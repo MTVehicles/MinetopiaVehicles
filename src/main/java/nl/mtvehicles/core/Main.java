@@ -12,7 +12,7 @@ import java.util.List;
 public class Main extends JavaPlugin {
     public static Main instance;
 
-    public List<Config> configList = new ArrayList<>();
+    public static List<Config> configList = new ArrayList<>();
 
     public static MessagesConfig messagesConfig = new MessagesConfig();
     public static VehicleDataConfig vehicleDataConfig = new VehicleDataConfig();
@@ -23,7 +23,7 @@ public class Main extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        System.out.println("De plugin is opgestart!");
+        getLogger().info("De plugin is opgestart!");
         Bukkit.getPluginCommand("minetopiavehicles").setExecutor(new Vehicles());
 
         configList.add(messagesConfig);

@@ -1,0 +1,5 @@
+helpMessageSpeler: "&a/vehicle &2info &f- &aVerkijg informatie over de plugin.\n&a/vehicle &2help &f- &aDan krijg je dit bericht wat je ziet\n&a/vehicle &2setowner &f- &aZet de voertuig eigenaar"
+helpMessageAdmin: "&a/vehicle &2info &f- &aVerkijg informatie over de plugin.\n&a/vehicle &2help &f- &aDan krijg je dit bericht wat je ziet\n&a/vehicle &2reload &f- &aVernieuw de config files."
+reloadSuccesvol: "&aJe hebt succesvol de plugin herladen!"
+notForConsole: "&cDit kan alleen een speler doen!"
+cmdNotExists: "&cDit command bestaat niet!"

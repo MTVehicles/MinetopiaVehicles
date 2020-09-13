@@ -20,8 +20,6 @@ public class Config implements ConfigInterface {
 
     public void reload() {
         if (customConfigFile == null) {
-            System.out.println(fileName);
-            System.out.println(Main.instance.getDataFolder());
             customConfigFile = new File(Main.instance.getDataFolder(), fileName);
         }
         if (!customConfigFile.exists())

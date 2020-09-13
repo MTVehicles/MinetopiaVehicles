@@ -8,23 +8,17 @@ import org.bukkit.entity.Player;
 
 import java.io.Console;
 
-public class Help extends MTVehicleSubCommand {
+public class Info extends MTVehicleSubCommand {
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
 
-        if (!(sender instanceof Player)) {
-            sendMessage(Main.messagesConfig.getMessage("notForConsole"));
-        }
 
+        sendMessage("&2-=-=-=-=-=-=-=-=-=-=-");
+        sendMessage("");
+        sendMessage("&a MT-Vehicles &2is gemaakt door: &aGamerJoep_ &2en &aJeffrey. &2wil je meer weten? Ga dan naar &ahttps://mtvehicles.nl");
+        sendMessage("");
+        sendMessage("&2-=-=-=-=-=-=-=-=-=-=-");
 
-        if (!sender.hasPermission("mtvehicles.admin")) {
-
-            sendMessage(Main.messagesConfig.getMessage("helpMessageSpeler"));
-
-        } else {
-
-            sendMessage(Main.messagesConfig.getMessage("helpMessageAdmin"));
-        }
 
 
         return false;
