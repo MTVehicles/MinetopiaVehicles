@@ -9,7 +9,7 @@ public class Help extends MTVehicleSubCommand {
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
 
-        sender.sendMessage(Text.colorize("&1Super vet!!!"));
+        sendMessage("&1Super vet!!!");
 
 
         return false;

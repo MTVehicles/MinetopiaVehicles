@@ -12,25 +12,19 @@ public class Vehicles extends MTVehicleCommand {
         MTVehicleSubCommand subCommand;
 
         if (args.length == 0) {
-
-
             subCommand = new Help();
             subCommand.execute(sender, cmd, s, args);
             return true;
         }
 
         if (args.length == 1) {
-
-
             if (args[0].equalsIgnoreCase("help")) {
                 subCommand = new Help();
                 subCommand.execute(sender, cmd, s, args);
             }
 
-
             return true;
         }
-
 
         return false;
     }
