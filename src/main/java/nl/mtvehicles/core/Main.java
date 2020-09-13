@@ -1,6 +1,8 @@
 package nl.mtvehicles.core;
 
+import nl.mtvehicles.core.Commands.Vehicles;
 import nl.mtvehicles.core.Infrastructure.Data.Config.*;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
@@ -12,11 +14,14 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        //Hallo
+        //
+        System.out.println("De plugin is opgestart!");
+        Bukkit.getPluginCommand("minetopiavehicles").setExecutor(new Vehicles());
     }
 
     @Override
     public void onDisable() {
         instance = this;
     }
+
 }

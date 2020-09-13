@@ -9,15 +9,28 @@ import org.bukkit.command.CommandSender;
 public class Vehicles extends MTVehicleCommand {
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
+        MTVehicleSubCommand subCommand;
+
+        if (args.length == 0) {
+
+
+            subCommand = new Help();
+            subCommand.execute(sender, cmd, s, args);
+            return true;
+        }
+
         if (args.length == 1) {
-            MTVehicleSubCommand subCommand;
+
 
             if (args[0].equalsIgnoreCase("help")) {
                 subCommand = new Help();
                 subCommand.execute(sender, cmd, s, args);
             }
+
+
             return true;
         }
+
 
         return false;
     }

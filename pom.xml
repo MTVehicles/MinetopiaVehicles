@@ -50,5 +50,11 @@
             <scope>system</scope>
             <systemPath>${basedir}/libs/spigot-1.15.2.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>RELEASE</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 </project>
