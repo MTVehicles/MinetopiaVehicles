@@ -14,14 +14,19 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        //
+        instance = this;
+
         System.out.println("De plugin is opgestart!");
         Bukkit.getPluginCommand("minetopiavehicles").setExecutor(new Vehicles());
+
+        messagesConfig.reload();
+        vehicleDataConfig.reload();
+        vehiclesConfig.reload();
     }
 
     @Override
     public void onDisable() {
-        instance = this;
+        //
     }
 
 }

@@ -20,6 +20,8 @@ public class Config implements ConfigInterface {
 
     public void reload() {
         if (customConfigFile == null) {
+            System.out.println(fileName);
+            System.out.println(Main.instance.getDataFolder());
             customConfigFile = new File(Main.instance.getDataFolder(), fileName);
         }
         customConfig = YamlConfiguration.loadConfiguration(customConfigFile);
@@ -28,6 +30,8 @@ public class Config implements ConfigInterface {
         defConfigStream = new InputStreamReader(Objects.requireNonNull(Main.instance.getResource(fileName)), StandardCharsets.UTF_8);
         YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
         customConfig.setDefaults(defConfig);
+
+        this.saveDefaultConfig();
     }
 
 
