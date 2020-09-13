@@ -8,7 +8,7 @@ public abstract class MTVehicleSubCommand {
     public CommandSender commandSender;
 
     public boolean onExecute(CommandSender sender, Command cmd, String s, String[] args) {
-
+        this.commandSender = sender;
         return this.execute(sender, cmd, s, args);
     }
 
