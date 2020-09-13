@@ -24,14 +24,15 @@ public class Config implements ConfigInterface {
             System.out.println(Main.instance.getDataFolder());
             customConfigFile = new File(Main.instance.getDataFolder(), fileName);
         }
+        if (!customConfigFile.exists())
+            this.saveDefaultConfig();
+
         customConfig = YamlConfiguration.loadConfiguration(customConfigFile);
 
         Reader defConfigStream;
         defConfigStream = new InputStreamReader(Objects.requireNonNull(Main.instance.getResource(fileName)), StandardCharsets.UTF_8);
         YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
         customConfig.setDefaults(defConfig);
-
-        this.saveDefaultConfig();
     }
 
 

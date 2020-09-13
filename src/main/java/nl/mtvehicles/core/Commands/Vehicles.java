@@ -6,26 +6,27 @@ import nl.mtvehicles.core.Infrastructure.Models.MTVehicleSubCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
+import java.util.HashMap;
+
 public class Vehicles extends MTVehicleCommand {
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
-        MTVehicleSubCommand subCommand;
+        HashMap<String, MTVehicleSubCommand> subcommands = new HashMap<>();
+
+        subcommands.put("help", new Help());
 
         if (args.length == 0) {
-            subCommand = new Help();
-            subCommand.execute(sender, cmd, s, args);
+            subcommands.get("help").onExecute(sender, cmd, s, args);
             return true;
         }
 
-        if (args.length == 1) {
-            if (args[0].equalsIgnoreCase("help")) {
-                subCommand = new Help();
-                subCommand.execute(sender, cmd, s, args);
-            }
 
-            return true;
+        if (!subcommands.containsKey(args[1])) {
+            sendMessage("&cDit command bestaat niet");
         }
 
-        return false;
+        subcommands.get(args[1]).onExecute(sender, cmd, s, args);
+
+        return true;
     }
 }

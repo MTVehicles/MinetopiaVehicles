@@ -18,7 +18,7 @@ public abstract class MTVehicleCommand implements CommandExecutor {
     public abstract boolean execute(CommandSender sender, Command cmd, String s, String[] args);
 
     public void sendMessage(String message) {
-        this.commandSender.sendMessage(Text.colorize(message));
+        this.commandSender.sendMessage("" + Text.colorize(message));
     }
 }
 
