@@ -11,14 +11,15 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.3.1</version>
                 <configuration>
-                    <source>8</source>
-                    <target>8</target>
+                    <outputDirectory>E:\Build\1.12.2\plugins</outputDirectory>
                 </configuration>
             </plugin>
         </plugins>
     </build>
+
 
     <repositories>
         <repository>
