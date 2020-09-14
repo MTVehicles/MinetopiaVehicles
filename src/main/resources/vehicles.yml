@@ -1,0 +1,8 @@
+voertuigen:
+  - name: "Autos"
+    item: DIAMOND_HOE
+    itemDamage: 10
+    items:
+      - name: "Roze auto"
+        item: DIAMOND_HOE
+        itemDamage: 10
