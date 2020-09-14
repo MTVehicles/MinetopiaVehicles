@@ -10,7 +10,5 @@ public class MessagesConfig extends Config {
 
     public String getMessage(String key) {
         return Text.colorize((String) this.getConfig().get(key));
-
-
     }
 }

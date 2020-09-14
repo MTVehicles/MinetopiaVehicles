@@ -17,4 +17,12 @@ public abstract class MTVehicleSubCommand {
     public void sendMessage(String message) {
         this.commandSender.sendMessage("" + Text.colorize(message));
     }
+
+    public boolean checkPermission(String permission) {
+        if (commandSender.hasPermission(permission)) {
+            return true;
+        }
+
+        return false;
+    }
 }

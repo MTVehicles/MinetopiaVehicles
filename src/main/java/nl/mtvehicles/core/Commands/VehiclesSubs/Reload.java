@@ -10,11 +10,13 @@ import org.bukkit.command.CommandSender;
 public class Reload extends MTVehicleSubCommand {
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
-        if (sender.hasPermission("mtvehicles.reload"))
-            Bukkit.getLogger().info("Reload config files..");
-            Main.configList.forEach(Config::reload);
-            Bukkit.getLogger().info("Files loaded!");
-            sendMessage(Main.messagesConfig.getMessage("reloadSuccesvol"));
-            return false;
+        if (!checkPermission("mtvehicles.reload")) return true;
+
+        Bukkit.getLogger().info("Reload config files..");
+        Main.configList.forEach(Config::reload);
+        Bukkit.getLogger().info("Files loaded!");
+        sendMessage(Main.messagesConfig.getMessage("reloadSuccesvol"));
+
+        return true;
     }
 }

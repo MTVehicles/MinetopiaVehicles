@@ -28,15 +28,8 @@ public class Vehicles extends MTVehicleCommand {
         if (subcommands.get(args[0]) == null){
             sendMessage(Main.messagesConfig.getMessage("cmdNotExists"));
         } else {
-
             subcommands.get(args[0]).onExecute(sender, cmd, s, args);
         }
-
-//        if (!subcommands.containsKey(args[0])) {
-//            sendMessage(Main.messagesConfig.getMessage("CmdNotExists"));
-//        }
-
-
 
         return true;
     }

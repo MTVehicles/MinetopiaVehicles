@@ -6,28 +6,22 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.io.Console;
-
 public class Help extends MTVehicleSubCommand {
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
-
         if (!(sender instanceof Player)) {
             sendMessage(Main.messagesConfig.getMessage("notForConsole"));
-        }
 
+            return false;
+        }
 
         if (!sender.hasPermission("mtvehicles.admin")) {
-
             sendMessage(Main.messagesConfig.getMessage("helpMessageSpeler"));
 
-        } else {
-
-            sendMessage(Main.messagesConfig.getMessage("helpMessageAdmin"));
+            return true;
         }
+        sendMessage(Main.messagesConfig.getMessage("helpMessageAdmin"));
 
-
-        return false;
-
+        return true;
     }
 }
