@@ -6,3 +6,10 @@ voertuigen:
       - name: "Roze auto"
         item: DIAMOND_HOE
         itemDamage: 10
+  - name: "nieuwstuk"
+    item: DIAMOND_HOE
+    itemDamage: 10
+    items:
+      - name: "Roze auto"
+        item: DIAMOND_HOE
+        itemDamage: 10

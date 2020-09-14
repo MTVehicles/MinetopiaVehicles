@@ -9,7 +9,7 @@ public class Info extends MTVehicleSubCommand {
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
         sendMessage("&2-=-=-=-=-=-=-=-=-=-=-");
         sendMessage("");
-        sendMessage("&a MT-Vehicles &2is gemaakt door: &aGamerJoep_ &2en &aJeffrey. &2wil je meer weten? Ga dan naar &ahttps://mtvehicles.nl");
+        sendMessage("&a MT-Vehicles &2is made by: &aGamerJoep_ &2and &aJeffrey. &2do you want know more? Go to &ahttps://mtvehicles.nl");
         sendMessage("");
         sendMessage("&2-=-=-=-=-=-=-=-=-=-=-");
 
