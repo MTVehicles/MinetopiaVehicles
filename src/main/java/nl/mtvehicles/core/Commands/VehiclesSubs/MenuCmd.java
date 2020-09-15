@@ -5,13 +5,17 @@ import nl.mtvehicles.core.Infrastructure.Helpers.TextUtils;
 import nl.mtvehicles.core.Infrastructure.Models.MTVehicleSubCommand;
 import nl.mtvehicles.core.Main;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class MenuCmd extends MTVehicleSubCommand {
@@ -36,7 +40,11 @@ public class MenuCmd extends MTVehicleSubCommand {
     }
 
     public ItemStack carItem(int id, String name, String material){
-        ItemStack car = (new ItemFactory(Material.getMaterial(material))).setDurability((short)id).unbreakable().setName(TextUtils.colorize(name)).toItemStack();
+        ItemStack car = (new ItemFactory(Material.getMaterial(material))).setDurability((short)id).setName(TextUtils.colorize(name)).toItemStack();
+        ItemMeta im = car.getItemMeta();
+        im.setUnbreakable(true);
+        car.setItemMeta(im);
+
 
         return car;
     }

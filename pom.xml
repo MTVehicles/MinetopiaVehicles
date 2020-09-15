@@ -57,6 +57,13 @@
             <systemPath>${basedir}/libs/spigot-1.15.2.jar</systemPath>
         </dependency>
         <dependency>
+            <groupId>net.minecraft</groupId>
+            <artifactId>example-app</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/libs/spigot-1.12.2.jar</systemPath>
+        </dependency>
+        <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
             <version>RELEASE</version>
