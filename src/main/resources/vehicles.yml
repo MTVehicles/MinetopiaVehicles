@@ -16,5 +16,27 @@ voertuigen:
       z: 0
     cars:
       - name: "Roze auto"
-        item: DIAMOND_HOE
+        SkinItem: DIAMOND_HOE
         itemDamage: 1005
+      - name: "Blauwe auto"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1009
+  - name: "penis"
+    VehicleType: CAR
+    SkinItem: DIAMOND_HOE
+    itemDamage: 1012
+    AcceleratieSpeed: 0.02
+    MaxSpeed: 2.5
+    BrakingSpeed: 0.08
+    AftrekkenSpeed: 0.08
+    RotateSpeed: 7
+    MaxSpeedBackwards: 1
+    Seats: 0
+    MainSeatOffset:
+      x: -0.1
+      y: -1
+      z: 0
+    cars:
+      - name: "penis auto"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1012

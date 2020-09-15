@@ -2,7 +2,7 @@ package nl.mtvehicles.core;
 
 import nl.mtvehicles.core.Commands.VehiclesSub;
 import nl.mtvehicles.core.Events.MenuClickEvent;
-import nl.mtvehicles.core.Infrastructure.Data.Config.*;
+import nl.mtvehicles.core.Infrastructure.DataConfig.*;
 import nl.mtvehicles.core.Infrastructure.DataConfig.DefaultConfig;
 import nl.mtvehicles.core.Infrastructure.DataConfig.MessagesConfig;
 import nl.mtvehicles.core.Infrastructure.DataConfig.VehicleDataConfig;
