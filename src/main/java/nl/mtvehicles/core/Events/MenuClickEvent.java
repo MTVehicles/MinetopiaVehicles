@@ -29,6 +29,9 @@ public class MenuClickEvent implements Listener {
                 return;
             }
 
+            List<Map<?, ?>> vehicles = Main.vehiclesConfig.getConfig().getMapList("voertuigen");
+            Map<?, ?> skins = (Map<?, ?>) vehicles.get(e.getRawSlot()).get("cars");
+
             for (Map<?, ?> vehicle : Main.vehiclesConfig.getConfig().getMapList("voertuigen")) {
                 System.out.println(vehicle);
                 for (Map<?, ?> cars : Main.vehiclesConfig.getConfig().getMapList("cars")) {
