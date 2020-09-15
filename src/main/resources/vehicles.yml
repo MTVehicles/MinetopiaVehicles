@@ -1,15 +1,20 @@
 voertuigen:
-  - name: "Autos"
-    item: DIAMOND_HOE
-    itemDamage: 10
-    items:
+  - name: "Sedans"
+    VehicleType: CAR
+    SkinItem: DIAMOND_HOE
+    itemDamage: 1005
+    AcceleratieSpeed: 0.02
+    MaxSpeed: 2.5
+    BrakingSpeed: 0.08
+    AftrekkenSpeed: 0.08
+    RotateSpeed: 7
+    MaxSpeedBackwards: 1
+    Seats: 0
+    MainSeatOffset:
+      x: -0.1
+      y: -1
+      z: 0
+    cars:
       - name: "Roze auto"
         item: DIAMOND_HOE
-        itemDamage: 10
-  - name: "nieuwstuk"
-    item: DIAMOND_HOE
-    itemDamage: 10
-    items:
-      - name: "Roze auto"
-        item: DIAMOND_HOE
-        itemDamage: 10
+        itemDamage: 1005

@@ -1,6 +1,6 @@
 package nl.mtvehicles.core.Infrastructure.Models;
 
-import nl.mtvehicles.core.Infrastructure.Helpers.Text;
+import nl.mtvehicles.core.Infrastructure.Helpers.TextUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,7 +18,7 @@ public abstract class MTVehicleCommand implements CommandExecutor {
     public abstract boolean execute(CommandSender sender, Command cmd, String s, String[] args);
 
     public void sendMessage(String message) {
-        this.commandSender.sendMessage("" + Text.colorize(message));
+        this.commandSender.sendMessage("" + TextUtils.colorize(message));
     }
 }
 

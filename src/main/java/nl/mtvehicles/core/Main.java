@@ -1,9 +1,12 @@
 package nl.mtvehicles.core;
 
-import nl.mtvehicles.core.Commands.Vehicles;
+import nl.mtvehicles.core.Commands.VehiclesSub;
+import nl.mtvehicles.core.Events.MenuClickEvent;
 import nl.mtvehicles.core.Infrastructure.Data.Config.*;
 import nl.mtvehicles.core.Infrastructure.Models.Config;
 import org.bukkit.Bukkit;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -24,7 +27,8 @@ public class Main extends JavaPlugin {
         instance = this;
 
         getLogger().info("De plugin is opgestart!");
-        Bukkit.getPluginCommand("minetopiavehicles").setExecutor(new Vehicles());
+        Bukkit.getPluginCommand("minetopiavehicles").setExecutor(new VehiclesSub());
+        Bukkit.getPluginManager().registerEvents((Listener)new MenuClickEvent(), (Plugin)this);
 
         configList.add(messagesConfig);
         configList.add(vehicleDataConfig);

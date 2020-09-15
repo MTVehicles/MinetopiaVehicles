@@ -4,7 +4,7 @@ import nl.mtvehicles.core.Infrastructure.Models.MTVehicleSubCommand;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
-public class Info extends MTVehicleSubCommand {
+public class InfoCmd extends MTVehicleSubCommand {
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
         sendMessage("&2-=-=-=-=-=-=-=-=-=-=-");
