@@ -1,8 +1,8 @@
 voertuigen:
-  - name: "Sedans"
+  - name: "Sedan"
     VehicleType: CAR
     SkinItem: DIAMOND_HOE
-    itemDamage: 1005
+    itemDamage: 1003
     AcceleratieSpeed: 0.02
     MaxSpeed: 2.5
     BrakingSpeed: 0.08
@@ -15,12 +15,24 @@ voertuigen:
       y: -1
       z: 0
     cars:
-      - name: "Roze auto"
+      - name: "Sedan Blauw"
         SkinItem: DIAMOND_HOE
-        itemDamage: 1005
-      - name: "Blauwe auto"
+        itemDamage: 1003
+      - name: "Sedan Rood"
         SkinItem: DIAMOND_HOE
-        itemDamage: 1009
+        itemDamage: 1017
+      - name: "Sedan Kaki"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1018
+      - name: "Sedan Grijs"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1019
+      - name: "Sedan Roze"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1020
+      - name: "Sedan Geel"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1021
   - name: "penis"
     VehicleType: CAR
     SkinItem: DIAMOND_HOE

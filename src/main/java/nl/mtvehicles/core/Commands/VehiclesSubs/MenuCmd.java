@@ -40,8 +40,11 @@ public class MenuCmd extends MTVehicleSubCommand {
     }
 
     public ItemStack carItem(int id, String name, String material){
-        ItemStack car = (new ItemFactory(Material.getMaterial(material))).setDurability((short)id).setName(TextUtils.colorize(name)).toItemStack();
+        ItemStack car = (new ItemFactory(Material.getMaterial(material))).setDurability((short)id).setName(TextUtils.colorize("&6"+name)).toItemStack();
         ItemMeta im = car.getItemMeta();
+        List<String> itemlore = new ArrayList<>();
+        itemlore.add(TextUtils.colorize("&a"));
+        im.setLore(itemlore);
         im.setUnbreakable(true);
         car.setItemMeta(im);
 
