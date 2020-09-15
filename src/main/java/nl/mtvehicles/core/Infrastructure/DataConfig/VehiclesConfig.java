@@ -1,4 +1,4 @@
-package nl.mtvehicles.core.Infrastructure.Data.Config;
+package nl.mtvehicles.core.Infrastructure.DataConfig;
 
 import nl.mtvehicles.core.Infrastructure.Models.Config;
 

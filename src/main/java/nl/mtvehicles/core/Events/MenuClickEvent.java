@@ -19,11 +19,11 @@ public class MenuClickEvent implements Listener {
             p.sendMessage("vte");
             for (Map<?, ?> vehicle : Main.vehiclesConfig.getConfig().getMapList("voertuigen")) {
                 //System.out.println(vehicle.get("item"));
-                for (Map<?, ?> cars : vehicle.get("cars")) {
-
-                    System.out.println(cars.get("item"));
-
-                }
+//                for (Map<?, ?> cars : vehicle.get("cars")) {
+//
+//                    System.out.println(cars.get("item"));
+//
+//                }
 
             }
 
