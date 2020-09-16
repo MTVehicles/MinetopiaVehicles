@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.Commands.VehiclesSubs;
 
+import nl.mtvehicles.core.Events.MenuClickEvent;
 import nl.mtvehicles.core.Infrastructure.Helpers.ItemFactory;
 import nl.mtvehicles.core.Infrastructure.Helpers.TextUtils;
 import nl.mtvehicles.core.Infrastructure.Models.MTVehicleSubCommand;
@@ -14,11 +15,10 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MenuCmd extends MTVehicleSubCommand {
+    public static HashMap<UUID, Inventory> beginmenu = new HashMap<>();
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
         if (sender instanceof Player) {
@@ -29,15 +29,15 @@ public class MenuCmd extends MTVehicleSubCommand {
             Inventory inv = Bukkit.createInventory(null, 18, "Vehicle Menu");
 
             for (Map<?, ?> vehicle : Main.vehiclesConfig.getConfig().getMapList("voertuigen")) {
-                System.out.println(vehicle);
                 inv.addItem(carItem((int) vehicle.get("itemDamage"), (String) vehicle.get("name"), (String) vehicle.get("SkinItem")));
             }
-
+            beginmenu.put(p.getUniqueId(), inv);
             p.openInventory(inv);
         }
 
         return true;
     }
+
 
     public ItemStack carItem(int id, String name, String material){
         ItemStack car = (new ItemFactory(Material.getMaterial(material))).setDurability((short)id).setName(TextUtils.colorize("&6"+name)).toItemStack();

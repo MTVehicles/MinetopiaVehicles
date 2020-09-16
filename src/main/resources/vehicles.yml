@@ -1,4 +1,86 @@
 voertuigen:
+  - name: "Oxboard"
+    VehicleType: CAR
+    SkinItem: DIAMOND_HOE
+    itemDamage: 1012
+    AcceleratieSpeed: 0.02
+    MaxSpeed: 2.5
+    BrakingSpeed: 0.08
+    AftrekkenSpeed: 0.08
+    RotateSpeed: 7
+    MaxSpeedBackwards: 1
+    Seats: 0
+    MainSeatOffset:
+      x: -0.1
+      y: -1
+      z: 0
+    cars:
+      - name: "Oxboard Geel"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1029
+      - name: "Oxboard Oranje"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1030
+      - name: "Oxboard Groen"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1031
+  - name: "Fiets"
+    VehicleType: CAR
+    SkinItem: DIAMOND_HOE
+    itemDamage: 1045
+    AcceleratieSpeed: 0.02
+    MaxSpeed: 2.5
+    BrakingSpeed: 0.08
+    AftrekkenSpeed: 0.08
+    RotateSpeed: 7
+    MaxSpeedBackwards: 1
+    Seats: 0
+    MainSeatOffset:
+      x: -0.1
+      y: -1
+      z: 0
+    cars:
+      - name: "penis auto"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1045
+  - name: "Motor"
+    VehicleType: CAR
+    SkinItem: DIAMOND_HOE
+    itemDamage: 1013
+    AcceleratieSpeed: 0.02
+    MaxSpeed: 2.5
+    BrakingSpeed: 0.08
+    AftrekkenSpeed: 0.08
+    RotateSpeed: 7
+    MaxSpeedBackwards: 1
+    Seats: 0
+    MainSeatOffset:
+      x: -0.1
+      y: -1
+      z: 0
+    cars:
+      - name: "penis auto"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1013
+  - name: "Sportief"
+    VehicleType: CAR
+    SkinItem: DIAMOND_HOE
+    itemDamage: 1064
+    AcceleratieSpeed: 0.02
+    MaxSpeed: 2.5
+    BrakingSpeed: 0.08
+    AftrekkenSpeed: 0.08
+    RotateSpeed: 7
+    MaxSpeedBackwards: 1
+    Seats: 0
+    MainSeatOffset:
+      x: -0.1
+      y: -1
+      z: 0
+    cars:
+      - name: "penis auto"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1012
   - name: "Sedan"
     VehicleType: CAR
     SkinItem: DIAMOND_HOE
@@ -33,10 +115,10 @@ voertuigen:
       - name: "Sedan Geel"
         SkinItem: DIAMOND_HOE
         itemDamage: 1021
-  - name: "penis"
+  - name: "Hotrod"
     VehicleType: CAR
     SkinItem: DIAMOND_HOE
-    itemDamage: 1012
+    itemDamage: 1006
     AcceleratieSpeed: 0.02
     MaxSpeed: 2.5
     BrakingSpeed: 0.08
@@ -51,4 +133,80 @@ voertuigen:
     cars:
       - name: "penis auto"
         SkinItem: DIAMOND_HOE
-        itemDamage: 1012
+        itemDamage: 1013
+  - name: "RaceKar"
+    VehicleType: CAR
+    SkinItem: DIAMOND_HOE
+    itemDamage: 1193
+    AcceleratieSpeed: 0.02
+    MaxSpeed: 2.5
+    BrakingSpeed: 0.08
+    AftrekkenSpeed: 0.08
+    RotateSpeed: 7
+    MaxSpeedBackwards: 1
+    Seats: 0
+    MainSeatOffset:
+      x: -0.1
+      y: -1
+      z: 0
+    cars:
+      - name: "penis auto"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1013
+  - name: "Suv"
+    VehicleType: CAR
+    SkinItem: DIAMOND_HOE
+    itemDamage: 1132
+    AcceleratieSpeed: 0.02
+    MaxSpeed: 2.5
+    BrakingSpeed: 0.08
+    AftrekkenSpeed: 0.08
+    RotateSpeed: 7
+    MaxSpeedBackwards: 1
+    Seats: 0
+    MainSeatOffset:
+      x: -0.1
+      y: -1
+      z: 0
+    cars:
+      - name: "penis auto"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1013
+  - name: "Hoverboard"
+    VehicleType: CARWATER
+    SkinItem: DIAMOND_HOE
+    itemDamage: 1202
+    AcceleratieSpeed: 0.02
+    MaxSpeed: 2.5
+    BrakingSpeed: 0.08
+    AftrekkenSpeed: 0.08
+    RotateSpeed: 7
+    MaxSpeedBackwards: 1
+    Seats: 0
+    MainSeatOffset:
+      x: -0.1
+      y: -1
+      z: 0
+    cars:
+      - name: "penis auto"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1013
+  - name: "Helicopter"
+    VehicleType: HELICOPTER
+    SkinItem: DIAMOND_HOE
+    itemDamage: 1124
+    AcceleratieSpeed: 0.02
+    MaxSpeed: 2.5
+    BrakingSpeed: 0.08
+    AftrekkenSpeed: 0.08
+    RotateSpeed: 7
+    MaxSpeedBackwards: 1
+    Seats: 0
+    MainSeatOffset:
+      x: -0.1
+      y: -1
+      z: 0
+    cars:
+      - name: "penis auto"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1013
