@@ -18,8 +18,8 @@ import java.util.*;
 
 public class MenuClickEvent implements Listener {
 
-    public HashMap<UUID, Inventory> secondmenu = new HashMap<>();
-    public HashMap<UUID, ItemStack> caritem = new HashMap<>();
+    public HashMap<UUID, ItemStack> vehicleMenu = new HashMap<>();
+    public HashMap<UUID, Inventory> skinMenu = new HashMap<>();
 
     @EventHandler
     public void onClick(InventoryClickEvent e) {
@@ -31,23 +31,25 @@ public class MenuClickEvent implements Listener {
             e.setCancelled(true);
             List<Map<?, ?>> vehicles = Main.vehiclesConfig.getConfig().getMapList("voertuigen");
             List<Map<?, ?>> skins = (List<Map<?, ?>>) vehicles.get(e.getRawSlot()).get("cars");
+
             Inventory inv = Bukkit.createInventory(null, 54, "Choose your vehicle");
+
             for (int i = 36; i <= 44; i++) {
                 inv.setItem(i, mItem("STAINED_GLASS_PANE", 1, (short) 0, "&c", "&c"));
             }
+
             inv.setItem(47, mItem("BARRIER", 1, (short) 0, "&4Sluiten", "&cDruk hier om het menu te sluiten!"));
             inv.setItem(51, mItem("WOOD_DOOR", 1, (short) 0, "&6Terug", "&eDruk hier om terug te gaan!"));
+
             for (Map<?, ?> skin : skins) {
                 inv.addItem(carItem((int) skin.get("itemDamage"), ((String) skin.get("name")), (String) skin.get("SkinItem")));
             }
-            secondmenu.put(p.getUniqueId(), inv);
+            skinMenu.put(p.getUniqueId(), inv);
             p.openInventory(inv);
             return;
         }
 
-
         if (e.getView().getTitle().contains("Choose your vehicle")) {
-
             if (e.getCurrentItem().equals(mItem("BARRIER", 1, (short) 0, "&4Sluiten", "&cDruk hier om het menu te sluiten!"))) {
                 e.setCancelled(true);
                 p.closeInventory();
@@ -59,10 +61,8 @@ public class MenuClickEvent implements Listener {
                 return;
             }
 
-
-
             e.setCancelled(true);
-            caritem.put(p.getUniqueId(), e.getCurrentItem());
+            vehicleMenu.put(p.getUniqueId(), e.getCurrentItem());
             Inventory inv = Bukkit.createInventory(null, 27, "Confirm getting vehicle");
             inv.setItem(11, woolItem("WOOL", "RED_WOOL", 1, (short) 14, "&4Annuleren", "&7Druk hier om het te annuleren."));
             inv.setItem(15, woolItem("WOOL", "LIME_WOOL", 1, (short) 5, "&aCreate Vehicle", "&7Druk hier als je het voertuigen wilt aanmaken en op je naam wilt zetten"));
@@ -72,18 +72,14 @@ public class MenuClickEvent implements Listener {
         if (e.getView().getTitle().contains("Confirm getting vehicle")) {
             e.setCancelled(true);
             if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Annuleren")) {
-                p.openInventory(secondmenu.get(p.getUniqueId()));
+                p.openInventory(skinMenu.get(p.getUniqueId()));
             }
             if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Create Vehicle")) {
                 p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("completedvehiclegive")));
-                p.getInventory().addItem(caritem.get(p.getUniqueId()));
+                p.getInventory().addItem(vehicleMenu.get(p.getUniqueId()));
                 p.closeInventory();
             }
-            return;
         }
-
-
-
     }
 
     public ItemStack carItem(int id, String name, String material) {
@@ -96,7 +92,6 @@ public class MenuClickEvent implements Listener {
         im.setLore(itemlore);
         im.setUnbreakable(true);
         car.setItemMeta(im);
-
 
         return car;
     }
@@ -122,6 +117,7 @@ public class MenuClickEvent implements Listener {
             im.setLore(itemlore);
             im.setDisplayName(TextUtils.colorize(text));
             is.setItemMeta(im);
+
             return is;
         } catch (Exception e) {
             try {
@@ -132,9 +128,11 @@ public class MenuClickEvent implements Listener {
                 im.setLore(itemlore);
                 im.setDisplayName(TextUtils.colorize(text));
                 is.setItemMeta(im);
+
                 return is;
             } catch (Exception e2) {
                 e2.printStackTrace();
+
                 return null;
             }
         }
@@ -149,6 +147,7 @@ public class MenuClickEvent implements Listener {
             im.setLore(itemlore);
             im.setDisplayName(TextUtils.colorize(text));
             is.setItemMeta(im);
+
             return is;
         } catch (Exception e) {
             try {
@@ -159,9 +158,11 @@ public class MenuClickEvent implements Listener {
                 im.setLore(itemlore);
                 im.setDisplayName(TextUtils.colorize(text));
                 is.setItemMeta(im);
+
                 return is;
             } catch (Exception e2) {
                 e2.printStackTrace();
+
                 return null;
             }
         }
