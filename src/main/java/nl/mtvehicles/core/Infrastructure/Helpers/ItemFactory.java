@@ -159,6 +159,11 @@ public class ItemFactory {
         return this;
     }
 
+    public ItemFactory setNBT(String key, String value) {
+        is = NBTUtils.set(is, value, key);
+        return this;
+    }
+
     public ItemFactory removeLoreLine(String line) {
         ItemMeta im = this.is.getItemMeta();
         List<String> lore = new ArrayList<>(im.getLore());

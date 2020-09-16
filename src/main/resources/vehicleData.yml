@@ -1,0 +1,23 @@
+vehicle:
+    2c-34-32:
+      name: "Oxboard - Rood"
+      skinDamage: 1002
+      skinItem: DIAMOND_HOE
+      isGlow: false
+      benzineEnabled: true
+      benzine: 87.4
+      kofferbak: true
+      kofferbakRows: 1
+      kofferbakData:
+        - data
+      acceleratieSpeed: 0.02
+      maxSpeed: 2.5
+      brakingSpeed: 0.08
+      aftrekkenSpeed: 0.08
+      rotateSpeed: 7
+      maxSpeedBackwards: 0.02
+      owner: id
+      riders:
+        - id
+      members:
+        - id

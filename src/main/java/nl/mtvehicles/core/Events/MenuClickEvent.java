@@ -1,6 +1,7 @@
 package nl.mtvehicles.core.Events;
 
 import nl.mtvehicles.core.Commands.VehiclesSubs.MenuCmd;
+import nl.mtvehicles.core.Infrastructure.Helpers.NBTUtils;
 import nl.mtvehicles.core.Infrastructure.Helpers.TextUtils;
 import nl.mtvehicles.core.Infrastructure.Helpers.Vehicles;
 import nl.mtvehicles.core.Main;
@@ -60,6 +61,11 @@ public class MenuClickEvent implements Listener {
                 p.openInventory(MenuCmd.beginmenu.get(p.getUniqueId()));
                 e.setCancelled(true);
                 return;
+            }
+            if (e.getCurrentItem().equals(Vehicles.mItem("STAINED_GLASS_PANE", 1, (short) 0, "&c", "&c"))) {
+                e.setCancelled(true);
+                return;
+
             }
 
             e.setCancelled(true);

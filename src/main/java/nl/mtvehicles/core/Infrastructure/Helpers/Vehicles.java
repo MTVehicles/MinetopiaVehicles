@@ -11,13 +11,15 @@ import java.util.List;
 public class Vehicles {
 
     public static ItemStack carItem(int id, String name, String material) {
-        ItemStack car = (new ItemFactory(Material.getMaterial(material))).setDurability((short) id).setName(TextUtils.colorize("&6" + name).replace(" ", " - ")).toItemStack();
+        String ken = generateLicencePlate();
+        ItemStack car = (new ItemFactory(Material.getMaterial(material))).setDurability((short) id).setName(TextUtils.colorize("&6" + name).replace(" ", " - ")).setNBT("mtvehicles.kenteken", ken).toItemStack();
         ItemMeta im = car.getItemMeta();
         List<String> itemlore = new ArrayList<>();
         itemlore.add(TextUtils.colorize("&a"));
-        itemlore.add(TextUtils.colorize("&a" + generateLicencePlate()));
+        itemlore.add(TextUtils.colorize("&a" + ken));
         itemlore.add(TextUtils.colorize("&a"));
         im.setLore(itemlore);
+
         im.setUnbreakable(true);
         car.setItemMeta(im);
 
