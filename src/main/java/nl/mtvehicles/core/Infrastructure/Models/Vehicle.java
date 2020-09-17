@@ -4,6 +4,7 @@ import nl.mtvehicles.core.Infrastructure.DataConfig.VehicleDataConfig;
 import nl.mtvehicles.core.Main;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -30,12 +31,12 @@ public class Vehicle {
     private List<UUID> members;
 
 
-    public static void save() {
+    public void save() {
 
-        Map<?, ?> map = new Map<?, ?>();
+        Map<String, Object> map = new HashMap<>();
         map.put("snelheid", this.getAcceleratieSpeed());
-
-
+        map.put("lisencePlate", this.getLicensePlate());
+        map.put("kofferbak", this.getKofferbakData());
 
     }
 
