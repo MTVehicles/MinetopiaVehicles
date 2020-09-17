@@ -4,6 +4,7 @@ import nl.mtvehicles.core.Commands.VehiclesSubs.MenuCmd;
 import nl.mtvehicles.core.Infrastructure.Helpers.NBTUtils;
 import nl.mtvehicles.core.Infrastructure.Helpers.TextUtils;
 import nl.mtvehicles.core.Infrastructure.Helpers.Vehicles;
+import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
 import nl.mtvehicles.core.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -22,6 +23,7 @@ public class MenuClickEvent implements Listener {
 
     public HashMap<UUID, ItemStack> vehicleMenu = new HashMap<>();
     public HashMap<UUID, Inventory> skinMenu = new HashMap<>();
+    public HashMap<UUID, Integer> intSave = new HashMap<>();
 
     @EventHandler
     public void onClick(InventoryClickEvent e) {
@@ -33,6 +35,9 @@ public class MenuClickEvent implements Listener {
             e.setCancelled(true);
             List<Map<?, ?>> vehicles = Main.vehiclesConfig.getConfig().getMapList("voertuigen");
             List<Map<?, ?>> skins = (List<Map<?, ?>>) vehicles.get(e.getRawSlot()).get("cars");
+
+
+            intSave.put(p.getUniqueId(), e.getRawSlot());
 
             Inventory inv = Bukkit.createInventory(null, 54, "Choose your vehicle");
 
@@ -82,8 +87,37 @@ public class MenuClickEvent implements Listener {
                 p.openInventory(skinMenu.get(p.getUniqueId()));
             }
             if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Create Vehicle")) {
+
+                List<Map<?, ?>> vehicles = Main.vehiclesConfig.getConfig().getMapList("voertuigen");
+                System.out.println(vehicles.get(intSave.get(p.getUniqueId())).get("RotateSpeed"));
+
                 p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("completedvehiclegive")));
                 p.getInventory().addItem(vehicleMenu.get(p.getUniqueId()));
+                String kenteken = NBTUtils.getString(vehicleMenu.get(p.getUniqueId()), "mtvehicles.kenteken");
+                String naam = NBTUtils.getString(vehicleMenu.get(p.getUniqueId()), "mtvehicles.naam");
+                Vehicle vehicle = new Vehicle();
+
+                vehicle.setLicensePlate("vehicle."+kenteken);
+                vehicle.setName(naam);
+                System.out.println(naam);
+                vehicle.setSkinDamage(vehicleMenu.get(p.getUniqueId()).getDurability());
+                vehicle.setSkinItem(vehicleMenu.get(p.getUniqueId()).getType().toString());
+                vehicle.setGlow(false);
+                vehicle.setBenzineEnabled((boolean) vehicles.get(intSave.get(p.getUniqueId())).get("benzineEnabled"));
+                vehicle.setBenzine(100);
+                vehicle.setKofferbak(true);
+                vehicle.setKofferbakRows(1);
+                vehicle.setKofferbakData(null);
+                vehicle.setAcceleratieSpeed((double)vehicles.get(intSave.get(p.getUniqueId())).get("acceleratieSpeed"));
+                vehicle.setMaxSpeed((double)vehicles.get(intSave.get(p.getUniqueId())).get("maxSpeed"));
+                vehicle.setBrakingSpeed((double)vehicles.get(intSave.get(p.getUniqueId())).get("brakingSpeed"));
+                vehicle.setAftrekkenSpeed((double)vehicles.get(intSave.get(p.getUniqueId())).get("aftrekkenSpeed"));
+                vehicle.setRotateSpeed((int) vehicles.get(intSave.get(p.getUniqueId())).get("rotateSpeed"));
+                vehicle.setMaxSpeedBackwards((double)vehicles.get(intSave.get(p.getUniqueId())).get("maxSpeedBackwards"));
+                vehicle.setOwner(p.getUniqueId().toString());
+
+
+                vehicle.save();
                 p.closeInventory();
             }
         }
