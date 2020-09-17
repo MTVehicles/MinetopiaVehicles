@@ -34,9 +34,25 @@ public class Vehicle {
     public void save() {
 
         Map<String, Object> map = new HashMap<>();
-        map.put("snelheid", this.getAcceleratieSpeed());
         map.put("lisencePlate", this.getLicensePlate());
-        map.put("kofferbak", this.getKofferbakData());
+        map.put("name", this.getName());
+        map.put("skinDamage", this.getSkinDamage());
+        map.put("skinItem", this.getSkinItem());
+        map.put("isGlow", this.isGlow());
+        map.put("benzineEnabled", this.isBenzineEnabled());
+        map.put("benzine", this.getBenzine());
+        map.put("kofferbak", this.isKofferbak());
+        map.put("kofferbakRows", this.getKofferbakRows());
+        map.put("kofferbakData", this.getKofferbakData());
+        map.put("acceleratieSpeed", this.getAcceleratieSpeed());
+        map.put("maxSpeed", this.getMaxSpeed());
+        map.put("brakingSpeed", this.getBrakingSpeed());
+        map.put("aftrekkenSpeed", this.getAftrekkenSpeed());
+        map.put("rotateSpeed", this.getRotateSpeed());
+        map.put("maxSpeedBackwards", this.getMaxSpeedBackwards());
+        map.put("owner", this.getOwner());
+        map.put("riders", this.getRiders());
+        map.put("members", this.getMembers());
 
     }
 
@@ -119,11 +135,8 @@ public class Vehicle {
         return members;
     }
 
-    public void setName(String name) {
 
-        this.name = name;
-
-    }
+    public void setName(String name) { this.name = name; }
     public void setSkinDamage(int skinDamage) {
         this.skinDamage = skinDamage;
     }
@@ -163,18 +176,7 @@ public class Vehicle {
     public void setAftrekkenSpeed(double aftrekkenSpeed) {
         this.aftrekkenSpeed = aftrekkenSpeed;
     }
-
-
-    public void setRotateSpeed(int rotateSpeed) {
-
-        VehicleDataConfig.
-
-        this.rotateSpeed = rotateSpeed;
-
-
-    }
-
-
+    public void setRotateSpeed(int rotateSpeed) { this.rotateSpeed = rotateSpeed; }
     public void setMaxSpeedBackwards(double maxSpeedBackwards) {
         this.maxSpeedBackwards = maxSpeedBackwards;
     }
