@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.Infrastructure.DataConfig;
 
+import nl.mtvehicles.core.Infrastructure.Helpers.TextUtils;
 import nl.mtvehicles.core.Infrastructure.Models.Config;
 
 public class VehicleDataConfig extends Config {

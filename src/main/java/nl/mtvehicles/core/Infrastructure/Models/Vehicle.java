@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.Infrastructure.Models;
 
+import nl.mtvehicles.core.Infrastructure.DataConfig.VehicleDataConfig;
 import nl.mtvehicles.core.Main;
 import org.bukkit.inventory.ItemStack;
 
@@ -29,7 +30,10 @@ public class Vehicle {
     private List<UUID> members;
 
 
-    public static void VehicleCreate(String license, int skinDamage, UUID Owner) {
+    public static void save() {
+
+        Map<?, ?> map = new Map<?, ?>();
+        map.put("snelheid", this.getAcceleratieSpeed());
 
 
 
@@ -115,7 +119,9 @@ public class Vehicle {
     }
 
     public void setName(String name) {
+
         this.name = name;
+
     }
     public void setSkinDamage(int skinDamage) {
         this.skinDamage = skinDamage;
@@ -156,9 +162,18 @@ public class Vehicle {
     public void setAftrekkenSpeed(double aftrekkenSpeed) {
         this.aftrekkenSpeed = aftrekkenSpeed;
     }
+
+
     public void setRotateSpeed(int rotateSpeed) {
+
+        VehicleDataConfig.
+
         this.rotateSpeed = rotateSpeed;
+
+
     }
+
+
     public void setMaxSpeedBackwards(double maxSpeedBackwards) {
         this.maxSpeedBackwards = maxSpeedBackwards;
     }
