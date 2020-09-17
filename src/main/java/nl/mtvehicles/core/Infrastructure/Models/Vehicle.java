@@ -34,7 +34,6 @@ public class Vehicle {
     public void save() {
 
         Map<String, Object> map = new HashMap<>();
-        map.put("lisencePlate", this.getLicensePlate());
         map.put("name", this.getName());
         map.put("skinDamage", this.getSkinDamage());
         map.put("skinItem", this.getSkinItem());
@@ -53,6 +52,9 @@ public class Vehicle {
         map.put("owner", this.getOwner());
         map.put("riders", this.getRiders());
         map.put("members", this.getMembers());
+
+        Main.vehicleDataConfig.getConfig().set(this.getLicensePlate(), map);
+        Main.vehicleDataConfig.save();
 
     }
 
