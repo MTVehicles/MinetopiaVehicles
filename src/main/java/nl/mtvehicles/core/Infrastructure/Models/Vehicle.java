@@ -4,10 +4,8 @@ import nl.mtvehicles.core.Infrastructure.DataConfig.VehicleDataConfig;
 import nl.mtvehicles.core.Main;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Vehicle {
     private String licensePlate;
@@ -29,6 +27,7 @@ public class Vehicle {
     private UUID owner;
     private List<UUID> riders;
     private List<UUID> members;
+    private Map<?, ?> vehicleData;
 
 
     public void save() {
@@ -63,9 +62,30 @@ public class Vehicle {
 
         if (!existsByPlate(plate)) return null;
 
+        List<Map<?, ?>> vehicles = Main.vehiclesConfig.getConfig().getMapList("voertuigen");
+        List<Map<?, ?>> skins = new ArrayList<>();
+        for (Map<?, ?> vehicle : vehicles) {
+            List<Map<?, ?>> cars = (List<Map<?, ?>>) vehicle.get("cars");
+            skins.addAll(cars);
+        }
+
         Map<?, ?> vehicleData = vehiclesData.get(0);
 
+        List<Map<?, ?>> collect = skins.stream().filter(x -> x.get("itemDamage") == vehicleData.get("skinDamage")).collect(Collectors.toList());
+
+        if (collect.size() == 0) {
+            return null;
+        }
+
+        if (collect.size() > 1) {
+            Main.instance.getLogger().warning("JA EIKEL NIET MEERDERE VAN 1 ITEM DAMAGE TOEVOEGEN");
+            return null;
+        }
+
         Vehicle vehicle = new Vehicle();
+
+        vehicle.setVehicleData(collect.get(0));
+
         vehicle.setLicensePlate((String) vehicleData.get("licensePlate"));
         vehicle.setName((String) vehicleData.get("name"));
         vehicle.setSkinDamage((int) vehicleData.get("skinDamage"));
@@ -211,4 +231,11 @@ public class Vehicle {
     }
 
 
+    public Map<?, ?> getVehicleData() {
+        return vehicleData;
+    }
+
+    public void setVehicleData(Map<?, ?> vehicleData) {
+        this.vehicleData = vehicleData;
+    }
 }
