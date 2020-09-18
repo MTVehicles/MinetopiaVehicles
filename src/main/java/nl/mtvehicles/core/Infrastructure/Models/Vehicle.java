@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.Infrastructure.Models;
 
+import nl.mtvehicles.core.Infrastructure.DataConfig.VehicleDataConfig;
 import nl.mtvehicles.core.Main;
 import org.bukkit.inventory.ItemStack;
 
@@ -25,7 +26,7 @@ public class Vehicle {
     private double aftrekkenSpeed;
     private int rotateSpeed;
     private double maxSpeedBackwards;
-    private String owner;
+    private UUID owner;
     private List<UUID> riders;
     private List<UUID> members;
 
@@ -144,7 +145,7 @@ public class Vehicle {
     public double getMaxSpeedBackwards() {
         return maxSpeedBackwards;
     }
-    public String getOwner() {
+    public UUID getOwner() {
         return owner;
     }
     public List<UUID> getRiders() {
@@ -199,7 +200,7 @@ public class Vehicle {
     public void setMaxSpeedBackwards(double maxSpeedBackwards) {
         this.maxSpeedBackwards = maxSpeedBackwards;
     }
-    public void setOwner(String owner) {
+    public void setOwner(UUID owner) {
         this.owner = owner;
     }
     public void setRiders(List<UUID> riders) {
