@@ -67,6 +67,24 @@ public class Vehicle {
 
         Vehicle vehicle = new Vehicle();
         vehicle.setLicensePlate((String) vehicleData.get("licensePlate"));
+        vehicle.setName((String) vehicleData.get("name"));
+        vehicle.setSkinDamage((int) vehicleData.get("skinDamage"));
+        vehicle.setSkinItem((String) vehicleData.get("skinItem"));
+        vehicle.setGlow((boolean) vehicleData.get("isGlow"));
+        vehicle.setBenzineEnabled((boolean) vehicleData.get("benzineEnabled"));
+        vehicle.setBenzine((double) vehicleData.get("benzine"));
+        vehicle.setKofferbak((boolean) vehicleData.get("kofferbak"));
+        vehicle.setKofferbakRows((int) vehicleData.get("kofferbakRows"));
+        vehicle.setKofferbakData((List<ItemStack>) vehicleData.get("kofferbakData"));
+        vehicle.setAcceleratieSpeed((double) vehicleData.get("acceleratieSpeed"));
+        vehicle.setMaxSpeed((double) vehicleData.get("maxSpeed"));
+        vehicle.setBrakingSpeed((double) vehicleData.get("brakingSpeed"));
+        vehicle.setAftrekkenSpeed((double) vehicleData.get("aftrekkenSpeed"));
+        vehicle.setRotateSpeed((int) vehicleData.get("rotateSpeed"));
+        vehicle.setMaxSpeedBackwards((double) vehicleData.get("maxSpeedBackwards"));
+        vehicle.setOwner((UUID) vehicleData.get("owner"));
+        vehicle.setRiders((List<UUID>) vehicleData.get("riders"));
+        vehicle.setMembers((List<UUID>) vehicleData.get("members"));
 
         return vehicle;
     }
