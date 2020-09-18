@@ -121,6 +121,33 @@ public class MenuClickEvent implements Listener {
                 p.closeInventory();
             }
         }
+
+        if (e.getView().getTitle().contains("Vehicle Edit")) {
+            e.setCancelled(true);
+            if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Vehicle Settings")) {
+                p.sendMessage("vehicle");
+            }
+            if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Benzine Settings")) {
+                p.sendMessage("benzine");
+            }
+            if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Kofferbak Settings")) {
+                p.sendMessage("koffer");
+            }
+            if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Member Settings")) {
+                p.sendMessage("member");
+            }
+            if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Speed Settings")) {
+                p.sendMessage("speed");
+            }
+            if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Delete Vehicle")) {
+                String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
+                Main.vehicleDataConfig.getConfig().set("vehicle."+ken, null);
+                p.getInventory().getItemInMainHand().setAmount(0);
+                p.closeInventory();
+            }
+
+
+        }
     }
 
 }

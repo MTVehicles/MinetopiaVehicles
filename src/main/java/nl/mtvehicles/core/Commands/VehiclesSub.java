@@ -18,6 +18,9 @@ public class VehiclesSub extends MTVehicleCommand {
         subcommands.put("help", new HelpCmd());
         subcommands.put("reload", new ReloadCmd());
         subcommands.put("menu", new MenuCmd());
+        subcommands.put("restore", new RestoreCmd());
+        subcommands.put("edit", new EditCmd());
+
 
         if (args.length == 0) {
             subcommands.get("help").onExecute(sender, cmd, s, args);
