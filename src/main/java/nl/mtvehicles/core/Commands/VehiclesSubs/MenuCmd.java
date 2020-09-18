@@ -29,7 +29,7 @@ public class MenuCmd extends MTVehicleSubCommand {
             Inventory inv = Bukkit.createInventory(null, 18, "Vehicle Menu");
 
             for (Map<?, ?> vehicle : Main.vehiclesConfig.getConfig().getMapList("voertuigen")) {
-                inv.addItem(carItem((int) vehicle.get("itemDamage"), (String) vehicle.get("name"), (String) vehicle.get("SkinItem")));
+                inv.addItem(carItem((int) vehicle.get("itemDamage"), (String) vehicle.get("name"), (String) vehicle.get("skinItem")));
             }
             beginmenu.put(p.getUniqueId(), inv);
             p.openInventory(inv);

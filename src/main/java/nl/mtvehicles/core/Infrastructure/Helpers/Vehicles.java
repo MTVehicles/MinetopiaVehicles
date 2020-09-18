@@ -12,7 +12,7 @@ public class Vehicles {
 
     public static ItemStack carItem(int id, String name, String material) {
         String ken = generateLicencePlate();
-        ItemStack car = (new ItemFactory(Material.getMaterial(material))).setDurability((short) id).setName(TextUtils.colorize("&6" + name).replace(" ", " - ")).setNBT("mtvehicles.kenteken", ken).toItemStack();
+        ItemStack car = (new ItemFactory(Material.getMaterial(material))).setDurability((short) id).setName(TextUtils.colorize("&6" + name).replace(" ", " - ")).setNBT("mtvehicles.kenteken", ken).setNBT("mtvehicles.naam", name).toItemStack();
         ItemMeta im = car.getItemMeta();
         List<String> itemlore = new ArrayList<>();
         itemlore.add(TextUtils.colorize("&a"));
