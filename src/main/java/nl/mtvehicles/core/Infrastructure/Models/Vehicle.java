@@ -77,6 +77,8 @@ public class Vehicle {
             }
         }
 
+        System.out.println(vehicleData);
+
         if (vehicleData == null) return null;
 
         if (vehicleData.size() == 0) return null;
