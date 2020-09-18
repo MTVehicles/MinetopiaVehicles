@@ -10,11 +10,10 @@ voertuigen:
     aftrekkenSpeed: 0.08
     rotateSpeed: 7
     maxSpeedBackwards: 1.1
-    seats: 0
-    mainSeatOffset:
-      x: -0.1
-      y: -1
-      z: 0
+    seats:
+      - x: -1
+        y: 1
+        z: -1
     cars:
       - name: "Sedan Blauw"
         SkinItem: DIAMOND_HOE

@@ -16,6 +16,7 @@ public class Vehicle {
     private boolean isGlow;
     private boolean benzineEnabled;
     private double benzine;
+    private double benzineVerbruik;
     private boolean kofferbak;
     private int kofferbakRows;
     private List<ItemStack> kofferbakData;
@@ -39,6 +40,7 @@ public class Vehicle {
         map.put("isGlow", this.isGlow());
         map.put("benzineEnabled", this.isBenzineEnabled());
         map.put("benzine", this.getBenzine());
+        map.put("benzineVerbruik", this.getBenzineVerbruik());
         map.put("kofferbak", this.isKofferbak());
         map.put("kofferbakRows", this.getKofferbakRows());
         map.put("kofferbakData", this.getKofferbakData());
@@ -81,7 +83,7 @@ public class Vehicle {
         vehicle.setAftrekkenSpeed((double) vehicleData.get("aftrekkenSpeed"));
         vehicle.setRotateSpeed((int) vehicleData.get("rotateSpeed"));
         vehicle.setMaxSpeedBackwards((double) vehicleData.get("maxSpeedBackwards"));
-        vehicle.setOwner((UUID) vehicleData.get("owner"));
+        vehicle.setOwner((String) vehicleData.get("owner"));
         vehicle.setRiders((List<UUID>) vehicleData.get("riders"));
         vehicle.setMembers((List<UUID>) vehicleData.get("members"));
 
@@ -153,7 +155,7 @@ public class Vehicle {
     public List<UUID> getMembers() {
         return members;
     }
-
+    public double getBenzineVerbruik() { return benzineVerbruik;    }
 
     public void setName(String name) { this.name = name; }
     public void setSkinDamage(int skinDamage) {
@@ -208,6 +210,5 @@ public class Vehicle {
     public void setMembers(List<UUID> members) {
         this.members = members;
     }
-
-
+    public void setBenzineVerbruik(double benzineVerbruik) {this.benzineVerbruik = benzineVerbruik; }
 }
