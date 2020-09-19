@@ -31,6 +31,16 @@ public class Vehicle {
     private Map<?, ?> vehicleData;
 
 
+    public void save2() {
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("isGlow", this.isGlow());
+
+        Main.vehicleDataConfig.getConfig().set(this.getLicensePlate(), map);
+        Main.vehicleDataConfig.save();
+
+    }
+
     public void save() {
 
         Map<String, Object> map = new HashMap<>();

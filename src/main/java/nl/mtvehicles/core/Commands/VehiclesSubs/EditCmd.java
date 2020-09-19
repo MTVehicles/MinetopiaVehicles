@@ -2,6 +2,7 @@ package nl.mtvehicles.core.Commands.VehiclesSubs;
 
 import nl.mtvehicles.core.Infrastructure.Helpers.NBTUtils;
 import nl.mtvehicles.core.Infrastructure.Helpers.Vehicles;
+import nl.mtvehicles.core.Infrastructure.Models.Config;
 import nl.mtvehicles.core.Infrastructure.Models.MTVehicleSubCommand;
 import nl.mtvehicles.core.Main;
 import org.bukkit.Bukkit;
@@ -21,21 +22,28 @@ public class EditCmd extends MTVehicleSubCommand {
             if (item == null||(!item.hasItemMeta() || !(NBTUtils.contains(item, "mtvehicles.kenteken")))) {
 
             }else {
+                Main.configList.forEach(Config::reload);
                 String ken = NBTUtils.getString(item, "mtvehicles.kenteken");
 
                 sendMessage(Main.messagesConfig.getMessage("menuOpen"));
-                Inventory inv = Bukkit.createInventory(null, 27, "Vehicle Edit");
-                //inv.addItem(Vehicles.carItem2(Main.vehicleDataConfig.getConfig().getInt("vehicle." + ken + ".skinDamage"), Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".name"), Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".skinItem"), ken));
-                inv.setItem(10, Vehicles.mItem2(Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".skinItem"), 1 , (short)Main.vehicleDataConfig.getConfig().getInt("vehicle." + ken + ".skinDamage"), "&6Vehicle Settings", ""));
-                inv.setItem(11, Vehicles.mItem2("DIAMOND_HOE", 1 , (short)58, "&6Benzine Settings", ""));
-                inv.setItem(12, Vehicles.mItem("CHEST", 1 , (short)0, "&6Kofferbak Settings", ""));
-                inv.setItem(13, Vehicles.mItem("PAPER", 1 , (short)0, "&6Member Settings", ""));
-                inv.setItem(14, Vehicles.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Speed Settings", ""));
-                inv.setItem(16, Vehicles.mItem("BARRIER", 1 , (short)0, "&4Delete Vehicle", "&7LETOP! Je kunt het item niet meer terug krijgen!"));
-                p.openInventory(inv);
+                editMenu(p, item);
             }
         }
         return true;
+    }
+
+    public static void editMenu(Player p, ItemStack item){
+        String ken = NBTUtils.getString(item, "mtvehicles.kenteken");
+        Inventory inv = Bukkit.createInventory(null, 27, "Vehicle Edit");
+        //inv.addItem(Vehicles.carItem2(Main.vehicleDataConfig.getConfig().getInt("vehicle." + ken + ".skinDamage"), Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".name"), Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".skinItem"), ken));
+        inv.setItem(10, Vehicles.mItem2(Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".skinItem"), 1 , (short)Main.vehicleDataConfig.getConfig().getInt("vehicle." + ken + ".skinDamage"), "&6Vehicle Settings", ""));
+        inv.setItem(11, Vehicles.mItem2("DIAMOND_HOE", 1 , (short)58, "&6Benzine Settings", ""));
+        inv.setItem(12, Vehicles.mItem("CHEST", 1 , (short)0, "&6Kofferbak Settings", ""));
+        inv.setItem(13, Vehicles.mItem("PAPER", 1 , (short)0, "&6Member Settings", ""));
+        inv.setItem(14, Vehicles.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Speed Settings", ""));
+        inv.setItem(16, Vehicles.mItem("BARRIER", 1 , (short)0, "&4Delete Vehicle", "&7LETOP! Je kunt het item niet meer terug krijgen!"));
+        p.openInventory(inv);
+
     }
 
 

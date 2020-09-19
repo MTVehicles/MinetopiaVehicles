@@ -1,14 +1,26 @@
 package nl.mtvehicles.core.Infrastructure.Helpers;
 
+import nl.mtvehicles.core.Main;
 import org.apache.commons.lang.RandomStringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
+
+import static org.bukkit.inventory.ItemFlag.HIDE_ENCHANTS;
 
 public class Vehicles {
+
+    public static HashMap<String, Boolean> edit = new HashMap<>();
 
     public static ItemStack carItem(int id, String name, String material) {
         String ken = generateLicencePlate();
@@ -142,5 +154,41 @@ public class Vehicles {
         car.setItemMeta(im);
 
         return car;
+    }
+
+    public static ItemStack glowItem(String material, String name, String ken) {
+        ItemStack car = (new ItemFactory(Material.getMaterial(material))).setName(name).toItemStack();
+        ItemMeta im = car.getItemMeta();
+        List<String> itemlore = new ArrayList<>();
+        itemlore.add(TextUtils.colorize(ken));
+        im.setLore(itemlore);
+        im.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
+        im.addItemFlags(new ItemFlag[] { ItemFlag.HIDE_ENCHANTS });
+        car.setItemMeta(im);
+
+        return car;
+    }
+
+    public static void menuEdit(Player p){
+        Inventory inv = Bukkit.createInventory(null, 45, "Vehicle Settings");
+        String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
+        inv.setItem(10, Vehicles.mItem2(Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".skinItem"), 1 , (short)Main.vehicleDataConfig.getConfig().getInt("vehicle." + ken + ".skinDamage"), "&6Naam Aanpassen", "&7Huidige: &e"+Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".name")));
+        inv.setItem(13, Vehicles.mItem("PAPER", 1 , (short)0, "&6Kenteken Aanpassen", "&7Huidige: &e"+ken));
+        if ((boolean) Main.vehicleDataConfig.getConfig().get("vehicle." + ken + ".isGlow") == true) {
+            inv.setItem(16, Vehicles.glowItem("BOOK", "&6Glow Aanpassen", "&7Huidige: &e"+Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".isGlow")));
+        } else {
+            inv.setItem(16, Vehicles.mItem("BOOK", 1 , (short)0, "&6Glow Aanpassen", "&7Huidige: &e"+Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".isGlow")));
+        }
+
+
+
+        for (int i = 27; i <= 35; i++) {
+            inv.setItem(i, Vehicles.mItem("STAINED_GLASS_PANE", 1, (short) 0, "&c", "&c"));
+        }
+        inv.setItem(38, Vehicles.mItem("BARRIER", 1, (short) 0, "&4Sluiten", "&cDruk hier om het menu te sluiten!"));
+        inv.setItem(42, Vehicles.mItem("WOOD_DOOR", 1, (short) 0, "&6Terug", "&eDruk hier om terug te gaan!"));
+        p.openInventory(inv);
+
+
     }
 }

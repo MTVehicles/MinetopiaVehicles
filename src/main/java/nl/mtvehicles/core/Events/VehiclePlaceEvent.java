@@ -2,6 +2,7 @@ package nl.mtvehicles.core.Events;
 
 import nl.mtvehicles.core.Infrastructure.Helpers.NBTUtils;
 import nl.mtvehicles.core.Infrastructure.Helpers.TextUtils;
+import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
 import nl.mtvehicles.core.Main;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
@@ -44,6 +45,8 @@ public class VehiclePlaceEvent implements Listener {
             ArmorStand as2 = location.getWorld().spawn(location, ArmorStand.class);
             as2.setCustomName("MTVEHICLES_MAIN_"+ken);
 
+            Vehicle vehicle = Vehicle.getByPlate(ken);
+            System.out.println(vehicle.getVehicleData());
 
 
         }

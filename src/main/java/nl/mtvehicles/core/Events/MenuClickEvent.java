@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.Events;
 
+import nl.mtvehicles.core.Commands.VehiclesSubs.EditCmd;
 import nl.mtvehicles.core.Commands.VehiclesSubs.MenuCmd;
 import nl.mtvehicles.core.Infrastructure.Helpers.NBTUtils;
 import nl.mtvehicles.core.Infrastructure.Helpers.TextUtils;
@@ -7,12 +8,16 @@ import nl.mtvehicles.core.Infrastructure.Helpers.Vehicles;
 import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
 import nl.mtvehicles.core.Main;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.HashMap;
 import java.util.List;
@@ -125,7 +130,10 @@ public class MenuClickEvent implements Listener {
         if (e.getView().getTitle().contains("Vehicle Edit")) {
             e.setCancelled(true);
             if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Vehicle Settings")) {
-                p.sendMessage("vehicle");
+
+                Vehicles.menuEdit(p);
+
+
             }
             if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Benzine Settings")) {
                 p.sendMessage("benzine");
@@ -142,11 +150,63 @@ public class MenuClickEvent implements Listener {
             if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Delete Vehicle")) {
                 String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
                 Main.vehicleDataConfig.getConfig().set("vehicle."+ken, null);
+                Main.vehicleDataConfig.save();
                 p.getInventory().getItemInMainHand().setAmount(0);
                 p.closeInventory();
             }
 
 
+        }
+
+        if (e.getView().getTitle().contains("Vehicle Settings")) {
+            e.setCancelled(true);
+            String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
+            if (e.getCurrentItem().equals(Vehicles.mItem("BARRIER", 1, (short) 0, "&4Sluiten", "&cDruk hier om het menu te sluiten!"))) {
+                e.setCancelled(true);
+                p.closeInventory();
+                return;
+            }
+            if (e.getCurrentItem().equals(Vehicles.mItem("WOOD_DOOR", 1, (short) 0, "&6Terug", "&eDruk hier om terug te gaan!"))) {
+                EditCmd.editMenu(p, p.getInventory().getItemInMainHand());
+                e.setCancelled(true);
+                return;
+            }
+
+            if (e.getCurrentItem().equals(Vehicles.glowItem("BOOK", "&6Glow Aanpassen", "&7Huidige: &e" + Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".isGlow")))) {
+                Main.vehicleDataConfig.getConfig().set("vehicle."+ken+".isGlow", false);
+                ItemMeta im = p.getInventory().getItemInMainHand().getItemMeta();
+                im.removeEnchant(Enchantment.ARROW_INFINITE);
+                im.removeItemFlags(new ItemFlag[] { ItemFlag.HIDE_ENCHANTS });
+                p.getInventory().getItemInMainHand().setItemMeta(im);
+                Main.vehicleDataConfig.save();
+                Vehicles.menuEdit(p);
+
+
+            }
+
+            if (e.getCurrentItem().equals(Vehicles.mItem("BOOK", 1 , (short)0, "&6Glow Aanpassen", "&7Huidige: &e"+Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".isGlow")))) {
+                Main.vehicleDataConfig.getConfig().set("vehicle."+ken+".isGlow", true);
+                ItemMeta im = p.getInventory().getItemInMainHand().getItemMeta();
+                im.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
+                im.addItemFlags(new ItemFlag[] { ItemFlag.HIDE_ENCHANTS });
+                p.getInventory().getItemInMainHand().setItemMeta(im);
+                Main.vehicleDataConfig.save();
+                Vehicles.menuEdit(p);
+
+
+            }
+
+            if (e.getCurrentItem().equals(Vehicles.mItem("PAPER", 1 , (short)0, "&6Kenteken Aanpassen", "&7Huidige: &e"+ken))) {
+                p.closeInventory();
+                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("typeLicenseInChat")));
+                Vehicles.edit.put(p.getUniqueId()+".kenteken", true);
+            }
+
+            if (e.getCurrentItem().equals(Vehicles.mItem2(Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".skinItem"), 1 , (short)Main.vehicleDataConfig.getConfig().getInt("vehicle." + ken + ".skinDamage"), "&6Naam Aanpassen", "&7Huidige: &e"+Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".name")))) {
+                p.closeInventory();
+                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("typeNameInChat")));
+                Vehicles.edit.put(p.getUniqueId()+".naam", true);
+            }
         }
     }
 

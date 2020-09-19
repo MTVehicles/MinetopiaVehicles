@@ -1,6 +1,7 @@
 package nl.mtvehicles.core;
 
 import nl.mtvehicles.core.Commands.VehiclesSub;
+import nl.mtvehicles.core.Events.ChatEvent;
 import nl.mtvehicles.core.Events.MenuClickEvent;
 import nl.mtvehicles.core.Events.VehiclePlaceEvent;
 import nl.mtvehicles.core.Infrastructure.DataConfig.*;
@@ -35,6 +36,7 @@ public class Main extends JavaPlugin {
         Bukkit.getPluginCommand("minetopiavehicles").setExecutor(new VehiclesSub());
         Bukkit.getPluginManager().registerEvents((Listener)new MenuClickEvent(), (Plugin)this);
         Bukkit.getPluginManager().registerEvents((Listener)new VehiclePlaceEvent(), (Plugin)this);
+        Bukkit.getPluginManager().registerEvents((Listener)new ChatEvent(), (Plugin)this);
 
         configList.add(messagesConfig);
         configList.add(vehicleDataConfig);

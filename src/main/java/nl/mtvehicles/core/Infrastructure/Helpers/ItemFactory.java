@@ -4,6 +4,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import net.minecraft.server.v1_12_R1.NBTTagCompound;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -64,6 +66,8 @@ public class ItemFactory {
         this.is.setAmount(amount);
         return this;
     }
+
+
 
     public List<String> getLore() {
         return this.is.getItemMeta().getLore();
