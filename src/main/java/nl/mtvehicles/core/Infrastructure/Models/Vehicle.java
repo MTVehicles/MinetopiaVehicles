@@ -75,7 +75,7 @@ public class Vehicle {
 
         System.out.println(2);
 
-        Map<?, ?> vehiclesData = Main.vehicleDataConfig.getConfig().getMapList(String.format("vehicle.%s", plate)).get(0);
+        Map<?, ?> vehiclesData = (Map<?, ?>) Main.vehicleDataConfig.getConfig().get(String.format("vehicle.%s", plate));
 
         List<Map<?, ?>> vehicles = Main.vehiclesConfig.getConfig().getMapList("voertuigen");
 
