@@ -52,6 +52,10 @@ public class VehiclePlaceEvent implements Listener {
 
             List<Map<String, Integer>> seats = (List<Map<String, Integer>>) vehicle.getVehicleData().get("steats");
 
+            for (int i = 1; i < seats.size(); i++) {
+                Map<String, Integer> seat = seats.get(i - 1);
+                System.out.printf("Seat number%d%n", i);
+            }
         }
     }
 }
