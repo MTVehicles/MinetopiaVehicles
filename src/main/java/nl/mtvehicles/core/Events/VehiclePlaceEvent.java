@@ -15,6 +15,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Map;
+
 public class VehiclePlaceEvent implements Listener {
     @EventHandler
     public void onVehiclePlace(final PlayerInteractEvent e) {
@@ -46,8 +48,8 @@ public class VehiclePlaceEvent implements Listener {
             as2.setCustomName("MTVEHICLES_MAIN_"+ken);
 
             Vehicle vehicle = Vehicle.getByPlate(ken);
-            System.out.println(vehicle.getVehicleData());
 
+            Map<String, Integer> seats = (Map<String, Integer>) vehicle.getVehicleData().get("steats");
 
         }
     }
