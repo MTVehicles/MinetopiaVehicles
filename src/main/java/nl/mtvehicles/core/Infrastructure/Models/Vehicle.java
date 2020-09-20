@@ -2,6 +2,7 @@ package nl.mtvehicles.core.Infrastructure.Models;
 
 import nl.mtvehicles.core.Infrastructure.DataConfig.VehicleDataConfig;
 import nl.mtvehicles.core.Main;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
@@ -75,11 +76,9 @@ public class Vehicle {
 
         System.out.println(2);
 
-        List<Map<?, ?>> vehiclesData = Main.vehicleDataConfig.getConfig().getMapList(String.format("vehicle.%s", plate));
+        ConfigurationSection section = Main.vehicleDataConfig.getConfig().getConfigurationSection(String.format("vehicle.%s", plate));
 
-        System.out.println(vehiclesData);
-
-        Map<?,?> vehicleData = vehiclesData.get(0);
+        Map<?, ?> vehicleData = section.getValues(true);
 
         List<Map<?, ?>> vehicles = Main.vehiclesConfig.getConfig().getMapList("voertuigen");
 
