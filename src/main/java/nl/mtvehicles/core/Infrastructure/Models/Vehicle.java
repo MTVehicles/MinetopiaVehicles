@@ -125,7 +125,7 @@ public class Vehicle {
     }
 
     public static boolean existsByPlate(String plate) {
-        List<Map<?, ?>> vehiclesData = Main.vehicleDataConfig.getConfig().getMapList(plate);
+        List<Map<?, ?>> vehiclesData = Main.vehicleDataConfig.getConfig().getMapList(String.format("vehicle.%s", plate));
 
         return vehiclesData.size() == 1;
     }
