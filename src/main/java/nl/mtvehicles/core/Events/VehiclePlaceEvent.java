@@ -15,6 +15,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.List;
 import java.util.Map;
 
 public class VehiclePlaceEvent implements Listener {
@@ -49,7 +50,7 @@ public class VehiclePlaceEvent implements Listener {
 
             Vehicle vehicle = Vehicle.getByPlate(ken);
 
-            Map<String, Integer> seats = (Map<String, Integer>) vehicle.getVehicleData().get("steats");
+            List<Map<String, Integer>> seats = (List<Map<String, Integer>>) vehicle.getVehicleData().get("steats");
 
         }
     }
