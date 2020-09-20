@@ -76,7 +76,7 @@ public class Vehicle {
 
         List<Map<?, ?>> vehicles = Main.vehiclesConfig.getConfig().getMapList("voertuigen");
 
-        List<Map<?, ?>> vehicleData = null;
+        List<Map<?, ?>> vehicleData = new ArrayList<>();
 
         for (Map<?, ?> configVehicle : vehicles) {
             List<Map<?, ?>> skins = (List<Map<?, ?>>) configVehicle.get("cars");
