@@ -38,23 +38,32 @@ public class VehiclePlaceEvent implements Listener {
         if (action.equals(Action.RIGHT_CLICK_BLOCK)) {
             p.sendMessage("Ja");
             e.setCancelled(true);
+
+
             Location loc = e.getClickedBlock().getLocation();
             Location location = new Location(loc.getWorld(), loc.getX(), loc.getY()+1, loc.getZ());
             ArmorStand as = location.getWorld().spawn(location, ArmorStand.class);
-
             as.setCustomName("MTVEHICLES_SKIN_"+ken);
             as.setHelmet(item);
-
             ArmorStand as2 = location.getWorld().spawn(location, ArmorStand.class);
             as2.setCustomName("MTVEHICLES_MAIN_"+ken);
-
             Vehicle vehicle = Vehicle.getByPlate(ken);
-
-            List<Map<String, Integer>> seats = (List<Map<String, Integer>>) vehicle.getVehicleData().get("steats");
-
-            for (int i = 1; i < seats.size(); i++) {
+            List<Map<String, Integer>> seats = (List<Map<String, Integer>>) vehicle.getVehicleData().get("seats");
+            for (int i = 1; i <= seats.size(); i++) {
                 Map<String, Integer> seat = seats.get(i - 1);
-                System.out.printf("Seat number%d%n", i);
+                if (i == 1 ){
+                    Location location2 = new Location(loc.getWorld(), loc.getX()+seat.get("z"), loc.getY()+seat.get("y"), loc.getZ()+seat.get("z"));
+                    ArmorStand as3 = location2.getWorld().spawn(location2, ArmorStand.class);
+                    as3.setCustomName("MTVEHICLES_MAINSEAT_"+ken);
+                    as3.setGravity(false);
+                }
+                if (i > 1){
+                    Location location2 = new Location(loc.getWorld(), loc.getX()+seat.get("z"), loc.getY()+seat.get("y"), loc.getZ()+seat.get("z"));
+                    ArmorStand as3 = location2.getWorld().spawn(location2, ArmorStand.class);
+                    as3.setCustomName("MTVEHICLES_SEAT"+i+"_"+ken);
+                    as3.setGravity(false);
+                }
+
             }
         }
     }
