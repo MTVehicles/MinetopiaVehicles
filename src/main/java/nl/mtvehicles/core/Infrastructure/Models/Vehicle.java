@@ -70,7 +70,10 @@ public class Vehicle {
     }
 
     public static Vehicle getByPlate(String plate) {
+        System.out.println(1);
         if (!existsByPlate(plate)) return null;
+
+        System.out.println(2);
 
         Map<?, ?> vehiclesData = Main.vehicleDataConfig.getConfig().getMapList(plate).get(0);
 
@@ -79,6 +82,7 @@ public class Vehicle {
         List<Map<?, ?>> vehicleData = new ArrayList<>();
 
         for (Map<?, ?> configVehicle : vehicles) {
+            System.out.println(3);
             List<Map<?, ?>> skins = (List<Map<?, ?>>) configVehicle.get("cars");
             for (Map<?, ?> skin : skins) {
                 System.out.println(skin.get("itemDamage"));
