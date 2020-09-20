@@ -129,11 +129,7 @@ public class Vehicle {
     }
 
     public static boolean existsByPlate(String plate) {
-        List<Map<?, ?>> vehiclesData = Main.vehicleDataConfig.getConfig().getMapList("vehicle");
-
-        List<?> matches = vehiclesData.stream().filter(x -> x.keySet().stream().filter(y -> y.equals(plate)).collect(Collectors.toList()).size() > 0).collect(Collectors.toList());
-
-        return matches.size() == 1;
+        return Main.vehicleDataConfig.getConfig().get(String.format("vehicle.%s", plate)) != null;
     }
 
     public String getLicensePlate() {
