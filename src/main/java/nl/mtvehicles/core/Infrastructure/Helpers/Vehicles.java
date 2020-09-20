@@ -179,9 +179,6 @@ public class Vehicles {
         } else {
             inv.setItem(16, Vehicles.mItem("BOOK", 1 , (short)0, "&6Glow Aanpassen", "&7Huidige: &e"+Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".isGlow")));
         }
-
-
-
         for (int i = 27; i <= 35; i++) {
             inv.setItem(i, Vehicles.mItem("STAINED_GLASS_PANE", 1, (short) 0, "&c", "&c"));
         }

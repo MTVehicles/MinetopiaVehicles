@@ -192,8 +192,6 @@ public class MenuClickEvent implements Listener {
                 p.getInventory().getItemInMainHand().setItemMeta(im);
                 Main.vehicleDataConfig.save();
                 Vehicles.menuEdit(p);
-
-
             }
 
             if (e.getCurrentItem().equals(Vehicles.mItem("PAPER", 1 , (short)0, "&6Kenteken Aanpassen", "&7Huidige: &e"+ken))) {
