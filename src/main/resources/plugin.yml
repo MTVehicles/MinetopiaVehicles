@@ -2,6 +2,8 @@ name: MinetopiaVehicles
 version: 1.0.0
 main: nl.mtvehicles.core.Main
 api-version: 1.15
+softdepend:
+  - ProtocolLib
 
 commands:
   minetopiavehicles:

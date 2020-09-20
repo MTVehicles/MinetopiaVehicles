@@ -1,15 +1,17 @@
 package nl.mtvehicles.core;
 
+import com.comphenix.protocol.ProtocolLibrary;
 import nl.mtvehicles.core.Commands.VehiclesSub;
-import nl.mtvehicles.core.Events.ChatEvent;
-import nl.mtvehicles.core.Events.MenuClickEvent;
-import nl.mtvehicles.core.Events.VehiclePlaceEvent;
+import nl.mtvehicles.core.Events.*;
 import nl.mtvehicles.core.Infrastructure.DataConfig.DefaultConfig;
 import nl.mtvehicles.core.Infrastructure.DataConfig.MessagesConfig;
 import nl.mtvehicles.core.Infrastructure.DataConfig.VehicleDataConfig;
 import nl.mtvehicles.core.Infrastructure.DataConfig.VehiclesConfig;
 import nl.mtvehicles.core.Infrastructure.Models.Config;
+import nl.mtvehicles.core.Movement.VehicleMovement;
 import org.bukkit.Bukkit;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -31,9 +33,12 @@ public class Main extends JavaPlugin {
 
         getLogger().info("De plugin is opgestart!");
         Bukkit.getPluginCommand("minetopiavehicles").setExecutor(new VehiclesSub());
-        Bukkit.getPluginManager().registerEvents(new MenuClickEvent(), this);
-        Bukkit.getPluginManager().registerEvents(new VehiclePlaceEvent(), this);
-        Bukkit.getPluginManager().registerEvents(new ChatEvent(), this);
+        Bukkit.getPluginManager().registerEvents((Listener)new MenuClickEvent(), (Plugin)this);
+        Bukkit.getPluginManager().registerEvents((Listener)new VehiclePlaceEvent(), (Plugin)this);
+        Bukkit.getPluginManager().registerEvents((Listener)new VehicleClickEvent(), (Plugin)this);
+        Bukkit.getPluginManager().registerEvents((Listener)new VehicleLeaveEvent(), (Plugin)this);
+        Bukkit.getPluginManager().registerEvents((Listener)new ChatEvent(), (Plugin)this);
+        ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement(this));
 
         configList.add(messagesConfig);
         configList.add(vehicleDataConfig);

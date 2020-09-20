@@ -4,16 +4,19 @@ voertuigen:
     skinItem: DIAMOND_HOE
     itemDamage: 1003
     benzineEnabled: true
-    acceleratieSpeed: 0.02
-    maxSpeed: 2.5
-    brakingSpeed: 0.08
-    aftrekkenSpeed: 0.08
-    rotateSpeed: 7
+    acceleratieSpeed: 0.01
+    maxSpeed: 0.7
+    brakingSpeed: 0.03
+    aftrekkenSpeed: 0.005
+    rotateSpeed: 8
     maxSpeedBackwards: 1.1
     seats:
-      - x: -1
-        y: 1
-        z: -1
+      - x: 0.0
+        y: -1.0
+        z: 0.0
+      - x: -1.0
+        y: -1.0
+        z: 0.0
     cars:
       - name: "Sedan Blauw"
         SkinItem: DIAMOND_HOE
