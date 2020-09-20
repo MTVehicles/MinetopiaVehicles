@@ -75,11 +75,15 @@ public class Vehicle {
 
         System.out.println(2);
 
-        Map<?, ?> vehiclesData = (Map<?, ?>) Main.vehicleDataConfig.getConfig().get(String.format("vehicle.%s", plate));
+        List<Map<?, ?>> vehiclesData = Main.vehicleDataConfig.getConfig().getMapList(String.format("vehicle.%s", plate));
+
+        System.out.println(vehiclesData);
+
+        Map<?,?> vehicleData = vehiclesData.get(0);
 
         List<Map<?, ?>> vehicles = Main.vehiclesConfig.getConfig().getMapList("voertuigen");
 
-        List<Map<?, ?>> vehicleData = new ArrayList<>();
+        List<Map<?, ?>> matchedVehicles = new ArrayList<>();
 
         for (Map<?, ?> configVehicle : vehicles) {
             System.out.println(3);
@@ -87,43 +91,43 @@ public class Vehicle {
             for (Map<?, ?> skin : skins) {
                 System.out.println(skin.get("itemDamage"));
                 System.out.println(skin.get("skinDamage"));
-                if (skin.get("itemDamage").equals(vehiclesData.get("skinDamage"))) {
-                    vehicleData.add(configVehicle);
+                if (skin.get("itemDamage").equals(vehicleData.get("skinDamage"))) {
+                    matchedVehicles.add(configVehicle);
                 }
             }
         }
 
-        System.out.println(vehicleData);
+        System.out.println(matchedVehicles);
 
-        if (vehicleData == null) return null;
+        if (matchedVehicles == null) return null;
 
-        if (vehicleData.size() == 0) return null;
+        if (matchedVehicles.size() == 0) return null;
 
-        if (vehicleData.size() > 1) return null;
+        if (matchedVehicles.size() > 1) return null;
 
         Vehicle vehicle = new Vehicle();
 
-        vehicle.setVehicleData(vehicleData.get(0));
+        vehicle.setVehicleData(matchedVehicles.get(0));
 
-        vehicle.setLicensePlate((String) vehiclesData.get("licensePlate"));
-        vehicle.setName((String) vehiclesData.get("name"));
-        vehicle.setSkinDamage((int) vehiclesData.get("skinDamage"));
-        vehicle.setSkinItem((String) vehiclesData.get("skinItem"));
-        vehicle.setGlow((boolean) vehiclesData.get("isGlow"));
-        vehicle.setBenzineEnabled((boolean) vehiclesData.get("benzineEnabled"));
-        vehicle.setBenzine((double) vehiclesData.get("benzine"));
-        vehicle.setKofferbak((boolean) vehiclesData.get("kofferbak"));
-        vehicle.setKofferbakRows((int) vehiclesData.get("kofferbakRows"));
-        vehicle.setKofferbakData((List<ItemStack>) vehiclesData.get("kofferbakData"));
-        vehicle.setAcceleratieSpeed((double) vehiclesData.get("acceleratieSpeed"));
-        vehicle.setMaxSpeed((double) vehiclesData.get("maxSpeed"));
-        vehicle.setBrakingSpeed((double) vehiclesData.get("brakingSpeed"));
-        vehicle.setAftrekkenSpeed((double) vehiclesData.get("aftrekkenSpeed"));
-        vehicle.setRotateSpeed((int) vehiclesData.get("rotateSpeed"));
-        vehicle.setMaxSpeedBackwards((double) vehiclesData.get("maxSpeedBackwards"));
-        vehicle.setOwner((String) vehiclesData.get("owner"));
-        vehicle.setRiders((List<UUID>) vehiclesData.get("riders"));
-        vehicle.setMembers((List<UUID>) vehiclesData.get("members"));
+        vehicle.setLicensePlate((String) vehicleData.get("licensePlate"));
+        vehicle.setName((String) vehicleData.get("name"));
+        vehicle.setSkinDamage((int) vehicleData.get("skinDamage"));
+        vehicle.setSkinItem((String) vehicleData.get("skinItem"));
+        vehicle.setGlow((boolean) vehicleData.get("isGlow"));
+        vehicle.setBenzineEnabled((boolean) vehicleData.get("benzineEnabled"));
+        vehicle.setBenzine((double) vehicleData.get("benzine"));
+        vehicle.setKofferbak((boolean) vehicleData.get("kofferbak"));
+        vehicle.setKofferbakRows((int) vehicleData.get("kofferbakRows"));
+        vehicle.setKofferbakData((List<ItemStack>) vehicleData.get("kofferbakData"));
+        vehicle.setAcceleratieSpeed((double) vehicleData.get("acceleratieSpeed"));
+        vehicle.setMaxSpeed((double) vehicleData.get("maxSpeed"));
+        vehicle.setBrakingSpeed((double) vehicleData.get("brakingSpeed"));
+        vehicle.setAftrekkenSpeed((double) vehicleData.get("aftrekkenSpeed"));
+        vehicle.setRotateSpeed((int) vehicleData.get("rotateSpeed"));
+        vehicle.setMaxSpeedBackwards((double) vehicleData.get("maxSpeedBackwards"));
+        vehicle.setOwner((String) vehicleData.get("owner"));
+        vehicle.setRiders((List<UUID>) vehicleData.get("riders"));
+        vehicle.setMembers((List<UUID>) vehicleData.get("members"));
 
         return vehicle;
     }
