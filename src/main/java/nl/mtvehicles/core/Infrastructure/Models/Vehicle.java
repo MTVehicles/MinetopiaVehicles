@@ -90,8 +90,6 @@ public class Vehicle {
             }
         }
 
-        System.out.println(matchedVehicles);
-
         if (matchedVehicles == null) return null;
 
         if (matchedVehicles.size() == 0) return null;
