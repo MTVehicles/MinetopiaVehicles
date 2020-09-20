@@ -81,7 +81,9 @@ public class Vehicle {
         for (Map<?, ?> configVehicle : vehicles) {
             List<Map<?, ?>> skins = (List<Map<?, ?>>) configVehicle.get("cars");
             for (Map<?, ?> skin : skins) {
-                if (skin.get("itemDamage") == vehiclesData.get("skinDamage")) {
+                System.out.println(skin.get("itemDamage"));
+                System.out.println(skin.get("skinDamage"));
+                if (skin.get("itemDamage").equals(vehiclesData.get("skinDamage"))) {
                     vehicleData.add(configVehicle);
                 }
             }
