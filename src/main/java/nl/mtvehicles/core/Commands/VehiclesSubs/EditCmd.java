@@ -1,6 +1,7 @@
 package nl.mtvehicles.core.Commands.VehiclesSubs;
 
 import nl.mtvehicles.core.Infrastructure.Helpers.NBTUtils;
+import nl.mtvehicles.core.Infrastructure.Helpers.TextUtils;
 import nl.mtvehicles.core.Infrastructure.Helpers.Vehicles;
 import nl.mtvehicles.core.Infrastructure.Models.Config;
 import nl.mtvehicles.core.Infrastructure.Models.MTVehicleSubCommand;
@@ -16,7 +17,7 @@ public class EditCmd extends MTVehicleSubCommand {
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
         if (sender instanceof Player) {
-            if (!checkPermission("mtvehicles.edit")) return true;
+            if (!checkPermission("mtvehicles.edit")){ sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("noPerms"))); return true;}
             Player p = (Player) sender;
             final ItemStack item = p.getInventory().getItemInMainHand();
             if (item == null||(!item.hasItemMeta() || !(NBTUtils.contains(item, "mtvehicles.kenteken")))) {

@@ -20,6 +20,7 @@ public class VehiclesSub extends MTVehicleCommand {
         subcommands.put("menu", new MenuCmd());
         subcommands.put("restore", new RestoreCmd());
         subcommands.put("edit", new EditCmd());
+        subcommands.put("setowner", new setOwnerCMD());
 
 
         if (args.length == 0) {

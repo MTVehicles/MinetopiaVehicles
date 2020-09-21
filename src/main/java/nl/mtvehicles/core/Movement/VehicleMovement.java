@@ -39,6 +39,9 @@ public class VehicleMovement extends PacketAdapter {
         if (p.getVehicle() == null) {
             return;
         }
+        if (!p.getVehicle().getCustomName().contains("MTVEHICLES_MAINSEAT_")){
+            return;
+        }
         String ken = p.getVehicle().getCustomName().replace("MTVEHICLES_MAINSEAT_", "");
 
 

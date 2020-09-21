@@ -96,11 +96,19 @@ public class MenuClickEvent implements Listener {
                 List<Map<?, ?>> vehicles = Main.vehiclesConfig.getConfig().getMapList("voertuigen");
                 System.out.println(vehicles.get(intSave.get(p.getUniqueId())).get("RotateSpeed"));
 
+
+
+
                 p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("completedvehiclegive")));
                 p.getInventory().addItem(vehicleMenu.get(p.getUniqueId()));
                 String kenteken = NBTUtils.getString(vehicleMenu.get(p.getUniqueId()), "mtvehicles.kenteken");
                 String naam = NBTUtils.getString(vehicleMenu.get(p.getUniqueId()), "mtvehicles.naam");
                 Vehicle vehicle = new Vehicle();
+                final List<String> members = (List<String>)Main.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".members");
+                members.add(p.getUniqueId().toString());
+
+                final List<String> riders = (List<String>)Main.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".riders");
+                riders.add(p.getUniqueId().toString());
 
                 vehicle.setLicensePlate("vehicle."+kenteken);
                 vehicle.setName(naam);
@@ -120,7 +128,8 @@ public class MenuClickEvent implements Listener {
                 vehicle.setRotateSpeed((int) vehicles.get(intSave.get(p.getUniqueId())).get("rotateSpeed"));
                 vehicle.setMaxSpeedBackwards((double)vehicles.get(intSave.get(p.getUniqueId())).get("maxSpeedBackwards"));
                 vehicle.setOwner(p.getUniqueId().toString());
-
+                vehicle.setRiders(riders);
+                vehicle.setMembers(members);
 
                 vehicle.save();
                 p.closeInventory();

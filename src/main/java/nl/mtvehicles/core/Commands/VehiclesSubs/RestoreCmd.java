@@ -21,7 +21,7 @@ public class RestoreCmd extends MTVehicleSubCommand {
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
         if (sender instanceof Player) {
-            if (!checkPermission("mtvehicles.restore")) return true;
+            if (!checkPermission("mtvehicles.restore")) { sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("noPerms"))); return true;}
 
             Player p = (Player) sender;
             sendMessage(Main.messagesConfig.getMessage("menuOpen"));

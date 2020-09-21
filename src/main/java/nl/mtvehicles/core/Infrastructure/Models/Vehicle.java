@@ -1,12 +1,13 @@
 package nl.mtvehicles.core.Infrastructure.Models;
 
-import nl.mtvehicles.core.Infrastructure.DataConfig.VehicleDataConfig;
+import nl.mtvehicles.core.Infrastructure.Helpers.NBTUtils;
 import nl.mtvehicles.core.Main;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Vehicle {
     private String licensePlate;
@@ -27,8 +28,8 @@ public class Vehicle {
     private int rotateSpeed;
     private double maxSpeedBackwards;
     private String owner;
-    private List<UUID> riders;
-    private List<UUID> members;
+    private List<String> riders;
+    private List<String> members;
     private Map<?, ?> vehicleData;
 
 
@@ -117,8 +118,8 @@ public class Vehicle {
         vehicle.setRotateSpeed((int) vehicleData.get("rotateSpeed"));
         vehicle.setMaxSpeedBackwards((double) vehicleData.get("maxSpeedBackwards"));
         vehicle.setOwner((String) vehicleData.get("owner"));
-        vehicle.setRiders((List<UUID>) vehicleData.get("riders"));
-        vehicle.setMembers((List<UUID>) vehicleData.get("members"));
+        vehicle.setRiders((List<String>) vehicleData.get("riders"));
+        vehicle.setMembers((List<String>) vehicleData.get("members"));
 
         return vehicle;
     }
@@ -195,11 +196,11 @@ public class Vehicle {
         return owner;
     }
 
-    public List<UUID> getRiders() {
+    public List<String> getRiders() {
         return riders;
     }
 
-    public List<UUID> getMembers() {
+    public List<String> getMembers() {
         return members;
     }
 
@@ -275,11 +276,11 @@ public class Vehicle {
         this.owner = owner;
     }
 
-    public void setRiders(List<UUID> riders) {
+    public void setRiders(List<String> riders) {
         this.riders = riders;
     }
 
-    public void setMembers(List<UUID> members) {
+    public void setMembers(List<String> members) {
         this.members = members;
     }
 
@@ -295,4 +296,14 @@ public class Vehicle {
     public void setVehicleData(Map<?, ?> vehicleData) {
         this.vehicleData = vehicleData;
     }
+
+
+    public static boolean canRide(Player p, String ken) {
+        return Main.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".riders").contains(p.getUniqueId().toString());
+    }
+
+    public static boolean canSit(Player p, String ken) {
+        return Main.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".members").contains(p.getUniqueId().toString());
+    }
+
 }

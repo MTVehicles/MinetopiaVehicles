@@ -22,7 +22,7 @@ public class MenuCmd extends MTVehicleSubCommand {
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
         if (sender instanceof Player) {
-            if (!checkPermission("mtvehicles.menu")) return true;
+            if (!checkPermission("mtvehicles.menu")) { sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("noPerms"))); return true;}
 
             Player p = (Player) sender;
             sendMessage(Main.messagesConfig.getMessage("menuOpen"));

@@ -14,10 +14,15 @@ import java.util.Map;
 
 public class VehicleLeaveEvent implements Listener {
     public static HashMap<String, ArmorStand> autostand = new HashMap<>();
+    public static HashMap<String, ArmorStand> autostand2 = new HashMap<>();
     @EventHandler
     public void onVehiclePlace(final EntityDismountEvent e) {
         if (e.getDismounted().getCustomName().contains("MTVEHICLES_MAINSEAT_")) {
             final String ken = e.getDismounted().getCustomName().replace("MTVEHICLES_MAINSEAT_", "");
+            ArmorStand as = VehicleLeaveEvent.autostand.get("MTVEHICLES_MAIN_"+ken);
+            ArmorStand as2 = VehicleLeaveEvent.autostand.get("MTVEHICLES_SKIN_"+ken);
+            as.setGravity(true);
+            as2.setGravity(true);
             Vehicle vehicle = Vehicle.getByPlate(ken);
             List<Map<String, Integer>> seats = (List<Map<String, Integer>>) vehicle.getVehicleData().get("seats");
             for (int i = 1; i <= seats.size(); i++) {

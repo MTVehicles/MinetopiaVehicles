@@ -5,6 +5,7 @@ import nl.mtvehicles.core.Infrastructure.Helpers.TextUtils;
 import nl.mtvehicles.core.Infrastructure.Models.Config;
 import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
 import nl.mtvehicles.core.Main;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
@@ -18,6 +19,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class VehiclePlaceEvent implements Listener {
     @EventHandler
@@ -37,7 +39,7 @@ public class VehiclePlaceEvent implements Listener {
         }
         String ken = NBTUtils.getString(item, "mtvehicles.kenteken");
         if (action.equals(Action.RIGHT_CLICK_BLOCK)) {
-            p.sendMessage("Ja");
+
             e.setCancelled(true);
             Main.configList.forEach(Config::reload);
 
@@ -54,6 +56,7 @@ public class VehiclePlaceEvent implements Listener {
             Vehicle vehicle = Vehicle.getByPlate(ken);
             List<Map<String, Double>> seats = (List<Map<String, Double>>) vehicle.getVehicleData().get("seats");
             p.getInventory().getItemInMainHand().setAmount(0);
+            p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehiclePlace").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
             for (int i = 1; i <= seats.size(); i++) {
                 Map<String, Double> seat = seats.get(i - 1);
                 if (i == 1) {
