@@ -33,26 +33,33 @@ public class VehicleClickEvent implements Listener {
         if (p.isSneaking()) {
             if (event.getRightClicked().getCustomName().contains("MTVEHICLES_MAINSEAT_")) {
                 getShitOppakVehicles(event.getRightClicked().getCustomName().replace("MTVEHICLES_MAINSEAT_", ""), p);
+                event.setCancelled(true);
             }
             if (event.getRightClicked().getCustomName().contains("MTVEHICLES_MAIN_")) {
                 getShitOppakVehicles(event.getRightClicked().getCustomName().replace("MTVEHICLES_MAIN_", ""), p);
+                event.setCancelled(true);
             }
             if (event.getRightClicked().getCustomName().contains("MTVEHICLES_SKIN_")) {
                 getShitOppakVehicles(event.getRightClicked().getCustomName().replace("MTVEHICLES_SKIN_", ""), p);
+                event.setCancelled(true);
             }
             return;
         }
         Main.configList.forEach(Config::reload);
         if (event.getRightClicked().getCustomName().contains("MTVEHICLES_MAINSEAT_")) {
             getShitVehicles(event.getRightClicked().getCustomName().replace("MTVEHICLES_MAINSEAT_", ""), p);
+            event.setCancelled(true);
         }
         if (event.getRightClicked().getCustomName().contains("MTVEHICLES_MAIN_")) {
             getShitVehicles(event.getRightClicked().getCustomName().replace("MTVEHICLES_MAIN_", ""), p);
+            event.setCancelled(true);
         }
         if (event.getRightClicked().getCustomName().contains("MTVEHICLES_SKIN_")) {
             getShitVehicles(event.getRightClicked().getCustomName().replace("MTVEHICLES_SKIN_", ""), p);
+            event.setCancelled(true);
         }
         if (event.getRightClicked().getCustomName().contains("MTVEHICLES_SEAT")) {
+            event.setCancelled(true);
             String ken = event.getRightClicked().getCustomName().substring(17);
             if (Vehicle.getByPlate(ken).getOwner().equals(p.getUniqueId().toString()) || Vehicle.canSit(p, ken) == true || p.hasPermission("mtvehicles.ride")) {
                 if(event.getRightClicked().isEmpty()){
