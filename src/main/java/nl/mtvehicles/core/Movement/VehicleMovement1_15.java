@@ -4,31 +4,29 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
-
-import net.minecraft.server.v1_12_R1.EntityArmorStand;
-import net.minecraft.server.v1_12_R1.PacketPlayInSteerVehicle;
+import net.minecraft.server.v1_15_R1.EntityArmorStand;
+import net.minecraft.server.v1_15_R1.PacketPlayInSteerVehicle;
 import nl.mtvehicles.core.Events.VehicleLeaveEvent;
 import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
-import org.bukkit.Bukkit;
+import nl.mtvehicles.core.Main;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftArmorStand;
+import org.bukkit.craftbukkit.v1_15_R1.entity.CraftArmorStand;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class VehicleMovement extends PacketAdapter {
+public class VehicleMovement1_15 extends PacketAdapter {
     public static HashMap<String, Double> speed = new HashMap<>();
     float yaw;
     int w;
 
-    public VehicleMovement(final Plugin main) {
-        super(main, ListenerPriority.HIGHEST, new PacketType[]{PacketType.Play.Client.STEER_VEHICLE});
+    public VehicleMovement1_15() {
+        super(Main.instance, ListenerPriority.HIGHEST, PacketType.Play.Client.STEER_VEHICLE);
         this.yaw = 0.0f;
         this.w = 0;
     }
@@ -60,9 +58,9 @@ public class VehicleMovement extends PacketAdapter {
             KeyW(as, speed.get(ken), 0.0);
         }
 
-        final float forward = ppisv.b();
-        final float side = ppisv.a();
-        final boolean space = ppisv.c();
+        final float forward = ppisv.c();
+        final float side = ppisv.b();
+        final boolean space = ppisv.d();
         boolean w;
         boolean s;
         if (forward > 0.0f) {

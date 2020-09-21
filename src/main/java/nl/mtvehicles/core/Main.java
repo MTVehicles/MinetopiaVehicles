@@ -8,10 +8,9 @@ import nl.mtvehicles.core.Infrastructure.DataConfig.MessagesConfig;
 import nl.mtvehicles.core.Infrastructure.DataConfig.VehicleDataConfig;
 import nl.mtvehicles.core.Infrastructure.DataConfig.VehiclesConfig;
 import nl.mtvehicles.core.Infrastructure.Models.Config;
-import nl.mtvehicles.core.Movement.VehicleMovement;
+import nl.mtvehicles.core.Movement.VehicleMovement1_12;
+import nl.mtvehicles.core.Movement.VehicleMovement1_15;
 import org.bukkit.Bukkit;
-import org.bukkit.event.Listener;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -29,16 +28,25 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+
         instance = this;
 
         getLogger().info("De plugin is opgestart!");
         Bukkit.getPluginCommand("minetopiavehicles").setExecutor(new VehiclesSub());
-        Bukkit.getPluginManager().registerEvents((Listener)new MenuClickEvent(), (Plugin)this);
-        Bukkit.getPluginManager().registerEvents((Listener)new VehiclePlaceEvent(), (Plugin)this);
-        Bukkit.getPluginManager().registerEvents((Listener)new VehicleClickEvent(), (Plugin)this);
-        Bukkit.getPluginManager().registerEvents((Listener)new VehicleLeaveEvent(), (Plugin)this);
-        Bukkit.getPluginManager().registerEvents((Listener)new ChatEvent(), (Plugin)this);
-        ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement(this));
+        Bukkit.getPluginManager().registerEvents(new MenuClickEvent(), this);
+        Bukkit.getPluginManager().registerEvents(new VehiclePlaceEvent(), this);
+        Bukkit.getPluginManager().registerEvents(new VehicleClickEvent(), this);
+        Bukkit.getPluginManager().registerEvents(new VehicleLeaveEvent(), this);
+        Bukkit.getPluginManager().registerEvents(new ChatEvent(), this);
+
+        System.out.println(version);
+
+        if (version.equals("v1_15_R1")) {
+            ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_15());
+        } else {
+            ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_12());
+        }
 
         configList.add(messagesConfig);
         configList.add(vehicleDataConfig);
