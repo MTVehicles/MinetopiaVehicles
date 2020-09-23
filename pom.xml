@@ -50,11 +50,18 @@
             <version>4.5.0</version>
         </dependency>
         <dependency>
-            <groupId>net.minecraft</groupId>
+            <groupId>net.minc</groupId>
             <artifactId>example-app</artifactId>
             <version>1.0</version>
             <scope>system</scope>
             <systemPath>${basedir}/libs/spigot-1.12.2.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>net.minecraft</groupId>
+            <artifactId>example-app</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/libs/spigot-1.13.2.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>net.mc</groupId>

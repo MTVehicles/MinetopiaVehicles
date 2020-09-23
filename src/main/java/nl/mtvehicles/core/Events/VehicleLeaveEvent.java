@@ -19,6 +19,10 @@ public class VehicleLeaveEvent implements Listener {
     public void onVehiclePlace(final EntityDismountEvent e) {
         if (e.getDismounted().getCustomName().contains("MTVEHICLES_MAINSEAT_")) {
             final String ken = e.getDismounted().getCustomName().replace("MTVEHICLES_MAINSEAT_", "");
+            if (VehicleLeaveEvent.autostand.get("MTVEHICLES_MAIN_"+ken) == null){
+                return;
+
+            }
             ArmorStand as = VehicleLeaveEvent.autostand.get("MTVEHICLES_MAIN_"+ken);
             ArmorStand as2 = VehicleLeaveEvent.autostand.get("MTVEHICLES_SKIN_"+ken);
             as.setGravity(true);

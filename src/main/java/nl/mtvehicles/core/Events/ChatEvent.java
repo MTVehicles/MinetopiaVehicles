@@ -4,6 +4,7 @@ import nl.mtvehicles.core.Infrastructure.Helpers.NBTUtils;
 import nl.mtvehicles.core.Infrastructure.Helpers.TextUtils;
 import nl.mtvehicles.core.Infrastructure.Helpers.Vehicles;
 import nl.mtvehicles.core.Main;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -14,7 +15,7 @@ import org.bukkit.inventory.ItemStack;
 public class ChatEvent implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
-    public void onLicenseChat(final AsyncPlayerChatEvent e) {
+    public void onLicenseChat(AsyncPlayerChatEvent e) {
         final Player p = e.getPlayer();
 
 
@@ -37,7 +38,15 @@ public class ChatEvent implements Listener {
                 }
                 Main.vehicleDataConfig.save();
                 p.getInventory().setItemInMainHand(Vehicles.carItem2(Main.vehicleDataConfig.getConfig().getInt("vehicle." + ken + ".skinDamage"), Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".name"), Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".skinItem"), e.getMessage()));
-                Vehicles.menuEdit(p);
+
+                if (e.isAsynchronous()) {
+
+
+                    Bukkit.getScheduler().runTask(Main.instance, () -> {
+                        Vehicles.menuEdit(p);
+                    });
+                }
+
                 p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("actionSuccessful")));
                 Vehicles.edit.put(p.getUniqueId() + ".kenteken", false);
                 Main.vehicleDataConfig.getConfig().set("vehicle." + ken, null);
@@ -45,7 +54,15 @@ public class ChatEvent implements Listener {
                 return;
             }
             e.setCancelled(true);
-            Vehicles.menuEdit(p);
+
+            if (e.isAsynchronous()) {
+
+
+                Bukkit.getScheduler().runTask(Main.instance, () -> {
+                    Vehicles.menuEdit(p);
+                });
+            }
+
             p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("actionCanceled")));
             Vehicles.edit.put(p.getUniqueId() + ".kenteken", false);
         }
@@ -54,6 +71,9 @@ public class ChatEvent implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onNaamChat(final AsyncPlayerChatEvent e) {
         final Player p = e.getPlayer();
+        if (Vehicles.edit.get(p.getUniqueId() + ".naam") == null) {
+            return;
+        }
         if (Vehicles.edit.get(p.getUniqueId() + ".naam") == true) {
             if (!e.getMessage().contains("annule") || !e.getMessage().contains("Annule")) {
                 e.setCancelled(true);
@@ -61,15 +81,28 @@ public class ChatEvent implements Listener {
                 Main.vehicleDataConfig.getConfig().set("vehicle." + ken + ".name", e.getMessage());
                 Main.vehicleDataConfig.save();
                 p.getInventory().setItemInMainHand(Vehicles.carItem2(Main.vehicleDataConfig.getConfig().getInt("vehicle." + ken + ".skinDamage"), e.getMessage(), Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".skinItem"), ken));
-                Vehicles.menuEdit(p);
                 p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("actionSuccessful")));
                 Vehicles.edit.put(p.getUniqueId() + ".naam", false);
+                if (e.isAsynchronous()) {
+
+                    Bukkit.getScheduler().runTask(Main.instance, () -> {
+                        Vehicles.menuEdit(p);
+                    });
+
+                }
                 return;
             }
             e.setCancelled(true);
             Vehicles.menuEdit(p);
             p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("actionCanceled")));
             Vehicles.edit.put(p.getUniqueId() + ".naam", false);
+            if (e.isAsynchronous()) {
+
+
+                Bukkit.getScheduler().runTask(Main.instance, () -> {
+                    Vehicles.menuEdit(p);
+                });
+            }
         }
     }
 }

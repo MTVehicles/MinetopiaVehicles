@@ -5,7 +5,7 @@ import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
 import net.minecraft.server.v1_15_R1.EntityArmorStand;
-import net.minecraft.server.v1_15_R1.PacketPlayInSteerVehicle;
+import nl.mtvehicles.core.Events.VehicleClickEvent;
 import nl.mtvehicles.core.Events.VehicleLeaveEvent;
 import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
 import nl.mtvehicles.core.Main;
@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 public class VehicleMovement1_15 extends PacketAdapter {
-    public static HashMap<String, Double> speed = new HashMap<>();
+
     float yaw;
     int w;
 
@@ -32,30 +32,35 @@ public class VehicleMovement1_15 extends PacketAdapter {
     }
 
     public void onPacketReceiving(final PacketEvent event) {
-        final PacketPlayInSteerVehicle ppisv = (PacketPlayInSteerVehicle) event.getPacket().getHandle();
+        net.minecraft.server.v1_15_R1.PacketPlayInSteerVehicle ppisv = (net.minecraft.server.v1_15_R1.PacketPlayInSteerVehicle) event.getPacket().getHandle();
         final Player p = event.getPlayer();
         if (p.getVehicle() == null) {
             return;
         }
+
         if (!p.getVehicle().getCustomName().contains("MTVEHICLES_MAINSEAT_")){
             return;
         }
         String ken = p.getVehicle().getCustomName().replace("MTVEHICLES_MAINSEAT_", "");
-
+        if (VehicleClickEvent.speed.get(ken) == null){
+            VehicleClickEvent.speed.put(ken, 0.0);
+            System.out.println("error");
+            return;
+        }
 
         ArmorStand as = VehicleLeaveEvent.autostand.get("MTVEHICLES_MAIN_"+ken);
         ArmorStand as2 = VehicleLeaveEvent.autostand.get("MTVEHICLES_SKIN_"+ken);
         ArmorStand as3 = VehicleLeaveEvent.autostand.get("MTVEHICLES_MAINSEAT_"+ken);
-        final EntityArmorStand stand = ((CraftArmorStand)as2).getHandle();
+        EntityArmorStand stand = ((CraftArmorStand)as2).getHandle();
         stand.setLocation(as.getLocation().getX(), as.getLocation().getY(), as.getLocation().getZ(), as.getLocation().getYaw(), as.getLocation().getPitch());
         mainSeat(as, as3, ken);
         seat(as, ken);
         Location loc = as.getLocation();
         Location location = new Location(loc.getWorld(), loc.getX(), loc.getY()-0.2, loc.getZ(), loc.getYaw(), loc.getPitch());
         if (location.getBlock().getType().equals(Material.AIR) || location.getBlock().getType().equals(Material.WATER)){
-            KeyW(as, speed.get(ken), -0.8);
+            KeyW(as, VehicleClickEvent.speed.get(ken), -0.8);
         } else {
-            KeyW(as, speed.get(ken), 0.0);
+            KeyW(as, VehicleClickEvent.speed.get(ken), 0.0);
         }
 
         final float forward = ppisv.c();
@@ -65,30 +70,30 @@ public class VehicleMovement1_15 extends PacketAdapter {
         boolean s;
         if (forward > 0.0f) {
 
-            if (speed.get(ken) > Vehicle.getByPlate(ken).getMaxSpeed()) {
+            if (VehicleClickEvent.speed.get(ken) > Vehicle.getByPlate(ken).getMaxSpeed()) {
 
             } else {
-                speed.put(ken, speed.get(ken) + Vehicle.getByPlate(ken).getAcceleratieSpeed());
+                VehicleClickEvent.speed.put(ken, VehicleClickEvent.speed.get(ken) + Vehicle.getByPlate(ken).getAcceleratieSpeed());
             }
 
             w = true;
             s = false;
         } else if (forward < 0.0f) {
-            if (speed.get(ken) <= 0){
-                speed.put(ken, 0.0);
+            if (VehicleClickEvent.speed.get(ken) <= 0){
+                VehicleClickEvent.speed.put(ken, 0.0);
             }else {
 
-                speed.put(ken, speed.get(ken)-Vehicle.getByPlate(ken).getBrakingSpeed());
+                VehicleClickEvent.speed.put(ken, VehicleClickEvent.speed.get(ken)-Vehicle.getByPlate(ken).getBrakingSpeed());
             }
             w = false;
             s = true;
         } else {
 
-            if (speed.get(ken) <= 0){
-                speed.put(ken, 0.0);
+            if (VehicleClickEvent.speed.get(ken) <= 0){
+                VehicleClickEvent.speed.put(ken, 0.0);
             }else {
 
-                speed.put(ken, speed.get(ken)-Vehicle.getByPlate(ken).getAftrekkenSpeed());
+                VehicleClickEvent.speed.put(ken, VehicleClickEvent.speed.get(ken)-Vehicle.getByPlate(ken).getAftrekkenSpeed());
             }
 
             w = false;

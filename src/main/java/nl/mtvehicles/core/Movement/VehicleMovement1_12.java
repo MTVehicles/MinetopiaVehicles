@@ -6,6 +6,7 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
 import net.minecraft.server.v1_12_R1.EntityArmorStand;
 import net.minecraft.server.v1_12_R1.PacketPlayInSteerVehicle;
+import nl.mtvehicles.core.Events.VehicleClickEvent;
 import nl.mtvehicles.core.Events.VehicleLeaveEvent;
 import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
 import nl.mtvehicles.core.Main;
@@ -22,7 +23,6 @@ import java.util.List;
 import java.util.Map;
 
 public class VehicleMovement1_12 extends PacketAdapter {
-    public static HashMap<String, Double> speed = new HashMap<>();
     float yaw;
     int w;
 
@@ -54,9 +54,9 @@ public class VehicleMovement1_12 extends PacketAdapter {
         Location loc = as.getLocation();
         Location location = new Location(loc.getWorld(), loc.getX(), loc.getY()-0.2, loc.getZ(), loc.getYaw(), loc.getPitch());
         if (location.getBlock().getType().equals(Material.AIR) || location.getBlock().getType().equals(Material.WATER)){
-            KeyW(as, speed.get(ken), -0.8);
+            KeyW(as, VehicleClickEvent.speed.get(ken), -0.8);
         } else {
-            KeyW(as, speed.get(ken), 0.0);
+            KeyW(as, VehicleClickEvent.speed.get(ken), 0.0);
         }
 
         final float forward = ppisv.b();
@@ -66,30 +66,30 @@ public class VehicleMovement1_12 extends PacketAdapter {
         boolean s;
         if (forward > 0.0f) {
 
-            if (speed.get(ken) > Vehicle.getByPlate(ken).getMaxSpeed()) {
+            if (VehicleClickEvent.speed.get(ken) > Vehicle.getByPlate(ken).getMaxSpeed()) {
 
             } else {
-                speed.put(ken, speed.get(ken) + Vehicle.getByPlate(ken).getAcceleratieSpeed());
+                VehicleClickEvent.speed.put(ken, VehicleClickEvent.speed.get(ken) + Vehicle.getByPlate(ken).getAcceleratieSpeed());
             }
 
             w = true;
             s = false;
         } else if (forward < 0.0f) {
-            if (speed.get(ken) <= 0){
-                speed.put(ken, 0.0);
+            if (VehicleClickEvent.speed.get(ken) <= 0){
+                VehicleClickEvent.speed.put(ken, 0.0);
             }else {
 
-                speed.put(ken, speed.get(ken)-Vehicle.getByPlate(ken).getBrakingSpeed());
+                VehicleClickEvent.speed.put(ken, VehicleClickEvent.speed.get(ken)-Vehicle.getByPlate(ken).getBrakingSpeed());
             }
             w = false;
             s = true;
         } else {
 
-            if (speed.get(ken) <= 0){
-                speed.put(ken, 0.0);
+            if (VehicleClickEvent.speed.get(ken) <= 0){
+                VehicleClickEvent.speed.put(ken, 0.0);
             }else {
 
-                speed.put(ken, speed.get(ken)-Vehicle.getByPlate(ken).getAftrekkenSpeed());
+                VehicleClickEvent.speed.put(ken, VehicleClickEvent.speed.get(ken)-Vehicle.getByPlate(ken).getAftrekkenSpeed());
             }
 
             w = false;

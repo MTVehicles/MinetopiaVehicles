@@ -16,12 +16,13 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 public class VehicleClickEvent implements Listener {
-
+    public static HashMap<String, Double> speed = new HashMap<>();
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerInteractAtEntity(final PlayerInteractAtEntityEvent event) {
@@ -118,7 +119,7 @@ public class VehicleClickEvent implements Listener {
                                     as3.setCustomName("MTVEHICLES_MAINSEAT_" + ken);
                                     VehicleLeaveEvent.autostand.put("MTVEHICLES_MAINSEAT_" + ken, as3);
                                     as3.setGravity(false);
-                                    VehicleMovement1_12.speed.put(ken, 0.0);
+                                    speed.put(ken, 0.0);
                                     as3.setPassenger(p);
                                     as3.setVisible(false);
                                     VehicleLeaveEvent.autostand2.put(ken, as3);

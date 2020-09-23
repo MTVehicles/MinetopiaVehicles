@@ -9,6 +9,7 @@ import nl.mtvehicles.core.Infrastructure.DataConfig.VehicleDataConfig;
 import nl.mtvehicles.core.Infrastructure.DataConfig.VehiclesConfig;
 import nl.mtvehicles.core.Infrastructure.Models.Config;
 import nl.mtvehicles.core.Movement.VehicleMovement1_12;
+import nl.mtvehicles.core.Movement.VehicleMovement1_13;
 import nl.mtvehicles.core.Movement.VehicleMovement1_15;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -25,10 +26,11 @@ public class Main extends JavaPlugin {
     public static VehicleDataConfig vehicleDataConfig = new VehicleDataConfig();
     public static VehiclesConfig vehiclesConfig = new VehiclesConfig();
     public static DefaultConfig defaultConfig = new DefaultConfig();
+    public static String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
 
     @Override
     public void onEnable() {
-        String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+
 
         instance = this;
 
@@ -40,13 +42,19 @@ public class Main extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new VehicleLeaveEvent(), this);
         Bukkit.getPluginManager().registerEvents(new ChatEvent(), this);
 
-        System.out.println(version);
-
+        if (version.equals("v1_12_R1")) {
+            ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_12());
+            getLogger().info("Loaded vehicle movement for version: "+version);
+        }
+        if (version.equals("v1_13_R2")) {
+            ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_13());
+            getLogger().info("Loaded vehicle movement for version: "+version);
+        }
         if (version.equals("v1_15_R1")) {
             ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_15());
-        } else {
-            ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_12());
+            getLogger().info("Loaded vehicle movement for version: "+version);
         }
+
 
         configList.add(messagesConfig);
         configList.add(vehicleDataConfig);

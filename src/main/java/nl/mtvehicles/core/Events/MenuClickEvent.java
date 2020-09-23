@@ -139,10 +139,7 @@ public class MenuClickEvent implements Listener {
         if (e.getView().getTitle().contains("Vehicle Edit")) {
             e.setCancelled(true);
             if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Vehicle Settings")) {
-
                 Vehicles.menuEdit(p);
-
-
             }
             if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Benzine Settings")) {
                 p.sendMessage("benzine");
@@ -163,8 +160,6 @@ public class MenuClickEvent implements Listener {
                 p.getInventory().getItemInMainHand().setAmount(0);
                 p.closeInventory();
             }
-
-
         }
 
         if (e.getView().getTitle().contains("Vehicle Settings")) {
@@ -209,7 +204,7 @@ public class MenuClickEvent implements Listener {
                 Vehicles.edit.put(p.getUniqueId()+".kenteken", true);
             }
 
-            if (e.getCurrentItem().equals(Vehicles.mItem2(Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".skinItem"), 1 , (short)Main.vehicleDataConfig.getConfig().getInt("vehicle." + ken + ".skinDamage"), "&6Naam Aanpassen", "&7Huidige: &e"+Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".name")))) {
+            if (e.getCurrentItem().getDurability() == (short)Main.vehicleDataConfig.getConfig().getInt("vehicle." + ken + ".skinDamage")) {
                 p.closeInventory();
                 p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("typeNameInChat")));
                 Vehicles.edit.put(p.getUniqueId()+".naam", true);

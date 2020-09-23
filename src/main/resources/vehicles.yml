@@ -21,6 +21,9 @@ voertuigen:
       - name: "Sedan Blauw"
         SkinItem: DIAMOND_HOE
         itemDamage: 1003
+      - name: "Sedan Undercover"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1015
       - name: "Sedan Rood"
         SkinItem: DIAMOND_HOE
         itemDamage: 1017
@@ -36,3 +39,93 @@ voertuigen:
       - name: "Sedan Geel"
         SkinItem: DIAMOND_HOE
         itemDamage: 1021
+      - name: "Sedan Bruin"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1022
+      - name: "Sedan Wit"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1023
+      - name: "Sedan Paars"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1024
+      - name: "Sedan Diamond"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1025
+      - name: "Sedan Koningsdag"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1026
+      - name: "Sedan Rainbow"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1027
+      - name: "Sedan Les"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1028
+      - name: "Sedan GoudZwart"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1071
+      - name: "Sedan Cars"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1099
+      - name: "Sedan Thunder"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1100
+      - name: "Sedan Monster"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1101
+      - name: "Sedan Lichtblauw"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1109
+      - name: "Sedan Antique"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1110
+      - name: "Sedan GrijsZwart"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1111
+      - name: "Sedan Beige"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1112
+      - name: "Sedan Citroen"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1113
+      - name: "Sedan Aqua"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1114
+      - name: "Sedan Lime"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1115
+      - name: "Sedan Obsidian"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1116
+      - name: "Sedan Lichtroze"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1117
+      - name: "Sedan WitZwart"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1173
+      - name: "Sedan OranjeZwart"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1176
+      - name: "Sedan PaarsWit"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1177
+      - name: "Sedan GeelZwart"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1178
+      - name: "Sedan BlauwZwart"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1179
+      - name: "Sedan Kerst"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1189
+      - name: "Sedan RoodWit"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1190
+      - name: "Sedan Lego"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1191
+      - name: "Sedan FelRoze"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1217
+      - name: "Sedan FelBlauw"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1218
