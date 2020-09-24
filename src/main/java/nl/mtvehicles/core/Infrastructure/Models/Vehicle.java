@@ -108,6 +108,7 @@ public class Vehicle {
         vehicle.setGlow((boolean) vehicleData.get("isGlow"));
         vehicle.setBenzineEnabled((boolean) vehicleData.get("benzineEnabled"));
         vehicle.setBenzine((double) vehicleData.get("benzine"));
+        vehicle.setBenzineVerbruik((double) vehicleData.get("benzineVerbruik"));
         vehicle.setKofferbak((boolean) vehicleData.get("kofferbak"));
         vehicle.setKofferbakRows((int) vehicleData.get("kofferbakRows"));
         vehicle.setKofferbakData((List<ItemStack>) vehicleData.get("kofferbakData"));

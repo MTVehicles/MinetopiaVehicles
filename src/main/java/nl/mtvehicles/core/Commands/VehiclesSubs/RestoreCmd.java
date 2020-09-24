@@ -31,10 +31,17 @@ public class RestoreCmd extends MTVehicleSubCommand {
 
             } else {
                 for (String key : Main.vehicleDataConfig.getConfig().getConfigurationSection("vehicle").getKeys(false)) {
-                    inv.addItem(Vehicles.carItem2(Main.vehicleDataConfig.getConfig().getInt("vehicle."+key+".skinDamage"), Main.vehicleDataConfig.getConfig().getString("vehicle."+key+".name"), Main.vehicleDataConfig.getConfig().getString("vehicle."+key+".skinItem"), key));
+                    if (Main.vehicleDataConfig.getConfig().getBoolean("vehicle."+key+".isGlow") == true){
+                        inv.addItem(Vehicles.carItem2glow(Main.vehicleDataConfig.getConfig().getInt("vehicle."+key+".skinDamage"), Main.vehicleDataConfig.getConfig().getString("vehicle."+key+".name"), Main.vehicleDataConfig.getConfig().getString("vehicle."+key+".skinItem"), key));
+                    } else {
+                        inv.addItem(Vehicles.carItem2(Main.vehicleDataConfig.getConfig().getInt("vehicle."+key+".skinDamage"), Main.vehicleDataConfig.getConfig().getString("vehicle."+key+".name"), Main.vehicleDataConfig.getConfig().getString("vehicle."+key+".skinItem"), key));
+                    }
+
                 }
 
-
+                for (int i = 36; i <= 44; i++) {
+                    inv.setItem(i, Vehicles.mItem("STAINED_GLASS_PANE", 1, (short) 0, "&c", "&c"));
+                }
                 p.openInventory(inv);
             }
         }

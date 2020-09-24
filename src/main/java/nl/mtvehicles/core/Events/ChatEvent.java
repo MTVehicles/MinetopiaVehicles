@@ -105,4 +105,113 @@ public class ChatEvent implements Listener {
             }
         }
     }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onBenzineChat(final AsyncPlayerChatEvent e) {
+        final Player p = e.getPlayer();
+        if (Vehicles.edit.get(p.getUniqueId() + ".benzine") == null) {
+            return;
+        }
+        if(isI(e.getMessage(), p) == false) {
+            e.setCancelled(true);
+            Vehicles.benzineEdit(p);
+            Vehicles.edit.put(p.getUniqueId() + ".benzine", false);
+            return;
+        }
+        if (Integer.parseInt(e.getMessage()) > 100){
+            e.setCancelled(true);
+            Vehicles.benzineEdit(p);
+            Vehicles.edit.put(p.getUniqueId() + ".benzine", false);
+            p.sendMessage(TextUtils.colorize("&cLetop! Het cijfer moet onder de 100 zijn!"));
+            return;
+        }
+        if (Vehicles.edit.get(p.getUniqueId() + ".benzine") == true) {
+            if (!e.getMessage().contains("annule") || !e.getMessage().contains("Annule")) {
+                e.setCancelled(true);
+                String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
+                Main.vehicleDataConfig.getConfig().set("vehicle." + ken + ".benzine", Double.valueOf(e.getMessage()));
+                Main.vehicleDataConfig.save();
+                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("actionSuccessful")));
+                Vehicles.edit.put(p.getUniqueId() + ".benzine", false);
+                if (e.isAsynchronous()) {
+                    Bukkit.getScheduler().runTask(Main.instance, () -> {
+                        Vehicles.benzineEdit(p);
+                    });
+                }
+                return;
+            }
+            e.setCancelled(true);
+            Vehicles.benzineEdit(p);
+            p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("actionCanceled")));
+            Vehicles.edit.put(p.getUniqueId() + ".benzine", false);
+            if (e.isAsynchronous()) {
+
+
+                Bukkit.getScheduler().runTask(Main.instance, () -> {
+                    Vehicles.menuEdit(p);
+                });
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onBenzineVerbruikChat(final AsyncPlayerChatEvent e) {
+        final Player p = e.getPlayer();
+        if (Vehicles.edit.get(p.getUniqueId() + ".benzineverbruik") == null) {
+            return;
+        }
+        if(isD(e.getMessage(), p) == false) {
+            e.setCancelled(true);
+            Vehicles.benzineEdit(p);
+            Vehicles.edit.put(p.getUniqueId() + ".benzineverbruik", false);
+            return;
+        }
+        if (Vehicles.edit.get(p.getUniqueId() + ".benzineverbruik") == true) {
+            if (!e.getMessage().contains("annule") || !e.getMessage().contains("Annule")) {
+                e.setCancelled(true);
+                String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
+                Main.vehicleDataConfig.getConfig().set("vehicle." + ken + ".benzineVerbruik", Double.valueOf(e.getMessage()));
+                Main.vehicleDataConfig.save();
+                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("actionSuccessful")));
+                Vehicles.edit.put(p.getUniqueId() + ".benzineverbruik", false);
+                if (e.isAsynchronous()) {
+                    Bukkit.getScheduler().runTask(Main.instance, () -> {
+                        Vehicles.benzineEdit(p);
+                    });
+                }
+                return;
+            }
+            e.setCancelled(true);
+            Vehicles.benzineEdit(p);
+            p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("actionCanceled")));
+            Vehicles.edit.put(p.getUniqueId() + ".benzine", false);
+            if (e.isAsynchronous()) {
+
+
+                Bukkit.getScheduler().runTask(Main.instance, () -> {
+                    Vehicles.menuEdit(p);
+                });
+            }
+        }
+    }
+
+    public boolean isI(String str, Player p) {
+        try {
+            Integer.parseInt(str);
+        } catch (Throwable e) {
+            p.sendMessage(TextUtils.colorize("&cLetop! Het moet een cijfer zijn."));
+            return false;
+        }
+        return true;
+    }
+
+    public boolean isD(String str, Player p) {
+        try {
+            Double.valueOf(str);
+        } catch (Throwable e) {
+            p.sendMessage(TextUtils.colorize("&cLetop! Het moet een double zijn. bv 0.02"));
+            return false;
+        }
+        return true;
+    }
 }

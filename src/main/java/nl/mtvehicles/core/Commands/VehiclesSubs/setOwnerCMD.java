@@ -23,7 +23,7 @@ public class setOwnerCMD extends MTVehicleSubCommand {
                 return true;
             }
             if (item == null || (!item.hasItemMeta() || !(NBTUtils.contains(item, "mtvehicles.kenteken")))) {
-
+                sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("noVehicleInHand")));
             } else {
                 try {
                     String ken = NBTUtils.getString(item, "mtvehicles.kenteken");

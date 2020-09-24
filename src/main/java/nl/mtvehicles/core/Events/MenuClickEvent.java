@@ -34,25 +34,18 @@ public class MenuClickEvent implements Listener {
     public void onClick(InventoryClickEvent e) {
         if (e.getCurrentItem() == null) return;
         if (!e.getCurrentItem().hasItemMeta()) return;
-
         Player p = (Player) e.getWhoClicked();
         if (e.getView().getTitle().contains("Vehicle Menu")) {
             e.setCancelled(true);
             List<Map<?, ?>> vehicles = Main.vehiclesConfig.getConfig().getMapList("voertuigen");
             List<Map<?, ?>> skins = (List<Map<?, ?>>) vehicles.get(e.getRawSlot()).get("cars");
-
-
             intSave.put(p.getUniqueId(), e.getRawSlot());
-
             Inventory inv = Bukkit.createInventory(null, 54, "Choose your vehicle");
-
             for (int i = 36; i <= 44; i++) {
                 inv.setItem(i, Vehicles.mItem("STAINED_GLASS_PANE", 1, (short) 0, "&c", "&c"));
             }
-
             inv.setItem(47, Vehicles.mItem("BARRIER", 1, (short) 0, "&4Sluiten", "&cDruk hier om het menu te sluiten!"));
             inv.setItem(51, Vehicles.mItem("WOOD_DOOR", 1, (short) 0, "&6Terug", "&eDruk hier om terug te gaan!"));
-
             for (Map<?, ?> skin : skins) {
                 inv.addItem(Vehicles.carItem((int) skin.get("itemDamage"), ((String) skin.get("name")), (String) skin.get("SkinItem")));
             }
@@ -60,7 +53,6 @@ public class MenuClickEvent implements Listener {
             p.openInventory(inv);
             return;
         }
-
         if (e.getView().getTitle().contains("Choose your vehicle")) {
             if (e.getCurrentItem().equals(Vehicles.mItem("BARRIER", 1, (short) 0, "&4Sluiten", "&cDruk hier om het menu te sluiten!"))) {
                 e.setCancelled(true);
@@ -75,9 +67,7 @@ public class MenuClickEvent implements Listener {
             if (e.getCurrentItem().equals(Vehicles.mItem("STAINED_GLASS_PANE", 1, (short) 0, "&c", "&c"))) {
                 e.setCancelled(true);
                 return;
-
             }
-
             e.setCancelled(true);
             vehicleMenu.put(p.getUniqueId(), e.getCurrentItem());
             Inventory inv = Bukkit.createInventory(null, 27, "Confirm getting vehicle");
@@ -85,32 +75,23 @@ public class MenuClickEvent implements Listener {
             inv.setItem(15, Vehicles.woolItem("WOOL", "LIME_WOOL", 1, (short) 5, "&aCreate Vehicle", "&7Druk hier als je het voertuigen wilt aanmaken en op je naam wilt zetten"));
             p.openInventory(inv);
         }
-
         if (e.getView().getTitle().contains("Confirm getting vehicle")) {
             e.setCancelled(true);
             if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Annuleren")) {
                 p.openInventory(skinMenu.get(p.getUniqueId()));
             }
             if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Create Vehicle")) {
-
                 List<Map<?, ?>> vehicles = Main.vehiclesConfig.getConfig().getMapList("voertuigen");
                 System.out.println(vehicles.get(intSave.get(p.getUniqueId())).get("RotateSpeed"));
-
-
-
-
                 p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("completedvehiclegive")));
                 p.getInventory().addItem(vehicleMenu.get(p.getUniqueId()));
                 String kenteken = NBTUtils.getString(vehicleMenu.get(p.getUniqueId()), "mtvehicles.kenteken");
                 String naam = NBTUtils.getString(vehicleMenu.get(p.getUniqueId()), "mtvehicles.naam");
                 Vehicle vehicle = new Vehicle();
-                final List<String> members = (List<String>)Main.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".members");
-                members.add(p.getUniqueId().toString());
-
-                final List<String> riders = (List<String>)Main.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".riders");
-                riders.add(p.getUniqueId().toString());
-
-                vehicle.setLicensePlate("vehicle."+kenteken);
+                List<String> members = (List<String>) Main.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".members");
+                List<String> riders = (List<String>) Main.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".riders");
+                List<ItemStack> kofferbakData = (List<ItemStack>) Main.vehicleDataConfig.getConfig().getList("voertuig." + kenteken + ".kofferbakData");
+                vehicle.setLicensePlate("vehicle." + kenteken);
                 vehicle.setName(naam);
                 System.out.println(naam);
                 vehicle.setSkinDamage(vehicleMenu.get(p.getUniqueId()).getDurability());
@@ -120,20 +101,29 @@ public class MenuClickEvent implements Listener {
                 vehicle.setBenzine(100);
                 vehicle.setKofferbak(true);
                 vehicle.setKofferbakRows(1);
-                vehicle.setKofferbakData(null);
-                vehicle.setAcceleratieSpeed((double)vehicles.get(intSave.get(p.getUniqueId())).get("acceleratieSpeed"));
-                vehicle.setMaxSpeed((double)vehicles.get(intSave.get(p.getUniqueId())).get("maxSpeed"));
-                vehicle.setBrakingSpeed((double)vehicles.get(intSave.get(p.getUniqueId())).get("brakingSpeed"));
-                vehicle.setAftrekkenSpeed((double)vehicles.get(intSave.get(p.getUniqueId())).get("aftrekkenSpeed"));
+                vehicle.setKofferbakData(kofferbakData);
+                vehicle.setAcceleratieSpeed((double) vehicles.get(intSave.get(p.getUniqueId())).get("acceleratieSpeed"));
+                vehicle.setMaxSpeed((double) vehicles.get(intSave.get(p.getUniqueId())).get("maxSpeed"));
+                vehicle.setBrakingSpeed((double) vehicles.get(intSave.get(p.getUniqueId())).get("brakingSpeed"));
+                vehicle.setAftrekkenSpeed((double) vehicles.get(intSave.get(p.getUniqueId())).get("aftrekkenSpeed"));
                 vehicle.setRotateSpeed((int) vehicles.get(intSave.get(p.getUniqueId())).get("rotateSpeed"));
-                vehicle.setMaxSpeedBackwards((double)vehicles.get(intSave.get(p.getUniqueId())).get("maxSpeedBackwards"));
+                vehicle.setMaxSpeedBackwards((double) vehicles.get(intSave.get(p.getUniqueId())).get("maxSpeedBackwards"));
                 vehicle.setOwner(p.getUniqueId().toString());
                 vehicle.setRiders(riders);
                 vehicle.setMembers(members);
-
                 vehicle.save();
                 p.closeInventory();
             }
+        }
+
+        if (e.getView().getTitle().contains("Vehicle Restore")) {
+            if (e.getCurrentItem().equals(Vehicles.mItem("STAINED_GLASS_PANE", 1, (short) 0, "&c", "&c"))) {
+                e.setCancelled(true);
+                return;
+            }
+            e.setCancelled(true);
+            ItemStack car = e.getCurrentItem();
+            p.getInventory().addItem(car);
         }
 
         if (e.getView().getTitle().contains("Vehicle Edit")) {
@@ -142,7 +132,7 @@ public class MenuClickEvent implements Listener {
                 Vehicles.menuEdit(p);
             }
             if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Benzine Settings")) {
-                p.sendMessage("benzine");
+                Vehicles.benzineEdit(p);
             }
             if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Kofferbak Settings")) {
                 p.sendMessage("koffer");
@@ -155,7 +145,7 @@ public class MenuClickEvent implements Listener {
             }
             if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Delete Vehicle")) {
                 String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
-                Main.vehicleDataConfig.getConfig().set("vehicle."+ken, null);
+                Main.vehicleDataConfig.getConfig().set("vehicle." + ken, null);
                 Main.vehicleDataConfig.save();
                 p.getInventory().getItemInMainHand().setAmount(0);
                 p.closeInventory();
@@ -177,10 +167,10 @@ public class MenuClickEvent implements Listener {
             }
 
             if (e.getCurrentItem().equals(Vehicles.glowItem("BOOK", "&6Glow Aanpassen", "&7Huidige: &e" + Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".isGlow")))) {
-                Main.vehicleDataConfig.getConfig().set("vehicle."+ken+".isGlow", false);
+                Main.vehicleDataConfig.getConfig().set("vehicle." + ken + ".isGlow", false);
                 ItemMeta im = p.getInventory().getItemInMainHand().getItemMeta();
                 im.removeEnchant(Enchantment.ARROW_INFINITE);
-                im.removeItemFlags(new ItemFlag[] { ItemFlag.HIDE_ENCHANTS });
+                im.removeItemFlags(new ItemFlag[]{ItemFlag.HIDE_ENCHANTS});
                 p.getInventory().getItemInMainHand().setItemMeta(im);
                 Main.vehicleDataConfig.save();
                 Vehicles.menuEdit(p);
@@ -188,26 +178,65 @@ public class MenuClickEvent implements Listener {
 
             }
 
-            if (e.getCurrentItem().equals(Vehicles.mItem("BOOK", 1 , (short)0, "&6Glow Aanpassen", "&7Huidige: &e"+Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".isGlow")))) {
-                Main.vehicleDataConfig.getConfig().set("vehicle."+ken+".isGlow", true);
+            if (e.getCurrentItem().equals(Vehicles.mItem("BOOK", 1, (short) 0, "&6Glow Aanpassen", "&7Huidige: &e" + Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".isGlow")))) {
+                Main.vehicleDataConfig.getConfig().set("vehicle." + ken + ".isGlow", true);
                 ItemMeta im = p.getInventory().getItemInMainHand().getItemMeta();
                 im.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
-                im.addItemFlags(new ItemFlag[] { ItemFlag.HIDE_ENCHANTS });
+                im.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_ENCHANTS});
                 p.getInventory().getItemInMainHand().setItemMeta(im);
                 Main.vehicleDataConfig.save();
                 Vehicles.menuEdit(p);
             }
 
-            if (e.getCurrentItem().equals(Vehicles.mItem("PAPER", 1 , (short)0, "&6Kenteken Aanpassen", "&7Huidige: &e"+ken))) {
+            if (e.getCurrentItem().equals(Vehicles.mItem("PAPER", 1, (short) 0, "&6Kenteken Aanpassen", "&7Huidige: &e" + ken))) {
                 p.closeInventory();
                 p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("typeLicenseInChat")));
-                Vehicles.edit.put(p.getUniqueId()+".kenteken", true);
+                Vehicles.edit.put(p.getUniqueId() + ".kenteken", true);
             }
 
-            if (e.getCurrentItem().getDurability() == (short)Main.vehicleDataConfig.getConfig().getInt("vehicle." + ken + ".skinDamage")) {
+            if (e.getCurrentItem().getDurability() == (short) Main.vehicleDataConfig.getConfig().getInt("vehicle." + ken + ".skinDamage")) {
                 p.closeInventory();
                 p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("typeNameInChat")));
-                Vehicles.edit.put(p.getUniqueId()+".naam", true);
+                Vehicles.edit.put(p.getUniqueId() + ".naam", true);
+            }
+        }
+        if (e.getView().getTitle().contains("Vehicle Benzine")) {
+            e.setCancelled(true);
+            String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
+            if (e.getCurrentItem().equals(Vehicles.mItem("BARRIER", 1, (short) 0, "&4Sluiten", "&cDruk hier om het menu te sluiten!"))) {
+                e.setCancelled(true);
+                p.closeInventory();
+                return;
+            }
+            if (e.getCurrentItem().equals(Vehicles.mItem("WOOD_DOOR", 1, (short) 0, "&6Terug", "&eDruk hier om terug te gaan!"))) {
+                EditCmd.editMenu(p, p.getInventory().getItemInMainHand());
+                e.setCancelled(true);
+                return;
+            }
+            String menuitem = NBTUtils.getString(e.getCurrentItem(), "mtvehicles.item");
+            if (menuitem.contains("1")) {
+                if (Main.vehicleDataConfig.getConfig().getBoolean("vehicle."+ken+".benzineEnabled") == true){
+                    Main.vehicleDataConfig.getConfig().set("vehicle." + ken + ".benzineEnabled", false);
+                    Main.vehicleDataConfig.save();
+                } else {
+                    Main.vehicleDataConfig.getConfig().set("vehicle." + ken + ".benzineEnabled", true);
+                    Main.vehicleDataConfig.save();
+                }
+                Vehicles.benzineEdit(p);
+                Main.vehicleDataConfig.save();
+                Vehicles.benzineEdit(p);
+            }
+            if (menuitem.contains("2")) {
+                p.closeInventory();
+                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("typeNewBenzineInChat")));
+                Vehicles.edit.put(p.getUniqueId() + ".benzine", true);
+
+            }
+            if (menuitem.contains("3")) {
+                p.closeInventory();
+                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("typeNewBenzineInChat")));
+                Vehicles.edit.put(p.getUniqueId() + ".benzineverbruik", true);
+
             }
         }
     }

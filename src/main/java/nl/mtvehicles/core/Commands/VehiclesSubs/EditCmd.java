@@ -21,7 +21,7 @@ public class EditCmd extends MTVehicleSubCommand {
             Player p = (Player) sender;
             final ItemStack item = p.getInventory().getItemInMainHand();
             if (item == null||(!item.hasItemMeta() || !(NBTUtils.contains(item, "mtvehicles.kenteken")))) {
-
+                sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("noVehicleInHand")));
             }else {
                 Main.configList.forEach(Config::reload);
                 String ken = NBTUtils.getString(item, "mtvehicles.kenteken");

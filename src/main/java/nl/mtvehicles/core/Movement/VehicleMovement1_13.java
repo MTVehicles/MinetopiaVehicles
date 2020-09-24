@@ -45,9 +45,6 @@ public class VehicleMovement1_13 extends PacketAdapter {
             return;
 
         }
-
-
-
         ArmorStand as = VehicleLeaveEvent.autostand.get("MTVEHICLES_MAIN_"+ken);
         ArmorStand as2 = VehicleLeaveEvent.autostand.get("MTVEHICLES_SKIN_"+ken);
         ArmorStand as3 = VehicleLeaveEvent.autostand.get("MTVEHICLES_MAINSEAT_"+ken);
@@ -57,48 +54,38 @@ public class VehicleMovement1_13 extends PacketAdapter {
         seat(as, ken);
         Location loc = as.getLocation();
         Location location = new Location(loc.getWorld(), loc.getX(), loc.getY()-0.2, loc.getZ(), loc.getYaw(), loc.getPitch());
-
-
-        if (location.getBlock().getType().equals(Material.AIR) || location.getBlock().getType().equals(Material.WATER) || location.getBlock().getType().toString().contains("STEP")){
+        if (location.getBlock().getType().equals(Material.AIR) || location.getBlock().getType().equals(Material.WATER)){
             KeyW(as, VehicleClickEvent.speed.get(ken), -0.8);
         } else {
             KeyW(as, VehicleClickEvent.speed.get(ken), 0.0);
         }
-
-
         final float forward = ppisv.c();
         final float side = ppisv.b();
         final boolean space = ppisv.d();
         boolean w;
         boolean s;
         if (forward > 0.0f) {
-
             if (VehicleClickEvent.speed.get(ken) > Vehicle.getByPlate(ken).getMaxSpeed()) {
-
             } else {
                 VehicleClickEvent.speed.put(ken, VehicleClickEvent.speed.get(ken) + Vehicle.getByPlate(ken).getAcceleratieSpeed());
             }
-
             w = true;
             s = false;
         } else if (forward < 0.0f) {
             if (VehicleClickEvent.speed.get(ken) <= 0){
                 VehicleClickEvent.speed.put(ken, 0.0);
             }else {
-
                 VehicleClickEvent.speed.put(ken, VehicleClickEvent.speed.get(ken)-Vehicle.getByPlate(ken).getBrakingSpeed());
             }
             w = false;
             s = true;
         } else {
-
             if (VehicleClickEvent.speed.get(ken) <= 0){
                 VehicleClickEvent.speed.put(ken, 0.0);
             }else {
 
                 VehicleClickEvent.speed.put(ken, VehicleClickEvent.speed.get(ken)-Vehicle.getByPlate(ken).getAftrekkenSpeed());
             }
-
             w = false;
             s = false;
         }
@@ -106,12 +93,10 @@ public class VehicleMovement1_13 extends PacketAdapter {
         boolean d;
         if (side > 0.0f) {
             KeyA(as, ken);
-
             a = true;
             d = false;
         } else if (side < 0.0f) {
             KeyD(as, ken);
-
             a = false;
             d = true;
         } else {
@@ -130,31 +115,22 @@ public class VehicleMovement1_13 extends PacketAdapter {
         float zvp = (float) (fbvp.getZ() + zOffset * Math.sin(Math.toRadians(fbvp.getYaw())));
         float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(fbvp.getYaw())));
         Location loc = new Location(as.getWorld(), (double) xvp, as.getLocation().getY() + yOffset, (double) zvp, fbvp.getYaw(), fbvp.getPitch());
-        Bukkit.broadcastMessage(""+loc.getBlock().getType());
-
         if (loc.getBlock().getType().toString().contains("STEP") || loc.getBlock().getType().toString().contains("SLAB")){
-
             as.setVelocity(new Vector(as.getLocation().getDirection().multiply((double)a).getX(), 0.5, as.getLocation().getDirection().multiply((double)a).getZ()));
         } else {
             Location loc2 = as.getLocation();
             Location location = new Location(loc2.getWorld(), loc2.getX(), loc2.getY(), loc2.getZ(), loc2.getYaw(), loc2.getPitch());
-            if (location.getBlock().getType().toString().contains("STEP")){
+            if (location.getBlock().getType().toString().contains("STEP") || !loc.getBlock().getType().toString().contains("SLAB")){
                 as.setVelocity(new Vector(as.getLocation().getDirection().multiply((double)a).getX(), 0.5, as.getLocation().getDirection().multiply((double)a).getZ()));
-            } else {
                 as.setVelocity(new Vector(as.getLocation().getDirection().multiply((double)a).getX(), b, as.getLocation().getDirection().multiply((double)a).getZ()));
                 if (!loc.getBlock().getType().toString().contains("AIR")){
-                    if (!loc.getBlock().getType().toString().contains("STEP")) {
+                    if (!loc.getBlock().getType().toString().contains("STEP") || !loc.getBlock().getType().toString().contains("SLAB")) {
                         String ken = as.getCustomName().replace("MTVEHICLES_MAIN_", "");
                         VehicleClickEvent.speed.put(ken, -0.01);
                     }
                 }
             }
-
         }
-
-
-
-
     }
 
     public static void KeyD(ArmorStand a, String ken) {
@@ -172,15 +148,11 @@ public class VehicleMovement1_13 extends PacketAdapter {
     }
 
     public static void mainSeat(ArmorStand main, ArmorStand seatas, String ken){
-
         Vehicle vehicle = Vehicle.getByPlate(ken);
         List<Map<String, Double>> seats = (List<Map<String, Double>>) vehicle.getVehicleData().get("seats");
-
         for (int i = 1; i <= seats.size(); i++) {
-
             Map<String, Double> seat = seats.get(i - 1);
             if (i == 1) {
-
                 double xOffset = seat.get("x");
                 double yOffset = seat.get("y");
                 double zOffset = seat.get("z");
@@ -193,16 +165,12 @@ public class VehicleMovement1_13 extends PacketAdapter {
                 stand.setLocation(loc.getX(), loc.getY(), loc.getZ(), fbvp.getYaw(), loc.getPitch());
             }
         }
-
     }
 
     public static void seat(ArmorStand main, String ken){
-
         Vehicle vehicle = Vehicle.getByPlate(ken);
         List<Map<String, Double>> seats = (List<Map<String, Double>>) vehicle.getVehicleData().get("seats");
-
         for (int i = 1; i <= seats.size(); i++) {
-
             Map<String, Double> seat = seats.get(i - 1);
             if (i > 1) {
                 ArmorStand seatas = VehicleLeaveEvent.autostand.get("MTVEHICLES_SEAT" + i + "_" + ken);
@@ -218,6 +186,5 @@ public class VehicleMovement1_13 extends PacketAdapter {
                 stand.setLocation(loc.getX(), loc.getY(), loc.getZ(), fbvp.getYaw(), loc.getPitch());
             }
         }
-
     }
 }
