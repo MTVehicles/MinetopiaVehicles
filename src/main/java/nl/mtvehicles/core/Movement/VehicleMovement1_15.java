@@ -58,7 +58,7 @@ public class VehicleMovement1_15 extends PacketAdapter {
         seat(as, ken);
         Location loc = as.getLocation();
         Location location = new Location(loc.getWorld(), loc.getX(), loc.getY()-0.2, loc.getZ(), loc.getYaw(), loc.getPitch());
-        if (location.getBlock().getType().equals(Material.AIR) || location.getBlock().getType().equals(Material.WATER) || location.getBlock().getType().toString().contains("STEP")){
+        if (location.getBlock().getType().equals(Material.AIR) || location.getBlock().getType().equals(Material.WATER)){
             KeyW(as, VehicleClickEvent.speed.get(ken), -0.8);
         } else {
             KeyW(as, VehicleClickEvent.speed.get(ken), 0.0);
@@ -128,30 +128,22 @@ public class VehicleMovement1_15 extends PacketAdapter {
         float zvp = (float) (fbvp.getZ() + zOffset * Math.sin(Math.toRadians(fbvp.getYaw())));
         float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(fbvp.getYaw())));
         Location loc = new Location(as.getWorld(), (double) xvp, as.getLocation().getY() + yOffset, (double) zvp, fbvp.getYaw(), fbvp.getPitch());
-
         if (loc.getBlock().getType().toString().contains("STEP") || loc.getBlock().getType().toString().contains("SLAB")){
-
             as.setVelocity(new Vector(as.getLocation().getDirection().multiply((double)a).getX(), 0.5, as.getLocation().getDirection().multiply((double)a).getZ()));
         } else {
             Location loc2 = as.getLocation();
             Location location = new Location(loc2.getWorld(), loc2.getX(), loc2.getY(), loc2.getZ(), loc2.getYaw(), loc2.getPitch());
-            if (location.getBlock().getType().toString().contains("awawdadwad23ad2qad")){
+            if (location.getBlock().getType().toString().contains("STEP") || !loc.getBlock().getType().toString().contains("SLAB")){
                 as.setVelocity(new Vector(as.getLocation().getDirection().multiply((double)a).getX(), 0.5, as.getLocation().getDirection().multiply((double)a).getZ()));
-            } else {
                 as.setVelocity(new Vector(as.getLocation().getDirection().multiply((double)a).getX(), b, as.getLocation().getDirection().multiply((double)a).getZ()));
                 if (!loc.getBlock().getType().toString().contains("AIR")){
-                    if (!loc.getBlock().getType().toString().contains("awadwdawdawadwdawdawad")) {
+                    if (!loc.getBlock().getType().toString().contains("STEP") || !loc.getBlock().getType().toString().contains("SLAB")) {
                         String ken = as.getCustomName().replace("MTVEHICLES_MAIN_", "");
                         VehicleClickEvent.speed.put(ken, -0.01);
                     }
                 }
             }
-
         }
-
-
-
-
     }
 
     public static void KeyD(ArmorStand a, String ken) {

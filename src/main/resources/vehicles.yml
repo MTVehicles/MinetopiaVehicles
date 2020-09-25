@@ -4,6 +4,7 @@ voertuigen:
     skinItem: DIAMOND_HOE
     itemDamage: 1003
     benzineEnabled: true
+    kofferbakEnabled: true
     acceleratieSpeed: 0.01
     maxSpeed: 0.7
     brakingSpeed: 0.03

@@ -1,12 +1,12 @@
 package nl.mtvehicles.core.Infrastructure.DataConfig;
 
 import nl.mtvehicles.core.Infrastructure.Helpers.TextUtils;
-import nl.mtvehicles.core.Infrastructure.Models.Config;
+import nl.mtvehicles.core.Infrastructure.Models.ConfigUtils;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;
 
-public class MessagesConfig extends Config {
+public class MessagesConfig extends ConfigUtils {
     public MessagesConfig() {
         this.setFileName("messages.yml");
     }

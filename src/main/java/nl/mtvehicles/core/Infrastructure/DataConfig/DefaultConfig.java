@@ -1,9 +1,9 @@
 package nl.mtvehicles.core.Infrastructure.DataConfig;
 
 import nl.mtvehicles.core.Infrastructure.Helpers.TextUtils;
-import nl.mtvehicles.core.Infrastructure.Models.Config;
+import nl.mtvehicles.core.Infrastructure.Models.ConfigUtils;
 
-public class DefaultConfig extends Config {
+public class DefaultConfig extends ConfigUtils {
     public DefaultConfig() {
         this.setFileName("config.yml");
     }

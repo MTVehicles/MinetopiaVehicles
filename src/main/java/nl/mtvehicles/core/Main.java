@@ -1,13 +1,13 @@
 package nl.mtvehicles.core;
 
 import com.comphenix.protocol.ProtocolLibrary;
-import nl.mtvehicles.core.Commands.VehiclesSub;
+import nl.mtvehicles.core.Commands.vehicleSubCommandManager;
 import nl.mtvehicles.core.Events.*;
 import nl.mtvehicles.core.Infrastructure.DataConfig.DefaultConfig;
 import nl.mtvehicles.core.Infrastructure.DataConfig.MessagesConfig;
 import nl.mtvehicles.core.Infrastructure.DataConfig.VehicleDataConfig;
 import nl.mtvehicles.core.Infrastructure.DataConfig.VehiclesConfig;
-import nl.mtvehicles.core.Infrastructure.Models.Config;
+import nl.mtvehicles.core.Infrastructure.Models.ConfigUtils;
 import nl.mtvehicles.core.Movement.VehicleMovement1_12;
 import nl.mtvehicles.core.Movement.VehicleMovement1_13;
 import nl.mtvehicles.core.Movement.VehicleMovement1_15;
@@ -20,7 +20,7 @@ import java.util.List;
 public class Main extends JavaPlugin {
     public static Main instance;
 
-    public static List<Config> configList = new ArrayList<>();
+    public static List<ConfigUtils> configList = new ArrayList<>();
 
     public static MessagesConfig messagesConfig = new MessagesConfig();
     public static VehicleDataConfig vehicleDataConfig = new VehicleDataConfig();
@@ -35,12 +35,13 @@ public class Main extends JavaPlugin {
         instance = this;
 
         getLogger().info("De plugin is opgestart!");
-        Bukkit.getPluginCommand("minetopiavehicles").setExecutor(new VehiclesSub());
+        Bukkit.getPluginCommand("minetopiavehicles").setExecutor(new vehicleSubCommandManager());
         Bukkit.getPluginManager().registerEvents(new MenuClickEvent(), this);
         Bukkit.getPluginManager().registerEvents(new VehiclePlaceEvent(), this);
         Bukkit.getPluginManager().registerEvents(new VehicleClickEvent(), this);
         Bukkit.getPluginManager().registerEvents(new VehicleLeaveEvent(), this);
         Bukkit.getPluginManager().registerEvents(new ChatEvent(), this);
+        Bukkit.getPluginManager().registerEvents(new VehicleEntityEvent(), this);
 
         if (version.equals("v1_12_R1")) {
             ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_12());
@@ -61,7 +62,7 @@ public class Main extends JavaPlugin {
         configList.add(vehiclesConfig);
         configList.add(defaultConfig);
 
-        configList.forEach(Config::reload);
+        configList.forEach(ConfigUtils::reload);
     }
 
     @Override

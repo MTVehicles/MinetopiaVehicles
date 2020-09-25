@@ -2,6 +2,7 @@ package nl.mtvehicles.core.Infrastructure.Models;
 
 import nl.mtvehicles.core.Infrastructure.Helpers.NBTUtils;
 import nl.mtvehicles.core.Main;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -32,6 +33,7 @@ public class Vehicle {
     private List<String> members;
     private Map<?, ?> vehicleData;
 
+    public static HashMap<String, MTVehicleSubCommand> subcommands = new HashMap<>();
 
     public void save2() {
 
@@ -305,6 +307,26 @@ public class Vehicle {
 
     public static boolean canSit(Player p, String ken) {
         return Main.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".members").contains(p.getUniqueId().toString());
+    }
+
+    public static UUID getOwner(String plate) {
+        if (Main.vehicleDataConfig.getConfig().getString("vehicle." + plate + ".owner") == null) {
+            return null;
+        }
+        return UUID.fromString(Main.vehicleDataConfig.getConfig().getString("vehicle." + plate + ".owner"));
+    }
+
+    public static String getRidersAsString(String plate) {
+        StringBuilder sb = new StringBuilder();
+        for (String s : Main.vehicleDataConfig.getConfig().getStringList("vehicle." + plate + ".riders")) {
+            if (!UUID.fromString(s).equals(getOwner(plate))) {
+                sb.append(Bukkit.getOfflinePlayer(UUID.fromString(s)).getName()).append(", ");
+            }
+        }
+        if (sb.toString().isEmpty()) {
+            sb.append("Niemand");
+        }
+        return sb.toString();
     }
 
 }

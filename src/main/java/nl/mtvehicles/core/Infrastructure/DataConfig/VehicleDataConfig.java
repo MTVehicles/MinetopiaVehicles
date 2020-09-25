@@ -1,9 +1,8 @@
 package nl.mtvehicles.core.Infrastructure.DataConfig;
 
-import nl.mtvehicles.core.Infrastructure.Helpers.TextUtils;
-import nl.mtvehicles.core.Infrastructure.Models.Config;
+import nl.mtvehicles.core.Infrastructure.Models.ConfigUtils;
 
-public class VehicleDataConfig extends Config {
+public class VehicleDataConfig extends ConfigUtils {
     public VehicleDataConfig() {
         this.setFileName("vehicleData.yml");
     }

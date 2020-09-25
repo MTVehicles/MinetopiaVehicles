@@ -11,7 +11,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public class setOwnerCMD extends MTVehicleSubCommand {
+public class vehicleSetOwnerCMD extends MTVehicleSubCommand {
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
         if (sender instanceof Player) {
@@ -34,7 +34,7 @@ public class setOwnerCMD extends MTVehicleSubCommand {
 
                     } else {
                         Main.vehicleDataConfig.getConfig().set("vehicle."+ken+".owner", of.getUniqueId().toString());
-                        p.sendMessage(Main.messagesConfig.getMessage("ownerChange"));
+                        p.sendMessage(Main.messagesConfig.getMessage("memberChange"));
                         Main.vehicleDataConfig.save();
                     }
                 }

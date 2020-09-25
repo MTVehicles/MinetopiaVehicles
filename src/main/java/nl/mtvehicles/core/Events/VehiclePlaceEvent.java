@@ -2,7 +2,7 @@ package nl.mtvehicles.core.Events;
 
 import nl.mtvehicles.core.Infrastructure.Helpers.NBTUtils;
 import nl.mtvehicles.core.Infrastructure.Helpers.TextUtils;
-import nl.mtvehicles.core.Infrastructure.Models.Config;
+import nl.mtvehicles.core.Infrastructure.Models.ConfigUtils;
 import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
 import nl.mtvehicles.core.Main;
 import org.bukkit.Bukkit;
@@ -10,7 +10,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -35,10 +34,17 @@ public class VehiclePlaceEvent implements Listener {
             e.getPlayer().sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("wrongHand")));
             return;
         }
+
         String ken = NBTUtils.getString(item, "mtvehicles.kenteken");
+        Main.configList.forEach(ConfigUtils::reload);
+        if (Vehicle.getByPlate(ken) == null){
+            p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleNotFound")));
+            e.setCancelled(true);
+            return;
+        }
         if (action.equals(Action.RIGHT_CLICK_BLOCK)) {
             e.setCancelled(true);
-            Main.configList.forEach(Config::reload);
+
             Location loc = e.getClickedBlock().getLocation();
             Location location = new Location(loc.getWorld(), loc.getX(), loc.getY() + 1, loc.getZ());
             ArmorStand as = location.getWorld().spawn(location, ArmorStand.class);
@@ -50,7 +56,7 @@ public class VehiclePlaceEvent implements Listener {
             as2.setCustomName("MTVEHICLES_MAIN_" + ken);
             Vehicle vehicle = Vehicle.getByPlate(ken);
             List<Map<String, Double>> seats = (List<Map<String, Double>>) vehicle.getVehicleData().get("seats");
-            p.getInventory().getItemInMainHand().setAmount(0);
+            p.getInventory().remove(p.getItemInHand());
             p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehiclePlace").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
             for (int i = 1; i <= seats.size(); i++) {
                 Map<String, Double> seat = seats.get(i - 1);

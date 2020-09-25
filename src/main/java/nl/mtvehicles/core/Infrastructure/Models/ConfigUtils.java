@@ -13,7 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.logging.Level;
 
-public class Config implements ConfigInterface {
+public class ConfigUtils implements ConfigInterface {
     private FileConfiguration customConfig;
     private File customConfigFile = null;
     private String fileName;

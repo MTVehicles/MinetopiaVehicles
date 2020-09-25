@@ -1,10 +1,9 @@
 package nl.mtvehicles.core.Events;
 
 import nl.mtvehicles.core.Infrastructure.Helpers.TextUtils;
-import nl.mtvehicles.core.Infrastructure.Models.Config;
+import nl.mtvehicles.core.Infrastructure.Models.ConfigUtils;
 import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
 import nl.mtvehicles.core.Main;
-import nl.mtvehicles.core.Movement.VehicleMovement1_12;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -46,7 +45,7 @@ public class VehicleClickEvent implements Listener {
             }
             return;
         }
-        Main.configList.forEach(Config::reload);
+        Main.configList.forEach(ConfigUtils::reload);
         if (event.getRightClicked().getCustomName().contains("MTVEHICLES_MAINSEAT_")) {
             getShitVehicles(event.getRightClicked().getCustomName().replace("MTVEHICLES_MAINSEAT_", ""), p);
             event.setCancelled(true);
