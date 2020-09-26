@@ -35,7 +35,7 @@ public class vehicleSubCommandManager extends MTVehicleCommand {
             return true;
         }
 
-        if (Vehicle.subcommands.get(args[0]) == null) {
+        if (Main.subcommands.get(args[0]) == null) {
             sendMessage(Main.messagesConfig.getMessage("cmdNotExists"));
             return true;
         }
