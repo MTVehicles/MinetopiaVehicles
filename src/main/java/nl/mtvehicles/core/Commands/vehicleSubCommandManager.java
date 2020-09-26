@@ -13,9 +13,7 @@ import java.util.ArrayList;
 public class vehicleSubCommandManager extends MTVehicleCommand {
     public static String name = "minetopiavehicles";
 
-    @Override
-    public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
-
+    public vehicleSubCommandManager() {
         Main.subcommands.put("info", new vehicleInfoCmd());
         Main.subcommands.put("help", new vehicleHelpCmd());
         Main.subcommands.put("reload", new vehicleReloadCmd());
@@ -28,13 +26,10 @@ public class vehicleSubCommandManager extends MTVehicleCommand {
         Main.subcommands.put("removemember", new vehicleRemoveMemberCMD());
         Main.subcommands.put("removerider", new vehicleRemoveRiderCMD());
         Main.subcommands.put("admin", new vehicleAdminCMD());
+    }
 
-        PluginCommand pluginCommand = Main.instance.getCommand(name);
-
-        if (pluginCommand != null) {
-            pluginCommand.setTabCompleter((commandSender, command, s1, strings) -> new ArrayList<>(Main.subcommands.keySet()));
-        }
-
+    @Override
+    public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
         if (args.length == 0) {
             Main.subcommands.get("help").onExecute(sender, cmd, s, args);
             return true;

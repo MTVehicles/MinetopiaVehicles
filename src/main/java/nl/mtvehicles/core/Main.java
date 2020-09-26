@@ -13,6 +13,7 @@ import nl.mtvehicles.core.Movement.VehicleMovement1_12;
 import nl.mtvehicles.core.Movement.VehicleMovement1_13;
 import nl.mtvehicles.core.Movement.VehicleMovement1_15;
 import org.bukkit.Bukkit;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
@@ -39,7 +40,11 @@ public class Main extends JavaPlugin {
         instance = this;
 
         getLogger().info("De plugin is opgestart!");
-        Bukkit.getPluginCommand("minetopiavehicles").setExecutor(new vehicleSubCommandManager());
+        PluginCommand pluginCommand = Main.instance.getCommand("minetopiavehicles");
+        if (pluginCommand != null) {
+            pluginCommand.setExecutor(new vehicleSubCommandManager());
+            pluginCommand.setTabCompleter((commandSender, command, s1, strings) -> new ArrayList<>(Main.subcommands.keySet()));
+        }
         Bukkit.getPluginManager().registerEvents(new MenuClickEvent(), this);
         Bukkit.getPluginManager().registerEvents(new VehiclePlaceEvent(), this);
         Bukkit.getPluginManager().registerEvents(new VehicleClickEvent(), this);
