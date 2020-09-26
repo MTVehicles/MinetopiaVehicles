@@ -21,30 +21,29 @@ public class VehiclesUtils {
 
     public static HashMap<String, Boolean> edit = new HashMap<>();
 
-    public static ItemStack carItem(int id, String name, String material) {
-        String ken = generateLicencePlate();
-        ItemStack car = (new ItemFactory(Material.getMaterial(material))).setDurability((short) id).setName(TextUtils.colorize("&6" + name).replace(" ", " - ")).setNBT("mtvehicles.kenteken", ken).setNBT("mtvehicles.naam", name).toItemStack();
-        ItemMeta im = car.getItemMeta();
-        List<String> itemlore = new ArrayList<>();
-        itemlore.add(TextUtils.colorize("&a"));
-        itemlore.add(TextUtils.colorize("&a" + ken));
-        itemlore.add(TextUtils.colorize("&a"));
-        im.setLore(itemlore);
+    public static ItemStack carItem(int durability, String name, String material) {
+        Material carMaterial = Material.getMaterial(material);
 
-        im.setUnbreakable(true);
-        car.setItemMeta(im);
+        assert carMaterial != null;
+        ItemStack carItem = new ItemStack(carMaterial);
+        carItem.setDurability((short) durability);
 
-        return car;
+        ItemMeta itemMeta = new ItemStack(carMaterial).getItemMeta();
+        assert itemMeta != null;
+        itemMeta.setDisplayName(TextUtils.colorize("&6" + name));
+
+        List<String> itemLore = new ArrayList<>();
+        itemLore.add(TextUtils.colorize("&a"));
+        itemMeta.setLore(itemLore);
+        itemMeta.setUnbreakable(true);
+        carItem.setItemMeta(itemMeta);
+
+        return carItem;
     }
 
     public static String generateLicencePlate() {
-        StringBuilder plate = new StringBuilder();
-        plate.append(RandomStringUtils.random(2, true, false));
-        plate.append("-");
-        plate.append(RandomStringUtils.random(2, true, false));
-        plate.append("-");
-        plate.append(RandomStringUtils.random(2, true, false));
-        return plate.toString().toUpperCase();
+        String plate = String.format("%s-%s-%s", RandomStringUtils.random(2, true, false), RandomStringUtils.random(2, true, false), RandomStringUtils.random(2, true, false));
+        return plate.toUpperCase();
     }
 
 

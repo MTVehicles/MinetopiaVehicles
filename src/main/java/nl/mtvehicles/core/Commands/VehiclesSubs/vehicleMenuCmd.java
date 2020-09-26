@@ -1,7 +1,7 @@
 package nl.mtvehicles.core.Commands.VehiclesSubs;
 
-import nl.mtvehicles.core.Infrastructure.Helpers.ItemFactory;
 import nl.mtvehicles.core.Infrastructure.Helpers.TextUtils;
+import nl.mtvehicles.core.Infrastructure.Helpers.VehiclesUtils;
 import nl.mtvehicles.core.Infrastructure.Models.MTVehicleSubCommand;
 import nl.mtvehicles.core.Main;
 import org.bukkit.Bukkit;
@@ -35,7 +35,7 @@ public class vehicleMenuCmd extends MTVehicleSubCommand {
             int itemDamage = (int) vehicle.get("itemDamage");
             String name = (String) vehicle.get("name");
             String skinItem = (String) vehicle.get("skinItem");
-            ItemStack itemStack = carItem(itemDamage, name, skinItem);
+            ItemStack itemStack = VehiclesUtils.carItem(itemDamage, name, skinItem);
             inv.addItem(itemStack);
         }
 
@@ -44,18 +44,5 @@ public class vehicleMenuCmd extends MTVehicleSubCommand {
         p.openInventory(inv);
 
         return true;
-    }
-
-    public ItemStack carItem(int id, String name, String material) {
-        ItemStack car = (new ItemFactory(Material.getMaterial(material))).setDurability((short) id).setName(TextUtils.colorize("&6" + name)).toItemStack();
-        ItemMeta im = car.getItemMeta();
-        List<String> itemLore = new ArrayList<>();
-        itemLore.add(TextUtils.colorize("&a"));
-        assert im != null;
-        im.setLore(itemLore);
-        im.setUnbreakable(true);
-        car.setItemMeta(im);
-
-        return car;
     }
 }
