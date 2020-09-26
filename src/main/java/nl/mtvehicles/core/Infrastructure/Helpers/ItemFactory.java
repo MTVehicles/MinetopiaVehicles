@@ -1,22 +1,17 @@
 package nl.mtvehicles.core.Infrastructure.Helpers;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import net.minecraft.server.v1_12_R1.NBTTagCompound;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Color;
-import org.bukkit.DyeColor;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class ItemFactory {
     private ItemStack is;
@@ -38,7 +33,7 @@ public class ItemFactory {
     }
 
     public ItemFactory(Material material, int amount, byte durability) {
-        this.is = new ItemStack(material, amount, (short)durability);
+        this.is = new ItemStack(material, amount, durability);
     }
 
     public ItemFactory clone() {
@@ -68,7 +63,6 @@ public class ItemFactory {
     }
 
 
-
     public List<String> getLore() {
         return this.is.getItemMeta().getLore();
     }
@@ -94,11 +88,12 @@ public class ItemFactory {
 
     public ItemFactory hideAttributes() {
         ItemMeta im = this.is.getItemMeta();
-        im.addItemFlags(new ItemFlag[] { ItemFlag.HIDE_ATTRIBUTES });
-        im.addItemFlags(new ItemFlag[] { ItemFlag.HIDE_ENCHANTS });
-        im.addItemFlags(new ItemFlag[] { ItemFlag.HIDE_PLACED_ON });
-        im.addItemFlags(new ItemFlag[] { ItemFlag.HIDE_UNBREAKABLE });
-        im.addItemFlags(new ItemFlag[] { ItemFlag.HIDE_POTION_EFFECTS });
+        assert im != null;
+        im.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+        im.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        im.addItemFlags(ItemFlag.HIDE_PLACED_ON);
+        im.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
+        im.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
         this.is.setItemMeta(im);
         return this;
     }
@@ -115,6 +110,7 @@ public class ItemFactory {
 
     public ItemFactory addEnchant(Enchantment enchantment, int level) {
         ItemMeta im = this.is.getItemMeta();
+        assert im != null;
         im.addEnchant(enchantment, level, true);
         this.is.setItemMeta(im);
         return this;
@@ -122,14 +118,14 @@ public class ItemFactory {
 
     public ItemFactory addEnchantGlow(Enchantment enchantment, int level) {
         ItemMeta im = this.is.getItemMeta();
+        assert im != null;
         im.addEnchant(enchantment, level, true);
-        im.addItemFlags(new ItemFlag[] { ItemFlag.HIDE_ENCHANTS });
+        im.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         this.is.setItemMeta(im);
         return this;
     }
 
     public ItemFactory addEnchantments(Map<Enchantment, Integer> enchantments) {
-        List<Enchantment[]> enchantsList = (List)new ArrayList<>();
         this.is.addEnchantments(enchantments);
         return this;
     }
@@ -146,6 +142,7 @@ public class ItemFactory {
             b++;
         }
         ItemMeta im = this.is.getItemMeta();
+        assert im != null;
         im.setLore(loreList);
         this.is.setItemMeta(im);
         return this;
@@ -154,6 +151,7 @@ public class ItemFactory {
     public ItemFactory addLoreLines(List<String> line) {
         ItemMeta im = this.is.getItemMeta();
         List<String> lore = new ArrayList<>();
+        assert im != null;
         if (im.hasLore())
             lore = new ArrayList<>(im.getLore());
         for (String s : line)
@@ -211,16 +209,17 @@ public class ItemFactory {
     }
 
     public ItemFactory setDyeColor(DyeColor color) {
-        this.is.setDurability((short)color.getDyeData());
+        this.is.setDurability(color.getDyeData());
         return this;
     }
 
     public ItemFactory setLeatherArmorColor(Color color) {
         try {
-            LeatherArmorMeta im = (LeatherArmorMeta)this.is.getItemMeta();
+            LeatherArmorMeta im = (LeatherArmorMeta) this.is.getItemMeta();
             im.setColor(color);
-            this.is.setItemMeta((ItemMeta)im);
-        } catch (ClassCastException classCastException) {}
+            this.is.setItemMeta(im);
+        } catch (ClassCastException classCastException) {
+        }
         return this;
     }
 
@@ -234,10 +233,11 @@ public class ItemFactory {
 
     public ItemFactory setSkullOwner(String owner) {
         try {
-            SkullMeta im = (SkullMeta)this.is.getItemMeta();
+            SkullMeta im = (SkullMeta) this.is.getItemMeta();
             im.setOwner(owner);
-            this.is.setItemMeta((ItemMeta)im);
-        } catch (ClassCastException classCastException) {}
+            this.is.setItemMeta(im);
+        } catch (ClassCastException classCastException) {
+        }
         return this;
     }
 
@@ -245,27 +245,27 @@ public class ItemFactory {
         try {
             Object compound;
             Class<?> craftItemStack = getBukkitClass("inventory", "CraftItemStack");
-            Method nmsCopy = craftItemStack.getMethod("asNMSCopy", new Class[] { ItemStack.class });
-            Object nmsStack = nmsCopy.invoke(null, new Object[] { this.is });
+            Method nmsCopy = craftItemStack.getMethod("asNMSCopy", new Class[]{ItemStack.class});
+            Object nmsStack = nmsCopy.invoke(null, new Object[]{this.is});
             Class<?> nmsStackClass = nmsStack.getClass();
             Method hasTag = nmsStackClass.getMethod("hasTag", new Class[0]);
             Method getTag = nmsStackClass.getMethod("getTag", new Class[0]);
-            Boolean tag = (Boolean)hasTag.invoke(nmsStack, new Object[0]);
+            Boolean tag = (Boolean) hasTag.invoke(nmsStack, new Object[0]);
             Class<?> nbtTagCompound = getNMSClass("NBTTagCompound");
             if (tag.booleanValue()) {
                 compound = getTag.invoke(nmsStack, new Object[0]);
             } else {
                 compound = nbtTagCompound.newInstance();
             }
-            Method setTag = nmsStackClass.getMethod("setTag", new Class[] { nbtTagCompound });
+            Method setTag = nmsStackClass.getMethod("setTag", new Class[]{nbtTagCompound});
             Class<?> compoundClass = compound.getClass();
             Class<?> nbtTagBase = getNMSClass("NBTBase");
             Class<?> nbtTagInt = getNMSClass("NBTTagInt");
-            Method set = compoundClass.getMethod("set", new Class[] { String.class, nbtTagBase });
-            set.invoke(compound, new Object[] { "Unbreakable", nbtTagInt.getConstructor(new Class[] { int.class }).newInstance(new Object[] { Integer.valueOf(1) }) });
-            setTag.invoke(nmsStack, new Object[] { compound });
-            Method asBukkitCopy = craftItemStack.getMethod("asBukkitCopy", new Class[] { nmsStackClass });
-            this.is = (ItemStack)asBukkitCopy.invoke(null, new Object[] { nmsStack });
+            Method set = compoundClass.getMethod("set", new Class[]{String.class, nbtTagBase});
+            set.invoke(compound, new Object[]{"Unbreakable", nbtTagInt.getConstructor(new Class[]{int.class}).newInstance(new Object[]{Integer.valueOf(1)})});
+            setTag.invoke(nmsStack, new Object[]{compound});
+            Method asBukkitCopy = craftItemStack.getMethod("asBukkitCopy", new Class[]{nmsStackClass});
+            this.is = (ItemStack) asBukkitCopy.invoke(null, new Object[]{nmsStack});
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -274,7 +274,7 @@ public class ItemFactory {
 
     private Class<?> getNMSClass(String nmsClassString) {
         try {
-            String version = String.valueOf(Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3]) + ".";
+            String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3] + ".";
             String name = "net.minecraft.server." + version + nmsClassString;
             return Class.forName(name);
         } catch (Exception e) {
@@ -285,7 +285,7 @@ public class ItemFactory {
 
     private Class<?> getBukkitClass(String packageName, String className) {
         try {
-            String version = String.valueOf(Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3]) + ".";
+            String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3] + ".";
             String name = "org.bukkit.craftbukkit." + version + packageName + "." + className;
             return Class.forName(name);
         } catch (Exception e) {

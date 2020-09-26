@@ -59,7 +59,7 @@ public class MenuClickEvent implements Listener {
                 return;
             }
             if (e.getCurrentItem().equals(VehiclesUtils.mItem("WOOD_DOOR", 1, (short) 0, "&6Terug", "&eDruk hier om terug te gaan!"))) {
-                p.openInventory(vehicleMenuCmd.beginmenu.get(p.getUniqueId()));
+                p.openInventory(vehicleMenuCmd.beginMenu.get(p.getUniqueId()));
                 e.setCancelled(true);
                 return;
             }
