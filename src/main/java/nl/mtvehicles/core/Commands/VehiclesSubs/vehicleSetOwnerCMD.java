@@ -18,10 +18,9 @@ public class vehicleSetOwnerCMD extends MTVehicleSubCommand {
 
             Player p = (Player) sender;
             ItemStack item = p.getInventory().getItemInMainHand();
-            if (!checkPermission("mtvehicles.setowner")) {
-                sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("noPerms")));
-                return true;
-            }
+            if (!checkPermission("mtvehicles.setowner")) return true;
+
+
             if (item == null || (!item.hasItemMeta() || !(NBTUtils.contains(item, "mtvehicles.kenteken")))) {
                 sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("noVehicleInHand")));
             } else {
@@ -43,9 +42,8 @@ public class vehicleSetOwnerCMD extends MTVehicleSubCommand {
                     }
 
             }
-
-
         }
+
         return true;
     }
 }

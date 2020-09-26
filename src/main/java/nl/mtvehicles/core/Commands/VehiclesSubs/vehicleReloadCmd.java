@@ -11,7 +11,7 @@ import org.bukkit.command.CommandSender;
 public class vehicleReloadCmd extends MTVehicleSubCommand {
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
-        if (!checkPermission("mtvehicles.reload")) { sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("noPerms"))); return true;}
+        if (!checkPermission("mtvehicles.reload")) return true;
 
         Bukkit.getLogger().info("Reload config files..");
         Main.configList.forEach(ConfigUtils::reload);

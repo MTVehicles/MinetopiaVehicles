@@ -8,6 +8,7 @@ import nl.mtvehicles.core.Infrastructure.DataConfig.MessagesConfig;
 import nl.mtvehicles.core.Infrastructure.DataConfig.VehicleDataConfig;
 import nl.mtvehicles.core.Infrastructure.DataConfig.VehiclesConfig;
 import nl.mtvehicles.core.Infrastructure.Models.ConfigUtils;
+import nl.mtvehicles.core.Infrastructure.Models.MTVehicleSubCommand;
 import nl.mtvehicles.core.Movement.VehicleMovement1_12;
 import nl.mtvehicles.core.Movement.VehicleMovement1_13;
 import nl.mtvehicles.core.Movement.VehicleMovement1_15;
@@ -15,6 +16,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Main extends JavaPlugin {
@@ -27,6 +29,8 @@ public class Main extends JavaPlugin {
     public static VehiclesConfig vehiclesConfig = new VehiclesConfig();
     public static DefaultConfig defaultConfig = new DefaultConfig();
     public static String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+
+    public static HashMap<String, MTVehicleSubCommand> subcommands = new HashMap<>();
 
     @Override
     public void onEnable() {
@@ -64,6 +68,7 @@ public class Main extends JavaPlugin {
 
         configList.forEach(ConfigUtils::reload);
     }
+
 
     @Override
     public void onDisable() {

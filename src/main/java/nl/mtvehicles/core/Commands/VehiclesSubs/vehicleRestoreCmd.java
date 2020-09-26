@@ -15,15 +15,14 @@ public class vehicleRestoreCmd extends MTVehicleSubCommand {
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
         if (sender instanceof Player) {
-            if (!checkPermission("mtvehicles.restore")) { sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("noPerms"))); return true;}
+            if (!checkPermission("mtvehicles.restore")) return true;
 
             Player p = (Player) sender;
             sendMessage(Main.messagesConfig.getMessage("menuOpen"));
             Inventory inv = Bukkit.createInventory(null, 54, "Vehicle Restore");
             Main.configList.forEach(ConfigUtils::reload);
-            if (Main.vehicleDataConfig.getConfig().getConfigurationSection("vehicle") == null) {
 
-            } else {
+            if (Main.vehicleDataConfig.getConfig().getConfigurationSection("vehicle") != null) {
                 for (String key : Main.vehicleDataConfig.getConfig().getConfigurationSection("vehicle").getKeys(false)) {
                     if (Main.vehicleDataConfig.getConfig().getBoolean("vehicle."+key+".isGlow") == true){
                         inv.addItem(VehiclesUtils.carItem2glow(Main.vehicleDataConfig.getConfig().getInt("vehicle."+key+".skinDamage"), Main.vehicleDataConfig.getConfig().getString("vehicle."+key+".name"), Main.vehicleDataConfig.getConfig().getString("vehicle."+key+".skinItem"), key));
@@ -41,6 +40,7 @@ public class vehicleRestoreCmd extends MTVehicleSubCommand {
                 }
                 p.openInventory(inv);
             }
+
         }
         return true;
     }

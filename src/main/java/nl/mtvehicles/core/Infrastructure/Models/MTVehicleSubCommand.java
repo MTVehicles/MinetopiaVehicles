@@ -1,6 +1,7 @@
 package nl.mtvehicles.core.Infrastructure.Models;
 
 import nl.mtvehicles.core.Infrastructure.Helpers.TextUtils;
+import nl.mtvehicles.core.Main;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
@@ -22,6 +23,8 @@ public abstract class MTVehicleSubCommand {
         if (commandSender.hasPermission(permission)) {
             return true;
         }
+
+        sendMessage(Main.messagesConfig.getMessage("noPerms"));
 
         return false;
     }
