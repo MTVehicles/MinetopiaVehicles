@@ -4,6 +4,7 @@ import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.spigotmc.event.entity.EntityDismountEvent;
@@ -17,6 +18,9 @@ public class VehicleLeaveEvent implements Listener {
     public static HashMap<String, ArmorStand> autostand2 = new HashMap<>();
     @EventHandler
     public void onVehiclePlace(final EntityDismountEvent e) {
+
+
+
         if (e.getDismounted().getCustomName().contains("MTVEHICLES_MAINSEAT_")) {
             final String ken = e.getDismounted().getCustomName().replace("MTVEHICLES_MAINSEAT_", "");
             if (VehicleLeaveEvent.autostand.get("MTVEHICLES_MAIN_"+ken) == null){

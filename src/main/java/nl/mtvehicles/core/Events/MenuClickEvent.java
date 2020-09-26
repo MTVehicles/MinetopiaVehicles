@@ -46,7 +46,7 @@ public class MenuClickEvent implements Listener {
             inv.setItem(47, VehiclesUtils.mItem("BARRIER", 1, (short) 0, "&4Sluiten", "&cDruk hier om het menu te sluiten!"));
             inv.setItem(51, VehiclesUtils.mItem("WOOD_DOOR", 1, (short) 0, "&6Terug", "&eDruk hier om terug te gaan!"));
             for (Map<?, ?> skin : skins) {
-                inv.addItem(VehiclesUtils.carItem((int) skin.get("itemDamage"), ((String) skin.get("name")), (String) skin.get("SkinItem")));
+                inv.addItem(VehiclesUtils.carItem2((int) skin.get("itemDamage"), ((String) skin.get("name")), (String) skin.get("SkinItem")));
             }
             skinMenu.put(p.getUniqueId(), inv);
             p.openInventory(inv);
@@ -96,7 +96,7 @@ public class MenuClickEvent implements Listener {
                 vehicle.setGlow(false);
                 vehicle.setBenzineEnabled((boolean) vehicles.get(intSave.get(p.getUniqueId())).get("benzineEnabled"));
                 vehicle.setBenzine(100);
-                vehicle.setKofferbak((boolean) vehicles.get(intSave.get(p.getUniqueId())).get("kofferbakEnabled"));
+                //vehicle.setKofferbak((boolean) vehicles.get(intSave.get(p.getUniqueId())).get("kofferbakEnabled"));
                 vehicle.setKofferbakRows(1);
                 vehicle.setKofferbakData(kofferbakData);
                 vehicle.setAcceleratieSpeed((double) vehicles.get(intSave.get(p.getUniqueId())).get("acceleratieSpeed"));

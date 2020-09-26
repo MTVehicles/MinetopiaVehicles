@@ -1,4 +1,287 @@
 voertuigen:
+  - name: "Oxboard"
+    vehicleType: CAR
+    skinItem: DIAMOND_HOE
+    itemDamage: 1009
+    benzineEnabled: false
+    kofferbakEnabled: false
+    acceleratieSpeed: 0.01
+    maxSpeed: 0.7
+    brakingSpeed: 0.03
+    aftrekkenSpeed: 0.005
+    rotateSpeed: 8
+    maxSpeedBackwards: 0.0
+    seats:
+      - x: 0.0
+        y: -1.5
+        z: 0.0
+    cars:
+      - name: "Oxboard White"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1009
+      - name: "Oxboard Gold"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1029
+      - name: "Oxboard Orange"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1030
+      - name: "Oxboard Green"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1031
+      - name: "Oxboard Blue"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1032
+      - name: "Oxboard Red"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1033
+      - name: "Oxboard Yellow"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1034
+      - name: "Oxboard Purple"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1035
+      - name: "Oxboard Babyblue"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1152
+      - name: "Oxboard Goldenglass"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1153
+      - name: "Oxboard Champagne"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1154
+      - name: "Oxboard Desert"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1155
+      - name: "Oxboard Ender"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1156
+      - name: "Oxboard Lemonyellow"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1157
+
+  - name: "Fiets"
+    vehicleType: CAR
+    skinItem: DIAMOND_HOE
+    itemDamage: 1008
+    benzineEnabled: false
+    kofferbakEnabled: false
+    acceleratieSpeed: 0.01
+    maxSpeed: 0.7
+    brakingSpeed: 0.03
+    aftrekkenSpeed: 0.005
+    rotateSpeed: 8
+    maxSpeedBackwards: 0.0
+    seats:
+      - x: 0.0
+        y: -1.0
+        z: 0.0
+    cars:
+      - name: "Fiets Man Gray"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1008
+      - name: "Fiets Man Green"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1043
+      - name: "Fiets Man Brown"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1044
+      - name: "Fiets Man Blueblack"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1045
+      - name: "Fiets Man Bluediamond"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1143
+      - name: "Fiets Man Gold"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1144
+      - name: "Fiets Man Pink"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1145
+      - name: "Fiets Man Red"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1146
+      - name: "Fiets Man Koningsdag"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1200
+      - name: "Fiets Man Babyboy"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1225
+      - name: "Fiets Vrouw Gray"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1046
+      - name: "Fiets Vrouw Green"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1047
+      - name: "Fiets Vrouw Brown"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1048
+      - name: "Fiets Vrouw Blueblack"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1049
+      - name: "Fiets Vrouw Bluediamond"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1147
+      - name: "Fiets Vrouw Gold"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1148
+      - name: "Fiets Vrouw Pink"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1149
+      - name: "Fiets Vrouw Red"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1150
+      - name: "Fiets Vrouw Rainbow"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1187
+      - name: "Fiets Vrouw Koningsdag"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1199
+      - name: "Fiets Vrouw Babygirl"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1226
+
+  - name: "Motor"
+    vehicleType: CAR
+    skinItem: DIAMOND_HOE
+    itemDamage: 1036
+    benzineEnabled: true
+    kofferbakEnabled: true
+    acceleratieSpeed: 0.01
+    maxSpeed: 0.7
+    brakingSpeed: 0.03
+    aftrekkenSpeed: 0.005
+    rotateSpeed: 8
+    maxSpeedBackwards: 0.0
+    seats:
+      - x: 0.0
+        y: -1.0
+        z: 0.0
+    cars:
+      - name: Motor Orange
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1036
+      - name: Motor Green
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1037
+      - name: Motor Blue
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1038
+      - name: Motor Gold
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1039
+      - name: Motor Police
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1040
+      - name: Motor Red
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1041
+      - name: Motor Pink
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1042
+      - name: Motor Vierjaar
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1194
+      - name: Motor Easter
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1195
+      - name: Motor Koningsdag
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1197
+  - name: "Sportief"
+    vehicleType: CAR
+    skinItem: DIAMOND_HOE
+    itemDamage: 1002
+    benzineEnabled: true
+    kofferbakEnabled: true
+    acceleratieSpeed: 0.01
+    maxSpeed: 0.7
+    brakingSpeed: 0.03
+    aftrekkenSpeed: 0.005
+    rotateSpeed: 8
+    maxSpeedBackwards: 1.1
+    seats:
+      - x: -0.3
+        y: -1.2
+        z: 0.0
+    cars:
+      - name: "Sportief Navyblue"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1002
+      - name: "Sportief White"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1060
+      - name: "Sportief Pink"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1061
+      - name: "Sportief Blackyellow"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1062
+      - name: "Sportief Flamered"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1063
+      - name: "Sportief Flameblue"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1064
+      - name: "Sportief Flamewhite"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1065
+      - name: "Sportief Gold"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1066
+      - name: "Sportief Emerald"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1067
+      - name: "Sportief Orange"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1068
+      - name: "Sportief Diamond"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1069
+      - name: "Sportief Black"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1070
+      - name: "Sportief Koningsclean"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1196
+      - name: "Sportief Bordeauxclean"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1216
+      - name: "Sportief Flamegreen"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1223
+      - name: "Sportief Flamepink"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1224
+      - name: "Sportief Forest"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1240
+      - name: "Sportief Forestclean"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1241
+      - name: "Sportief Puppel"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1242
+      - name: "Sportief Puppelclean"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1243
+      - name: "Sportief Nietrood"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1244
+      - name: "Sportief Nietroodclean"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1245
+      - name: "Sportief Fakegold"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1246
+      - name: "Sportief Fakegoldclean"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1247
+      - name: "Sportief Peppa"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1248
+      - name: "Sportief Peppaclean"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1249
   - name: "Sedan"
     vehicleType: CAR
     skinItem: DIAMOND_HOE
@@ -19,49 +302,49 @@ voertuigen:
         y: -1.0
         z: 0.0
     cars:
-      - name: "Sedan Blauw"
+      - name: "Sedan Navyblauw"
         SkinItem: DIAMOND_HOE
         itemDamage: 1003
-      - name: "Sedan Undercover"
+      - name: "Sedan Politie"
         SkinItem: DIAMOND_HOE
         itemDamage: 1015
-      - name: "Sedan Rood"
+      - name: "Sedan Red"
         SkinItem: DIAMOND_HOE
         itemDamage: 1017
-      - name: "Sedan Kaki"
+      - name: "Sedan Green"
         SkinItem: DIAMOND_HOE
         itemDamage: 1018
-      - name: "Sedan Grijs"
+      - name: "Sedan Gray"
         SkinItem: DIAMOND_HOE
         itemDamage: 1019
-      - name: "Sedan Roze"
+      - name: "Sedan Pink"
         SkinItem: DIAMOND_HOE
         itemDamage: 1020
-      - name: "Sedan Geel"
+      - name: "Sedan Yellow"
         SkinItem: DIAMOND_HOE
         itemDamage: 1021
-      - name: "Sedan Bruin"
+      - name: "Sedan Brown"
         SkinItem: DIAMOND_HOE
         itemDamage: 1022
-      - name: "Sedan Wit"
+      - name: "Sedan Sportief Quartz"
         SkinItem: DIAMOND_HOE
         itemDamage: 1023
-      - name: "Sedan Paars"
+      - name: "Sedan Purple"
         SkinItem: DIAMOND_HOE
         itemDamage: 1024
-      - name: "Sedan Diamond"
+      - name: "Sedan Sportief Diamond"
         SkinItem: DIAMOND_HOE
         itemDamage: 1025
       - name: "Sedan Koningsdag"
         SkinItem: DIAMOND_HOE
         itemDamage: 1026
-      - name: "Sedan Rainbow"
+      - name: "Sedan Sportief Rainbow"
         SkinItem: DIAMOND_HOE
         itemDamage: 1027
-      - name: "Sedan Les"
+      - name: "Sedan Lesauto"
         SkinItem: DIAMOND_HOE
         itemDamage: 1028
-      - name: "Sedan GoudZwart"
+      - name: "Sedan Sportief Gold v2"
         SkinItem: DIAMOND_HOE
         itemDamage: 1071
       - name: "Sedan Cars"
@@ -73,34 +356,31 @@ voertuigen:
       - name: "Sedan Monster"
         SkinItem: DIAMOND_HOE
         itemDamage: 1101
-      - name: "Sedan Lichtblauw"
+      - name: "Sedan Babyblauw"
         SkinItem: DIAMOND_HOE
         itemDamage: 1109
-      - name: "Sedan Antique"
-        SkinItem: DIAMOND_HOE
-        itemDamage: 1110
-      - name: "Sedan GrijsZwart"
-        SkinItem: DIAMOND_HOE
-        itemDamage: 1111
       - name: "Sedan Beige"
         SkinItem: DIAMOND_HOE
-        itemDamage: 1112
-      - name: "Sedan Citroen"
+        itemDamage: 1110
+      - name: "Sedan Black"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1111
+      - name: "Sedan Lemonyellow"
         SkinItem: DIAMOND_HOE
         itemDamage: 1113
-      - name: "Sedan Aqua"
+      - name: "Sedan Lily"
         SkinItem: DIAMOND_HOE
         itemDamage: 1114
-      - name: "Sedan Lime"
+      - name: "Sedan Sportief Emerald"
         SkinItem: DIAMOND_HOE
         itemDamage: 1115
-      - name: "Sedan Obsidian"
+      - name: "Sedan Sportief Obsidian"
         SkinItem: DIAMOND_HOE
         itemDamage: 1116
-      - name: "Sedan Lichtroze"
+      - name: "Sedan Zalm"
         SkinItem: DIAMOND_HOE
         itemDamage: 1117
-      - name: "Sedan WitZwart"
+      - name: "Sedan Sportief President"
         SkinItem: DIAMOND_HOE
         itemDamage: 1173
       - name: "Sedan OranjeZwart"
@@ -121,12 +401,418 @@ voertuigen:
       - name: "Sedan RoodWit"
         SkinItem: DIAMOND_HOE
         itemDamage: 1190
-      - name: "Sedan Lego"
+      - name: "Sedan Sportief Lego"
         SkinItem: DIAMOND_HOE
         itemDamage: 1191
-      - name: "Sedan FelRoze"
+      - name: "Sedan Babygirl"
         SkinItem: DIAMOND_HOE
         itemDamage: 1217
-      - name: "Sedan FelBlauw"
+      - name: "Sedan Babyboy"
         SkinItem: DIAMOND_HOE
         itemDamage: 1218
+  - name: "Racecar"
+    vehicleType: CAR
+    skinItem: DIAMOND_HOE
+    itemDamage: 1165
+    benzineEnabled: true
+    kofferbakEnabled: true
+    acceleratieSpeed: 0.01
+    maxSpeed: 0.7
+    brakingSpeed: 0.03
+    aftrekkenSpeed: 0.005
+    rotateSpeed: 8
+    maxSpeedBackwards: 1.1
+    seats:
+      - x: 0.0
+        y: -1.0
+        z: 0.0
+      - x: -1.0
+        y: -1.0
+        z: 0.0
+    cars:
+      - name: Racecar Black
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1165
+      - name: Racecar Red
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1166
+      - name: Racecar Emerald
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1167
+      - name: Racecar Gold
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1168
+      - name: Racecar Pink
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1169
+      - name: Racecar Diamond
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1170
+      - name: Racecar Orange
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1171
+      - name: Racecar Orangeblack
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1172
+      - name: Racecar Ender
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1186
+      - name: Racecar Purplefade
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1193
+      - name: Racecar Rainbow
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1210
+  - name: "Jeep"
+    vehicleType: CAR
+    skinItem: DIAMOND_HOE
+    itemDamage: 1074
+    benzineEnabled: true
+    kofferbakEnabled: true
+    acceleratieSpeed: 0.01
+    maxSpeed: 0.7
+    brakingSpeed: 0.03
+    aftrekkenSpeed: 0.005
+    rotateSpeed: 8
+    maxSpeedBackwards: 1.1
+    seats:
+      - x: 0.0
+        y: -1.0
+        z: 0.0
+      - x: -1.0
+        y: -1.0
+        z: 0.0
+    cars:
+      - name: "Jeep Politie"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1005
+      - name: "Jeep Blue"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1073
+      - name: "Jeep Gold"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1074
+  - name: "Hotrod"
+    vehicleType: CAR
+    skinItem: DIAMOND_HOE
+    itemDamage: 1006
+    benzineEnabled: true
+    kofferbakEnabled: true
+    acceleratieSpeed: 0.01
+    maxSpeed: 0.7
+    brakingSpeed: 0.03
+    aftrekkenSpeed: 0.005
+    rotateSpeed: 8
+    maxSpeedBackwards: 1.1
+    seats:
+      - x: 0.0
+        y: -1.0
+        z: 0.0
+      - x: -1.0
+        y: -1.0
+        z: 0.0
+    cars:
+      - name: "Hotrod Red"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1006
+      - name: "Hotrod Blackyellow"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1075
+      - name: "Hotrod Gold"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1158
+      - name: "Hotrod Blue"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1159
+      - name: "Hotrod Orange"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1160
+      - name: "Hotrod Black"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1161
+      - name: "Hotrod Pink"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1162
+      - name: "Hotrod Army"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1164
+      - name: "Hotrod Valentijn"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1192
+  - name: "Hovercraft"
+    vehicleType: CAR
+    skinItem: DIAMOND_HOE
+    itemDamage: 1121
+    benzineEnabled: true
+    kofferbakEnabled: true
+    acceleratieSpeed: 0.01
+    maxSpeed: 0.7
+    brakingSpeed: 0.03
+    aftrekkenSpeed: 0.005
+    rotateSpeed: 8
+    maxSpeedBackwards: 1.1
+    seats:
+      - x: 0.0
+        y: -1.0
+        z: 0.0
+      - x: -1.0
+        y: -1.0
+        z: 0.0
+    cars:
+      - name: Hovercraft Lime
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1121
+      - name: Hovercraft White
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1122
+      - name: Hovercraft Gold
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1123
+      - name: Hovercraft Orange
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1201
+      - name: Hovercraft Black
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1202
+      - name: Hovercraft Purpleyellow
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1211
+  - name: "SUV"
+    vehicleType: CAR
+    skinItem: DIAMOND_HOE
+    itemDamage: 1132
+    benzineEnabled: true
+    kofferbakEnabled: true
+    acceleratieSpeed: 0.01
+    maxSpeed: 0.7
+    brakingSpeed: 0.03
+    aftrekkenSpeed: 0.005
+    rotateSpeed: 8
+    maxSpeedBackwards: 1.1
+    seats:
+      - x: 0.0
+        y: -1.0
+        z: 0.0
+      - x: -1.0
+        y: -1.0
+        z: 0.0
+    cars:
+      - name: "SUV Blue"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1132
+      - name: "SUV Brown"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1133
+      - name: "SUV Gold"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1134
+      - name: "SUV Green"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1135
+      - name: "SUV Pink"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1136
+      - name: "SUV Red"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1137
+      - name: "SUV Upperblue"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1138
+      - name: "SUV White"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1139
+      - name: "SUV Yellow"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1140
+      - name: "SUV Black"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1141
+      - name: "SUV Ender"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1184
+      - name: "SUV Politie"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1185
+      - name: "SUV Stars"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1188
+      - name: "SUV Cabrio Orangeblack"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1198
+      - name: "SUV Redblack"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1203
+      - name: "SUV Greenwhite"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1204
+      - name: "SUV Lightbluewhite"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1207
+      - name: "SUV Purplewhite"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1208
+      - name: "SUV Pinkwhite"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1209
+      - name: "SUV Lime"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1219
+      - name: "SUV Criminalblack"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1220
+      - name: "SUV Navyblue"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1221
+      - name: "SUV Bordeaux"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1222
+      - name: "SUV Pokémon"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1227
+      - name: "SUV Giraffe"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1228
+  - name: "UFO"
+    vehicleType: CAR
+    skinItem: DIAMOND_HOE
+    itemDamage: 1234
+    benzineEnabled: true
+    kofferbakEnabled: true
+    acceleratieSpeed: 0.01
+    maxSpeed: 0.7
+    brakingSpeed: 0.03
+    aftrekkenSpeed: 0.005
+    rotateSpeed: 8
+    maxSpeedBackwards: 1.1
+    seats:
+      - x: 0.0
+        y: -1.0
+        z: 0.0
+      - x: -1.0
+        y: -1.0
+        z: 0.0
+    cars:
+      - name: UFO
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1230
+      - name: UFO Orange
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1231
+      - name: UFO Blackgold
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1232
+      - name: UFO Purple
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1233
+      - name: UFO Blue
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1234
+      - name: UFO Black
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1235
+  - name: "Broomstick"
+    vehicleType: CAR
+    skinItem: DIAMOND_HOE
+    itemDamage: 1229
+    benzineEnabled: true
+    kofferbakEnabled: true
+    acceleratieSpeed: 0.01
+    maxSpeed: 0.7
+    brakingSpeed: 0.03
+    aftrekkenSpeed: 0.005
+    rotateSpeed: 8
+    maxSpeedBackwards: 1.1
+    seats:
+      - x: 0.0
+        y: -1.0
+        z: 0.0
+      - x: -1.0
+        y: -1.0
+        z: 0.0
+    cars:
+      - name: Broomstick
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1229
+      - name: Broomstick2
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1236
+      - name: Broomstick3
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1237
+      - name: Broomstick4
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1238
+      - name: Broomstick5
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1239
+  - name: "Apache"
+    vehicleType: CAR
+    skinItem: DIAMOND_HOE
+    itemDamage: 1124
+    benzineEnabled: true
+    kofferbakEnabled: true
+    acceleratieSpeed: 0.01
+    maxSpeed: 0.7
+    brakingSpeed: 0.03
+    aftrekkenSpeed: 0.005
+    rotateSpeed: 8
+    maxSpeedBackwards: 1.1
+    seats:
+      - x: 0.0
+        y: -1.0
+        z: 0.0
+      - x: -1.0
+        y: -1.0
+        z: 0.0
+    cars:
+      - name: Apache Blue
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1124
+      - name: Apache Pink
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1125
+      - name: Apache Preen
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1126
+      - name: Apache Brown
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1127
+      - name: Apache Gray
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1128
+      - name: Apache Gold
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1129
+      - name: Apache Red
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1130
+      - name: Apache Upperblue
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1131
+      - name: Apache Black
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1142
+      - name: Apache Pink
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1180
+      - name: Apache Obsidian
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1181
+      - name: Apache Leaves
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1182
+      - name: Apache Orange
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1183
+      - name: Apache Roodze
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1212
+      - name: Apache Bordeaux
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1213
+      - name: Apache Criminalblack
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1214
+      - name: Apache Mint
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1215

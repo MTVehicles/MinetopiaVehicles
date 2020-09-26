@@ -23,23 +23,35 @@ public class VehiclesUtils {
 
     public static ItemStack carItem(int durability, String name, String material) {
         Material carMaterial = Material.getMaterial(material);
-
         assert carMaterial != null;
         ItemStack carItem = new ItemStack(carMaterial);
-        carItem.setDurability((short) durability);
-
         ItemMeta itemMeta = new ItemStack(carMaterial).getItemMeta();
         assert itemMeta != null;
         itemMeta.setDisplayName(TextUtils.colorize("&6" + name));
-
         List<String> itemLore = new ArrayList<>();
         itemLore.add(TextUtils.colorize("&a"));
         itemMeta.setLore(itemLore);
         itemMeta.setUnbreakable(true);
         carItem.setItemMeta(itemMeta);
-
+        carItem.setDurability((short) durability);
         return carItem;
     }
+
+    public static ItemStack carItem2(int id, String name, String material) {
+        String ken = generateLicencePlate();
+        ItemStack car = (new ItemFactory(Material.getMaterial(material))).setDurability((short) id).setName(TextUtils.colorize("&6" + name)).setNBT("mtvehicles.kenteken", ken).setNBT("mtvehicles.naam", name).toItemStack();
+        ItemMeta im = car.getItemMeta();
+        List<String> itemlore = new ArrayList<>();
+        itemlore.add(TextUtils.colorize("&a"));
+        itemlore.add(TextUtils.colorize("&a" + ken));
+        itemlore.add(TextUtils.colorize("&a"));
+        im.setLore(itemlore);
+        im.setUnbreakable(true);
+        car.setItemMeta(im);
+
+        return car;
+    }
+
 
     public static String generateLicencePlate() {
         String plate = String.format("%s-%s-%s", RandomStringUtils.random(2, true, false), RandomStringUtils.random(2, true, false), RandomStringUtils.random(2, true, false));

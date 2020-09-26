@@ -45,6 +45,10 @@ public class VehiclePlaceEvent implements Listener {
         if (action.equals(Action.RIGHT_CLICK_BLOCK)) {
             e.setCancelled(true);
 
+
+
+
+
             Location loc = e.getClickedBlock().getLocation();
             Location location = new Location(loc.getWorld(), loc.getX(), loc.getY() + 1, loc.getZ());
             ArmorStand as = location.getWorld().spawn(location, ArmorStand.class);
