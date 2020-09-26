@@ -36,7 +36,7 @@ public class vehicleSubCommandManager extends MTVehicleCommand {
         }
 
         if (args.length == 0) {
-            Vehicle.subcommands.get("help").onExecute(sender, cmd, s, args);
+            Main.subcommands.get("help").onExecute(sender, cmd, s, args);
             return true;
         }
 
