@@ -4,12 +4,15 @@ import nl.mtvehicles.core.Infrastructure.Helpers.TextUtils;
 import nl.mtvehicles.core.Main;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public abstract class MTVehicleSubCommand {
     public CommandSender commandSender;
+    public boolean isPlayer;
 
     public boolean onExecute(CommandSender sender, Command cmd, String s, String[] args) {
         this.commandSender = sender;
+        this.isPlayer = sender instanceof Player;
         return this.execute(sender, cmd, s, args);
     }
 

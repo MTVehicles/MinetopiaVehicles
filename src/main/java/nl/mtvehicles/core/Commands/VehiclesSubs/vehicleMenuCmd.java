@@ -1,30 +1,25 @@
 package nl.mtvehicles.core.Commands.VehiclesSubs;
 
-import nl.mtvehicles.core.Infrastructure.Helpers.ItemFactory;
-import nl.mtvehicles.core.Infrastructure.Helpers.TextUtils;
 import nl.mtvehicles.core.Infrastructure.Helpers.VehiclesUtils;
 import nl.mtvehicles.core.Infrastructure.Models.MTVehicleSubCommand;
 import nl.mtvehicles.core.Main;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class vehicleMenuCmd extends MTVehicleSubCommand {
     public static HashMap<UUID, Inventory> beginMenu = new HashMap<>();
 
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
-        if (!(sender instanceof Player)) {
-            return false;
-        }
+        if (!isPlayer) return false;
 
         if (!checkPermission("mtvehicles.menu")) return true;
         Player p = (Player) sender;

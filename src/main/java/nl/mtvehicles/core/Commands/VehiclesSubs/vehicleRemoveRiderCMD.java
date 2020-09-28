@@ -16,9 +16,7 @@ import java.util.List;
 public class vehicleRemoveRiderCMD extends MTVehicleSubCommand {
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
-        if (!(sender instanceof Player)) {
-            return false;
-        }
+        if (!isPlayer) return false;
 
         Player p = (Player) sender;
         ItemStack item = p.getInventory().getItemInMainHand();

@@ -12,7 +12,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.List;
 import java.util.UUID;
 
 public class vehicleInfoCmd extends MTVehicleSubCommand {
@@ -26,27 +25,33 @@ public class vehicleInfoCmd extends MTVehicleSubCommand {
             return true;
         }
 
-        Main.configList.forEach(ConfigUtils::reload);
         String ken = NBTUtils.getString(item, "mtvehicles.kenteken");
-        sendMessage("&6Kenteken: &c" + ken);
-        sendMessage("&6Owner: &c" + Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner())).getName());
+        Vehicle vehicle = Vehicle.getByPlate(ken);
 
-        if (Main.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".riders").size() == 0) {
+        if (vehicle == null) return true;
+
+        Main.configList.forEach(ConfigUtils::reload);
+        sendMessage("&6Kenteken: &c" + ken);
+        sendMessage("&6Owner: &c" + Bukkit.getOfflinePlayer(UUID.fromString(vehicle.getOwner())).getName());
+
+        if (Main.vehicleDataConfig.getConfig().getStringList(String.format("vehicle.%s.riders", ken)).size() == 0) {
             sendMessage("&6Riders: &cGeen");
-        } else {
-            sendMessage("&6Riders: &c");
-            for (String subj : Main.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".riders")) {
-                sendMessage("&6- &c" + Bukkit.getOfflinePlayer(UUID.fromString(subj)).getName());
-            }
+            return true;
         }
 
-        if (Main.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".members").size() == 0) {
+        sendMessage("&6Riders: &c");
+        for (String subj : Main.vehicleDataConfig.getConfig().getStringList(String.format("vehicle.%s.riders", ken))) {
+            sendMessage("&6- &c" + Bukkit.getOfflinePlayer(UUID.fromString(subj)).getName());
+        }
+
+        if (Main.vehicleDataConfig.getConfig().getStringList(String.format("vehicle.%s.members", ken)).size() == 0) {
             sendMessage("&6Members: &cGeen");
-        } else {
-            sendMessage("&6Members: &c");
-            for (String subj : Main.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".members")) {
-                sendMessage("&6- &c" + Bukkit.getOfflinePlayer(UUID.fromString(subj)).getName());
-            }
+            return true;
+        }
+
+        sendMessage("&6Members: &c");
+        for (String subj : Main.vehicleDataConfig.getConfig().getStringList(String.format("vehicle.%s.members", ken))) {
+            sendMessage("&6- &c" + Bukkit.getOfflinePlayer(UUID.fromString(subj)).getName());
         }
 
         return true;

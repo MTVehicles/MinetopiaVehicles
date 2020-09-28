@@ -10,9 +10,8 @@ import org.bukkit.entity.Player;
 public class vehicleHelpCmd extends MTVehicleSubCommand {
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
-        if (!(sender instanceof Player)) {
+        if (!isPlayer) {
             sendMessage(Main.messagesConfig.getMessage("notForConsole"));
-
             return false;
         }
 

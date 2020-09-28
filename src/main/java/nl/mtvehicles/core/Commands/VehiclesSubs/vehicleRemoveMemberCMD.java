@@ -16,9 +16,7 @@ import java.util.List;
 public class vehicleRemoveMemberCMD extends MTVehicleSubCommand {
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
-        if (!(sender instanceof Player)) {
-            return false;
-        }
+        if (!isPlayer) return false;
 
         Player p = (Player) sender;
         ItemStack item = p.getInventory().getItemInMainHand();
@@ -31,25 +29,24 @@ public class vehicleRemoveMemberCMD extends MTVehicleSubCommand {
             p.sendMessage("gebruik /vehicle addmember <speler>");
         }
 
-        try {
-            String ken = NBTUtils.getString(item, "mtvehicles.kenteken");
-            Vehicle.getByPlate(ken).setOwner(args[1]);
-            Player of = Bukkit.getPlayer(args[1]);
-            if (!of.hasPlayedBefore()) {
-                p.sendMessage(Main.messagesConfig.getMessage("playerNotFound"));
+        String ken = NBTUtils.getString(item, "mtvehicles.kenteken");
+        Vehicle vehicle = Vehicle.getByPlate(ken);
+        if (vehicle == null) return true;
+        vehicle.setOwner(args[1]);
+        Player of = Bukkit.getPlayer(args[1]);
 
-            } else {
-                List<String> members = Main.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".members");
-                members.remove(of.getUniqueId().toString());
-                Main.vehicleDataConfig.getConfig().set("vehicle." + ken + ".members", members);
-                Main.vehicleDataConfig.save();
-
-                Main.vehicleDataConfig.save();
-                p.sendMessage(Main.messagesConfig.getMessage("memberChange"));
-            }
-        } catch (NullPointerException x) {
+        if (of == null || !of.hasPlayedBefore()) {
             p.sendMessage(Main.messagesConfig.getMessage("playerNotFound"));
+            return true;
         }
+
+        List<String> members = Main.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".members");
+        members.remove(of.getUniqueId().toString());
+        Main.vehicleDataConfig.getConfig().set("vehicle." + ken + ".members", members);
+        Main.vehicleDataConfig.save();
+
+        Main.vehicleDataConfig.save();
+        p.sendMessage(Main.messagesConfig.getMessage("memberChange"));
 
         return true;
     }
