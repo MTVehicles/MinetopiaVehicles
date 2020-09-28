@@ -63,13 +63,15 @@ public class VehicleMovement1_15 extends PacketAdapter {
         } else {
             KeyW(as, VehicleClickEvent.speed.get(ken), 0.0);
         }
-
         final float forward = ppisv.c();
         final float side = ppisv.b();
         final boolean space = ppisv.d();
         boolean w;
         boolean s;
+
         if (forward > 0.0f) {
+
+
 
             if (VehicleClickEvent.speed.get(ken) > Vehicle.getByPlate(ken).getMaxSpeed()) {
 
@@ -116,6 +118,7 @@ public class VehicleMovement1_15 extends PacketAdapter {
             a = false;
             d = false;
         }
+
 
     }
 

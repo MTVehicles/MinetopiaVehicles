@@ -11,6 +11,7 @@ import java.util.*;
 public class Vehicle {
     private String licensePlate;
     private String name;
+    private String vehicleType;
     private int skinDamage;
     private String skinItem;
     private boolean isGlow;
@@ -47,6 +48,7 @@ public class Vehicle {
 
         Map<String, Object> map = new HashMap<>();
         map.put("name", this.getName());
+        map.put("vehicleType", this.getVehicleType());
         map.put("skinDamage", this.getSkinDamage());
         map.put("skinItem", this.getSkinItem());
         map.put("isGlow", this.isGlow());
@@ -103,6 +105,7 @@ public class Vehicle {
 
         vehicle.setLicensePlate((String) vehicleData.get("licensePlate"));
         vehicle.setName((String) vehicleData.get("name"));
+        vehicle.setName((String) vehicleData.get("vehicleType"));
         vehicle.setSkinDamage((int) vehicleData.get("skinDamage"));
         vehicle.setSkinItem((String) vehicleData.get("skinItem"));
         vehicle.setGlow((boolean) vehicleData.get("isGlow"));
@@ -327,4 +330,11 @@ public class Vehicle {
         return sb.toString();
     }
 
+    public String getVehicleType() {
+        return vehicleType;
+    }
+
+    public void setVehicleType(String vehicleType) {
+        this.vehicleType = vehicleType;
+    }
 }
