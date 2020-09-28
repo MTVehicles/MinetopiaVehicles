@@ -1,12 +1,16 @@
 package nl.mtvehicles.core.Events;
 
 import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
+import nl.mtvehicles.core.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.spigotmc.event.entity.EntityDismountEvent;
 
 import java.util.HashMap;
@@ -42,4 +46,16 @@ public class VehicleLeaveEvent implements Listener {
             }
         }
     }
+
+//    @EventHandler
+//    public void onInventoryClose(InventoryCloseEvent event) {
+//        if (event.getView().getTitle().contains("Kofferbak")){
+//            String ken = "AB-AB-AB";
+//
+//            List<ItemStack> chestContentsFromConfig = (List<ItemStack>) Main.vehicleDataConfig.getConfig().getList("vehicle." +ken+ "dik"); //I've also tried just get("players." + key);
+//hestRepopulate.addItem(item);
+//            }
+//
+//        }
+//    }
 }

@@ -8,6 +8,7 @@ import nl.mtvehicles.core.Infrastructure.Helpers.VehiclesUtils;
 import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
 import nl.mtvehicles.core.Main;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -88,17 +89,18 @@ public class MenuClickEvent implements Listener {
                 Vehicle vehicle = new Vehicle();
                 List<String> members = (List<String>) Main.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".members");
                 List<String> riders = (List<String>) Main.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".riders");
-                List<ItemStack> kofferbakData = (List<ItemStack>) Main.vehicleDataConfig.getConfig().getList("voertuig." + kenteken + ".kofferbakData");
+                List<ItemStack> kof = (List<ItemStack>) Main.vehicleDataConfig.getConfig().get("voertuig." + kenteken + ".kofferbakData");
                 vehicle.setLicensePlate("vehicle." + kenteken);
                 vehicle.setName(naam);
+                vehicle.setVehicleType((String) vehicles.get(intSave.get(p.getUniqueId())).get("vehicleType"));
                 vehicle.setSkinDamage(vehicleMenu.get(p.getUniqueId()).getDurability());
                 vehicle.setSkinItem(vehicleMenu.get(p.getUniqueId()).getType().toString());
                 vehicle.setGlow(false);
                 vehicle.setBenzineEnabled((boolean) vehicles.get(intSave.get(p.getUniqueId())).get("benzineEnabled"));
                 vehicle.setBenzine(100);
-                //vehicle.setKofferbak((boolean) vehicles.get(intSave.get(p.getUniqueId())).get("kofferbakEnabled"));
+                vehicle.setKofferbak((boolean) vehicles.get(intSave.get(p.getUniqueId())).get("kofferbakEnabled"));
                 vehicle.setKofferbakRows(1);
-                vehicle.setKofferbakData(kofferbakData);
+                vehicle.setKofferbakData(kof);
                 vehicle.setAcceleratieSpeed((double) vehicles.get(intSave.get(p.getUniqueId())).get("acceleratieSpeed"));
                 vehicle.setMaxSpeed((double) vehicles.get(intSave.get(p.getUniqueId())).get("maxSpeed"));
                 vehicle.setBrakingSpeed((double) vehicles.get(intSave.get(p.getUniqueId())).get("brakingSpeed"));
@@ -264,6 +266,11 @@ public class MenuClickEvent implements Listener {
                 p.closeInventory();
                 p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("typeNewRowsInChat")));
                 VehiclesUtils.edit.put(p.getUniqueId() + ".kofferbakRows", true);
+
+            }
+            if (menuitem.contains("3")) {
+                p.closeInventory();
+                VehicleEntityEvent.kofferbak(p, ken);
 
             }
         }

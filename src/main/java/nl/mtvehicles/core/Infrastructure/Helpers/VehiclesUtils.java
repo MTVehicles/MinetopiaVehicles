@@ -5,17 +5,20 @@ import nl.mtvehicles.core.Main;
 import org.apache.commons.lang.RandomStringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.util.io.BukkitObjectInputStream;
+import org.bukkit.util.io.BukkitObjectOutputStream;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.*;
 
 public class VehiclesUtils {
 
@@ -394,4 +397,13 @@ public class VehiclesUtils {
         inv.setItem(42, VehiclesUtils.mItem("WOOD_DOOR", 1, (short) 0, "&6Terug", "&eDruk hier om terug te gaan!"));
         p.openInventory(inv);
     }
+
+    public static void saveInventory(final Inventory inv) {
+//        for (int i = 0; i < inv.length; i++) { // start iterating into the inv
+//            ItemStack item = inv[i]; // getting the itemstack
+//            if (item == null) Main.vehicleDataConfig.getConfig().set("Players.xVoidZx.world.Inventory." + i, "empty"); // if it's a null itemstack, we save it as a string
+//            else Main.vehicleDataConfig.getConfig().set("Players.xVoidZx.world.Inventory." + i, item); // else, we save the itemstack
+//        }
+    }
+
 }
