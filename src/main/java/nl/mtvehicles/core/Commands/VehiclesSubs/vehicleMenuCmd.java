@@ -27,7 +27,6 @@ public class vehicleMenuCmd extends MTVehicleSubCommand {
         }
 
         if (!checkPermission("mtvehicles.menu")) return true;
-
         Player p = (Player) sender;
         sendMessage(Main.messagesConfig.getMessage("menuOpen"));
         int menuSize = Main.defaultConfig.getConfig().getInt("vehicleMenuSize") * 9;

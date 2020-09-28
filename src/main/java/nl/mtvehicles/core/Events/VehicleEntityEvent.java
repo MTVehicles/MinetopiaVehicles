@@ -31,27 +31,28 @@ public class VehicleEntityEvent implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerInteractAtEntity(EntityDamageByEntityEvent event) {
-        final Entity a = event.getEntity();
-        final Player p = (Player) event.getDamager();
-        if (a.getCustomName() == null) {
-            return;
-        }
-
-
-        if (p.isSneaking()) {
-            if (a.getCustomName().contains("MTVEHICLES_MAINSEAT_")) {
-                kofferbak(p, a.getCustomName().replace("MTVEHICLES_MAINSEAT_", ""));
-                event.setCancelled(true);
+        Entity a = event.getEntity();
+        Entity e = (Entity) event.getDamager();
+        if (e instanceof Player) {
+            Player p = (Player) e;
+            if (a.getCustomName() == null) {
+                return;
             }
-            if (a.getCustomName().contains("MTVEHICLES_MAIN_")) {
-                kofferbak(p, a.getCustomName().replace("MTVEHICLES_MAIN_", ""));
-                event.setCancelled(true);
+            if (p.isSneaking()) {
+                if (a.getCustomName().contains("MTVEHICLES_MAINSEAT_")) {
+                    kofferbak(p, a.getCustomName().replace("MTVEHICLES_MAINSEAT_", ""));
+                    event.setCancelled(true);
+                }
+                if (a.getCustomName().contains("MTVEHICLES_MAIN_")) {
+                    kofferbak(p, a.getCustomName().replace("MTVEHICLES_MAIN_", ""));
+                    event.setCancelled(true);
+                }
+                if (a.getCustomName().contains("MTVEHICLES_SKIN_")) {
+                    kofferbak(p, a.getCustomName().replace("MTVEHICLES_SKIN_", ""));
+                    event.setCancelled(true);
+                }
+                return;
             }
-            if (a.getCustomName().contains("MTVEHICLES_SKIN_")) {
-                kofferbak(p, a.getCustomName().replace("MTVEHICLES_SKIN_", ""));
-                event.setCancelled(true);
-            }
-            return;
         }
     }
 
@@ -66,7 +67,7 @@ public class VehicleEntityEvent implements Listener {
                 if (Main.vehicleDataConfig.getConfig().getList("vehicle." + ken + ".kofferbakData") == null) {
                     return;
                 }
-                Inventory inv = Bukkit.createInventory(null, Main.vehicleDataConfig.getConfig().getInt("vehicle." + ken + ".kofferbakRows") * 9, "Kofferbak Vehicle: "+ken);
+                Inventory inv = Bukkit.createInventory(null, Main.vehicleDataConfig.getConfig().getInt("vehicle." + ken + ".kofferbakRows") * 9, "Kofferbak Vehicle: " + ken);
                 List<ItemStack> chestContentsFromConfig = (List<ItemStack>) Main.vehicleDataConfig.getConfig().getList("vehicle." + ken + ".kofferbakData");
                 for (ItemStack item : chestContentsFromConfig) {
                     if (item == null) {

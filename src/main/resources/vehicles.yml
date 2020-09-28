@@ -737,7 +737,7 @@ voertuigen:
         SkinItem: DIAMOND_HOE
         itemDamage: 1239
   - name: "Apache"
-    vehicleType: CAR
+    vehicleType: HELICOPTER
     skinItem: DIAMOND_HOE
     itemDamage: 1124
     benzineEnabled: true
@@ -745,13 +745,26 @@ voertuigen:
     acceleratieSpeed: 0.01
     maxSpeed: 0.7
     brakingSpeed: 0.03
-    aftrekkenSpeed: 0.005
-    rotateSpeed: 8
+    aftrekkenSpeed: 0.02
+    rotateSpeed: 10
     maxSpeedBackwards: 1.1
     seats:
       - x: -0.3
         y: -1.0
         z: 0.0
+    wiekens:
+      - x: -0.3
+        y: -1.0
+        z: 0.0
+        item:
+          ==: org.bukkit.inventory.ItemStack
+          v: 2230
+          type: DIAMOND_HOE
+          meta:
+            ==: ItemMeta
+            meta-type: UNSPECIFIC
+            Unbreakable: true
+            Damage: 1058
     cars:
       - name: Apache Blue
         SkinItem: DIAMOND_HOE

@@ -37,16 +37,13 @@ public class VehiclePlaceEvent implements Listener {
 
         String ken = NBTUtils.getString(item, "mtvehicles.kenteken");
         Main.configList.forEach(ConfigUtils::reload);
-        if (Vehicle.getByPlate(ken) == null){
+        if (Vehicle.getByPlate(ken) == null) {
             p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleNotFound")));
             e.setCancelled(true);
             return;
         }
         if (action.equals(Action.RIGHT_CLICK_BLOCK)) {
             e.setCancelled(true);
-
-
-
 
 
             Location loc = e.getClickedBlock().getLocation();
@@ -60,6 +57,7 @@ public class VehiclePlaceEvent implements Listener {
             as2.setCustomName("MTVEHICLES_MAIN_" + ken);
             Vehicle vehicle = Vehicle.getByPlate(ken);
             List<Map<String, Double>> seats = (List<Map<String, Double>>) vehicle.getVehicleData().get("seats");
+
             p.getInventory().remove(p.getItemInHand());
             p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehiclePlace").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
             for (int i = 1; i <= seats.size(); i++) {
@@ -72,6 +70,23 @@ public class VehiclePlaceEvent implements Listener {
                     as3.setVisible(false);
                 }
 
+            }
+            List<Map<String, Double>> wiekens = (List<Map<String, Double>>) vehicle.getVehicleData().get("wiekens");
+            if (Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".vehicleType").contains("HELICOPTER")) {
+                for (int i = 1; i <= wiekens.size(); i++) {
+                    Map<?, ?> seat = wiekens.get(i - 1);
+                    if (i == 1) {
+                        Location location2 = new Location(location.getWorld(), location.getX() + (double)seat.get("z"), (double)location.getY() + (double)seat.get("y"), location.getZ() + (double)seat.get("x"));
+                        ArmorStand as3 = location2.getWorld().spawn(location2, ArmorStand.class);
+                        as3.setCustomName("MTVEHICLES_WIEKENS_" + ken);
+                        as3.setGravity(false);
+                        as3.setVisible(false);
+                        if (Main.defaultConfig.getConfig().getBoolean("wiekens-always-on") == true) {
+                            as3.setHelmet((ItemStack) seat.get("item"));
+                        }
+                    }
+
+                }
             }
         }
 
