@@ -57,32 +57,34 @@ public class VehicleEntityEvent implements Listener {
     }
 
     public static void kofferbak(Player p, String ken) {
-        if (Vehicle.getByPlate(ken) == null) {
-            p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleNotFound")));
-            return;
-        }
-        if (Vehicle.getByPlate(ken).getOwner().equals(p.getUniqueId().toString()) || Vehicle.canRide(p, ken) == true || p.hasPermission("mtvehicles.kofferbak")) {
-            Main.configList.forEach(ConfigUtils::reload);
-            if (Main.vehicleDataConfig.getConfig().getBoolean("vehicle." + ken + ".kofferbak") == true) {
-                if (Main.vehicleDataConfig.getConfig().getList("vehicle." + ken + ".kofferbakData") == null) {
-                    return;
-                }
-                Inventory inv = Bukkit.createInventory(null, Main.vehicleDataConfig.getConfig().getInt("vehicle." + ken + ".kofferbakRows") * 9, "Kofferbak Vehicle: " + ken);
-                List<ItemStack> chestContentsFromConfig = (List<ItemStack>) Main.vehicleDataConfig.getConfig().getList("vehicle." + ken + ".kofferbakData");
-                for (ItemStack item : chestContentsFromConfig) {
-                    if (item == null) {
-                        continue;
+        if (Main.defaultConfig.getConfig().getBoolean("kofferbakEnabled") == true) {
+            if (Vehicle.getByPlate(ken) == null) {
+                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleNotFound")));
+                return;
+            }
+            if (Vehicle.getByPlate(ken).getOwner().equals(p.getUniqueId().toString()) || Vehicle.canRide(p, ken) == true || p.hasPermission("mtvehicles.kofferbak")) {
+                Main.configList.forEach(ConfigUtils::reload);
+                if (Main.vehicleDataConfig.getConfig().getBoolean("vehicle." + ken + ".kofferbak") == true) {
+                    if (Main.vehicleDataConfig.getConfig().getList("vehicle." + ken + ".kofferbakData") == null) {
+                        return;
                     }
-                    inv.addItem(item);
+                    Inventory inv = Bukkit.createInventory(null, Main.vehicleDataConfig.getConfig().getInt("vehicle." + ken + ".kofferbakRows") * 9, "Kofferbak Vehicle: " + ken);
+                    List<ItemStack> chestContentsFromConfig = (List<ItemStack>) Main.vehicleDataConfig.getConfig().getList("vehicle." + ken + ".kofferbakData");
+                    for (ItemStack item : chestContentsFromConfig) {
+                        if (item == null) {
+                            continue;
+                        }
+                        inv.addItem(item);
+                    }
+                    p.openInventory(inv);
+
+                } else {
                 }
-                p.openInventory(inv);
 
             } else {
+                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleNoRiderKofferbak").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
+
             }
-
-        } else {
-            p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleNoRiderKofferbak").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
-
         }
 
     }

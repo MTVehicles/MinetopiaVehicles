@@ -120,6 +120,25 @@ public class MenuClickEvent implements Listener {
                 e.setCancelled(true);
                 return;
             }
+
+
+
+            if (e.getCurrentItem().equals(VehiclesUtils.mItem("SPECTRAL_ARROW", 1, (short) 0, "&cVolgende Pagina", "&c"))){
+                e.setCancelled(true);
+
+                VehiclesUtils.restoreCMD(p , Integer.parseInt(e.getView().getTitle().replace("Vehicle Restore ", ""))+1);
+                return;
+            }
+            if (e.getCurrentItem().equals(VehiclesUtils.mItem("SPECTRAL_ARROW", 1, (short) 0, "&cVorige Pagina", "&c"))){
+                e.setCancelled(true);
+                if (!(Integer.parseInt(e.getView().getTitle().replace("Vehicle Restore ", ""))-1 < 1)) {
+
+
+                    VehiclesUtils.restoreCMD(p, Integer.parseInt(e.getView().getTitle().replace("Vehicle Restore ", "")) - 1);
+                }
+                return;
+            }
+
             e.setCancelled(true);
             ItemStack car = e.getCurrentItem();
             p.getInventory().addItem(car);
@@ -334,6 +353,7 @@ public class MenuClickEvent implements Listener {
                 VehiclesUtils.edit.put(p.getUniqueId() + ".maxSpeedBackwards", true);
             }
         }
+
     }
 
 }

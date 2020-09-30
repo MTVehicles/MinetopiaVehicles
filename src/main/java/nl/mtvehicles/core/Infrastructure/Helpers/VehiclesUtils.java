@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.Infrastructure.Helpers;
 
+import nl.mtvehicles.core.Infrastructure.Models.ConfigUtils;
 import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
 import nl.mtvehicles.core.Main;
 import org.apache.commons.lang.RandomStringUtils;
@@ -397,6 +398,64 @@ public class VehiclesUtils {
         inv.setItem(42, VehiclesUtils.mItem("WOOD_DOOR", 1, (short) 0, "&6Terug", "&eDruk hier om terug te gaan!"));
         p.openInventory(inv);
     }
+
+    public static HashMap<String, Integer> restoreId = new HashMap<>();
+
+    public static void restoreCMD(Player p, int id){
+        Inventory inv = Bukkit.createInventory(null, 54, "Vehicle Restore "+id);
+        Main.configList.forEach(ConfigUtils::reload);
+
+        if (Main.vehicleDataConfig.getConfig().getConfigurationSection("vehicle") != null) {
+
+            List<String> dataVehicle = new ArrayList<>();
+            for (String entry : Main.vehicleDataConfig.getConfig().getConfigurationSection("vehicle").getKeys(false)) {
+
+                dataVehicle.add(entry);
+            }
+            System.out.println(dataVehicle.get(1));
+
+
+
+            for (int i = 1+id*36-36; i <= id*36; i++) {
+                if (i - 1 < dataVehicle.size()) {
+
+
+                        if (Main.vehicleDataConfig.getConfig().getBoolean("vehicle."+dataVehicle.get(i - 1)+".isGlow") == true){
+                            inv.addItem(VehiclesUtils.carItem2glow(Main.vehicleDataConfig.getConfig().getInt("vehicle."+dataVehicle.get(i - 1)+".skinDamage"), Main.vehicleDataConfig.getConfig().getString("vehicle."+dataVehicle.get(i - 1)+".name"), Main.vehicleDataConfig.getConfig().getString("vehicle."+dataVehicle.get(i - 1)+".skinItem"), dataVehicle.get(i - 1)));
+                        } else {
+                            inv.addItem(VehiclesUtils.carItem2(Main.vehicleDataConfig.getConfig().getInt("vehicle."+dataVehicle.get(i - 1)+".skinDamage"), Main.vehicleDataConfig.getConfig().getString("vehicle."+dataVehicle.get(i - 1)+".name"), Main.vehicleDataConfig.getConfig().getString("vehicle."+dataVehicle.get(i - 1)+".skinItem"), dataVehicle.get(i - 1)));
+                        }
+
+                }
+            }
+
+            for (int i = 36; i <= 44; i++) {
+                inv.setItem(i, VehiclesUtils.mItem("STAINED_GLASS_PANE", 1, (short) 0, "&c", "&c"));
+            }
+
+//                System.out.println(Main.vehicleDataConfig.getConfig().getMapList("vehicle").get(0));
+            //System.out.println("test "+vehicles.get(0).get("kofferbakEnabled"));
+//                for (Map<?, ?> configVehicle : vehicles) {
+//                    vehicles.get(0).get("a");
+//                    System.out.println("test "+vehicles.get(0).get("kofferbakEnabled"));
+//                }
+
+
+//                int abc = Main.vehicleDataConfig.getConfig().getConfigurationSection("vehicle").getKeys(false).size();
+//                System.out.println(abc);
+            //inv.addItem(Vehicles.carItem2(Main.vehicleDataConfig.getConfig().getInt("vehicle."+key+".skinDamage"), Main.vehicleDataConfig.getConfig().getString("vehicle."+key+".name"), Main.vehicleDataConfig.getConfig().getString("vehicle."+key+".skinItem"), key));
+            for (int i = 36; i <= 44; i++) {
+                inv.setItem(i, VehiclesUtils.mItem("STAINED_GLASS_PANE", 1, (short) 0, "&c", "&c"));
+            }
+
+            inv.setItem(52, VehiclesUtils.mItem("SPECTRAL_ARROW", 1, (short) 0, "&cVolgende Pagina", "&c"));
+
+            inv.setItem(46, VehiclesUtils.mItem("SPECTRAL_ARROW", 1, (short) 0, "&cVorige Pagina", "&c"));
+
+            p.openInventory(inv);
+        }
+    }
+
 
     public static void saveInventory(final Inventory inv) {
 //        for (int i = 0; i < inv.length; i++) { // start iterating into the inv

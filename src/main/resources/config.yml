@@ -8,11 +8,14 @@
 # Blijf hiervan af want je plugin gaat sowieso kapot als je dit aanpast!
 config-versie: 2.0
 
-# Dit laat zien hoeveel rows het begin menu heeft van /vehicle menu 6 rows is de max
+# Dit laat zien hoeveel rows het begin menu heeft van /vehicle menu 6 rows is de max.
 vehicleMenuSize: 3
 
-#Staat dit true staan de wiekens er altijd op false = wiekens komen er pas op als je instapt en gaan eraf met uitstappen
+#Staat dit true staan de wiekens er altijd op false = wiekens komen er pas op als je instapt en gaan eraf met uitstappen.
 wiekens-always-on: true
 
 # Als je dit op true zet kun je je voertuig niet oppakken zodra je het in het water hebt gereden. Je hebt anders de permissie mtvehicles.anwb nodig.
 anwb: true
+
+# Zet je dit op false kun je niet meer kofferbak openen maar.
+kofferbakEnabled: true
