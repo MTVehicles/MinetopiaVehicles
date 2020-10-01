@@ -16,12 +16,9 @@ public class ChatEvent implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onLicenseChat(AsyncPlayerChatEvent e) {
         final Player p = e.getPlayer();
-
-
         if (VehiclesUtils.edit.get(p.getUniqueId() + ".kenteken") == null) {
             return;
         }
-
         if (VehiclesUtils.edit.get(p.getUniqueId() + ".kenteken") == true) {
             if (!e.getMessage().toLowerCase().contains("annule")) {
                 e.setCancelled(true);
@@ -37,15 +34,11 @@ public class ChatEvent implements Listener {
                 }
                 Main.vehicleDataConfig.save();
                 p.getInventory().setItemInMainHand(VehiclesUtils.carItem2(Main.vehicleDataConfig.getConfig().getInt("vehicle." + ken + ".skinDamage"), Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".name"), Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".skinItem"), e.getMessage()));
-
                 if (e.isAsynchronous()) {
-
-
                     Bukkit.getScheduler().runTask(Main.instance, () -> {
                         VehiclesUtils.menuEdit(p);
                     });
                 }
-
                 p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("actionSuccessful")));
                 VehiclesUtils.edit.put(p.getUniqueId() + ".kenteken", false);
                 Main.vehicleDataConfig.getConfig().set("vehicle." + ken, null);
@@ -53,15 +46,11 @@ public class ChatEvent implements Listener {
                 return;
             }
             e.setCancelled(true);
-
             if (e.isAsynchronous()) {
-
-
                 Bukkit.getScheduler().runTask(Main.instance, () -> {
                     VehiclesUtils.menuEdit(p);
                 });
             }
-
             p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("actionCanceled")));
             VehiclesUtils.edit.put(p.getUniqueId() + ".kenteken", false);
         }
@@ -83,11 +72,9 @@ public class ChatEvent implements Listener {
                 p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("actionSuccessful")));
                 VehiclesUtils.edit.put(p.getUniqueId() + ".naam", false);
                 if (e.isAsynchronous()) {
-
                     Bukkit.getScheduler().runTask(Main.instance, () -> {
                         VehiclesUtils.menuEdit(p);
                     });
-
                 }
                 return;
             }
@@ -96,8 +83,6 @@ public class ChatEvent implements Listener {
             p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("actionCanceled")));
             VehiclesUtils.edit.put(p.getUniqueId() + ".naam", false);
             if (e.isAsynchronous()) {
-
-
                 Bukkit.getScheduler().runTask(Main.instance, () -> {
                     VehiclesUtils.menuEdit(p);
                 });
@@ -144,8 +129,6 @@ public class ChatEvent implements Listener {
             p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("actionCanceled")));
             VehiclesUtils.edit.put(p.getUniqueId() + ".benzine", false);
             if (e.isAsynchronous()) {
-
-
                 Bukkit.getScheduler().runTask(Main.instance, () -> {
                     VehiclesUtils.menuEdit(p);
                 });
@@ -226,8 +209,6 @@ public class ChatEvent implements Listener {
             p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("actionCanceled")));
             VehiclesUtils.edit.put(p.getUniqueId() + ".kofferbakRows", false);
             if (e.isAsynchronous()) {
-
-
                 Bukkit.getScheduler().runTask(Main.instance, () -> {
                     VehiclesUtils.kofferbakEdit(p);
                 });
@@ -267,8 +248,6 @@ public class ChatEvent implements Listener {
             p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("actionCanceled")));
             VehiclesUtils.edit.put(p.getUniqueId() + ".acceleratieSpeed", false);
             if (e.isAsynchronous()) {
-
-
                 Bukkit.getScheduler().runTask(Main.instance, () -> {
                     VehiclesUtils.speedEdit(p);
                 });

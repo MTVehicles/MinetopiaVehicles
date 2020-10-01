@@ -4,7 +4,6 @@ import nl.mtvehicles.core.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
@@ -20,7 +19,7 @@ public class Vehicle {
     private double benzineVerbruik;
     private boolean kofferbak;
     private int kofferbakRows;
-    private List<ItemStack> kofferbakData;
+    private List<String> kofferbakData;
     private double acceleratieSpeed;
     private double maxSpeed;
     private double brakingSpeed;
@@ -38,7 +37,6 @@ public class Vehicle {
 
         Map<String, Object> map = new HashMap<>();
         map.put("isGlow", this.isGlow());
-
         Main.vehicleDataConfig.getConfig().set(this.getLicensePlate(), map);
         Main.vehicleDataConfig.save();
 
@@ -67,7 +65,6 @@ public class Vehicle {
         map.put("owner", this.getOwner());
         map.put("riders", this.getRiders());
         map.put("members", this.getMembers());
-
         Main.vehicleDataConfig.getConfig().set(this.getLicensePlate(), map);
         Main.vehicleDataConfig.save();
 
@@ -75,15 +72,10 @@ public class Vehicle {
 
     public static Vehicle getByPlate(String plate) {
         if (!existsByPlate(plate)) return null;
-
         ConfigurationSection section = Main.vehicleDataConfig.getConfig().getConfigurationSection(String.format("vehicle.%s", plate));
-
         Map<?, ?> vehicleData = section.getValues(true);
-
         List<Map<?, ?>> vehicles = Main.vehiclesConfig.getConfig().getMapList("voertuigen");
-
         List<Map<?, ?>> matchedVehicles = new ArrayList<>();
-
         for (Map<?, ?> configVehicle : vehicles) {
             List<Map<?, ?>> skins = (List<Map<?, ?>>) configVehicle.get("cars");
             for (Map<?, ?> skin : skins) {
@@ -92,17 +84,11 @@ public class Vehicle {
                 }
             }
         }
-
         if (matchedVehicles == null) return null;
-
         if (matchedVehicles.size() == 0) return null;
-
         if (matchedVehicles.size() > 1) return null;
-
         Vehicle vehicle = new Vehicle();
-
         vehicle.setVehicleData(matchedVehicles.get(0));
-
         vehicle.setLicensePlate((String) vehicleData.get("licensePlate"));
         vehicle.setName((String) vehicleData.get("name"));
         vehicle.setName((String) vehicleData.get("vehicleType"));
@@ -114,7 +100,7 @@ public class Vehicle {
         vehicle.setBenzineVerbruik((double) vehicleData.get("benzineVerbruik"));
         vehicle.setKofferbak((boolean) vehicleData.get("kofferbak"));
         vehicle.setKofferbakRows((int) vehicleData.get("kofferbakRows"));
-        vehicle.setKofferbakData((List<ItemStack>) vehicleData.get("kofferbakData"));
+        vehicle.setKofferbakData((List<String>) vehicleData.get("kofferbakData"));
         vehicle.setAcceleratieSpeed((double) vehicleData.get("acceleratieSpeed"));
         vehicle.setMaxSpeed((double) vehicleData.get("maxSpeed"));
         vehicle.setBrakingSpeed((double) vehicleData.get("brakingSpeed"));
@@ -124,7 +110,6 @@ public class Vehicle {
         vehicle.setOwner((String) vehicleData.get("owner"));
         vehicle.setRiders((List<String>) vehicleData.get("riders"));
         vehicle.setMembers((List<String>) vehicleData.get("members"));
-
         return vehicle;
     }
 
@@ -244,11 +229,11 @@ public class Vehicle {
         this.kofferbakRows = kofferbakRows;
     }
 
-    public List<ItemStack> getKofferbakData() {
+    public List<String> getKofferbakData() {
         return kofferbakData;
     }
 
-    public void setKofferbakData(List<ItemStack> kofferbakData) {
+    public void setKofferbakData(List<String> kofferbakData) {
         this.kofferbakData = kofferbakData;
     }
 

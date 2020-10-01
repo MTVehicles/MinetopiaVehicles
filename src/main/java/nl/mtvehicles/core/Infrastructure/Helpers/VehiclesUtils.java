@@ -6,20 +6,17 @@ import nl.mtvehicles.core.Main;
 import org.apache.commons.lang.RandomStringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.util.io.BukkitObjectInputStream;
-import org.bukkit.util.io.BukkitObjectOutputStream;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
 public class VehiclesUtils {
 
@@ -52,7 +49,6 @@ public class VehiclesUtils {
         im.setLore(itemlore);
         im.setUnbreakable(true);
         car.setItemMeta(im);
-
         return car;
     }
 
@@ -72,7 +68,6 @@ public class VehiclesUtils {
             im.setLore(itemlore);
             im.setDisplayName(TextUtils.colorize(text));
             is.setItemMeta(im);
-
             return is;
         } catch (Exception e) {
             try {
@@ -83,7 +78,6 @@ public class VehiclesUtils {
                 im.setLore(itemlore);
                 im.setDisplayName(TextUtils.colorize(text));
                 is.setItemMeta(im);
-
                 return is;
             } catch (Exception e2) {
                 e2.printStackTrace();
@@ -102,7 +96,6 @@ public class VehiclesUtils {
             im.setLore(itemlore);
             im.setDisplayName(TextUtils.colorize(text));
             is.setItemMeta(im);
-
             return is;
         } catch (Exception e) {
             try {
@@ -113,11 +106,9 @@ public class VehiclesUtils {
                 im.setLore(itemlore);
                 im.setDisplayName(TextUtils.colorize(text));
                 is.setItemMeta(im);
-
                 return is;
             } catch (Exception e2) {
                 e2.printStackTrace();
-
                 return null;
             }
         }
@@ -138,7 +129,6 @@ public class VehiclesUtils {
             im.setLore(itemlore);
             im.setDisplayName(TextUtils.colorize(text));
             is.setItemMeta(im);
-
             return is;
         } catch (Exception e) {
             try {
@@ -155,11 +145,9 @@ public class VehiclesUtils {
                 im.setLore(itemlore);
                 im.setDisplayName(TextUtils.colorize(text));
                 is.setItemMeta(im);
-
                 return is;
             } catch (Exception e2) {
                 e2.printStackTrace();
-
                 return null;
             }
         }
@@ -180,7 +168,6 @@ public class VehiclesUtils {
             im.setLore(itemlore);
             im.setDisplayName(TextUtils.colorize(text));
             is.setItemMeta(im);
-
             return is;
         } catch (Exception e) {
             try {
@@ -197,11 +184,9 @@ public class VehiclesUtils {
                 im.setLore(itemlore);
                 im.setDisplayName(TextUtils.colorize(text));
                 is.setItemMeta(im);
-
                 return is;
             } catch (Exception e2) {
                 e2.printStackTrace();
-
                 return null;
             }
         }
@@ -217,7 +202,6 @@ public class VehiclesUtils {
             im.setUnbreakable(true);
             im.setDisplayName(TextUtils.colorize(text));
             is.setItemMeta(im);
-
             return is;
         } catch (Exception e) {
             try {
@@ -229,11 +213,9 @@ public class VehiclesUtils {
                 im.setUnbreakable(true);
                 im.setDisplayName(TextUtils.colorize(text));
                 is.setItemMeta(im);
-
                 return is;
             } catch (Exception e2) {
                 e2.printStackTrace();
-
                 return null;
             }
         }
@@ -248,10 +230,8 @@ public class VehiclesUtils {
         itemlore.add(TextUtils.colorize("&a" + ken));
         itemlore.add(TextUtils.colorize("&a"));
         im.setLore(itemlore);
-
         im.setUnbreakable(true);
         car.setItemMeta(im);
-
         return car;
     }
 
@@ -267,7 +247,6 @@ public class VehiclesUtils {
         im.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_ENCHANTS});
         im.setUnbreakable(true);
         car.setItemMeta(im);
-
         return car;
     }
 
@@ -280,7 +259,6 @@ public class VehiclesUtils {
         im.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
         im.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_ENCHANTS});
         car.setItemMeta(im);
-
         return car;
     }
 
@@ -308,11 +286,9 @@ public class VehiclesUtils {
         ItemStack test = VehiclesUtils.mItem2("DIAMOND_HOE", 1, (short) 58, "&6Benzine", "&7Huidige: &e" + (Boolean) Main.vehicleDataConfig.getConfig().get("vehicle." + ken + ".benzineEnabled"));
         ItemStack test2 = VehiclesUtils.mItem2("DIAMOND_HOE", 1, (short) 58, "&6Huidige Benzine", "&7Huidige: &e" + Main.vehicleDataConfig.getConfig().getDouble("vehicle." + ken + ".benzine"));
         ItemStack test3 = VehiclesUtils.mItem2("DIAMOND_HOE", 1, (short) 58, "&6Benzine Verbruik", "&7Huidige: &e" + Main.vehicleDataConfig.getConfig().getDouble("vehicle." + ken + ".benzineVerbruik"));
-
         ItemStack car = (new ItemFactory(test).setNBT("mtvehicles.item", "1").toItemStack());
         ItemStack car2 = (new ItemFactory(test2).setNBT("mtvehicles.item", "2").toItemStack());
         ItemStack car3 = (new ItemFactory(test3).setNBT("mtvehicles.item", "3").toItemStack());
-
         inv.setItem(10, car);
         inv.setItem(13, car2);
         inv.setItem(16, car3);
@@ -330,11 +306,9 @@ public class VehiclesUtils {
         ItemStack test = VehiclesUtils.mItem("CHEST", 1, (short) 0, "&6Kofferbak", "&7Huidige: &e" + (Boolean) Main.vehicleDataConfig.getConfig().get("vehicle." + ken + ".kofferbak"));
         ItemStack test2 = VehiclesUtils.mItem("CHEST", 1, (short) 0, "&6Huidige Rows", "&7Huidige: &e" + Main.vehicleDataConfig.getConfig().getInt("vehicle." + ken + ".kofferbakRows"));
         ItemStack test3 = VehiclesUtils.mItem("CHEST", 1, (short) 0, "&6Open Kofferbak", "&7Huidige: &eClick to open");
-
         ItemStack car = (new ItemFactory(test).setNBT("mtvehicles.item", "1").toItemStack());
         ItemStack car2 = (new ItemFactory(test2).setNBT("mtvehicles.item", "2").toItemStack());
         ItemStack car3 = (new ItemFactory(test3).setNBT("mtvehicles.item", "3").toItemStack());
-
         inv.setItem(10, car);
         inv.setItem(13, car2);
         inv.setItem(16, car3);
@@ -345,17 +319,16 @@ public class VehiclesUtils {
         inv.setItem(42, VehiclesUtils.mItem("WOOD_DOOR", 1, (short) 0, "&6Terug", "&eDruk hier om terug te gaan!"));
         p.openInventory(inv);
     }
+
     public static void membersEdit(Player p) {
         Inventory inv = Bukkit.createInventory(null, 45, "Vehicle Members");
         String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
-        ItemStack test = VehiclesUtils.mItem("PAPER", 1, (short) 58, "&6Owners", "&7Naam: &e"+ Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName());
+        ItemStack test = VehiclesUtils.mItem("PAPER", 1, (short) 58, "&6Owners", "&7Naam: &e" + Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName());
         ItemStack test2 = VehiclesUtils.mItemRiders("PAPER", 1, (short) 58, "&6Riders", ken);
         ItemStack test3 = VehiclesUtils.mItemMembers("PAPER", 1, (short) 58, "&6Members", ken);
-
         ItemStack car = (new ItemFactory(test).setNBT("mtvehicles.item", "1").toItemStack());
         ItemStack car2 = (new ItemFactory(test2).setNBT("mtvehicles.item", "2").toItemStack());
         ItemStack car3 = (new ItemFactory(test3).setNBT("mtvehicles.item", "3").toItemStack());
-
         inv.setItem(10, car);
         inv.setItem(13, car2);
         inv.setItem(16, car3);
@@ -370,21 +343,18 @@ public class VehiclesUtils {
     public static void speedEdit(Player p) {
         Inventory inv = Bukkit.createInventory(null, 45, "Vehicle Speed");
         String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
-        ItemStack test = VehiclesUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Acceleratie Speed", "&7Huidige: &e"+(double)Main.vehicleDataConfig.getConfig().get("vehicle." + ken + ".acceleratieSpeed"));
-        ItemStack test2 = VehiclesUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Max Speed", "&7Huidige: &e"+(double)Main.vehicleDataConfig.getConfig().get("vehicle." + ken + ".maxSpeed"));
-        ItemStack test3 = VehiclesUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Braking Speed", "&7Huidige: &e"+(double)Main.vehicleDataConfig.getConfig().get("vehicle." + ken + ".brakingSpeed"));
-        ItemStack test4 = VehiclesUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Aftrekken Speed", "&7Huidige: &e"+(double)Main.vehicleDataConfig.getConfig().get("vehicle." + ken + ".aftrekkenSpeed"));
-        ItemStack test5 = VehiclesUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Rotate Speed", "&7Huidige: &e"+(int)Main.vehicleDataConfig.getConfig().get("vehicle." + ken + ".rotateSpeed"));
-        ItemStack test6 = VehiclesUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Max Speed Backwards", "&7Huidige: &e"+(double)Main.vehicleDataConfig.getConfig().get("vehicle." + ken + ".maxSpeedBackwards"));
-
+        ItemStack test = VehiclesUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Acceleratie Speed", "&7Huidige: &e" + (double) Main.vehicleDataConfig.getConfig().get("vehicle." + ken + ".acceleratieSpeed"));
+        ItemStack test2 = VehiclesUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Max Speed", "&7Huidige: &e" + (double) Main.vehicleDataConfig.getConfig().get("vehicle." + ken + ".maxSpeed"));
+        ItemStack test3 = VehiclesUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Braking Speed", "&7Huidige: &e" + (double) Main.vehicleDataConfig.getConfig().get("vehicle." + ken + ".brakingSpeed"));
+        ItemStack test4 = VehiclesUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Aftrekken Speed", "&7Huidige: &e" + (double) Main.vehicleDataConfig.getConfig().get("vehicle." + ken + ".aftrekkenSpeed"));
+        ItemStack test5 = VehiclesUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Rotate Speed", "&7Huidige: &e" + (int) Main.vehicleDataConfig.getConfig().get("vehicle." + ken + ".rotateSpeed"));
+        ItemStack test6 = VehiclesUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Max Speed Backwards", "&7Huidige: &e" + (double) Main.vehicleDataConfig.getConfig().get("vehicle." + ken + ".maxSpeedBackwards"));
         ItemStack car = (new ItemFactory(test).setNBT("mtvehicles.item", "1").toItemStack());
         ItemStack car2 = (new ItemFactory(test2).setNBT("mtvehicles.item", "2").toItemStack());
         ItemStack car3 = (new ItemFactory(test3).setNBT("mtvehicles.item", "3").toItemStack());
         ItemStack car4 = (new ItemFactory(test4).setNBT("mtvehicles.item", "4").toItemStack());
         ItemStack car5 = (new ItemFactory(test5).setNBT("mtvehicles.item", "5").toItemStack());
         ItemStack car6 = (new ItemFactory(test6).setNBT("mtvehicles.item", "6").toItemStack());
-
-
         inv.setItem(10, car);
         inv.setItem(11, car2);
         inv.setItem(12, car3);
@@ -401,68 +371,32 @@ public class VehiclesUtils {
 
     public static HashMap<String, Integer> restoreId = new HashMap<>();
 
-    public static void restoreCMD(Player p, int id){
-        Inventory inv = Bukkit.createInventory(null, 54, "Vehicle Restore "+id);
+    public static void restoreCMD(Player p, int id) {
+        Inventory inv = Bukkit.createInventory(null, 54, "Vehicle Restore " + id);
         Main.configList.forEach(ConfigUtils::reload);
-
         if (Main.vehicleDataConfig.getConfig().getConfigurationSection("vehicle") != null) {
-
             List<String> dataVehicle = new ArrayList<>();
             for (String entry : Main.vehicleDataConfig.getConfig().getConfigurationSection("vehicle").getKeys(false)) {
-
                 dataVehicle.add(entry);
             }
-            System.out.println(dataVehicle.get(1));
-
-
-
-            for (int i = 1+id*36-36; i <= id*36; i++) {
+            for (int i = 1 + id * 36 - 36; i <= id * 36; i++) {
                 if (i - 1 < dataVehicle.size()) {
-
-
-                        if (Main.vehicleDataConfig.getConfig().getBoolean("vehicle."+dataVehicle.get(i - 1)+".isGlow") == true){
-                            inv.addItem(VehiclesUtils.carItem2glow(Main.vehicleDataConfig.getConfig().getInt("vehicle."+dataVehicle.get(i - 1)+".skinDamage"), Main.vehicleDataConfig.getConfig().getString("vehicle."+dataVehicle.get(i - 1)+".name"), Main.vehicleDataConfig.getConfig().getString("vehicle."+dataVehicle.get(i - 1)+".skinItem"), dataVehicle.get(i - 1)));
-                        } else {
-                            inv.addItem(VehiclesUtils.carItem2(Main.vehicleDataConfig.getConfig().getInt("vehicle."+dataVehicle.get(i - 1)+".skinDamage"), Main.vehicleDataConfig.getConfig().getString("vehicle."+dataVehicle.get(i - 1)+".name"), Main.vehicleDataConfig.getConfig().getString("vehicle."+dataVehicle.get(i - 1)+".skinItem"), dataVehicle.get(i - 1)));
-                        }
-
+                    if (Main.vehicleDataConfig.getConfig().getBoolean("vehicle." + dataVehicle.get(i - 1) + ".isGlow") == true) {
+                        inv.addItem(VehiclesUtils.carItem2glow(Main.vehicleDataConfig.getConfig().getInt("vehicle." + dataVehicle.get(i - 1) + ".skinDamage"), Main.vehicleDataConfig.getConfig().getString("vehicle." + dataVehicle.get(i - 1) + ".name"), Main.vehicleDataConfig.getConfig().getString("vehicle." + dataVehicle.get(i - 1) + ".skinItem"), dataVehicle.get(i - 1)));
+                    } else {
+                        inv.addItem(VehiclesUtils.carItem2(Main.vehicleDataConfig.getConfig().getInt("vehicle." + dataVehicle.get(i - 1) + ".skinDamage"), Main.vehicleDataConfig.getConfig().getString("vehicle." + dataVehicle.get(i - 1) + ".name"), Main.vehicleDataConfig.getConfig().getString("vehicle." + dataVehicle.get(i - 1) + ".skinItem"), dataVehicle.get(i - 1)));
+                    }
                 }
             }
-
             for (int i = 36; i <= 44; i++) {
                 inv.setItem(i, VehiclesUtils.mItem("STAINED_GLASS_PANE", 1, (short) 0, "&c", "&c"));
             }
-
-//                System.out.println(Main.vehicleDataConfig.getConfig().getMapList("vehicle").get(0));
-            //System.out.println("test "+vehicles.get(0).get("kofferbakEnabled"));
-//                for (Map<?, ?> configVehicle : vehicles) {
-//                    vehicles.get(0).get("a");
-//                    System.out.println("test "+vehicles.get(0).get("kofferbakEnabled"));
-//                }
-
-
-//                int abc = Main.vehicleDataConfig.getConfig().getConfigurationSection("vehicle").getKeys(false).size();
-//                System.out.println(abc);
-            //inv.addItem(Vehicles.carItem2(Main.vehicleDataConfig.getConfig().getInt("vehicle."+key+".skinDamage"), Main.vehicleDataConfig.getConfig().getString("vehicle."+key+".name"), Main.vehicleDataConfig.getConfig().getString("vehicle."+key+".skinItem"), key));
             for (int i = 36; i <= 44; i++) {
                 inv.setItem(i, VehiclesUtils.mItem("STAINED_GLASS_PANE", 1, (short) 0, "&c", "&c"));
             }
-
             inv.setItem(52, VehiclesUtils.mItem("SPECTRAL_ARROW", 1, (short) 0, "&cVolgende Pagina", "&c"));
-
             inv.setItem(46, VehiclesUtils.mItem("SPECTRAL_ARROW", 1, (short) 0, "&cVorige Pagina", "&c"));
-
             p.openInventory(inv);
         }
     }
-
-
-    public static void saveInventory(final Inventory inv) {
-//        for (int i = 0; i < inv.length; i++) { // start iterating into the inv
-//            ItemStack item = inv[i]; // getting the itemstack
-//            if (item == null) Main.vehicleDataConfig.getConfig().set("Players.xVoidZx.world.Inventory." + i, "empty"); // if it's a null itemstack, we save it as a string
-//            else Main.vehicleDataConfig.getConfig().set("Players.xVoidZx.world.Inventory." + i, item); // else, we save the itemstack
-//        }
-    }
-
 }

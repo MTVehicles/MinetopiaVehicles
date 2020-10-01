@@ -8,7 +8,6 @@ import nl.mtvehicles.core.Infrastructure.Helpers.VehiclesUtils;
 import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
 import nl.mtvehicles.core.Main;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -89,7 +88,7 @@ public class MenuClickEvent implements Listener {
                 Vehicle vehicle = new Vehicle();
                 List<String> members = (List<String>) Main.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".members");
                 List<String> riders = (List<String>) Main.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".riders");
-                List<ItemStack> kof = (List<ItemStack>) Main.vehicleDataConfig.getConfig().get("voertuig." + kenteken + ".kofferbakData");
+                List<String> kof = (List<String>) Main.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".kofferbakData");
                 vehicle.setLicensePlate("vehicle." + kenteken);
                 vehicle.setName(naam);
                 vehicle.setVehicleType((String) vehicles.get(intSave.get(p.getUniqueId())).get("vehicleType"));

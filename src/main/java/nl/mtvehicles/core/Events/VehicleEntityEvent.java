@@ -1,16 +1,10 @@
 package nl.mtvehicles.core.Events;
 
-import nl.mtvehicles.core.Infrastructure.Helpers.ItemFactory;
 import nl.mtvehicles.core.Infrastructure.Helpers.TextUtils;
-import nl.mtvehicles.core.Infrastructure.Helpers.VehiclesUtils;
 import nl.mtvehicles.core.Infrastructure.Models.ConfigUtils;
 import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
 import nl.mtvehicles.core.Main;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,13 +12,12 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.player.PlayerInteractAtEntityEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
 public class VehicleEntityEvent implements Listener {
     public static HashMap<String, Double> speed = new HashMap<>();
@@ -77,7 +70,6 @@ public class VehicleEntityEvent implements Listener {
                         inv.addItem(item);
                     }
                     p.openInventory(inv);
-
                 } else {
                 }
 

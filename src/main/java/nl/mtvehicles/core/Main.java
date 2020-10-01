@@ -3,10 +3,7 @@ package nl.mtvehicles.core;
 import com.comphenix.protocol.ProtocolLibrary;
 import nl.mtvehicles.core.Commands.vehicleSubCommandManager;
 import nl.mtvehicles.core.Events.*;
-import nl.mtvehicles.core.Infrastructure.DataConfig.DefaultConfig;
-import nl.mtvehicles.core.Infrastructure.DataConfig.MessagesConfig;
-import nl.mtvehicles.core.Infrastructure.DataConfig.VehicleDataConfig;
-import nl.mtvehicles.core.Infrastructure.DataConfig.VehiclesConfig;
+import nl.mtvehicles.core.Infrastructure.DataConfig.*;
 import nl.mtvehicles.core.Infrastructure.Models.ConfigUtils;
 import nl.mtvehicles.core.Infrastructure.Models.MTVehicleSubCommand;
 import nl.mtvehicles.core.Movement.VehicleMovement1_12;
@@ -51,6 +48,10 @@ public class Main extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new VehicleLeaveEvent(), this);
         Bukkit.getPluginManager().registerEvents(new ChatEvent(), this);
         Bukkit.getPluginManager().registerEvents(new VehicleEntityEvent(), this);
+
+
+        int pluginId = 5932;
+        Metrics metrics = new Metrics(this, pluginId);
 
         if (version.equals("v1_12_R1")) {
             ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_12());

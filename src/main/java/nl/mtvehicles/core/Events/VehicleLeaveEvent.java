@@ -1,9 +1,11 @@
 package nl.mtvehicles.core.Events;
 
+import nl.mtvehicles.core.Infrastructure.Helpers.VehiclesUtils;
 import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
 import nl.mtvehicles.core.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -31,6 +33,14 @@ public class VehicleLeaveEvent implements Listener {
                 return;
 
             }
+
+            if (Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".vehicleType").contains("HELICOPTER")) {
+                ArmorStand as4 = VehicleLeaveEvent.autostand.get("MTVEHICLES_WIEKENS_" + ken);
+                if (!(as4 == null)){
+                    //as4.getHelmet().setType(VehiclesUtils.mItem("AIR", 1, (short) 1, " ", " "));
+                }
+            }
+
             ArmorStand as = VehicleLeaveEvent.autostand.get("MTVEHICLES_MAIN_" + ken);
             ArmorStand as2 = VehicleLeaveEvent.autostand.get("MTVEHICLES_SKIN_" + ken);
             as.setGravity(true);

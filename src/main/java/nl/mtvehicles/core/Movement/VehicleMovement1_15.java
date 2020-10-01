@@ -9,7 +9,6 @@ import nl.mtvehicles.core.Events.VehicleClickEvent;
 import nl.mtvehicles.core.Events.VehicleLeaveEvent;
 import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
 import nl.mtvehicles.core.Main;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_15_R1.entity.CraftArmorStand;
@@ -17,7 +16,6 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -210,11 +208,11 @@ public class VehicleMovement1_15 extends PacketAdapter {
                 double zOffset = seat.get("z");
                 final Location locvp = main.getLocation().clone();
                 final Location fbvp = locvp.add(locvp.getDirection().setY(0).normalize().multiply(xOffset));
-                final float zvp = (float)(fbvp.getZ() + zOffset * Math.sin(Math.toRadians(fbvp.getYaw())));
-                final float xvp = (float)(fbvp.getX() + zOffset * Math.cos(Math.toRadians(fbvp.getYaw())));
-                final Location loc = new Location(main.getWorld(), (double)xvp, main.getLocation().getY() + yOffset, (double)zvp, fbvp.getYaw(), fbvp.getPitch());
+                final float zvp = (float)(fbvp.getZ() + zOffset * Math.sin(Math.toRadians(seatas.getLocation().getYaw())));
+                final float xvp = (float)(fbvp.getX() + zOffset * Math.cos(Math.toRadians(seatas.getLocation().getYaw())));
+                final Location loc = new Location(main.getWorld(), (double)xvp, main.getLocation().getY() + yOffset, (double)zvp, seatas.getLocation().getYaw(), fbvp.getPitch());
                 final EntityArmorStand stand = ((CraftArmorStand)seatas).getHandle();
-                stand.setLocation(loc.getX(), loc.getY(), loc.getZ(), (float)(seatas.getLocation().getYaw() + 9), loc.getPitch());
+                stand.setLocation(loc.getX(), loc.getY(), loc.getZ(), seatas.getLocation().getYaw()+ 15, seatas.getLocation().getPitch());
 
 
             }
