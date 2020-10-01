@@ -44,8 +44,6 @@ public class VehiclePlaceEvent implements Listener {
         }
         if (action.equals(Action.RIGHT_CLICK_BLOCK)) {
             e.setCancelled(true);
-
-
             Location loc = e.getClickedBlock().getLocation();
             Location location = new Location(loc.getWorld(), loc.getX(), loc.getY() + 1, loc.getZ());
             ArmorStand as = location.getWorld().spawn(location, ArmorStand.class);
@@ -57,7 +55,6 @@ public class VehiclePlaceEvent implements Listener {
             as2.setCustomName("MTVEHICLES_MAIN_" + ken);
             Vehicle vehicle = Vehicle.getByPlate(ken);
             List<Map<String, Double>> seats = (List<Map<String, Double>>) vehicle.getVehicleData().get("seats");
-
             p.getInventory().remove(p.getItemInHand());
             p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehiclePlace").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
             for (int i = 1; i <= seats.size(); i++) {
@@ -69,7 +66,6 @@ public class VehiclePlaceEvent implements Listener {
                     as3.setGravity(false);
                     as3.setVisible(false);
                 }
-
             }
             List<Map<String, Double>> wiekens = (List<Map<String, Double>>) vehicle.getVehicleData().get("wiekens");
             if (Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".vehicleType").contains("HELICOPTER")) {
@@ -85,10 +81,8 @@ public class VehiclePlaceEvent implements Listener {
                             as3.setHelmet((ItemStack) seat.get("item"));
                         }
                     }
-
                 }
             }
         }
-
     }
 }

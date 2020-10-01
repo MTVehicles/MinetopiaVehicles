@@ -119,30 +119,22 @@ public class MenuClickEvent implements Listener {
                 e.setCancelled(true);
                 return;
             }
-
-
-
             if (e.getCurrentItem().equals(VehiclesUtils.mItem("SPECTRAL_ARROW", 1, (short) 0, "&cVolgende Pagina", "&c"))){
                 e.setCancelled(true);
-
                 VehiclesUtils.restoreCMD(p , Integer.parseInt(e.getView().getTitle().replace("Vehicle Restore ", ""))+1);
                 return;
             }
             if (e.getCurrentItem().equals(VehiclesUtils.mItem("SPECTRAL_ARROW", 1, (short) 0, "&cVorige Pagina", "&c"))){
                 e.setCancelled(true);
                 if (!(Integer.parseInt(e.getView().getTitle().replace("Vehicle Restore ", ""))-1 < 1)) {
-
-
                     VehiclesUtils.restoreCMD(p, Integer.parseInt(e.getView().getTitle().replace("Vehicle Restore ", "")) - 1);
                 }
                 return;
             }
-
             e.setCancelled(true);
             ItemStack car = e.getCurrentItem();
             p.getInventory().addItem(car);
         }
-
         if (e.getView().getTitle().contains("Vehicle Edit")) {
             e.setCancelled(true);
             if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Vehicle Settings")) {
@@ -191,8 +183,6 @@ public class MenuClickEvent implements Listener {
                 p.getInventory().getItemInMainHand().setItemMeta(im);
                 Main.vehicleDataConfig.save();
                 VehiclesUtils.menuEdit(p);
-
-
             }
 
             if (e.getCurrentItem().equals(VehiclesUtils.mItem("BOOK", 1, (short) 0, "&6Glow Aanpassen", "&7Huidige: &e" + Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".isGlow")))) {
@@ -284,12 +274,10 @@ public class MenuClickEvent implements Listener {
                 p.closeInventory();
                 p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("typeNewRowsInChat")));
                 VehiclesUtils.edit.put(p.getUniqueId() + ".kofferbakRows", true);
-
             }
             if (menuitem.contains("3")) {
                 p.closeInventory();
                 VehicleEntityEvent.kofferbak(p, ken);
-
             }
         }
         if (e.getView().getTitle().contains("Vehicle Members")) {

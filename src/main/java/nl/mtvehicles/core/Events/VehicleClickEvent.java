@@ -68,20 +68,17 @@ public class VehicleClickEvent implements Listener {
             event.setCancelled(true);
             String ken = event.getRightClicked().getCustomName().substring(17);
             if (Vehicle.getByPlate(ken).getOwner().equals(p.getUniqueId().toString()) || Vehicle.canSit(p, ken) == true || p.hasPermission("mtvehicles.ride")) {
-                if(event.getRightClicked().isEmpty()){
+                if (event.getRightClicked().isEmpty()) {
                     event.getRightClicked().setPassenger(p);
                     p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleEnterMember").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
                 }
             } else {
                 p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleNoRiderEnter").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
-
             }
         }
         if (event.getRightClicked().getCustomName().contains("MTVEHICLES_WIEKENS_")) {
             event.setCancelled(true);
         }
-
-
     }
 
     public void getShitVehicles(final String ken, final Player p) {
@@ -89,10 +86,8 @@ public class VehicleClickEvent implements Listener {
             if (!VehicleLeaveEvent.autostand2.get(ken).isEmpty()) {
                 return;
             }
-
-
         }
-        if (Vehicle.getByPlate(ken) == null){
+        if (Vehicle.getByPlate(ken) == null) {
             p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleNotFound")));
             return;
         }
@@ -109,8 +104,6 @@ public class VehicleClickEvent implements Listener {
                             return;
                         }
                         if (test.getCustomName().contains("MTVEHICLES_SKIN_" + ken)) {
-
-
                             Location loc = test.getLocation();
                             Location location = new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
                             ArmorStand as = location.getWorld().spawn(location, ArmorStand.class);
@@ -150,14 +143,13 @@ public class VehicleClickEvent implements Listener {
                                     as3.setVisible(false);
                                     VehicleLeaveEvent.autostand.put("MTVEHICLES_SEAT" + (int) i + "_" + ken, as3);
                                 }
-
                             }
                             List<Map<String, Double>> wiekens = (List<Map<String, Double>>) vehicle.getVehicleData().get("wiekens");
                             if (Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".vehicleType").contains("HELICOPTER")) {
                                 for (int i = 1; i <= wiekens.size(); i++) {
                                     Map<?, ?> seat = wiekens.get(i - 1);
                                     if (i == 1) {
-                                        Location location2 = new Location(location.getWorld(), location.getX() + (double)seat.get("z"), (double)location.getY() + (double)seat.get("y"), location.getZ() + (double)seat.get("x"));
+                                        Location location2 = new Location(location.getWorld(), location.getX() + (double) seat.get("z"), (double) location.getY() + (double) seat.get("y"), location.getZ() + (double) seat.get("x"));
                                         ArmorStand as3 = location2.getWorld().spawn(location2, ArmorStand.class);
                                         as3.setCustomName("MTVEHICLES_WIEKENS_" + ken);
                                         as3.setGravity(false);
@@ -165,7 +157,6 @@ public class VehicleClickEvent implements Listener {
                                         VehicleLeaveEvent.autostand.put("MTVEHICLES_WIEKENS_" + ken, as3);
                                         as3.setHelmet((ItemStack) seat.get("item"));
                                     }
-
                                 }
                             }
                         }
@@ -179,12 +170,11 @@ public class VehicleClickEvent implements Listener {
     }
 
     public void getShitOppakVehicles(final String ken, final Player p) {
-        if (Vehicle.getByPlate(ken) == null){
+        if (Vehicle.getByPlate(ken) == null) {
             p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleNotFound")));
             return;
         }
         if (Vehicle.getByPlate(ken).getOwner().equals(p.getUniqueId().toString()) || p.hasPermission("mtvehicles.oppakken")) {
-
             for (final World world : Bukkit.getServer().getWorlds()) {
                 for (final Entity entity : world.getEntities()) {
                     if (Main.defaultConfig.getConfig().getBoolean("anwb") && !p.hasPermission("mtvehicles.anwb") && (entity.getLocation().clone().add(0.0, 0.9, 0.0).getBlock().getType() == Material.WATER || entity.getLocation().clone().add(0.0, 0.9, 0.0).getBlock().getType() == Material.LEGACY_STATIONARY_WATER)) {
@@ -194,12 +184,9 @@ public class VehicleClickEvent implements Listener {
                     if (entity.getCustomName() != null && entity.getCustomName().contains(ken)) {
                         final ArmorStand test = (ArmorStand) entity;
                         if (test.getCustomName().contains("MTVEHICLES_SKIN_" + ken)) {
-
                             p.getInventory().addItem(test.getHelmet());
                             p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehiclePickup").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
-
                         }
-
                         test.remove();
                     }
                 }
@@ -209,6 +196,4 @@ public class VehicleClickEvent implements Listener {
             return;
         }
     }
-
-
 }
