@@ -1,6 +1,9 @@
 package nl.mtvehicles.core.Events;
 
+import nl.mtvehicles.core.Commands.VehiclesSubs.vehicleBenzineCmd;
+import nl.mtvehicles.core.Infrastructure.Helpers.NBTUtils;
 import nl.mtvehicles.core.Infrastructure.Helpers.TextUtils;
+import nl.mtvehicles.core.Infrastructure.Helpers.VehiclesUtils;
 import nl.mtvehicles.core.Infrastructure.Models.ConfigUtils;
 import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
 import nl.mtvehicles.core.Main;
@@ -31,6 +34,45 @@ public class VehicleEntityEvent implements Listener {
             if (a.getCustomName() == null) {
                 return;
             }
+            if (p.isInsideVehicle()) {
+                ItemStack item = p.getInventory().getItemInMainHand();
+                if ((!item.hasItemMeta() || !(NBTUtils.contains(item, "mtvehicles.benzineval")))) {
+                    return;
+                }
+                String licensePlate = p.getVehicle().getCustomName().replace("MTVEHICLES_MAINSEAT_", "");
+                double curb = Vehicle.getByPlate(licensePlate).getBenzine();
+                String benval = NBTUtils.getString(item, "mtvehicles.benzineval");
+                String bensize = NBTUtils.getString(item, "mtvehicles.benzinesize");
+                if (Integer.parseInt(benval) < 1){
+                    p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("noFuel")));
+                    return;
+                }
+                if (curb > 99){
+                    p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleFull")));
+                    return;
+                }
+                if (curb + 5 > 100) {
+                    int test = (int) (100 - curb);
+                    p.setItemInHand(vehicleBenzineCmd.benzineItem(Integer.parseInt(bensize), Integer.parseInt(benval) - test));
+                    Main.vehicleDataConfig.getConfig().set("vehicle." + licensePlate + ".benzine", curb + test);
+                    Main.vehicleDataConfig.save();
+                    VehiclesUtils.setbossbarvalue(curb / 100.0D, licensePlate);
+                    return;
+                }
+                if (!(Integer.parseInt(benval) < 5)) {
+                    Main.vehicleDataConfig.getConfig().set("vehicle." + licensePlate + ".benzine", curb + 5);
+                    Main.vehicleDataConfig.save();
+                    VehiclesUtils.setbossbarvalue(curb / 100.0D, licensePlate);
+                    p.setItemInHand(vehicleBenzineCmd.benzineItem(Integer.parseInt(bensize), Integer.parseInt(benval) - 5));
+
+                } else {
+                    Main.vehicleDataConfig.getConfig().set("vehicle." + licensePlate + ".benzine", curb + Integer.parseInt(benval));
+                    Main.vehicleDataConfig.save();
+                    VehiclesUtils.setbossbarvalue(curb / 100.0D, licensePlate);
+                    p.setItemInHand(vehicleBenzineCmd.benzineItem(Integer.parseInt(bensize), Integer.parseInt(benval) - Integer.parseInt(benval)));
+                }
+            }
+
             if (p.isSneaking()) {
                 if (a.getCustomName().contains("MTVEHICLES_MAINSEAT_")) {
                     kofferbak(p, a.getCustomName().replace("MTVEHICLES_MAINSEAT_", ""));

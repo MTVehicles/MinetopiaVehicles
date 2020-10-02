@@ -16,6 +16,7 @@ public class vehicleSubCommandManager extends MTVehicleCommand {
         Main.subcommands.put("menu", new vehicleMenuCmd());
         Main.subcommands.put("restore", new vehicleRestoreCmd());
         Main.subcommands.put("edit", new vehicleEditCmd());
+        Main.subcommands.put("benzine", new vehicleBenzineCmd());
         Main.subcommands.put("setowner", new vehicleSetOwnerCMD());
         Main.subcommands.put("addmember", new vehicleAddMemberCMD());
         Main.subcommands.put("addrider", new vehicleAddRiderCMD());
@@ -36,7 +37,12 @@ public class vehicleSubCommandManager extends MTVehicleCommand {
             return true;
         }
 
-        Main.subcommands.get(args[0]).onExecute(sender, cmd, s, args);
+
+            Main.subcommands.get(args[0]).onExecute(sender, cmd, s, args);
+
+
+
+
         return true;
     }
 }

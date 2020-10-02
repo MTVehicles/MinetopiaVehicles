@@ -99,6 +99,7 @@ public class MenuClickEvent implements Listener {
                 vehicle.setBenzine(100);
                 vehicle.setKofferbak((boolean) vehicles.get(intSave.get(p.getUniqueId())).get("kofferbakEnabled"));
                 vehicle.setKofferbakRows(1);
+                vehicle.setBenzineVerbruik(0.01);
                 vehicle.setKofferbakData(kof);
                 vehicle.setAcceleratieSpeed((double) vehicles.get(intSave.get(p.getUniqueId())).get("acceleratieSpeed"));
                 vehicle.setMaxSpeed((double) vehicles.get(intSave.get(p.getUniqueId())).get("maxSpeed"));
@@ -339,6 +340,12 @@ public class MenuClickEvent implements Listener {
                 p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("typeSpeedInChat")));
                 VehiclesUtils.edit.put(p.getUniqueId() + ".maxSpeedBackwards", true);
             }
+        }
+
+        if (e.getView().getTitle().contains("Benzine menu")) {
+            e.setCancelled(true);
+            p.getInventory().addItem(e.getCurrentItem());
+
         }
 
     }

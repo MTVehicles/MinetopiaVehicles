@@ -4,16 +4,15 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
+import net.minecraft.server.v1_13_R2.EntityArmorStand;
 import net.minecraft.server.v1_13_R2.PacketPlayInSteerVehicle;
-import net.minecraft.server.v1_15_R1.EntityArmorStand;
 import nl.mtvehicles.core.Events.VehicleClickEvent;
 import nl.mtvehicles.core.Events.VehicleLeaveEvent;
 import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
 import nl.mtvehicles.core.Main;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_15_R1.entity.CraftArmorStand;
+import org.bukkit.craftbukkit.v1_13_R2.entity.CraftArmorStand;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -32,7 +31,7 @@ public class VehicleMovement1_13 extends PacketAdapter {
     }
 
     public void onPacketReceiving(final PacketEvent event) {
-        net.minecraft.server.v1_15_R1.PacketPlayInSteerVehicle ppisv = (net.minecraft.server.v1_15_R1.PacketPlayInSteerVehicle) event.getPacket().getHandle();
+        PacketPlayInSteerVehicle ppisv = (PacketPlayInSteerVehicle) event.getPacket().getHandle();
         final Player p = event.getPlayer();
         if (p.getVehicle() == null) {
             return;
@@ -53,7 +52,7 @@ public class VehicleMovement1_13 extends PacketAdapter {
         ArmorStand as2 = VehicleLeaveEvent.autostand.get("MTVEHICLES_SKIN_" + ken);
         ArmorStand as3 = VehicleLeaveEvent.autostand.get("MTVEHICLES_MAINSEAT_" + ken);
         ArmorStand as4 = VehicleLeaveEvent.autostand.get("MTVEHICLES_WIEKENS_" + ken);
-        net.minecraft.server.v1_15_R1.EntityArmorStand stand = ((org.bukkit.craftbukkit.v1_15_R1.entity.CraftArmorStand) as2).getHandle();
+        EntityArmorStand stand = ((CraftArmorStand) as2).getHandle();
         stand.setLocation(as.getLocation().getX(), as.getLocation().getY(), as.getLocation().getZ(), as.getLocation().getYaw(), as.getLocation().getPitch());
         mainSeat(as, as3, ken);
 
@@ -158,14 +157,14 @@ public class VehicleMovement1_13 extends PacketAdapter {
 
     public static void KeyD(ArmorStand a, String ken) {
         Location loc = a.getLocation();
-        net.minecraft.server.v1_15_R1.EntityArmorStand stand = ((org.bukkit.craftbukkit.v1_15_R1.entity.CraftArmorStand) a).getHandle();
+        EntityArmorStand stand = ((CraftArmorStand) a).getHandle();
         int draai = Vehicle.getByPlate(ken).getRotateSpeed();
         stand.setLocation(a.getLocation().getX(), a.getLocation().getY(), a.getLocation().getZ(), loc.getYaw() + draai, loc.getPitch());
     }
 
     public static void KeyA(ArmorStand a, String ken) {
         Location loc = a.getLocation();
-        net.minecraft.server.v1_15_R1.EntityArmorStand stand = ((org.bukkit.craftbukkit.v1_15_R1.entity.CraftArmorStand) a).getHandle();
+        EntityArmorStand stand = ((CraftArmorStand) a).getHandle();
         int draai = Vehicle.getByPlate(ken).getRotateSpeed();
         stand.setLocation(a.getLocation().getX(), a.getLocation().getY(), a.getLocation().getZ(), loc.getYaw() - draai, loc.getPitch());
     }
@@ -188,7 +187,7 @@ public class VehicleMovement1_13 extends PacketAdapter {
                 float zvp = (float) (fbvp.getZ() + zOffset * Math.sin(Math.toRadians(fbvp.getYaw())));
                 float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(fbvp.getYaw())));
                 Location loc = new Location(main.getWorld(), (double) xvp, main.getLocation().getY() + yOffset, (double) zvp, fbvp.getYaw(), fbvp.getPitch());
-                net.minecraft.server.v1_15_R1.EntityArmorStand stand = ((org.bukkit.craftbukkit.v1_15_R1.entity.CraftArmorStand) seatas).getHandle();
+                EntityArmorStand stand = ((CraftArmorStand) seatas).getHandle();
                 stand.setLocation(loc.getX(), loc.getY(), loc.getZ(), fbvp.getYaw(), loc.getPitch());
             }
         }
@@ -212,7 +211,7 @@ public class VehicleMovement1_13 extends PacketAdapter {
                 final float zvp = (float)(fbvp.getZ() + zOffset * Math.sin(Math.toRadians(seatas.getLocation().getYaw())));
                 final float xvp = (float)(fbvp.getX() + zOffset * Math.cos(Math.toRadians(seatas.getLocation().getYaw())));
                 final Location loc = new Location(main.getWorld(), (double)xvp, main.getLocation().getY() + yOffset, (double)zvp, seatas.getLocation().getYaw(), fbvp.getPitch());
-                final net.minecraft.server.v1_15_R1.EntityArmorStand stand = ((org.bukkit.craftbukkit.v1_15_R1.entity.CraftArmorStand)seatas).getHandle();
+                EntityArmorStand stand = ((CraftArmorStand) seatas).getHandle();
                 stand.setLocation(loc.getX(), loc.getY(), loc.getZ(), seatas.getLocation().getYaw()+ 15, seatas.getLocation().getPitch());
 
 

@@ -1,6 +1,8 @@
 package nl.mtvehicles.core.Events;
 
+import nl.mtvehicles.core.Infrastructure.DataConfig.VehicleDataConfig;
 import nl.mtvehicles.core.Infrastructure.Helpers.TextUtils;
+import nl.mtvehicles.core.Infrastructure.Helpers.VehiclesUtils;
 import nl.mtvehicles.core.Infrastructure.Models.ConfigUtils;
 import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
 import nl.mtvehicles.core.Main;
@@ -8,6 +10,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -132,6 +136,7 @@ public class VehicleClickEvent implements Listener {
                                     as3.setPassenger(p);
                                     as3.setVisible(false);
                                     VehicleLeaveEvent.autostand2.put(ken, as3);
+                                    VehiclesUtils.addBossbar(p, ken);
                                     p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleEnterRider").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
                                 }
                                 if (i > 1) {

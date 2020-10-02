@@ -5,8 +5,10 @@ import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
 import net.minecraft.server.v1_15_R1.EntityArmorStand;
+import net.minecraft.server.v1_15_R1.PacketPlayInSteerVehicle;
 import nl.mtvehicles.core.Events.VehicleClickEvent;
 import nl.mtvehicles.core.Events.VehicleLeaveEvent;
+import nl.mtvehicles.core.Infrastructure.Helpers.VehiclesUtils;
 import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
 import nl.mtvehicles.core.Main;
 import org.bukkit.Location;
@@ -31,7 +33,7 @@ public class VehicleMovement1_15 extends PacketAdapter {
     }
 
     public void onPacketReceiving(final PacketEvent event) {
-        net.minecraft.server.v1_15_R1.PacketPlayInSteerVehicle ppisv = (net.minecraft.server.v1_15_R1.PacketPlayInSteerVehicle) event.getPacket().getHandle();
+        PacketPlayInSteerVehicle ppisv = (PacketPlayInSteerVehicle) event.getPacket().getHandle();
         final Player p = event.getPlayer();
         if (p.getVehicle() == null) {
             return;
@@ -40,14 +42,18 @@ public class VehicleMovement1_15 extends PacketAdapter {
             return;
         }
         String ken = p.getVehicle().getCustomName().replace("MTVEHICLES_MAINSEAT_", "");
-        if (VehicleLeaveEvent.autostand.get("MTVEHICLES_MAIN_" + ken) == null){
+        if (VehicleLeaveEvent.autostand.get("MTVEHICLES_MAIN_" + ken) == null) {
             return;
         }
         if (VehicleClickEvent.speed.get(ken) == null) {
             VehicleClickEvent.speed.put(ken, 0.0);
             return;
         }
-
+        if (Main.vehicleDataConfig.getConfig().getDouble("vehicle."+ken+".benzine") < 1) {
+            VehiclesUtils.setbossbarvalue(0 / 100.0D, ken);
+        } else {
+            VehiclesUtils.setbossbarvalue(Vehicle.getByPlate(ken).getBenzine() / 100.0D, ken);
+        }
         ArmorStand as = VehicleLeaveEvent.autostand.get("MTVEHICLES_MAIN_" + ken);
         ArmorStand as2 = VehicleLeaveEvent.autostand.get("MTVEHICLES_SKIN_" + ken);
         ArmorStand as3 = VehicleLeaveEvent.autostand.get("MTVEHICLES_MAINSEAT_" + ken);
@@ -90,9 +96,25 @@ public class VehicleMovement1_15 extends PacketAdapter {
             }
         }
         if (forward > 0.0f) {
-            if (VehicleClickEvent.speed.get(ken) > Vehicle.getByPlate(ken).getMaxSpeed()) {
+
+            if (!(Main.vehicleDataConfig.getConfig().getDouble("vehicle."+ken+".benzine") < 1)) {
+
+                if (Main.defaultConfig.getConfig().getBoolean("benzine") == true && Main.vehicleDataConfig.getConfig().getBoolean("vehicle."+ken+".benzineEnabled") == true) {
+                    double dnum = Main.vehicleDataConfig.getConfig().getDouble("vehicle." + ken + ".benzine") - Main.vehicleDataConfig.getConfig().getDouble("vehicle." + ken + ".benzineVerbruik");
+                    Main.vehicleDataConfig.getConfig().set("vehicle." + ken + ".benzine", dnum);
+                    Main.vehicleDataConfig.save();
+                }
+                if (VehicleClickEvent.speed.get(ken) > Vehicle.getByPlate(ken).getMaxSpeed()) {
+                } else {
+                    VehicleClickEvent.speed.put(ken, VehicleClickEvent.speed.get(ken) + Vehicle.getByPlate(ken).getAcceleratieSpeed());
+                }
             } else {
-                VehicleClickEvent.speed.put(ken, VehicleClickEvent.speed.get(ken) + Vehicle.getByPlate(ken).getAcceleratieSpeed());
+                if (VehicleClickEvent.speed.get(ken) <= 0) {
+                    VehicleClickEvent.speed.put(ken, 0.0);
+                } else {
+                    VehicleClickEvent.speed.put(ken, VehicleClickEvent.speed.get(ken) - Vehicle.getByPlate(ken).getAftrekkenSpeed());
+                }
+
             }
             w = true;
             s = false;
@@ -128,6 +150,7 @@ public class VehicleMovement1_15 extends PacketAdapter {
             d = false;
         }
     }
+
     public static void KeyW(ArmorStand as, double a, double b) {
         double xOffset = 0.3;
         double yOffset = 0.4;
@@ -208,11 +231,11 @@ public class VehicleMovement1_15 extends PacketAdapter {
                 double zOffset = seat.get("z");
                 final Location locvp = main.getLocation().clone();
                 final Location fbvp = locvp.add(locvp.getDirection().setY(0).normalize().multiply(xOffset));
-                final float zvp = (float)(fbvp.getZ() + zOffset * Math.sin(Math.toRadians(seatas.getLocation().getYaw())));
-                final float xvp = (float)(fbvp.getX() + zOffset * Math.cos(Math.toRadians(seatas.getLocation().getYaw())));
-                final Location loc = new Location(main.getWorld(), (double)xvp, main.getLocation().getY() + yOffset, (double)zvp, seatas.getLocation().getYaw(), fbvp.getPitch());
-                final EntityArmorStand stand = ((CraftArmorStand)seatas).getHandle();
-                stand.setLocation(loc.getX(), loc.getY(), loc.getZ(), seatas.getLocation().getYaw()+ 15, seatas.getLocation().getPitch());
+                final float zvp = (float) (fbvp.getZ() + zOffset * Math.sin(Math.toRadians(seatas.getLocation().getYaw())));
+                final float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(seatas.getLocation().getYaw())));
+                final Location loc = new Location(main.getWorld(), (double) xvp, main.getLocation().getY() + yOffset, (double) zvp, seatas.getLocation().getYaw(), fbvp.getPitch());
+                EntityArmorStand stand = ((CraftArmorStand) seatas).getHandle();
+                stand.setLocation(loc.getX(), loc.getY(), loc.getZ(), seatas.getLocation().getYaw() + 15, seatas.getLocation().getPitch());
 
 
             }
@@ -242,6 +265,5 @@ public class VehicleMovement1_15 extends PacketAdapter {
                 stand.setLocation(loc.getX(), loc.getY(), loc.getZ(), fbvp.getYaw(), loc.getPitch());
             }
         }
-
     }
 }

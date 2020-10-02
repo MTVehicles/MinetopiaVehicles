@@ -753,8 +753,8 @@ voertuigen:
         y: -1.0
         z: 0.0
     wiekens:
-      - x: -0.3
-        y: -1.0
+      - x: -0.85
+        y: -0.12
         z: 0.0
         item:
           ==: org.bukkit.inventory.ItemStack
