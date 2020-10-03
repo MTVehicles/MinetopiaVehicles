@@ -11,6 +11,7 @@ import nl.mtvehicles.core.Events.VehicleLeaveEvent;
 import nl.mtvehicles.core.Infrastructure.Helpers.VehiclesUtils;
 import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
 import nl.mtvehicles.core.Main;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_15_R1.entity.CraftArmorStand;
@@ -152,7 +153,7 @@ public class VehicleMovement1_15 extends PacketAdapter {
     }
 
     public static void KeyW(ArmorStand as, double a, double b) {
-        double xOffset = 0.3;
+        double xOffset = 0.7;
         double yOffset = 0.4;
         double zOffset = 0;
         Location locvp = as.getLocation().clone();

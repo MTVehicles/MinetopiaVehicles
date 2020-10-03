@@ -69,6 +69,7 @@ public class Main extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new ChatEvent(), this);
         Bukkit.getPluginManager().registerEvents(new VehicleEntityEvent(), this);
         Bukkit.getPluginManager().registerEvents(new JoinEvent(), this);
+        Bukkit.getPluginManager().registerEvents(new LeaveEvent(), this);
 
         int pluginId = 5932;
         Metrics metrics = new Metrics(this, pluginId);
