@@ -22,3 +22,9 @@ kofferbakEnabled: true
 
 # Wil je benzine voor ALLE voertuigen uit? zet dit dan op false.
 benzine: true
+
+# Jerrycan grote's
+jerrycans:
+  - 25
+  - 50
+  - 75

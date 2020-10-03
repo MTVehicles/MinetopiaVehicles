@@ -42,7 +42,6 @@ public class Main extends JavaPlugin {
     @Override
     public void onEnable() {
 
-
 //        if (getServer().getPluginManager().getPlugin("ProtocolLib") == null) {
 //            System.out.println("We zien dat ProtocolLib nog niet geinstalleerd is heb even geduld");
 //            File dest = new File("plugins");
@@ -55,7 +54,6 @@ public class Main extends JavaPlugin {
 //        }
 
         instance = this;
-
 
         getLogger().info("De plugin is opgestart!");
         PluginCommand pluginCommand = Main.instance.getCommand("minetopiavehicles");
@@ -72,9 +70,7 @@ public class Main extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new JoinEvent(), this);
         Bukkit.getPluginManager().registerEvents(new LeaveEvent(), this);
 
-        int pluginId = 5932;
-        Metrics metrics = new Metrics(this, pluginId);
-
+        new Metrics(this, 5932);
 
         for (Player player : Bukkit.getServer().getOnlinePlayers()) {
             if (player.isInsideVehicle()) {
@@ -89,11 +85,11 @@ public class Main extends JavaPlugin {
             config.renameTo(new File(getDataFolder(), "config_OUD.yml"));
             saveDefaultConfig();
         }
+
         configList.add(messagesConfig);
         configList.add(vehicleDataConfig);
         configList.add(vehiclesConfig);
         configList.add(defaultConfig);
-
 
         System.out.println(this.getFile());
 

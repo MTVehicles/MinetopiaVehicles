@@ -30,12 +30,14 @@ public class VehicleBenzine extends MTVehicleSubCommand {
 
         Inventory inv = Bukkit.createInventory(null, 9, "Benzine menu");
 
-        inv.addItem(benzineItem(25, 25));
-        inv.addItem(benzineItem(50, 50));
-        inv.addItem(benzineItem(75,75));
+        List<Integer> jerrycans = (List<Integer>) Main.defaultConfig.getConfig().getList("jerrycans");
+        assert jerrycans != null;
+
+        for (int jerrycan : jerrycans) {
+            inv.addItem(benzineItem(jerrycan, jerrycan));
+        }
 
         p.openInventory(inv);
-
         return true;
     }
 
@@ -45,6 +47,7 @@ public class VehicleBenzine extends MTVehicleSubCommand {
         List<String> itemlore = new ArrayList<>();
         itemlore.add(TextUtils.colorize("&8"));
         itemlore.add(TextUtils.colorize("&7Jerrycan &e"+literold+"&7/&e"+liter+" &7liter"));
+        assert im != null;
         im.setLore(itemlore);
         im.setUnbreakable(true);
         im.setDisplayName(TextUtils.colorize("&6Jerrycan "+liter+"L"));
