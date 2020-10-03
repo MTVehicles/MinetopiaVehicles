@@ -12,6 +12,7 @@ public class vehicleAdminCMD extends MTVehicleSubCommand {
             sendMessage(Main.messagesConfig.getMessage("notForConsole"));
             return false;
         }
+        if (!checkPermission("mtvehicles.admin")) return true;
 
         sendMessage("");
         sendMessage("&aMT-Vehicles &2is made by: &aGamerJoep_&2. Do you want know more? Go to &ahttps://mtvehicles.nl");

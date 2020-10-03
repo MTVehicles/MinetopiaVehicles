@@ -26,7 +26,8 @@ public class vehicleAddMemberCMD extends MTVehicleSubCommand {
         }
 
         if (args.length != 2) {
-            sendMessage("gebruik /vehicle addmember <speler>");
+            player.sendMessage(Main.messagesConfig.getMessage("useAddMember"));
+            return true;
         }
 
         Player offlinePlayer = Bukkit.getPlayer(args[1]);

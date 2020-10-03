@@ -12,7 +12,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class vehicleSetOwnerCMD extends MTVehicleSubCommand {
     @Override
@@ -26,6 +25,11 @@ public class vehicleSetOwnerCMD extends MTVehicleSubCommand {
 
         if (item == null || (!item.hasItemMeta() || !(NBTUtils.contains(item, "mtvehicles.kenteken")))) {
             sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("noVehicleInHand")));
+            return true;
+        }
+
+        if (args.length != 2) {
+            player.sendMessage(Main.messagesConfig.getMessage("useSetOwner"));
             return true;
         }
 

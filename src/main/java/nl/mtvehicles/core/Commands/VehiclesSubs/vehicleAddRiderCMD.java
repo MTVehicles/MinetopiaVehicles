@@ -26,7 +26,8 @@ public class vehicleAddRiderCMD extends MTVehicleSubCommand {
         }
 
         if (args.length != 2) {
-            player.sendMessage("gebruik /vehicle addriders <speler>");
+            player.sendMessage(Main.messagesConfig.getMessage("useAddRider"));
+            return true;
         }
 
 

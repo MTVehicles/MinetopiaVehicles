@@ -95,24 +95,22 @@ public class Main extends JavaPlugin {
 
         System.out.println(this.getFile());
 
-        Main.reloadAll();
-    }
-
-    public static void reloadAll() {
         configList.forEach(ConfigUtils::reload);
 
         if (version.equals("v1_12_R1")) {
             ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_12());
-            Main.instance.getLogger().info("Loaded vehicle movement for version: " + version);
+            getLogger().info("Loaded vehicle movement for version: " + version);
         }
         if (version.equals("v1_13_R2")) {
             ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_13());
-            Main.instance.getLogger().info("Loaded vehicle movement for version: " + version);
+            getLogger().info("Loaded vehicle movement for version: " + version);
         }
         if (version.equals("v1_15_R1")) {
             ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_15());
-            Main.instance.getLogger().info("Loaded vehicle movement for version: " + version);
+            getLogger().info("Loaded vehicle movement for version: " + version);
         }
+
+
 
 
     }
