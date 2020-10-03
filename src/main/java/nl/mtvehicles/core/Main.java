@@ -110,10 +110,6 @@ public class Main extends JavaPlugin {
             ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_15());
             getLogger().info("Loaded vehicle movement for version: " + version);
         }
-
-
-
-
     }
 
     public void download(URL file, File dest) {

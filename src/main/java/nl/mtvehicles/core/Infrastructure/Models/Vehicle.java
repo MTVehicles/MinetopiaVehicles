@@ -70,6 +70,10 @@ public class Vehicle {
 
     }
 
+    public String getOwnerName() {
+        return Bukkit.getOfflinePlayer(UUID.fromString(this.getOwner())).getName();
+    }
+
     public static Vehicle getByPlate(String plate) {
         if (!existsByPlate(plate)) return null;
 

@@ -24,13 +24,11 @@ public class vehicleBenzineCmd extends MTVehicleSubCommand {
             return false;
         }
 
-
         Player p = (Player) sender;
 
         if (!checkPermission("mtvehicles.benzine")) return true;
 
         Inventory inv = Bukkit.createInventory(null, 9, "Benzine menu");
-
 
         inv.addItem(benzineItem(25, 25));
         inv.addItem(benzineItem(50, 50));
