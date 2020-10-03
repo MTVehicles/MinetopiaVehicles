@@ -86,10 +86,10 @@ public class MenuClickEvent implements Listener {
                 String kenteken = NBTUtils.getString(vehicleMenu.get(p.getUniqueId()), "mtvehicles.kenteken");
                 String naam = NBTUtils.getString(vehicleMenu.get(p.getUniqueId()), "mtvehicles.naam");
                 Vehicle vehicle = new Vehicle();
-                List<String> members = (List<String>) Main.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".members");
-                List<String> riders = (List<String>) Main.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".riders");
-                List<String> kof = (List<String>) Main.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".kofferbakData");
-                vehicle.setLicensePlate("vehicle." + kenteken);
+                List<String> members = Main.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".members");
+                List<String> riders = Main.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".riders");
+                List<String> kof = Main.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".kofferbakData");
+                vehicle.setLicensePlate(kenteken);
                 vehicle.setName(naam);
                 vehicle.setVehicleType((String) vehicles.get(intSave.get(p.getUniqueId())).get("vehicleType"));
                 vehicle.setSkinDamage(vehicleMenu.get(p.getUniqueId()).getDurability());

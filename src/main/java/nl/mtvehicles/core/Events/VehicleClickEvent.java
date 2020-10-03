@@ -150,7 +150,9 @@ public class VehicleClickEvent implements Listener {
                                 }
                             }
                             List<Map<String, Double>> wiekens = (List<Map<String, Double>>) vehicle.getVehicleData().get("wiekens");
-                            if (Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".vehicleType").contains("HELICOPTER")) {
+                            String vehicleType = Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".vehicleType");
+                            if (vehicleType == null) return;
+                            if (vehicleType.contains("HELICOPTER")) {
                                 for (int i = 1; i <= wiekens.size(); i++) {
                                     Map<?, ?> seat = wiekens.get(i - 1);
                                     if (i == 1) {

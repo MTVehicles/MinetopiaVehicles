@@ -50,6 +50,7 @@ public class ConfigUtils implements ConfigInterface {
         } catch (IOException ex) {
             Main.instance.getLogger().log(Level.SEVERE, "Could not save config to " + customConfigFile, ex);
         }
+        this.reload();
         return true;
     }
 

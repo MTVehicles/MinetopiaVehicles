@@ -65,15 +65,16 @@ public class Vehicle {
         map.put("owner", this.getOwner());
         map.put("riders", this.getRiders());
         map.put("members", this.getMembers());
-        Main.vehicleDataConfig.getConfig().set(this.getLicensePlate(), map);
+        Main.vehicleDataConfig.getConfig().set(String.format("vehicle.%s", this.getLicensePlate()), map);
         Main.vehicleDataConfig.save();
 
     }
 
     public static Vehicle getByPlate(String plate) {
         if (!existsByPlate(plate)) return null;
-        ConfigurationSection section = Main.vehicleDataConfig.getConfig().getConfigurationSection(String.format("vehicle.%s", plate));
-        Map<?, ?> vehicleData = section.getValues(true);
+
+        Map<?, ?> vehicleData = Main.vehicleDataConfig.getConfig()
+                .getConfigurationSection(String.format("vehicle.%s", plate)).getValues(true);
         List<Map<?, ?>> vehicles = Main.vehiclesConfig.getConfig().getMapList("voertuigen");
         List<Map<?, ?>> matchedVehicles = new ArrayList<>();
         for (Map<?, ?> configVehicle : vehicles) {
@@ -89,9 +90,9 @@ public class Vehicle {
         if (matchedVehicles.size() > 1) return null;
         Vehicle vehicle = new Vehicle();
         vehicle.setVehicleData(matchedVehicles.get(0));
-        vehicle.setLicensePlate((String) vehicleData.get("licensePlate"));
+        vehicle.setLicensePlate(plate);
         vehicle.setName((String) vehicleData.get("name"));
-        vehicle.setName((String) vehicleData.get("vehicleType"));
+        vehicle.setVehicleType((String) vehicleData.get("vehicleType"));
         vehicle.setSkinDamage((int) vehicleData.get("skinDamage"));
         vehicle.setSkinItem((String) vehicleData.get("skinItem"));
         vehicle.setGlow((boolean) vehicleData.get("isGlow"));

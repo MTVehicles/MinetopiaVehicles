@@ -11,13 +11,15 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+
 public class vehicleSetOwnerCMD extends MTVehicleSubCommand {
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
         if (!(sender instanceof Player)) return false;
 
-        Player p = (Player) sender;
-        ItemStack item = p.getInventory().getItemInMainHand();
+        Player player = (Player) sender;
+        ItemStack item = player.getInventory().getItemInMainHand();
 
         if (!checkPermission("mtvehicles.setowner")) return true;
 
@@ -27,23 +29,33 @@ public class vehicleSetOwnerCMD extends MTVehicleSubCommand {
         }
 
         if (args.length != 2) {
-            p.sendMessage(Main.messagesConfig.getMessage("useSetOwner"));
+            player.sendMessage(Main.messagesConfig.getMessage("useSetOwner"));
             return true;
         }
 
-        String ken = NBTUtils.getString(item, "mtvehicles.kenteken");
-        Vehicle.getByPlate(ken).setOwner(args[1]);
+        String licensePlate = NBTUtils.getString(item, "mtvehicles.kenteken");
+
+        if (!Vehicle.existsByPlate(licensePlate)) {
+            player.sendMessage(Main.messagesConfig.getMessage("vehicleNotFound"));
+            return true;
+        }
+
         Player of = Bukkit.getPlayer(args[1]);
 
         if (of == null || !of.hasPlayedBefore()) {
-            p.sendMessage(Main.messagesConfig.getMessage("playerNotFound"));
+            player.sendMessage(Main.messagesConfig.getMessage("playerNotFound"));
             return true;
         }
 
-        Main.vehicleDataConfig.getConfig().set("vehicle." + ken + ".owner", of.getUniqueId().toString());
-        p.sendMessage(Main.messagesConfig.getMessage("memberChange"));
-        Main.vehicleDataConfig.save();
+        Vehicle vehicle = Vehicle.getByPlate(licensePlate);
 
+        assert vehicle != null;
+        vehicle.setRiders(new ArrayList<String>());
+        vehicle.setMembers(new ArrayList<String>());
+        vehicle.setOwner(of.getUniqueId().toString());
+        vehicle.save();
+
+        player.sendMessage(Main.messagesConfig.getMessage("memberChange"));
         return true;
     }
 }
