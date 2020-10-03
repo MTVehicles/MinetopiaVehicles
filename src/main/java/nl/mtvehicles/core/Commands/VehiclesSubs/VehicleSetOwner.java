@@ -20,7 +20,11 @@ public class VehicleSetOwner extends MTVehicleSubCommand {
         Player player = (Player) sender;
         ItemStack item = player.getInventory().getItemInMainHand();
 
-        if (!checkPermission("mtvehicles.setowner")) return true;
+        boolean playerSetOwner = Main.defaultConfig.getConfig().getBoolean("spelerSetOwner");
+
+        if (!playerSetOwner && !checkPermission("mtvehicles.setowner")) {
+            return true;
+        }
 
         if (item == null || (!item.hasItemMeta() || !(NBTUtils.contains(item, "mtvehicles.kenteken")))) {
             sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("noVehicleInHand")));
@@ -48,6 +52,14 @@ public class VehicleSetOwner extends MTVehicleSubCommand {
 
         Vehicle vehicle = Vehicle.getByPlate(licensePlate);
         assert vehicle != null;
+
+        if ((playerSetOwner || player.hasPermission("mtvehicles.setowner"))
+            && !vehicle.getOwner().equals(player.getUniqueId().toString())
+        ) {
+            player.sendMessage(Main.messagesConfig.getMessage("notYourCar"));
+            return true;
+        }
+
         vehicle.setRiders(new ArrayList<String>());
         vehicle.setMembers(new ArrayList<String>());
         vehicle.setOwner(of.getUniqueId().toString());

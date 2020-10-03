@@ -28,3 +28,6 @@ jerrycans:
   - 25
   - 50
   - 75
+
+# Laat spelers zelf de owner zetten
+spelerSetOwner: false
