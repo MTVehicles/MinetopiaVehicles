@@ -23,6 +23,7 @@ public class VehicleSubCommandManager extends MTVehicleCommand {
         Main.subcommands.put("removemember", new VehicleRemoveMember());
         Main.subcommands.put("removerider", new VehicleRemoveRider());
         Main.subcommands.put("admin", new VehicleAdmin());
+        Main.subcommands.put("givecar", new VehicleGiveCar());
     }
 
     @Override
