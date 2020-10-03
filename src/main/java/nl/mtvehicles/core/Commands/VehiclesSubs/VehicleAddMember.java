@@ -13,7 +13,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
-public class vehicleAddRiderCMD extends MTVehicleSubCommand {
+public class VehicleAddMember extends MTVehicleSubCommand {
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
         if (!isPlayer) return false;
@@ -26,10 +26,9 @@ public class vehicleAddRiderCMD extends MTVehicleSubCommand {
         }
 
         if (args.length != 2) {
-            player.sendMessage(Main.messagesConfig.getMessage("useAddRider"));
+            player.sendMessage(Main.messagesConfig.getMessage("useAddMember"));
             return true;
         }
-
 
         Player offlinePlayer = Bukkit.getPlayer(args[1]);
         String licensePlate = NBTUtils.getString(item, "mtvehicles.kenteken");
@@ -42,9 +41,9 @@ public class vehicleAddRiderCMD extends MTVehicleSubCommand {
         Vehicle vehicle = Vehicle.getByPlate(licensePlate);
 
         assert vehicle != null;
-        List<String> riders = vehicle.getRiders();
-        riders.add(offlinePlayer.getUniqueId().toString());
-        vehicle.setRiders(riders);
+        List<String> members = vehicle.getMembers();
+        members.add(offlinePlayer.getUniqueId().toString());
+        vehicle.setMembers(members);
         vehicle.save();
 
         player.sendMessage(Main.messagesConfig.getMessage("memberChange"));

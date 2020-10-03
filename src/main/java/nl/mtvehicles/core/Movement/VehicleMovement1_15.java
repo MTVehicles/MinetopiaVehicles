@@ -8,10 +8,9 @@ import net.minecraft.server.v1_15_R1.EntityArmorStand;
 import net.minecraft.server.v1_15_R1.PacketPlayInSteerVehicle;
 import nl.mtvehicles.core.Events.VehicleClickEvent;
 import nl.mtvehicles.core.Events.VehicleLeaveEvent;
-import nl.mtvehicles.core.Infrastructure.Helpers.VehiclesUtils;
+import nl.mtvehicles.core.Infrastructure.Helpers.BossbarUtils;
 import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
 import nl.mtvehicles.core.Main;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_15_R1.entity.CraftArmorStand;
@@ -51,9 +50,9 @@ public class VehicleMovement1_15 extends PacketAdapter {
             return;
         }
         if (Main.vehicleDataConfig.getConfig().getDouble("vehicle."+ken+".benzine") < 1) {
-            VehiclesUtils.setbossbarvalue(0 / 100.0D, ken);
+            BossbarUtils.setbossbarvalue(0 / 100.0D, ken);
         } else {
-            VehiclesUtils.setbossbarvalue(Vehicle.getByPlate(ken).getBenzine() / 100.0D, ken);
+            BossbarUtils.setbossbarvalue(Vehicle.getByPlate(ken).getBenzine() / 100.0D, ken);
         }
         ArmorStand as = VehicleLeaveEvent.autostand.get("MTVEHICLES_MAIN_" + ken);
         ArmorStand as2 = VehicleLeaveEvent.autostand.get("MTVEHICLES_SKIN_" + ken);

@@ -1,6 +1,6 @@
 package nl.mtvehicles.core.Commands.VehiclesSubs;
 
-import nl.mtvehicles.core.Infrastructure.Helpers.VehiclesUtils;
+import nl.mtvehicles.core.Infrastructure.Helpers.ItemUtils;
 import nl.mtvehicles.core.Infrastructure.Models.MTVehicleSubCommand;
 import nl.mtvehicles.core.Main;
 import org.bukkit.Bukkit;
@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class vehicleMenuCmd extends MTVehicleSubCommand {
+public class VehicleMenu extends MTVehicleSubCommand {
     public static HashMap<UUID, Inventory> beginMenu = new HashMap<>();
 
     @Override
@@ -30,7 +30,7 @@ public class vehicleMenuCmd extends MTVehicleSubCommand {
             int itemDamage = (int) vehicle.get("itemDamage");
             String name = (String) vehicle.get("name");
             String skinItem = (String) vehicle.get("skinItem");
-            ItemStack itemStack = VehiclesUtils.carItem(itemDamage, name, skinItem);
+            ItemStack itemStack = ItemUtils.carItem(itemDamage, name, skinItem);
             inv.addItem(itemStack);
         }
 

@@ -1,6 +1,6 @@
 package nl.mtvehicles.core.Events;
 
-import nl.mtvehicles.core.Infrastructure.Helpers.VehiclesUtils;
+import nl.mtvehicles.core.Infrastructure.Helpers.BossbarUtils;
 import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
 import nl.mtvehicles.core.Main;
 import org.bukkit.entity.ArmorStand;
@@ -35,7 +35,7 @@ public class VehicleLeaveEvent implements Listener {
                 }
             }
 
-            VehiclesUtils.removeBossbar((Player) e.getEntity(), ken);
+            BossbarUtils.removeBossbar((Player) e.getEntity(), ken);
 
             ArmorStand as = VehicleLeaveEvent.autostand.get("MTVEHICLES_MAIN_" + ken);
             ArmorStand as2 = VehicleLeaveEvent.autostand.get("MTVEHICLES_SKIN_" + ken);
