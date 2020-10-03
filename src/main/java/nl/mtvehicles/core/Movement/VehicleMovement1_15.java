@@ -11,13 +11,13 @@ import nl.mtvehicles.core.Events.VehicleLeaveEvent;
 import nl.mtvehicles.core.Infrastructure.Helpers.BossbarUtils;
 import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
 import nl.mtvehicles.core.Main;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_15_R1.entity.CraftArmorStand;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
-
 import java.util.List;
 import java.util.Map;
 
@@ -163,16 +163,15 @@ public class VehicleMovement1_15 extends PacketAdapter {
         if (loc.getBlock().getType().toString().contains("STEP") || loc.getBlock().getType().toString().contains("SLAB")) {
             as.setVelocity(new Vector(as.getLocation().getDirection().multiply((double) a).getX(), 0.5, as.getLocation().getDirection().multiply((double) a).getZ()));
         } else {
+
             Location loc2 = as.getLocation();
             Location location = new Location(loc2.getWorld(), loc2.getX(), loc2.getY(), loc2.getZ(), loc2.getYaw(), loc2.getPitch());
             if (location.getBlock().getType().toString().contains("STEP") || !loc.getBlock().getType().toString().contains("SLAB")) {
                 as.setVelocity(new Vector(as.getLocation().getDirection().multiply((double) a).getX(), 0.5, as.getLocation().getDirection().multiply((double) a).getZ()));
                 as.setVelocity(new Vector(as.getLocation().getDirection().multiply((double) a).getX(), b, as.getLocation().getDirection().multiply((double) a).getZ()));
-                if (!loc.getBlock().getType().toString().contains("AIR")) {
-                    if (!loc.getBlock().getType().toString().contains("STEP") || !loc.getBlock().getType().toString().contains("SLAB")) {
+                    if (!loc.getBlock().isPassable()) {
                         String ken = as.getCustomName().replace("MTVEHICLES_MAIN_", "");
                         VehicleClickEvent.speed.put(ken, -0.01);
-                    }
                 }
             }
         }
