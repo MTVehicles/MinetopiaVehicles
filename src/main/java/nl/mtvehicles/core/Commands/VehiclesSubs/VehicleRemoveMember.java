@@ -31,24 +31,22 @@ public class VehicleRemoveMember extends MTVehicleSubCommand {
         }
 
         String ken = NBTUtils.getString(item, "mtvehicles.kenteken");
-        Vehicle vehicle = Vehicle.getByPlate(ken);
-        if (vehicle == null) return true;
-        vehicle.setOwner(args[1]);
         Player of = Bukkit.getPlayer(args[1]);
+
+        Vehicle vehicle = Vehicle.getByPlate(ken);
 
         if (of == null || !of.hasPlayedBefore()) {
             p.sendMessage(Main.messagesConfig.getMessage("playerNotFound"));
             return true;
         }
 
-        List<String> members = Main.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".members");
+        assert vehicle != null;
+        List<String> members = vehicle.getMembers();
         members.remove(of.getUniqueId().toString());
-        Main.vehicleDataConfig.getConfig().set("vehicle." + ken + ".members", members);
-        Main.vehicleDataConfig.save();
+        vehicle.setMembers(members);
+        vehicle.save();
 
-        Main.vehicleDataConfig.save();
         p.sendMessage(Main.messagesConfig.getMessage("memberChange"));
-
         return true;
     }
 }

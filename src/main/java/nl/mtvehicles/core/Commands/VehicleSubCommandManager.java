@@ -37,15 +37,7 @@ public class VehicleSubCommandManager extends MTVehicleCommand {
             return true;
         }
 
-
-            Main.subcommands.get(args[0]).onExecute(sender, cmd, s, args);
-
-
-
-
+        Main.subcommands.get(args[0]).onExecute(sender, cmd, s, args);
         return true;
     }
-
-
-
 }

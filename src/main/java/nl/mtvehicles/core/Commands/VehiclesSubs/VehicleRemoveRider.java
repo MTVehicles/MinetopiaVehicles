@@ -30,26 +30,23 @@ public class VehicleRemoveRider extends MTVehicleSubCommand {
             return true;
         }
 
-        try {
-            String ken = NBTUtils.getString(item, "mtvehicles.kenteken");
-            Vehicle.getByPlate(ken).setOwner(args[1]);
-            Player of = Bukkit.getPlayer(args[1]);
-            if (!of.hasPlayedBefore()) {
-                p.sendMessage(Main.messagesConfig.getMessage("playerNotFound"));
+        String ken = NBTUtils.getString(item, "mtvehicles.kenteken");
+        Player of = Bukkit.getPlayer(args[1]);
 
-            } else {
-                List<String> riders = Main.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".riders");
-                riders.remove(of.getUniqueId().toString());
-                Main.vehicleDataConfig.getConfig().set("vehicle." + ken + ".riders", riders);
-                Main.vehicleDataConfig.save();
+        Vehicle vehicle = Vehicle.getByPlate(ken);
 
-                Main.vehicleDataConfig.save();
-                p.sendMessage(Main.messagesConfig.getMessage("memberChange"));
-            }
-        } catch (NullPointerException x) {
+        if (of == null || !of.hasPlayedBefore()) {
             p.sendMessage(Main.messagesConfig.getMessage("playerNotFound"));
+            return true;
         }
 
+        assert vehicle != null;
+        List<String> riders = vehicle.getRiders();
+        riders.remove(of.getUniqueId().toString());
+        vehicle.setRiders(riders);
+        vehicle.save();
+
+        p.sendMessage(Main.messagesConfig.getMessage("memberChange"));
         return true;
     }
 }
