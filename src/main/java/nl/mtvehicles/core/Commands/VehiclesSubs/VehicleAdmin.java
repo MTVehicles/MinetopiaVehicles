@@ -5,7 +5,7 @@ import nl.mtvehicles.core.Main;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
-public class vehicleAdminCMD extends MTVehicleSubCommand {
+public class VehicleAdmin extends MTVehicleSubCommand {
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
         if (!isPlayer) {

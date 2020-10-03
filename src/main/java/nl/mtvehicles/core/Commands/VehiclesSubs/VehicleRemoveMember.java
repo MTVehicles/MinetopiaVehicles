@@ -13,7 +13,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
-public class vehicleRemoveRiderCMD extends MTVehicleSubCommand {
+public class VehicleRemoveMember extends MTVehicleSubCommand {
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
         if (!isPlayer) return false;
@@ -26,29 +26,28 @@ public class vehicleRemoveRiderCMD extends MTVehicleSubCommand {
         }
 
         if (args.length != 2) {
-            p.sendMessage(Main.messagesConfig.getMessage("useRemoveRider"));
+            p.sendMessage(Main.messagesConfig.getMessage("useRemoveMember"));
             return true;
         }
 
-        try {
-            String ken = NBTUtils.getString(item, "mtvehicles.kenteken");
-            Vehicle.getByPlate(ken).setOwner(args[1]);
-            Player of = Bukkit.getPlayer(args[1]);
-            if (!of.hasPlayedBefore()) {
-                p.sendMessage(Main.messagesConfig.getMessage("playerNotFound"));
+        String ken = NBTUtils.getString(item, "mtvehicles.kenteken");
+        Vehicle vehicle = Vehicle.getByPlate(ken);
+        if (vehicle == null) return true;
+        vehicle.setOwner(args[1]);
+        Player of = Bukkit.getPlayer(args[1]);
 
-            } else {
-                List<String> riders = Main.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".riders");
-                riders.remove(of.getUniqueId().toString());
-                Main.vehicleDataConfig.getConfig().set("vehicle." + ken + ".riders", riders);
-                Main.vehicleDataConfig.save();
-
-                Main.vehicleDataConfig.save();
-                p.sendMessage(Main.messagesConfig.getMessage("memberChange"));
-            }
-        } catch (NullPointerException x) {
+        if (of == null || !of.hasPlayedBefore()) {
             p.sendMessage(Main.messagesConfig.getMessage("playerNotFound"));
+            return true;
         }
+
+        List<String> members = Main.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".members");
+        members.remove(of.getUniqueId().toString());
+        Main.vehicleDataConfig.getConfig().set("vehicle." + ken + ".members", members);
+        Main.vehicleDataConfig.save();
+
+        Main.vehicleDataConfig.save();
+        p.sendMessage(Main.messagesConfig.getMessage("memberChange"));
 
         return true;
     }

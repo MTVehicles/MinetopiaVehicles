@@ -13,7 +13,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
-public class vehicleAddMemberCMD extends MTVehicleSubCommand {
+public class VehicleAddMember extends MTVehicleSubCommand {
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
         if (!isPlayer) return false;

@@ -1,12 +1,13 @@
 package nl.mtvehicles.core;
 
 import com.comphenix.protocol.ProtocolLibrary;
-import nl.mtvehicles.core.Commands.TabCompleter;
-import nl.mtvehicles.core.Commands.vehicleSubCommandManager;
+import nl.mtvehicles.core.Commands.VehicleTabCompleterManager;
+import nl.mtvehicles.core.Commands.VehicleSubCommandManager;
 import nl.mtvehicles.core.Events.*;
 import nl.mtvehicles.core.Infrastructure.DataConfig.*;
 import nl.mtvehicles.core.Infrastructure.Models.ConfigUtils;
 import nl.mtvehicles.core.Infrastructure.Models.MTVehicleSubCommand;
+import nl.mtvehicles.core.Inventory.InventoryClickEvent;
 import nl.mtvehicles.core.Movement.VehicleMovement1_12;
 import nl.mtvehicles.core.Movement.VehicleMovement1_13;
 import nl.mtvehicles.core.Movement.VehicleMovement1_15;
@@ -59,10 +60,10 @@ public class Main extends JavaPlugin {
         getLogger().info("De plugin is opgestart!");
         PluginCommand pluginCommand = Main.instance.getCommand("minetopiavehicles");
         if (pluginCommand != null) {
-            pluginCommand.setExecutor(new vehicleSubCommandManager());
-            pluginCommand.setTabCompleter(new TabCompleter());
+            pluginCommand.setExecutor(new VehicleSubCommandManager());
+            pluginCommand.setTabCompleter(new VehicleTabCompleterManager());
         }
-        Bukkit.getPluginManager().registerEvents(new MenuClickEvent(), this);
+        Bukkit.getPluginManager().registerEvents(new InventoryClickEvent(), this);
         Bukkit.getPluginManager().registerEvents(new VehiclePlaceEvent(), this);
         Bukkit.getPluginManager().registerEvents(new VehicleClickEvent(), this);
         Bukkit.getPluginManager().registerEvents(new VehicleLeaveEvent(), this);

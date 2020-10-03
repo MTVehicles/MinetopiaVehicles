@@ -1,8 +1,10 @@
 package nl.mtvehicles.core.Events;
 
-import nl.mtvehicles.core.Infrastructure.Helpers.VehiclesUtils;
+import nl.mtvehicles.core.Infrastructure.Helpers.BossbarUtils;
 import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
 import nl.mtvehicles.core.Main;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -33,9 +35,15 @@ public class VehicleLeaveEvent implements Listener {
                 if (!(as4 == null)) {
                     //as4.getHelmet().setType(VehiclesUtils.mItem("AIR", 1, (short) 1, " ", " "));
                 }
+                if (!as4.getLocation().getBlock().getType().equals(Material.AIR)){
+                    as4.setGravity(false);
+
+                } else {
+                    as4.setGravity(true);
+                }
             }
 
-            VehiclesUtils.removeBossbar((Player) e.getEntity(), ken);
+            BossbarUtils.removeBossbar((Player) e.getEntity(), ken);
 
             ArmorStand as = VehicleLeaveEvent.autostand.get("MTVEHICLES_MAIN_" + ken);
             ArmorStand as2 = VehicleLeaveEvent.autostand.get("MTVEHICLES_SKIN_" + ken);

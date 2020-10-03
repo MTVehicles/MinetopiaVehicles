@@ -11,41 +11,40 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.List;
-
-public class vehicleAddRiderCMD extends MTVehicleSubCommand {
+public class VehicleGiveCar extends MTVehicleSubCommand {
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
-        if (!isPlayer) return false;
+        if (!(sender instanceof Player)) return false;
 
         Player player = (Player) sender;
         ItemStack item = player.getInventory().getItemInMainHand();
-        if (!item.hasItemMeta() || !NBTUtils.contains(item, "mtvehicles.kenteken")) {
+
+        if (!checkPermission("mtvehicles.givecar")) return true;
+
+        if (item == null || (!item.hasItemMeta() || !(NBTUtils.contains(item, "mtvehicles.kenteken")))) {
             sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("noVehicleInHand")));
             return true;
         }
 
         if (args.length != 2) {
-            player.sendMessage(Main.messagesConfig.getMessage("useAddRider"));
+            player.sendMessage(Main.messagesConfig.getMessage("useSetOwner"));
             return true;
         }
 
-
-        Player offlinePlayer = Bukkit.getPlayer(args[1]);
         String licensePlate = NBTUtils.getString(item, "mtvehicles.kenteken");
 
-        if (offlinePlayer == null || !offlinePlayer.hasPlayedBefore()) {
-            sendMessage(Main.messagesConfig.getMessage("playerNotFound"));
+        if (!Vehicle.existsByPlate(licensePlate)) {
+            player.sendMessage(Main.messagesConfig.getMessage("vehicleNotFound"));
             return true;
         }
 
-        Vehicle vehicle = Vehicle.getByPlate(licensePlate);
+        Player of = Bukkit.getPlayer(args[1]);
 
-        assert vehicle != null;
-        List<String> riders = vehicle.getRiders();
-        riders.add(offlinePlayer.getUniqueId().toString());
-        vehicle.setRiders(riders);
-        vehicle.save();
+        if (of == null || !of.hasPlayedBefore()) {
+            player.sendMessage(Main.messagesConfig.getMessage("playerNotFound"));
+            return true;
+        }
+
 
         player.sendMessage(Main.messagesConfig.getMessage("memberChange"));
         return true;

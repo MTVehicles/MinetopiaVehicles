@@ -2,7 +2,7 @@ package nl.mtvehicles.core.Commands.VehiclesSubs;
 
 import nl.mtvehicles.core.Infrastructure.Helpers.NBTUtils;
 import nl.mtvehicles.core.Infrastructure.Helpers.TextUtils;
-import nl.mtvehicles.core.Infrastructure.Helpers.VehiclesUtils;
+import nl.mtvehicles.core.Infrastructure.Helpers.ItemUtils;
 import nl.mtvehicles.core.Infrastructure.Models.ConfigUtils;
 import nl.mtvehicles.core.Infrastructure.Models.MTVehicleSubCommand;
 import nl.mtvehicles.core.Main;
@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-public class vehicleEditCmd extends MTVehicleSubCommand {
+public class VehicleEdit extends MTVehicleSubCommand {
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
         if (!isPlayer) return false;
@@ -36,12 +36,12 @@ public class vehicleEditCmd extends MTVehicleSubCommand {
     public static void editMenu(Player p, ItemStack item) {
         String ken = NBTUtils.getString(item, "mtvehicles.kenteken");
         Inventory inv = Bukkit.createInventory(null, 27, "Vehicle Edit");
-        inv.setItem(10, VehiclesUtils.mItem2(Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".skinItem"), 1, (short) Main.vehicleDataConfig.getConfig().getInt("vehicle." + ken + ".skinDamage"), "&6Vehicle Settings", ""));
-        inv.setItem(11, VehiclesUtils.mItem2("DIAMOND_HOE", 1, (short) 58, "&6Benzine Settings", ""));
-        inv.setItem(12, VehiclesUtils.mItem("CHEST", 1, (short) 0, "&6Kofferbak Settings", ""));
-        inv.setItem(13, VehiclesUtils.mItem("PAPER", 1, (short) 0, "&6Member Settings", ""));
-        inv.setItem(14, VehiclesUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Speed Settings", ""));
-        inv.setItem(16, VehiclesUtils.mItem("BARRIER", 1, (short) 0, "&4Delete Vehicle", "&7LETOP! Je kunt het item niet meer terug krijgen!"));
+        inv.setItem(10, ItemUtils.mItem2(Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".skinItem"), 1, (short) Main.vehicleDataConfig.getConfig().getInt("vehicle." + ken + ".skinDamage"), "&6Vehicle Settings", ""));
+        inv.setItem(11, ItemUtils.mItem2("DIAMOND_HOE", 1, (short) 58, "&6Benzine Settings", ""));
+        inv.setItem(12, ItemUtils.mItem("CHEST", 1, (short) 0, "&6Kofferbak Settings", ""));
+        inv.setItem(13, ItemUtils.mItem("PAPER", 1, (short) 0, "&6Member Settings", ""));
+        inv.setItem(14, ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Speed Settings", ""));
+        inv.setItem(16, ItemUtils.mItem("BARRIER", 1, (short) 0, "&4Delete Vehicle", "&7LETOP! Je kunt het item niet meer terug krijgen!"));
         p.openInventory(inv);
     }
 }

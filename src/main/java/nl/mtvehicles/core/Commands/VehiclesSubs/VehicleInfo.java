@@ -16,7 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class vehicleInfoCmd extends MTVehicleSubCommand {
+public class VehicleInfo extends MTVehicleSubCommand {
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
         Player p = (Player) sender;
