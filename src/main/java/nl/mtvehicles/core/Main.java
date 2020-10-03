@@ -1,6 +1,7 @@
 package nl.mtvehicles.core;
 
 import com.comphenix.protocol.ProtocolLibrary;
+import nl.mtvehicles.core.Commands.TabCompleter;
 import nl.mtvehicles.core.Commands.vehicleSubCommandManager;
 import nl.mtvehicles.core.Events.*;
 import nl.mtvehicles.core.Infrastructure.DataConfig.*;
@@ -59,7 +60,7 @@ public class Main extends JavaPlugin {
         PluginCommand pluginCommand = Main.instance.getCommand("minetopiavehicles");
         if (pluginCommand != null) {
             pluginCommand.setExecutor(new vehicleSubCommandManager());
-            pluginCommand.setTabCompleter((commandSender, command, s1, strings) -> new ArrayList<>(Main.subcommands.keySet()));
+            pluginCommand.setTabCompleter(new TabCompleter());
         }
         Bukkit.getPluginManager().registerEvents(new MenuClickEvent(), this);
         Bukkit.getPluginManager().registerEvents(new VehiclePlaceEvent(), this);
@@ -94,22 +95,24 @@ public class Main extends JavaPlugin {
 
         System.out.println(this.getFile());
 
+        Main.reloadAll();
+    }
+
+    public static void reloadAll() {
         configList.forEach(ConfigUtils::reload);
 
         if (version.equals("v1_12_R1")) {
             ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_12());
-            getLogger().info("Loaded vehicle movement for version: " + version);
+            Main.instance.getLogger().info("Loaded vehicle movement for version: " + version);
         }
         if (version.equals("v1_13_R2")) {
             ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_13());
-            getLogger().info("Loaded vehicle movement for version: " + version);
+            Main.instance.getLogger().info("Loaded vehicle movement for version: " + version);
         }
         if (version.equals("v1_15_R1")) {
             ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_15());
-            getLogger().info("Loaded vehicle movement for version: " + version);
+            Main.instance.getLogger().info("Loaded vehicle movement for version: " + version);
         }
-
-
 
 
     }
@@ -138,7 +141,6 @@ public class Main extends JavaPlugin {
             ec.printStackTrace();
         }
     }
-
 
     @Override
     public void onDisable() {

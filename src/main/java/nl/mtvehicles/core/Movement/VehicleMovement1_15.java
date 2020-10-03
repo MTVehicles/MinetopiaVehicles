@@ -66,7 +66,7 @@ public class VehicleMovement1_15 extends PacketAdapter {
         Location loc = as.getLocation();
         Location location = new Location(loc.getWorld(), loc.getX(), loc.getY() - 0.2, loc.getZ(), loc.getYaw(), loc.getPitch());
         if (!Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".vehicleType").contains("HELICOPTER")) {
-            if (location.getBlock().getType().equals(Material.AIR) || location.getBlock().getType().equals(Material.WATER)) {
+            if (location.getBlock().isPassable() || location.getBlock().getType().equals(Material.WATER)) {
                 KeyW(as, VehicleClickEvent.speed.get(ken), -0.8);
             } else {
                 KeyW(as, VehicleClickEvent.speed.get(ken), 0.0);

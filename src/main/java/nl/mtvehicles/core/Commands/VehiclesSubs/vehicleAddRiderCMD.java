@@ -18,37 +18,35 @@ public class vehicleAddRiderCMD extends MTVehicleSubCommand {
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
         if (!isPlayer) return false;
 
-        Player p = (Player) sender;
-        ItemStack item = p.getInventory().getItemInMainHand();
+        Player player = (Player) sender;
+        ItemStack item = player.getInventory().getItemInMainHand();
         if (!item.hasItemMeta() || !NBTUtils.contains(item, "mtvehicles.kenteken")) {
             sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("noVehicleInHand")));
             return true;
         }
 
         if (args.length != 2) {
-            p.sendMessage("gebruik /vehicle addriders <speler>");
+            player.sendMessage("gebruik /vehicle addriders <speler>");
         }
 
-        try {
-            String ken = NBTUtils.getString(item, "mtvehicles.kenteken");
-            Vehicle.getByPlate(ken).setOwner(args[1]);
-            Player of = Bukkit.getPlayer(args[1]);
-            if (!of.hasPlayedBefore()) {
-                p.sendMessage(Main.messagesConfig.getMessage("playerNotFound"));
 
-            } else {
-                List<String> riders = Main.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".riders");
-                riders.add(of.getUniqueId().toString());
-                Main.vehicleDataConfig.getConfig().set("vehicle." + ken + ".riders", riders);
-                Main.vehicleDataConfig.save();
+        Player offlinePlayer = Bukkit.getPlayer(args[1]);
+        String licensePlate = NBTUtils.getString(item, "mtvehicles.kenteken");
 
-                Main.vehicleDataConfig.save();
-                p.sendMessage(Main.messagesConfig.getMessage("memberChange"));
-            }
-        } catch (NullPointerException x) {
-            p.sendMessage(Main.messagesConfig.getMessage("playerNotFound"));
+        if (offlinePlayer == null || !offlinePlayer.hasPlayedBefore()) {
+            sendMessage(Main.messagesConfig.getMessage("playerNotFound"));
+            return true;
         }
 
+        Vehicle vehicle = Vehicle.getByPlate(licensePlate);
+
+        assert vehicle != null;
+        List<String> riders = vehicle.getRiders();
+        riders.add(offlinePlayer.getUniqueId().toString());
+        vehicle.setRiders(riders);
+        vehicle.save();
+
+        player.sendMessage(Main.messagesConfig.getMessage("memberChange"));
         return true;
     }
 }

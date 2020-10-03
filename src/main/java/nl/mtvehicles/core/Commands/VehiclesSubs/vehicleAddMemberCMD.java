@@ -3,6 +3,7 @@ package nl.mtvehicles.core.Commands.VehiclesSubs;
 import nl.mtvehicles.core.Infrastructure.Helpers.NBTUtils;
 import nl.mtvehicles.core.Infrastructure.Helpers.TextUtils;
 import nl.mtvehicles.core.Infrastructure.Models.MTVehicleSubCommand;
+import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
 import nl.mtvehicles.core.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -36,14 +37,15 @@ public class vehicleAddMemberCMD extends MTVehicleSubCommand {
             return true;
         }
 
-        List<String> members = Main.vehicleDataConfig.getConfig().getStringList("vehicle." + licensePlate + ".members");
+        Vehicle vehicle = Vehicle.getByPlate(licensePlate);
+
+        assert vehicle != null;
+        List<String> members = vehicle.getMembers();
         members.add(offlinePlayer.getUniqueId().toString());
-        Main.vehicleDataConfig.getConfig().set("vehicle." + licensePlate + ".members", members);
-        Main.vehicleDataConfig.save();
+        vehicle.setMembers(members);
+        vehicle.save();
 
-        Main.vehicleDataConfig.save();
         player.sendMessage(Main.messagesConfig.getMessage("memberChange"));
-
         return true;
     }
 }

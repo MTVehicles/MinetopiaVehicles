@@ -69,7 +69,7 @@ public class JoinEvent implements Listener {
             }
             String value = sb.toString();
             PluginDescriptionFile pdf = Main.instance.getDescription();
-            if (value == 0.1){
+            if (value.equals("0.1")){
                 getUpdateMessage(p);
             }
 

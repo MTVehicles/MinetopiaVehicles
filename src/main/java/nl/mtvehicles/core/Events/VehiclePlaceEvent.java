@@ -37,11 +37,13 @@ public class VehiclePlaceEvent implements Listener {
 
         String ken = NBTUtils.getString(item, "mtvehicles.kenteken");
         Main.configList.forEach(ConfigUtils::reload);
-        if (Vehicle.getByPlate(ken) == null) {
+
+        if (!Vehicle.existsByPlate(ken)) {
             p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleNotFound")));
             e.setCancelled(true);
             return;
         }
+
         if (action.equals(Action.RIGHT_CLICK_BLOCK)) {
             e.setCancelled(true);
             Location loc = e.getClickedBlock().getLocation();
