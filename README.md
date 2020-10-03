@@ -10,7 +10,7 @@ Discord: https://discord.gg/7VfdnQ4
 ```
 
 
-##**Functions:**
+## **Functions:**
 ```
 ✔ Custom voertuigen toevoegen.
 ✔ Voertuigen data aanpassen in game.
@@ -25,7 +25,7 @@ Discord: https://discord.gg/7VfdnQ4
 ✔ Vouchers voor voertuigen.
 ```
 
-##**Commands:**
+## **Commands:**
   ```
   /vehicle info
   /vehicle help
@@ -43,7 +43,7 @@ Discord: https://discord.gg/7VfdnQ4
   /vehicle setowner
 ```
 
-##**Permissions:**
+## **Permissions:**
   ```
   mtvehicles.setowner
   mtvehicles.admin
