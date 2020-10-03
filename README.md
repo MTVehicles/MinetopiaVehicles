@@ -4,9 +4,8 @@ Een realistische voertuigen plugin voor jouw Minecraft server!
 Site: https://mtvehicles.nl
 Discord: https://discord.gg/7VfdnQ4
 
-
 Commands:
-  /vehicle info
+  ```/vehicle info
   /vehicle help
   /vehicle addrider
   /vehicle addmember
@@ -20,9 +19,10 @@ Commands:
   /vehicle reload
   /vehicle update
   /vehicle setowner
+```
 
 Permissions:
-  mtvehicles.setowner
+  ```mtvehicles.setowner
   mtvehicles.admin
   mtvehicles.benzine
   mtvehicles.edit
@@ -36,3 +36,4 @@ Permissions:
   mtvehicles.anwb
   mtvehicles.ride
   mtvehicles.update
+```
