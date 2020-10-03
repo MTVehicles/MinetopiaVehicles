@@ -26,7 +26,8 @@ public class vehicleRemoveMemberCMD extends MTVehicleSubCommand {
         }
 
         if (args.length != 2) {
-            p.sendMessage("gebruik /vehicle addmember <speler>");
+            p.sendMessage(Main.messagesConfig.getMessage("useRemoveMember"));
+            return true;
         }
 
         String ken = NBTUtils.getString(item, "mtvehicles.kenteken");

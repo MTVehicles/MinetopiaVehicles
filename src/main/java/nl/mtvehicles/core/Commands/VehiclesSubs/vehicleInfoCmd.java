@@ -25,33 +25,36 @@ public class vehicleInfoCmd extends MTVehicleSubCommand {
             return true;
         }
 
+        Main.configList.forEach(ConfigUtils::reload);
+
         String ken = NBTUtils.getString(item, "mtvehicles.kenteken");
         Vehicle vehicle = Vehicle.getByPlate(ken);
 
         if (vehicle == null) return true;
 
-        Main.configList.forEach(ConfigUtils::reload);
+
+
+
         sendMessage("&6Kenteken: &c" + ken);
         sendMessage("&6Owner: &c" + Bukkit.getOfflinePlayer(UUID.fromString(vehicle.getOwner())).getName());
 
         if (Main.vehicleDataConfig.getConfig().getStringList(String.format("vehicle.%s.riders", ken)).size() == 0) {
             sendMessage("&6Riders: &cGeen");
-            return true;
-        }
-
-        sendMessage("&6Riders: &c");
-        for (String subj : Main.vehicleDataConfig.getConfig().getStringList(String.format("vehicle.%s.riders", ken))) {
-            sendMessage("&6- &c" + Bukkit.getOfflinePlayer(UUID.fromString(subj)).getName());
+        } else {
+            sendMessage("&6Riders: &c");
+            for (String subj : Main.vehicleDataConfig.getConfig().getStringList(String.format("vehicle.%s.riders", ken))) {
+                sendMessage("&6- &c" + Bukkit.getOfflinePlayer(UUID.fromString(subj)).getName());
+            }
         }
 
         if (Main.vehicleDataConfig.getConfig().getStringList(String.format("vehicle.%s.members", ken)).size() == 0) {
             sendMessage("&6Members: &cGeen");
-            return true;
-        }
+        } else {
 
-        sendMessage("&6Members: &c");
-        for (String subj : Main.vehicleDataConfig.getConfig().getStringList(String.format("vehicle.%s.members", ken))) {
-            sendMessage("&6- &c" + Bukkit.getOfflinePlayer(UUID.fromString(subj)).getName());
+            sendMessage("&6Members: &c");
+            for (String subj : Main.vehicleDataConfig.getConfig().getStringList(String.format("vehicle.%s.members", ken))) {
+                sendMessage("&6- &c" + Bukkit.getOfflinePlayer(UUID.fromString(subj)).getName());
+            }
         }
 
         return true;

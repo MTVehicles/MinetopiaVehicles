@@ -26,7 +26,8 @@ public class vehicleRemoveRiderCMD extends MTVehicleSubCommand {
         }
 
         if (args.length != 2) {
-            p.sendMessage("gebruik /vehicle addriders <speler>");
+            p.sendMessage(Main.messagesConfig.getMessage("useRemoveRider"));
+            return true;
         }
 
         try {

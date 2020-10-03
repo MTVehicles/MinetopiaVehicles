@@ -26,6 +26,11 @@ public class vehicleSetOwnerCMD extends MTVehicleSubCommand {
             return true;
         }
 
+        if (args.length != 2) {
+            p.sendMessage(Main.messagesConfig.getMessage("useSetOwner"));
+            return true;
+        }
+
         String ken = NBTUtils.getString(item, "mtvehicles.kenteken");
         Vehicle.getByPlate(ken).setOwner(args[1]);
         Player of = Bukkit.getPlayer(args[1]);

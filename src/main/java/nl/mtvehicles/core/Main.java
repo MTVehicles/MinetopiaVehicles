@@ -59,7 +59,7 @@ public class Main extends JavaPlugin {
         PluginCommand pluginCommand = Main.instance.getCommand("minetopiavehicles");
         if (pluginCommand != null) {
             pluginCommand.setExecutor(new vehicleSubCommandManager());
-            pluginCommand.setTabCompleter((commandSender, command, s1, strings) -> new ArrayList<>(Main.subcommands.keySet()));
+            //pluginCommand.setTabCompleter((commandSender, command, s1, strings) -> new ArrayList<>(Main.subcommands.keySet()));
         }
         Bukkit.getPluginManager().registerEvents(new MenuClickEvent(), this);
         Bukkit.getPluginManager().registerEvents(new VehiclePlaceEvent(), this);
