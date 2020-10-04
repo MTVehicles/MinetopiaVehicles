@@ -21,8 +21,15 @@ public class VehicleGiveCar extends MTVehicleSubCommand {
         if (!checkPermission("mtvehicles.givecar")) return true;
 
         if (args.length != 3) {
-            player.sendMessage(Main.messagesConfig.getMessage(Main.messagesConfig.getMessage("useGiveCar")));
+            player.sendMessage(Main.messagesConfig.getMessage("useGiveCar"));
             return true;
+        }
+
+        try {
+            Integer.parseInt(args[1]);
+        } catch (Throwable e) {
+            player.sendMessage(Main.messagesConfig.getMessage("useGiveCar"));
+            return false;
         }
 
         Player of = Bukkit.getPlayer(args[2]);
@@ -36,4 +43,6 @@ public class VehicleGiveCar extends MTVehicleSubCommand {
 
         return true;
     }
+
+
 }
