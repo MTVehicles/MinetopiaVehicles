@@ -49,25 +49,32 @@
             <version>4.5.0</version>
         </dependency>
         <dependency>
-            <groupId>net.minc</groupId>
+            <groupId>net.mine</groupId>
             <artifactId>example-app</artifactId>
             <version>1.0</version>
             <scope>system</scope>
             <systemPath>${basedir}/libs/spigot-1.12.2.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>net.minecraft</groupId>
+            <groupId>net.minec</groupId>
             <artifactId>example-app</artifactId>
             <version>1.0</version>
             <scope>system</scope>
             <systemPath>${basedir}/libs/spigot-1.13.2.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>net.mc</groupId>
+            <groupId>net.minecr</groupId>
             <artifactId>example-app</artifactId>
             <version>1.0</version>
             <scope>system</scope>
             <systemPath>${basedir}/libs/spigot-1.15.2.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>net.minecre</groupId>
+            <artifactId>example-app</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/libs/spigot-1.16.3.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.jetbrains</groupId>

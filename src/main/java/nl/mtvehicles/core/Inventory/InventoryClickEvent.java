@@ -342,10 +342,22 @@ public class InventoryClickEvent implements Listener {
                 ItemUtils.edit.put(p.getUniqueId() + ".maxSpeedBackwards", true);
             }
         }
-
         if (e.getView().getTitle().contains("Benzine menu")) {
             e.setCancelled(true);
             p.getInventory().addItem(e.getCurrentItem());
+
+        }
+        if (e.getView().getTitle().contains("Voucher Redeem Menu")) {
+            e.setCancelled(true);
+            if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Ja")){
+                p.sendMessage(Main.messagesConfig.getMessage(TextUtils.colorize("voucherRedeem")));
+                String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.damage");
+                Vehicle.getByDamage(Integer.parseInt(ken), p);
+                p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount()-1);
+            }
+            if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Nee")){
+                p.closeInventory();
+            }
 
         }
 

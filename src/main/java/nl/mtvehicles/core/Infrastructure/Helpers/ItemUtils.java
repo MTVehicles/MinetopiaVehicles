@@ -68,7 +68,10 @@ public class ItemUtils {
             ItemStack is = new ItemStack(Material.getMaterial(mat1.toUpperCase()), amount, durability);
             ItemMeta im = is.getItemMeta();
             List<String> itemlore = new ArrayList<>();
-            itemlore.add(TextUtils.colorize(lores));
+            String[] lorem = lores.split("@");
+            for (String s : lorem) {
+                itemlore.add((TextUtils.colorize(s)));
+            }
             im.setLore(itemlore);
             im.setDisplayName(TextUtils.colorize(text));
             is.setItemMeta(im);
@@ -78,7 +81,11 @@ public class ItemUtils {
                 ItemStack is = new ItemStack(Material.matchMaterial(mat2), amount, durability);
                 ItemMeta im = is.getItemMeta();
                 List<String> itemlore = new ArrayList<>();
-                itemlore.add(TextUtils.colorize(lores));
+
+                String[] lorem = lores.split("@");
+                for (String s : lorem) {
+                    itemlore.add((TextUtils.colorize(s)));
+                }
                 im.setLore(itemlore);
                 im.setDisplayName(TextUtils.colorize(text));
                 is.setItemMeta(im);
@@ -266,4 +273,25 @@ public class ItemUtils {
         return car;
     }
 
+    public static void createVoucher(Object damage, Object item, Object name, Player p) {
+        ItemStack is = (new ItemFactory(Material.PAPER)).setNBT("mtvehicles.item", String.valueOf(item)).setNBT("mtvehicles.damage", String.valueOf(damage)).setNBT("mtvehicles.name", String.valueOf(name)).toItemStack();
+        ItemMeta im = is.getItemMeta();
+        List<String> goldlore = new ArrayList<>();
+        goldlore.add(TextUtils.colorize("&8&m                                    "));
+        goldlore.add(TextUtils.colorize("&7Gebruik &2rechterklik&r&7 op deze voucher om"));
+        goldlore.add(TextUtils.colorize("&7hem te verzilveren"));
+        goldlore.add(TextUtils.colorize("&2&l"));
+        goldlore.add(TextUtils.colorize("&7Deze &2voucher &r&7is houdbaar tot:"));
+        goldlore.add(TextUtils.colorize("&2permanent"));
+        goldlore.add(TextUtils.colorize("&8&m                                    "));
+        im.setLore(goldlore);
+        im.setDisplayName(TextUtils.colorize("&2&l" + name));
+        is.setItemMeta(im);
+        double a = Math.random() * 10.0D;
+        int b = (int) Math.random() * 10;
+        String c = UUID.randomUUID().toString();
+        p.getInventory().addItem(new ItemStack[]{is});
+
+
+    }
 }

@@ -11,7 +11,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.PluginDescriptionFile;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -24,9 +23,6 @@ public class JoinEvent implements Listener {
     public void onJoinEventPlayer(PlayerJoinEvent e) {
         Player p = e.getPlayer();
         if (p.hasPermission("mtvehicles.update")) {
-
-            PluginDescriptionFile pdf = Main.instance.getDescription();
-            System.out.println(pdf.getVersion());
             checkNewVersion(p);
         }
     }
@@ -69,7 +65,7 @@ public class JoinEvent implements Listener {
             }
             String value = sb.toString();
             PluginDescriptionFile pdf = Main.instance.getDescription();
-            if (value.equals("0.1")){
+            if (!value.contains(pdf.getVersion())) {
                 getUpdateMessage(p);
             }
 
