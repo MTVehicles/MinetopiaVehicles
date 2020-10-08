@@ -74,6 +74,7 @@ public class VehicleEntityEvent implements Listener {
             }
 
             if (p.isSneaking()) {
+                Main.configList.forEach(ConfigUtils::reload);
                 if (a.getCustomName().contains("MTVEHICLES_MAINSEAT_")) {
                     kofferbak(p, a.getCustomName().replace("MTVEHICLES_MAINSEAT_", ""));
                     event.setCancelled(true);

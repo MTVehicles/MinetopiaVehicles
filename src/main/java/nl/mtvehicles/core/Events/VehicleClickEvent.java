@@ -52,7 +52,8 @@ public class VehicleClickEvent implements Listener {
             }
             return;
         }
-        Main.configList.forEach(ConfigUtils::reload);
+            Main.configList.forEach(ConfigUtils::reload);
+
         if (event.getRightClicked().getCustomName().contains("MTVEHICLES_MAINSEAT_")) {
             getShitVehicles(event.getRightClicked().getCustomName().replace("MTVEHICLES_MAINSEAT_", ""), p);
             event.setCancelled(true);

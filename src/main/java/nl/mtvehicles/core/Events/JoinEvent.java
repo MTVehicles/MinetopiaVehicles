@@ -23,9 +23,15 @@ public class JoinEvent implements Listener {
     public void onJoinEventPlayer(PlayerJoinEvent e) {
         Player p = e.getPlayer();
         if (p.hasPermission("mtvehicles.update")) {
+            if (Main.defaultConfig.getConfig().getBoolean("auto-update") == false) {
+                return;
+            }
+
             checkNewVersion(p);
+
         }
     }
+
 
 
     public void getUpdateMessage(Player p) {

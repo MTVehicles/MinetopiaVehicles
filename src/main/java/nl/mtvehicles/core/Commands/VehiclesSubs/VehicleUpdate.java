@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.Commands.VehiclesSubs;
 
+import nl.mtvehicles.core.Infrastructure.Helpers.TextUtils;
 import nl.mtvehicles.core.Infrastructure.Models.MTVehicleSubCommand;
 import nl.mtvehicles.core.Main;
 import org.bukkit.Bukkit;
@@ -24,14 +25,11 @@ public class VehicleUpdate extends MTVehicleSubCommand {
 
         Player p = (Player) sender;
 
-        File dest = new File("plugins");
-        URL file;
-        try {
-            download(file = new URL("https://minetopiavehicles.nl/api/MTVehicles.jar"), dest);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
+        if (Main.defaultConfig.getConfig().getBoolean("auto-update") == false){
+            sendMessage(Main.messagesConfig.getMessage("updateDisabled"));
+            return false;
         }
-
+        checkNewVersion(p);
 
         return true;
     }
@@ -50,9 +48,16 @@ public class VehicleUpdate extends MTVehicleSubCommand {
             String value = sb.toString();
             PluginDescriptionFile pdf = Main.instance.getDescription();
             if (!value.contains(pdf.getVersion())) {
-                p.sendMessage("We hebben een update gevonden heb even geduld!");
+                p.sendMessage(TextUtils.colorize("&aWe hebben een update gevonden heb even geduld!"));
+                File dest = new File("plugins");
+                URL file;
+                try {
+                    download(file = new URL("https://minetopiavehicles.nl/api/MTVehicles.jar"), dest);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
             } else {
-                p.sendMessage("Er is geen update gevonden, is dit een fout meld het dan in de discord.");
+                p.sendMessage(TextUtils.colorize("&cEr is geen update gevonden, is dit een fout meld het dan in de discord. https://mtvehicles.nl"));
             }
 
         } catch (IOException ex) {
