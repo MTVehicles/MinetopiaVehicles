@@ -67,10 +67,17 @@
             <artifactId>example-app</artifactId>
             <version>1.0</version>
             <scope>system</scope>
-            <systemPath>${basedir}/libs/spigot-1.15.2.jar</systemPath>
+            <systemPath>${basedir}/libs/spigot-1.14.4.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>net.minecre</groupId>
+            <artifactId>example-app</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/libs/spigot-1.15.2.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>net.minecref</groupId>
             <artifactId>example-app</artifactId>
             <version>1.0</version>
             <scope>system</scope>

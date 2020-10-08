@@ -1,32 +1,21 @@
 package nl.mtvehicles.core;
 
 import com.comphenix.protocol.ProtocolLibrary;
-import nl.mtvehicles.core.Commands.VehicleTabCompleterManager;
 import nl.mtvehicles.core.Commands.VehicleSubCommandManager;
+import nl.mtvehicles.core.Commands.VehicleTabCompleterManager;
 import nl.mtvehicles.core.Events.*;
 import nl.mtvehicles.core.Infrastructure.DataConfig.*;
 import nl.mtvehicles.core.Infrastructure.Models.ConfigUtils;
 import nl.mtvehicles.core.Infrastructure.Models.MTVehicleSubCommand;
-import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
 import nl.mtvehicles.core.Inventory.InventoryClickEvent;
-import nl.mtvehicles.core.Movement.VehicleMovement1_12;
-import nl.mtvehicles.core.Movement.VehicleMovement1_13;
-import nl.mtvehicles.core.Movement.VehicleMovement1_15;
+import nl.mtvehicles.core.Movement.*;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Main extends JavaPlugin {
     public static Main instance;
@@ -45,6 +34,15 @@ public class Main extends JavaPlugin {
     public void onEnable() {
 
         instance = this;
+
+
+        if (!version.equals("v1_12_R1") && !version.equals("v1_13_R2") && !version.equals("v1_15_R1") && !version.equals("v1_16_R2")) {
+            getLogger().info("-------------------------------------------------------");
+            getLogger().info("We supporten alleen 1.12, 1.13, 1.15, en 1.16.");
+            getLogger().info("als je denkt dat dit fout is contacteer ons https://mtvehicles.nl");
+            getLogger().info("-------------------------------------------------------");
+            return;
+        }
 
         getLogger().info("De plugin is opgestart!");
         PluginCommand pluginCommand = Main.instance.getCommand("minetopiavehicles");
@@ -78,11 +76,6 @@ public class Main extends JavaPlugin {
 //        }
 
         System.out.println(version);
-        configList.add(messagesConfig);
-        configList.add(vehicleDataConfig);
-        configList.add(vehiclesConfig);
-        configList.add(defaultConfig);
-        configList.forEach(ConfigUtils::reload);
 
         if (version.equals("v1_12_R1")) {
             ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_12());
@@ -92,14 +85,26 @@ public class Main extends JavaPlugin {
             ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_13());
             getLogger().info("Loaded vehicle movement for version: " + version);
         }
+        if (version.equals("v1_14_R1")) {
+            ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_14());
+            getLogger().info("Loaded vehicle movement for version: " + version);
+        }
         if (version.equals("v1_15_R1")) {
             ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_15());
             getLogger().info("Loaded vehicle movement for version: " + version);
         }
         if (version.equals("v1_16_R2")) {
-            ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_15());
+            ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_16());
             getLogger().info("Loaded vehicle movement for version: " + version);
         }
+
+
+        configList.add(messagesConfig);
+        configList.add(vehicleDataConfig);
+        configList.add(vehiclesConfig);
+        configList.add(defaultConfig);
+        configList.forEach(ConfigUtils::reload);
+
     }
 
     @Override

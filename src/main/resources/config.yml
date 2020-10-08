@@ -6,7 +6,7 @@
 #---------------------------------------------------------------------------
 
 # Blijf hiervan af want je plugin gaat sowieso kapot als je dit aanpast!
-Config-Versie: 2.0
+Config-Versie: 2.0.0
 
 # Dit laat zien hoeveel rows het begin menu heeft van /vehicle menu 6 rows is de max.
 vehicleMenuSize: 3
@@ -23,11 +23,17 @@ kofferbakEnabled: true
 # Wil je benzine voor ALLE voertuigen uit? zet dit dan op false.
 benzine: true
 
-# Jerrycan grote's
+# Jerrycan grote's voor in het jerrycan menu /vehicle benzine
 jerrycans:
   - 25
   - 50
   - 75
+
+# Laat dit op true staan als je altijd up-to date wilt zijn!
+# zet je dit uit krijg je geen melding bij een update
+# dat bericht krijg je als je de server joined en permissions mtvehicles.update hebt
+# en het /vehicle update command wordt ermee uitgeschakeld.
+auto-update: true
 
 # Laat spelers zelf de owner zetten
 spelerSetOwner: false

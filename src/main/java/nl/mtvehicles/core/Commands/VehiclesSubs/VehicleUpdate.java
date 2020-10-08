@@ -2,16 +2,17 @@ package nl.mtvehicles.core.Commands.VehiclesSubs;
 
 import nl.mtvehicles.core.Infrastructure.Models.MTVehicleSubCommand;
 import nl.mtvehicles.core.Main;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginDescriptionFile;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
+import java.nio.charset.Charset;
 
 public class VehicleUpdate extends MTVehicleSubCommand {
 
@@ -35,6 +36,30 @@ public class VehicleUpdate extends MTVehicleSubCommand {
         return true;
     }
 
+    public void checkNewVersion(Player p) {
+        try {
+            URLConnection connection = new URL("https://minetopiavehicles.nl/api/update-api-version.php").openConnection();
+            connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+            connection.connect();
+            BufferedReader r = new BufferedReader(new InputStreamReader(connection.getInputStream(), Charset.forName("UTF-8")));
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = r.readLine()) != null) {
+                sb.append(line);
+            }
+            String value = sb.toString();
+            PluginDescriptionFile pdf = Main.instance.getDescription();
+            if (!value.contains(pdf.getVersion())) {
+                p.sendMessage("We hebben een update gevonden heb even geduld!");
+            } else {
+                p.sendMessage("Er is geen update gevonden, is dit een fout meld het dan in de discord.");
+            }
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            Bukkit.getLogger().info("We hebben geen verbinding kunnen maken met de servers van MinetopiaVehicles.");
+        }
+    }
 
     public void download(URL file, File dest) {
         try {

@@ -22,6 +22,10 @@ public class VehicleAdmin extends MTVehicleSubCommand {
         sendMessage("&2/vehicle &abenzine &f- &2" + Main.messagesConfig.getMessage("adminBenzine"));
         sendMessage("&2/vehicle &arestore &f- &2" + Main.messagesConfig.getMessage("adminRestore"));
         sendMessage("&2/vehicle &areload &f- &2" + Main.messagesConfig.getMessage("adminReload"));
+        sendMessage("&2/vehicle &agivevoucher &f- &2" + Main.messagesConfig.getMessage("adminGivevoucher"));
+        sendMessage("&2/vehicle &agivecar &f- &2" + Main.messagesConfig.getMessage("adminGivecar"));
+        sendMessage("&2/vehicle &asetowner &f- &2" + Main.messagesConfig.getMessage("adminSetowner"));
+        sendMessage("&2/vehicle &aupdate &f- &2" + Main.messagesConfig.getMessage("adminUpdate"));
         return true;
     }
 }
