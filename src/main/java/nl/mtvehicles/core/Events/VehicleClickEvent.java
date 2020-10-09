@@ -1,6 +1,7 @@
 package nl.mtvehicles.core.Events;
 
 import nl.mtvehicles.core.Infrastructure.Helpers.BossbarUtils;
+import nl.mtvehicles.core.Infrastructure.Helpers.ItemFactory;
 import nl.mtvehicles.core.Infrastructure.Helpers.TextUtils;
 import nl.mtvehicles.core.Infrastructure.Models.ConfigUtils;
 import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
@@ -17,11 +18,9 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class VehicleClickEvent implements Listener {
     public static HashMap<String, Double> speed = new HashMap<>();
@@ -160,7 +159,20 @@ public class VehicleClickEvent implements Listener {
                                         as3.setGravity(false);
                                         as3.setVisible(false);
                                         VehicleLeaveEvent.autostand.put("MTVEHICLES_WIEKENS_" + ken, as3);
-                                        as3.setHelmet((ItemStack) seat.get("item"));
+                                        ItemStack car = (new ItemFactory(Material.getMaterial("DIAMOND_HOE"))).setDurability((short) 1058).setName(TextUtils.colorize("&6Wieken")).setNBT("mtvehicles.kenteken", ken).toItemStack();
+                                        ItemMeta im = car.getItemMeta();
+                                        List<String> itemlore = new ArrayList<>();
+                                        itemlore.add(TextUtils.colorize("&a"));
+                                        itemlore.add(TextUtils.colorize("&a" + ken));
+                                        itemlore.add(TextUtils.colorize("&a"));
+                                        im.setLore(itemlore);
+                                        im.setUnbreakable(true);
+                                        car.setItemMeta(im);
+                                        if (!Main.instance.version.equals("v1_12_R1")) {
+                                            as3.setHelmet((ItemStack) seat.get("item"));
+                                        } else {
+                                            as3.setHelmet(car);
+                                        }
                                     }
                                 }
                             }

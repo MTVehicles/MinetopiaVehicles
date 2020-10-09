@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.Events;
 
+import nl.mtvehicles.core.Infrastructure.Helpers.ItemFactory;
 import nl.mtvehicles.core.Infrastructure.Helpers.NBTUtils;
 import nl.mtvehicles.core.Infrastructure.Helpers.TextUtils;
 import nl.mtvehicles.core.Infrastructure.Models.ConfigUtils;
@@ -7,6 +8,7 @@ import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
 import nl.mtvehicles.core.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,7 +17,9 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -81,7 +85,20 @@ public class VehiclePlaceEvent implements Listener {
                         as3.setGravity(false);
                         as3.setVisible(false);
                         if (Main.defaultConfig.getConfig().getBoolean("wiekens-always-on") == true) {
-                            as3.setHelmet((ItemStack) seat.get("item"));
+                            ItemStack car = (new ItemFactory(Material.getMaterial("DIAMOND_HOE"))).setDurability((short) 1058).setName(TextUtils.colorize("&6Wieken")).setNBT("mtvehicles.kenteken", ken).toItemStack();
+                            ItemMeta im = car.getItemMeta();
+                            List<String> itemlore = new ArrayList<>();
+                            itemlore.add(TextUtils.colorize("&a"));
+                            itemlore.add(TextUtils.colorize("&a" + ken));
+                            itemlore.add(TextUtils.colorize("&a"));
+                            im.setLore(itemlore);
+                            im.setUnbreakable(true);
+                            car.setItemMeta(im);
+                            if (!Main.instance.version.equals("v1_12_R1")) {
+                                as3.setHelmet((ItemStack) seat.get("item"));
+                            } else {
+                                as3.setHelmet(car);
+                            }
                         }
                     }
                 }
