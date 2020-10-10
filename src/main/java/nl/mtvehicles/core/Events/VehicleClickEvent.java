@@ -95,7 +95,7 @@ public class VehicleClickEvent implements Listener {
         if (Vehicle.getByPlate(ken).getOwner().equals(p.getUniqueId().toString()) || Vehicle.canRide(p, ken) == true || p.hasPermission("mtvehicles.ride")) {
             for (final World world : Bukkit.getServer().getWorlds()) {
                 for (final Entity entity : world.getEntities()) {
-                    if (Main.defaultConfig.getConfig().getBoolean("anwb") && !p.hasPermission("mtvehicles.anwb") && (entity.getLocation().clone().add(0.0, 0.9, 0.0).getBlock().getType() == Material.WATER || entity.getLocation().clone().add(0.0, 0.9, 0.0).getBlock().getType() == Material.LEGACY_STATIONARY_WATER)) {
+                    if (Main.defaultConfig.getConfig().getBoolean("anwb") && !p.hasPermission("mtvehicles.anwb") && (entity.getLocation().clone().add(0.0, 0.9, 0.0).getBlock().getType().toString().contains("WATER"))) {
                         p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleInWater")));
                         return;
                     }

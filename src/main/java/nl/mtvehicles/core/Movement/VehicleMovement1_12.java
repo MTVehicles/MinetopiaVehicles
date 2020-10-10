@@ -40,6 +40,9 @@ public class VehicleMovement1_12 extends PacketAdapter {
         if (!p.getVehicle().getCustomName().contains("MTVEHICLES_MAINSEAT_")) {
             return;
         }
+        if (p.getVehicle().getCustomName().replace("MTVEHICLES_MAINSEAT_", "") == null){
+            return;
+        }
         String ken = p.getVehicle().getCustomName().replace("MTVEHICLES_MAINSEAT_", "");
         if (VehicleLeaveEvent.autostand.get("MTVEHICLES_MAIN_" + ken) == null) {
             return;
