@@ -1,18 +1,11 @@
 package nl.mtvehicles.core.Infrastructure.Helpers;
 
-import nl.mtvehicles.core.Infrastructure.Models.ConfigUtils;
-import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
 import nl.mtvehicles.core.Main;
 import org.apache.commons.lang.RandomStringUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.boss.BarColor;
-import org.bukkit.boss.BarStyle;
-import org.bukkit.boss.BossBar;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;

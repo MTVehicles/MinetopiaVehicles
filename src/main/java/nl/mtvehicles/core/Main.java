@@ -47,7 +47,7 @@ public class Main extends JavaPlugin {
 
         getLogger().info("De plugin is opgestart!");
         System.out.println("--------------------------");
-        System.out.println("Welkom bij MTVehicles 2.0 !");
+        System.out.println("Welkom bij MTVehicles 2.0.2 !");
         System.out.println("Dankuwel voor het gebruiken van de plugin.");
         System.out.println("--------------------------");
         PluginCommand pluginCommand = Main.instance.getCommand("minetopiavehicles");

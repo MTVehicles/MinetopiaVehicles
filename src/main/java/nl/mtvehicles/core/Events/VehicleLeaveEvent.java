@@ -3,7 +3,6 @@ package nl.mtvehicles.core.Events;
 import nl.mtvehicles.core.Infrastructure.Helpers.BossbarUtils;
 import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
 import nl.mtvehicles.core.Main;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;

@@ -1,7 +1,5 @@
 package nl.mtvehicles.core.Commands.VehiclesSubs;
 
-import nl.mtvehicles.core.Infrastructure.Helpers.NBTUtils;
-import nl.mtvehicles.core.Infrastructure.Helpers.TextUtils;
 import nl.mtvehicles.core.Infrastructure.Models.MTVehicleSubCommand;
 import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
 import nl.mtvehicles.core.Main;
@@ -9,7 +7,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 public class VehicleGiveCar extends MTVehicleSubCommand {
     @Override

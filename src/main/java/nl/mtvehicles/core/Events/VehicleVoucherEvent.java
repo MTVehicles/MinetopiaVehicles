@@ -1,25 +1,18 @@
 package nl.mtvehicles.core.Events;
 
-import nl.mtvehicles.core.Infrastructure.Helpers.ItemFactory;
 import nl.mtvehicles.core.Infrastructure.Helpers.ItemUtils;
 import nl.mtvehicles.core.Infrastructure.Helpers.NBTUtils;
-import nl.mtvehicles.core.Infrastructure.Helpers.TextUtils;
 import nl.mtvehicles.core.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class VehicleVoucherEvent implements Listener {
     @EventHandler

@@ -17,6 +17,7 @@ import org.bukkit.craftbukkit.v1_14_R1.entity.CraftArmorStand;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+
 import java.util.List;
 import java.util.Map;
 
@@ -34,10 +35,7 @@ public class VehicleMovement1_14 extends PacketAdapter {
     public void onPacketReceiving(final PacketEvent event) {
         PacketPlayInSteerVehicle ppisv = (PacketPlayInSteerVehicle) event.getPacket().getHandle();
         final Player p = event.getPlayer();
-        if (p.getVehicle() == null) {
-            return;
-        }
-        if (!p.getVehicle().getCustomName().contains("MTVEHICLES_MAINSEAT_")) {
+        if (p.getVehicle() == null || p.getVehicle().getCustomName() == null) {
             return;
         }
         if (p.getVehicle().getCustomName().replace("MTVEHICLES_MAINSEAT_", "") == null){

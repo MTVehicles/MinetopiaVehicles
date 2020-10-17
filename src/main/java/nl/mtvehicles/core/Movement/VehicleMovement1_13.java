@@ -34,10 +34,7 @@ public class VehicleMovement1_13 extends PacketAdapter {
     public void onPacketReceiving(final PacketEvent event) {
         PacketPlayInSteerVehicle ppisv = (PacketPlayInSteerVehicle) event.getPacket().getHandle();
         final Player p = event.getPlayer();
-        if (p.getVehicle() == null) {
-            return;
-        }
-        if (!p.getVehicle().getCustomName().contains("MTVEHICLES_MAINSEAT_")) {
+        if (p.getVehicle() == null || p.getVehicle().getCustomName() == null) {
             return;
         }
         if (p.getVehicle().getCustomName().replace("MTVEHICLES_MAINSEAT_", "") == null){
