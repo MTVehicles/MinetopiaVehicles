@@ -6,7 +6,7 @@
 #---------------------------------------------------------------------------
 
 # Blijf hiervan af want je plugin gaat sowieso kapot als je dit aanpast!
-Config-Versie: 2.0.2
+Config-Versie: 2.0.3
 
 # Dit laat zien hoeveel rows het begin menu heeft van /vehicle menu 6 rows is de max.
 vehicleMenuSize: 3
@@ -37,3 +37,6 @@ auto-update: true
 
 # Laat spelers zelf de owner zetten
 spelerSetOwner: false
+
+# Zet dit aan als je wilt dat spelers geen voertuigen kunnen oppakken
+carPickup: false

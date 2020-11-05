@@ -168,10 +168,6 @@ public class VehicleMovement1_12 extends PacketAdapter {
             if (location.getBlock().getType().toString().contains("STEP") || !loc.getBlock().getType().toString().contains("SLAB")) {
                 as.setVelocity(new Vector(as.getLocation().getDirection().multiply((double) a).getX(), 0.5, as.getLocation().getDirection().multiply((double) a).getZ()));
                 as.setVelocity(new Vector(as.getLocation().getDirection().multiply((double) a).getX(), b, as.getLocation().getDirection().multiply((double) a).getZ()));
-                if (!loc.getBlock().getType().equals(Material.AIR)) {
-                    String ken = as.getCustomName().replace("MTVEHICLES_MAIN_", "");
-                    VehicleClickEvent.speed.put(ken, -0.01);
-                }
             }
         }
     }

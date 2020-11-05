@@ -51,7 +51,7 @@ public class VehicleClickEvent implements Listener {
             }
             return;
         }
-            Main.configList.forEach(ConfigUtils::reload);
+        Main.configList.forEach(ConfigUtils::reload);
 
         if (event.getRightClicked().getCustomName().contains("MTVEHICLES_MAINSEAT_")) {
             getShitVehicles(event.getRightClicked().getCustomName().replace("MTVEHICLES_MAINSEAT_", ""), p);
@@ -191,10 +191,10 @@ public class VehicleClickEvent implements Listener {
             p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleNotFound")));
             return;
         }
-        if (Vehicle.getByPlate(ken).getOwner().equals(p.getUniqueId().toString()) || p.hasPermission("mtvehicles.oppakken")) {
+        if (Vehicle.getByPlate(ken).getOwner().equals(p.getUniqueId().toString()) && Main.defaultConfig.getConfig().getBoolean("carPickup") == false || p.hasPermission("mtvehicles.oppakken")){
             for (final World world : Bukkit.getServer().getWorlds()) {
                 for (final Entity entity : world.getEntities()) {
-                    if (Main.defaultConfig.getConfig().getBoolean("anwb") && !p.hasPermission("mtvehicles.anwb") && (entity.getLocation().clone().add(0.0, 0.9, 0.0).getBlock().getType() == Material.WATER || entity.getLocation().clone().add(0.0, 0.9, 0.0).getBlock().getType() == Material.LEGACY_STATIONARY_WATER)) {
+                    if (Main.defaultConfig.getConfig().getBoolean("anwb") && !p.hasPermission("mtvehicles.anwb") && (entity.getLocation().clone().add(0.0, 0.9, 0.0).getBlock().getType().toString().contains("WATER"))) {
                         p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleInWater")));
                         return;
                     }
@@ -208,7 +208,11 @@ public class VehicleClickEvent implements Listener {
                     }
                 }
             }
-        } else {
+        } else{
+            if (Main.defaultConfig.getConfig().getBoolean("carPickup") == true){
+                p.sendMessage(TextUtils.colorize("&cVoertuigen oppakken staat uitgeschakeld"));
+                return;
+            }
             p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleNoOwnerPickup").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
             return;
         }
