@@ -37,7 +37,7 @@ public class Main extends JavaPlugin {
 
         instance = this;
 
-        if (!version.equals("v1_12_R1") && !version.equals("v1_13_R2") && !version.equals("v1_14_R1") && !version.equals("v1_15_R1") && !version.equals("v1_16_R2")) {
+        if (!version.equals("v1_12_R1") && !version.equals("v1_13_R2") && !version.equals("v1_14_R1") && !version.equals("v1_15_R1") && !version.contains("v1_16")) {
             getLogger().info("-------------------------------------------------------");
             getLogger().info("We supporten alleen 1.12, 1.13, 1.15, en 1.16.");
             getLogger().info("als je denkt dat dit fout is contacteer ons https://mtvehicles.nl");
@@ -99,7 +99,7 @@ public class Main extends JavaPlugin {
             ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_15());
             getLogger().info("Loaded vehicle movement for version: " + version);
         }
-        if (version.equals("v1_16_R2")) {
+        if (version.contains("v1_16")) {
             ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_16());
             getLogger().info("Loaded vehicle movement for version: " + version);
         }

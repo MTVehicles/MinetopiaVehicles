@@ -11,10 +11,12 @@ import nl.mtvehicles.core.Events.VehicleLeaveEvent;
 import nl.mtvehicles.core.Infrastructure.Helpers.BossbarUtils;
 import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
 import nl.mtvehicles.core.Main;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_15_R1.entity.CraftArmorStand;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -49,7 +51,7 @@ public class VehicleMovement1_15 extends PacketAdapter {
             VehicleClickEvent.speed.put(ken, 0.0);
             return;
         }
-        if (Main.vehicleDataConfig.getConfig().getDouble("vehicle."+ken+".benzine") < 1) {
+        if (Main.vehicleDataConfig.getConfig().getDouble("vehicle." + ken + ".benzine") < 1) {
             BossbarUtils.setbossbarvalue(0 / 100.0D, ken);
         } else {
             BossbarUtils.setbossbarvalue(Vehicle.getByPlate(ken).getBenzine() / 100.0D, ken);
@@ -58,6 +60,7 @@ public class VehicleMovement1_15 extends PacketAdapter {
         ArmorStand as2 = VehicleLeaveEvent.autostand.get("MTVEHICLES_SKIN_" + ken);
         ArmorStand as3 = VehicleLeaveEvent.autostand.get("MTVEHICLES_MAINSEAT_" + ken);
         ArmorStand as4 = VehicleLeaveEvent.autostand.get("MTVEHICLES_WIEKENS_" + ken);
+        
         EntityArmorStand stand = ((CraftArmorStand) as2).getHandle();
         stand.setLocation(as.getLocation().getX(), as.getLocation().getY(), as.getLocation().getZ(), as.getLocation().getYaw(), as.getLocation().getPitch());
         mainSeat(as, as3, ken);
@@ -79,6 +82,9 @@ public class VehicleMovement1_15 extends PacketAdapter {
             KeyW(as, VehicleClickEvent.speed.get(ken), VehicleClickEvent.speedhigh.get(ken));
 
         }
+
+
+
         final float forward = ppisv.c();
         final float side = ppisv.b();
         final boolean space = ppisv.d();
@@ -97,9 +103,9 @@ public class VehicleMovement1_15 extends PacketAdapter {
         }
         if (forward > 0.0f) {
 
-            if (!(Main.vehicleDataConfig.getConfig().getDouble("vehicle."+ken+".benzine") < 1)) {
+            if (!(Main.vehicleDataConfig.getConfig().getDouble("vehicle." + ken + ".benzine") < 1)) {
 
-                if (Main.defaultConfig.getConfig().getBoolean("benzine") == true && Main.vehicleDataConfig.getConfig().getBoolean("vehicle."+ken+".benzineEnabled") == true) {
+                if (Main.defaultConfig.getConfig().getBoolean("benzine") == true && Main.vehicleDataConfig.getConfig().getBoolean("vehicle." + ken + ".benzineEnabled") == true) {
                     double dnum = Main.vehicleDataConfig.getConfig().getDouble("vehicle." + ken + ".benzine") - Main.vehicleDataConfig.getConfig().getDouble("vehicle." + ken + ".benzineVerbruik");
                     Main.vehicleDataConfig.getConfig().set("vehicle." + ken + ".benzine", dnum);
                     Main.vehicleDataConfig.save();
@@ -152,26 +158,36 @@ public class VehicleMovement1_15 extends PacketAdapter {
     }
 
     public static void KeyW(ArmorStand as, double a, double b) {
-        double xOffset = 0.7;
-        double yOffset = 0.4;
-        double zOffset = 0;
+
+        double xOffset = 0.9;
+        double yOffset = 0.1;
+        double zOffset = 0.4;
         Location locvp = as.getLocation().clone();
         Location fbvp = locvp.add(locvp.getDirection().setY(0).normalize().multiply(xOffset));
         float zvp = (float) (fbvp.getZ() + zOffset * Math.sin(Math.toRadians(fbvp.getYaw())));
         float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(fbvp.getYaw())));
         Location loc = new Location(as.getWorld(), (double) xvp, as.getLocation().getY() + yOffset, (double) zvp, fbvp.getYaw(), fbvp.getPitch());
-        if (loc.getBlock().getType().toString().contains("STEP") || loc.getBlock().getType().toString().contains("SLAB")) {
-            as.setVelocity(new Vector(as.getLocation().getDirection().multiply((double) a).getX(), 0.5, as.getLocation().getDirection().multiply((double) a).getZ()));
-        } else {
 
+
+        double xOffset1 = 0.9;
+        double yOffset1 = 0.1;
+        double zOffset1 = -0.4;
+        Location locvp1 = as.getLocation().clone();
+        Location fbvp1 = locvp1.add(locvp1.getDirection().setY(0).normalize().multiply(xOffset1));
+        float zvp1 = (float) (fbvp1.getZ() + zOffset1 * Math.sin(Math.toRadians(fbvp1.getYaw())));
+        float xvp1 = (float) (fbvp1.getX() + zOffset1 * Math.cos(Math.toRadians(fbvp1.getYaw())));
+        Location loc1 = new Location(as.getWorld(), (double) xvp1, as.getLocation().getY() + yOffset1, (double) zvp1, fbvp1.getYaw(), fbvp1.getPitch());
+        if (loc.getBlock().getType().toString().contains("STEP") || loc.getBlock().getType().toString().contains("SLAB") || loc1.getBlock().getType().toString().contains("STEP") || loc1.getBlock().getType().toString().contains("SLAB")) {
+            as.setVelocity(new Vector(as.getLocation().getDirection().multiply((double) a).getX(), 0.7, as.getLocation().getDirection().multiply((double) a).getZ()));
+        } else {
             Location loc2 = as.getLocation();
             Location location = new Location(loc2.getWorld(), loc2.getX(), loc2.getY(), loc2.getZ(), loc2.getYaw(), loc2.getPitch());
             if (location.getBlock().getType().toString().contains("STEP") || !loc.getBlock().getType().toString().contains("SLAB")) {
-                as.setVelocity(new Vector(as.getLocation().getDirection().multiply((double) a).getX(), 0.5, as.getLocation().getDirection().multiply((double) a).getZ()));
+                as.setVelocity(new Vector(as.getLocation().getDirection().multiply((double) a).getX(), 0.7, as.getLocation().getDirection().multiply((double) a).getZ()));
                 as.setVelocity(new Vector(as.getLocation().getDirection().multiply((double) a).getX(), b, as.getLocation().getDirection().multiply((double) a).getZ()));
-                    if (!loc.getBlock().isPassable()) {
-                        String ken = as.getCustomName().replace("MTVEHICLES_MAIN_", "");
-                        VehicleClickEvent.speed.put(ken, -0.01);
+                if (!loc.getBlock().isPassable()) {
+                    String ken = as.getCustomName().replace("MTVEHICLES_MAIN_", "");
+                    VehicleClickEvent.speed.put(ken, -0.01);
                 }
             }
         }
