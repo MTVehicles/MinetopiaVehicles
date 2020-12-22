@@ -35,15 +35,15 @@ public class VehicleClickEvent implements Listener {
         }
         if (p.isSneaking()) {
             if (event.getRightClicked().getCustomName().contains("MTVEHICLES_MAINSEAT_")) {
-                getShitOppakVehicles(event.getRightClicked().getCustomName().replace("MTVEHICLES_MAINSEAT_", ""), p);
+                PickupVehicle(event.getRightClicked().getCustomName().replace("MTVEHICLES_MAINSEAT_", ""), p);
                 event.setCancelled(true);
             }
             if (event.getRightClicked().getCustomName().contains("MTVEHICLES_MAIN_")) {
-                getShitOppakVehicles(event.getRightClicked().getCustomName().replace("MTVEHICLES_MAIN_", ""), p);
+                PickupVehicle(event.getRightClicked().getCustomName().replace("MTVEHICLES_MAIN_", ""), p);
                 event.setCancelled(true);
             }
             if (event.getRightClicked().getCustomName().contains("MTVEHICLES_SKIN_")) {
-                getShitOppakVehicles(event.getRightClicked().getCustomName().replace("MTVEHICLES_SKIN_", ""), p);
+                PickupVehicle(event.getRightClicked().getCustomName().replace("MTVEHICLES_SKIN_", ""), p);
                 event.setCancelled(true);
             }
             if (event.getRightClicked().getCustomName().contains("MTVEHICLES_WIEKENS_")) {
@@ -54,15 +54,15 @@ public class VehicleClickEvent implements Listener {
         Main.configList.forEach(ConfigUtils::reload);
 
         if (event.getRightClicked().getCustomName().contains("MTVEHICLES_MAINSEAT_")) {
-            getShitVehicles(event.getRightClicked().getCustomName().replace("MTVEHICLES_MAINSEAT_", ""), p);
+            createVehicle(event.getRightClicked().getCustomName().replace("MTVEHICLES_MAINSEAT_", ""), p);
             event.setCancelled(true);
         }
         if (event.getRightClicked().getCustomName().contains("MTVEHICLES_MAIN_")) {
-            getShitVehicles(event.getRightClicked().getCustomName().replace("MTVEHICLES_MAIN_", ""), p);
+            createVehicle(event.getRightClicked().getCustomName().replace("MTVEHICLES_MAIN_", ""), p);
             event.setCancelled(true);
         }
         if (event.getRightClicked().getCustomName().contains("MTVEHICLES_SKIN_")) {
-            getShitVehicles(event.getRightClicked().getCustomName().replace("MTVEHICLES_SKIN_", ""), p);
+            createVehicle(event.getRightClicked().getCustomName().replace("MTVEHICLES_SKIN_", ""), p);
             event.setCancelled(true);
         }
         if (event.getRightClicked().getCustomName().contains("MTVEHICLES_SEAT")) {
@@ -82,7 +82,22 @@ public class VehicleClickEvent implements Listener {
         }
     }
 
-    public void getShitVehicles(final String ken, final Player p) {
+    public static HashMap<String, Double> mainx = new HashMap<>();
+    public static HashMap<String, Double> mainy = new HashMap<>();
+    public static HashMap<String, Double> mainz = new HashMap<>();
+
+    public static HashMap<String, Integer> seatsize = new HashMap<>();
+    public static HashMap<String, Double> seatx = new HashMap<>();
+    public static HashMap<String, Double> seaty = new HashMap<>();
+    public static HashMap<String, Double> seatz = new HashMap<>();
+
+    public static HashMap<String, Double> wiekenx = new HashMap<>();
+    public static HashMap<String, Double> wiekeny = new HashMap<>();
+    public static HashMap<String, Double> wiekenz = new HashMap<>();
+
+    public static HashMap<String, String> type = new HashMap<>();
+
+    public void createVehicle(final String ken, final Player p) {
         if (!(VehicleLeaveEvent.autostand2.get(ken) == null)) {
             if (!VehicleLeaveEvent.autostand2.get(ken).isEmpty()) {
                 return;
@@ -130,6 +145,9 @@ public class VehicleClickEvent implements Listener {
                                     as3.setGravity(false);
                                     speed.put(ken, 0.0);
                                     speedhigh.put(ken, 0.0);
+                                    mainx.put("MTVEHICLES_MAINSEAT_" + ken, seat.get("x"));
+                                    mainy.put("MTVEHICLES_MAINSEAT_" + ken, seat.get("y"));
+                                    mainz.put("MTVEHICLES_MAINSEAT_" + ken, seat.get("z"));
                                     as3.setPassenger(p);
                                     as3.setVisible(false);
                                     VehicleLeaveEvent.autostand2.put(ken, as3);
@@ -137,12 +155,18 @@ public class VehicleClickEvent implements Listener {
                                     p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleEnterRider").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
                                 }
                                 if (i > 1) {
+                                    seatsize.put(ken, seats.size());
+                                    seatx.put("MTVEHICLES_SEAT" + (int) i + "_" + ken, seat.get("x"));
+                                    seaty.put("MTVEHICLES_SEAT" + (int) i + "_" + ken, seat.get("y"));
+                                    seatz.put("MTVEHICLES_SEAT" + (int) i + "_" + ken, seat.get("z"));
                                     Location location2 = new Location(location.getWorld(), location.getX() + Double.valueOf(seat.get("z")), location.getY() + Double.valueOf(seat.get("y")), location.getZ() + Double.valueOf(seat.get("x")));
                                     ArmorStand as3 = location2.getWorld().spawn(location2, ArmorStand.class);
                                     as3.setCustomName("MTVEHICLES_SEAT" + (int) i + "_" + ken);
 
                                     as3.setGravity(false);
                                     as3.setVisible(false);
+
+
                                     VehicleLeaveEvent.autostand.put("MTVEHICLES_SEAT" + (int) i + "_" + ken, as3);
                                 }
                             }
@@ -154,6 +178,9 @@ public class VehicleClickEvent implements Listener {
                                     Map<?, ?> seat = wiekens.get(i - 1);
                                     if (i == 1) {
                                         Location location2 = new Location(location.getWorld(), location.getX() + (double) seat.get("z"), (double) location.getY() + (double) seat.get("y"), location.getZ() + (double) seat.get("x"));
+                                        wiekenx.put("MTVEHICLES_WIEKENS_" + ken, (Double) seat.get("x"));
+                                        wiekeny.put("MTVEHICLES_WIEKENS_" + ken, (Double) seat.get("y"));
+                                        wiekenz.put("MTVEHICLES_WIEKENS_" + ken, (Double) seat.get("z"));
                                         ArmorStand as3 = location2.getWorld().spawn(location2, ArmorStand.class);
                                         as3.setCustomName("MTVEHICLES_WIEKENS_" + ken);
                                         as3.setGravity(false);
@@ -186,7 +213,7 @@ public class VehicleClickEvent implements Listener {
         }
     }
 
-    public void getShitOppakVehicles(final String ken, final Player p) {
+    public void PickupVehicle(final String ken, final Player p) {
         if (Vehicle.getByPlate(ken) == null) {
             p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleNotFound")));
             return;
