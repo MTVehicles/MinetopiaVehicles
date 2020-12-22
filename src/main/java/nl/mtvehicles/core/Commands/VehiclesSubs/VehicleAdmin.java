@@ -13,9 +13,6 @@ public class VehicleAdmin extends MTVehicleSubCommand {
             return false;
         }
         if (!checkPermission("mtvehicles.admin")) return true;
-
-        sendMessage("");
-        sendMessage("&aMT-Vehicles &2is made by: &aGamerJoep_&2. Do you want know more? Go to &ahttps://mtvehicles.nl");
         sendMessage("");
         sendMessage("&2/vehicle &aedit &f- &2" + Main.messagesConfig.getMessage("adminEdit"));
         sendMessage("&2/vehicle &amenu &f- &2" + Main.messagesConfig.getMessage("adminMenu"));
@@ -26,6 +23,7 @@ public class VehicleAdmin extends MTVehicleSubCommand {
         sendMessage("&2/vehicle &agivecar &f- &2" + Main.messagesConfig.getMessage("adminGivecar"));
         sendMessage("&2/vehicle &asetowner &f- &2" + Main.messagesConfig.getMessage("adminSetowner"));
         sendMessage("&2/vehicle &aupdate &f- &2" + Main.messagesConfig.getMessage("adminUpdate"));
+        sendMessage("&2/vehicle &adelete &f- &2" + Main.messagesConfig.getMessage("adminDelete"));
         return true;
     }
 }

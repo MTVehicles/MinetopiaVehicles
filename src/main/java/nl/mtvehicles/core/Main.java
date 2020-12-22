@@ -45,9 +45,12 @@ public class Main extends JavaPlugin {
             return;
         }
 
+        PluginDescriptionFile pdf = this.getDescription();
+        String versions = pdf.getVersion();
+
         getLogger().info("De plugin is opgestart!");
         System.out.println("--------------------------");
-        System.out.println("Welkom bij MTVehicles 2.0.4 !");
+        System.out.println("Welkom bij MTVehicles "+versions+" !");
         System.out.println("Dankuwel voor het gebruiken van de plugin.");
         System.out.println("--------------------------");
         PluginCommand pluginCommand = Main.instance.getCommand("minetopiavehicles");
@@ -74,9 +77,8 @@ public class Main extends JavaPlugin {
             }
         }
 
-        PluginDescriptionFile pdf = this.getDescription();
+
         File config = new File(getDataFolder(), "config.yml");
-        String versions = pdf.getVersion();
         SimpleDateFormat formatter = new SimpleDateFormat("dd_MM_yyyy-HH_mm_ss");
         Date date = new Date();
         if (!getConfig().get("Config-Versie").equals(versions)) {
