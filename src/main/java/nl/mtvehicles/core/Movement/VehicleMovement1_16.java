@@ -4,7 +4,7 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
-import net.minecraft.server.v1_16_R2.EntityArmorStand;
+import net.minecraft.server..EntityArmorStand;
 import net.minecraft.server.v1_16_R2.PacketPlayInSteerVehicle;
 import nl.mtvehicles.core.Events.VehicleClickEvent;
 import nl.mtvehicles.core.Events.VehicleLeaveEvent;
