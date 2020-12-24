@@ -354,6 +354,7 @@ public class InventoryClickEvent implements Listener {
                 String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.damage");
                 Vehicle.getByDamage(Integer.parseInt(ken), p);
                 p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount()-1);
+                p.closeInventory();
             }
             if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Nee")){
                 p.closeInventory();
