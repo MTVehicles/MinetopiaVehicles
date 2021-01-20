@@ -17,7 +17,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
 
-
 public class JoinEvent implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onJoinEventPlayer(PlayerJoinEvent e) {
@@ -26,13 +25,9 @@ public class JoinEvent implements Listener {
             if (Main.defaultConfig.getConfig().getBoolean("auto-update") == false) {
                 return;
             }
-
             checkNewVersion(p);
-
         }
     }
-
-
 
     public void getUpdateMessage(Player p) {
         try {
@@ -51,7 +46,6 @@ public class JoinEvent implements Listener {
             for (String s : vet) {
                 p.sendMessage(TextUtils.colorize(s.replace("<oldVer>", pdf.getVersion())));
             }
-
         } catch (IOException ex) {
             ex.printStackTrace();
             Bukkit.getLogger().info("We hebben geen verbinding kunnen maken met de servers van MinetopiaVehicles.");
@@ -74,7 +68,6 @@ public class JoinEvent implements Listener {
             if (!value.contains(pdf.getVersion())) {
                 getUpdateMessage(p);
             }
-
         } catch (IOException ex) {
             ex.printStackTrace();
             Bukkit.getLogger().info("We hebben geen verbinding kunnen maken met de servers van MinetopiaVehicles.");

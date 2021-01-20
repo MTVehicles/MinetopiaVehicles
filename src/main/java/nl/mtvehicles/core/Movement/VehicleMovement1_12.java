@@ -75,7 +75,6 @@ public class VehicleMovement1_12 extends PacketAdapter {
                 VehicleClickEvent.speed.put(ken, 0.0);
             }
             KeyW(as, VehicleClickEvent.speed.get(ken), VehicleClickEvent.speedhigh.get(ken));
-
         }
         float forward = ppisv.b();
         float side = ppisv.a();

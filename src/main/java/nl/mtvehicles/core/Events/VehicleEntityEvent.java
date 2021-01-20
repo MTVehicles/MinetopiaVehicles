@@ -95,7 +95,7 @@ public class VehicleEntityEvent implements Listener {
                 p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleNotFound")));
                 return;
             }
-            if (Vehicle.getByPlate(ken).getOwner().equals(p.getUniqueId().toString()) || Vehicle.canRide(p, ken) == true || p.hasPermission("mtvehicles.kofferbak")) {
+            if (Vehicle.getByPlate(ken).getOwner().equals(p.getUniqueId().toString()) || p.hasPermission("mtvehicles.kofferbak")) {
                 Main.configList.forEach(ConfigUtils::reload);
                 if (Main.vehicleDataConfig.getConfig().getBoolean("vehicle." + ken + ".kofferbak") == true) {
                     if (Main.vehicleDataConfig.getConfig().getList("vehicle." + ken + ".kofferbakData") == null) {
