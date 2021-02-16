@@ -30,9 +30,15 @@ public class VehiclePlaceEvent implements Listener {
         final Player p = e.getPlayer();
         final Action action = e.getAction();
         final ItemStack item = e.getItem();
-        if (e.getItem() == null || (!e.getItem().hasItemMeta() || !(NBTUtils.contains(item, "mtvehicles.kenteken")))) {
+
+        if (e.getItem() == null
+                || (!e.getItem().hasItemMeta()
+                || !(NBTUtils.contains(item, "mtvehicles.kenteken")))
+                || e.getClickedBlock() == null
+        ) {
             return;
         }
+
         if (e.getHand() != EquipmentSlot.HAND) {
             e.setCancelled(true);
             e.getPlayer().sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("wrongHand")));
@@ -41,7 +47,14 @@ public class VehiclePlaceEvent implements Listener {
 
         String ken = NBTUtils.getString(item, "mtvehicles.kenteken");
 
-            Main.configList.forEach(ConfigUtils::reload);
+        if (ken == null) {
+            return;
+        }
+
+        if (e.getClickedBlock().getType() != Material.GRAY_CONCRETE) {
+            e.getPlayer().sendMessage(TextUtils.colorize("&cJe kan alleen voortuigen op de weg plaatsen"));
+            return;
+        }
 
         if (!Vehicle.existsByPlate(ken)) {
             p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleNotFound")));
@@ -49,56 +62,58 @@ public class VehiclePlaceEvent implements Listener {
             return;
         }
 
-        if (action.equals(Action.RIGHT_CLICK_BLOCK)) {
-            e.setCancelled(true);
-            Location loc = e.getClickedBlock().getLocation();
-            Location location = new Location(loc.getWorld(), loc.getX(), loc.getY() + 1, loc.getZ());
-            ArmorStand as = location.getWorld().spawn(location, ArmorStand.class);
-            as.setVisible(false);
-            as.setCustomName("MTVEHICLES_SKIN_" + ken);
-            as.setHelmet(item);
-            ArmorStand as2 = location.getWorld().spawn(location, ArmorStand.class);
-            as2.setVisible(false);
-            as2.setCustomName("MTVEHICLES_MAIN_" + ken);
-            Vehicle vehicle = Vehicle.getByPlate(ken);
-            List<Map<String, Double>> seats = (List<Map<String, Double>>) vehicle.getVehicleData().get("seats");
-            p.getInventory().remove(p.getItemInHand());
-            p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehiclePlace").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
-            for (int i = 1; i <= seats.size(); i++) {
-                Map<String, Double> seat = seats.get(i - 1);
-                if (i == 1) {
-                    Location location2 = new Location(location.getWorld(), location.getX() + seat.get("x"), location.getY() + seat.get("y"), location.getZ() + seat.get("z"));
+        if (!action.equals(Action.RIGHT_CLICK_BLOCK)) {
+            return;
+        }
+
+        e.setCancelled(true);
+        Location loc = e.getClickedBlock().getLocation();
+        Location location = new Location(loc.getWorld(), loc.getX(), loc.getY() + 1, loc.getZ());
+        ArmorStand as = location.getWorld().spawn(location, ArmorStand.class);
+        as.setVisible(false);
+        as.setCustomName("MTVEHICLES_SKIN_" + ken);
+        as.setHelmet(item);
+        ArmorStand as2 = location.getWorld().spawn(location, ArmorStand.class);
+        as2.setVisible(false);
+        as2.setCustomName("MTVEHICLES_MAIN_" + ken);
+        Vehicle vehicle = Vehicle.getByPlate(ken);
+        List<Map<String, Double>> seats = (List<Map<String, Double>>) vehicle.getVehicleData().get("seats");
+        p.getInventory().remove(p.getItemInHand());
+        p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehiclePlace").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
+        for (int i = 1; i <= seats.size(); i++) {
+            Map<String, Double> seat = seats.get(i - 1);
+            if (i == 1) {
+                Location location2 = new Location(location.getWorld(), location.getX() + seat.get("x"), location.getY() + seat.get("y"), location.getZ() + seat.get("z"));
                     ArmorStand as3 = location2.getWorld().spawn(location2, ArmorStand.class);
                     as3.setCustomName("MTVEHICLES_MAINSEAT_" + ken);
                     as3.setGravity(false);
                     as3.setVisible(false);
-                }
             }
-            List<Map<String, Double>> wiekens = (List<Map<String, Double>>) vehicle.getVehicleData().get("wiekens");
-            if (Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".vehicleType").contains("HELICOPTER")) {
-                for (int i = 1; i <= wiekens.size(); i++) {
-                    Map<?, ?> seat = wiekens.get(i - 1);
-                    if (i == 1) {
-                        Location location2 = new Location(location.getWorld(), location.getX() + (double)seat.get("z"), (double)location.getY() + (double)seat.get("y"), location.getZ() + (double)seat.get("x"));
-                        ArmorStand as3 = location2.getWorld().spawn(location2, ArmorStand.class);
-                        as3.setCustomName("MTVEHICLES_WIEKENS_" + ken);
-                        as3.setGravity(false);
-                        as3.setVisible(false);
-                        if (Main.defaultConfig.getConfig().getBoolean("wiekens-always-on") == true) {
-                            ItemStack car = (new ItemFactory(Material.getMaterial("DIAMOND_HOE"))).setDurability((short) 1058).setName(TextUtils.colorize("&6Wieken")).setNBT("mtvehicles.kenteken", ken).toItemStack();
-                            ItemMeta im = car.getItemMeta();
-                            List<String> itemlore = new ArrayList<>();
-                            itemlore.add(TextUtils.colorize("&a"));
-                            itemlore.add(TextUtils.colorize("&a" + ken));
-                            itemlore.add(TextUtils.colorize("&a"));
-                            im.setLore(itemlore);
-                            im.setUnbreakable(true);
-                            car.setItemMeta(im);
-                            if (!Main.instance.version.equals("v1_12_R1")) {
-                                as3.setHelmet((ItemStack) seat.get("item"));
-                            } else {
-                                as3.setHelmet(car);
-                            }
+        }
+        List<Map<String, Double>> wiekens = (List<Map<String, Double>>) vehicle.getVehicleData().get("wiekens");
+        if (Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".vehicleType").contains("HELICOPTER")) {
+            for (int i = 1; i <= wiekens.size(); i++) {
+                Map<?, ?> seat = wiekens.get(i - 1);
+                if (i == 1) {
+                    Location location2 = new Location(location.getWorld(), location.getX() + (double) seat.get("z"), (double) location.getY() + (double) seat.get("y"), location.getZ() + (double) seat.get("x"));
+                    ArmorStand as3 = location2.getWorld().spawn(location2, ArmorStand.class);
+                    as3.setCustomName("MTVEHICLES_WIEKENS_" + ken);
+                    as3.setGravity(false);
+                    as3.setVisible(false);
+                    if (Main.defaultConfig.getConfig().getBoolean("wiekens-always-on") == true) {
+                        ItemStack car = (new ItemFactory(Material.getMaterial("DIAMOND_HOE"))).setDurability((short) 1058).setName(TextUtils.colorize("&6Wieken")).setNBT("mtvehicles.kenteken", ken).toItemStack();
+                        ItemMeta im = car.getItemMeta();
+                        List<String> itemlore = new ArrayList<>();
+                        itemlore.add(TextUtils.colorize("&a"));
+                        itemlore.add(TextUtils.colorize("&a" + ken));
+                        itemlore.add(TextUtils.colorize("&a"));
+                        im.setLore(itemlore);
+                        im.setUnbreakable(true);
+                        car.setItemMeta(im);
+                        if (!Main.instance.version.equals("v1_12_R1")) {
+                            as3.setHelmet((ItemStack) seat.get("item"));
+                        } else {
+                            as3.setHelmet(car);
                         }
                     }
                 }

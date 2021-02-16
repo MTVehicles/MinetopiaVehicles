@@ -389,9 +389,16 @@ public class Vehicle {
         this.vehicleData = vehicleData;
     }
 
+    public boolean canRide(Player p) {
+        return Main.vehicleDataConfig.getConfig().getStringList("vehicle." + this.licensePlate + ".riders").contains(p.getUniqueId().toString());
+    }
 
     public static boolean canRide(Player p, String ken) {
         return Main.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".riders").contains(p.getUniqueId().toString());
+    }
+
+    public boolean canSit(Player p) {
+        return Main.vehicleDataConfig.getConfig().getStringList("vehicle." + this.licensePlate + ".members").contains(p.getUniqueId().toString());
     }
 
     public static boolean canSit(Player p, String ken) {
