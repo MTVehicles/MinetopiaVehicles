@@ -51,11 +51,6 @@ public class VehiclePlaceEvent implements Listener {
             return;
         }
 
-        if (e.getClickedBlock().getType() != Material.GRAY_CONCRETE) {
-            e.getPlayer().sendMessage(TextUtils.colorize("&cJe kan alleen voortuigen op de weg plaatsen"));
-            return;
-        }
-
         if (!Vehicle.existsByPlate(ken)) {
             p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleNotFound")));
             e.setCancelled(true);
