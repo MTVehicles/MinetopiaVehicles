@@ -12,6 +12,7 @@ public class VehicleSubCommandManager extends MTVehicleCommand {
     public VehicleSubCommandManager() {
         Main.subcommands.put("info", new VehicleInfo());
         Main.subcommands.put("help", new VehicleHelp());
+        Main.subcommands.put("admin", new VehicleHelp()); // voor de mensen die nog /vehicle admin gewend waren
         Main.subcommands.put("reload", new VehicleReload());
         Main.subcommands.put("menu", new VehicleMenu());
         Main.subcommands.put("restore", new VehicleRestore());
@@ -22,7 +23,6 @@ public class VehicleSubCommandManager extends MTVehicleCommand {
         Main.subcommands.put("addrider", new VehicleAddRider());
         Main.subcommands.put("removemember", new VehicleRemoveMember());
         Main.subcommands.put("removerider", new VehicleRemoveRider());
-        Main.subcommands.put("admin", new VehicleAdmin());
         Main.subcommands.put("givecar", new VehicleGiveCar());
         Main.subcommands.put("givevoucher", new VehicleGiveVoucher());
         Main.subcommands.put("update", new VehicleUpdate());
@@ -36,12 +36,12 @@ public class VehicleSubCommandManager extends MTVehicleCommand {
             return true;
         }
 
-        if (Main.subcommands.get(args[0]) == null) {
+        if (Main.subcommands.get(args[0].toLowerCase()) == null) {
             sendMessage(Main.messagesConfig.getMessage("cmdNotExists"));
             return true;
         }
 
-        Main.subcommands.get(args[0]).onExecute(sender, cmd, s, args);
+        Main.subcommands.get(args[0].toLowerCase()).onExecute(sender, cmd, s, args);
         return true;
     }
 }

@@ -84,7 +84,7 @@ public class VehicleUpdate extends MTVehicleSubCommand {
             os.flush();
             is.close();
             os.close();
-            sendMessage(Main.messagesConfig.getMessage("updatedSucces"));
+            sendMessage(Main.messagesConfig.getMessage("updatedSucces2"));
 
 
         } catch (Exception ec) {

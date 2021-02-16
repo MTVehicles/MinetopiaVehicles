@@ -33,7 +33,9 @@ public class VehicleInfo extends MTVehicleSubCommand {
         Vehicle vehicle = Vehicle.getByPlate(ken);
 
         if (vehicle == null) return true;
-
+        if (p.hasPermission("mtvehicles.admin")){
+            sendMessage("&6ID: &c" + p.getItemInHand().getDurability());
+        }
         sendMessage("&6Kenteken: &c" + ken);
         sendMessage("&6Owner: &c" + vehicle.getOwnerName());
 
