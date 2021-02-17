@@ -134,10 +134,22 @@ public class MenuUtils {
             }
             for (int i = 1 + id * 36 - 36; i <= id * 36; i++) {
                 if (i - 1 < dataVehicle.size()) {
-                    if (Main.vehicleDataConfig.getConfig().getBoolean("vehicle." + dataVehicle.get(i - 1) + ".isGlow") == true) {
-                        inv.addItem(ItemUtils.carItem2glow(Main.vehicleDataConfig.getConfig().getInt("vehicle." + dataVehicle.get(i - 1) + ".skinDamage"), Main.vehicleDataConfig.getConfig().getString("vehicle." + dataVehicle.get(i - 1) + ".name"), Main.vehicleDataConfig.getConfig().getString("vehicle." + dataVehicle.get(i - 1) + ".skinItem"), dataVehicle.get(i - 1)));
+                    int skinDamage = Main.vehicleDataConfig.getConfig().getInt("vehicle." + dataVehicle.get(i - 1) + ".skinDamage");
+                    String name = Main.vehicleDataConfig.getConfig().getString("vehicle." + dataVehicle.get(i - 1) + ".name");
+                    String material = Main.vehicleDataConfig.getConfig().getString("vehicle." + dataVehicle.get(i - 1) + ".skinItem");
+                    boolean glow = Main.vehicleDataConfig.getConfig().getBoolean("vehicle." + dataVehicle.get(i - 1) + ".isGlow");
+
+                    if (material == null || name == null) {
+                        if (name != null) {
+                            Bukkit.getLogger().warning(String.format("Could not load vehicle %s", name));
+                        }
+                        continue;
+                    }
+
+                    if (glow) {
+                        inv.addItem(ItemUtils.carItem2glow(skinDamage, name, material, dataVehicle.get(i - 1)));
                     } else {
-                        inv.addItem(ItemUtils.carItem2(Main.vehicleDataConfig.getConfig().getInt("vehicle." + dataVehicle.get(i - 1) + ".skinDamage"), Main.vehicleDataConfig.getConfig().getString("vehicle." + dataVehicle.get(i - 1) + ".name"), Main.vehicleDataConfig.getConfig().getString("vehicle." + dataVehicle.get(i - 1) + ".skinItem"), dataVehicle.get(i - 1)));
+                        inv.addItem(ItemUtils.carItem2(skinDamage, name, material, dataVehicle.get(i - 1)));
                     }
                 }
             }

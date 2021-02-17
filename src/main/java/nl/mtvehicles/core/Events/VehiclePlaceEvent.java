@@ -3,7 +3,6 @@ package nl.mtvehicles.core.Events;
 import nl.mtvehicles.core.Infrastructure.Helpers.ItemFactory;
 import nl.mtvehicles.core.Infrastructure.Helpers.NBTUtils;
 import nl.mtvehicles.core.Infrastructure.Helpers.TextUtils;
-import nl.mtvehicles.core.Infrastructure.Models.ConfigUtils;
 import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
 import nl.mtvehicles.core.Main;
 import org.bukkit.Bukkit;
@@ -48,6 +47,11 @@ public class VehiclePlaceEvent implements Listener {
         String ken = NBTUtils.getString(item, "mtvehicles.kenteken");
 
         if (ken == null) {
+            return;
+        }
+
+        if (e.getClickedBlock().getType() != Material.GRAY_CONCRETE) {
+            e.getPlayer().sendMessage(TextUtils.colorize("&cJe kan alleen voortuigen op de weg plaatsen"));
             return;
         }
 
