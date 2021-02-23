@@ -6,7 +6,7 @@ Heb je problemen of klopt er iets niet kun je
 contact met ons opnemen vanuit de Discord server
 
 Site: https://mtvehicles.nl
-Discord: https://discord.gg/7VfdnQ4
+Discord: https://discord.gg/4nAcycckn6
 ```
 
 
