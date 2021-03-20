@@ -17,7 +17,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -27,10 +26,12 @@ public class VehicleClickEvent implements Listener {
     public static HashMap<String, Double> speed = new HashMap<>();
     public static HashMap<String, Double> speedhigh = new HashMap<>();
 
+    private Map<String, Long> lastUsage = new HashMap<String, Long>();
+
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerInteractAtEntity(final PlayerInteractAtEntityEvent event) {
-        final Entity a = event.getRightClicked();
-        final Player p = event.getPlayer();
+    public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event) {
+        Entity a = event.getRightClicked();
+        Player p = event.getPlayer();
 
         if (a.getCustomName() == null) {
             return;
@@ -40,24 +41,42 @@ public class VehicleClickEvent implements Listener {
             return;
         }
 
+        long lastUsed = 0L;
+
+        if (this.lastUsage.containsKey(p.getName())) {
+            lastUsed = ((Long) this.lastUsage.get(p.getName())).longValue();
+        }
+        int cdmillis = 1 * 500;
+
+        if (System.currentTimeMillis() - lastUsed >= cdmillis) {
+            this.lastUsage.put(p.getName(), Long.valueOf(System.currentTimeMillis()));
+        } else {
+            return;
+        }
+
         if (p.isSneaking()) {
             if (a.getCustomName().contains("MTVEHICLES_MAINSEAT_")) {
                 pickupVehicle(a.getCustomName().replace("MTVEHICLES_MAINSEAT_", ""), p);
                 event.setCancelled(true);
+                return;
             }
             if (a.getCustomName().contains("MTVEHICLES_MAIN_")) {
                 pickupVehicle(a.getCustomName().replace("MTVEHICLES_MAIN_", ""), p);
                 event.setCancelled(true);
+                return;
             }
             if (a.getCustomName().contains("MTVEHICLES_SKIN_")) {
                 pickupVehicle(a.getCustomName().replace("MTVEHICLES_SKIN_", ""), p);
                 event.setCancelled(true);
+                return;
             }
             if (a.getCustomName().contains("MTVEHICLES_WIEKENS_")) {
                 event.setCancelled(true);
+                return;
             }
             return;
         }
+
         Main.configList.forEach(ConfigUtils::reload);
 
         if (a.getCustomName().contains("MTVEHICLES_MAINSEAT_")) {

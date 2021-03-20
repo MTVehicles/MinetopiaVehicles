@@ -84,6 +84,13 @@
             <systemPath>${basedir}/libs/spigot-1.16.4.jar</systemPath>
         </dependency>
         <dependency>
+            <groupId>net.minecruf</groupId>
+            <artifactId>example-app</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/libs/spigot-1.16.5.jar</systemPath>
+        </dependency>
+        <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
             <version>RELEASE</version>
