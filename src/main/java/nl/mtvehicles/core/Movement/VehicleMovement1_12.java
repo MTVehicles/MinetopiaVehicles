@@ -83,7 +83,11 @@ public class VehicleMovement1_12 extends PacketAdapter {
         boolean s;
         if (VehicleClickEvent.type.get(ken).contains("HELICOPTER")) {
             if (space) {
-                VehicleClickEvent.speedhigh.put(ken, 0.2);
+                if (as.getLocation().getY() > VehicleClickEvent.maxhight.get(ken)){
+                    VehicleClickEvent.speedhigh.put(ken, 0.0);
+                } else {
+                    VehicleClickEvent.speedhigh.put(ken, 0.2);
+                }
             } else {
                 if (location.getBlock().getType().equals(Material.AIR) || location.getBlock().getType().toString().contains("WATER")) {
                     VehicleClickEvent.speedhigh.put(ken, -0.2);

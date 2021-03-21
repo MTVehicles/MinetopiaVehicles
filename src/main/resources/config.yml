@@ -38,5 +38,8 @@ auto-update: true
 # Laat spelers zelf de owner zetten
 spelerSetOwner: false
 
+# Je kunt dit instellen voor de max hoogte van een helicopter.
+helicopterMaxHight: 150
+
 # Zet dit aan als je wilt dat spelers geen voertuigen kunnen oppakken
 carPickup: false

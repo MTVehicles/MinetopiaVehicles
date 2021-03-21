@@ -105,11 +105,7 @@ public class VehiclePlaceEvent implements Listener {
                         im.setLore(itemlore);
                         im.setUnbreakable(true);
                         car.setItemMeta(im);
-                        if (!Main.instance.version.equals("v1_12_R1")) {
-                            as3.setHelmet((ItemStack) seat.get("item"));
-                        } else {
-                            as3.setHelmet(car);
-                        }
+                        //as3.setHelmet((ItemStack) seat.get("item"));
                     }
                 }
             }
