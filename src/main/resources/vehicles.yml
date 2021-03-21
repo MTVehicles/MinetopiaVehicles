@@ -760,6 +760,7 @@ voertuigen:
           ==: org.bukkit.inventory.ItemStack
           v: 2230
           type: DIAMOND_HOE
+          damage: 1058
           meta:
             ==: ItemMeta
             meta-type: UNSPECIFIC

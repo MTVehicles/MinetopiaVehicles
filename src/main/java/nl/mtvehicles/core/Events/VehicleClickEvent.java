@@ -25,91 +25,52 @@ import java.util.*;
 public class VehicleClickEvent implements Listener {
     public static HashMap<String, Double> speed = new HashMap<>();
     public static HashMap<String, Double> speedhigh = new HashMap<>();
-
     private Map<String, Long> lastUsage = new HashMap<String, Long>();
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event) {
-        Entity a = event.getRightClicked();
-        Player p = event.getPlayer();
-
+    public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent e) {
+        Entity a = e.getRightClicked();
+        Player p = e.getPlayer();
+        long lastUsed = 0L;
         if (a.getCustomName() == null) {
             return;
         }
-
         if (!a.getCustomName().contains("MTVEHICLES")) {
             return;
         }
-
-        long lastUsed = 0L;
-
-        if (this.lastUsage.containsKey(p.getName())) {
-            lastUsed = ((Long) this.lastUsage.get(p.getName())).longValue();
+        if (lastUsage.containsKey(p.getName())) {
+            lastUsed = ((Long) lastUsage.get(p.getName())).longValue();
         }
-        int cdmillis = 1 * 500;
-
-        if (System.currentTimeMillis() - lastUsed >= cdmillis) {
-            this.lastUsage.put(p.getName(), Long.valueOf(System.currentTimeMillis()));
+        if (System.currentTimeMillis() - lastUsed >= 500) {
+            lastUsage.put(p.getName(), Long.valueOf(System.currentTimeMillis()));
         } else {
             return;
         }
-
+        String license = TextUtils.licenseReplacer(a.getCustomName());
         if (p.isSneaking()) {
-            if (a.getCustomName().contains("MTVEHICLES_MAINSEAT_")) {
-                pickupVehicle(a.getCustomName().replace("MTVEHICLES_MAINSEAT_", ""), p);
-                event.setCancelled(true);
-                return;
-            }
-            if (a.getCustomName().contains("MTVEHICLES_MAIN_")) {
-                pickupVehicle(a.getCustomName().replace("MTVEHICLES_MAIN_", ""), p);
-                event.setCancelled(true);
-                return;
-            }
-            if (a.getCustomName().contains("MTVEHICLES_SKIN_")) {
-                pickupVehicle(a.getCustomName().replace("MTVEHICLES_SKIN_", ""), p);
-                event.setCancelled(true);
-                return;
-            }
-            if (a.getCustomName().contains("MTVEHICLES_WIEKENS_")) {
-                event.setCancelled(true);
-                return;
-            }
+            pickupVehicle(license, p);
+            e.setCancelled(true);
             return;
         }
-
         Main.configList.forEach(ConfigUtils::reload);
-
-        if (a.getCustomName().contains("MTVEHICLES_MAINSEAT_")) {
-            createVehicle(a.getCustomName().replace("MTVEHICLES_MAINSEAT_", ""), p);
-            event.setCancelled(true);
-        }
-        if (a.getCustomName().contains("MTVEHICLES_MAIN_")) {
-            createVehicle(a.getCustomName().replace("MTVEHICLES_MAIN_", ""), p);
-            event.setCancelled(true);
-        }
-        if (a.getCustomName().contains("MTVEHICLES_SKIN_")) {
-            createVehicle(a.getCustomName().replace("MTVEHICLES_SKIN_", ""), p);
-            event.setCancelled(true);
-        }
         if (a.getCustomName().contains("MTVEHICLES_SEAT")) {
-            event.setCancelled(true);
-            String ken = a.getCustomName().substring(17);
-            Vehicle vehicle = Vehicle.getByPlate(ken);
+            e.setCancelled(true);
+            Vehicle vehicle = Vehicle.getByPlate(license);
             if (vehicle == null) {
                 return;
             }
             if (vehicle.getOwner().equals(p.getUniqueId().toString()) || vehicle.canSit(p) || p.hasPermission("mtvehicles.ride")) {
                 if (a.isEmpty()) {
                     a.setPassenger(p);
-                    p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleEnterMember").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner())).getName())));
+                    p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleEnterMember").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(license).getOwner())).getName())));
                 }
             } else {
-                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleNoRiderEnter").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner())).getName())));
+                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleNoRiderEnter").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(license).getOwner())).getName())));
             }
+            return;
         }
-        if (a.getCustomName().contains("MTVEHICLES_WIEKENS_")) {
-            event.setCancelled(true);
-        }
+        createVehicle(license, p);
+        e.setCancelled(true);
     }
 
     public static HashMap<String, Double> mainx = new HashMap<>();
@@ -126,7 +87,7 @@ public class VehicleClickEvent implements Listener {
     public static HashMap<String, Double> benzine = new HashMap<>();
     public static HashMap<String, Double> benzineverbruik = new HashMap<>();
 
-    public void createVehicle(final String ken, final Player p) {
+    public void createVehicle(String ken, Player p) {
         if (!(VehicleLeaveEvent.autostand2.get(ken) == null)) {
             if (!VehicleLeaveEvent.autostand2.get(ken).isEmpty()) {
                 return;
@@ -137,108 +98,72 @@ public class VehicleClickEvent implements Listener {
             p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleNotFound")));
             return;
         }
-        if (vehicle.getOwner().equals(p.getUniqueId().toString()) || vehicle.canRide(p) || p.hasPermission("mtvehicles.ride")) {
-            for (final World world : Bukkit.getServer().getWorlds()) {
-                for (final Entity entity : world.getEntities()) {
-                    if (Main.defaultConfig.getConfig().getBoolean("anwb") && !p.hasPermission("mtvehicles.anwb") && (entity.getLocation().clone().add(0.0, 0.9, 0.0).getBlock().getType().toString().contains("WATER"))) {
-                        p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleInWater")));
-                        return;
+        if (!vehicle.getOwner().equals(p.getUniqueId().toString()) && !vehicle.canRide(p) && !p.hasPermission("mtvehicles.ride")) {
+            p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleNoRiderEnter").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
+            return;
+        }
+        for (Entity entity : p.getWorld().getEntities()) {
+            if (Main.defaultConfig.getConfig().getBoolean("anwb") && !p.hasPermission("mtvehicles.anwb") && (entity.getLocation().clone().add(0.0, 0.9, 0.0).getBlock().getType().toString().contains("WATER"))) {
+                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleInWater")));
+                return;
+            }
+            if (entity.getCustomName() != null && entity.getCustomName().contains(ken)) {
+                ArmorStand vehicleAs = (ArmorStand) entity;
+                if (!entity.isEmpty()) {
+                    return;
+                }
+                benzine.put(ken, vehicle.getBenzine());
+                benzineverbruik.put(ken, Main.vehicleDataConfig.getConfig().getDouble("vehicle." + ken + ".benzineVerbruik"));
+                type.put(ken, Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".vehicleType"));
+                Location location = new Location(entity.getWorld(), entity.getLocation().getX(), entity.getLocation().getY(), entity.getLocation().getZ(), entity.getLocation().getYaw(), entity.getLocation().getPitch());
+                if (!vehicleAs.getCustomName().contains("MTVEHICLES_SKIN_" + ken)) {
+                    return;
+                }
+                TextUtils.basicStandCreator(ken, "SKIN", location, vehicleAs.getHelmet(), false);
+                TextUtils.basicStandCreator(ken, "MAIN", location, null, true);
+                List<Map<String, Double>> seats = (List<Map<String, Double>>) vehicle.getVehicleData().get("seats");
+                for (int i = 1; i <= seats.size(); i++) {
+                    Map<String, Double> seat = seats.get(i - 1);
+                    if (i == 1) {
+                        TextUtils.mainSeatStandCreator(ken, location, p, seat.get("x"), seat.get("y"), seat.get("z"));
+                        BossbarUtils.addBossbar(p, ken);
+                        p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleEnterRider").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
                     }
-                    if (entity.getCustomName() != null && entity.getCustomName().contains(ken)) {
-                        final ArmorStand test = (ArmorStand) entity;
-                        if (!entity.isEmpty()) {
-                            return;
-                        }
-                        if (test.getCustomName().contains("MTVEHICLES_SKIN_" + ken)) {
-                            benzine.put(ken, vehicle.getBenzine());
-                            benzineverbruik.put(ken, Main.vehicleDataConfig.getConfig().getDouble("vehicle." + ken + ".benzineVerbruik"));
-                            type.put(ken, Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".vehicleType"));
-                            Location loc = test.getLocation();
-                            Location location = new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
-                            ArmorStand as = location.getWorld().spawn(location, ArmorStand.class);
-                            as.setCustomName("MTVEHICLES_SKIN_" + ken);
-                            as.setHelmet(test.getHelmet());
-                            ArmorStand as2 = location.getWorld().spawn(location, ArmorStand.class);
-                            as2.setCustomName("MTVEHICLES_MAIN_" + ken);
-                            List<Map<String, Double>> seats = (List<Map<String, Double>>) vehicle.getVehicleData().get("seats");
-                            VehicleLeaveEvent.autostand.put("MTVEHICLES_SKIN_" + ken, as);
-                            VehicleLeaveEvent.autostand.put("MTVEHICLES_MAIN_" + ken, as2);
-                            as.setGravity(false);
-                            as2.setGravity(true);
-                            as.setVisible(false);
-                            as2.setVisible(false);
-                            for (int i = 1; i <= seats.size(); i++) {
-                                Map<String, Double> seat = seats.get(i - 1);
-                                if (i == 1) {
-                                    Location location2 = new Location(location.getWorld(), location.getX() + Double.valueOf(seat.get("z")), location.getY() + Double.valueOf(seat.get("y")), location.getZ() + Double.valueOf(seat.get("z")));
-                                    ArmorStand as3 = location2.getWorld().spawn(location2, ArmorStand.class);
-                                    as3.setCustomName("MTVEHICLES_MAINSEAT_" + ken);
-                                    VehicleLeaveEvent.autostand.put("MTVEHICLES_MAINSEAT_" + ken, as3);
-                                    as3.setGravity(false);
-                                    speed.put(ken, 0.0);
-                                    speedhigh.put(ken, 0.0);
-                                    mainx.put("MTVEHICLES_MAINSEAT_" + ken, seat.get("x"));
-                                    mainy.put("MTVEHICLES_MAINSEAT_" + ken, seat.get("y"));
-                                    mainz.put("MTVEHICLES_MAINSEAT_" + ken, seat.get("z"));
-                                    as3.setPassenger(p);
-                                    as3.setVisible(false);
-                                    VehicleLeaveEvent.autostand2.put(ken, as3);
-                                    BossbarUtils.addBossbar(p, ken);
-                                    p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleEnterRider").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
-                                }
-                                if (i > 1) {
-                                    seatsize.put(ken, seats.size());
-                                    seatx.put("MTVEHICLES_SEAT" + (int) i + "_" + ken, seat.get("x"));
-                                    seaty.put("MTVEHICLES_SEAT" + (int) i + "_" + ken, seat.get("y"));
-                                    seatz.put("MTVEHICLES_SEAT" + (int) i + "_" + ken, seat.get("z"));
-                                    Location location2 = new Location(location.getWorld(), location.getX() + Double.valueOf(seat.get("z")), location.getY() + Double.valueOf(seat.get("y")), location.getZ() + Double.valueOf(seat.get("x")));
-                                    ArmorStand as3 = location2.getWorld().spawn(location2, ArmorStand.class);
-                                    as3.setCustomName("MTVEHICLES_SEAT" + (int) i + "_" + ken);
-                                    as3.setGravity(false);
-                                    as3.setVisible(false);
-                                    VehicleLeaveEvent.autostand.put("MTVEHICLES_SEAT" + (int) i + "_" + ken, as3);
-                                }
-                            }
-                            List<Map<String, Double>> wiekens = (List<Map<String, Double>>) vehicle.getVehicleData().get("wiekens");
-                            String vehicleType = Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".vehicleType");
-                            if (vehicleType == null) return;
-                            if (vehicleType.contains("HELICOPTER")) {
-                                for (int i = 1; i <= wiekens.size(); i++) {
-                                    Map<?, ?> seat = wiekens.get(i - 1);
-                                    if (i == 1) {
-                                        Location location2 = new Location(location.getWorld(), location.getX() + (double) seat.get("z"), (double) location.getY() + (double) seat.get("y"), location.getZ() + (double) seat.get("x"));
-                                        wiekenx.put("MTVEHICLES_WIEKENS_" + ken, (Double) seat.get("x"));
-                                        wiekeny.put("MTVEHICLES_WIEKENS_" + ken, (Double) seat.get("y"));
-                                        wiekenz.put("MTVEHICLES_WIEKENS_" + ken, (Double) seat.get("z"));
-                                        ArmorStand as3 = location2.getWorld().spawn(location2, ArmorStand.class);
-                                        as3.setCustomName("MTVEHICLES_WIEKENS_" + ken);
-                                        as3.setGravity(false);
-                                        as3.setVisible(false);
-                                        VehicleLeaveEvent.autostand.put("MTVEHICLES_WIEKENS_" + ken, as3);
-                                        ItemStack car = (new ItemFactory(Material.getMaterial("DIAMOND_HOE"))).setDurability((short) 1058).setName(TextUtils.colorize("&6Wieken")).setNBT("mtvehicles.kenteken", ken).toItemStack();
-                                        ItemMeta im = car.getItemMeta();
-                                        List<String> itemlore = new ArrayList<>();
-                                        itemlore.add(TextUtils.colorize("&a"));
-                                        itemlore.add(TextUtils.colorize("&a" + ken));
-                                        itemlore.add(TextUtils.colorize("&a"));
-                                        im.setLore(itemlore);
-                                        im.setUnbreakable(true);
-                                        car.setItemMeta(im);
-                                        if (!Main.instance.version.equals("v1_12_R1")) {
-                                            as3.setHelmet((ItemStack) seat.get("item"));
-                                        } else {
-                                            as3.setHelmet(car);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        test.remove();
+                    if (i > 1) {
+                        seatsize.put(ken, seats.size());
+                        seatx.put("MTVEHICLES_SEAT" + (int) i + "_" + ken, seat.get("x"));
+                        seaty.put("MTVEHICLES_SEAT" + (int) i + "_" + ken, seat.get("y"));
+                        seatz.put("MTVEHICLES_SEAT" + (int) i + "_" + ken, seat.get("z"));
+                        Location location2 = new Location(location.getWorld(), location.getX() + Double.valueOf(seat.get("z")), location.getY() + Double.valueOf(seat.get("y")), location.getZ() + Double.valueOf(seat.get("x")));
+                        ArmorStand as = location2.getWorld().spawn(location2, ArmorStand.class);
+                        as.setCustomName("MTVEHICLES_SEAT" + (int) i + "_" + ken);
+                        as.setGravity(false);
+                        as.setVisible(false);
+                        VehicleLeaveEvent.autostand.put("MTVEHICLES_SEAT" + (int) i + "_" + ken, as);
                     }
                 }
+                List<Map<String, Double>> wiekens = (List<Map<String, Double>>) vehicle.getVehicleData().get("wiekens");
+                String vehicleType = Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".vehicleType");
+                if (vehicleType.contains("HELICOPTER")) {
+                    if (vehicleType == null) return;
+                    for (int i = 1; i <= wiekens.size(); i++) {
+                        Map<?, ?> seat = wiekens.get(i - 1);
+                        if (i == 1) {
+                            Location location2 = new Location(location.getWorld(), location.getX() + (double) seat.get("z"), (double) location.getY() + (double) seat.get("y"), location.getZ() + (double) seat.get("x"));
+                            wiekenx.put("MTVEHICLES_WIEKENS_" + ken, (Double) seat.get("x"));
+                            wiekeny.put("MTVEHICLES_WIEKENS_" + ken, (Double) seat.get("y"));
+                            wiekenz.put("MTVEHICLES_WIEKENS_" + ken, (Double) seat.get("z"));
+                            ArmorStand as = location2.getWorld().spawn(location2, ArmorStand.class);
+                            as.setCustomName("MTVEHICLES_WIEKENS_" + ken);
+                            as.setGravity(false);
+                            as.setVisible(false);
+                            VehicleLeaveEvent.autostand.put("MTVEHICLES_WIEKENS_" + ken, as);
+                            as.setHelmet((ItemStack) seat.get("item"));
+                        }
+                    }
+                }
+                vehicleAs.remove();
             }
-        } else {
-            p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleNoRiderEnter").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
         }
     }
 
@@ -278,7 +203,6 @@ public class VehicleClickEvent implements Listener {
             return;
         }
     }
-
 
     public boolean checkInvFull(Player p) {
         return !Arrays.asList(p.getInventory().getStorageContents()).contains(null);

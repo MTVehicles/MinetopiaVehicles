@@ -53,9 +53,7 @@ public class VehicleSetOwner extends MTVehicleSubCommand {
         Vehicle vehicle = Vehicle.getByPlate(licensePlate);
         assert vehicle != null;
 
-        if ((playerSetOwner || player.hasPermission("mtvehicles.setowner"))
-            && !vehicle.getOwner().equals(player.getUniqueId().toString())
-        ) {
+        if ((playerSetOwner || !player.hasPermission("mtvehicles.setowner")) && !vehicle.getOwner().equals(player.getUniqueId().toString())) {
             player.sendMessage(Main.messagesConfig.getMessage("notYourCar"));
             return true;
         }
