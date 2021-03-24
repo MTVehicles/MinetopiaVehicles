@@ -20,7 +20,6 @@ public class VehicleMenu extends MTVehicleSubCommand {
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
         if (!isPlayer) return false;
-
         if (!checkPermission("mtvehicles.menu")) return true;
         Player p = (Player) sender;
         sendMessage(Main.messagesConfig.getMessage("menuOpen"));
@@ -33,11 +32,8 @@ public class VehicleMenu extends MTVehicleSubCommand {
             ItemStack itemStack = ItemUtils.carItem(itemDamage, name, skinItem);
             inv.addItem(itemStack);
         }
-
         beginMenu.put(p.getUniqueId(), inv);
-
         p.openInventory(inv);
-
         return true;
     }
 }

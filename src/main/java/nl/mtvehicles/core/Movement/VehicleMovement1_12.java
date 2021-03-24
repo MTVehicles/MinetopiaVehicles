@@ -46,103 +46,36 @@ public class VehicleMovement1_12 extends PacketAdapter {
             VehicleClickEvent.speed.put(ken, 0.0);
             return;
         }
-        if (VehicleClickEvent.benzine.get(ken) < 1) {
-            BossbarUtils.setbossbarvalue(0 / 100.0D, ken);
-        } else {
-            BossbarUtils.setbossbarvalue(VehicleClickEvent.benzine.get(ken) / 100.0D, ken);
-        }
-        ArmorStand as = VehicleLeaveEvent.autostand.get("MTVEHICLES_MAIN_" + ken);
-        ArmorStand as2 = VehicleLeaveEvent.autostand.get("MTVEHICLES_SKIN_" + ken);
-        ArmorStand as3 = VehicleLeaveEvent.autostand.get("MTVEHICLES_MAINSEAT_" + ken);
-        ArmorStand as4 = VehicleLeaveEvent.autostand.get("MTVEHICLES_WIEKENS_" + ken);
-        EntityArmorStand stand = ((CraftArmorStand) as2).getHandle();
-        stand.setLocation(as.getLocation().getX(), as.getLocation().getY(), as.getLocation().getZ(), as.getLocation().getYaw(), as.getLocation().getPitch());
-        mainSeat(as, as3, ken);
-        if (!(VehicleClickEvent.seatsize.get(ken) == null)) {
-            seat(as, ken);
-        }
-        Location loc = as.getLocation();
-        Location location = new Location(loc.getWorld(), loc.getX(), loc.getY() - 0.2, loc.getZ(), loc.getYaw(), loc.getPitch());
-        if (!VehicleClickEvent.type.get(ken).contains("HELICOPTER")) {
-            if (location.getBlock().getType().equals(Material.AIR) || location.getBlock().getType().toString().contains("WATER")) {
-                KeyW(as, VehicleClickEvent.speed.get(ken), -0.8);
-            } else {
-                KeyW(as, VehicleClickEvent.speed.get(ken), 0.0);
-            }
-        } else {
-            wiekens(as, as4, ken);
-            if (!location.getBlock().getType().equals(Material.AIR) || location.getBlock().getType().equals(Material.WATER)) {
-                VehicleClickEvent.speed.put(ken, 0.0);
-            }
-            KeyW(as, VehicleClickEvent.speed.get(ken), VehicleClickEvent.speedhigh.get(ken));
-        }
+
+        ArmorStand standMain = VehicleLeaveEvent.autostand.get("MTVEHICLES_MAIN_" + ken);
+        ArmorStand standSkin = VehicleLeaveEvent.autostand.get("MTVEHICLES_SKIN_" + ken);
+        ArmorStand standMainSeat = VehicleLeaveEvent.autostand.get("MTVEHICLES_MAINSEAT_" + ken);
+        ArmorStand standRotors = VehicleLeaveEvent.autostand.get("MTVEHICLES_WIEKENS_" + ken);
+
         float forward = ppisv.b();
         float side = ppisv.a();
         boolean space = ppisv.c();
         boolean w;
         boolean s;
-        if (VehicleClickEvent.type.get(ken).contains("HELICOPTER")) {
-            if (space) {
-                if (as.getLocation().getY() > VehicleClickEvent.maxhight.get(ken)){
-                    VehicleClickEvent.speedhigh.put(ken, 0.0);
-                } else {
-                    VehicleClickEvent.speedhigh.put(ken, 0.2);
-                }
-            } else {
-                if (location.getBlock().getType().equals(Material.AIR) || location.getBlock().getType().toString().contains("WATER")) {
-                    VehicleClickEvent.speedhigh.put(ken, -0.2);
-                } else {
-                    VehicleClickEvent.speedhigh.put(ken, 0.0);
-                }
-            }
-        }
         if (forward > 0.0f) {
-
-            if (!(VehicleClickEvent.benzine.get(ken) < 1)) {
-
-                if (Main.defaultConfig.getConfig().getBoolean("benzine") == true && Main.vehicleDataConfig.getConfig().getBoolean("vehicle." + ken + ".benzineEnabled") == true) {
-                    double dnum = VehicleClickEvent.benzine.get(ken) - VehicleClickEvent.benzineverbruik.get(ken);
-                    VehicleClickEvent.benzine.put(ken, dnum);
-                }
-                if (VehicleClickEvent.speed.get(ken) > Vehicle.getByPlate(ken).getMaxSpeed()) {
-                } else {
-                    VehicleClickEvent.speed.put(ken, VehicleClickEvent.speed.get(ken) + Vehicle.getByPlate(ken).getAcceleratieSpeed());
-                }
-            } else {
-                if (VehicleClickEvent.speed.get(ken) <= 0) {
-                    VehicleClickEvent.speed.put(ken, 0.0);
-                } else {
-                    VehicleClickEvent.speed.put(ken, VehicleClickEvent.speed.get(ken) - Vehicle.getByPlate(ken).getAftrekkenSpeed());
-                }
-
-            }
-            w = true;
-            s = false;
+            System.out.println("W");
+            standMain.setVelocity(new Vector(standMain.getLocation().getDirection().multiply(0.1).getX(), 0.0, standMain.getLocation().getDirection().multiply(0.1).getZ()));
         } else if (forward < 0.0f) {
-            if (VehicleClickEvent.speed.get(ken) <= 0) {
-                VehicleClickEvent.speed.put(ken, 0.0);
-            } else {
-                VehicleClickEvent.speed.put(ken, VehicleClickEvent.speed.get(ken) - Vehicle.getByPlate(ken).getBrakingSpeed());
-            }
+            System.out.println("S");
             w = false;
             s = true;
         } else {
-            if (VehicleClickEvent.speed.get(ken) <= 0) {
-                VehicleClickEvent.speed.put(ken, 0.0);
-            } else {
-                VehicleClickEvent.speed.put(ken, VehicleClickEvent.speed.get(ken) - Vehicle.getByPlate(ken).getAftrekkenSpeed());
-            }
             w = false;
             s = false;
         }
         boolean a;
         boolean d;
         if (side > 0.0f) {
-            KeyA(as, ken);
+            System.out.println("A");
             a = true;
             d = false;
         } else if (side < 0.0f) {
-            KeyD(as, ken);
+            System.out.println("D");
             a = false;
             d = true;
         } else {
