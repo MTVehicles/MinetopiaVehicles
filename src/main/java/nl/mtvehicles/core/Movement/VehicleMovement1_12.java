@@ -118,7 +118,7 @@ public class VehicleMovement1_12 extends PacketAdapter {
 
     public static void slabCheck(ArmorStand mainStand, String license) {
         Bukkit.getScheduler().runTaskAsynchronously(Main.instance, () -> {
-            double xOffset = 1.0;
+            double xOffset = 0.7;
             double yOffset = 0.4;
             double zOffset = 0.0;
             Location locvp = mainStand.getLocation().clone();
@@ -128,11 +128,6 @@ public class VehicleMovement1_12 extends PacketAdapter {
             Location loc = new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
             int data = loc.getBlock().getData();
             String locY = String.valueOf(mainStand.getLocation().getY());
-//            if (!locY.substring(locY.length() - 2).contains(".5")) {
-//                if (!loc.getBlock().getType().toString().contains("AIR")  && !loc.getBlock().getType().toString().contains("STEP") && !loc.getBlock().getType().toString().contains("SLAB")) {
-//                    VehicleClickEvent.speed.put(license, 0.0);
-//                }
-//            }
             if (locY.substring(locY.length() - 2).contains(".5")) {
 
                 if (loc.getBlock().getType().toString().contains("AIR")) {
