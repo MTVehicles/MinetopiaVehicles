@@ -71,9 +71,10 @@ public class Main extends JavaPlugin {
 
         new Metrics(this, 5932);
 
-        for (Player player : Bukkit.getServer().getOnlinePlayers()) {
-            if (player.isInsideVehicle()) {
-                player.kickPlayer("Ga niet in een voertuig zitten terwijl de reload bezig is!");
+        for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+            if (p.isInsideVehicle()) {
+                p.kickPlayer("Ga niet in een voertuig zitten terwijl de reload bezig is!");
+                //p.getVehicle().removePassenger(p);
             }
         }
 
