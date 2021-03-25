@@ -1,14 +1,12 @@
 package nl.mtvehicles.core.Events;
 
 import nl.mtvehicles.core.Infrastructure.Helpers.BossbarUtils;
-import nl.mtvehicles.core.Infrastructure.Helpers.ItemFactory;
 import nl.mtvehicles.core.Infrastructure.Helpers.TextUtils;
 import nl.mtvehicles.core.Infrastructure.Models.ConfigUtils;
 import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
 import nl.mtvehicles.core.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
@@ -18,7 +16,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
@@ -169,40 +166,42 @@ public class VehicleClickEvent implements Listener {
     }
 
     public void pickupVehicle(String ken, Player p) {
-        if (Vehicle.getByPlate(ken) == null) {
-            p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleNotFound")));
-            return;
-        }
-        if (Vehicle.getByPlate(ken).getOwner().equals(p.getUniqueId().toString()) && Main.defaultConfig.getConfig().getBoolean("carPickup") == false || p.hasPermission("mtvehicles.oppakken")) {
-            for (World world : Bukkit.getServer().getWorlds()) {
-                for (Entity entity : world.getEntities()) {
-                    if (Main.defaultConfig.getConfig().getBoolean("anwb") && !p.hasPermission("mtvehicles.anwb") && (entity.getLocation().clone().add(0.0, 0.9, 0.0).getBlock().getType().toString().contains("WATER"))) {
-                        p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleInWater")));
-                        return;
-                    }
-                    if (entity.getCustomName() != null && entity.getCustomName().contains(ken)) {
-                        ArmorStand test = (ArmorStand) entity;
-                        if (test.getCustomName().contains("MTVEHICLES_SKIN_" + ken)) {
-                            if (checkInvFull(p) == false) {
-                                p.getInventory().addItem(test.getHelmet());
-                                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehiclePickup").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
-                            } else {
-                                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("inventoryFull")));
-                                return;
-                            }
-                        }
-                        test.remove();
-                    }
-                }
-            }
-        } else {
-            if (Main.defaultConfig.getConfig().getBoolean("carPickup") == true) {
-                p.sendMessage(TextUtils.colorize("&cVoertuigen oppakken staat uitgeschakeld"));
+        Bukkit.getScheduler().runTaskAsynchronously(Main.instance, () -> {
+            if (Vehicle.getByPlate(ken) == null) {
+                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleNotFound")));
                 return;
             }
-            p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleNoOwnerPickup").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
-            return;
-        }
+            if (Vehicle.getByPlate(ken).getOwner().equals(p.getUniqueId().toString()) && Main.defaultConfig.getConfig().getBoolean("carPickup") == false || p.hasPermission("mtvehicles.oppakken")) {
+                for (World world : Bukkit.getServer().getWorlds()) {
+                    for (Entity entity : world.getEntities()) {
+                        if (Main.defaultConfig.getConfig().getBoolean("anwb") && !p.hasPermission("mtvehicles.anwb") && (entity.getLocation().clone().add(0.0, 0.9, 0.0).getBlock().getType().toString().contains("WATER"))) {
+                            p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleInWater")));
+                            return;
+                        }
+                        if (entity.getCustomName() != null && entity.getCustomName().contains(ken)) {
+                            ArmorStand test = (ArmorStand) entity;
+                            if (test.getCustomName().contains("MTVEHICLES_SKIN_" + ken)) {
+                                if (checkInvFull(p) == false) {
+                                    p.getInventory().addItem(test.getHelmet());
+                                    p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehiclePickup").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
+                                } else {
+                                    p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("inventoryFull")));
+                                    return;
+                                }
+                            }
+                            test.remove();
+                        }
+                    }
+                }
+            } else {
+                if (Main.defaultConfig.getConfig().getBoolean("carPickup") == true) {
+                    p.sendMessage(TextUtils.colorize("&cVoertuigen oppakken staat uitgeschakeld"));
+                    return;
+                }
+                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleNoOwnerPickup").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
+                return;
+            }
+        });
     }
 
     public boolean checkInvFull(Player p) {

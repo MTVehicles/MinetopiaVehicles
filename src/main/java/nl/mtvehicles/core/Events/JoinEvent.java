@@ -30,48 +30,52 @@ public class JoinEvent implements Listener {
     }
 
     public void getUpdateMessage(Player p) {
-        try {
-            URLConnection connection = new URL("https://minetopiavehicles.nl/api/update-api-check.php").openConnection();
-            connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
-            connection.connect();
-            BufferedReader r = new BufferedReader(new InputStreamReader(connection.getInputStream(), Charset.forName("UTF-8")));
-            StringBuilder sb = new StringBuilder();
-            String line;
-            while ((line = r.readLine()) != null) {
-                sb.append(line);
+        Bukkit.getScheduler().runTaskAsynchronously(Main.instance, () -> {
+            try {
+                URLConnection connection = new URL("https://minetopiavehicles.nl/api/update-api-check.php").openConnection();
+                connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+                connection.connect();
+                BufferedReader r = new BufferedReader(new InputStreamReader(connection.getInputStream(), Charset.forName("UTF-8")));
+                StringBuilder sb = new StringBuilder();
+                String line;
+                while ((line = r.readLine()) != null) {
+                    sb.append(line);
+                }
+                String value = sb.toString();
+                String[] vet = value.split("@");
+                PluginDescriptionFile pdf = Main.instance.getDescription();
+                for (String s : vet) {
+                    p.sendMessage(TextUtils.colorize(s.replace("<oldVer>", pdf.getVersion())));
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                Bukkit.getLogger().info("We hebben geen verbinding kunnen maken met de servers van MinetopiaVehicles.");
             }
-            String value = sb.toString();
-            String[] vet = value.split("@");
-            PluginDescriptionFile pdf = Main.instance.getDescription();
-            for (String s : vet) {
-                p.sendMessage(TextUtils.colorize(s.replace("<oldVer>", pdf.getVersion())));
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            Bukkit.getLogger().info("We hebben geen verbinding kunnen maken met de servers van MinetopiaVehicles.");
-        }
+        });
     }
 
     public void checkNewVersion(Player p) {
-        try {
-            URLConnection connection = new URL("https://minetopiavehicles.nl/api/update-api-version.php").openConnection();
-            connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
-            connection.connect();
-            BufferedReader r = new BufferedReader(new InputStreamReader(connection.getInputStream(), Charset.forName("UTF-8")));
-            StringBuilder sb = new StringBuilder();
-            String line;
-            while ((line = r.readLine()) != null) {
-                sb.append(line);
+        Bukkit.getScheduler().runTaskAsynchronously(Main.instance, () -> {
+            try {
+                URLConnection connection = new URL("https://minetopiavehicles.nl/api/update-api-version.php").openConnection();
+                connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+                connection.connect();
+                BufferedReader r = new BufferedReader(new InputStreamReader(connection.getInputStream(), Charset.forName("UTF-8")));
+                StringBuilder sb = new StringBuilder();
+                String line;
+                while ((line = r.readLine()) != null) {
+                    sb.append(line);
+                }
+                String value = sb.toString();
+                PluginDescriptionFile pdf = Main.instance.getDescription();
+                if (!value.contains(pdf.getVersion())) {
+                    getUpdateMessage(p);
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                Bukkit.getLogger().info("We hebben geen verbinding kunnen maken met de servers van MinetopiaVehicles.");
             }
-            String value = sb.toString();
-            PluginDescriptionFile pdf = Main.instance.getDescription();
-            if (!value.contains(pdf.getVersion())) {
-                getUpdateMessage(p);
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            Bukkit.getLogger().info("We hebben geen verbinding kunnen maken met de servers van MinetopiaVehicles.");
-        }
+        });
     }
 
 }

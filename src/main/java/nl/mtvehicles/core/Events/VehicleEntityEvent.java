@@ -43,11 +43,11 @@ public class VehicleEntityEvent implements Listener {
                 double curb = VehicleClickEvent.benzine.get(licensePlate);
                 String benval = NBTUtils.getString(item, "mtvehicles.benzineval");
                 String bensize = NBTUtils.getString(item, "mtvehicles.benzinesize");
-                if (Integer.parseInt(benval) < 1){
+                if (Integer.parseInt(benval) < 1) {
                     p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("noFuel")));
                     return;
                 }
-                if (curb > 99){
+                if (curb > 99) {
                     p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleFull")));
                     return;
                 }
@@ -72,18 +72,9 @@ public class VehicleEntityEvent implements Listener {
 
             if (p.isSneaking()) {
                 Main.configList.forEach(ConfigUtils::reload);
-                if (a.getCustomName().contains("MTVEHICLES_MAINSEAT_")) {
-                    kofferbak(p, a.getCustomName().replace("MTVEHICLES_MAINSEAT_", ""));
-                    event.setCancelled(true);
-                }
-                if (a.getCustomName().contains("MTVEHICLES_MAIN_")) {
-                    kofferbak(p, a.getCustomName().replace("MTVEHICLES_MAIN_", ""));
-                    event.setCancelled(true);
-                }
-                if (a.getCustomName().contains("MTVEHICLES_SKIN_")) {
-                    kofferbak(p, a.getCustomName().replace("MTVEHICLES_SKIN_", ""));
-                    event.setCancelled(true);
-                }
+                String license = TextUtils.licenseReplacer(a.getCustomName());
+                kofferbak(p, license);
+                event.setCancelled(true);
                 return;
             }
         }
@@ -112,15 +103,11 @@ public class VehicleEntityEvent implements Listener {
                     p.openInventory(inv);
                 } else {
                 }
-
             } else {
                 p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleNoRiderKofferbak").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
-
             }
         }
-
     }
-
 
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {

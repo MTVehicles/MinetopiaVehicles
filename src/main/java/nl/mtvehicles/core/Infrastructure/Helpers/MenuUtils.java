@@ -127,33 +127,35 @@ public class MenuUtils {
     public static HashMap<String, UUID> restoreUUID = new HashMap<>();
 
     public static void restoreCMD(Player p, int id, UUID of) {
-        Inventory inv = Bukkit.createInventory(null, 54, "Vehicle Restore " + id);
-        Main.configList.forEach(ConfigUtils::reload);
-        if (Main.vehicleDataConfig.getConfig().getConfigurationSection("vehicle") != null) {
-            List<String> dataVehicle = new ArrayList<>();
-            for (String entry : Main.vehicleDataConfig.getConfig().getConfigurationSection("vehicle").getKeys(false)) {
-                dataVehicle.add(entry);
-            }
-            for (int i = 1 + id * 36 - 36; i <= id * 36; i++) {
-                if (i - 1 < dataVehicle.size()) {
-                    if (of == null || Main.vehicleDataConfig.getConfig().getString("vehicle." + dataVehicle.get(i - 1) + ".owner").contains(of.toString())) {
-                        if (Main.vehicleDataConfig.getConfig().getBoolean("vehicle." + dataVehicle.get(i - 1) + ".isGlow") == true) {
-                            inv.addItem(ItemUtils.carItem2glow(Main.vehicleDataConfig.getConfig().getInt("vehicle." + dataVehicle.get(i - 1) + ".skinDamage"), Main.vehicleDataConfig.getConfig().getString("vehicle." + dataVehicle.get(i - 1) + ".name"), Main.vehicleDataConfig.getConfig().getString("vehicle." + dataVehicle.get(i - 1) + ".skinItem"), dataVehicle.get(i - 1)));
-                        } else {
-                            inv.addItem(ItemUtils.carItem2(Main.vehicleDataConfig.getConfig().getInt("vehicle." + dataVehicle.get(i - 1) + ".skinDamage"), Main.vehicleDataConfig.getConfig().getString("vehicle." + dataVehicle.get(i - 1) + ".name"), Main.vehicleDataConfig.getConfig().getString("vehicle." + dataVehicle.get(i - 1) + ".skinItem"), dataVehicle.get(i - 1)));
+        Bukkit.getScheduler().runTaskAsynchronously(Main.instance, () -> {
+            Inventory inv = Bukkit.createInventory(null, 54, "Vehicle Restore " + id);
+            Main.configList.forEach(ConfigUtils::reload);
+            if (Main.vehicleDataConfig.getConfig().getConfigurationSection("vehicle") != null) {
+                List<String> dataVehicle = new ArrayList<>();
+                for (String entry : Main.vehicleDataConfig.getConfig().getConfigurationSection("vehicle").getKeys(false)) {
+                    dataVehicle.add(entry);
+                }
+                for (int i = 1 + id * 36 - 36; i <= id * 36; i++) {
+                    if (i - 1 < dataVehicle.size()) {
+                        if (of == null || Main.vehicleDataConfig.getConfig().getString("vehicle." + dataVehicle.get(i - 1) + ".owner").contains(of.toString())) {
+                            if (Main.vehicleDataConfig.getConfig().getBoolean("vehicle." + dataVehicle.get(i - 1) + ".isGlow") == true) {
+                                inv.addItem(ItemUtils.carItem2glow(Main.vehicleDataConfig.getConfig().getInt("vehicle." + dataVehicle.get(i - 1) + ".skinDamage"), Main.vehicleDataConfig.getConfig().getString("vehicle." + dataVehicle.get(i - 1) + ".name"), Main.vehicleDataConfig.getConfig().getString("vehicle." + dataVehicle.get(i - 1) + ".skinItem"), dataVehicle.get(i - 1)));
+                            } else {
+                                inv.addItem(ItemUtils.carItem2(Main.vehicleDataConfig.getConfig().getInt("vehicle." + dataVehicle.get(i - 1) + ".skinDamage"), Main.vehicleDataConfig.getConfig().getString("vehicle." + dataVehicle.get(i - 1) + ".name"), Main.vehicleDataConfig.getConfig().getString("vehicle." + dataVehicle.get(i - 1) + ".skinItem"), dataVehicle.get(i - 1)));
+                            }
                         }
                     }
                 }
+                for (int i = 36; i <= 44; i++) {
+                    inv.setItem(i, ItemUtils.mItem("STAINED_GLASS_PANE", 1, (short) 0, "&c", "&c"));
+                }
+                for (int i = 36; i <= 44; i++) {
+                    inv.setItem(i, ItemUtils.mItem("STAINED_GLASS_PANE", 1, (short) 0, "&c", "&c"));
+                }
+                inv.setItem(52, ItemUtils.mItem("SPECTRAL_ARROW", 1, (short) 0, "&cVolgende Pagina", "&c"));
+                inv.setItem(46, ItemUtils.mItem("SPECTRAL_ARROW", 1, (short) 0, "&cVorige Pagina", "&c"));
+                p.openInventory(inv);
             }
-            for (int i = 36; i <= 44; i++) {
-                inv.setItem(i, ItemUtils.mItem("STAINED_GLASS_PANE", 1, (short) 0, "&c", "&c"));
-            }
-            for (int i = 36; i <= 44; i++) {
-                inv.setItem(i, ItemUtils.mItem("STAINED_GLASS_PANE", 1, (short) 0, "&c", "&c"));
-            }
-            inv.setItem(52, ItemUtils.mItem("SPECTRAL_ARROW", 1, (short) 0, "&cVolgende Pagina", "&c"));
-            inv.setItem(46, ItemUtils.mItem("SPECTRAL_ARROW", 1, (short) 0, "&cVorige Pagina", "&c"));
-            p.openInventory(inv);
-        }
+        });
     }
 }

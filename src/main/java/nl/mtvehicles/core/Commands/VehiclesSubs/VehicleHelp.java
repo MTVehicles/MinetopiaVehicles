@@ -4,6 +4,7 @@ import nl.mtvehicles.core.Infrastructure.Models.MTVehicleSubCommand;
 import nl.mtvehicles.core.Main;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.plugin.PluginDescriptionFile;
 
 public class VehicleHelp extends MTVehicleSubCommand {
     @Override
@@ -12,8 +13,7 @@ public class VehicleHelp extends MTVehicleSubCommand {
             sendMessage(Main.messagesConfig.getMessage("notForConsole"));
             return false;
         }
-
-        sendMessage("&2&lMinetopiaVehicles Commands:");
+        sendMessage("&2&lMinetopiaVehicles Commands: ("+Main.instance.getDescription().getVersion()+")");
         sendMessage("");
         sendMessage("&2/vehicle &ainfo &f- &2"+Main.messagesConfig.getMessage("helpInfo"));
         //sendMessage("&2/vehicle &ahelp &f- &2"+Main.messagesConfig.getMessage("helpHelp"));

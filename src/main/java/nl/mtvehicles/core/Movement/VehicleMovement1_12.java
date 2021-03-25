@@ -129,13 +129,12 @@ public class VehicleMovement1_12 extends PacketAdapter {
             int data = loc.getBlock().getData();
             String locY = String.valueOf(mainStand.getLocation().getY());
             if (locY.substring(locY.length() - 2).contains(".5")) {
-
                 if (loc.getBlock().getType().toString().contains("AIR")) {
                     return;
                 }
                 if (loc.getBlock().getType().toString().contains("STEP") || loc.getBlock().getType().toString().contains("SLAB")) {
                     if (!loc.getBlock().getType().toString().contains("DOUBLE")) {
-                        if (data == 0 || data == 5) {
+                        if (data < 9) {
                             return;
                         }
                     }
@@ -147,7 +146,7 @@ public class VehicleMovement1_12 extends PacketAdapter {
                 if (loc.getBlock().getType().toString().contains("DOUBLE")) {
                     return;
                 }
-                if (data == 0 || data == 5) {
+                if (data < 9) {
                     ((CraftArmorStand) mainStand).getHandle().setLocation(mainStand.getLocation().getX(), mainStand.getLocation().getY() + 0.5, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
                 }
             }
@@ -169,7 +168,15 @@ public class VehicleMovement1_12 extends PacketAdapter {
                 mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleClickEvent.speed.get(license)).getX(), -0.2, mainStand.getLocation().getDirection().multiply(VehicleClickEvent.speed.get(license)).getZ()));
                 return;
             }
-            if (location.getBlock().getType().equals(Material.AIR) || location.getBlock().getType().toString().contains("WATER")) {
+            if (VehicleClickEvent.type.get(license).contains("HOVER")) {
+                if (location.getBlock().getType().equals(Material.AIR)) {
+                    mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleClickEvent.speed.get(license)).getX(), -0.8, mainStand.getLocation().getDirection().multiply(VehicleClickEvent.speed.get(license)).getZ()));
+                    return;
+                }
+                mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleClickEvent.speed.get(license)).getX(), 0.00001, mainStand.getLocation().getDirection().multiply(VehicleClickEvent.speed.get(license)).getZ()));
+                return;
+            }
+            if (location.getBlock().getType().toString().contains("AIR") || location.getBlock().getType().toString().contains("WATER")) {
                 mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleClickEvent.speed.get(license)).getX(), -0.8, mainStand.getLocation().getDirection().multiply(VehicleClickEvent.speed.get(license)).getZ()));
                 return;
             }
@@ -177,8 +184,23 @@ public class VehicleMovement1_12 extends PacketAdapter {
         });
     }
 
-    public static void mainSeat(ArmorStand mainStand, CraftArmorStand seatas, String license) {
+    public static void mainSeat(ArmorStand mainStand, CraftArmorStand mainseat, String license) {
         Bukkit.getScheduler().runTaskAsynchronously(Main.instance, () -> {
+            if (!(VehicleClickEvent.seatsize.get(license) == null)) {
+                for (int i = 2; i <= VehicleClickEvent.seatsize.get(license); i++) {
+                    ArmorStand seatas = VehicleLeaveEvent.autostand.get("MTVEHICLES_SEAT" + i + "_" + license);
+                    double xOffset = VehicleClickEvent.seatx.get("MTVEHICLES_SEAT" + i + "_" + license);
+                    double yOffset = VehicleClickEvent.seaty.get("MTVEHICLES_SEAT" + i + "_" + license);
+                    double zOffset = VehicleClickEvent.seatz.get("MTVEHICLES_SEAT" + i + "_" + license);
+                    Location locvp = mainStand.getLocation().clone();
+                    Location fbvp = locvp.add(locvp.getDirection().setY(0).normalize().multiply(xOffset));
+                    float zvp = (float) (fbvp.getZ() + zOffset * Math.sin(Math.toRadians(fbvp.getYaw())));
+                    float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(fbvp.getYaw())));
+                    Location loc = new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
+                    EntityArmorStand stand = ((CraftArmorStand) seatas).getHandle();
+                    stand.setLocation(loc.getX(), loc.getY(), loc.getZ(), fbvp.getYaw(), loc.getPitch());
+                }
+            }
             double xOffset = VehicleClickEvent.mainx.get("MTVEHICLES_MAINSEAT_" + license);
             double yOffset = VehicleClickEvent.mainy.get("MTVEHICLES_MAINSEAT_" + license);
             double zOffset = VehicleClickEvent.mainz.get("MTVEHICLES_MAINSEAT_" + license);
@@ -187,7 +209,8 @@ public class VehicleMovement1_12 extends PacketAdapter {
             float zvp = (float) (fbvp.getZ() + zOffset * Math.sin(Math.toRadians(fbvp.getYaw())));
             float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(fbvp.getYaw())));
             Location loc = new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
-            seatas.getHandle().setLocation(loc.getX(), loc.getY(), loc.getZ(), fbvp.getYaw(), loc.getPitch());
+            mainseat.getHandle().setLocation(loc.getX(), loc.getY(), loc.getZ(), fbvp.getYaw(), loc.getPitch());
+
         });
     }
 
@@ -205,23 +228,4 @@ public class VehicleMovement1_12 extends PacketAdapter {
             stand.setLocation(loc.getX(), loc.getY(), loc.getZ(), seatas.getLocation().getYaw() + 15, seatas.getLocation().getPitch());
         });
     }
-
-    public static void seat(ArmorStand main, String license) {
-        Bukkit.getScheduler().runTaskAsynchronously(Main.instance, () -> {
-            for (int i = 2; i <= VehicleClickEvent.seatsize.get(license); i++) {
-                ArmorStand seatas = VehicleLeaveEvent.autostand.get("MTVEHICLES_SEAT" + i + "_" + license);
-                double xOffset = VehicleClickEvent.seatx.get("MTVEHICLES_SEAT" + i + "_" + license);
-                double yOffset = VehicleClickEvent.seaty.get("MTVEHICLES_SEAT" + i + "_" + license);
-                double zOffset = VehicleClickEvent.seatz.get("MTVEHICLES_SEAT" + i + "_" + license);
-                Location locvp = main.getLocation().clone();
-                Location fbvp = locvp.add(locvp.getDirection().setY(0).normalize().multiply(xOffset));
-                float zvp = (float) (fbvp.getZ() + zOffset * Math.sin(Math.toRadians(fbvp.getYaw())));
-                float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(fbvp.getYaw())));
-                Location loc = new Location(main.getWorld(), xvp, main.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
-                EntityArmorStand stand = ((CraftArmorStand) seatas).getHandle();
-                stand.setLocation(loc.getX(), loc.getY(), loc.getZ(), fbvp.getYaw(), loc.getPitch());
-            }
-        });
-    }
-
 }

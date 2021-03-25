@@ -10,7 +10,7 @@ voertuigen:
     brakingSpeed: 0.03
     aftrekkenSpeed: 0.005
     rotateSpeed: 8
-    maxSpeedBackwards: 0.0
+    maxSpeedBackwards: 0.35
     seats:
       - x: -0.2
         y: -1.5
@@ -151,7 +151,7 @@ voertuigen:
     brakingSpeed: 0.03
     aftrekkenSpeed: 0.005
     rotateSpeed: 8
-    maxSpeedBackwards: 0.0
+    maxSpeedBackwards: 0.35
     seats:
       - x: -0.2
         y: -0.8
@@ -198,7 +198,7 @@ voertuigen:
     brakingSpeed: 0.03
     aftrekkenSpeed: 0.005
     rotateSpeed: 8
-    maxSpeedBackwards: 0.0
+    maxSpeedBackwards: 0.35
     seats:
       - x: -0.2
         y: -1.2
@@ -293,7 +293,7 @@ voertuigen:
     brakingSpeed: 0.03
     aftrekkenSpeed: 0.005
     rotateSpeed: 8
-    maxSpeedBackwards: 1.1
+    maxSpeedBackwards: 0.35
     seats:
       - x: 0.0
         y: -1.0
@@ -421,7 +421,7 @@ voertuigen:
     brakingSpeed: 0.03
     aftrekkenSpeed: 0.005
     rotateSpeed: 8
-    maxSpeedBackwards: 0.0
+    maxSpeedBackwards: 0.35
     seats:
       - x: -0.1
         y: -1.6
@@ -471,7 +471,7 @@ voertuigen:
     brakingSpeed: 0.03
     aftrekkenSpeed: 0.005
     rotateSpeed: 8
-    maxSpeedBackwards: 1.1
+    maxSpeedBackwards: 0.35
     seats:
       - x: -0.1
         y: -1.0
@@ -500,7 +500,7 @@ voertuigen:
     brakingSpeed: 0.03
     aftrekkenSpeed: 0.005
     rotateSpeed: 8
-    maxSpeedBackwards: 0.0
+    maxSpeedBackwards: 0.35
     seats:
       - x: -0.1
         y: -1.1
@@ -534,7 +534,7 @@ voertuigen:
         SkinItem: DIAMOND_HOE
         itemDamage: 1192
   - name: "Hovercraft"
-    vehicleType: CAR
+    vehicleType: HOVER
     skinItem: DIAMOND_HOE
     itemDamage: 1121
     benzineEnabled: true
@@ -544,7 +544,7 @@ voertuigen:
     brakingSpeed: 0.03
     aftrekkenSpeed: 0.005
     rotateSpeed: 8
-    maxSpeedBackwards: 0.0
+    maxSpeedBackwards: 0.35
     seats:
       - x: -0.2
         y: -0.6
@@ -579,7 +579,7 @@ voertuigen:
     brakingSpeed: 0.03
     aftrekkenSpeed: 0.005
     rotateSpeed: 8
-    maxSpeedBackwards: 0.0
+    maxSpeedBackwards: 0.35
     seats:
       - x: 0.0
         y: -0.9
@@ -670,7 +670,7 @@ voertuigen:
         SkinItem: DIAMOND_HOE
         itemDamage: 1228
   - name: "UFO"
-    vehicleType: CAR
+    vehicleType: HOVER
     skinItem: DIAMOND_HOE
     itemDamage: 1234
     benzineEnabled: true
@@ -680,7 +680,7 @@ voertuigen:
     brakingSpeed: 0.03
     aftrekkenSpeed: 0.005
     rotateSpeed: 8
-    maxSpeedBackwards: 0.0
+    maxSpeedBackwards: 0.35
     seats:
       - x: 0.0
         y: -0.6
@@ -705,7 +705,7 @@ voertuigen:
         SkinItem: DIAMOND_HOE
         itemDamage: 1235
   - name: "Broomstick"
-    vehicleType: CAR
+    vehicleType: HOVER
     skinItem: DIAMOND_HOE
     itemDamage: 1229
     benzineEnabled: true
@@ -715,7 +715,7 @@ voertuigen:
     brakingSpeed: 0.03
     aftrekkenSpeed: 0.005
     rotateSpeed: 8
-    maxSpeedBackwards: 0.0
+    maxSpeedBackwards: 0.35
     seats:
       - x: 0.0
         y: -0.75
@@ -747,7 +747,7 @@ voertuigen:
     brakingSpeed: 0.03
     aftrekkenSpeed: 0.02
     rotateSpeed: 10
-    maxSpeedBackwards: 1.1
+    maxSpeedBackwards: 0.35
     seats:
       - x: -0.3
         y: -1.0
