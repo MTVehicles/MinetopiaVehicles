@@ -127,7 +127,6 @@ public class MenuUtils {
     public static HashMap<String, UUID> restoreUUID = new HashMap<>();
 
     public static void restoreCMD(Player p, int id, UUID of) {
-        Bukkit.getScheduler().runTaskAsynchronously(Main.instance, () -> {
             Inventory inv = Bukkit.createInventory(null, 54, "Vehicle Restore " + id);
             Main.configList.forEach(ConfigUtils::reload);
             if (Main.vehicleDataConfig.getConfig().getConfigurationSection("vehicle") != null) {
@@ -156,6 +155,5 @@ public class MenuUtils {
                 inv.setItem(46, ItemUtils.mItem("SPECTRAL_ARROW", 1, (short) 0, "&cVorige Pagina", "&c"));
                 p.openInventory(inv);
             }
-        });
     }
 }
