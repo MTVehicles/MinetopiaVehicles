@@ -14,11 +14,10 @@ public class BossbarUtils {
 
     public static double Teller;
 
-    public static void setbossbarvalue(double Teller, String ken) {
+    public static void setbossbarvalue(double counter, String ken) {
         if (Main.defaultConfig.getConfig().getBoolean("benzine") == true && Main.vehicleDataConfig.getConfig().getBoolean("vehicle."+ken+".benzineEnabled") == true) {
-            Teller = Teller;
-            Benzine.setProgress(Teller);
-            Benzine.setTitle(String.valueOf((int) Math.round(Teller * 100.0D)) + "% " + TextUtils.colorize("&6Brandstofmeter"));
+            Benzine.setProgress(counter);
+            Benzine.setTitle(Math.round(counter * 100.0D) + "% " + TextUtils.colorize("&6Brandstofmeter"));
             if (Main.vehicleDataConfig.getConfig().getDouble("vehicle." + ken + ".benzine") < 30) {
                 Benzine.setColor(BarColor.RED);
                 return;
@@ -48,7 +47,7 @@ public class BossbarUtils {
     public static void addBossbar(Player player, String ken) {
         if (Main.defaultConfig.getConfig().getBoolean("benzine") == true && Main.vehicleDataConfig.getConfig().getBoolean("vehicle."+ken+".benzineEnabled") == true) {
             String benzineValue = String.valueOf(Main.vehicleDataConfig.getConfig().getDouble("vehicle." + player.getVehicle().getCustomName().replace("MTVEHICLES_MAINSEAT_", "") + ".benzine"));
-            Benzine = Bukkit.createBossBar(Math.round(Double.parseDouble(benzineValue)) + "% " + TextUtils.colorize("&6Brandstofmeter"), BarColor.GREEN, BarStyle.SOLID, new org.bukkit.boss.BarFlag[0]);
+            Benzine = Bukkit.createBossBar(Math.round(Double.parseDouble(benzineValue)) + "% " + TextUtils.colorize("&6Brandstofmeter"), BarColor.GREEN, BarStyle.SOLID);
 
             if (Main.vehicleDataConfig.getConfig().getDouble("vehicle." + ken + ".benzine") < 30) {
                 Benzine.setColor(BarColor.RED);

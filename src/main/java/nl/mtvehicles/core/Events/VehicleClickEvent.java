@@ -127,15 +127,15 @@ public class VehicleClickEvent implements Listener {
                         }
                         if (i > 1) {
                             seatsize.put(ken, seats.size());
-                            seatx.put("MTVEHICLES_SEAT" + (int) i + "_" + ken, seat.get("x"));
-                            seaty.put("MTVEHICLES_SEAT" + (int) i + "_" + ken, seat.get("y"));
-                            seatz.put("MTVEHICLES_SEAT" + (int) i + "_" + ken, seat.get("z"));
+                            seatx.put("MTVEHICLES_SEAT" + (Integer) i + "_" + ken, seat.get("x"));
+                            seaty.put("MTVEHICLES_SEAT" + (Integer) i + "_" + ken, seat.get("y"));
+                            seatz.put("MTVEHICLES_SEAT" + (Integer) i + "_" + ken, seat.get("z"));
                             Location location2 = new Location(location.getWorld(), location.getX() + Double.valueOf(seat.get("z")), location.getY() + Double.valueOf(seat.get("y")), location.getZ() + Double.valueOf(seat.get("x")));
                             ArmorStand as = location2.getWorld().spawn(location2, ArmorStand.class);
-                            as.setCustomName("MTVEHICLES_SEAT" + (int) i + "_" + ken);
+                            as.setCustomName("MTVEHICLES_SEAT" + (Integer) i + "_" + ken);
                             as.setGravity(false);
                             as.setVisible(false);
-                            VehicleLeaveEvent.autostand.put("MTVEHICLES_SEAT" + (int) i + "_" + ken, as);
+                            VehicleLeaveEvent.autostand.put("MTVEHICLES_SEAT" + (Integer) i + "_" + ken, as);
                         }
                     }
                     List<Map<String, Double>> wiekens = (List<Map<String, Double>>) vehicle.getVehicleData().get("wiekens");
@@ -146,7 +146,7 @@ public class VehicleClickEvent implements Listener {
                         for (int i = 1; i <= wiekens.size(); i++) {
                             Map<?, ?> seat = wiekens.get(i - 1);
                             if (i == 1) {
-                                Location location2 = new Location(location.getWorld(), location.getX() + (double) seat.get("z"), (double) location.getY() + (double) seat.get("y"), location.getZ() + (double) seat.get("x"));
+                                Location location2 = new Location(location.getWorld(), location.getX() + (Double) seat.get("z"), (Double) location.getY() + (Double) seat.get("y"), location.getZ() + (Double) seat.get("x"));
                                 wiekenx.put("MTVEHICLES_WIEKENS_" + ken, (Double) seat.get("x"));
                                 wiekeny.put("MTVEHICLES_WIEKENS_" + ken, (Double) seat.get("y"));
                                 wiekenz.put("MTVEHICLES_WIEKENS_" + ken, (Double) seat.get("z"));

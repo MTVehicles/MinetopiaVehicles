@@ -26,7 +26,7 @@ public class VehicleMenu extends MTVehicleSubCommand {
         int menuSize = Main.defaultConfig.getConfig().getInt("vehicleMenuSize") * 9;
         Inventory inv = Bukkit.createInventory(null, menuSize, "Vehicle Menu");
         for (Map<?, ?> vehicle : Main.vehiclesConfig.getConfig().getMapList("voertuigen")) {
-            int itemDamage = (int) vehicle.get("itemDamage");
+            int itemDamage = (Integer) vehicle.get("itemDamage");
             String name = (String) vehicle.get("name");
             String skinItem = (String) vehicle.get("skinItem");
             ItemStack itemStack = ItemUtils.carItem(itemDamage, name, skinItem);

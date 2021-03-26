@@ -281,7 +281,7 @@ public class ItemUtils {
         im.setDisplayName(TextUtils.colorize("&2&l" + name));
         is.setItemMeta(im);
         double a = Math.random() * 10.0D;
-        int b = (int) Math.random() * 10;
+        int b = Integer.parseInt(String.valueOf(Math.random() * 10));
         String c = UUID.randomUUID().toString();
         p.getInventory().addItem(new ItemStack[]{is});
 

@@ -83,7 +83,7 @@ public class VehiclePlaceEvent implements Listener {
             for (int i = 1; i <= wiekens.size(); i++) {
                 Map<?, ?> seat = wiekens.get(i - 1);
                 if (i == 1) {
-                    Location location2 = new Location(location.getWorld(), location.getX() + (double) seat.get("z"), (double) location.getY() + (double) seat.get("y"), location.getZ() + (double) seat.get("x"));
+                    Location location2 = new Location(location.getWorld(), location.getX() + (Double) seat.get("z"), (Double) location.getY() + (Double) seat.get("y"), location.getZ() + (Double) seat.get("x"));
                     ArmorStand as3 = location2.getWorld().spawn(location2, ArmorStand.class);
                     as3.setCustomName("MTVEHICLES_WIEKENS_" + ken);
                     as3.setGravity(false);

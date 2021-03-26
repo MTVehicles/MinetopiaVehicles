@@ -21,7 +21,7 @@ public class MenuUtils {
         String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
         inv.setItem(10, ItemUtils.mItem2(Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".skinItem"), 1, (short) Main.vehicleDataConfig.getConfig().getInt("vehicle." + ken + ".skinDamage"), "&6Naam Aanpassen", "&7Huidige: &e" + Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".name")));
         inv.setItem(13, ItemUtils.mItem("PAPER", 1, (short) 0, "&6Kenteken Aanpassen", "&7Huidige: &e" + ken));
-        if ((boolean) Main.vehicleDataConfig.getConfig().get("vehicle." + ken + ".isGlow") == true) {
+        if ((Boolean) Main.vehicleDataConfig.getConfig().get("vehicle." + ken + ".isGlow") == true) {
             inv.setItem(16, ItemUtils.glowItem("BOOK", "&6Glow Aanpassen", "&7Huidige: &e" + Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".isGlow")));
         } else {
             inv.setItem(16, ItemUtils.mItem("BOOK", 1, (short) 0, "&6Glow Aanpassen", "&7Huidige: &e" + Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".isGlow")));
@@ -97,12 +97,12 @@ public class MenuUtils {
     public static void speedEdit(Player p) {
         Inventory inv = Bukkit.createInventory(null, 45, "Vehicle Speed");
         String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
-        ItemStack test = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Acceleratie Speed", "&7Huidige: &e" + (double) Main.vehicleDataConfig.getConfig().get("vehicle." + ken + ".acceleratieSpeed"));
-        ItemStack test2 = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Max Speed", "&7Huidige: &e" + (double) Main.vehicleDataConfig.getConfig().get("vehicle." + ken + ".maxSpeed"));
-        ItemStack test3 = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Braking Speed", "&7Huidige: &e" + (double) Main.vehicleDataConfig.getConfig().get("vehicle." + ken + ".brakingSpeed"));
-        ItemStack test4 = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Aftrekken Speed", "&7Huidige: &e" + (double) Main.vehicleDataConfig.getConfig().get("vehicle." + ken + ".aftrekkenSpeed"));
-        ItemStack test5 = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Rotate Speed", "&7Huidige: &e" + (int) Main.vehicleDataConfig.getConfig().get("vehicle." + ken + ".rotateSpeed"));
-        ItemStack test6 = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Max Speed Backwards", "&7Huidige: &e" + (double) Main.vehicleDataConfig.getConfig().get("vehicle." + ken + ".maxSpeedBackwards"));
+        ItemStack test = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Acceleratie Speed", "&7Huidige: &e" + (Double) Main.vehicleDataConfig.getConfig().get("vehicle." + ken + ".acceleratieSpeed"));
+        ItemStack test2 = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Max Speed", "&7Huidige: &e" + (Double) Main.vehicleDataConfig.getConfig().get("vehicle." + ken + ".maxSpeed"));
+        ItemStack test3 = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Braking Speed", "&7Huidige: &e" + (Double) Main.vehicleDataConfig.getConfig().get("vehicle." + ken + ".brakingSpeed"));
+        ItemStack test4 = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Aftrekken Speed", "&7Huidige: &e" + (Double) Main.vehicleDataConfig.getConfig().get("vehicle." + ken + ".aftrekkenSpeed"));
+        ItemStack test5 = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Rotate Speed", "&7Huidige: &e" + (Integer) Main.vehicleDataConfig.getConfig().get("vehicle." + ken + ".rotateSpeed"));
+        ItemStack test6 = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Max Speed Backwards", "&7Huidige: &e" + (Double) Main.vehicleDataConfig.getConfig().get("vehicle." + ken + ".maxSpeedBackwards"));
         ItemStack car = (new ItemFactory(test).setNBT("mtvehicles.item", "1").toItemStack());
         ItemStack car2 = (new ItemFactory(test2).setNBT("mtvehicles.item", "2").toItemStack());
         ItemStack car3 = (new ItemFactory(test3).setNBT("mtvehicles.item", "3").toItemStack());

@@ -47,7 +47,7 @@ public class InventoryClickEvent implements Listener {
             inv.setItem(47, ItemUtils.mItem("BARRIER", 1, (short) 0, "&4Sluiten", "&cDruk hier om het menu te sluiten!"));
             inv.setItem(51, ItemUtils.mItem("WOOD_DOOR", 1, (short) 0, "&6Terug", "&eDruk hier om terug te gaan!"));
             for (Map<?, ?> skin : skins) {
-                inv.addItem(ItemUtils.carItem2((int) skin.get("itemDamage"), ((String) skin.get("name")), (String) skin.get("SkinItem")));
+                inv.addItem(ItemUtils.carItem2((Integer) skin.get("itemDamage"), ((String) skin.get("name")), (String) skin.get("SkinItem")));
             }
             skinMenu.put(p.getUniqueId(), inv);
             p.openInventory(inv);
@@ -96,18 +96,18 @@ public class InventoryClickEvent implements Listener {
                 vehicle.setSkinDamage(vehicleMenu.get(p.getUniqueId()).getDurability());
                 vehicle.setSkinItem(vehicleMenu.get(p.getUniqueId()).getType().toString());
                 vehicle.setGlow(false);
-                vehicle.setBenzineEnabled((boolean) vehicles.get(intSave.get(p.getUniqueId())).get("benzineEnabled"));
+                vehicle.setBenzineEnabled((Boolean) vehicles.get(intSave.get(p.getUniqueId())).get("benzineEnabled"));
                 vehicle.setBenzine(100);
-                vehicle.setKofferbak((boolean) vehicles.get(intSave.get(p.getUniqueId())).get("kofferbakEnabled"));
+                vehicle.setKofferbak((Boolean) vehicles.get(intSave.get(p.getUniqueId())).get("kofferbakEnabled"));
                 vehicle.setKofferbakRows(1);
                 vehicle.setBenzineVerbruik(0.01);
                 vehicle.setKofferbakData(kof);
-                vehicle.setAcceleratieSpeed((double) vehicles.get(intSave.get(p.getUniqueId())).get("acceleratieSpeed"));
-                vehicle.setMaxSpeed((double) vehicles.get(intSave.get(p.getUniqueId())).get("maxSpeed"));
-                vehicle.setBrakingSpeed((double) vehicles.get(intSave.get(p.getUniqueId())).get("brakingSpeed"));
-                vehicle.setAftrekkenSpeed((double) vehicles.get(intSave.get(p.getUniqueId())).get("aftrekkenSpeed"));
-                vehicle.setRotateSpeed((int) vehicles.get(intSave.get(p.getUniqueId())).get("rotateSpeed"));
-                vehicle.setMaxSpeedBackwards((double) vehicles.get(intSave.get(p.getUniqueId())).get("maxSpeedBackwards"));
+                vehicle.setAcceleratieSpeed((Double) vehicles.get(intSave.get(p.getUniqueId())).get("acceleratieSpeed"));
+                vehicle.setMaxSpeed((Double) vehicles.get(intSave.get(p.getUniqueId())).get("maxSpeed"));
+                vehicle.setBrakingSpeed((Double) vehicles.get(intSave.get(p.getUniqueId())).get("brakingSpeed"));
+                vehicle.setAftrekkenSpeed((Double) vehicles.get(intSave.get(p.getUniqueId())).get("aftrekkenSpeed"));
+                vehicle.setRotateSpeed((Integer) vehicles.get(intSave.get(p.getUniqueId())).get("rotateSpeed"));
+                vehicle.setMaxSpeedBackwards((Double) vehicles.get(intSave.get(p.getUniqueId())).get("maxSpeedBackwards"));
                 vehicle.setOwner(p.getUniqueId().toString());
                 vehicle.setRiders(riders);
                 vehicle.setMembers(members);
