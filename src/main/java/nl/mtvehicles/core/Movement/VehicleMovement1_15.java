@@ -127,7 +127,6 @@ public class VehicleMovement1_15 extends PacketAdapter {
             float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(fbvp.getYaw())));
             Location loc = new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
             int data = loc.getBlock().getData();
-            System.out.println(loc.getBlock().getType().toString() + " " + data);
             String locY = String.valueOf(mainStand.getLocation().getY());
             if (!locY.substring(locY.length() - 2).contains(".5")) {
                 if (!loc.getBlock().isPassable() && !loc.getBlock().getType().toString().contains("STEP") && !loc.getBlock().getType().toString().contains("SLAB")) {
