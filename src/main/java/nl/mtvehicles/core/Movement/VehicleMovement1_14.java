@@ -6,9 +6,8 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
 import net.minecraft.server.v1_15_R1.EntityArmorStand;
 import net.minecraft.server.v1_15_R1.PacketPlayInSteerVehicle;
-import nl.mtvehicles.core.Events.VehicleClickEvent;
-import nl.mtvehicles.core.Events.VehicleLeaveEvent;
 import nl.mtvehicles.core.Infrastructure.Helpers.BossbarUtils;
+import nl.mtvehicles.core.Infrastructure.Helpers.VehicleData;
 import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
 import nl.mtvehicles.core.Main;
 import org.bukkit.Bukkit;
@@ -42,27 +41,27 @@ public class VehicleMovement1_14 extends PacketAdapter {
             return;
         }
         String license = p.getVehicle().getCustomName().replace("MTVEHICLES_MAINSEAT_", "");
-        if (VehicleLeaveEvent.autostand.get("MTVEHICLES_MAIN_" + license) == null) {
+        if (VehicleData.autostand.get("MTVEHICLES_MAIN_" + license) == null) {
             return;
         }
-        if (VehicleClickEvent.speed.get(license) == null) {
-            VehicleClickEvent.speed.put(license, 0.0);
+        if (VehicleData.speed.get(license) == null) {
+            VehicleData.speed.put(license, 0.0);
             return;
         }
-        if (VehicleClickEvent.benzine.get(license) < 1) {
+        if (VehicleData.benzine.get(license) < 1) {
             BossbarUtils.setbossbarvalue(0 / 100.0D, license);
             return;
         }
-        BossbarUtils.setbossbarvalue(VehicleClickEvent.benzine.get(license) / 100.0D, license);
-        ArmorStand standMain = VehicleLeaveEvent.autostand.get("MTVEHICLES_MAIN_" + license);
-        ArmorStand standSkin = VehicleLeaveEvent.autostand.get("MTVEHICLES_SKIN_" + license);
-        ArmorStand standMainSeat = VehicleLeaveEvent.autostand.get("MTVEHICLES_MAINSEAT_" + license);
-        ArmorStand standRotors = VehicleLeaveEvent.autostand.get("MTVEHICLES_WIEKENS_" + license);
+        BossbarUtils.setbossbarvalue(VehicleData.benzine.get(license) / 100.0D, license);
+        ArmorStand standMain = VehicleData.autostand.get("MTVEHICLES_MAIN_" + license);
+        ArmorStand standSkin = VehicleData.autostand.get("MTVEHICLES_SKIN_" + license);
+        ArmorStand standMainSeat = VehicleData.autostand.get("MTVEHICLES_MAINSEAT_" + license);
+        ArmorStand standRotors = VehicleData.autostand.get("MTVEHICLES_WIEKENS_" + license);
         ((org.bukkit.craftbukkit.v1_15_R1.entity.CraftArmorStand) standSkin).getHandle().setLocation(standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw(), standMain.getLocation().getPitch());
         mainSeat(standMain, (org.bukkit.craftbukkit.v1_15_R1.entity.CraftArmorStand) standMainSeat, license);
         updateStand(standMain, license, ppisv.d());
         slabCheck(standMain, license);
-        if (VehicleClickEvent.type.get(license).contains("HELICOPTER")) {
+        if (VehicleData.type.get(license).contains("HELICOPTER")) {
             rotors(standMain, standRotors, license);
         }
         if (ppisv.b() > 0.0) {
@@ -71,46 +70,46 @@ public class VehicleMovement1_14 extends PacketAdapter {
             ((org.bukkit.craftbukkit.v1_15_R1.entity.CraftArmorStand) standMain).getHandle().setLocation(standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() + Vehicle.getByPlate(license).getRotateSpeed(), standMain.getLocation().getPitch());
         }
         if (ppisv.c() > 0.0) {
-            if (VehicleClickEvent.speed.get(license) < 0) {
-                VehicleClickEvent.speed.put(license, VehicleClickEvent.speed.get(license) + Vehicle.getByPlate(license).getBrakingSpeed());
+            if (VehicleData.speed.get(license) < 0) {
+                VehicleData.speed.put(license, VehicleData.speed.get(license) + Vehicle.getByPlate(license).getBrakingSpeed());
                 return;
             }
             if (Main.defaultConfig.getConfig().getBoolean("benzine") == true && Main.vehicleDataConfig.getConfig().getBoolean("vehicle." + license + ".benzineEnabled") == true) {
-                double dnum = VehicleClickEvent.benzine.get(license) - VehicleClickEvent.benzineverbruik.get(license);
-                VehicleClickEvent.benzine.put(license, dnum);
+                double dnum = VehicleData.benzine.get(license) - VehicleData.benzineverbruik.get(license);
+                VehicleData.benzine.put(license, dnum);
             }
-            if (VehicleClickEvent.speed.get(license) > Vehicle.getByPlate(license).getMaxSpeed()) {
+            if (VehicleData.speed.get(license) > Vehicle.getByPlate(license).getMaxSpeed()) {
                 return;
             }
-            VehicleClickEvent.speed.put(license, VehicleClickEvent.speed.get(license) + Vehicle.getByPlate(license).getAcceleratieSpeed());
+            VehicleData.speed.put(license, VehicleData.speed.get(license) + Vehicle.getByPlate(license).getAcceleratieSpeed());
         }
         if (ppisv.c() < 0.0) {
-            if (VehicleClickEvent.speed.get(license) > 0) {
-                VehicleClickEvent.speed.put(license, VehicleClickEvent.speed.get(license) - Vehicle.getByPlate(license).getBrakingSpeed());
+            if (VehicleData.speed.get(license) > 0) {
+                VehicleData.speed.put(license, VehicleData.speed.get(license) - Vehicle.getByPlate(license).getBrakingSpeed());
                 return;
             }
             if (Main.defaultConfig.getConfig().getBoolean("benzine") == true && Main.vehicleDataConfig.getConfig().getBoolean("vehicle." + license + ".benzineEnabled") == true) {
-                double dnum = VehicleClickEvent.benzine.get(license) - VehicleClickEvent.benzineverbruik.get(license);
-                VehicleClickEvent.benzine.put(license, dnum);
+                double dnum = VehicleData.benzine.get(license) - VehicleData.benzineverbruik.get(license);
+                VehicleData.benzine.put(license, dnum);
             }
-            if (VehicleClickEvent.speed.get(license) < -Vehicle.getByPlate(license).getMaxSpeedBackwards()) {
+            if (VehicleData.speed.get(license) < -Vehicle.getByPlate(license).getMaxSpeedBackwards()) {
                 return;
             }
-            VehicleClickEvent.speed.put(license, VehicleClickEvent.speed.get(license) - Vehicle.getByPlate(license).getAcceleratieSpeed());
+            VehicleData.speed.put(license, VehicleData.speed.get(license) - Vehicle.getByPlate(license).getAcceleratieSpeed());
 
         }
         if (ppisv.c() == 0.0) {
-            BigDecimal round = new BigDecimal(VehicleClickEvent.speed.get(license)).setScale(1, BigDecimal.ROUND_DOWN);
+            BigDecimal round = new BigDecimal(VehicleData.speed.get(license)).setScale(1, BigDecimal.ROUND_DOWN);
             if (Double.parseDouble(String.valueOf(round)) == 0.0) {
-                VehicleClickEvent.speed.put(license, 0.0);
+                VehicleData.speed.put(license, 0.0);
                 return;
             }
             if (Double.parseDouble(String.valueOf(round)) > 0.01) {
-                VehicleClickEvent.speed.put(license, VehicleClickEvent.speed.get(license) - Vehicle.getByPlate(license).getAftrekkenSpeed());
+                VehicleData.speed.put(license, VehicleData.speed.get(license) - Vehicle.getByPlate(license).getAftrekkenSpeed());
                 return;
             }
             if (Double.parseDouble(String.valueOf(round)) < 0.01) {
-                VehicleClickEvent.speed.put(license, VehicleClickEvent.speed.get(license) + Vehicle.getByPlate(license).getAftrekkenSpeed());
+                VehicleData.speed.put(license, VehicleData.speed.get(license) + Vehicle.getByPlate(license).getAftrekkenSpeed());
                 return;
             }
         }
@@ -131,7 +130,7 @@ public class VehicleMovement1_14 extends PacketAdapter {
             String locY = String.valueOf(mainStand.getLocation().getY());
             if (!locY.substring(locY.length() - 2).contains(".5")) {
                 if (!loc.getBlock().isPassable() && !loc.getBlock().getType().toString().contains("STEP") && !loc.getBlock().getType().toString().contains("SLAB")) {
-                    VehicleClickEvent.speed.put(license, 0.0);
+                    VehicleData.speed.put(license, 0.0);
                 }
             }
             if (locY.substring(locY.length() - 2).contains(".5")) {
@@ -164,41 +163,41 @@ public class VehicleMovement1_14 extends PacketAdapter {
         Bukkit.getScheduler().runTaskAsynchronously(Main.instance, () -> {
             Location loc = mainStand.getLocation();
             Location location = new Location(loc.getWorld(), loc.getX(), loc.getY() - 0.2, loc.getZ(), loc.getYaw(), loc.getPitch());
-            if (VehicleClickEvent.type.get(license).contains("HELICOPTER")) {
+            if (VehicleData.type.get(license).contains("HELICOPTER")) {
                 if (!location.getBlock().getType().equals(Material.AIR)) {
-                    VehicleClickEvent.speed.put(license, 0.0);
+                    VehicleData.speed.put(license, 0.0);
                 }
                 if (space) {
-                    mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleClickEvent.speed.get(license)).getX(), 0.2, mainStand.getLocation().getDirection().multiply(VehicleClickEvent.speed.get(license)).getZ()));
+                    mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.2, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
                     return;
                 }
-                mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleClickEvent.speed.get(license)).getX(), -0.2, mainStand.getLocation().getDirection().multiply(VehicleClickEvent.speed.get(license)).getZ()));
+                mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.2, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
                 return;
             }
-            if (VehicleClickEvent.type.get(license).contains("HOVER")) {
+            if (VehicleData.type.get(license).contains("HOVER")) {
                 if (location.getBlock().getType().equals(Material.AIR)) {
-                    mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleClickEvent.speed.get(license)).getX(), -0.8, mainStand.getLocation().getDirection().multiply(VehicleClickEvent.speed.get(license)).getZ()));
+                    mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.8, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
                     return;
                 }
-                mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleClickEvent.speed.get(license)).getX(), 0.00001, mainStand.getLocation().getDirection().multiply(VehicleClickEvent.speed.get(license)).getZ()));
+                mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.00001, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
                 return;
             }
             if (location.getBlock().getType().equals(Material.AIR) || location.getBlock().getType().toString().contains("WATER")) {
-                mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleClickEvent.speed.get(license)).getX(), -0.8, mainStand.getLocation().getDirection().multiply(VehicleClickEvent.speed.get(license)).getZ()));
+                mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.8, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
                 return;
             }
-            mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleClickEvent.speed.get(license)).getX(), 0.0, mainStand.getLocation().getDirection().multiply(VehicleClickEvent.speed.get(license)).getZ()));
+            mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.0, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
         });
     }
 
     public static void mainSeat(ArmorStand mainStand, CraftArmorStand mainseat, String license) {
         Bukkit.getScheduler().runTaskAsynchronously(Main.instance, () -> {
-            if (!(VehicleClickEvent.seatsize.get(license) == null)) {
-                for (int i = 2; i <= VehicleClickEvent.seatsize.get(license); i++) {
-                    ArmorStand seatas = VehicleLeaveEvent.autostand.get("MTVEHICLES_SEAT" + i + "_" + license);
-                    double xOffset = VehicleClickEvent.seatx.get("MTVEHICLES_SEAT" + i + "_" + license);
-                    double yOffset = VehicleClickEvent.seaty.get("MTVEHICLES_SEAT" + i + "_" + license);
-                    double zOffset = VehicleClickEvent.seatz.get("MTVEHICLES_SEAT" + i + "_" + license);
+            if (!(VehicleData.seatsize.get(license) == null)) {
+                for (int i = 2; i <= VehicleData.seatsize.get(license); i++) {
+                    ArmorStand seatas = VehicleData.autostand.get("MTVEHICLES_SEAT" + i + "_" + license);
+                    double xOffset = VehicleData.seatx.get("MTVEHICLES_SEAT" + i + "_" + license);
+                    double yOffset = VehicleData.seaty.get("MTVEHICLES_SEAT" + i + "_" + license);
+                    double zOffset = VehicleData.seatz.get("MTVEHICLES_SEAT" + i + "_" + license);
                     Location locvp = mainStand.getLocation().clone();
                     Location fbvp = locvp.add(locvp.getDirection().setY(0).normalize().multiply(xOffset));
                     float zvp = (float) (fbvp.getZ() + zOffset * Math.sin(Math.toRadians(fbvp.getYaw())));
@@ -208,9 +207,9 @@ public class VehicleMovement1_14 extends PacketAdapter {
                     stand.setLocation(loc.getX(), loc.getY(), loc.getZ(), fbvp.getYaw(), loc.getPitch());
                 }
             }
-            double xOffset = VehicleClickEvent.mainx.get("MTVEHICLES_MAINSEAT_" + license);
-            double yOffset = VehicleClickEvent.mainy.get("MTVEHICLES_MAINSEAT_" + license);
-            double zOffset = VehicleClickEvent.mainz.get("MTVEHICLES_MAINSEAT_" + license);
+            double xOffset = VehicleData.mainx.get("MTVEHICLES_MAINSEAT_" + license);
+            double yOffset = VehicleData.mainy.get("MTVEHICLES_MAINSEAT_" + license);
+            double zOffset = VehicleData.mainz.get("MTVEHICLES_MAINSEAT_" + license);
             Location locvp = mainStand.getLocation().clone();
             Location fbvp = locvp.add(locvp.getDirection().setY(0).normalize().multiply(xOffset));
             float zvp = (float) (fbvp.getZ() + zOffset * Math.sin(Math.toRadians(fbvp.getYaw())));
@@ -223,9 +222,9 @@ public class VehicleMovement1_14 extends PacketAdapter {
 
     public static void rotors(ArmorStand main, ArmorStand seatas, String license) {
         Bukkit.getScheduler().runTaskAsynchronously(Main.instance, () -> {
-            double xOffset = VehicleClickEvent.wiekenx.get("MTVEHICLES_WIEKENS_" + license);
-            double yOffset = VehicleClickEvent.wiekeny.get("MTVEHICLES_WIEKENS_" + license);
-            double zOffset = VehicleClickEvent.wiekenz.get("MTVEHICLES_WIEKENS_" + license);
+            double xOffset = VehicleData.wiekenx.get("MTVEHICLES_WIEKENS_" + license);
+            double yOffset = VehicleData.wiekeny.get("MTVEHICLES_WIEKENS_" + license);
+            double zOffset = VehicleData.wiekenz.get("MTVEHICLES_WIEKENS_" + license);
             final Location locvp = main.getLocation().clone();
             final Location fbvp = locvp.add(locvp.getDirection().setY(0).normalize().multiply(xOffset));
             final float zvp = (float) (fbvp.getZ() + zOffset * Math.sin(Math.toRadians(seatas.getLocation().getYaw())));

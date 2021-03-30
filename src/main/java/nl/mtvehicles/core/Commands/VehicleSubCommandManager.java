@@ -17,6 +17,7 @@ public class VehicleSubCommandManager extends MTVehicleCommand {
         Main.subcommands.put("menu", new VehicleMenu());
         Main.subcommands.put("restore", new VehicleRestore());
         Main.subcommands.put("edit", new VehicleEdit());
+        Main.subcommands.put("fuel", new VehicleBenzine());
         Main.subcommands.put("benzine", new VehicleBenzine());
         Main.subcommands.put("setowner", new VehicleSetOwner());
         Main.subcommands.put("addmember", new VehicleAddMember());

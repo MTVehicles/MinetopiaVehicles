@@ -25,7 +25,7 @@ public class VehicleHelp extends MTVehicleSubCommand {
             sendMessage("");
             sendMessage("&2/vehicle &aedit &f- &2" + Main.messagesConfig.getMessage("adminEdit"));
             sendMessage("&2/vehicle &amenu &f- &2" + Main.messagesConfig.getMessage("adminMenu"));
-            sendMessage("&2/vehicle &abenzine &f- &2" + Main.messagesConfig.getMessage("adminBenzine"));
+            sendMessage("&2/vehicle &afuel &f- &2" + Main.messagesConfig.getMessage("adminBenzine"));
             sendMessage("&2/vehicle &arestore &f- &2" + Main.messagesConfig.getMessage("adminRestore"));
             sendMessage("&2/vehicle &areload &f- &2" + Main.messagesConfig.getMessage("adminReload"));
             sendMessage("&2/vehicle &agivevoucher &f- &2" + Main.messagesConfig.getMessage("adminGivevoucher"));
