@@ -52,6 +52,9 @@ public class VehicleMovement1_15 extends PacketAdapter {
             BossbarUtils.setbossbarvalue(0 / 100.0D, license);
             return;
         }
+        if (VehicleData.autostand.get("MTVEHICLES_SKIN_" + license) == null ){
+            return;
+        }
         BossbarUtils.setbossbarvalue(VehicleData.benzine.get(license) / 100.0D, license);
         ArmorStand standMain = VehicleData.autostand.get("MTVEHICLES_MAIN_" + license);
         ArmorStand standSkin = VehicleData.autostand.get("MTVEHICLES_SKIN_" + license);
