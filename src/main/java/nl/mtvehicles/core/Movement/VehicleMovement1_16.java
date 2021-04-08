@@ -116,7 +116,6 @@ public class VehicleMovement1_16 extends PacketAdapter {
     }
 
     public static void slabCheck(ArmorStand mainStand, String license) {
-        Bukkit.getScheduler().runTaskAsynchronously(Main.instance, () -> {
             double xOffset = 0.7;
             double yOffset = 0.4;
             double zOffset = 0.0;
@@ -126,7 +125,6 @@ public class VehicleMovement1_16 extends PacketAdapter {
             float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(fbvp.getYaw())));
             Location loc = new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
             int data = loc.getBlock().getData();
-            System.out.println(loc.getBlock().getType().toString() + " " + data);
             String locY = String.valueOf(mainStand.getLocation().getY());
             if (!locY.substring(locY.length() - 2).contains(".5")) {
                 if (!loc.getBlock().isPassable() && !loc.getBlock().getType().toString().contains("STEP") && !loc.getBlock().getType().toString().contains("SLAB")) {
@@ -134,7 +132,6 @@ public class VehicleMovement1_16 extends PacketAdapter {
                 }
             }
             if (locY.substring(locY.length() - 2).contains(".5")) {
-
                 if (loc.getBlock().getType().toString().contains("AIR")) {
                     return;
                 }
@@ -156,11 +153,9 @@ public class VehicleMovement1_16 extends PacketAdapter {
                     ((CraftArmorStand) mainStand).getHandle().setLocation(mainStand.getLocation().getX(), mainStand.getLocation().getY() + 0.5, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
                 }
             }
-        });
     }
 
     public static void updateStand(ArmorStand mainStand, String license, Boolean space) {
-        Bukkit.getScheduler().runTaskAsynchronously(Main.instance, () -> {
             Location loc = mainStand.getLocation();
             Location location = new Location(loc.getWorld(), loc.getX(), loc.getY() - 0.2, loc.getZ(), loc.getYaw(), loc.getPitch());
             if (VehicleData.type.get(license).contains("HELICOPTER")) {
@@ -168,6 +163,9 @@ public class VehicleMovement1_16 extends PacketAdapter {
                     VehicleData.speed.put(license, 0.0);
                 }
                 if (space) {
+                    if (mainStand.getLocation().getY() > Main.instance.getConfig().getInt("helicopterMaxHight")){
+                        return;
+                    }
                     mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.2, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
                     return;
                 }
@@ -187,11 +185,9 @@ public class VehicleMovement1_16 extends PacketAdapter {
                 return;
             }
             mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.0, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
-        });
     }
 
     public static void mainSeat(ArmorStand mainStand, CraftArmorStand mainseat, String license) {
-        Bukkit.getScheduler().runTaskAsynchronously(Main.instance, () -> {
             if (!(VehicleData.seatsize.get(license) == null)) {
                 for (int i = 2; i <= VehicleData.seatsize.get(license); i++) {
                     ArmorStand seatas = VehicleData.autostand.get("MTVEHICLES_SEAT" + i + "_" + license);
@@ -216,12 +212,9 @@ public class VehicleMovement1_16 extends PacketAdapter {
             float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(fbvp.getYaw())));
             Location loc = new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
             mainseat.getHandle().setLocation(loc.getX(), loc.getY(), loc.getZ(), fbvp.getYaw(), loc.getPitch());
-
-        });
     }
 
     public static void rotors(ArmorStand main, ArmorStand seatas, String license) {
-        Bukkit.getScheduler().runTaskAsynchronously(Main.instance, () -> {
             double xOffset = VehicleData.wiekenx.get("MTVEHICLES_WIEKENS_" + license);
             double yOffset = VehicleData.wiekeny.get("MTVEHICLES_WIEKENS_" + license);
             double zOffset = VehicleData.wiekenz.get("MTVEHICLES_WIEKENS_" + license);
@@ -232,8 +225,5 @@ public class VehicleMovement1_16 extends PacketAdapter {
             final Location loc = new Location(main.getWorld(), xvp, main.getLocation().getY() + yOffset, zvp, seatas.getLocation().getYaw(), fbvp.getPitch());
             EntityArmorStand stand = ((CraftArmorStand) seatas).getHandle();
             stand.setLocation(loc.getX(), loc.getY(), loc.getZ(), seatas.getLocation().getYaw() + 15, seatas.getLocation().getPitch());
-        });
     }
-
-
 }

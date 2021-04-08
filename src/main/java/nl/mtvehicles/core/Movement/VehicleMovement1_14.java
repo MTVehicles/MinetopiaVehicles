@@ -168,6 +168,9 @@ public class VehicleMovement1_14 extends PacketAdapter {
                     VehicleData.speed.put(license, 0.0);
                 }
                 if (space) {
+                    if (mainStand.getLocation().getY() > Main.instance.getConfig().getInt("helicopterMaxHight")){
+                        return;
+                    }
                     mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.2, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
                     return;
                 }

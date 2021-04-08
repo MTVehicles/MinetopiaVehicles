@@ -52,9 +52,9 @@ public class VehicleMovement1_15 extends PacketAdapter {
             BossbarUtils.setbossbarvalue(0 / 100.0D, license);
             return;
         }
-        if (VehicleData.autostand.get("MTVEHICLES_SKIN_" + license) == null ){
-            return;
-        }
+//        if (VehicleData.autostand.get("MTVEHICLES_SKIN_" + license) == null ){
+//            return;
+//        }
         BossbarUtils.setbossbarvalue(VehicleData.benzine.get(license) / 100.0D, license);
         ArmorStand standMain = VehicleData.autostand.get("MTVEHICLES_MAIN_" + license);
         ArmorStand standSkin = VehicleData.autostand.get("MTVEHICLES_SKIN_" + license);
@@ -119,7 +119,6 @@ public class VehicleMovement1_15 extends PacketAdapter {
     }
 
     public static void slabCheck(ArmorStand mainStand, String license) {
-        Bukkit.getScheduler().runTaskAsynchronously(Main.instance, () -> {
             double xOffset = 0.7;
             double yOffset = 0.4;
             double zOffset = 0.0;
@@ -158,7 +157,6 @@ public class VehicleMovement1_15 extends PacketAdapter {
                     ((CraftArmorStand) mainStand).getHandle().setLocation(mainStand.getLocation().getX(), mainStand.getLocation().getY() + 0.5, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
                 }
             }
-        });
     }
 
     public static void updateStand(ArmorStand mainStand, String license, Boolean space) {
@@ -169,6 +167,9 @@ public class VehicleMovement1_15 extends PacketAdapter {
                 VehicleData.speed.put(license, 0.0);
             }
             if (space) {
+                if (mainStand.getLocation().getY() > Main.instance.getConfig().getInt("helicopterMaxHight")){
+                    return;
+                }
                 mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.2, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
                 return;
             }
@@ -218,7 +219,6 @@ public class VehicleMovement1_15 extends PacketAdapter {
     }
 
     public static void rotors(ArmorStand main, ArmorStand seatas, String license) {
-        Bukkit.getScheduler().runTaskAsynchronously(Main.instance, () -> {
             double xOffset = VehicleData.wiekenx.get("MTVEHICLES_WIEKENS_" + license);
             double yOffset = VehicleData.wiekeny.get("MTVEHICLES_WIEKENS_" + license);
             double zOffset = VehicleData.wiekenz.get("MTVEHICLES_WIEKENS_" + license);
@@ -229,6 +229,5 @@ public class VehicleMovement1_15 extends PacketAdapter {
             final Location loc = new Location(main.getWorld(), xvp, main.getLocation().getY() + yOffset, zvp, seatas.getLocation().getYaw(), fbvp.getPitch());
             EntityArmorStand stand = ((CraftArmorStand) seatas).getHandle();
             stand.setLocation(loc.getX(), loc.getY(), loc.getZ(), seatas.getLocation().getYaw() + 15, seatas.getLocation().getPitch());
-        });
     }
 }

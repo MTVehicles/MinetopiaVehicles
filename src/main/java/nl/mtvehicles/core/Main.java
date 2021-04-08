@@ -102,7 +102,7 @@ public class Main extends JavaPlugin {
             ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_15());
             getLogger().info("Loaded vehicle movement for version: " + version);
         }
-        if (version.contains("v1_16")) {
+        if (version.contains("v1_16_R3")) {
             ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_16());
             getLogger().info("Loaded vehicle movement for version: " + version);
         }
