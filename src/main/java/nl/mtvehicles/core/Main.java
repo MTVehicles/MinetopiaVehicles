@@ -1,10 +1,10 @@
 package nl.mtvehicles.core;
 
-import com.comphenix.protocol.ProtocolLibrary;
 import nl.mtvehicles.core.Commands.VehicleSubCommandManager;
 import nl.mtvehicles.core.Commands.VehicleTabCompleterManager;
 import nl.mtvehicles.core.Events.*;
 import nl.mtvehicles.core.Infrastructure.DataConfig.*;
+import nl.mtvehicles.core.Infrastructure.Helpers.TextUtils;
 import nl.mtvehicles.core.Infrastructure.Models.ConfigUtils;
 import nl.mtvehicles.core.Infrastructure.Models.MTVehicleSubCommand;
 import nl.mtvehicles.core.Inventory.InventoryClickEvent;
@@ -39,8 +39,8 @@ public class Main extends JavaPlugin {
 
         if (!version.equals("v1_12_R1") && !version.equals("v1_13_R2") && !version.equals("v1_14_R1") && !version.equals("v1_15_R1") && !version.contains("v1_16")) {
             getLogger().info("-------------------------------------------------------");
-            getLogger().info("We supporten alleen 1.12, 1.13, 1.15, en 1.16.");
-            getLogger().info("als je denkt dat dit fout is contacteer ons https://mtvehicles.nl");
+            getLogger().info("Your Server version is not supported by the plugin");
+            getLogger().info("check the supported versions here https://mtvehicles.nl");
             getLogger().info("-------------------------------------------------------");
             return;
         }
@@ -48,10 +48,10 @@ public class Main extends JavaPlugin {
         PluginDescriptionFile pdf = this.getDescription();
         String versions = pdf.getVersion();
 
-        getLogger().info("De plugin is opgestart!");
+        getLogger().info("Plugin is started!");
         System.out.println("--------------------------");
-        System.out.println("Welkom bij MTVehicles "+versions+" !");
-        System.out.println("Dankuwel voor het gebruiken van de plugin.");
+        System.out.println("Welcome by MTVehicles " + versions + " !");
+        System.out.println("Thanks for using our plugin.");
         System.out.println("--------------------------");
         PluginCommand pluginCommand = Main.instance.getCommand("minetopiavehicles");
         if (pluginCommand != null) {
@@ -73,10 +73,9 @@ public class Main extends JavaPlugin {
 
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
             if (p.isInsideVehicle()) {
-                p.kickPlayer("Ga niet in een voertuig zitten terwijl de reload bezig is!");
+                p.kickPlayer(TextUtils.colorize(Main.messagesConfig.getMessage("reloadInVehicle")));
             }
         }
-
 
         File config = new File(getDataFolder(), "config.yml");
         SimpleDateFormat formatter = new SimpleDateFormat("dd_MM_yyyy-HH_mm_ss");
@@ -85,25 +84,24 @@ public class Main extends JavaPlugin {
             config.renameTo(new File(getDataFolder(), "configOld_" + formatter.format(date) + ".yml"));
             saveDefaultConfig();
         }
-
         if (version.equals("v1_12_R1")) {
-            ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_12());
+            com.comphenix.protocol.ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_12());
             getLogger().info("Loaded vehicle movement for version: " + version);
         }
         if (version.equals("v1_13_R2")) {
-            ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_13());
+            com.comphenix.protocol.ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_13());
             getLogger().info("Loaded vehicle movement for version: " + version);
         }
         if (version.equals("v1_14_R1")) {
-            ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_14());
+            com.comphenix.protocol.ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_14());
             getLogger().info("Loaded vehicle movement for version: " + version);
         }
         if (version.equals("v1_15_R1")) {
-            ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_15());
+            com.comphenix.protocol.ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_15());
             getLogger().info("Loaded vehicle movement for version: " + version);
         }
         if (version.contains("v1_16_R3")) {
-            ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_16());
+            com.comphenix.protocol.ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_16());
             getLogger().info("Loaded vehicle movement for version: " + version);
         }
 
@@ -112,11 +110,6 @@ public class Main extends JavaPlugin {
         configList.add(vehiclesConfig);
         configList.add(defaultConfig);
         configList.forEach(ConfigUtils::reload);
-    }
-
-    @Override
-    public void onDisable() {
-        //
     }
 
     public static String fol() {
