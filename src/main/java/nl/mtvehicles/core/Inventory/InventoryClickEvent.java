@@ -224,7 +224,7 @@ public class InventoryClickEvent implements Listener {
             }
             String menuitem = NBTUtils.getString(e.getCurrentItem(), "mtvehicles.item");
             if (menuitem.contains("1")) {
-                if (Main.vehicleDataConfig.getConfig().getBoolean("vehicle."+ken+".benzineEnabled") == true){
+                if (Main.vehicleDataConfig.getConfig().getBoolean("vehicle."+ken+".benzineEnabled")){
                     Main.vehicleDataConfig.getConfig().set("vehicle." + ken + ".benzineEnabled", false);
                     Main.vehicleDataConfig.save();
                 } else {
@@ -261,7 +261,7 @@ public class InventoryClickEvent implements Listener {
             String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
             String menuitem = NBTUtils.getString(e.getCurrentItem(), "mtvehicles.item");
             if (menuitem.contains("1")) {
-                if (Main.vehicleDataConfig.getConfig().getBoolean("vehicle."+ken+".kofferbak") == true){
+                if (Main.vehicleDataConfig.getConfig().getBoolean("vehicle."+ken+".kofferbak")){
                     Main.vehicleDataConfig.getConfig().set("vehicle." + ken + ".kofferbak", false);
                     Main.vehicleDataConfig.save();
                 } else {

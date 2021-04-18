@@ -16,7 +16,7 @@ public class BossbarUtils {
     public static double Teller;
 
     public static void setbossbarvalue(double counter, String ken) {
-        if (Main.defaultConfig.getConfig().getBoolean("benzine") == true && Main.vehicleDataConfig.getConfig().getBoolean("vehicle."+ken+".benzineEnabled") == true) {
+        if (Main.defaultConfig.getConfig().getBoolean("benzine") && Main.vehicleDataConfig.getConfig().getBoolean("vehicle."+ken+".benzineEnabled")) {
             Benzine.setProgress(counter);
             Benzine.setTitle(Math.round(counter * 100.0D) + "% " + TextUtils.colorize(Main.messagesConfig.getMessage("bossbarFuel")));
             Main.vehicleDataConfig.getConfig().set("vehicle." + ken + ".benzine", VehicleData.benzine.get(ken));
@@ -43,14 +43,14 @@ public class BossbarUtils {
     }
 
     public static void removeBossbar(Player player, String ken) {
-        if (Main.defaultConfig.getConfig().getBoolean("benzine") == true && Main.vehicleDataConfig.getConfig().getBoolean("vehicle."+ken+".benzineEnabled") == true) {
+        if (Main.defaultConfig.getConfig().getBoolean("benzine") && Main.vehicleDataConfig.getConfig().getBoolean("vehicle."+ken+".benzineEnabled")) {
             Benzine.removePlayer(player);
         }
 
     }
 
     public static void addBossbar(Player player, String ken) {
-        if (Main.defaultConfig.getConfig().getBoolean("benzine") == true && Main.vehicleDataConfig.getConfig().getBoolean("vehicle."+ken+".benzineEnabled") == true) {
+        if (Main.defaultConfig.getConfig().getBoolean("benzine") && Main.vehicleDataConfig.getConfig().getBoolean("vehicle."+ken+".benzineEnabled")) {
             String benzineValue = String.valueOf(Main.vehicleDataConfig.getConfig().getDouble("vehicle." + player.getVehicle().getCustomName().replace("MTVEHICLES_MAINSEAT_", "") + ".benzine"));
             Benzine = Bukkit.createBossBar(Math.round(Double.parseDouble(benzineValue)) + "% " + TextUtils.colorize(Main.messagesConfig.getMessage("bossbarFuel")), BarColor.GREEN, BarStyle.SOLID);
 

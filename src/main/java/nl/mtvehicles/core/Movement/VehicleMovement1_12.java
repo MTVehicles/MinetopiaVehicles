@@ -11,6 +11,7 @@ import nl.mtvehicles.core.Infrastructure.Helpers.BossbarUtils;
 import nl.mtvehicles.core.Infrastructure.Helpers.VehicleData;
 import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
 import nl.mtvehicles.core.Main;
+import nl.mtvehicles.core.Utils.RunnableUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -33,21 +34,17 @@ public class VehicleMovement1_12 extends PacketAdapter {
     }
 
     public void onPacketReceiving(final PacketEvent event) {
+        RunnableUtils.catchAsync(() -> {
         PacketPlayInSteerVehicle ppisv = (PacketPlayInSteerVehicle) event.getPacket().getHandle();
         final Player p = event.getPlayer();
-        if (p.getVehicle().getCustomName() == null) {
-            return;
-        }
-        if (p.getVehicle() == null) {
-            return;
-        }
-        if (p.getVehicle().getCustomName().replace("MTVEHICLES_MAINSEAT_", "") == null) {
-            return;
-        }
+
+        if (p.getVehicle() == null) return;
+        if (p.getVehicle().getCustomName() == null) return;
         String license = p.getVehicle().getCustomName().replace("MTVEHICLES_MAINSEAT_", "");
-        if (VehicleData.autostand.get("MTVEHICLES_MAIN_" + license) == null) {
+        if (license.isEmpty()) return; // vehicle doesn't have license.
+
+        if (VehicleData.autostand.get("MTVEHICLES_MAIN_" + license) == null)
             return;
-        }
         if (VehicleData.speed.get(license) == null) {
             VehicleData.speed.put(license, 0.0);
             return;
@@ -78,7 +75,7 @@ public class VehicleMovement1_12 extends PacketAdapter {
                 VehicleData.speed.put(license, VehicleData.speed.get(license) + Vehicle.getByPlate(license).getBrakingSpeed());
                 return;
             }
-            if (Main.defaultConfig.getConfig().getBoolean("benzine") == true && Main.vehicleDataConfig.getConfig().getBoolean("vehicle." + license + ".benzineEnabled") == true) {
+            if (Main.defaultConfig.getConfig().getBoolean("benzine") && Main.vehicleDataConfig.getConfig().getBoolean("vehicle." + license + ".benzineEnabled")) {
                 double dnum = VehicleData.benzine.get(license) - VehicleData.benzineverbruik.get(license);
                 VehicleData.benzine.put(license, dnum);
             }
@@ -92,7 +89,7 @@ public class VehicleMovement1_12 extends PacketAdapter {
                 VehicleData.speed.put(license, VehicleData.speed.get(license) - Vehicle.getByPlate(license).getBrakingSpeed());
                 return;
             }
-            if (Main.defaultConfig.getConfig().getBoolean("benzine") == true && Main.vehicleDataConfig.getConfig().getBoolean("vehicle." + license + ".benzineEnabled") == true) {
+            if (Main.defaultConfig.getConfig().getBoolean("benzine") && Main.vehicleDataConfig.getConfig().getBoolean("vehicle." + license + ".benzineEnabled")) {
                 double dnum = VehicleData.benzine.get(license) - VehicleData.benzineverbruik.get(license);
                 VehicleData.benzine.put(license, dnum);
             }
@@ -104,19 +101,18 @@ public class VehicleMovement1_12 extends PacketAdapter {
         }
         if (ppisv.b() == 0.0) {
             BigDecimal round = new BigDecimal(VehicleData.speed.get(license)).setScale(1, BigDecimal.ROUND_DOWN);
-            if (Double.parseDouble(String.valueOf(round)) == 0.0) {
+            if (round.doubleValue() == 0.0) {
                 VehicleData.speed.put(license, 0.0);
                 return;
             }
-            if (Double.parseDouble(String.valueOf(round)) > 0.01) {
+            if (round.doubleValue() > 0.01) {
                 VehicleData.speed.put(license, VehicleData.speed.get(license) - Vehicle.getByPlate(license).getAftrekkenSpeed());
                 return;
             }
-            if (Double.parseDouble(String.valueOf(round)) < 0.01) {
+            if (round.doubleValue() < 0.01) {
                 VehicleData.speed.put(license, VehicleData.speed.get(license) + Vehicle.getByPlate(license).getAftrekkenSpeed());
-                return;
             }
-        }
+        }});
     }
 
     public static void slabCheck(ArmorStand mainStand, String license) {

@@ -20,7 +20,7 @@ public class ChatEvent implements Listener {
         if (ItemUtils.edit.get(p.getUniqueId() + ".kenteken") == null) {
             return;
         }
-        if (ItemUtils.edit.get(p.getUniqueId() + ".kenteken") == true) {
+        if (ItemUtils.edit.get(p.getUniqueId() + ".kenteken")) {
             if (!e.getMessage().toLowerCase().contains("annule")) {
                 e.setCancelled(true);
                 String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
@@ -63,7 +63,7 @@ public class ChatEvent implements Listener {
         if (ItemUtils.edit.get(p.getUniqueId() + ".naam") == null) {
             return;
         }
-        if (ItemUtils.edit.get(p.getUniqueId() + ".naam") == true) {
+        if (ItemUtils.edit.get(p.getUniqueId() + ".naam")) {
             if (!e.getMessage().toLowerCase().contains("annule")) {
                 e.setCancelled(true);
                 String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
@@ -97,7 +97,7 @@ public class ChatEvent implements Listener {
         if (ItemUtils.edit.get(p.getUniqueId() + ".benzine") == null) {
             return;
         }
-        if (ItemUtils.edit.get(p.getUniqueId() + ".benzine") == true) {
+        if (ItemUtils.edit.get(p.getUniqueId() + ".benzine")) {
             if (isI(e.getMessage(), p) == false) {
                 e.setCancelled(true);
                 MenuUtils.benzineEdit(p);
@@ -143,7 +143,7 @@ public class ChatEvent implements Listener {
         if (ItemUtils.edit.get(p.getUniqueId() + ".benzineverbruik") == null) {
             return;
         }
-        if (ItemUtils.edit.get(p.getUniqueId() + ".benzineverbruik") == true) {
+        if (ItemUtils.edit.get(p.getUniqueId() + ".benzineverbruik")) {
             if (isD(e.getMessage(), p) == false) {
                 e.setCancelled(true);
                 MenuUtils.benzineEdit(p);
@@ -184,7 +184,7 @@ public class ChatEvent implements Listener {
         if (ItemUtils.edit.get(p.getUniqueId() + ".kofferbakRows") == null) {
             return;
         }
-        if (ItemUtils.edit.get(p.getUniqueId() + ".kofferbakRows") == true) {
+        if (ItemUtils.edit.get(p.getUniqueId() + ".kofferbakRows")) {
             if (isI(e.getMessage(), p) == false) {
                 e.setCancelled(true);
                 MenuUtils.kofferbakEdit(p);
@@ -223,7 +223,7 @@ public class ChatEvent implements Listener {
         if (ItemUtils.edit.get(p.getUniqueId() + ".acceleratieSpeed") == null) {
             return;
         }
-        if (ItemUtils.edit.get(p.getUniqueId() + ".acceleratieSpeed") == true) {
+        if (ItemUtils.edit.get(p.getUniqueId() + ".acceleratieSpeed")) {
             if (isD(e.getMessage(), p) == false) {
                 e.setCancelled(true);
                 MenuUtils.speedEdit(p);
@@ -262,7 +262,7 @@ public class ChatEvent implements Listener {
         if (ItemUtils.edit.get(p.getUniqueId() + ".maxSpeed") == null) {
             return;
         }
-        if (ItemUtils.edit.get(p.getUniqueId() + ".maxSpeed") == true) {
+        if (ItemUtils.edit.get(p.getUniqueId() + ".maxSpeed")) {
             if (isD(e.getMessage(), p) == false) {
                 e.setCancelled(true);
                 MenuUtils.speedEdit(p);
@@ -303,7 +303,7 @@ public class ChatEvent implements Listener {
         if (ItemUtils.edit.get(p.getUniqueId() + ".brakingSpeed") == null) {
             return;
         }
-        if (ItemUtils.edit.get(p.getUniqueId() + ".brakingSpeed") == true) {
+        if (ItemUtils.edit.get(p.getUniqueId() + ".brakingSpeed")) {
             if (isD(e.getMessage(), p) == false) {
                 e.setCancelled(true);
                 MenuUtils.speedEdit(p);
@@ -344,7 +344,7 @@ public class ChatEvent implements Listener {
         if (ItemUtils.edit.get(p.getUniqueId() + ".aftrekkenSpeed") == null) {
             return;
         }
-        if (ItemUtils.edit.get(p.getUniqueId() + ".aftrekkenSpeed") == true) {
+        if (ItemUtils.edit.get(p.getUniqueId() + ".aftrekkenSpeed")) {
             if (isD(e.getMessage(), p) == false) {
                 e.setCancelled(true);
                 MenuUtils.speedEdit(p);
@@ -385,7 +385,7 @@ public class ChatEvent implements Listener {
         if (ItemUtils.edit.get(p.getUniqueId() + ".maxSpeedBackwards") == null) {
             return;
         }
-        if (ItemUtils.edit.get(p.getUniqueId() + ".maxSpeedBackwards") == true) {
+        if (ItemUtils.edit.get(p.getUniqueId() + ".maxSpeedBackwards")) {
             if (isD(e.getMessage(), p) == false) {
                 e.setCancelled(true);
                 MenuUtils.speedEdit(p);
@@ -424,7 +424,7 @@ public class ChatEvent implements Listener {
         if (ItemUtils.edit.get(p.getUniqueId() + ".rotateSpeed") == null) {
             return;
         }
-        if (ItemUtils.edit.get(p.getUniqueId() + ".rotateSpeed") == true) {
+        if (ItemUtils.edit.get(p.getUniqueId() + ".rotateSpeed")) {
             if (isI(e.getMessage(), p) == false) {
                 e.setCancelled(true);
                 MenuUtils.speedEdit(p);

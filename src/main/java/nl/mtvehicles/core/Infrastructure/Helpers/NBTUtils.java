@@ -1170,7 +1170,7 @@ public final class NBTUtils {
                 notCompound = value;
             } else {
                 if ( value instanceof Boolean ) {
-                    value = ( byte ) ( ( Boolean ) value == true ? 1 : 0 );
+                    value = ( byte ) ( ( Boolean ) value ? 1 : 0 );
                 }
                 notCompound = getConstructor( getNBTTag( value.getClass() ) ).newInstance( value );
             }

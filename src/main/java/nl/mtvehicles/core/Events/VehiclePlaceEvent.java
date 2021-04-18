@@ -88,7 +88,7 @@ public class VehiclePlaceEvent implements Listener {
                     as3.setCustomName("MTVEHICLES_WIEKENS_" + ken);
                     as3.setGravity(false);
                     as3.setVisible(false);
-                    if (Main.defaultConfig.getConfig().getBoolean("wiekens-always-on") == true) {
+                    if (Main.defaultConfig.getConfig().getBoolean("wiekens-always-on")) {
                         ItemStack car = (new ItemFactory(Material.getMaterial("DIAMOND_HOE"))).setDurability((short) 1058).setName(TextUtils.colorize("&6Wieken")).setNBT("mtvehicles.kenteken", ken).toItemStack();
                         ItemMeta im = car.getItemMeta();
                         List<String> itemlore = new ArrayList<>();

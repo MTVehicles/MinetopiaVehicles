@@ -31,7 +31,7 @@ public class Main extends JavaPlugin {
     public static DefaultConfig defaultConfig = new DefaultConfig();
     public static String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
     public static HashMap<String, MTVehicleSubCommand> subcommands = new HashMap<>();
-
+    public static boolean paper = false;
     @Override
     public void onEnable() {
 
@@ -53,6 +53,13 @@ public class Main extends JavaPlugin {
         System.out.println("Welcome by MTVehicles " + versions + " !");
         System.out.println("Thanks for using our plugin.");
         System.out.println("--------------------------");
+        try {
+            Class.forName("com.destroystokyo.paper.Metrics");
+            System.out.println("Loading PaperSpigot support.");
+            paper = true;
+        } catch (ClassNotFoundException e) {
+            System.out.println("PaperSpigot could not be found, if you're running it, please report this issue.");
+        }
         PluginCommand pluginCommand = Main.instance.getCommand("minetopiavehicles");
         if (pluginCommand != null) {
             pluginCommand.setExecutor(new VehicleSubCommandManager());
@@ -87,20 +94,16 @@ public class Main extends JavaPlugin {
         if (version.equals("v1_12_R1")) {
             com.comphenix.protocol.ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_12());
             getLogger().info("Loaded vehicle movement for version: " + version);
-        }
-        if (version.equals("v1_13_R2")) {
+        } else if (version.equals("v1_13_R2")) {
             com.comphenix.protocol.ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_13());
             getLogger().info("Loaded vehicle movement for version: " + version);
-        }
-        if (version.equals("v1_14_R1")) {
+        } else if (version.equals("v1_14_R1")) {
             com.comphenix.protocol.ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_14());
             getLogger().info("Loaded vehicle movement for version: " + version);
-        }
-        if (version.equals("v1_15_R1")) {
+        } else if (version.equals("v1_15_R1")) {
             com.comphenix.protocol.ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_15());
             getLogger().info("Loaded vehicle movement for version: " + version);
-        }
-        if (version.contains("v1_16_R3")) {
+        } else if (version.contains("v1_16_R3")) {
             com.comphenix.protocol.ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_16());
             getLogger().info("Loaded vehicle movement for version: " + version);
         }

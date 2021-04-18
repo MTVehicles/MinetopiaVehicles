@@ -21,7 +21,7 @@ public class MenuUtils {
         String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
         inv.setItem(10, ItemUtils.mItem2(Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".skinItem"), 1, (short) Main.vehicleDataConfig.getConfig().getInt("vehicle." + ken + ".skinDamage"), "&6Naam Aanpassen", "&7Huidige: &e" + Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".name")));
         inv.setItem(13, ItemUtils.mItem("PAPER", 1, (short) 0, "&6Kenteken Aanpassen", "&7Huidige: &e" + ken));
-        if ((Boolean) Main.vehicleDataConfig.getConfig().get("vehicle." + ken + ".isGlow") == true) {
+        if ((Boolean) Main.vehicleDataConfig.getConfig().get("vehicle." + ken + ".isGlow")) {
             inv.setItem(16, ItemUtils.glowItem("BOOK", "&6Glow Aanpassen", "&7Huidige: &e" + Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".isGlow")));
         } else {
             inv.setItem(16, ItemUtils.mItem("BOOK", 1, (short) 0, "&6Glow Aanpassen", "&7Huidige: &e" + Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".isGlow")));
@@ -137,7 +137,7 @@ public class MenuUtils {
                 for (int i = 1 + id * 36 - 36; i <= id * 36; i++) {
                     if (i - 1 < dataVehicle.size()) {
                         if (of == null || Main.vehicleDataConfig.getConfig().getString("vehicle." + dataVehicle.get(i - 1) + ".owner").contains(of.toString())) {
-                            if (Main.vehicleDataConfig.getConfig().getBoolean("vehicle." + dataVehicle.get(i - 1) + ".isGlow") == true) {
+                            if (Main.vehicleDataConfig.getConfig().getBoolean("vehicle." + dataVehicle.get(i - 1) + ".isGlow")) {
                                 inv.addItem(ItemUtils.carItem2glow(Main.vehicleDataConfig.getConfig().getInt("vehicle." + dataVehicle.get(i - 1) + ".skinDamage"), Main.vehicleDataConfig.getConfig().getString("vehicle." + dataVehicle.get(i - 1) + ".name"), Main.vehicleDataConfig.getConfig().getString("vehicle." + dataVehicle.get(i - 1) + ".skinItem"), dataVehicle.get(i - 1)));
                             } else {
                                 inv.addItem(ItemUtils.carItem2(Main.vehicleDataConfig.getConfig().getInt("vehicle." + dataVehicle.get(i - 1) + ".skinDamage"), Main.vehicleDataConfig.getConfig().getString("vehicle." + dataVehicle.get(i - 1) + ".name"), Main.vehicleDataConfig.getConfig().getString("vehicle." + dataVehicle.get(i - 1) + ".skinItem"), dataVehicle.get(i - 1)));

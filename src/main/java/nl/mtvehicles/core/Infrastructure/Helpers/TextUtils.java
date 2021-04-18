@@ -163,7 +163,7 @@ public class TextUtils {
                     }
                 }
             } else {
-                if (Main.defaultConfig.getConfig().getBoolean("carPickup") == true) {
+                if (Main.defaultConfig.getConfig().getBoolean("carPickup")) {
                     p.sendMessage(TextUtils.colorize("&cVoertuigen oppakken staat uitgeschakeld"));
                     return;
                 }
