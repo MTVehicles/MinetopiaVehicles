@@ -11,35 +11,23 @@ import org.bukkit.entity.Player;
 public class VehicleGiveCar extends MTVehicleSubCommand {
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
-        if (!(sender instanceof Player)) return false;
-
-        Player player = (Player) sender;
-
         if (!checkPermission("mtvehicles.givecar")) return true;
-
         if (args.length != 3) {
-            player.sendMessage(Main.messagesConfig.getMessage("useGiveCar"));
+            sender.sendMessage(Main.messagesConfig.getMessage("useGiveCar"));
             return true;
         }
-
         try {
             Integer.parseInt(args[1]);
         } catch (Throwable e) {
-            player.sendMessage(Main.messagesConfig.getMessage("useGiveCar"));
+            sender.sendMessage(Main.messagesConfig.getMessage("useGiveCar"));
             return false;
         }
-
         Player of = Bukkit.getPlayer(args[2]);
-
         if (of == null || !of.hasPlayedBefore()) {
-            player.sendMessage(Main.messagesConfig.getMessage("playerNotFound"));
+            sender.sendMessage(Main.messagesConfig.getMessage("playerNotFound"));
             return true;
         }
-
         Vehicle.getByDamage(Integer.parseInt(args[1]), of);
-
         return true;
     }
-
-
 }
