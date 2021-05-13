@@ -17,9 +17,12 @@ import java.util.UUID;
 public class VehicleMenu extends MTVehicleSubCommand {
     public static HashMap<UUID, Inventory> beginMenu = new HashMap<>();
 
+    public VehicleMenu() {
+        this.setPlayerCommand(true);
+    }
+
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
-        if (!isPlayer) return false;
         if (!checkPermission("mtvehicles.menu")) return true;
         Player p = (Player) sender;
         sendMessage(Main.messagesConfig.getMessage("menuOpen"));

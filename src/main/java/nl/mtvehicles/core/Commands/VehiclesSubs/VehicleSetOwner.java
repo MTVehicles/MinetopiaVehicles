@@ -14,9 +14,12 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 
 public class VehicleSetOwner extends MTVehicleSubCommand {
+    public VehicleSetOwner() {
+        this.setPlayerCommand(true);
+    }
+
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
-        if (!(sender instanceof Player)) return false;
         Player player = (Player) sender;
         ItemStack item = player.getInventory().getItemInMainHand();
 
@@ -26,7 +29,7 @@ public class VehicleSetOwner extends MTVehicleSubCommand {
             return true;
         }
 
-        if (item == null || (!item.hasItemMeta() || !(NBTUtils.contains(item, "mtvehicles.kenteken")))) {
+        if (!item.hasItemMeta() || !(NBTUtils.contains(item, "mtvehicles.kenteken"))) {
             sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("noVehicleInHand")));
             return true;
         }
@@ -58,8 +61,8 @@ public class VehicleSetOwner extends MTVehicleSubCommand {
             return true;
         }
 
-        vehicle.setRiders(new ArrayList<String>());
-        vehicle.setMembers(new ArrayList<String>());
+        vehicle.setRiders(new ArrayList<>());
+        vehicle.setMembers(new ArrayList<>());
         vehicle.setOwner(of.getUniqueId().toString());
         vehicle.save();
 

@@ -1,7 +1,7 @@
 package nl.mtvehicles.core.Events;
 
 import nl.mtvehicles.core.Commands.VehiclesSubs.VehicleBenzine;
-import nl.mtvehicles.core.Infrastructure.Helpers.BossbarUtils;
+import nl.mtvehicles.core.Infrastructure.Helpers.BossBarUtils;
 import nl.mtvehicles.core.Infrastructure.Helpers.NBTUtils;
 import nl.mtvehicles.core.Infrastructure.Helpers.TextUtils;
 import nl.mtvehicles.core.Infrastructure.Helpers.VehicleData;
@@ -41,7 +41,7 @@ public class VehicleEntityEvent implements Listener {
                     return;
                 }
                 String licensePlate = p.getVehicle().getCustomName().replace("MTVEHICLES_MAINSEAT_", "");
-                double curb = VehicleData.benzine.get(licensePlate);
+                double curb = VehicleData.fuel.get(licensePlate);
                 String benval = NBTUtils.getString(item, "mtvehicles.benzineval");
                 String bensize = NBTUtils.getString(item, "mtvehicles.benzinesize");
                 if (Integer.parseInt(benval) < 1) {
@@ -55,18 +55,18 @@ public class VehicleEntityEvent implements Listener {
                 if (curb + 5 > 100) {
                     int test = (int) (100 - curb);
                     p.setItemInHand(VehicleBenzine.benzineItem(Integer.parseInt(bensize), Integer.parseInt(benval) - test));
-                    VehicleData.benzine.put(licensePlate, VehicleData.benzine.get(licensePlate) + test);
-                    BossbarUtils.setbossbarvalue(curb / 100.0D, licensePlate);
+                    VehicleData.fuel.put(licensePlate, VehicleData.fuel.get(licensePlate) + test);
+                    BossBarUtils.setBossBarValue(curb / 100.0D, licensePlate);
                     return;
                 }
                 if (!(Integer.parseInt(benval) < 5)) {
-                    VehicleData.benzine.put(licensePlate, VehicleData.benzine.get(licensePlate) + 5);
-                    BossbarUtils.setbossbarvalue(curb / 100.0D, licensePlate);
+                    VehicleData.fuel.put(licensePlate, VehicleData.fuel.get(licensePlate) + 5);
+                    BossBarUtils.setBossBarValue(curb / 100.0D, licensePlate);
                     p.setItemInHand(VehicleBenzine.benzineItem(Integer.parseInt(bensize), Integer.parseInt(benval) - 5));
 
                 } else {
-                    VehicleData.benzine.put(licensePlate, Double.valueOf(VehicleData.benzine.get(licensePlate) + benval));
-                    BossbarUtils.setbossbarvalue(curb / 100.0D, licensePlate);
+                    VehicleData.fuel.put(licensePlate, Double.valueOf(VehicleData.fuel.get(licensePlate) + benval));
+                    BossBarUtils.setBossBarValue(curb / 100.0D, licensePlate);
                     p.setItemInHand(VehicleBenzine.benzineItem(Integer.parseInt(bensize), Integer.parseInt(benval) - Integer.parseInt(benval)));
                 }
             }
@@ -76,7 +76,6 @@ public class VehicleEntityEvent implements Listener {
                 String license = TextUtils.licenseReplacer(a.getCustomName());
                 kofferbak(p, license);
                 event.setCancelled(true);
-                return;
             }
         }
     }
@@ -102,7 +101,6 @@ public class VehicleEntityEvent implements Listener {
                         inv.addItem(item);
                     }
                     p.openInventory(inv);
-                } else {
                 }
             } else {
                 p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleNoRiderKofferbak").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));

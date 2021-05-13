@@ -7,35 +7,35 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.PluginDescriptionFile;
 
 public class VehicleHelp extends MTVehicleSubCommand {
+    public VehicleHelp() {
+        this.setPlayerCommand(true);
+    }
+
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
-        if (!isPlayer) {
-            sendMessage(Main.messagesConfig.getMessage("notForConsole"));
-            return false;
-        }
-        sendMessage("&2&lMinetopiaVehicles Commands: ("+Main.instance.getDescription().getVersion()+")");
+        sendMessage(String.format("&2&lMinetopiaVehicles Commands: (%s)", Main.instance.getDescription().getVersion()));
         sendMessage("");
-        sendMessage("&2/vehicle &ainfo &f- &2"+Main.messagesConfig.getMessage("helpInfo"));
+        sendMessage(String.format("&2/vehicle &ainfo &f- &2%s", Main.messagesConfig.getMessage("helpInfo")));
         //sendMessage("&2/vehicle &ahelp &f- &2"+Main.messagesConfig.getMessage("helpHelp"));
-        sendMessage("&2/vehicle &aaddrider &f- &2"+Main.messagesConfig.getMessage("helpAddRider"));
-        sendMessage("&2/vehicle &aaddmember &f- &2"+Main.messagesConfig.getMessage("helpAddMember"));
-        sendMessage("&2/vehicle &aremoverider &f- &2"+Main.messagesConfig.getMessage("helpRemoveRider"));
-        sendMessage("&2/vehicle &aremovemember &f- &2"+Main.messagesConfig.getMessage("helpRemoveMember"));
+        sendMessage(String.format("&2/vehicle &aaddrider &f- &2%s", Main.messagesConfig.getMessage("helpAddRider")));
+        sendMessage(String.format("&2/vehicle &aaddmember &f- &2%s", Main.messagesConfig.getMessage("helpAddMember")));
+        sendMessage(String.format("&2/vehicle &aremoverider &f- &2%s", Main.messagesConfig.getMessage("helpRemoveRider")));
+        sendMessage(String.format("&2/vehicle &aremovemember &f- &2%s", Main.messagesConfig.getMessage("helpRemoveMember")));
         if (sender.hasPermission("mtvehicles.admin")) {
             sendMessage("");
-            sendMessage("&2/vehicle &aedit &f- &2" + Main.messagesConfig.getMessage("adminEdit"));
-            sendMessage("&2/vehicle &amenu &f- &2" + Main.messagesConfig.getMessage("adminMenu"));
-            sendMessage("&2/vehicle &afuel &f- &2" + Main.messagesConfig.getMessage("adminBenzine"));
-            sendMessage("&2/vehicle &arestore &f- &2" + Main.messagesConfig.getMessage("adminRestore"));
-            sendMessage("&2/vehicle &areload &f- &2" + Main.messagesConfig.getMessage("adminReload"));
-            sendMessage("&2/vehicle &agivevoucher &f- &2" + Main.messagesConfig.getMessage("adminGivevoucher"));
-            sendMessage("&2/vehicle &agivecar &f- &2" + Main.messagesConfig.getMessage("adminGivecar"));
-            sendMessage("&2/vehicle &asetowner &f- &2" + Main.messagesConfig.getMessage("adminSetowner"));
-            sendMessage("&2/vehicle &aupdate &f- &2" + Main.messagesConfig.getMessage("adminUpdate"));
-            sendMessage("&2/vehicle &adelete &f- &2" + Main.messagesConfig.getMessage("adminDelete"));
+            sendMessage(String.format("&2/vehicle &aedit &f- &2%s", Main.messagesConfig.getMessage("adminEdit")));
+            sendMessage(String.format("&2/vehicle &amenu &f- &2%s", Main.messagesConfig.getMessage("adminMenu")));
+            sendMessage(String.format("&2/vehicle &afuel &f- &2%s", Main.messagesConfig.getMessage("adminBenzine")));
+            sendMessage(String.format("&2/vehicle &arestore &f- &2%s", Main.messagesConfig.getMessage("adminRestore")));
+            sendMessage(String.format("&2/vehicle &areload &f- &2%s", Main.messagesConfig.getMessage("adminReload")));
+            sendMessage(String.format("&2/vehicle &agivevoucher &f- &2%s", Main.messagesConfig.getMessage("adminGivevoucher")));
+            sendMessage(String.format("&2/vehicle &agivecar &f- &2%s", Main.messagesConfig.getMessage("adminGivecar")));
+            sendMessage(String.format("&2/vehicle &asetowner &f- &2%s", Main.messagesConfig.getMessage("adminSetowner")));
+            sendMessage(String.format("&2/vehicle &aupdate &f- &2%s", Main.messagesConfig.getMessage("adminUpdate")));
+            sendMessage(String.format("&2/vehicle &adelete &f- &2%s", Main.messagesConfig.getMessage("adminDelete")));
         }
         sendMessage("");
-        sendMessage("&7&omtvehicles.nl by GamerJoep_ -> Joep#0001 free to use.");
+        sendMessage("&7&omtvehicles.nl by GamerJoep_ & jeff11222, free to use.");
         return true;
     }
 }

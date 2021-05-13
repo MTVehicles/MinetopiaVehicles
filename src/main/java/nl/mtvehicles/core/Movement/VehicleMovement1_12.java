@@ -6,12 +6,10 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
 import net.minecraft.server.v1_12_R1.EntityArmorStand;
 import net.minecraft.server.v1_12_R1.PacketPlayInSteerVehicle;
-import nl.mtvehicles.core.Events.VehicleLeaveEvent;
-import nl.mtvehicles.core.Infrastructure.Helpers.BossbarUtils;
+import nl.mtvehicles.core.Infrastructure.Helpers.BossBarUtils;
 import nl.mtvehicles.core.Infrastructure.Helpers.VehicleData;
 import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
 import nl.mtvehicles.core.Main;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftArmorStand;
@@ -52,11 +50,11 @@ public class VehicleMovement1_12 extends PacketAdapter {
             VehicleData.speed.put(license, 0.0);
             return;
         }
-        if (VehicleData.benzine.get(license) < 1) {
-            BossbarUtils.setbossbarvalue(0 / 100.0D, license);
+        if (VehicleData.fuel.get(license) < 1) {
+            BossBarUtils.setBossBarValue(0 / 100.0D, license);
             return;
         }
-        BossbarUtils.setbossbarvalue(VehicleData.benzine.get(license) / 100.0D, license);
+        BossBarUtils.setBossBarValue(VehicleData.fuel.get(license) / 100.0D, license);
         ArmorStand standMain = VehicleData.autostand.get("MTVEHICLES_MAIN_" + license);
         ArmorStand standSkin = VehicleData.autostand.get("MTVEHICLES_SKIN_" + license);
         ArmorStand standMainSeat = VehicleData.autostand.get("MTVEHICLES_MAINSEAT_" + license);
@@ -79,13 +77,13 @@ public class VehicleMovement1_12 extends PacketAdapter {
                 return;
             }
             if (Main.defaultConfig.getConfig().getBoolean("benzine") == true && Main.vehicleDataConfig.getConfig().getBoolean("vehicle." + license + ".benzineEnabled") == true) {
-                double dnum = VehicleData.benzine.get(license) - VehicleData.benzineverbruik.get(license);
-                VehicleData.benzine.put(license, dnum);
+                double dnum = VehicleData.fuel.get(license) - VehicleData.fuelUsage.get(license);
+                VehicleData.fuel.put(license, dnum);
             }
             if (VehicleData.speed.get(license) > Vehicle.getByPlate(license).getMaxSpeed()) {
                 return;
             }
-            VehicleData.speed.put(license, VehicleData.speed.get(license) + Vehicle.getByPlate(license).getAcceleratieSpeed());
+            VehicleData.speed.put(license, VehicleData.speed.get(license) + Vehicle.getByPlate(license).getAccelerationSpeed());
         }
         if (ppisv.b() < 0.0) {
             if (VehicleData.speed.get(license) > 0) {
@@ -93,13 +91,13 @@ public class VehicleMovement1_12 extends PacketAdapter {
                 return;
             }
             if (Main.defaultConfig.getConfig().getBoolean("benzine") == true && Main.vehicleDataConfig.getConfig().getBoolean("vehicle." + license + ".benzineEnabled") == true) {
-                double dnum = VehicleData.benzine.get(license) - VehicleData.benzineverbruik.get(license);
-                VehicleData.benzine.put(license, dnum);
+                double dnum = VehicleData.fuel.get(license) - VehicleData.fuelUsage.get(license);
+                VehicleData.fuel.put(license, dnum);
             }
             if (VehicleData.speed.get(license) < -Vehicle.getByPlate(license).getMaxSpeedBackwards()) {
                 return;
             }
-            VehicleData.speed.put(license, VehicleData.speed.get(license) - Vehicle.getByPlate(license).getAcceleratieSpeed());
+            VehicleData.speed.put(license, VehicleData.speed.get(license) - Vehicle.getByPlate(license).getAccelerationSpeed());
 
         }
         if (ppisv.b() == 0.0) {
@@ -109,11 +107,11 @@ public class VehicleMovement1_12 extends PacketAdapter {
                 return;
             }
             if (Double.parseDouble(String.valueOf(round)) > 0.01) {
-                VehicleData.speed.put(license, VehicleData.speed.get(license) - Vehicle.getByPlate(license).getAftrekkenSpeed());
+                VehicleData.speed.put(license, VehicleData.speed.get(license) - Vehicle.getByPlate(license).getFrictionSpeed());
                 return;
             }
             if (Double.parseDouble(String.valueOf(round)) < 0.01) {
-                VehicleData.speed.put(license, VehicleData.speed.get(license) + Vehicle.getByPlate(license).getAftrekkenSpeed());
+                VehicleData.speed.put(license, VehicleData.speed.get(license) + Vehicle.getByPlate(license).getFrictionSpeed());
                 return;
             }
         }

@@ -15,18 +15,16 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 public class JoinEvent implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onJoinEventPlayer(PlayerJoinEvent e) {
         Player p = e.getPlayer();
-        if (p.hasPermission("mtvehicles.update")) {
-            if (Main.defaultConfig.getConfig().getBoolean("auto-update") == false) {
-                return;
-            }
-            checkNewVersion(p);
+        if (!p.hasPermission("mtvehicles.update") || !Main.defaultConfig.getConfig().getBoolean("auto-update")) {
+            return;
         }
+        checkNewVersion(p);
     }
 
     public void getUpdateMessage(Player p) {
@@ -35,7 +33,7 @@ public class JoinEvent implements Listener {
                 URLConnection connection = new URL("https://minetopiavehicles.nl/api/update-api-check.php").openConnection();
                 connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
                 connection.connect();
-                BufferedReader r = new BufferedReader(new InputStreamReader(connection.getInputStream(), Charset.forName("UTF-8")));
+                BufferedReader r = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
                 StringBuilder sb = new StringBuilder();
                 String line;
                 while ((line = r.readLine()) != null) {
@@ -60,7 +58,7 @@ public class JoinEvent implements Listener {
                 URLConnection connection = new URL("https://minetopiavehicles.nl/api/update-api-version.php").openConnection();
                 connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
                 connection.connect();
-                BufferedReader r = new BufferedReader(new InputStreamReader(connection.getInputStream(), Charset.forName("UTF-8")));
+                BufferedReader r = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
                 StringBuilder sb = new StringBuilder();
                 String line;
                 while ((line = r.readLine()) != null) {

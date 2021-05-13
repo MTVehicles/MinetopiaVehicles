@@ -12,7 +12,12 @@ public class VehicleSubCommandManager extends MTVehicleCommand {
     public VehicleSubCommandManager() {
         Main.subcommands.put("info", new VehicleInfo());
         Main.subcommands.put("help", new VehicleHelp());
-        Main.subcommands.put("admin", new VehicleHelp()); // voor de mensen die nog /vehicle admin gewend waren
+        /*
+         * voor de mensen die nog /vehicle admin gewend waren.
+         *
+         * Joep ik neem aan dat je zit zelf bent? ~ Jeffrey
+         */
+        Main.subcommands.put("admin", new VehicleHelp());
         Main.subcommands.put("reload", new VehicleReload());
         Main.subcommands.put("menu", new VehicleMenu());
         Main.subcommands.put("restore", new VehicleRestore());

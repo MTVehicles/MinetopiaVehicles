@@ -17,13 +17,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VehicleBenzine extends MTVehicleSubCommand {
+    public VehicleBenzine() {
+        this.setPlayerCommand(true);
+    }
+
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
-        if (!isPlayer) {
-            sendMessage(Main.messagesConfig.getMessage("notForConsole"));
-            return false;
-        }
-
         Player p = (Player) sender;
 
         if (!checkPermission("mtvehicles.benzine")) return true;

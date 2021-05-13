@@ -15,9 +15,7 @@ import java.util.Map;
 
 public class ItemFactory {
     private ItemStack is;
-
     private String skullOwner;
-
     private static Enchantment glow;
 
     public ItemFactory(Material material) {

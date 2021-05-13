@@ -1,7 +1,5 @@
 package nl.mtvehicles.core.Infrastructure.Helpers;
 
-import nl.mtvehicles.core.Events.VehicleClickEvent;
-import nl.mtvehicles.core.Events.VehicleLeaveEvent;
 import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
 import nl.mtvehicles.core.Main;
 import org.bukkit.Bukkit;
@@ -79,8 +77,8 @@ public class TextUtils {
                 if (!entity.isEmpty()) {
                     return;
                 }
-                VehicleData.benzine.put(ken, vehicle.getBenzine());
-                VehicleData.benzineverbruik.put(ken, Main.vehicleDataConfig.getConfig().getDouble("vehicle." + ken + ".benzineVerbruik"));
+                VehicleData.fuel.put(ken, vehicle.getFuel());
+                VehicleData.fuelUsage.put(ken, Main.vehicleDataConfig.getConfig().getDouble("vehicle." + ken + ".benzineVerbruik"));
                 VehicleData.type.put(ken, Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".vehicleType"));
                 Location location = new Location(entity.getWorld(), entity.getLocation().getX(), entity.getLocation().getY(), entity.getLocation().getZ(), entity.getLocation().getYaw(), entity.getLocation().getPitch());
                 if (vehicleAs.getCustomName().contains("MTVEHICLES_SKIN_" + ken)) {
@@ -91,7 +89,7 @@ public class TextUtils {
                         Map<String, Double> seat = seats.get(i - 1);
                         if (i == 1) {
                             TextUtils.mainSeatStandCreator(ken, location, p, seat.get("x"), seat.get("y"), seat.get("z"));
-                            BossbarUtils.addBossbar(p, ken);
+                            BossBarUtils.addBossBar(p, ken);
                             p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleEnterRider").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
                         }
                         if (i > 1) {

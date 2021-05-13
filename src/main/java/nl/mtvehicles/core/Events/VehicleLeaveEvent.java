@@ -1,9 +1,8 @@
 package nl.mtvehicles.core.Events;
 
-import nl.mtvehicles.core.Infrastructure.Helpers.BossbarUtils;
+import nl.mtvehicles.core.Infrastructure.Helpers.BossBarUtils;
 import nl.mtvehicles.core.Infrastructure.Helpers.VehicleData;
 import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
-import nl.mtvehicles.core.Main;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
@@ -11,7 +10,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.spigotmc.event.entity.EntityDismountEvent;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,7 +32,7 @@ public class VehicleLeaveEvent implements Listener {
                     as4.setGravity(true);
                 }
             }
-            BossbarUtils.removeBossbar((Player) e.getEntity(), ken);
+            BossBarUtils.removeBossBar((Player) e.getEntity(), ken);
 //            Main.vehicleDataConfig.getConfig().set("vehicle." + ken + ".benzine", VehicleData.benzine.get(ken));
 //            Main.vehicleDataConfig.save();
             ArmorStand as = VehicleData.autostand.get("MTVEHICLES_MAIN_" + ken);
