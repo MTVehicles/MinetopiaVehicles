@@ -6,7 +6,6 @@ import nl.mtvehicles.core.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 
 import java.io.*;
@@ -16,25 +15,21 @@ import java.net.URLConnection;
 import java.nio.charset.Charset;
 
 public class VehicleUpdate extends MTVehicleSubCommand {
-
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
-        if (!isPlayer) return false;
-
         if (!checkPermission("mtvehicles.update")) return true;
 
-        Player p = (Player) sender;
-
-        if (Main.defaultConfig.getConfig().getBoolean("auto-update") == false){
+        if (!Main.defaultConfig.getConfig().getBoolean("auto-update")) {
             sendMessage(Main.messagesConfig.getMessage("updateDisabled"));
             return false;
         }
-        checkNewVersion(p);
+
+        checkNewVersion();
 
         return true;
     }
 
-    public void checkNewVersion(Player p) {
+    public void checkNewVersion() {
         try {
             URLConnection connection = new URL("https://minetopiavehicles.nl/api/update-api-version.php").openConnection();
             connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
@@ -48,16 +43,15 @@ public class VehicleUpdate extends MTVehicleSubCommand {
             String value = sb.toString();
             PluginDescriptionFile pdf = Main.instance.getDescription();
             if (!value.contains(pdf.getVersion())) {
-                p.sendMessage(TextUtils.colorize("&aWe hebben een update gevonden heb even geduld!"));
+                sendMessage(TextUtils.colorize("&aWe hebben een update gevonden heb even geduld!"));
                 File dest = new File("plugins");
-                URL file;
                 try {
-                    download(file = new URL("https://minetopiavehicles.nl/api/MTVehicles.jar"), dest);
+                    download(new URL("https://minetopiavehicles.nl/api/MTVehicles.jar"), dest);
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 }
             } else {
-                p.sendMessage(TextUtils.colorize("&cEr is geen update gevonden, is dit een fout meld het dan in de discord. https://mtvehicles.nl"));
+                sendMessage(TextUtils.colorize("&cEr is geen update gevonden, is dit een fout meld het dan in de discord. https://mtvehicles.nl"));
             }
 
         } catch (IOException ex) {
@@ -69,8 +63,8 @@ public class VehicleUpdate extends MTVehicleSubCommand {
     public void download(URL file, File dest) {
         try {
             InputStream is = file.openStream();
-            File finaldest = new File(dest + "/" + file.getFile().replace("/api/MTVehicles.jar", "/"+Main.fol().replace("plugins", "")));
-           // File finaldest = new File(dest + "/" + file.getFile());
+            File finaldest = new File(dest + "/" + file.getFile().replace("/api/MTVehicles.jar", "/" + Main.fol().replace("plugins", "")));
+            // File finaldest = new File(dest + "/" + file.getFile());
             finaldest.getParentFile().mkdirs();
             finaldest.createNewFile();
             System.out.println("Voor de laatste stap moeten we even de server herladen!");

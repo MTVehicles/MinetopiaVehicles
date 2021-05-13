@@ -10,9 +10,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public class VehicleDelete extends MTVehicleSubCommand {
+    public VehicleDelete() {
+        this.setPlayerCommand(true);
+    }
+
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
-        if (!isPlayer) return false;
         if (!checkPermission("mtvehicles.delete")) return true;
         Player p = (Player) sender;
         ItemStack item = p.getInventory().getItemInMainHand();

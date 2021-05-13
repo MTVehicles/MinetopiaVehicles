@@ -14,9 +14,12 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 public class VehicleEdit extends MTVehicleSubCommand {
+    public VehicleEdit() {
+        this.setPlayerCommand(true);
+    }
+
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
-        if (!isPlayer) return false;
         if (!checkPermission("mtvehicles.edit")) return true;
 
         Player p = (Player) sender;

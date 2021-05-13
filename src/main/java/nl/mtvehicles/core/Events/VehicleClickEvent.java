@@ -1,27 +1,22 @@
 package nl.mtvehicles.core.Events;
 
-import nl.mtvehicles.core.Infrastructure.Helpers.BossbarUtils;
 import nl.mtvehicles.core.Infrastructure.Helpers.TextUtils;
-import nl.mtvehicles.core.Infrastructure.Helpers.VehicleData;
-import nl.mtvehicles.core.Infrastructure.Models.ConfigUtils;
 import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
 import nl.mtvehicles.core.Main;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
-import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class VehicleClickEvent implements Listener {
-    private Map<String, Long> lastUsage = new HashMap<String, Long>();
+    private Map<String, Long> lastUsage = new HashMap<>();
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent e) {
@@ -68,8 +63,5 @@ public class VehicleClickEvent implements Listener {
         }
         TextUtils.createVehicle(license, p);
         e.setCancelled(true);
-
-        return;
     }
-
 }

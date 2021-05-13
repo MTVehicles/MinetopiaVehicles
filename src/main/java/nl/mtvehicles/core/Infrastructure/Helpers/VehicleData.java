@@ -21,8 +21,8 @@ public class VehicleData {
     public static HashMap<String, Double> wiekeny = new HashMap<>();
     public static HashMap<String, Double> wiekenz = new HashMap<>();
     public static HashMap<String, String> type = new HashMap<>();
-    public static HashMap<String, Double> benzine = new HashMap<>();
-    public static HashMap<String, Double> benzineverbruik = new HashMap<>();
+    public static HashMap<String, Double> fuel = new HashMap<>();
+    public static HashMap<String, Double> fuelUsage = new HashMap<>();
 
     public static HashMap<String, ArmorStand> autostand = new HashMap<>();
     public static HashMap<String, ArmorStand> autostand2 = new HashMap<>();

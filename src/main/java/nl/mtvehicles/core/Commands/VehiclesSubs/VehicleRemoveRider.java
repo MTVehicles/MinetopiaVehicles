@@ -14,19 +14,20 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 
 public class VehicleRemoveRider extends MTVehicleSubCommand {
+    public VehicleRemoveRider() {
+        this.setPlayerCommand(true);
+    }
+
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
-        if (!isPlayer) return false;
-
-        Player p = (Player) sender;
-        ItemStack item = p.getInventory().getItemInMainHand();
-        if (item == null || (!item.hasItemMeta() || !(NBTUtils.contains(item, "mtvehicles.kenteken")))) {
+        ItemStack item = player.getInventory().getItemInMainHand();
+        if (!item.hasItemMeta() || !(NBTUtils.contains(item, "mtvehicles.kenteken"))) {
             sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("noVehicleInHand")));
             return true;
         }
 
         if (args.length != 2) {
-            p.sendMessage(Main.messagesConfig.getMessage("useRemoveRider"));
+            player.sendMessage(Main.messagesConfig.getMessage("useRemoveRider"));
             return true;
         }
 
@@ -36,7 +37,7 @@ public class VehicleRemoveRider extends MTVehicleSubCommand {
         Vehicle vehicle = Vehicle.getByPlate(ken);
 
         if (of == null || !of.hasPlayedBefore()) {
-            p.sendMessage(Main.messagesConfig.getMessage("playerNotFound"));
+            player.sendMessage(Main.messagesConfig.getMessage("playerNotFound"));
             return true;
         }
 
@@ -46,7 +47,7 @@ public class VehicleRemoveRider extends MTVehicleSubCommand {
         vehicle.setRiders(riders);
         vehicle.save();
 
-        p.sendMessage(Main.messagesConfig.getMessage("memberChange"));
+        player.sendMessage(Main.messagesConfig.getMessage("memberChange"));
         return true;
     }
 }

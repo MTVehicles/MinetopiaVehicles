@@ -9,6 +9,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class VehicleGiveVoucher extends MTVehicleSubCommand {
+    public VehicleGiveVoucher() {
+        this.setPlayerCommand(true);
+    }
+
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
         if (!checkPermission("mtvehicles.givevoucher")) return true;

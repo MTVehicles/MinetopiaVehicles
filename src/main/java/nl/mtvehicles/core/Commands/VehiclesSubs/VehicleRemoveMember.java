@@ -14,10 +14,12 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 
 public class VehicleRemoveMember extends MTVehicleSubCommand {
+    public VehicleRemoveMember() {
+        this.setPlayerCommand(true);
+    }
+
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
-        if (!isPlayer) return false;
-
         Player p = (Player) sender;
         ItemStack item = p.getInventory().getItemInMainHand();
         if (item == null || (!item.hasItemMeta() || !(NBTUtils.contains(item, "mtvehicles.kenteken")))) {

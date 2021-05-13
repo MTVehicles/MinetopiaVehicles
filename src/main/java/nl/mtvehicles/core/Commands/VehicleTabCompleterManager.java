@@ -13,8 +13,7 @@ public class VehicleTabCompleterManager implements org.bukkit.command.TabComplet
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         if (strings.length == 1) {
-            List<String> list = new ArrayList<>(Main.subcommands.keySet());
-            return list;
+            return new ArrayList<>(Main.subcommands.keySet());
         }
         return null;
     }

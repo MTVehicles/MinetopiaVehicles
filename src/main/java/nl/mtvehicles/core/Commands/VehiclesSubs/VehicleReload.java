@@ -8,6 +8,10 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 public class VehicleReload extends MTVehicleSubCommand {
+    public VehicleReload() {
+        this.setPlayerCommand(true);
+    }
+
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
         if (!checkPermission("mtvehicles.reload")) return true;

@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.UUID;
 
 public class ItemUtils {
-
     public static HashMap<String, Boolean> edit = new HashMap<>();
 
     public static ItemStack carItem(int durability, String name, String material) {
@@ -284,7 +283,5 @@ public class ItemUtils {
         int b = Integer.parseInt(String.valueOf(Math.random() * 10));
         String c = UUID.randomUUID().toString();
         p.getInventory().addItem(new ItemStack[]{is});
-
-
     }
 }

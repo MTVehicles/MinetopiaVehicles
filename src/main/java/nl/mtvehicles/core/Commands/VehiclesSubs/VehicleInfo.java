@@ -17,12 +17,16 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class VehicleInfo extends MTVehicleSubCommand {
+    public VehicleInfo() {
+        this.setPlayerCommand(true);
+    }
+
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
         Player p = (Player) sender;
         ItemStack item = p.getInventory().getItemInMainHand();
 
-        if (item == null || (!item.hasItemMeta() || !(NBTUtils.contains(item, "mtvehicles.kenteken")))) {
+        if (!item.hasItemMeta() || !(NBTUtils.contains(item, "mtvehicles.kenteken"))) {
             sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("noVehicleInHand")));
             return true;
         }
@@ -33,7 +37,7 @@ public class VehicleInfo extends MTVehicleSubCommand {
         Vehicle vehicle = Vehicle.getByPlate(ken);
 
         if (vehicle == null) return true;
-        if (p.hasPermission("mtvehicles.admin")){
+        if (p.hasPermission("mtvehicles.admin")) {
             sendMessage("&6ID: &c" + p.getItemInHand().getDurability());
         }
         sendMessage("&6Kenteken: &c" + ken);
