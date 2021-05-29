@@ -48,12 +48,10 @@ public class ItemUtils {
         return car;
     }
 
-
     public static String generateLicencePlate() {
         String plate = String.format("%s-%s-%s", RandomStringUtils.random(2, true, false), RandomStringUtils.random(2, true, false), RandomStringUtils.random(2, true, false));
         return plate.toUpperCase();
     }
-
 
     public static ItemStack woolItem(String mat1, String mat2, int amount, short durability, String text, String lores) {
         try {
@@ -73,7 +71,6 @@ public class ItemUtils {
                 ItemStack is = new ItemStack(Material.matchMaterial(mat2), amount, durability);
                 ItemMeta im = is.getItemMeta();
                 List<String> itemlore = new ArrayList<>();
-
                 String[] lorem = lores.split("@");
                 for (String s : lorem) {
                     itemlore.add((TextUtils.colorize(s)));
@@ -224,7 +221,6 @@ public class ItemUtils {
         }
     }
 
-
     public static ItemStack carItem2(int id, String name, String material, String ken) {
         ItemStack car = (new ItemFactory(Material.getMaterial(material))).setDurability((short) id).setName(TextUtils.colorize("&6" + name)).setNBT("mtvehicles.kenteken", ken).setNBT("mtvehicles.naam", name).toItemStack();
         ItemMeta im = car.getItemMeta();
@@ -279,9 +275,6 @@ public class ItemUtils {
         im.setLore(goldlore);
         im.setDisplayName(TextUtils.colorize("&2&l" + name));
         is.setItemMeta(im);
-        double a = Math.random() * 10.0D;
-        int b = Integer.parseInt(String.valueOf(Math.random() * 10));
-        String c = UUID.randomUUID().toString();
         p.getInventory().addItem(new ItemStack[]{is});
     }
 }

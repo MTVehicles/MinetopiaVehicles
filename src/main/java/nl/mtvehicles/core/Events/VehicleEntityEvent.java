@@ -70,7 +70,6 @@ public class VehicleEntityEvent implements Listener {
                     p.setItemInHand(VehicleBenzine.benzineItem(Integer.parseInt(bensize), Integer.parseInt(benval) - Integer.parseInt(benval)));
                 }
             }
-
             if (p.isSneaking()) {
                 Main.configList.forEach(ConfigUtils::reload);
                 String license = TextUtils.licenseReplacer(a.getCustomName());

@@ -28,15 +28,16 @@ public class TextUtils {
         return null;
     }
 
-    public static void basicStandCreator(String license, String type, Location location, ItemStack item, Boolean gravity){
+    public static void basicStandCreator(String license, String type, Location location, ItemStack item, Boolean gravity) {
         ArmorStand as = location.getWorld().spawn(location, ArmorStand.class);
-        as.setCustomName("MTVEHICLES_"+type+"_" + license);
+        as.setCustomName("MTVEHICLES_" + type + "_" + license);
         as.setHelmet(item);
         as.setGravity(gravity);
         as.setVisible(false);
-        VehicleData.autostand.put("MTVEHICLES_"+type+"_" + license, as);
+        VehicleData.autostand.put("MTVEHICLES_" + type + "_" + license, as);
     }
-    public static void mainSeatStandCreator(String license, Location location, Player p, double x, double y, double z){
+
+    public static void mainSeatStandCreator(String license, Location location, Player p, double x, double y, double z) {
         Location location2 = new Location(location.getWorld(), location.getX() + Double.valueOf(z), location.getY() + Double.valueOf(y), location.getZ() + Double.valueOf(z));
         ArmorStand as = location2.getWorld().spawn(location2, ArmorStand.class);
         as.setCustomName("MTVEHICLES_MAINSEAT_" + license);

@@ -28,10 +28,9 @@ public class VehicleAddRider extends MTVehicleSubCommand {
         }
 
         if (args.length != 2) {
-            player.sendMessage(Main.messagesConfig.getMessage("useAddRider"));
+            sendMessage(Main.messagesConfig.getMessage("useAddRider"));
             return true;
         }
-
 
         Player offlinePlayer = Bukkit.getPlayer(args[1]);
         String licensePlate = NBTUtils.getString(item, "mtvehicles.kenteken");
@@ -49,7 +48,7 @@ public class VehicleAddRider extends MTVehicleSubCommand {
         vehicle.setRiders(riders);
         vehicle.save();
 
-        player.sendMessage(Main.messagesConfig.getMessage("memberChange"));
+        sendMessage(Main.messagesConfig.getMessage("memberChange"));
         return true;
     }
 }

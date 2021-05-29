@@ -48,7 +48,7 @@ public class VehicleAddMember extends MTVehicleSubCommand {
         vehicle.setMembers(members);
         vehicle.save();
 
-        player.sendMessage(Main.messagesConfig.getMessage("memberChange"));
+        sendMessage(Main.messagesConfig.getMessage("memberChange"));
         return true;
     }
 }

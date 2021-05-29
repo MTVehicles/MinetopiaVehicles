@@ -6,7 +6,7 @@
 #---------------------------------------------------------------------------
 
 # Blijf hiervan af want je plugin gaat sowieso kapot als je dit aanpast!
-Config-Versie: 2.0.7
+Config-Versie: 2.0.8
 
 # Dit laat zien hoeveel rows het begin menu heeft van /vehicle menu 6 rows is de max.
 vehicleMenuSize: 3

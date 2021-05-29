@@ -60,7 +60,6 @@ public class ItemFactory {
         return this;
     }
 
-
     public List<String> getLore() {
         return this.is.getItemMeta().getLore();
     }

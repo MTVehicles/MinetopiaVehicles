@@ -4,8 +4,8 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
-import net.minecraft.server.v1_15_R1.EntityArmorStand;
-import net.minecraft.server.v1_15_R1.PacketPlayInSteerVehicle;
+import net.minecraft.server.v1_13_R2.EntityArmorStand;
+import net.minecraft.server.v1_13_R2.PacketPlayInSteerVehicle;
 import nl.mtvehicles.core.Infrastructure.Helpers.BossBarUtils;
 import nl.mtvehicles.core.Infrastructure.Helpers.VehicleData;
 import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
@@ -13,7 +13,7 @@ import nl.mtvehicles.core.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_15_R1.entity.CraftArmorStand;
+import org.bukkit.craftbukkit.v1_13_R2.entity.CraftArmorStand;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -32,7 +32,7 @@ public class VehicleMovement1_13 extends PacketAdapter {
 
 
     public void onPacketReceiving(final PacketEvent event) {
-        net.minecraft.server.v1_15_R1.PacketPlayInSteerVehicle ppisv = (PacketPlayInSteerVehicle) event.getPacket().getHandle();
+        net.minecraft.server.v1_13_R2.PacketPlayInSteerVehicle ppisv = (PacketPlayInSteerVehicle) event.getPacket().getHandle();
         final Player p = event.getPlayer();
         if (p.getVehicle() == null || p.getVehicle().getCustomName() == null) {
             return;
@@ -57,17 +57,17 @@ public class VehicleMovement1_13 extends PacketAdapter {
         ArmorStand standSkin = VehicleData.autostand.get("MTVEHICLES_SKIN_" + license);
         ArmorStand standMainSeat = VehicleData.autostand.get("MTVEHICLES_MAINSEAT_" + license);
         ArmorStand standRotors = VehicleData.autostand.get("MTVEHICLES_WIEKENS_" + license);
-        ((org.bukkit.craftbukkit.v1_15_R1.entity.CraftArmorStand) standSkin).getHandle().setLocation(standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw(), standMain.getLocation().getPitch());
-        mainSeat(standMain, (org.bukkit.craftbukkit.v1_15_R1.entity.CraftArmorStand) standMainSeat, license);
+        ((org.bukkit.craftbukkit.v1_13_R2.entity.CraftArmorStand) standSkin).getHandle().setLocation(standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw(), standMain.getLocation().getPitch());
+        mainSeat(standMain, (org.bukkit.craftbukkit.v1_13_R2.entity.CraftArmorStand) standMainSeat, license);
         updateStand(standMain, license, ppisv.d());
         slabCheck(standMain, license);
         if (VehicleData.type.get(license).contains("HELICOPTER")) {
             rotors(standMain, standRotors, license);
         }
         if (ppisv.b() > 0.0) {
-            ((org.bukkit.craftbukkit.v1_15_R1.entity.CraftArmorStand) standMain).getHandle().setLocation(standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - Vehicle.getByPlate(license).getRotateSpeed(), standMain.getLocation().getPitch());
+            ((org.bukkit.craftbukkit.v1_13_R2.entity.CraftArmorStand) standMain).getHandle().setLocation(standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - Vehicle.getByPlate(license).getRotateSpeed(), standMain.getLocation().getPitch());
         } else if (ppisv.b() < 0.0) {
-            ((org.bukkit.craftbukkit.v1_15_R1.entity.CraftArmorStand) standMain).getHandle().setLocation(standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() + Vehicle.getByPlate(license).getRotateSpeed(), standMain.getLocation().getPitch());
+            ((org.bukkit.craftbukkit.v1_13_R2.entity.CraftArmorStand) standMain).getHandle().setLocation(standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() + Vehicle.getByPlate(license).getRotateSpeed(), standMain.getLocation().getPitch());
         }
         if (ppisv.c() > 0.0) {
             if (VehicleData.speed.get(license) < 0) {
@@ -145,7 +145,7 @@ public class VehicleMovement1_13 extends PacketAdapter {
                         }
                     }
                 }
-                ((org.bukkit.craftbukkit.v1_15_R1.entity.CraftArmorStand) mainStand).getHandle().setLocation(mainStand.getLocation().getX(), mainStand.getLocation().getY() + 0.5, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
+                ((org.bukkit.craftbukkit.v1_13_R2.entity.CraftArmorStand) mainStand).getHandle().setLocation(mainStand.getLocation().getX(), mainStand.getLocation().getY() + 0.5, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
                 return;
             }
             if (loc.getBlock().getType().toString().contains("STEP") || loc.getBlock().getType().toString().contains("SLAB")) {
@@ -153,7 +153,7 @@ public class VehicleMovement1_13 extends PacketAdapter {
                     return;
                 }
                 if (data == 0 || data == 5) {
-                    ((org.bukkit.craftbukkit.v1_15_R1.entity.CraftArmorStand) mainStand).getHandle().setLocation(mainStand.getLocation().getX(), mainStand.getLocation().getY() + 0.5, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
+                    ((org.bukkit.craftbukkit.v1_13_R2.entity.CraftArmorStand) mainStand).getHandle().setLocation(mainStand.getLocation().getX(), mainStand.getLocation().getY() + 0.5, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
                 }
             }
         });
@@ -168,7 +168,7 @@ public class VehicleMovement1_13 extends PacketAdapter {
                     VehicleData.speed.put(license, 0.0);
                 }
                 if (space) {
-                    if (mainStand.getLocation().getY() > Main.instance.getConfig().getInt("helicopterMaxHight")){
+                    if (mainStand.getLocation().getY() > Main.instance.getConfig().getInt("helicopterMaxHight")) {
                         return;
                     }
                     mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.2, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
@@ -233,7 +233,7 @@ public class VehicleMovement1_13 extends PacketAdapter {
             final float zvp = (float) (fbvp.getZ() + zOffset * Math.sin(Math.toRadians(seatas.getLocation().getYaw())));
             final float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(seatas.getLocation().getYaw())));
             final Location loc = new Location(main.getWorld(), xvp, main.getLocation().getY() + yOffset, zvp, seatas.getLocation().getYaw(), fbvp.getPitch());
-            net.minecraft.server.v1_15_R1.EntityArmorStand stand = ((org.bukkit.craftbukkit.v1_15_R1.entity.CraftArmorStand) seatas).getHandle();
+            net.minecraft.server.v1_13_R2.EntityArmorStand stand = ((org.bukkit.craftbukkit.v1_13_R2.entity.CraftArmorStand) seatas).getHandle();
             stand.setLocation(loc.getX(), loc.getY(), loc.getZ(), seatas.getLocation().getYaw() + 15, seatas.getLocation().getPitch());
         });
     }

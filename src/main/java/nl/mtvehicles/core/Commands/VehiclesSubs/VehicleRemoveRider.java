@@ -33,7 +33,6 @@ public class VehicleRemoveRider extends MTVehicleSubCommand {
 
         String ken = NBTUtils.getString(item, "mtvehicles.kenteken");
         Player of = Bukkit.getPlayer(args[1]);
-
         Vehicle vehicle = Vehicle.getByPlate(ken);
 
         if (of == null || !of.hasPlayedBefore()) {
@@ -46,7 +45,6 @@ public class VehicleRemoveRider extends MTVehicleSubCommand {
         riders.remove(of.getUniqueId().toString());
         vehicle.setRiders(riders);
         vehicle.save();
-
         player.sendMessage(Main.messagesConfig.getMessage("memberChange"));
         return true;
     }
