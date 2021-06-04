@@ -8,6 +8,7 @@ import nl.mtvehicles.core.Infrastructure.Helpers.TextUtils;
 import nl.mtvehicles.core.Infrastructure.Models.ConfigUtils;
 import nl.mtvehicles.core.Infrastructure.Models.MTVehicleSubCommand;
 import nl.mtvehicles.core.Inventory.InventoryClickEvent;
+import nl.mtvehicles.core.Inventory.InventoryCloseEvent;
 import nl.mtvehicles.core.Movement.*;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
@@ -68,6 +69,7 @@ public class Main extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new JoinEvent(), this);
         Bukkit.getPluginManager().registerEvents(new LeaveEvent(), this);
         Bukkit.getPluginManager().registerEvents(new VehicleVoucherEvent(), this);
+        Bukkit.getPluginManager().registerEvents(new InventoryCloseEvent(), this);
 
         new Metrics(this, 5932);
 

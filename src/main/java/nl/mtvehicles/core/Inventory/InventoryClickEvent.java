@@ -2,6 +2,7 @@ package nl.mtvehicles.core.Inventory;
 
 import nl.mtvehicles.core.Commands.VehiclesSubs.VehicleEdit;
 import nl.mtvehicles.core.Commands.VehiclesSubs.VehicleMenu;
+import nl.mtvehicles.core.Events.JoinEvent;
 import nl.mtvehicles.core.Events.VehicleEntityEvent;
 import nl.mtvehicles.core.Infrastructure.Helpers.MenuUtils;
 import nl.mtvehicles.core.Infrastructure.Helpers.NBTUtils;
@@ -74,6 +75,25 @@ public class InventoryClickEvent implements Listener {
             inv.setItem(11, ItemUtils.woolItem("WOOL", "RED_WOOL", 1, (short) 14, "&4Annuleren", "&7Druk hier om het te annuleren."));
             inv.setItem(15, ItemUtils.woolItem("WOOL", "LIME_WOOL", 1, (short) 5, "&aCreate Vehicle", "&7Druk hier als je het voertuigen wilt aanmaken en op je naam wilt zetten"));
             p.openInventory(inv);
+        }
+        if (e.getView().getTitle().contains("Choose your language")) {
+            e.setCancelled(true);
+            if (e.getRawSlot() == 11){
+                JoinEvent.languageCheck.put(p.getUniqueId(), false);
+                p.sendMessage(TextUtils.colorize("&aYour language has changed!"));
+                JoinEvent.changeLanguageEnglish();
+                Main.defaultConfig.getConfig().set("messagesLanguage", "en");
+                Main.defaultConfig.save();
+                p.closeInventory();
+            }
+            if (e.getRawSlot() == 15){
+                JoinEvent.languageCheck.put(p.getUniqueId(), false);
+                p.sendMessage(TextUtils.colorize("&aJouw taal is veranderd!!"));
+                JoinEvent.changeLanguageDutch();
+                Main.defaultConfig.getConfig().set("messagesLanguage", "nl");
+                Main.defaultConfig.save();
+                p.closeInventory();
+            }
         }
         if (e.getView().getTitle().contains("Confirm getting vehicle")) {
             e.setCancelled(true);

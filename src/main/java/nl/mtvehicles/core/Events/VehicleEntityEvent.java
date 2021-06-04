@@ -106,18 +106,4 @@ public class VehicleEntityEvent implements Listener {
             }
         }
     }
-
-    @EventHandler
-    public void onInventoryClose(InventoryCloseEvent event) {
-        if (event.getView().getTitle().contains("Kofferbak Vehicle: ")) {
-            String ken = event.getView().getTitle().replace("Kofferbak Vehicle: ", "");
-            List<ItemStack> chest = (List<ItemStack>) Main.vehicleDataConfig.getConfig().getList("vehicle." + ken + ".kofferbakData");
-            chest.removeAll(chest);
-            for (ItemStack item : event.getInventory().getContents()) {
-                chest.add(item);
-                Main.vehicleDataConfig.getConfig().set("vehicle." + ken + ".kofferbakData", chest);
-                Main.vehicleDataConfig.save();
-            }
-        }
-    }
 }
