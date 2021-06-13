@@ -30,6 +30,12 @@ public class JoinEvent implements Listener {
     @EventHandler
     public void onJoinEventPlayer(PlayerJoinEvent e) {
         Player p = e.getPlayer();
+        if (Main.instance.version.contains("v1_16_R3")) {
+            Main.instance.movement_1_16(p);
+        }
+        if (Main.instance.version.contains("v1_17_R1")) {
+            Main.instance.movement_1_17(p);
+        }
         if (Main.defaultConfig.getConfig().getString("messagesLanguage").contains("ns")) {
             if (p.hasPermission("mtvehicles.language")) {
                 checkLanguage(p);

@@ -1,5 +1,6 @@
 package nl.mtvehicles.core;
 
+import net.minecraft.server.v1_16_R3.PacketPlayInSteerVehicle;
 import nl.mtvehicles.core.Commands.VehicleSubCommandManager;
 import nl.mtvehicles.core.Commands.VehicleTabCompleterManager;
 import nl.mtvehicles.core.Events.*;
@@ -11,11 +12,15 @@ import nl.mtvehicles.core.Inventory.InventoryClickEvent;
 import nl.mtvehicles.core.Inventory.InventoryCloseEvent;
 import nl.mtvehicles.core.Movement.*;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.PluginCommand;
+import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import io.netty.channel.*;
+
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -87,26 +92,26 @@ public class Main extends JavaPlugin {
             config.renameTo(new File(getDataFolder(), "configOld_" + formatter.format(date) + ".yml"));
             saveDefaultConfig();
         }
-        if (version.equals("v1_12_R1")) {
-            com.comphenix.protocol.ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_12());
-            getLogger().info("Loaded vehicle movement for version: " + version);
-        }
-        if (version.equals("v1_13_R2")) {
-            com.comphenix.protocol.ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_13());
-            getLogger().info("Loaded vehicle movement for version: " + version);
-        }
-        if (version.equals("v1_14_R1")) {
-            com.comphenix.protocol.ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_14());
-            getLogger().info("Loaded vehicle movement for version: " + version);
-        }
-        if (version.equals("v1_15_R1")) {
-            com.comphenix.protocol.ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_15());
-            getLogger().info("Loaded vehicle movement for version: " + version);
-        }
-        if (version.contains("v1_16_R3")) {
-            com.comphenix.protocol.ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_16());
-            getLogger().info("Loaded vehicle movement for version: " + version);
-        }
+//        if (version.equals("v1_12_R1")) {
+//            com.comphenix.protocol.ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_12());
+//            getLogger().info("Loaded vehicle movement for version: " + version);
+//        }
+//        if (version.equals("v1_13_R2")) {
+//            com.comphenix.protocol.ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_13());
+//            getLogger().info("Loaded vehicle movement for version: " + version);
+//        }
+//        if (version.equals("v1_14_R1")) {
+//            com.comphenix.protocol.ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_14());
+//            getLogger().info("Loaded vehicle movement for version: " + version);
+//        }
+//        if (version.equals("v1_15_R1")) {
+//            com.comphenix.protocol.ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_15());
+//            getLogger().info("Loaded vehicle movement for version: " + version);
+//        }
+//        if (version.contains("v1_16_R3")) {
+//            com.comphenix.protocol.ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_16());
+//            getLogger().info("Loaded vehicle movement for version: " + version);
+//        }
 
         configList.add(messagesConfig);
         configList.add(vehicleDataConfig);
@@ -115,16 +120,37 @@ public class Main extends JavaPlugin {
         configList.forEach(ConfigUtils::reload);
     }
 
-    public void runnable(Player p) {
-
-        new BukkitRunnable(){
+    public void movement_1_17(Player player) {
+        ChannelDuplexHandler channelDuplexHandler = new ChannelDuplexHandler() {
             @Override
-            public void run(){
-                p.sendMessage("test");
+            public void channelRead(ChannelHandlerContext channelHandlerContext, Object packet) throws Exception {
+                super.channelRead(channelHandlerContext, packet);
+                if(packet instanceof net.minecraft.network.protocol.game.PacketPlayInSteerVehicle){
+                    net.minecraft.network.protocol.game.PacketPlayInSteerVehicle ppisv = (net.minecraft.network.protocol.game.PacketPlayInSteerVehicle) packet;
+                    VehicleMovement1_17.vehicleMovement(player, ppisv);
+                }
             }
-
-        }.runTaskTimerAsynchronously(this, 0, 1);
+        };
+        ChannelPipeline pipeline = ((org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer) player).getHandle().b.a.k.pipeline();
+        pipeline.addBefore("packet_handler", player.getName(), channelDuplexHandler);
     }
+
+    public void movement_1_16(Player player) {
+
+        ChannelDuplexHandler channelDuplexHandler = new ChannelDuplexHandler() {
+            @Override
+            public void channelRead(ChannelHandlerContext channelHandlerContext, Object packet) throws Exception {
+                super.channelRead(channelHandlerContext, packet);
+                if(packet instanceof PacketPlayInSteerVehicle){
+                    PacketPlayInSteerVehicle ppisv = (PacketPlayInSteerVehicle) packet;
+                    VehicleMovement1_16.vehicleMovement(player, ppisv);
+                }
+            }
+        };
+        ChannelPipeline pipeline = ((CraftPlayer) player).getHandle().playerConnection.networkManager.channel.pipeline();
+        pipeline.addBefore("packet_handler", player.getName(), channelDuplexHandler);
+    }
+
 
     public static String fol() {
         return String.valueOf(Main.instance.getFile());

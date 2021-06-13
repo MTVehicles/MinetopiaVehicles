@@ -86,7 +86,7 @@ public class Vehicle {
                         return;
                     }
                     ItemStack is = ItemUtils.carItem2((Integer) skin.get("itemDamage"), ((String) skin.get("name")), (String) skin.get("SkinItem"));
-                    //String kenteken = NBTUtils.getString((is), "mtvehicles.kenteken");
+                    String kenteken = NBTUtils.getString((is), "mtvehicles.kenteken");
                     matchedVehicles.add(configVehicle);
 
                     //ItemUtils.createVoucher(skin.get("itemDamage"), skin.get("SkinItem"), skin.get("name"), p);
@@ -163,8 +163,6 @@ public class Vehicle {
                     vehicle.setMembers(members);
                     vehicle.save();
                     p.getInventory().addItem(is);
-
-
                 }
             }
         }
