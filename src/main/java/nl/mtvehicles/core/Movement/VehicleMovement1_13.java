@@ -20,20 +20,8 @@ import org.bukkit.util.Vector;
 
 import java.math.BigDecimal;
 
-public class VehicleMovement1_13 extends PacketAdapter {
-    float yaw;
-    int w;
-
-    public VehicleMovement1_13() {
-        super(Main.instance, ListenerPriority.HIGHEST, new PacketType[]{PacketType.Play.Client.STEER_VEHICLE});
-        this.yaw = 0.0f;
-        this.w = 0;
-    }
-
-
-    public void onPacketReceiving(final PacketEvent event) {
-        net.minecraft.server.v1_13_R2.PacketPlayInSteerVehicle ppisv = (PacketPlayInSteerVehicle) event.getPacket().getHandle();
-        final Player p = event.getPlayer();
+public class VehicleMovement1_13 {
+    public static void vehicleMovement(Player p, PacketPlayInSteerVehicle ppisv){
         if (p.getVehicle() == null || p.getVehicle().getCustomName() == null) {
             return;
         }

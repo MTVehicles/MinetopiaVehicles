@@ -1,10 +1,14 @@
 package nl.mtvehicles.core.Events;
 
+import io.netty.channel.ChannelPipeline;
 import nl.mtvehicles.core.Infrastructure.Helpers.ItemUtils;
 import nl.mtvehicles.core.Infrastructure.Helpers.TextUtils;
 import nl.mtvehicles.core.Infrastructure.Models.ConfigUtils;
 import nl.mtvehicles.core.Main;
+import nl.mtvehicles.core.Movement.MovementManager;
+import nl.mtvehicles.core.Movement.PacketHandler;
 import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -26,19 +30,16 @@ import java.util.UUID;
 
 public class JoinEvent implements Listener {
     public static HashMap<UUID, Boolean> languageCheck = new HashMap<>();
+    public static HashMap<UUID, ChannelPipeline> pipe = new HashMap<>();
 
     @EventHandler
     public void onJoinEventPlayer(PlayerJoinEvent e) {
         Player p = e.getPlayer();
-        if (Main.instance.version.contains("v1_16_R3")) {
-            Main.instance.movement_1_16(p);
-        }
-        if (Main.instance.version.contains("v1_17_R1")) {
-            Main.instance.movement_1_17(p);
-        }
+        MovementManager.MovementSelector(p);
+
         if (Main.defaultConfig.getConfig().getString("messagesLanguage").contains("ns")) {
             if (p.hasPermission("mtvehicles.language")) {
-                checkLanguage(p);
+                p.sendMessage(TextUtils.colorize("&cHey! You have not yet changed the language of the plugin. Do this by with &4/vehicle language&c!"));
             }
         }
         if (!p.hasPermission("mtvehicles.update") || !Main.defaultConfig.getConfig().getBoolean("auto-update")) {

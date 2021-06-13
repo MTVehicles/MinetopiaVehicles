@@ -14,5 +14,6 @@ public class LeaveEvent implements Listener {
             return;
         }
         p.leaveVehicle();
+        JoinEvent.pipe.get(p.getUniqueId()).remove(p.getName());
     }
 }

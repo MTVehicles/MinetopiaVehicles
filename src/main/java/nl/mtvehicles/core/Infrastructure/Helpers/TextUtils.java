@@ -134,7 +134,6 @@ public class TextUtils {
     }
 
     public static void pickupVehicle(String ken, Player p) {
-        Bukkit.getScheduler().runTaskAsynchronously(Main.instance, () -> {
             if (Vehicle.getByPlate(ken) == null) {
                 p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleNotFound")));
                 return;
@@ -169,7 +168,6 @@ public class TextUtils {
                 p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleNoOwnerPickup").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
                 return;
             }
-        });
     }
 
     public static boolean checkInvFull(Player p) {

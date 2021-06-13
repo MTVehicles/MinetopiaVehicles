@@ -19,20 +19,11 @@ import org.bukkit.util.Vector;
 
 import java.math.BigDecimal;
 
-public class VehicleMovement1_15 extends PacketAdapter {
-
-    float yaw;
-    int w;
-
-    public VehicleMovement1_15() {
-        super(Main.instance, ListenerPriority.HIGHEST, PacketType.Play.Client.STEER_VEHICLE);
-        this.yaw = 0.0f;
-        this.w = 0;
-    }
-
-    public void onPacketReceiving(final PacketEvent event) {
-        PacketPlayInSteerVehicle ppisv = (PacketPlayInSteerVehicle) event.getPacket().getHandle();
-        final Player p = event.getPlayer();
+public class VehicleMovement1_15 {
+    public static void vehicleMovement(Player p, PacketPlayInSteerVehicle ppisv){
+        if (p.getVehicle() == null || p.getVehicle().getCustomName() == null) {
+            return;
+        }
         if (p.getVehicle() == null || p.getVehicle().getCustomName() == null) {
             return;
         }

@@ -18,10 +18,6 @@ import java.math.BigDecimal;
 
 public class VehicleMovement1_17 {
 
-    public VehicleMovement1_17() {
-
-    }
-
     public static void vehicleMovement(Player p, PacketPlayInSteerVehicle ppisv){
         if (p.getVehicle() == null || p.getVehicle().getCustomName() == null) {
             return;
