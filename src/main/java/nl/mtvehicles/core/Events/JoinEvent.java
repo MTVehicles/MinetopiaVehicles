@@ -27,7 +27,7 @@ import java.util.UUID;
 public class JoinEvent implements Listener {
     public static HashMap<UUID, Boolean> languageCheck = new HashMap<>();
 
-    @EventHandler(priority = EventPriority.HIGH)
+    @EventHandler
     public void onJoinEventPlayer(PlayerJoinEvent e) {
         Player p = e.getPlayer();
         if (Main.defaultConfig.getConfig().getString("messagesLanguage").contains("ns")) {

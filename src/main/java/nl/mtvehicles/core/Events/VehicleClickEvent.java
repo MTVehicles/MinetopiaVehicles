@@ -62,6 +62,7 @@ public class VehicleClickEvent implements Listener {
             return;
         }
         TextUtils.createVehicle(license, p);
+        Main.instance.runnable(p);
         e.setCancelled(true);
     }
 }

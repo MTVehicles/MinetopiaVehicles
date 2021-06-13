@@ -15,6 +15,7 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -38,13 +39,13 @@ public class Main extends JavaPlugin {
 
         instance = this;
 
-        if (!version.equals("v1_12_R1") && !version.equals("v1_13_R2") && !version.equals("v1_14_R1") && !version.equals("v1_15_R1") && !version.contains("v1_16")) {
-            getLogger().info("-------------------------------------------------------");
-            getLogger().info("Your Server version is not supported by the plugin");
-            getLogger().info("check the supported versions here https://mtvehicles.nl");
-            getLogger().info("-------------------------------------------------------");
-            return;
-        }
+//        if (!version.equals("v1_12_R1") && !version.equals("v1_13_R2") && !version.equals("v1_14_R1") && !version.equals("v1_15_R1") && !version.contains("v1_16")) {
+//            getLogger().info("-------------------------------------------------------");
+//            getLogger().info("Your Server version is not supported by the plugin");
+//            getLogger().info("check the supported versions here https://mtvehicles.nl");
+//            getLogger().info("-------------------------------------------------------");
+//            return;
+//        }
 
         PluginDescriptionFile pdf = this.getDescription();
         String versions = pdf.getVersion();
@@ -112,6 +113,17 @@ public class Main extends JavaPlugin {
         configList.add(vehiclesConfig);
         configList.add(defaultConfig);
         configList.forEach(ConfigUtils::reload);
+    }
+
+    public void runnable(Player p) {
+
+        new BukkitRunnable(){
+            @Override
+            public void run(){
+                p.sendMessage("test");
+            }
+
+        }.runTaskTimerAsynchronously(this, 0, 1);
     }
 
     public static String fol() {

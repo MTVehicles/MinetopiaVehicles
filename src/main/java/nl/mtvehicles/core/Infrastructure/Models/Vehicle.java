@@ -86,10 +86,10 @@ public class Vehicle {
                         return;
                     }
                     ItemStack is = ItemUtils.carItem2((Integer) skin.get("itemDamage"), ((String) skin.get("name")), (String) skin.get("SkinItem"));
-                    String kenteken = NBTUtils.getString((is), "mtvehicles.kenteken");
+                    //String kenteken = NBTUtils.getString((is), "mtvehicles.kenteken");
                     matchedVehicles.add(configVehicle);
 
-                    ItemUtils.createVoucher(skin.get("itemDamage"), skin.get("SkinItem"), skin.get("name"), p);
+                    //ItemUtils.createVoucher(skin.get("itemDamage"), skin.get("SkinItem"), skin.get("name"), p);
 //                    Vehicle vehicle = new Vehicle();
 //                    List<String> members = Main.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".members");
 //                    List<String> riders = Main.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".riders");

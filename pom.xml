@@ -8,7 +8,7 @@
     <artifactId>MTVehicles</artifactId>
     <version>2.0.8-SNAPSHOT</version>
     <build>
-        <directory>E:\Build\1.16.4 - kopie\plugins</directory>
+        <directory>E:\Build\1.17\plugins</directory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -81,6 +81,13 @@
             <version>1.0</version>
             <scope>system</scope>
             <systemPath>${basedir}/libs/spigot-1.16.5.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>net.minecrhf</groupId>
+            <artifactId>example-app</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/libs/spigot-1.17.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.jetbrains</groupId>

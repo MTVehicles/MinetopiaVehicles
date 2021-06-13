@@ -276,6 +276,7 @@ public final class NBTUtils {
             return Class.forName("net.minecraft.server." + VERSION + "." + name);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+
             return null;
         }
     }
