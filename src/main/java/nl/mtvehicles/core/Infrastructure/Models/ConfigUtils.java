@@ -56,7 +56,7 @@ public class ConfigUtils implements ConfigInterface {
 
     public void saveDefaultConfig() {
         if (customConfigFile == null) {
-            customConfigFile = new File(Main.instance.getDataFolder(),fileName);
+            customConfigFile = new File(Main.instance.getDataFolder(), fileName);
         }
         if (!customConfigFile.exists()) {
             Main.instance.saveResource(fileName, false);

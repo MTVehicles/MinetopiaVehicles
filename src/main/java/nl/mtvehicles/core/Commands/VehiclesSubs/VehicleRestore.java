@@ -1,8 +1,7 @@
 package nl.mtvehicles.core.Commands.VehiclesSubs;
 
-import nl.mtvehicles.core.Infrastructure.Models.MTVehicleSubCommand;
 import nl.mtvehicles.core.Infrastructure.Helpers.MenuUtils;
-import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
+import nl.mtvehicles.core.Infrastructure.Models.MTVehicleSubCommand;
 import nl.mtvehicles.core.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;

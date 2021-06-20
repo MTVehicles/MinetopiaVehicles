@@ -1,9 +1,5 @@
 package nl.mtvehicles.core.Movement;
 
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.events.ListenerPriority;
-import com.comphenix.protocol.events.PacketAdapter;
-import com.comphenix.protocol.events.PacketEvent;
 import net.minecraft.server.v1_13_R2.EntityArmorStand;
 import net.minecraft.server.v1_13_R2.PacketPlayInSteerVehicle;
 import nl.mtvehicles.core.Infrastructure.Helpers.BossBarUtils;

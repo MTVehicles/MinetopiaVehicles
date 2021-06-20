@@ -4,10 +4,10 @@ import nl.mtvehicles.core.Commands.VehiclesSubs.VehicleEdit;
 import nl.mtvehicles.core.Commands.VehiclesSubs.VehicleMenu;
 import nl.mtvehicles.core.Events.JoinEvent;
 import nl.mtvehicles.core.Events.VehicleEntityEvent;
+import nl.mtvehicles.core.Infrastructure.Helpers.ItemUtils;
 import nl.mtvehicles.core.Infrastructure.Helpers.MenuUtils;
 import nl.mtvehicles.core.Infrastructure.Helpers.NBTUtils;
 import nl.mtvehicles.core.Infrastructure.Helpers.TextUtils;
-import nl.mtvehicles.core.Infrastructure.Helpers.ItemUtils;
 import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
 import nl.mtvehicles.core.Main;
 import org.bukkit.Bukkit;
@@ -78,7 +78,7 @@ public class InventoryClickEvent implements Listener {
         }
         if (e.getView().getTitle().contains("Choose your language")) {
             e.setCancelled(true);
-            if (e.getRawSlot() == 11){
+            if (e.getRawSlot() == 11) {
                 JoinEvent.languageCheck.put(p.getUniqueId(), false);
                 p.sendMessage(TextUtils.colorize("&aYour language has changed!"));
                 JoinEvent.changeLanguageEnglish();
@@ -86,7 +86,7 @@ public class InventoryClickEvent implements Listener {
                 Main.defaultConfig.save();
                 p.closeInventory();
             }
-            if (e.getRawSlot() == 15){
+            if (e.getRawSlot() == 15) {
                 JoinEvent.languageCheck.put(p.getUniqueId(), false);
                 p.sendMessage(TextUtils.colorize("&aJouw taal is veranderd!!"));
                 JoinEvent.changeLanguageDutch();
@@ -141,14 +141,14 @@ public class InventoryClickEvent implements Listener {
                 e.setCancelled(true);
                 return;
             }
-            if (e.getCurrentItem().equals(ItemUtils.mItem("SPECTRAL_ARROW", 1, (short) 0, "&cVolgende Pagina", "&c"))){
+            if (e.getCurrentItem().equals(ItemUtils.mItem("SPECTRAL_ARROW", 1, (short) 0, "&cVolgende Pagina", "&c"))) {
                 e.setCancelled(true);
-                MenuUtils.restoreCMD(p , Integer.parseInt(e.getView().getTitle().replace("Vehicle Restore ", ""))+1, MenuUtils.restoreUUID.get("uuid"));
+                MenuUtils.restoreCMD(p, Integer.parseInt(e.getView().getTitle().replace("Vehicle Restore ", "")) + 1, MenuUtils.restoreUUID.get("uuid"));
                 return;
             }
-            if (e.getCurrentItem().equals(ItemUtils.mItem("SPECTRAL_ARROW", 1, (short) 0, "&cVorige Pagina", "&c"))){
+            if (e.getCurrentItem().equals(ItemUtils.mItem("SPECTRAL_ARROW", 1, (short) 0, "&cVorige Pagina", "&c"))) {
                 e.setCancelled(true);
-                if (!(Integer.parseInt(e.getView().getTitle().replace("Vehicle Restore ", ""))-1 < 1)) {
+                if (!(Integer.parseInt(e.getView().getTitle().replace("Vehicle Restore ", "")) - 1 < 1)) {
                     MenuUtils.restoreCMD(p, Integer.parseInt(e.getView().getTitle().replace("Vehicle Restore ", "")) - 1, MenuUtils.restoreUUID.get("uuid"));
                 }
                 return;
@@ -244,7 +244,7 @@ public class InventoryClickEvent implements Listener {
             }
             String menuitem = NBTUtils.getString(e.getCurrentItem(), "mtvehicles.item");
             if (menuitem.contains("1")) {
-                if (Main.vehicleDataConfig.getConfig().getBoolean("vehicle."+ken+".benzineEnabled") == true){
+                if (Main.vehicleDataConfig.getConfig().getBoolean("vehicle." + ken + ".benzineEnabled") == true) {
                     Main.vehicleDataConfig.getConfig().set("vehicle." + ken + ".benzineEnabled", false);
                     Main.vehicleDataConfig.save();
                 } else {
@@ -281,7 +281,7 @@ public class InventoryClickEvent implements Listener {
             String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
             String menuitem = NBTUtils.getString(e.getCurrentItem(), "mtvehicles.item");
             if (menuitem.contains("1")) {
-                if (Main.vehicleDataConfig.getConfig().getBoolean("vehicle."+ken+".kofferbak") == true){
+                if (Main.vehicleDataConfig.getConfig().getBoolean("vehicle." + ken + ".kofferbak") == true) {
                     Main.vehicleDataConfig.getConfig().set("vehicle." + ken + ".kofferbak", false);
                     Main.vehicleDataConfig.save();
                 } else {
@@ -369,14 +369,14 @@ public class InventoryClickEvent implements Listener {
         }
         if (e.getView().getTitle().contains("Voucher Redeem Menu")) {
             e.setCancelled(true);
-            if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Ja")){
+            if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Ja")) {
                 p.sendMessage(Main.messagesConfig.getMessage(TextUtils.colorize("voucherRedeem")));
                 String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.damage");
                 Vehicle.getByDamage(Integer.parseInt(ken), p);
-                p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount()-1);
+                p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
                 p.closeInventory();
             }
-            if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Nee")){
+            if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Nee")) {
                 p.closeInventory();
             }
 

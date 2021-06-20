@@ -17,7 +17,7 @@ import org.bukkit.util.Vector;
 import java.math.BigDecimal;
 
 public class VehicleMovement1_14 {
-    public static void vehicleMovement(Player p, PacketPlayInSteerVehicle ppisv){
+    public static void vehicleMovement(Player p, PacketPlayInSteerVehicle ppisv) {
         if (p.getVehicle() == null || p.getVehicle().getCustomName() == null) {
             return;
         }
@@ -152,7 +152,7 @@ public class VehicleMovement1_14 {
                     VehicleData.speed.put(license, 0.0);
                 }
                 if (space) {
-                    if (mainStand.getLocation().getY() > Main.instance.getConfig().getInt("helicopterMaxHight")){
+                    if (mainStand.getLocation().getY() > Main.instance.getConfig().getInt("helicopterMaxHight")) {
                         return;
                     }
                     mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.2, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));

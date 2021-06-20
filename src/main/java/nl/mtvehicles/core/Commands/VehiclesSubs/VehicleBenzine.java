@@ -41,15 +41,15 @@ public class VehicleBenzine extends MTVehicleSubCommand {
     }
 
     public static ItemStack benzineItem(int liter, int literold) {
-        ItemStack is = new ItemFactory(Material.getMaterial("DIAMOND_HOE")).setAmount(1).setDurability((short) 58).setNBT("mtvehicles.benzineval", ""+literold).setNBT("mtvehicles.benzinesize", ""+liter).toItemStack();
+        ItemStack is = new ItemFactory(Material.getMaterial("DIAMOND_HOE")).setAmount(1).setDurability((short) 58).setNBT("mtvehicles.benzineval", "" + literold).setNBT("mtvehicles.benzinesize", "" + liter).toItemStack();
         ItemMeta im = is.getItemMeta();
         List<String> itemlore = new ArrayList<>();
         itemlore.add(TextUtils.colorize("&8"));
-        itemlore.add(TextUtils.colorize("&7Jerrycan &e"+literold+"&7/&e"+liter+" &7liter"));
+        itemlore.add(TextUtils.colorize("&7Jerrycan &e" + literold + "&7/&e" + liter + " &7liter"));
         assert im != null;
         im.setLore(itemlore);
         im.setUnbreakable(true);
-        im.setDisplayName(TextUtils.colorize("&6Jerrycan "+liter+"L"));
+        im.setDisplayName(TextUtils.colorize("&6Jerrycan " + liter + "L"));
         is.setItemMeta(im);
         return is;
     }

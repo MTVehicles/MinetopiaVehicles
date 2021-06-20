@@ -1,9 +1,5 @@
 package nl.mtvehicles.core.Movement;
 
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.events.ListenerPriority;
-import com.comphenix.protocol.events.PacketAdapter;
-import com.comphenix.protocol.events.PacketEvent;
 import net.minecraft.server.v1_15_R1.EntityArmorStand;
 import net.minecraft.server.v1_15_R1.PacketPlayInSteerVehicle;
 import nl.mtvehicles.core.Infrastructure.Helpers.BossBarUtils;
@@ -20,7 +16,7 @@ import org.bukkit.util.Vector;
 import java.math.BigDecimal;
 
 public class VehicleMovement1_15 {
-    public static void vehicleMovement(Player p, PacketPlayInSteerVehicle ppisv){
+    public static void vehicleMovement(Player p, PacketPlayInSteerVehicle ppisv) {
         if (p.getVehicle() == null || p.getVehicle().getCustomName() == null) {
             return;
         }

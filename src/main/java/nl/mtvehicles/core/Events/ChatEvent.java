@@ -1,9 +1,9 @@
 package nl.mtvehicles.core.Events;
 
-import nl.mtvehicles.core.Infrastructure.Helpers.NBTUtils;
-import nl.mtvehicles.core.Infrastructure.Helpers.TextUtils;
 import nl.mtvehicles.core.Infrastructure.Helpers.ItemUtils;
 import nl.mtvehicles.core.Infrastructure.Helpers.MenuUtils;
+import nl.mtvehicles.core.Infrastructure.Helpers.NBTUtils;
+import nl.mtvehicles.core.Infrastructure.Helpers.TextUtils;
 import nl.mtvehicles.core.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

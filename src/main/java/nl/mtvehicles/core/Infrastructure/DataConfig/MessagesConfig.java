@@ -10,9 +10,11 @@ public class MessagesConfig extends ConfigUtils {
     public MessagesConfig() {
         this.setFileName("messages.yml");
     }
+
     public String getMessage(String key) {
         return TextUtils.colorize((String) this.getConfig().get(key));
     }
+
     public void sendMessage(CommandSender sender, String key) {
         Object object = this.getConfig().get(key);
         if (object instanceof List) {

@@ -4,7 +4,6 @@ import nl.mtvehicles.core.Infrastructure.Models.MTVehicleSubCommand;
 import nl.mtvehicles.core.Main;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.PluginDescriptionFile;
 
 public class VehicleHelp extends MTVehicleSubCommand {
     public VehicleHelp() {

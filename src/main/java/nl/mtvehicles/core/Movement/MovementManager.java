@@ -4,7 +4,7 @@ import nl.mtvehicles.core.Main;
 import org.bukkit.entity.Player;
 
 public class MovementManager {
-    public static void MovementSelector(Player p){
+    public static void MovementSelector(Player p) {
         if (Main.instance.version.equals("v1_12_R1")) {
             PacketHandler.movement_1_12(p);
         }

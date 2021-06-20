@@ -12,7 +12,7 @@ public class PacketHandler {
         ChannelDuplexHandler channelDuplexHandler = new ChannelDuplexHandler() {
             public void channelRead(ChannelHandlerContext channelHandlerContext, Object packet) throws Exception {
                 super.channelRead(channelHandlerContext, packet);
-                if(packet instanceof net.minecraft.network.protocol.game.PacketPlayInSteerVehicle){
+                if (packet instanceof net.minecraft.network.protocol.game.PacketPlayInSteerVehicle) {
                     net.minecraft.network.protocol.game.PacketPlayInSteerVehicle ppisv = (net.minecraft.network.protocol.game.PacketPlayInSteerVehicle) packet;
                     VehicleMovement1_17.vehicleMovement(player, ppisv);
                 }
@@ -28,7 +28,7 @@ public class PacketHandler {
             @Override
             public void channelRead(ChannelHandlerContext channelHandlerContext, Object packet) throws Exception {
                 super.channelRead(channelHandlerContext, packet);
-                if(packet instanceof net.minecraft.server.v1_16_R3.PacketPlayInSteerVehicle){
+                if (packet instanceof net.minecraft.server.v1_16_R3.PacketPlayInSteerVehicle) {
                     net.minecraft.server.v1_16_R3.PacketPlayInSteerVehicle ppisv = (net.minecraft.server.v1_16_R3.PacketPlayInSteerVehicle) packet;
                     VehicleMovement1_16.vehicleMovement(player, ppisv);
                 }
@@ -44,7 +44,7 @@ public class PacketHandler {
             @Override
             public void channelRead(ChannelHandlerContext channelHandlerContext, Object packet) throws Exception {
                 super.channelRead(channelHandlerContext, packet);
-                if(packet instanceof net.minecraft.server.v1_15_R1.PacketPlayInSteerVehicle){
+                if (packet instanceof net.minecraft.server.v1_15_R1.PacketPlayInSteerVehicle) {
                     net.minecraft.server.v1_15_R1.PacketPlayInSteerVehicle ppisv = (net.minecraft.server.v1_15_R1.PacketPlayInSteerVehicle) packet;
                     VehicleMovement1_15.vehicleMovement(player, ppisv);
                 }
@@ -60,7 +60,7 @@ public class PacketHandler {
             @Override
             public void channelRead(ChannelHandlerContext channelHandlerContext, Object packet) throws Exception {
                 super.channelRead(channelHandlerContext, packet);
-                if(packet instanceof net.minecraft.server.v1_14_R1.PacketPlayInSteerVehicle){
+                if (packet instanceof net.minecraft.server.v1_14_R1.PacketPlayInSteerVehicle) {
                     net.minecraft.server.v1_14_R1.PacketPlayInSteerVehicle ppisv = (net.minecraft.server.v1_14_R1.PacketPlayInSteerVehicle) packet;
                     VehicleMovement1_14.vehicleMovement(player, ppisv);
                 }
@@ -76,7 +76,7 @@ public class PacketHandler {
             @Override
             public void channelRead(ChannelHandlerContext channelHandlerContext, Object packet) throws Exception {
                 super.channelRead(channelHandlerContext, packet);
-                if(packet instanceof net.minecraft.server.v1_13_R2.PacketPlayInSteerVehicle){
+                if (packet instanceof net.minecraft.server.v1_13_R2.PacketPlayInSteerVehicle) {
                     net.minecraft.server.v1_13_R2.PacketPlayInSteerVehicle ppisv = (net.minecraft.server.v1_13_R2.PacketPlayInSteerVehicle) packet;
                     VehicleMovement1_13.vehicleMovement(player, ppisv);
                 }
@@ -92,7 +92,7 @@ public class PacketHandler {
             @Override
             public void channelRead(ChannelHandlerContext channelHandlerContext, Object packet) throws Exception {
                 super.channelRead(channelHandlerContext, packet);
-                if(packet instanceof net.minecraft.server.v1_12_R1.PacketPlayInSteerVehicle){
+                if (packet instanceof net.minecraft.server.v1_12_R1.PacketPlayInSteerVehicle) {
                     net.minecraft.server.v1_12_R1.PacketPlayInSteerVehicle ppisv = (net.minecraft.server.v1_12_R1.PacketPlayInSteerVehicle) packet;
                     VehicleMovement1_12.vehicleMovement(player, ppisv);
                 }
