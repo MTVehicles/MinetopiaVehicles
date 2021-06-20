@@ -1,6 +1,5 @@
 package nl.mtvehicles.core;
 
-import net.minecraft.server.v1_16_R3.PacketPlayInSteerVehicle;
 import nl.mtvehicles.core.Commands.VehicleSubCommandManager;
 import nl.mtvehicles.core.Commands.VehicleTabCompleterManager;
 import nl.mtvehicles.core.Events.*;
@@ -10,17 +9,11 @@ import nl.mtvehicles.core.Infrastructure.Models.ConfigUtils;
 import nl.mtvehicles.core.Infrastructure.Models.MTVehicleSubCommand;
 import nl.mtvehicles.core.Inventory.InventoryClickEvent;
 import nl.mtvehicles.core.Inventory.InventoryCloseEvent;
-import nl.mtvehicles.core.Movement.*;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.PluginCommand;
-import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
-import io.netty.channel.*;
-
 
 import java.io.File;
 import java.text.SimpleDateFormat;

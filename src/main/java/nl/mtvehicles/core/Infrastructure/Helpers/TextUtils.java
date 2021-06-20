@@ -141,7 +141,7 @@ public class TextUtils {
             if (Vehicle.getByPlate(ken).getOwner().equals(p.getUniqueId().toString()) && Main.defaultConfig.getConfig().getBoolean("carPickup") == false || p.hasPermission("mtvehicles.oppakken")) {
                 for (World world : Bukkit.getServer().getWorlds()) {
                     for (Entity entity : world.getEntities()) {
-                        if (Main.defaultConfig.getConfig().getBoolean("anwb") && !p.hasPermission("mtvehicles.anwb") && (entity.getLocation().clone().add(0.0, 0.9, 0.0).getBlock().getType().toString().contains("WATER"))) {
+                        if (Main.defaultConfig.getConfig().getBoolean("anwb") && !p.hasPermission("mtvehicles.anwb") && entity.getLocation().clone().add(0.0, 0.9, 0.0).getBlock().getType().toString().contains("WATER")) {
                             p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleInWater")));
                             return;
                         }

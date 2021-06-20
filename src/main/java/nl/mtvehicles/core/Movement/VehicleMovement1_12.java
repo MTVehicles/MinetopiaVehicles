@@ -17,9 +17,6 @@ import java.math.BigDecimal;
 
 public class VehicleMovement1_12 {
     public static void vehicleMovement(Player p, PacketPlayInSteerVehicle ppisv){
-        if (p.getVehicle().getCustomName() == null) {
-            return;
-        }
         if (p.getVehicle() == null) {
             return;
         }

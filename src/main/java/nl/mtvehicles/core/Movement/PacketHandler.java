@@ -36,6 +36,7 @@ public class PacketHandler {
         };
         ChannelPipeline pipeline = ((org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer) player).getHandle().playerConnection.networkManager.channel.pipeline();
         pipeline.addBefore("packet_handler", player.getName(), channelDuplexHandler);
+        JoinEvent.pipe.put(player.getUniqueId(), pipeline);
     }
 
     public static void movement_1_15(Player player) {
@@ -51,6 +52,7 @@ public class PacketHandler {
         };
         ChannelPipeline pipeline = ((org.bukkit.craftbukkit.v1_15_R1.entity.CraftPlayer) player).getHandle().playerConnection.networkManager.channel.pipeline();
         pipeline.addBefore("packet_handler", player.getName(), channelDuplexHandler);
+        JoinEvent.pipe.put(player.getUniqueId(), pipeline);
     }
 
     public static void movement_1_14(Player player) {
@@ -66,6 +68,7 @@ public class PacketHandler {
         };
         ChannelPipeline pipeline = ((org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer) player).getHandle().playerConnection.networkManager.channel.pipeline();
         pipeline.addBefore("packet_handler", player.getName(), channelDuplexHandler);
+        JoinEvent.pipe.put(player.getUniqueId(), pipeline);
     }
 
     public static void movement_1_13(Player player) {
@@ -81,6 +84,7 @@ public class PacketHandler {
         };
         ChannelPipeline pipeline = ((org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer) player).getHandle().playerConnection.networkManager.channel.pipeline();
         pipeline.addBefore("packet_handler", player.getName(), channelDuplexHandler);
+        JoinEvent.pipe.put(player.getUniqueId(), pipeline);
     }
 
     public static void movement_1_12(Player player) {
@@ -96,5 +100,6 @@ public class PacketHandler {
         };
         ChannelPipeline pipeline = ((org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer) player).getHandle().playerConnection.networkManager.channel.pipeline();
         pipeline.addBefore("packet_handler", player.getName(), channelDuplexHandler);
+        JoinEvent.pipe.put(player.getUniqueId(), pipeline);
     }
 }
