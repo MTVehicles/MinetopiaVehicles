@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="minecraft" name="Minecraft">
+      <configuration>
+        <autoDetectTypes>
+          <platformType>SPIGOT</platformType>
+          <platformType>MCP</platformType>
+        </autoDetectTypes>
+      </configuration>
+    </facet>
+  </component>
+  <component name="McpModuleSettings">
+    <option name="srgType" value="SRG" />
+  </component>
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
+    <output url="file://E:/Build/1.17/plugins/classes" />
+    <output-test url="file://E:/Build/1.17/plugins/test-classes" />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="libs" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.spigotmc:spigot-api:1.15.2-R0.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: commons-lang:commons-lang:2.6" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.google.guava:guava:21.0" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.google.code.gson:gson:2.8.0" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: net.md-5:bungeecord-chat:1.15-SNAPSHOT" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.yaml:snakeyaml:1.25" level="project" />
+    <orderEntry type="library" name="Maven: com.comphenix.protocol:ProtocolLib:4.5.0" level="project" />
+    <orderEntry type="library" name="Maven: cglib:cglib-nodep:3.2.5" level="project" />
+    <orderEntry type="library" name="Maven: com.comphenix.executors:BukkitExecutors:1.1-SNAPSHOT" level="project" />
+    <orderEntry type="module-library">
+      <library name="Maven: net.mine:example-app:1.0">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/spigot-1.12.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: net.minec:example-app:1.0">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/spigot-1.13.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: net.minecr:example-app:1.0">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/spigot-1.14.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: net.minecre:example-app:1.0">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/spigot-1.15.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: net.minecref:example-app:1.0">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/spigot-1.16.5.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="Maven: net.minecrhf:example-app:1.0">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/libs/spigot-1.17.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="Maven: org.jetbrains:annotations:21.0.1" level="project" />
+  </component>
+</module>
