@@ -15,7 +15,7 @@ public class VehicleTabCompleterManager implements org.bukkit.command.TabComplet
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         if (strings.length == 1) {
-            return getApplicableTabCompleters(args[0], Main.subcommands.keySet());
+            return getApplicableTabCompleters(strings[0], Main.subcommands.keySet());
         }
         return null;
     }

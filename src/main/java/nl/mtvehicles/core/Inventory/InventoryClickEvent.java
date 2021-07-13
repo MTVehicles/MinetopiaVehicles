@@ -379,9 +379,6 @@ public class InventoryClickEvent implements Listener {
             if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Nee")) {
                 p.closeInventory();
             }
-
         }
-
     }
-
 }
