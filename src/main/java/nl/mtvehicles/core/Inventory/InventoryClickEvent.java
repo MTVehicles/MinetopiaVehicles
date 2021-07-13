@@ -102,7 +102,7 @@ public class InventoryClickEvent implements Listener {
             }
             if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Create Vehicle")) {
                 List<Map<?, ?>> vehicles = Main.vehiclesConfig.getConfig().getMapList("voertuigen");
-                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("completedvehiclegive")));
+                Main.messagesConfig.sendMessage(p, "completedvehiclegive");
                 p.getInventory().addItem(vehicleMenu.get(p.getUniqueId()));
                 String kenteken = NBTUtils.getString(vehicleMenu.get(p.getUniqueId()), "mtvehicles.kenteken");
                 String naam = NBTUtils.getString(vehicleMenu.get(p.getUniqueId()), "mtvehicles.naam");
@@ -219,13 +219,13 @@ public class InventoryClickEvent implements Listener {
 
             if (e.getCurrentItem().equals(ItemUtils.mItem("PAPER", 1, (short) 0, "&6Kenteken Aanpassen", "&7Huidige: &e" + ken))) {
                 p.closeInventory();
-                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("typeLicenseInChat")));
+                Main.messagesConfig.sendMessage(p, "typeLicenseInChat");
                 ItemUtils.edit.put(p.getUniqueId() + ".kenteken", true);
             }
 
             if (e.getCurrentItem().getDurability() == (short) Main.vehicleDataConfig.getConfig().getInt("vehicle." + ken + ".skinDamage")) {
                 p.closeInventory();
-                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("typeNameInChat")));
+                Main.messagesConfig.sendMessage(p, "typeNameInChat");
                 ItemUtils.edit.put(p.getUniqueId() + ".naam", true);
             }
         }
@@ -257,12 +257,12 @@ public class InventoryClickEvent implements Listener {
             }
             if (menuitem.contains("2")) {
                 p.closeInventory();
-                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("typeNewBenzineInChat")));
+                Main.messagesConfig.sendMessage(p, "typeNewBenzineInChat");
                 ItemUtils.edit.put(p.getUniqueId() + ".benzine", true);
             }
             if (menuitem.contains("3")) {
                 p.closeInventory();
-                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("typeNewBenzineInChat")));
+                Main.messagesConfig.sendMessage(p, "typeNewBenzineInChat");
                 ItemUtils.edit.put(p.getUniqueId() + ".benzineverbruik", true);
             }
         }
@@ -294,7 +294,7 @@ public class InventoryClickEvent implements Listener {
             }
             if (menuitem.contains("2")) {
                 p.closeInventory();
-                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("typeNewRowsInChat")));
+                Main.messagesConfig.sendMessage(p, "typeNewRowsInChat");
                 ItemUtils.edit.put(p.getUniqueId() + ".kofferbakRows", true);
             }
             if (menuitem.contains("3")) {
@@ -330,35 +330,35 @@ public class InventoryClickEvent implements Listener {
             String menuitem = NBTUtils.getString(e.getCurrentItem(), "mtvehicles.item");
             if (menuitem.contains("1")) {
                 p.closeInventory();
-                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("typeSpeedInChat")));
+                Main.messagesConfig.sendMessage(p, "typeSpeedInChat");
                 ItemUtils.edit.put(p.getUniqueId() + ".acceleratieSpeed", true);
 
             }
             if (menuitem.contains("2")) {
                 p.closeInventory();
-                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("typeSpeedInChat")));
+                Main.messagesConfig.sendMessage(p, "typeSpeedInChat");
                 ItemUtils.edit.put(p.getUniqueId() + ".maxSpeed", true);
 
             }
             if (menuitem.contains("3")) {
                 p.closeInventory();
-                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("typeSpeedInChat")));
+                Main.messagesConfig.sendMessage(p, "typeSpeedInChat");
                 ItemUtils.edit.put(p.getUniqueId() + ".brakingSpeed", true);
             }
             if (menuitem.contains("4")) {
                 p.closeInventory();
-                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("typeSpeedInChat")));
+                Main.messagesConfig.sendMessage(p, "typeSpeedInChat");
                 ItemUtils.edit.put(p.getUniqueId() + ".aftrekkenSpeed", true);
 
             }
             if (menuitem.contains("5")) {
                 p.closeInventory();
-                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("typeSpeedInChat")));
+                Main.messagesConfig.sendMessage(p, "typeSpeedInChat");
                 ItemUtils.edit.put(p.getUniqueId() + ".rotateSpeed", true);
             }
             if (menuitem.contains("6")) {
                 p.closeInventory();
-                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("typeSpeedInChat")));
+                Main.messagesConfig.sendMessage(p, "typeSpeedInChat");
                 ItemUtils.edit.put(p.getUniqueId() + ".maxSpeedBackwards", true);
             }
         }

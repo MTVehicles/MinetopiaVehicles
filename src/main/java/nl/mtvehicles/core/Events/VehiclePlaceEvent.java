@@ -47,11 +47,16 @@ public class VehiclePlaceEvent implements Listener {
             return;
         }
         if (!Vehicle.existsByPlate(ken)) {
-            p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleNotFound")));
+            Main.messagesConfig.sendMessage(p, "vehicleNotFound");
             e.setCancelled(true);
             return;
         }
         if (!action.equals(Action.RIGHT_CLICK_BLOCK)) {
+            return;
+        }
+        if (Main.defaultConfig.isBlockWhitelistEnabled()
+            && !Main.defaultConfig.blockWhiteList().contains(e.getClickedBlock().getType())) {
+            Main.messagesConfig.sendMessage(p, "blockNotInWhitelist");
             return;
         }
         e.setCancelled(true);

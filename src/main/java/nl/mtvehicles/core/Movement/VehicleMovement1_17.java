@@ -21,7 +21,7 @@ public class VehicleMovement1_17 {
         if (p.getVehicle() == null || p.getVehicle().getCustomName() == null) {
             return;
         }
-        if (p.getVehicle().getCustomName().replace("MTVEHICLES_MAINSEAT_", "") == null) {
+        if (p.getVehicle().getCustomName().replace("MTVEHICLES_MAINSEAT_", "").equals("")) {
             return;
         }
         String license = p.getVehicle().getCustomName().replace("MTVEHICLES_MAINSEAT_", "");

@@ -10,10 +10,9 @@ public class LeaveEvent implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onLeaveEventPlayer(PlayerQuitEvent e) {
         Player p = e.getPlayer();
-        if (!p.isInsideVehicle()) {
-            return;
+        if (p.isInsideVehicle()) {
+            p.leaveVehicle();
+            JoinEvent.pipe.get(p.getUniqueId()).remove(p.getName());
         }
-        p.leaveVehicle();
-        JoinEvent.pipe.get(p.getUniqueId()).remove(p.getName());
     }
 }

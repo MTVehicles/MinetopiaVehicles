@@ -25,7 +25,7 @@ public class ChatEvent implements Listener {
                 e.setCancelled(true);
                 String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
                 if (!(Main.vehicleDataConfig.getConfig().get("vehicle." + e.getMessage() + ".skinItem") == null)) {
-                    p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("actionFailedDupLicense")));
+                    Main.messagesConfig.sendMessage(p, "actionFailedDupLicense");
                     MenuUtils.menuEdit(p);
                     ItemUtils.edit.put(p.getUniqueId() + ".kenteken", false);
                     return;
@@ -40,7 +40,7 @@ public class ChatEvent implements Listener {
                         MenuUtils.menuEdit(p);
                     });
                 }
-                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("actionSuccessful")));
+                Main.messagesConfig.sendMessage(p, "actionSuccessful");
                 ItemUtils.edit.put(p.getUniqueId() + ".kenteken", false);
                 Main.vehicleDataConfig.getConfig().set("vehicle." + ken, null);
                 Main.vehicleDataConfig.save();
@@ -52,7 +52,7 @@ public class ChatEvent implements Listener {
                     MenuUtils.menuEdit(p);
                 });
             }
-            p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("actionCanceled")));
+            Main.messagesConfig.sendMessage(p, "actionCanceled");
             ItemUtils.edit.put(p.getUniqueId() + ".kenteken", false);
         }
     }
@@ -70,7 +70,7 @@ public class ChatEvent implements Listener {
                 Main.vehicleDataConfig.getConfig().set("vehicle." + ken + ".name", e.getMessage());
                 Main.vehicleDataConfig.save();
                 p.getInventory().setItemInMainHand(ItemUtils.carItem2(Main.vehicleDataConfig.getConfig().getInt("vehicle." + ken + ".skinDamage"), e.getMessage(), Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".skinItem"), ken));
-                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("actionSuccessful")));
+                Main.messagesConfig.sendMessage(p, "actionSuccessful");
                 ItemUtils.edit.put(p.getUniqueId() + ".naam", false);
                 if (e.isAsynchronous()) {
                     Bukkit.getScheduler().runTask(Main.instance, () -> {
@@ -81,7 +81,7 @@ public class ChatEvent implements Listener {
             }
             e.setCancelled(true);
             MenuUtils.menuEdit(p);
-            p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("actionCanceled")));
+            Main.messagesConfig.sendMessage(p, "actionCanceled");
             ItemUtils.edit.put(p.getUniqueId() + ".naam", false);
             if (e.isAsynchronous()) {
                 Bukkit.getScheduler().runTask(Main.instance, () -> {
@@ -116,7 +116,7 @@ public class ChatEvent implements Listener {
                 String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
                 Main.vehicleDataConfig.getConfig().set("vehicle." + ken + ".benzine", Double.valueOf(e.getMessage()));
                 Main.vehicleDataConfig.save();
-                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("actionSuccessful")));
+                Main.messagesConfig.sendMessage(p, "actionSuccessful");
                 ItemUtils.edit.put(p.getUniqueId() + ".benzine", false);
                 if (e.isAsynchronous()) {
                     Bukkit.getScheduler().runTask(Main.instance, () -> {
@@ -127,7 +127,7 @@ public class ChatEvent implements Listener {
             }
             e.setCancelled(true);
             MenuUtils.benzineEdit(p);
-            p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("actionCanceled")));
+            Main.messagesConfig.sendMessage(p, "actionCanceled");
             ItemUtils.edit.put(p.getUniqueId() + ".benzine", false);
             if (e.isAsynchronous()) {
                 Bukkit.getScheduler().runTask(Main.instance, () -> {
@@ -155,7 +155,7 @@ public class ChatEvent implements Listener {
                 String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
                 Main.vehicleDataConfig.getConfig().set("vehicle." + ken + ".benzineVerbruik", Double.valueOf(e.getMessage()));
                 Main.vehicleDataConfig.save();
-                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("actionSuccessful")));
+                Main.messagesConfig.sendMessage(p, "actionSuccessful");
                 ItemUtils.edit.put(p.getUniqueId() + ".benzineverbruik", false);
                 if (e.isAsynchronous()) {
                     Bukkit.getScheduler().runTask(Main.instance, () -> {
@@ -166,7 +166,7 @@ public class ChatEvent implements Listener {
             }
             e.setCancelled(true);
             MenuUtils.benzineEdit(p);
-            p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("actionCanceled")));
+            Main.messagesConfig.sendMessage(p, "actionCanceled");
             ItemUtils.edit.put(p.getUniqueId() + ".benzine", false);
             if (e.isAsynchronous()) {
 
@@ -196,7 +196,7 @@ public class ChatEvent implements Listener {
                 String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
                 Main.vehicleDataConfig.getConfig().set("vehicle." + ken + ".kofferbakRows", Integer.parseInt(e.getMessage()));
                 Main.vehicleDataConfig.save();
-                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("actionSuccessful")));
+                Main.messagesConfig.sendMessage(p, "actionSuccessful");
                 ItemUtils.edit.put(p.getUniqueId() + ".kofferbakRows", false);
                 if (e.isAsynchronous()) {
                     Bukkit.getScheduler().runTask(Main.instance, () -> {
@@ -207,7 +207,7 @@ public class ChatEvent implements Listener {
             }
             e.setCancelled(true);
             MenuUtils.benzineEdit(p);
-            p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("actionCanceled")));
+            Main.messagesConfig.sendMessage(p, "actionCanceled");
             ItemUtils.edit.put(p.getUniqueId() + ".kofferbakRows", false);
             if (e.isAsynchronous()) {
                 Bukkit.getScheduler().runTask(Main.instance, () -> {
@@ -235,7 +235,7 @@ public class ChatEvent implements Listener {
                 String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
                 Main.vehicleDataConfig.getConfig().set("vehicle." + ken + ".acceleratieSpeed", Double.valueOf(e.getMessage()));
                 Main.vehicleDataConfig.save();
-                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("actionSuccessful")));
+                Main.messagesConfig.sendMessage(p, "actionSuccessful");
                 ItemUtils.edit.put(p.getUniqueId() + ".acceleratieSpeed", false);
                 if (e.isAsynchronous()) {
                     Bukkit.getScheduler().runTask(Main.instance, () -> {
@@ -246,7 +246,7 @@ public class ChatEvent implements Listener {
             }
             e.setCancelled(true);
             MenuUtils.benzineEdit(p);
-            p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("actionCanceled")));
+            Main.messagesConfig.sendMessage(p, "actionCanceled");
             ItemUtils.edit.put(p.getUniqueId() + ".acceleratieSpeed", false);
             if (e.isAsynchronous()) {
                 Bukkit.getScheduler().runTask(Main.instance, () -> {
@@ -274,7 +274,7 @@ public class ChatEvent implements Listener {
                 String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
                 Main.vehicleDataConfig.getConfig().set("vehicle." + ken + ".maxSpeed", Double.valueOf(e.getMessage()));
                 Main.vehicleDataConfig.save();
-                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("actionSuccessful")));
+                Main.messagesConfig.sendMessage(p, "actionSuccessful");
                 ItemUtils.edit.put(p.getUniqueId() + ".maxSpeed", false);
                 if (e.isAsynchronous()) {
                     Bukkit.getScheduler().runTask(Main.instance, () -> {
@@ -285,7 +285,7 @@ public class ChatEvent implements Listener {
             }
             e.setCancelled(true);
             MenuUtils.benzineEdit(p);
-            p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("actionCanceled")));
+            Main.messagesConfig.sendMessage(p, "actionCanceled");
             ItemUtils.edit.put(p.getUniqueId() + ".maxSpeed", false);
             if (e.isAsynchronous()) {
 
@@ -315,7 +315,7 @@ public class ChatEvent implements Listener {
                 String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
                 Main.vehicleDataConfig.getConfig().set("vehicle." + ken + ".brakingSpeed", Double.valueOf(e.getMessage()));
                 Main.vehicleDataConfig.save();
-                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("actionSuccessful")));
+                Main.messagesConfig.sendMessage(p, "actionSuccessful");
                 ItemUtils.edit.put(p.getUniqueId() + ".brakingSpeed", false);
                 if (e.isAsynchronous()) {
                     Bukkit.getScheduler().runTask(Main.instance, () -> {
@@ -326,7 +326,7 @@ public class ChatEvent implements Listener {
             }
             e.setCancelled(true);
             MenuUtils.benzineEdit(p);
-            p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("actionCanceled")));
+            Main.messagesConfig.sendMessage(p, "actionCanceled");
             ItemUtils.edit.put(p.getUniqueId() + ".brakingSpeed", false);
             if (e.isAsynchronous()) {
 
@@ -356,7 +356,7 @@ public class ChatEvent implements Listener {
                 String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
                 Main.vehicleDataConfig.getConfig().set("vehicle." + ken + ".aftrekkenSpeed", Double.valueOf(e.getMessage()));
                 Main.vehicleDataConfig.save();
-                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("actionSuccessful")));
+                Main.messagesConfig.sendMessage(p, "actionSuccessful");
                 ItemUtils.edit.put(p.getUniqueId() + ".aftrekkenSpeed", false);
                 if (e.isAsynchronous()) {
                     Bukkit.getScheduler().runTask(Main.instance, () -> {
@@ -367,7 +367,7 @@ public class ChatEvent implements Listener {
             }
             e.setCancelled(true);
             MenuUtils.benzineEdit(p);
-            p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("actionCanceled")));
+            Main.messagesConfig.sendMessage(p, "actionCanceled");
             ItemUtils.edit.put(p.getUniqueId() + ".aftrekkenSpeed", false);
             if (e.isAsynchronous()) {
 
@@ -397,7 +397,7 @@ public class ChatEvent implements Listener {
                 String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
                 Main.vehicleDataConfig.getConfig().set("vehicle." + ken + ".maxSpeedBackwards", Double.valueOf(e.getMessage()));
                 Main.vehicleDataConfig.save();
-                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("actionSuccessful")));
+                Main.messagesConfig.sendMessage(p, "actionSuccessful");
                 ItemUtils.edit.put(p.getUniqueId() + ".maxSpeedBackwards", false);
                 if (e.isAsynchronous()) {
                     Bukkit.getScheduler().runTask(Main.instance, () -> {
@@ -408,7 +408,7 @@ public class ChatEvent implements Listener {
             }
             e.setCancelled(true);
             MenuUtils.benzineEdit(p);
-            p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("actionCanceled")));
+            Main.messagesConfig.sendMessage(p, "actionCanceled");
             ItemUtils.edit.put(p.getUniqueId() + ".maxSpeedBackwards", false);
             if (e.isAsynchronous()) {
                 Bukkit.getScheduler().runTask(Main.instance, () -> {
@@ -436,18 +436,19 @@ public class ChatEvent implements Listener {
                 String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
                 Main.vehicleDataConfig.getConfig().set("vehicle." + ken + ".rotateSpeed", Integer.parseInt(e.getMessage()));
                 Main.vehicleDataConfig.save();
-                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("actionSuccessful")));
+                Main.messagesConfig.sendMessage(p, "actionSuccessful");
                 ItemUtils.edit.put(p.getUniqueId() + ".rotateSpeed", false);
                 if (e.isAsynchronous()) {
                     Bukkit.getScheduler().runTask(Main.instance, () -> {
                         MenuUtils.speedEdit(p);
                     });
                 }
+
                 return;
             }
             e.setCancelled(true);
             MenuUtils.speedEdit(p);
-            p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("actionCanceled")));
+            Main.messagesConfig.sendMessage(p, "actionCanceled");
             ItemUtils.edit.put(p.getUniqueId() + ".rotateSpeed", false);
             if (e.isAsynchronous()) {
                 Bukkit.getScheduler().runTask(Main.instance, () -> {
@@ -462,8 +463,10 @@ public class ChatEvent implements Listener {
             Integer.parseInt(str);
         } catch (Throwable e) {
             p.sendMessage(TextUtils.colorize("&cLetop! Het moet een cijfer zijn."));
+
             return false;
         }
+
         return true;
     }
 
@@ -472,8 +475,10 @@ public class ChatEvent implements Listener {
             Double.valueOf(str);
         } catch (Throwable e) {
             p.sendMessage(TextUtils.colorize("&cLetop! Het moet een double zijn. bv 0.02"));
+
             return false;
         }
+
         return true;
     }
 }

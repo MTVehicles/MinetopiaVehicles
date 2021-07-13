@@ -28,7 +28,7 @@ public class VehicleEntityEvent implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerInteractAtEntity(EntityDamageByEntityEvent event) {
         Entity a = event.getEntity();
-        Entity e = (Entity) event.getDamager();
+        Entity e = event.getDamager();
         if (e instanceof Player) {
             Player p = (Player) e;
             if (a.getCustomName() == null) {
@@ -44,11 +44,11 @@ public class VehicleEntityEvent implements Listener {
                 String benval = NBTUtils.getString(item, "mtvehicles.benzineval");
                 String bensize = NBTUtils.getString(item, "mtvehicles.benzinesize");
                 if (Integer.parseInt(benval) < 1) {
-                    p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("noFuel")));
+                    Main.messagesConfig.sendMessage(p, "noFuel");
                     return;
                 }
                 if (curb > 99) {
-                    p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleFull")));
+                    Main.messagesConfig.sendMessage(p, "vehicleFull");
                     return;
                 }
                 if (curb + 5 > 100) {
@@ -81,7 +81,7 @@ public class VehicleEntityEvent implements Listener {
     public static void kofferbak(Player p, String ken) {
         if (Main.defaultConfig.getConfig().getBoolean("kofferbakEnabled") == true) {
             if (Vehicle.getByPlate(ken) == null) {
-                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleNotFound")));
+                Main.messagesConfig.sendMessage(p, "vehicleNotFound");
                 return;
             }
             if (Vehicle.getByPlate(ken).getOwner().equals(p.getUniqueId().toString()) || p.hasPermission("mtvehicles.kofferbak")) {
