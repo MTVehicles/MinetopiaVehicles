@@ -49,6 +49,7 @@ public class VehicleAddRider extends MTVehicleSubCommand {
         vehicle.save();
 
         sendMessage(Main.messagesConfig.getMessage("memberChange"));
+
         return true;
     }
 }

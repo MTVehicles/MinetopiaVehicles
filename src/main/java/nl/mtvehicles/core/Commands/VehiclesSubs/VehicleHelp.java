@@ -15,7 +15,6 @@ public class VehicleHelp extends MTVehicleSubCommand {
         sendMessage(String.format("&2&lMinetopiaVehicles Commands: (%s)", Main.instance.getDescription().getVersion()));
         sendMessage("");
         sendMessage(String.format("&2/vehicle &ainfo &f- &2%s", Main.messagesConfig.getMessage("helpInfo")));
-        //sendMessage("&2/vehicle &ahelp &f- &2"+Main.messagesConfig.getMessage("helpHelp"));
         sendMessage(String.format("&2/vehicle &aaddrider &f- &2%s", Main.messagesConfig.getMessage("helpAddRider")));
         sendMessage(String.format("&2/vehicle &aaddmember &f- &2%s", Main.messagesConfig.getMessage("helpAddMember")));
         sendMessage(String.format("&2/vehicle &aremoverider &f- &2%s", Main.messagesConfig.getMessage("helpRemoveRider")));

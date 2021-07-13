@@ -17,17 +17,22 @@ public class VehicleDelete extends MTVehicleSubCommand {
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
         if (!checkPermission("mtvehicles.delete")) return true;
+
         Player p = (Player) sender;
+
         ItemStack item = p.getInventory().getItemInMainHand();
+
         if (item == null || (!item.hasItemMeta() || !(NBTUtils.contains(item, "mtvehicles.kenteken")))) {
             sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("noVehicleInHand")));
             return true;
         }
+
         String ken = NBTUtils.getString(item, "mtvehicles.kenteken");
         Main.vehicleDataConfig.getConfig().set("vehicle." + ken, null);
         Main.vehicleDataConfig.save();
         p.getInventory().getItemInMainHand().setAmount(0);
         sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleDeleted")));
+
         return true;
     }
 }

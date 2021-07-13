@@ -24,10 +24,14 @@ public class VehicleMenu extends MTVehicleSubCommand {
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
         if (!checkPermission("mtvehicles.menu")) return true;
+
         Player p = (Player) sender;
         sendMessage(Main.messagesConfig.getMessage("menuOpen"));
+
         int menuSize = Main.defaultConfig.getConfig().getInt("vehicleMenuSize") * 9;
+
         Inventory inv = Bukkit.createInventory(null, menuSize, "Vehicle Menu");
+
         for (Map<?, ?> vehicle : Main.vehiclesConfig.getConfig().getMapList("voertuigen")) {
             int itemDamage = (Integer) vehicle.get("itemDamage");
             String name = (String) vehicle.get("name");
@@ -35,8 +39,10 @@ public class VehicleMenu extends MTVehicleSubCommand {
             ItemStack itemStack = ItemUtils.carItem(itemDamage, name, skinItem);
             inv.addItem(itemStack);
         }
+
         beginMenu.put(p.getUniqueId(), inv);
         p.openInventory(inv);
+
         return true;
     }
 }

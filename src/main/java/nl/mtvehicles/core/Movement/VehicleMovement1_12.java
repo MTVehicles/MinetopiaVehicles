@@ -35,6 +35,7 @@ public class VehicleMovement1_12 {
             BossBarUtils.setBossBarValue(0 / 100.0D, license);
             return;
         }
+
         BossBarUtils.setBossBarValue(VehicleData.fuel.get(license) / 100.0D, license);
         ArmorStand standMain = VehicleData.autostand.get("MTVEHICLES_MAIN_" + license);
         ArmorStand standSkin = VehicleData.autostand.get("MTVEHICLES_SKIN_" + license);
@@ -44,14 +45,17 @@ public class VehicleMovement1_12 {
         mainSeat(standMain, (CraftArmorStand) standMainSeat, license);
         updateStand(standMain, license, ppisv.c());
         slabCheck(standMain, license);
+
         if (VehicleData.type.get(license).contains("HELICOPTER")) {
             rotors(standMain, standRotors, license);
         }
+
         if (ppisv.a() > 0.0) {
             ((CraftArmorStand) standMain).getHandle().setLocation(standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - Vehicle.getByPlate(license).getRotateSpeed(), standMain.getLocation().getPitch());
         } else if (ppisv.a() < 0.0) {
             ((CraftArmorStand) standMain).getHandle().setLocation(standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() + Vehicle.getByPlate(license).getRotateSpeed(), standMain.getLocation().getPitch());
         }
+
         if (ppisv.b() > 0.0) {
             if (VehicleData.speed.get(license) < 0) {
                 VehicleData.speed.put(license, VehicleData.speed.get(license) + Vehicle.getByPlate(license).getBrakingSpeed());
@@ -66,6 +70,7 @@ public class VehicleMovement1_12 {
             }
             VehicleData.speed.put(license, VehicleData.speed.get(license) + Vehicle.getByPlate(license).getAccelerationSpeed());
         }
+
         if (ppisv.b() < 0.0) {
             if (VehicleData.speed.get(license) > 0) {
                 VehicleData.speed.put(license, VehicleData.speed.get(license) - Vehicle.getByPlate(license).getBrakingSpeed());
@@ -81,20 +86,25 @@ public class VehicleMovement1_12 {
             VehicleData.speed.put(license, VehicleData.speed.get(license) - Vehicle.getByPlate(license).getAccelerationSpeed());
 
         }
+
         if (ppisv.b() == 0.0) {
             BigDecimal round = new BigDecimal(VehicleData.speed.get(license)).setScale(1, BigDecimal.ROUND_DOWN);
+
             if (Double.parseDouble(String.valueOf(round)) == 0.0) {
                 VehicleData.speed.put(license, 0.0);
                 return;
             }
+
             if (Double.parseDouble(String.valueOf(round)) > 0.01) {
                 VehicleData.speed.put(license, VehicleData.speed.get(license) - Vehicle.getByPlate(license).getFrictionSpeed());
                 return;
             }
+
             if (Double.parseDouble(String.valueOf(round)) < 0.01) {
                 VehicleData.speed.put(license, VehicleData.speed.get(license) + Vehicle.getByPlate(license).getFrictionSpeed());
                 return;
             }
+
         }
     }
 

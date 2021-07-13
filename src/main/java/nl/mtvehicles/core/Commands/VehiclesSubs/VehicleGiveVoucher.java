@@ -16,22 +16,28 @@ public class VehicleGiveVoucher extends MTVehicleSubCommand {
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
         if (!checkPermission("mtvehicles.givevoucher")) return true;
+
         if (args.length != 3) {
             sendMessage(Main.messagesConfig.getMessage("useGiveVoucher"));
             return true;
         }
+
         try {
             Integer.parseInt(args[1]);
         } catch (Throwable e) {
             sendMessage(Main.messagesConfig.getMessage("useGiveVoucher"));
             return false;
         }
+
         Player of = Bukkit.getPlayer(args[2]);
+
         if (of == null || !of.hasPlayedBefore()) {
             sendMessage(Main.messagesConfig.getMessage("playerNotFound"));
             return true;
         }
+
         Vehicle.getVoucher(Integer.parseInt(args[1]), of);
+
         return true;
     }
 }

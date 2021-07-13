@@ -20,31 +20,40 @@ public class VehicleClickEvent implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent e) {
+
         Entity a = e.getRightClicked();
         Player p = e.getPlayer();
         long lastUsed = 0L;
+
         if (a.getCustomName() == null) {
             return;
         }
+
         if (!a.getCustomName().contains("MTVEHICLES")) {
             return;
         }
+
         e.setCancelled(true);
+
         if (lastUsage.containsKey(p.getName())) {
+
             lastUsed = ((Long) lastUsage.get(p.getName())).longValue();
         }
+
         if (System.currentTimeMillis() - lastUsed >= 500) {
             lastUsage.put(p.getName(), Long.valueOf(System.currentTimeMillis()));
         } else {
             return;
         }
+
         String license = TextUtils.licenseReplacer(a.getCustomName());
+
         if (p.isSneaking()) {
             TextUtils.pickupVehicle(license, p);
             e.setCancelled(true);
             return;
         }
-        //Main.configList.forEach(ConfigUtils::reload);
+
         if (a.getCustomName().contains("MTVEHICLES_SEAT")) {
             e.setCancelled(true);
             Vehicle vehicle = Vehicle.getByPlate(license);

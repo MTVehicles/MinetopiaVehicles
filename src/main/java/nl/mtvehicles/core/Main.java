@@ -53,7 +53,9 @@ public class Main extends JavaPlugin {
         System.out.println("Welcome by MTVehicles " + versions + " !");
         System.out.println("Thanks for using our plugin.");
         System.out.println("--------------------------");
+
         PluginCommand pluginCommand = Main.instance.getCommand("minetopiavehicles");
+
         if (pluginCommand != null) {
             pluginCommand.setExecutor(new VehicleSubCommandManager());
             pluginCommand.setTabCompleter(new VehicleTabCompleterManager());
@@ -85,26 +87,6 @@ public class Main extends JavaPlugin {
             config.renameTo(new File(getDataFolder(), "configOld_" + formatter.format(date) + ".yml"));
             saveDefaultConfig();
         }
-//        if (version.equals("v1_12_R1")) {
-//            com.comphenix.protocol.ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_12());
-//            getLogger().info("Loaded vehicle movement for version: " + version);
-//        }
-//        if (version.equals("v1_13_R2")) {
-//            com.comphenix.protocol.ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_13());
-//            getLogger().info("Loaded vehicle movement for version: " + version);
-//        }
-//        if (version.equals("v1_14_R1")) {
-//            com.comphenix.protocol.ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_14());
-//            getLogger().info("Loaded vehicle movement for version: " + version);
-//        }
-//        if (version.equals("v1_15_R1")) {
-//            com.comphenix.protocol.ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_15());
-//            getLogger().info("Loaded vehicle movement for version: " + version);
-//        }
-//        if (version.contains("v1_16_R3")) {
-//            com.comphenix.protocol.ProtocolLibrary.getProtocolManager().addPacketListener(new VehicleMovement1_16());
-//            getLogger().info("Loaded vehicle movement for version: " + version);
-//        }
 
         configList.add(messagesConfig);
         configList.add(vehicleDataConfig);

@@ -23,9 +23,9 @@ public class VehicleBenzine extends MTVehicleSubCommand {
 
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
-        Player p = (Player) sender;
-
         if (!checkPermission("mtvehicles.benzine")) return true;
+
+        Player p = (Player) sender;
 
         Inventory inv = Bukkit.createInventory(null, 9, "Benzine menu");
 
@@ -37,6 +37,7 @@ public class VehicleBenzine extends MTVehicleSubCommand {
         }
 
         p.openInventory(inv);
+
         return true;
     }
 

@@ -21,6 +21,7 @@ public class VehicleRemoveRider extends MTVehicleSubCommand {
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
         ItemStack item = player.getInventory().getItemInMainHand();
+
         if (!item.hasItemMeta() || !(NBTUtils.contains(item, "mtvehicles.kenteken"))) {
             sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("noVehicleInHand")));
             return true;
@@ -46,6 +47,7 @@ public class VehicleRemoveRider extends MTVehicleSubCommand {
         vehicle.setRiders(riders);
         vehicle.save();
         player.sendMessage(Main.messagesConfig.getMessage("memberChange"));
+
         return true;
     }
 }

@@ -34,9 +34,8 @@ public class VehiclePlaceEvent implements Listener {
                 || (!e.getItem().hasItemMeta()
                 || !(NBTUtils.contains(item, "mtvehicles.kenteken")))
                 || e.getClickedBlock() == null
-        ) {
-            return;
-        }
+        ) {return;
+}
         if (e.getHand() != EquipmentSlot.HAND) {
             e.setCancelled(true);
             e.getPlayer().sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("wrongHand")));

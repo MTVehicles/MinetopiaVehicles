@@ -24,6 +24,7 @@ public class VehicleInfo extends MTVehicleSubCommand {
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
         Player p = (Player) sender;
+
         ItemStack item = p.getInventory().getItemInMainHand();
 
         if (!item.hasItemMeta() || !(NBTUtils.contains(item, "mtvehicles.kenteken"))) {
@@ -37,9 +38,11 @@ public class VehicleInfo extends MTVehicleSubCommand {
         Vehicle vehicle = Vehicle.getByPlate(ken);
 
         if (vehicle == null) return true;
+
         if (p.hasPermission("mtvehicles.admin")) {
             sendMessage("&6ID: &c" + p.getItemInHand().getDurability());
         }
+
         sendMessage("&6Kenteken: &c" + ken);
         sendMessage("&6Owner: &c" + vehicle.getOwnerName());
 

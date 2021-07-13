@@ -36,6 +36,7 @@ public class VehicleRestore extends MTVehicleSubCommand {
         MenuUtils.restoreCMD(p, 1, of.getUniqueId());
         MenuUtils.restoreUUID.put("uuid", of.getUniqueId());
         MenuUtils.restoreId.put("pagina", 1);
+
         return true;
     }
 }

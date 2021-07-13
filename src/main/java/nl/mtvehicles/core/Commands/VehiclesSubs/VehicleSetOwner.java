@@ -67,6 +67,7 @@ public class VehicleSetOwner extends MTVehicleSubCommand {
         vehicle.save();
 
         player.sendMessage(Main.messagesConfig.getMessage("memberChange"));
+
         return true;
     }
 }

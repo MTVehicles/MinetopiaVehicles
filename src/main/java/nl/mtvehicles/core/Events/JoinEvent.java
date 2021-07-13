@@ -35,9 +35,11 @@ public class JoinEvent implements Listener {
                 p.sendMessage(TextUtils.colorize("&cHey! You have not yet changed the language of the plugin. Do this by with &4/vehicle language&c!"));
             }
         }
+
         if (!p.hasPermission("mtvehicles.update") || !Main.defaultConfig.getConfig().getBoolean("auto-update")) {
             return;
         }
+
         checkNewVersion(p);
     }
 
@@ -55,7 +57,6 @@ public class JoinEvent implements Listener {
         while ((cp = rd.read()) != -1) {
             sb.append((char) cp);
         }
-
         PrintWriter writer = new PrintWriter("plugins/MTVehicles/messages.yml");
         writer.print(sb.toString());
         writer.close();

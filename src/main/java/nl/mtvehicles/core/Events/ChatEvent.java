@@ -288,8 +288,6 @@ public class ChatEvent implements Listener {
             Main.messagesConfig.sendMessage(p, "actionCanceled");
             ItemUtils.edit.put(p.getUniqueId() + ".maxSpeed", false);
             if (e.isAsynchronous()) {
-
-
                 Bukkit.getScheduler().runTask(Main.instance, () -> {
                     MenuUtils.speedEdit(p);
                 });

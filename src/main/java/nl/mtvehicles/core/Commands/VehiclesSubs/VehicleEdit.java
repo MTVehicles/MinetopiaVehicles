@@ -23,11 +23,14 @@ public class VehicleEdit extends MTVehicleSubCommand {
         if (!checkPermission("mtvehicles.edit")) return true;
 
         Player p = (Player) sender;
+
         final ItemStack item = p.getInventory().getItemInMainHand();
+
         if (item == null || (!item.hasItemMeta() || !(NBTUtils.contains(item, "mtvehicles.kenteken")))) {
             sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("noVehicleInHand")));
             return true;
         }
+
         Main.configList.forEach(ConfigUtils::reload);
 
         sendMessage(Main.messagesConfig.getMessage("menuOpen"));

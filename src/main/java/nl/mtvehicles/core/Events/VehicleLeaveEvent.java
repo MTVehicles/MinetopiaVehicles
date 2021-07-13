@@ -33,8 +33,6 @@ public class VehicleLeaveEvent implements Listener {
                 }
             }
             BossBarUtils.removeBossBar((Player) e.getEntity(), ken);
-//            Main.vehicleDataConfig.getConfig().set("vehicle." + ken + ".benzine", VehicleData.benzine.get(ken));
-//            Main.vehicleDataConfig.save();
             ArmorStand as = VehicleData.autostand.get("MTVEHICLES_MAIN_" + ken);
             ArmorStand as2 = VehicleData.autostand.get("MTVEHICLES_SKIN_" + ken);
             as.setGravity(true);

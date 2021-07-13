@@ -21,7 +21,9 @@ public class VehicleRemoveMember extends MTVehicleSubCommand {
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
         Player p = (Player) sender;
+
         ItemStack item = p.getInventory().getItemInMainHand();
+
         if (item == null || (!item.hasItemMeta() || !(NBTUtils.contains(item, "mtvehicles.kenteken")))) {
             sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("noVehicleInHand")));
             return true;
@@ -49,6 +51,7 @@ public class VehicleRemoveMember extends MTVehicleSubCommand {
         vehicle.save();
 
         p.sendMessage(Main.messagesConfig.getMessage("memberChange"));
+
         return true;
     }
 }
