@@ -46,3 +46,9 @@ helicopterMaxHight: 150
 
 # Zet dit aan als je wilt dat spelers geen voertuigen kunnen oppakken
 carPickup: false
+
+# Een lijst met toegestaande blokken om een auto op te kunnen plaatsen
+blockWhitelist:
+  enabled: false
+  list:
+    - GRAY_CONCRETE

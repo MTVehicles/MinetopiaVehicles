@@ -36,7 +36,7 @@ public abstract class MTVehicleSubCommand {
             return true;
         }
 
-        sendMessage(Main.messagesConfig.getMessage("noPerms"));
+        Main.messagesConfig.sendMessage(commandSender, "noPerms");
 
         return false;
     }

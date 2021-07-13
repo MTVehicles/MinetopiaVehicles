@@ -61,7 +61,7 @@ public class TextUtils {
         }
         Vehicle vehicle = Vehicle.getByPlate(ken);
         if (vehicle == null) {
-            p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleNotFound")));
+            Main.messagesConfig.sendMessage(p, "vehicleNotFound");
             return;
         }
         if (!vehicle.getOwner().equals(p.getUniqueId().toString()) && !vehicle.canRide(p) && !p.hasPermission("mtvehicles.ride")) {
@@ -70,7 +70,7 @@ public class TextUtils {
         }
         for (Entity entity : p.getWorld().getEntities()) {
             if (Main.defaultConfig.getConfig().getBoolean("anwb") && !p.hasPermission("mtvehicles.anwb") && (entity.getLocation().clone().add(0.0, 0.9, 0.0).getBlock().getType().toString().contains("WATER"))) {
-                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleInWater")));
+                Main.messagesConfig.sendMessage(p, "vehicleInWater");
                 return;
             }
             if (entity.getCustomName() != null && entity.getCustomName().contains(ken)) {
@@ -135,14 +135,14 @@ public class TextUtils {
 
     public static void pickupVehicle(String ken, Player p) {
         if (Vehicle.getByPlate(ken) == null) {
-            p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleNotFound")));
+            Main.messagesConfig.sendMessage(p, "vehicleNotFound");
             return;
         }
         if (Vehicle.getByPlate(ken).getOwner().equals(p.getUniqueId().toString()) && Main.defaultConfig.getConfig().getBoolean("carPickup") == false || p.hasPermission("mtvehicles.oppakken")) {
             for (World world : Bukkit.getServer().getWorlds()) {
                 for (Entity entity : world.getEntities()) {
                     if (Main.defaultConfig.getConfig().getBoolean("anwb") && !p.hasPermission("mtvehicles.anwb") && entity.getLocation().clone().add(0.0, 0.9, 0.0).getBlock().getType().toString().contains("WATER")) {
-                        p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleInWater")));
+                        Main.messagesConfig.sendMessage(p, "vehicleInWater");
                         return;
                     }
                     if (entity.getCustomName() != null && entity.getCustomName().contains(ken)) {
@@ -152,7 +152,7 @@ public class TextUtils {
                                 p.getInventory().addItem(test.getHelmet());
                                 p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehiclePickup").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
                             } else {
-                                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("inventoryFull")));
+                                Main.messagesConfig.sendMessage(p, "inventoryFull");
                                 return;
                             }
                         }

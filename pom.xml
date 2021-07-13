@@ -48,43 +48,43 @@
             <version>4.5.0</version>
         </dependency>
         <dependency>
-            <groupId>net.mine</groupId>
-            <artifactId>example-app</artifactId>
+            <groupId>net.minecraft</groupId>
+            <artifactId>1.12</artifactId>
             <version>1.0</version>
             <scope>system</scope>
             <systemPath>${basedir}/libs/spigot-1.12.2.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>net.minec</groupId>
-            <artifactId>example-app</artifactId>
+            <groupId>net.minecraft</groupId>
+            <artifactId>1.13</artifactId>
             <version>1.0</version>
             <scope>system</scope>
             <systemPath>${basedir}/libs/spigot-1.13.2.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>net.minecr</groupId>
-            <artifactId>example-app</artifactId>
+            <groupId>net.minecraft</groupId>
+            <artifactId>1.14</artifactId>
             <version>1.0</version>
             <scope>system</scope>
             <systemPath>${basedir}/libs/spigot-1.14.4.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>net.minecre</groupId>
-            <artifactId>example-app</artifactId>
+            <groupId>net.minecraft</groupId>
+            <artifactId>1.15</artifactId>
             <version>1.0</version>
             <scope>system</scope>
             <systemPath>${basedir}/libs/spigot-1.15.2.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>net.minecref</groupId>
-            <artifactId>example-app</artifactId>
+            <groupId>net.minecraft</groupId>
+            <artifactId>1.16</artifactId>
             <version>1.0</version>
             <scope>system</scope>
             <systemPath>${basedir}/libs/spigot-1.16.5.jar</systemPath>
         </dependency>
         <dependency>
-            <groupId>net.minecrhf</groupId>
-            <artifactId>example-app</artifactId>
+            <groupId>net.minecraft</groupId>
+            <artifactId>1.17</artifactId>
             <version>1.0</version>
             <scope>system</scope>
             <systemPath>${basedir}/libs/spigot-1.17.jar</systemPath>
