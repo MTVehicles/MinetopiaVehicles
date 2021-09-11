@@ -28,6 +28,5 @@ public class MovementManager {
         if (Main.instance.version.contains("v1_17_R1")) {
             PacketHandler.movement_1_17(p);
         }
-
     }
 }

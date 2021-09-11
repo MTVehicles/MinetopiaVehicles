@@ -12,7 +12,6 @@ public class LeaveEvent implements Listener {
         Player p = e.getPlayer();
         if (p.isInsideVehicle()) {
             p.leaveVehicle();
-            JoinEvent.pipe.get(p.getUniqueId()).remove(p.getName());
         }
     }
 }

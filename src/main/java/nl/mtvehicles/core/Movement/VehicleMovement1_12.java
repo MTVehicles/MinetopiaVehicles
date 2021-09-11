@@ -20,6 +20,9 @@ public class VehicleMovement1_12 {
         if (p.getVehicle() == null) {
             return;
         }
+        if (!p.getVehicle().getType().toString().contains("ARMOR_STAND")){
+            return;
+        }
         if (p.getVehicle().getCustomName().replace("MTVEHICLES_MAINSEAT_", "") == null) {
             return;
         }

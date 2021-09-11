@@ -9,6 +9,7 @@ import nl.mtvehicles.core.Infrastructure.Models.ConfigUtils;
 import nl.mtvehicles.core.Infrastructure.Models.MTVehicleSubCommand;
 import nl.mtvehicles.core.Inventory.InventoryClickEvent;
 import nl.mtvehicles.core.Inventory.InventoryCloseEvent;
+import nl.mtvehicles.core.Movement.MovementManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
@@ -78,6 +79,7 @@ public class Main extends JavaPlugin {
             if (p.isInsideVehicle()) {
                 p.kickPlayer(TextUtils.colorize(Main.messagesConfig.getMessage("reloadInVehicle")));
             }
+            MovementManager.MovementSelector(p);
         }
 
         File config = new File(getDataFolder(), "config.yml");

@@ -23,7 +23,6 @@ import java.util.UUID;
 
 public class JoinEvent implements Listener {
     public static HashMap<UUID, Boolean> languageCheck = new HashMap<>();
-    public static HashMap<UUID, ChannelPipeline> pipe = new HashMap<>();
 
     @EventHandler
     public void onJoinEventPlayer(PlayerJoinEvent e) {

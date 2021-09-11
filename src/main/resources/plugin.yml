@@ -7,4 +7,4 @@ softdepend:
 commands:
   minetopiavehicles:
     usage: /minetopiavehicles
-    aliases: [ mtv, minetopiav, mtvehicles, vehicle ]
+    aliases: [ mtv, minetopiav, mtvehicles, mtvehicle, vehicle ]

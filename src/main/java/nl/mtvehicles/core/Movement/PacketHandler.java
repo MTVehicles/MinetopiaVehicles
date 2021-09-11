@@ -3,8 +3,9 @@ package nl.mtvehicles.core.Movement;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;
-import nl.mtvehicles.core.Events.JoinEvent;
 import org.bukkit.entity.Player;
+
+import java.util.NoSuchElementException;
 
 public class PacketHandler {
 
@@ -19,8 +20,14 @@ public class PacketHandler {
             }
         };
         ChannelPipeline pipeline = ((org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer) player).getHandle().b.a.k.pipeline();
-        pipeline.addBefore("packet_handler", player.getName(), channelDuplexHandler);
-        JoinEvent.pipe.put(player.getUniqueId(), pipeline);
+        try {
+            pipeline.remove(player.getName());
+        } catch (NoSuchElementException e) {
+        }
+        try {
+            pipeline.addBefore("packet_handler", player.getName(), channelDuplexHandler);
+        } catch (NoSuchElementException e) {
+        }
     }
 
     public static void movement_1_16(Player player) {
@@ -35,8 +42,14 @@ public class PacketHandler {
             }
         };
         ChannelPipeline pipeline = ((org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer) player).getHandle().playerConnection.networkManager.channel.pipeline();
-        pipeline.addBefore("packet_handler", player.getName(), channelDuplexHandler);
-        JoinEvent.pipe.put(player.getUniqueId(), pipeline);
+        try {
+            pipeline.remove(player.getName());
+        } catch (NoSuchElementException e) {
+        }
+        try {
+            pipeline.addBefore("packet_handler", player.getName(), channelDuplexHandler);
+        } catch (NoSuchElementException e) {
+        }
     }
 
     public static void movement_1_15(Player player) {
@@ -51,8 +64,14 @@ public class PacketHandler {
             }
         };
         ChannelPipeline pipeline = ((org.bukkit.craftbukkit.v1_15_R1.entity.CraftPlayer) player).getHandle().playerConnection.networkManager.channel.pipeline();
-        pipeline.addBefore("packet_handler", player.getName(), channelDuplexHandler);
-        JoinEvent.pipe.put(player.getUniqueId(), pipeline);
+        try {
+            pipeline.remove(player.getName());
+        } catch (NoSuchElementException e) {
+        }
+        try {
+            pipeline.addBefore("packet_handler", player.getName(), channelDuplexHandler);
+        } catch (NoSuchElementException e) {
+        }
     }
 
     public static void movement_1_14(Player player) {
@@ -67,8 +86,14 @@ public class PacketHandler {
             }
         };
         ChannelPipeline pipeline = ((org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer) player).getHandle().playerConnection.networkManager.channel.pipeline();
-        pipeline.addBefore("packet_handler", player.getName(), channelDuplexHandler);
-        JoinEvent.pipe.put(player.getUniqueId(), pipeline);
+        try {
+            pipeline.remove(player.getName());
+        } catch (NoSuchElementException e) {
+        }
+        try {
+            pipeline.addBefore("packet_handler", player.getName(), channelDuplexHandler);
+        } catch (NoSuchElementException e) {
+        }
     }
 
     public static void movement_1_13(Player player) {
@@ -83,8 +108,14 @@ public class PacketHandler {
             }
         };
         ChannelPipeline pipeline = ((org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer) player).getHandle().playerConnection.networkManager.channel.pipeline();
-        pipeline.addBefore("packet_handler", player.getName(), channelDuplexHandler);
-        JoinEvent.pipe.put(player.getUniqueId(), pipeline);
+        try {
+            pipeline.remove(player.getName());
+        } catch (NoSuchElementException e) {
+        }
+        try {
+            pipeline.addBefore("packet_handler", player.getName(), channelDuplexHandler);
+        } catch (NoSuchElementException e) {
+        }
     }
 
     public static void movement_1_12(Player player) {
@@ -99,7 +130,13 @@ public class PacketHandler {
             }
         };
         ChannelPipeline pipeline = ((org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer) player).getHandle().playerConnection.networkManager.channel.pipeline();
-        pipeline.addBefore("packet_handler", player.getName(), channelDuplexHandler);
-        JoinEvent.pipe.put(player.getUniqueId(), pipeline);
+        try {
+            pipeline.remove(player.getName());
+        } catch (NoSuchElementException e) {
+        }
+        try {
+            pipeline.addBefore("packet_handler", player.getName(), channelDuplexHandler);
+        } catch (NoSuchElementException e) {
+        }
     }
 }
