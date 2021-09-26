@@ -460,7 +460,7 @@ public class ChatEvent implements Listener {
         try {
             Integer.parseInt(str);
         } catch (Throwable e) {
-            p.sendMessage(TextUtils.colorize("&cLetop! Het moet een cijfer zijn."));
+            p.sendMessage(TextUtils.colorize("&cPay attention! It must be a number."));
 
             return false;
         }
@@ -472,7 +472,7 @@ public class ChatEvent implements Listener {
         try {
             Double.valueOf(str);
         } catch (Throwable e) {
-            p.sendMessage(TextUtils.colorize("&cLetop! Het moet een double zijn. bv 0.02"));
+            p.sendMessage(TextUtils.colorize("&cPay attention! It must be a double. for example 0.02"));
 
             return false;
         }
