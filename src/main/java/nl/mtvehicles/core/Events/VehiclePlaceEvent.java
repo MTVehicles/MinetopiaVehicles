@@ -34,8 +34,9 @@ public class VehiclePlaceEvent implements Listener {
                 || (!e.getItem().hasItemMeta()
                 || !(NBTUtils.contains(item, "mtvehicles.kenteken")))
                 || e.getClickedBlock() == null
-        ) {return;
-}
+        ) {
+            return;
+        }
         if (e.getHand() != EquipmentSlot.HAND) {
             e.setCancelled(true);
             e.getPlayer().sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("wrongHand")));
@@ -54,7 +55,7 @@ public class VehiclePlaceEvent implements Listener {
             return;
         }
         if (Main.defaultConfig.isBlockWhitelistEnabled()
-            && !Main.defaultConfig.blockWhiteList().contains(e.getClickedBlock().getType())) {
+                && !Main.defaultConfig.blockWhiteList().contains(e.getClickedBlock().getType())) {
             Main.messagesConfig.sendMessage(p, "blockNotInWhitelist");
             return;
         }

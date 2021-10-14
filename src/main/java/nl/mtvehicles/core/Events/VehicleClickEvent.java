@@ -20,7 +20,6 @@ public class VehicleClickEvent implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent e) {
-
         Entity a = e.getRightClicked();
         Player p = e.getPlayer();
         long lastUsed = 0L;

@@ -53,6 +53,13 @@ public class VehicleMovement1_16 {
         mainSeat(standMain, (CraftArmorStand) standMainSeat, license);
         updateStand(standMain, license, ppisv.d());
         slabCheck(standMain, license);
+        if (VehicleData.seatsize.get(license+"addon") != null) {
+            for (int i = 1; i <= VehicleData.seatsize.get(license + "addon"); i++) {
+                ArmorStand standAddon = VehicleData.autostand.get("MTVEHICLES_ADDON" + i + "_" + license);
+                net.minecraft.server.v1_12_R1.EntityArmorStand stand = ((org.bukkit.craftbukkit.v1_12_R1.entity.CraftArmorStand) standAddon).getHandle();
+                stand.setLocation(standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw(), standMain.getLocation().getPitch());
+            }
+        }
         if (VehicleData.type.get(license).contains("HELICOPTER")) {
             rotors(standMain, standRotors, license);
         }
