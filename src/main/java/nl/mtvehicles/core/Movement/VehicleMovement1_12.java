@@ -56,8 +56,10 @@ public class VehicleMovement1_12 {
                 stand.setLocation(standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw(), standMain.getLocation().getPitch());
             }
         }
-        if (VehicleData.type.get(license).contains("HELICOPTER")) {
-            rotors(standMain, standRotors, license);
+        if (VehicleData.type.get(license) != null) {
+            if (VehicleData.type.get(license).contains("HELICOPTER")) {
+                rotors(standMain, standRotors, license);
+            }
         }
 
         if (ppisv.a() > 0.0) {
@@ -156,31 +158,35 @@ public class VehicleMovement1_12 {
     public static void updateStand(ArmorStand mainStand, String license, Boolean space) {
         Location loc = mainStand.getLocation();
         Location location = new Location(loc.getWorld(), loc.getX(), loc.getY() - 0.2, loc.getZ(), loc.getYaw(), loc.getPitch());
-        if (VehicleData.type.get(license).contains("HELICOPTER")) {
-            if (!location.getBlock().getType().equals(Material.AIR)) {
-                VehicleData.speed.put(license, 0.0);
-            }
-            if (space) {
-                if (mainStand.getLocation().getY() > Main.instance.getConfig().getInt("helicopterMaxHight")) {
+        if (VehicleData.type.get(license) != null) {
+            if (VehicleData.type.get(license).contains("HELICOPTER")) {
+                if (!location.getBlock().getType().equals(Material.AIR)) {
+                    VehicleData.speed.put(license, 0.0);
+                }
+                if (space) {
+                    if (mainStand.getLocation().getY() > Main.instance.getConfig().getInt("helicopterMaxHight")) {
+                        return;
+                    }
+                    mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.2, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
                     return;
                 }
-                mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.2, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
+                mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.2, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
                 return;
             }
-            mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.2, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
-            return;
         }
-        if (VehicleData.type.get(license).contains("HOVER")) {
-            if (location.getBlock().getType().equals(Material.AIR)) {
+        if (VehicleData.type.get(license) != null) {
+            if (VehicleData.type.get(license).contains("HOVER")) {
+                if (location.getBlock().getType().equals(Material.AIR)) {
+                    mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.8, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
+                    return;
+                }
+                mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.00001, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
+                return;
+            }
+            if (location.getBlock().getType().toString().contains("AIR") || location.getBlock().getType().toString().contains("WATER")) {
                 mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.8, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
                 return;
             }
-            mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.00001, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
-            return;
-        }
-        if (location.getBlock().getType().toString().contains("AIR") || location.getBlock().getType().toString().contains("WATER")) {
-            mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.8, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
-            return;
         }
         mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.0, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
     }

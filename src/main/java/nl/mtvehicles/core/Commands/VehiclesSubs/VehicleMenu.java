@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.Commands.VehiclesSubs;
 
+import nl.mtvehicles.core.Infrastructure.Helpers.ItemFactory;
 import nl.mtvehicles.core.Infrastructure.Helpers.ItemUtils;
 import nl.mtvehicles.core.Infrastructure.Models.MTVehicleSubCommand;
 import nl.mtvehicles.core.Main;
@@ -37,7 +38,12 @@ public class VehicleMenu extends MTVehicleSubCommand {
             String name = (String) vehicle.get("name");
             String skinItem = (String) vehicle.get("skinItem");
             ItemStack itemStack = ItemUtils.carItem(itemDamage, name, skinItem);
-            inv.addItem(itemStack);
+
+            if (vehicle.get("nbtValue") == null) {
+                inv.addItem(itemStack);
+                continue;
+            }
+            inv.addItem(new ItemFactory(itemStack).setNBT((String) vehicle.get("nbtKey"), (String)vehicle.get("nbtValue")).toItemStack());
         }
 
         beginMenu.put(p.getUniqueId(), inv);

@@ -39,7 +39,9 @@ public class VehicleLeaveEvent implements Listener {
             as2.setGravity(true);
             List<Map<String, Integer>> seats = (List<Map<String, Integer>>) vehicle.getVehicleData().get("seats");
             for (int i = 2; i <= seats.size(); i++) {
-                VehicleData.autostand.get("MTVEHICLES_SEAT" + i + "_" + ken).remove();
+                if (VehicleData.autostand.get("MTVEHICLES_SEAT" + i + "_" + ken) != null) {
+                    VehicleData.autostand.get("MTVEHICLES_SEAT" + i + "_" + ken).remove();
+                }
             }
             VehicleData.type.clear();
         }

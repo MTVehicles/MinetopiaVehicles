@@ -34,6 +34,17 @@ public class ItemUtils {
         return carItem;
     }
 
+    public static ItemStack carItem9(int durability, String name, String material, String model, String nbt) {
+        ItemStack car = (new ItemFactory(Material.getMaterial(material))).setDurability((short) durability).setName(TextUtils.colorize("&6" + name)).toItemStack();
+        ItemMeta im = car.getItemMeta();
+        List<String> itemlore = new ArrayList<>();
+        itemlore.add(TextUtils.colorize("&a"));
+        im.setLore(itemlore);
+        im.setUnbreakable(true);
+        car.setItemMeta(im);
+        return car;
+    }
+
     public static ItemStack carItem2(int id, String name, String material) {
         String ken = generateLicencePlate();
         ItemStack car = (new ItemFactory(Material.getMaterial(material))).setDurability((short) id).setName(TextUtils.colorize("&6" + name)).setNBT("mtvehicles.kenteken", ken).setNBT("mtvehicles.naam", name).toItemStack();
