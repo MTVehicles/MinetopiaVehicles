@@ -29,6 +29,7 @@ public class Vehicle {
     private int rotateSpeed;
     private double maxSpeedBackwards;
     private String owner;
+    private String nbtValue;
     private List<String> riders;
     private List<String> members;
     private Map<?, ?> vehicleData;
@@ -64,6 +65,7 @@ public class Vehicle {
         map.put("rotateSpeed", this.getRotateSpeed());
         map.put("maxSpeedBackwards", this.getMaxSpeedBackwards());
         map.put("owner", this.getOwner());
+        map.put("nbtValue", this.getNbtValue());
         map.put("riders", this.getRiders());
         map.put("members", this.getMembers());
         Main.vehicleDataConfig.getConfig().set(String.format("vehicle.%s", this.getLicensePlate()), map);
@@ -179,10 +181,19 @@ public class Vehicle {
             List<Map<?, ?>> skins = (List<Map<?, ?>>) configVehicle.get("cars");
             for (Map<?, ?> skin : skins) {
                 if (skin.get("itemDamage").equals(vehicleData.get("skinDamage"))) {
-                    matchedVehicles.add(configVehicle);
+                    if (skin.get("SkinItem").equals(vehicleData.get("skinItem"))) {
+                        if (skin.get("nbtValue") != null) {
+                            if (skin.get("nbtValue").equals(vehicleData.get("nbtValue"))) {
+                                matchedVehicles.add(configVehicle);
+                            }
+                        } else {
+                            matchedVehicles.add(configVehicle);
+                        }
+                    }
                 }
             }
         }
+
         if (matchedVehicles == null) return null;
         if (matchedVehicles.size() == 0) return null;
         if (matchedVehicles.size() > 1) return null;
@@ -284,6 +295,10 @@ public class Vehicle {
         return owner;
     }
 
+    public String getNbtValue() {
+        return nbtValue;
+    }
+
     public List<String> getRiders() {
         return riders;
     }
@@ -362,6 +377,10 @@ public class Vehicle {
 
     public void setOwner(String owner) {
         this.owner = owner;
+    }
+
+    public void setNbtValue(String nbt) {
+        this.nbtValue = nbt;
     }
 
     public void setRiders(List<String> riders) {

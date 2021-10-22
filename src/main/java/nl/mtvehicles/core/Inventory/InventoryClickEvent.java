@@ -28,8 +28,11 @@ import java.util.UUID;
 public class InventoryClickEvent implements Listener {
 
     public HashMap<UUID, ItemStack> vehicleMenu = new HashMap<>();
-    public HashMap<UUID, Inventory> skinMenu = new HashMap<>();
-    public HashMap<UUID, Integer> intSave = new HashMap<>();
+    public static HashMap<UUID, Inventory> skinMenu = new HashMap<>();
+    public static HashMap<UUID, Integer> intSave = new HashMap<>();
+
+    public static HashMap<UUID, Integer> id = new HashMap<>();
+    public static HashMap<UUID, Integer> raw = new HashMap<>();
 
     @EventHandler
     public void onClick(org.bukkit.event.inventory.InventoryClickEvent e) {
@@ -38,29 +41,18 @@ public class InventoryClickEvent implements Listener {
         Player p = (Player) e.getWhoClicked();
         if (e.getView().getTitle().contains("Vehicle Menu")) {
             e.setCancelled(true);
-            List<Map<?, ?>> vehicles = Main.vehiclesConfig.getConfig().getMapList("voertuigen");
-            List<Map<?, ?>> skins = (List<Map<?, ?>>) vehicles.get(e.getRawSlot()).get("cars");
-            intSave.put(p.getUniqueId(), e.getRawSlot());
-            Inventory inv = Bukkit.createInventory(null, 54, "Choose your vehicle");
-            for (int i = 36; i <= 44; i++) {
-                inv.setItem(i, ItemUtils.mItem("STAINED_GLASS_PANE", 1, (short) 0, "&c", "&c"));
-            }
-            inv.setItem(47, ItemUtils.mItem("BARRIER", 1, (short) 0, "&4Close", "&cPress here to close the menu!"));
-            inv.setItem(51, ItemUtils.mItem("WOOD_DOOR", 1, (short) 0, "&6Back", "&ePress here to go back!"));
-            for (Map<?, ?> skin : skins) {
-                inv.addItem(ItemUtils.carItem2((Integer) skin.get("itemDamage"), ((String) skin.get("name")), (String) skin.get("SkinItem")));
-            }
-            skinMenu.put(p.getUniqueId(), inv);
-            p.openInventory(inv);
+            id.put(p.getUniqueId(), 1);
+            raw.put(p.getUniqueId(), e.getRawSlot());
+            MenuUtils.getvehicleCMD(p, id.get(p.getUniqueId()), raw.get(p.getUniqueId()));
             return;
         }
         if (e.getView().getTitle().contains("Choose your vehicle")) {
-            if (e.getRawSlot() == 47) { // close menu
+            if (e.getCurrentItem().equals(ItemUtils.mItem("BARRIER", 1, (short) 0, "&4Sluiten", "&cDruk hier om het menu te sluiten!"))) {
                 e.setCancelled(true);
                 p.closeInventory();
                 return;
             }
-            if (e.getRawSlot() == 51) { // go back
+            if (e.getCurrentItem().equals(ItemUtils.mItem("WOOD_DOOR", 1, (short) 0, "&6Terug", "&eDruk hier om terug te gaan!"))) {
                 p.openInventory(VehicleMenu.beginMenu.get(p.getUniqueId()));
                 e.setCancelled(true);
                 return;
@@ -69,11 +61,25 @@ public class InventoryClickEvent implements Listener {
                 e.setCancelled(true);
                 return;
             }
+            if (e.getCurrentItem().equals(ItemUtils.mItem("SPECTRAL_ARROW", 1, (short) 0, "&cVolgende Pagina", "&c"))) {
+                e.setCancelled(true);
+                MenuUtils.getvehicleCMD(p, id.get(p.getUniqueId()) + 1, raw.get(p.getUniqueId()));
+                id.put(p.getUniqueId(), id.get(p.getUniqueId()) + 1);
+                return;
+            }
+            if (e.getCurrentItem().equals(ItemUtils.mItem("SPECTRAL_ARROW", 1, (short) 0, "&cVorige Pagina", "&c"))) {
+                e.setCancelled(true);
+                if (id.get(p.getUniqueId()) > 1) {
+                    MenuUtils.getvehicleCMD(p, id.get(p.getUniqueId()) - 1, raw.get(p.getUniqueId()));
+                    id.put(p.getUniqueId(), id.get(p.getUniqueId()) - 1);
+                }
+                return;
+            }
             e.setCancelled(true);
             vehicleMenu.put(p.getUniqueId(), e.getCurrentItem());
             Inventory inv = Bukkit.createInventory(null, 27, "Confirm getting vehicle");
-            inv.setItem(11, ItemUtils.woolItem("WOOL", "RED_WOOL", 1, (short) 14, "&4Cancel", "&7Press here to cancel it."));
-            inv.setItem(15, ItemUtils.woolItem("WOOL", "LIME_WOOL", 1, (short) 5, "&aCreate Vehicle", "&7Press here if you want to create the vehicles and then it will be set you as owner."));
+            inv.setItem(11, ItemUtils.woolItem("WOOL", "RED_WOOL", 1, (short) 14, "&4Annuleren", "&7Druk hier om het te annuleren."));
+            inv.setItem(15, ItemUtils.woolItem("WOOL", "LIME_WOOL", 1, (short) 5, "&aCreate Vehicle", "&7Druk hier als je het voertuigen wilt aanmaken en op je naam wilt zetten"));
             p.openInventory(inv);
         }
         if (e.getView().getTitle().contains("Choose your language")) {
@@ -129,6 +135,7 @@ public class InventoryClickEvent implements Listener {
                 vehicle.setRotateSpeed((Integer) vehicles.get(intSave.get(p.getUniqueId())).get("rotateSpeed"));
                 vehicle.setMaxSpeedBackwards((Double) vehicles.get(intSave.get(p.getUniqueId())).get("maxSpeedBackwards"));
                 vehicle.setOwner(p.getUniqueId().toString());
+                vehicle.setNbtValue(NBTUtils.getString(vehicleMenu.get(p.getUniqueId()), "mtcustom"));
                 vehicle.setRiders(riders);
                 vehicle.setMembers(members);
                 vehicle.save();

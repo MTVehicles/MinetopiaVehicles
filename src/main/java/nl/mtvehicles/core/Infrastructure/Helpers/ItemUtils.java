@@ -48,6 +48,20 @@ public class ItemUtils {
         return car;
     }
 
+    public static ItemStack carItem3(int id, String name, String material, String model, String nbt) {
+        String ken = generateLicencePlate();
+        ItemStack car = (new ItemFactory(Material.getMaterial(material))).setDurability((short) id).setName(TextUtils.colorize("&6" + name)).setNBT("mtvehicles.kenteken", ken).setNBT("mtvehicles.naam", name).setNBT(model, nbt).toItemStack();
+        ItemMeta im = car.getItemMeta();
+        List<String> itemlore = new ArrayList<>();
+        itemlore.add(TextUtils.colorize("&a"));
+        itemlore.add(TextUtils.colorize("&a" + ken));
+        itemlore.add(TextUtils.colorize("&a"));
+        im.setLore(itemlore);
+        im.setUnbreakable(true);
+        car.setItemMeta(im);
+        return car;
+    }
+
     public static String generateLicencePlate() {
         String plate = String.format("%s-%s-%s", RandomStringUtils.random(2, true, false), RandomStringUtils.random(2, true, false), RandomStringUtils.random(2, true, false));
         return plate.toUpperCase();

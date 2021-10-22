@@ -45,7 +45,6 @@ public class BossBarUtils {
             double fuel = Main.vehicleDataConfig.getConfig().getDouble(String.format("vehicle.%s.benzine", player.getVehicle().getCustomName().replace("MTVEHICLES_MAINSEAT_", "")));
             String fuelString = String.valueOf(fuel);
             Benzine = Bukkit.createBossBar(Math.round(Double.parseDouble(fuelString)) + "% " + TextUtils.colorize(Main.messagesConfig.getMessage("bossbarFuel")), BarColor.GREEN, BarStyle.SOLID);
-
             if (fuel < 30) {
                 Benzine.setColor(BarColor.RED);
             }

@@ -41,6 +41,7 @@ public class VehicleLeaveEvent implements Listener {
             for (int i = 2; i <= seats.size(); i++) {
                 VehicleData.autostand.get("MTVEHICLES_SEAT" + i + "_" + ken).remove();
             }
+            VehicleData.type.clear();
         }
     }
 }

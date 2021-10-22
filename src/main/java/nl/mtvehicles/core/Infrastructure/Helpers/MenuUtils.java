@@ -2,16 +2,14 @@ package nl.mtvehicles.core.Infrastructure.Helpers;
 
 import nl.mtvehicles.core.Infrastructure.Models.ConfigUtils;
 import nl.mtvehicles.core.Infrastructure.Models.Vehicle;
+import nl.mtvehicles.core.Inventory.InventoryClickEvent;
 import nl.mtvehicles.core.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class MenuUtils {
     public static HashMap<String, Integer> restoreId = new HashMap<>();
@@ -126,6 +124,41 @@ public class MenuUtils {
         inv.setItem(14, car5);
         inv.setItem(15, car6);
         DrawOptions(p, inv);
+    }
+
+    public static void getvehicleCMD(Player p, int id, int slot) {
+        List<Map<?, ?>> vehicles = Main.vehiclesConfig.getConfig().getMapList("voertuigen");
+        List<Map<?, ?>> skins = (List<Map<?, ?>>) vehicles.get(slot).get("cars");
+        InventoryClickEvent.intSave.put(p.getUniqueId(), slot);
+        Inventory inv = Bukkit.createInventory(null, 54, "Choose your vehicle");
+        for (int i = 36; i <= 44; i++) {
+            inv.setItem(i, ItemUtils.mItem("STAINED_GLASS_PANE", 1, (short) 0, "&c", "&c"));
+        }
+        inv.setItem(47, ItemUtils.mItem("BARRIER", 1, (short) 0, "&4Sluiten", "&cDruk hier om het menu te sluiten!"));
+        inv.setItem(51, ItemUtils.mItem("WOOD_DOOR", 1, (short) 0, "&6Terug", "&eDruk hier om terug te gaan!"));
+        List<Map> dataVehicle = new ArrayList<>();
+        for (Map<?, ?> skin : skins) {
+            dataVehicle.add(skin);
+            //inv.addItem(ItemUtils.carItem2((int) skin.get("itemDamage"), ((String) skin.get("name")), (String) skin.get("SkinItem")));
+        }
+        for (int i = 1 + id * 36 - 36; i <= id * 36; i++) {
+            if (i - 1 < dataVehicle.size()) {
+
+                if (dataVehicle.get(i-1).get("nbtValue") == null) {
+                    inv.addItem(ItemUtils.carItem2((int) dataVehicle.get(i-1).get("itemDamage"), ((String) dataVehicle.get(i-1).get("name")), (String) dataVehicle.get(i-1).get("SkinItem")));
+                    continue;
+                }
+
+                inv.addItem(ItemUtils.carItem3((int) dataVehicle.get(i-1).get("itemDamage"), ((String) dataVehicle.get(i-1).get("name")), (String) dataVehicle.get(i-1).get("SkinItem"), (String) dataVehicle.get(i-1).get("nbtKey"), (String) dataVehicle.get(i-1).get("nbtValue")));
+
+            }
+
+        }
+        inv.setItem(53, ItemUtils.mItem("SPECTRAL_ARROW", 1, (short) 0, "&cVolgende Pagina", "&c"));
+        inv.setItem(45, ItemUtils.mItem("SPECTRAL_ARROW", 1, (short) 0, "&cVorige Pagina", "&c"));
+
+        InventoryClickEvent.skinMenu.put(p.getUniqueId(), inv);
+        p.openInventory(inv);
     }
 
     public static void restoreCMD(Player p, int id, UUID of) {

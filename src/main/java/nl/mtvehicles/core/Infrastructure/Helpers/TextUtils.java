@@ -52,7 +52,6 @@ public class TextUtils {
         as.setVisible(false);
         VehicleData.autostand2.put(license, as);
     }
-
     public static void createVehicle(String ken, Player p) {
         if (!(VehicleData.autostand2.get(ken) == null)) {
             if (!VehicleData.autostand2.get(ken).isEmpty()) {
