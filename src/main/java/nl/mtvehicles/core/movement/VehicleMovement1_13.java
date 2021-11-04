@@ -45,6 +45,14 @@ public class VehicleMovement1_13 {
         mainSeat(standMain, (org.bukkit.craftbukkit.v1_13_R2.entity.CraftArmorStand) standMainSeat, license);
         updateStand(standMain, license, ppisv.d());
         slabCheck(standMain, license);
+
+        int RotationSpeed = Main.vehicleDataConfig.getConfig().getInt("vehicle."+license+".rotateSpeed");
+        double MaxSpeed = Main.vehicleDataConfig.getConfig().getDouble("vehicle."+license+".maxSpeed");
+        double AccelerationSpeed = Main.vehicleDataConfig.getConfig().getDouble("vehicle."+license+".acceleratieSpeed");
+        double BrakingSpeed = Main.vehicleDataConfig.getConfig().getDouble("vehicle."+license+".brakingSpeed");
+        double MaxSpeedBackwards = Main.vehicleDataConfig.getConfig().getDouble("vehicle."+license+".maxSpeedBackwards");
+        double FrictionSpeed = Main.vehicleDataConfig.getConfig().getDouble("vehicle."+license+".aftrekkenSpeed");
+
         if (VehicleData.seatsize.get(license+"addon") != null) {
             for (int i = 1; i <= VehicleData.seatsize.get(license + "addon"); i++) {
                 ArmorStand standAddon = VehicleData.autostand.get("MTVEHICLES_ADDON" + i + "_" + license);
@@ -56,37 +64,37 @@ public class VehicleMovement1_13 {
             rotors(standMain, standRotors, license);
         }
         if (ppisv.b() > 0.0) {
-            ((org.bukkit.craftbukkit.v1_13_R2.entity.CraftArmorStand) standMain).getHandle().setLocation(standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - Vehicle.getByPlate(license).getRotateSpeed(), standMain.getLocation().getPitch());
+            ((org.bukkit.craftbukkit.v1_13_R2.entity.CraftArmorStand) standMain).getHandle().setLocation(standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - RotationSpeed, standMain.getLocation().getPitch());
         } else if (ppisv.b() < 0.0) {
-            ((org.bukkit.craftbukkit.v1_13_R2.entity.CraftArmorStand) standMain).getHandle().setLocation(standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() + Vehicle.getByPlate(license).getRotateSpeed(), standMain.getLocation().getPitch());
+            ((org.bukkit.craftbukkit.v1_13_R2.entity.CraftArmorStand) standMain).getHandle().setLocation(standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() + RotationSpeed, standMain.getLocation().getPitch());
         }
         if (ppisv.c() > 0.0) {
             if (VehicleData.speed.get(license) < 0) {
-                VehicleData.speed.put(license, VehicleData.speed.get(license) + Vehicle.getByPlate(license).getBrakingSpeed());
+                VehicleData.speed.put(license, VehicleData.speed.get(license) + BrakingSpeed);
                 return;
             }
             if (Main.defaultConfig.getConfig().getBoolean("benzine") && Main.vehicleDataConfig.getConfig().getBoolean("vehicle." + license + ".benzineEnabled")) {
                 double dnum = VehicleData.fuel.get(license) - VehicleData.fuelUsage.get(license);
                 VehicleData.fuel.put(license, dnum);
             }
-            if (VehicleData.speed.get(license) > Vehicle.getByPlate(license).getMaxSpeed()) {
+            if (VehicleData.speed.get(license) > MaxSpeed) {
                 return;
             }
-            VehicleData.speed.put(license, VehicleData.speed.get(license) + Vehicle.getByPlate(license).getAccelerationSpeed());
+            VehicleData.speed.put(license, VehicleData.speed.get(license) + AccelerationSpeed);
         }
         if (ppisv.c() < 0.0) {
             if (VehicleData.speed.get(license) > 0) {
-                VehicleData.speed.put(license, VehicleData.speed.get(license) - Vehicle.getByPlate(license).getBrakingSpeed());
+                VehicleData.speed.put(license, VehicleData.speed.get(license) - BrakingSpeed);
                 return;
             }
             if (Main.defaultConfig.getConfig().getBoolean("benzine") && Main.vehicleDataConfig.getConfig().getBoolean("vehicle." + license + ".benzineEnabled")) {
                 double dnum = VehicleData.fuel.get(license) - VehicleData.fuelUsage.get(license);
                 VehicleData.fuel.put(license, dnum);
             }
-            if (VehicleData.speed.get(license) < -Vehicle.getByPlate(license).getMaxSpeedBackwards()) {
+            if (VehicleData.speed.get(license) < -MaxSpeedBackwards) {
                 return;
             }
-            VehicleData.speed.put(license, VehicleData.speed.get(license) - Vehicle.getByPlate(license).getAccelerationSpeed());
+            VehicleData.speed.put(license, VehicleData.speed.get(license) - AccelerationSpeed);
 
         }
         if (ppisv.c() == 0.0) {
@@ -96,11 +104,11 @@ public class VehicleMovement1_13 {
                 return;
             }
             if (Double.parseDouble(String.valueOf(round)) > 0.01) {
-                VehicleData.speed.put(license, VehicleData.speed.get(license) - Vehicle.getByPlate(license).getFrictionSpeed());
+                VehicleData.speed.put(license, VehicleData.speed.get(license) - FrictionSpeed);
                 return;
             }
             if (Double.parseDouble(String.valueOf(round)) < 0.01) {
-                VehicleData.speed.put(license, VehicleData.speed.get(license) + Vehicle.getByPlate(license).getFrictionSpeed());
+                VehicleData.speed.put(license, VehicleData.speed.get(license) + FrictionSpeed);
             }
         }
     }
