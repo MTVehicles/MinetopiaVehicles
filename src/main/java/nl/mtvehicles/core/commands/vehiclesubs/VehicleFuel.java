@@ -16,8 +16,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VehicleBenzine extends MTVehicleSubCommand {
-    public VehicleBenzine() {
+public class VehicleFuel extends MTVehicleSubCommand {
+    public VehicleFuel() {
         this.setPlayerCommand(true);
     }
 

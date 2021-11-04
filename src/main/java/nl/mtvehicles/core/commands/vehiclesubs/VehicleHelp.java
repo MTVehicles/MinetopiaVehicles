@@ -15,6 +15,8 @@ public class VehicleHelp extends MTVehicleSubCommand {
         sendMessage(String.format("&2&lMinetopiaVehicles Commands: (%s)", Main.instance.getDescription().getVersion()));
         sendMessage("");
         sendMessage(String.format("&2/vehicle &ainfo &f- &2%s", Main.messagesConfig.getMessage("helpInfo")));
+        sendMessage(String.format("&2/vehicle &apublic &f- &2%s", Main.messagesConfig.getMessage("helpPublic")));
+        sendMessage(String.format("&2/vehicle &aprivate &f- &2%s", Main.messagesConfig.getMessage("helpPrivate")));
         sendMessage(String.format("&2/vehicle &aaddrider &f- &2%s", Main.messagesConfig.getMessage("helpAddRider")));
         sendMessage(String.format("&2/vehicle &aaddmember &f- &2%s", Main.messagesConfig.getMessage("helpAddMember")));
         sendMessage(String.format("&2/vehicle &aremoverider &f- &2%s", Main.messagesConfig.getMessage("helpRemoveRider")));
@@ -26,8 +28,8 @@ public class VehicleHelp extends MTVehicleSubCommand {
             sendMessage(String.format("&2/vehicle &afuel &f- &2%s", Main.messagesConfig.getMessage("adminBenzine")));
             sendMessage(String.format("&2/vehicle &arestore &f- &2%s", Main.messagesConfig.getMessage("adminRestore")));
             sendMessage(String.format("&2/vehicle &areload &f- &2%s", Main.messagesConfig.getMessage("adminReload")));
-            sendMessage(String.format("&2/vehicle &agivevoucher &f- &2%s", Main.messagesConfig.getMessage("adminGivevoucher")));
-            sendMessage(String.format("&2/vehicle &agivecar &f- &2%s", Main.messagesConfig.getMessage("adminGivecar")));
+            //sendMessage(String.format("&2/vehicle &agivevoucher &f- &2%s", Main.messagesConfig.getMessage("adminGivevoucher")));
+            //sendMessage(String.format("&2/vehicle &agivecar &f- &2%s", Main.messagesConfig.getMessage("adminGivecar")));
             sendMessage(String.format("&2/vehicle &asetowner &f- &2%s", Main.messagesConfig.getMessage("adminSetowner")));
             sendMessage(String.format("&2/vehicle &aupdate &f- &2%s", Main.messagesConfig.getMessage("adminUpdate")));
             sendMessage(String.format("&2/vehicle &adelete &f- &2%s", Main.messagesConfig.getMessage("adminDelete")));

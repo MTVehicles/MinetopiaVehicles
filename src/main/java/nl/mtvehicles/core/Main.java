@@ -73,7 +73,10 @@ public class Main extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new VehicleVoucherEvent(), this);
         Bukkit.getPluginManager().registerEvents(new InventoryCloseEvent(), this);
 
-        new Metrics(this, 5932);
+        Metrics metrics = new Metrics(this, 5932);
+        metrics.addCustomChart(new Metrics.SimplePie("used_language", () -> {
+            return defaultConfig.getConfig().getString("messagesLanguage");
+        }));
 
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
             if (p.isInsideVehicle()) {
@@ -97,9 +100,7 @@ public class Main extends JavaPlugin {
         configList.forEach(ConfigUtils::reload);
     }
 
-
     public static String fol() {
         return String.valueOf(Main.instance.getFile());
     }
-
 }

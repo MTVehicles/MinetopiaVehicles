@@ -28,6 +28,7 @@ public class Vehicle {
     private double aftrekkenSpeed;
     private int rotateSpeed;
     private double maxSpeedBackwards;
+    private boolean isOpen;
     private String owner;
     private String nbtValue;
     private List<String> riders;
@@ -36,21 +37,13 @@ public class Vehicle {
 
     public static HashMap<String, MTVehicleSubCommand> subcommands = new HashMap<>();
 
-    public void save2() {
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("isGlow", this.isGlow());
-        Main.vehicleDataConfig.getConfig().set(this.getLicensePlate(), map);
-        Main.vehicleDataConfig.save();
-
-    }
-
     public void save() {
         Map<String, Object> map = new HashMap<>();
         map.put("name", this.getName());
         map.put("vehicleType", this.getVehicleType());
         map.put("skinDamage", this.getSkinDamage());
         map.put("skinItem", this.getSkinItem());
+        map.put("isOpen", this.isOpen());
         map.put("isGlow", this.isGlow());
         map.put("benzineEnabled", this.isFuelEnabled());
         map.put("benzine", this.getFuel());
@@ -91,34 +84,34 @@ public class Vehicle {
                     String kenteken = NBTUtils.getString((is), "mtvehicles.kenteken");
                     matchedVehicles.add(configVehicle);
 
-                    //ItemUtils.createVoucher(skin.get("itemDamage"), skin.get("SkinItem"), skin.get("name"), p);
-//                    Vehicle vehicle = new Vehicle();
-//                    List<String> members = Main.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".members");
-//                    List<String> riders = Main.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".riders");
-//                    List<String> kof = Main.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".kofferbakData");
-//                    vehicle.setLicensePlate(kenteken);
-//                    vehicle.setName((String) skin.get("name"));
-//                    vehicle.setVehicleType((String) configVehicle.get("vehicleType"));
-//                    vehicle.setSkinDamage((Integer) skin.get("itemDamage"));
-//                    vehicle.setSkinItem((String) skin.get("SkinItem"));
-//                    vehicle.setGlow(false);
-//                    vehicle.setBenzineEnabled((Boolean) configVehicle.get("benzineEnabled"));
-//                    vehicle.setBenzine(100);
-//                    vehicle.setKofferbak((Boolean) configVehicle.get("kofferbakEnabled"));
-//                    vehicle.setKofferbakRows(1);
-//                    vehicle.setBenzineVerbruik(0.01);
-//                    vehicle.setKofferbakData(kof);
-//                    vehicle.setAcceleratieSpeed((Double) configVehicle.get("acceleratieSpeed"));
-//                    vehicle.setMaxSpeed((Double) configVehicle.get("maxSpeed"));
-//                    vehicle.setBrakingSpeed((Double) configVehicle.get("brakingSpeed"));
-//                    vehicle.setAftrekkenSpeed((Double) configVehicle.get("aftrekkenSpeed"));
-//                    vehicle.setRotateSpeed((Integer) configVehicle.get("rotateSpeed"));
-//                    vehicle.setMaxSpeedBackwards((Double) configVehicle.get("maxSpeedBackwards"));
-//                    vehicle.setOwner(p.getUniqueId().toString());
-//                    vehicle.setRiders(riders);
-//                    vehicle.setMembers(members);
-//                    vehicle.save();
-                    //p.getInventory().addItem(is);
+                    ItemUtils.createVoucher(skin.get("itemDamage"), skin.get("SkinItem"), skin.get("name"), p);
+                    Vehicle vehicle = new Vehicle();
+                    List<String> members = Main.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".members");
+                    List<String> riders = Main.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".riders");
+                    List<String> kof = Main.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".kofferbakData");
+                    vehicle.setLicensePlate(kenteken);
+                    vehicle.setName((String) skin.get("name"));
+                    vehicle.setVehicleType((String) configVehicle.get("vehicleType"));
+                    vehicle.setSkinDamage((Integer) skin.get("itemDamage"));
+                    vehicle.setSkinItem((String) skin.get("SkinItem"));
+                    vehicle.setGlow(false);
+                    vehicle.setBenzineEnabled((Boolean) configVehicle.get("benzineEnabled"));
+                    vehicle.setBenzine(100);
+                    vehicle.setTrunk((Boolean) configVehicle.get("kofferbakEnabled"));
+                    vehicle.setTrunkRows(1);
+                    vehicle.setFuelUsage(0.01);
+                    vehicle.setTrunkData(kof);
+                    vehicle.setAccelerationSpeed((Double) configVehicle.get("acceleratieSpeed"));
+                    vehicle.setMaxSpeed((Double) configVehicle.get("maxSpeed"));
+                    vehicle.setBrakingSpeed((Double) configVehicle.get("brakingSpeed"));
+                    vehicle.setFrictionSpeed((Double) configVehicle.get("aftrekkenSpeed"));
+                    vehicle.setRotateSpeed((Integer) configVehicle.get("rotateSpeed"));
+                    vehicle.setMaxSpeedBackwards((Double) configVehicle.get("maxSpeedBackwards"));
+                    vehicle.setOwner(p.getUniqueId().toString());
+                    vehicle.setRiders(riders);
+                    vehicle.setMembers(members);
+                    vehicle.save();
+                    p.getInventory().addItem(is);
                 }
             }
         }
@@ -198,6 +191,7 @@ public class Vehicle {
         Vehicle vehicle = new Vehicle();
         vehicle.setVehicleData(matchedVehicles.get(0));
         vehicle.setLicensePlate(plate);
+        vehicle.setOpen(false);
         vehicle.setName((String) vehicleData.get("name"));
         vehicle.setVehicleType((String) vehicleData.get("vehicleType"));
         vehicle.setSkinDamage((Integer) vehicleData.get("skinDamage"));
@@ -247,6 +241,10 @@ public class Vehicle {
 
     public boolean isGlow() {
         return isGlow;
+    }
+
+    public boolean isOpen() {
+        return isOpen;
     }
 
     public boolean isFuelEnabled() {
@@ -323,6 +321,10 @@ public class Vehicle {
 
     public void setGlow(boolean glow) {
         isGlow = glow;
+    }
+
+    public void setOpen(boolean open) {
+        isOpen = open;
     }
 
     public void setBenzineEnabled(boolean benzineEnabled) {

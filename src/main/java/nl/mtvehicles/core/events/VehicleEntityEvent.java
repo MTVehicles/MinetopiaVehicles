@@ -1,6 +1,6 @@
 package nl.mtvehicles.core.events;
 
-import nl.mtvehicles.core.commands.vehiclesubs.VehicleBenzine;
+import nl.mtvehicles.core.commands.vehiclesubs.VehicleFuel;
 import nl.mtvehicles.core.infrastructure.helpers.BossBarUtils;
 import nl.mtvehicles.core.infrastructure.helpers.NBTUtils;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
@@ -53,7 +53,7 @@ public class VehicleEntityEvent implements Listener {
                 }
                 if (curb + 5 > 100) {
                     int test = (int) (100 - curb);
-                    p.setItemInHand(VehicleBenzine.benzineItem(Integer.parseInt(bensize), Integer.parseInt(benval) - test));
+                    p.setItemInHand(VehicleFuel.benzineItem(Integer.parseInt(bensize), Integer.parseInt(benval) - test));
                     VehicleData.fuel.put(licensePlate, VehicleData.fuel.get(licensePlate) + test);
                     BossBarUtils.setBossBarValue(curb / 100.0D, licensePlate);
                     return;
@@ -61,12 +61,12 @@ public class VehicleEntityEvent implements Listener {
                 if (!(Integer.parseInt(benval) < 5)) {
                     VehicleData.fuel.put(licensePlate, VehicleData.fuel.get(licensePlate) + 5);
                     BossBarUtils.setBossBarValue(curb / 100.0D, licensePlate);
-                    p.setItemInHand(VehicleBenzine.benzineItem(Integer.parseInt(bensize), Integer.parseInt(benval) - 5));
+                    p.setItemInHand(VehicleFuel.benzineItem(Integer.parseInt(bensize), Integer.parseInt(benval) - 5));
 
                 } else {
                     VehicleData.fuel.put(licensePlate, Double.valueOf(VehicleData.fuel.get(licensePlate) + benval));
                     BossBarUtils.setBossBarValue(curb / 100.0D, licensePlate);
-                    p.setItemInHand(VehicleBenzine.benzineItem(Integer.parseInt(bensize), Integer.parseInt(benval) - Integer.parseInt(benval)));
+                    p.setItemInHand(VehicleFuel.benzineItem(Integer.parseInt(bensize), Integer.parseInt(benval) - Integer.parseInt(benval)));
                 }
             }
             if (p.isSneaking()) {
