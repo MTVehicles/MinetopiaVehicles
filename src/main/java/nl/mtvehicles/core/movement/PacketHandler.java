@@ -127,10 +127,12 @@ public class PacketHandler {
         try {
             pipeline.remove(player.getName());
         } catch (NoSuchElementException e) { //It isn't good practice to ignore exceptions, but I'll keep it like this for now :)
+            System.out.println(e);
         }
         try {
             pipeline.addBefore("packet_handler", player.getName(), channelDuplexHandler);
         } catch (NoSuchElementException e) { //It isn't good practice to ignore exceptions, but I'll keep it like this for now :)
+            System.out.println(e);
         }
     }
 }

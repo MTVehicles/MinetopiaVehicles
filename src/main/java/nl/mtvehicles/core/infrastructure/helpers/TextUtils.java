@@ -52,6 +52,7 @@ public class TextUtils {
         as.setVisible(false);
         VehicleData.autostand2.put(license, as);
     }
+
     public static void createVehicle(String ken, Player p) {
         if (!(VehicleData.autostand2.get(ken) == null)) {
             if (!VehicleData.autostand2.get(ken).isEmpty()) {
@@ -134,6 +135,22 @@ public class TextUtils {
 
     public static void pickupVehicle(String ken, Player p) {
         if (Vehicle.getByPlate(ken) == null) {
+            for (World world : Bukkit.getServer().getWorlds()) {
+                for (Entity entity : world.getEntities()) {
+                    if (entity.getCustomName() != null && entity.getCustomName().contains(ken)) {
+                        ArmorStand test = (ArmorStand) entity;
+                        if (test.getCustomName().contains("MTVEHICLES_SKIN_" + ken)) {
+                            if (checkInvFull(p) == false) {
+                                p.getInventory().addItem(test.getHelmet());
+                            } else {
+                                Main.messagesConfig.sendMessage(p, "inventoryFull");
+                                return;
+                            }
+                        }
+                        test.remove();
+                    }
+                }
+            }
             Main.messagesConfig.sendMessage(p, "vehicleNotFound");
             return;
         }
