@@ -2,8 +2,6 @@ name: MTVehicles
 version: 2.0.9
 main: nl.mtvehicles.core.Main
 api-version: 1.13
-softdepend:
-  - ProtocolLib
 commands:
   minetopiavehicles:
     usage: /minetopiavehicles
