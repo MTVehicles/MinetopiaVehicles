@@ -1,15 +1,15 @@
 package nl.mtvehicles.core;
 
-import nl.mtvehicles.core.Commands.VehicleSubCommandManager;
-import nl.mtvehicles.core.Commands.VehicleTabCompleterManager;
-import nl.mtvehicles.core.Events.*;
-import nl.mtvehicles.core.Infrastructure.DataConfig.*;
-import nl.mtvehicles.core.Infrastructure.Helpers.TextUtils;
-import nl.mtvehicles.core.Infrastructure.Models.ConfigUtils;
-import nl.mtvehicles.core.Infrastructure.Models.MTVehicleSubCommand;
-import nl.mtvehicles.core.Inventory.InventoryClickEvent;
-import nl.mtvehicles.core.Inventory.InventoryCloseEvent;
-import nl.mtvehicles.core.Movement.MovementManager;
+import nl.mtvehicles.core.commands.VehicleSubCommandManager;
+import nl.mtvehicles.core.commands.VehicleTabCompleterManager;
+import nl.mtvehicles.core.events.*;
+import nl.mtvehicles.core.infrastructure.dataconfig.*;
+import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
+import nl.mtvehicles.core.infrastructure.models.ConfigUtils;
+import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
+import nl.mtvehicles.core.inventory.InventoryClickEvent;
+import nl.mtvehicles.core.inventory.InventoryCloseEvent;
+import nl.mtvehicles.core.movement.MovementManager;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
