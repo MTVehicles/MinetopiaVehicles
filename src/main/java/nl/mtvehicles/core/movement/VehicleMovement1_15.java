@@ -65,7 +65,9 @@ public class VehicleMovement1_15 {
                 stand.setLocation(standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw(), standMain.getLocation().getPitch());
             }
         }
-        if (VehicleData.type.get(license).contains("HELICOPTER")) {
+        String type = VehicleData.type.get(license);
+        if(type == null) return;
+        if (type.contains("HELICOPTER")) {
             rotors(standMain, standRotors, license);
         }
         if (ppisv.b() > 0.0) {
@@ -162,7 +164,9 @@ public class VehicleMovement1_15 {
     public static void updateStand(ArmorStand mainStand, String license, Boolean space) {
         Location loc = mainStand.getLocation();
         Location location = new Location(loc.getWorld(), loc.getX(), loc.getY() - 0.2, loc.getZ(), loc.getYaw(), loc.getPitch());
-        if (VehicleData.type.get(license).contains("HELICOPTER")) {
+        String type = VehicleData.type.get(license);
+        if(type == null) return;
+        if (type.contains("HELICOPTER")) {
             if (!location.getBlock().getType().equals(Material.AIR)) {
                 VehicleData.speed.put(license, 0.0);
             }
@@ -176,7 +180,7 @@ public class VehicleMovement1_15 {
             mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.2, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
             return;
         }
-        if (VehicleData.type.get(license).contains("HOVER")) {
+        if (type.contains("HOVER")) {
             if (location.getBlock().getType().equals(Material.AIR)) {
                 mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.8, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
                 return;
