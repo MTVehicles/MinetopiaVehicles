@@ -18,7 +18,7 @@
                 </configuration>
             </plugin>
         </plugins>
-        <directory>E:\Build\1.17.1\plugins</directory>
+        <directory>E:\Build\1.12.2\plugins</directory>
     </build>
     <repositories>
         <repository>

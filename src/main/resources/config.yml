@@ -47,6 +47,12 @@ helicopterMaxHeight: 150
 # Zet dit aan als je wilt dat spelers geen voertuigen kunnen oppakken
 carPickup: false
 
+# Cooldown 10 = 10 seconds
+hornCooldown: 5
+
+# Type of horn, later will be added that you can change the types for each car
+hornType: "minetopiaclassic.horn1"
+
 # Een lijst met toegestane blokken om een auto op te kunnen plaatsen
 blockWhitelist:
   enabled: false

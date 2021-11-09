@@ -85,11 +85,13 @@ public class Main extends JavaPlugin {
             MovementManager.MovementSelector(p);
         }
 
-        File config = new File(getDataFolder(), "config.yml");
+        File defaultconfig = new File(getDataFolder(), "config.yml");
+        File vehicleconfig = new File(getDataFolder(), "vehicles.yml");
         SimpleDateFormat formatter = new SimpleDateFormat("dd_MM_yyyy-HH_mm_ss");
         Date date = new Date();
         if (!getConfig().get("Config-Versie").equals(versions)) {
-            config.renameTo(new File(getDataFolder(), "configOld_" + formatter.format(date) + ".yml"));
+            defaultconfig.renameTo(new File(getDataFolder(), "configOld_" + formatter.format(date) + ".yml"));
+            vehicleconfig.renameTo(new File(getDataFolder(), "vehiclesOld_" + formatter.format(date) + ".yml"));
             saveDefaultConfig();
         }
 

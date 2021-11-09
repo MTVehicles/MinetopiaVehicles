@@ -704,38 +704,82 @@ voertuigen:
       - name: UFO Black
         SkinItem: DIAMOND_HOE
         itemDamage: 1235
-  - name: "Broomstick"
-    vehicleType: HOVER
+  - name: "Tank"
+    vehicleType: TANK
     skinItem: DIAMOND_HOE
-    itemDamage: 1229
+    itemDamage: 1250
     benzineEnabled: true
     kofferbakEnabled: true
     acceleratieSpeed: 0.012
-    maxSpeed: 0.67
+    maxSpeed: 0.4
     brakingSpeed: 0.03
-    aftrekkenSpeed: 0.005
-    rotateSpeed: 8
-    maxSpeedBackwards: 0.35
+    aftrekkenSpeed: 0.008
+    rotateSpeed: 6
+    maxSpeedBackwards: 0.17
     seats:
       - x: 0.0
-        y: -0.75
+        y: -0.8
         z: 0.0
     cars:
-      - name: Broomstick
+      - name: Tank Legend Black
         SkinItem: DIAMOND_HOE
-        itemDamage: 1229
-      - name: Broomstick2
+        itemDamage: 1250
+      - name: Tank Legend Camo Dark
         SkinItem: DIAMOND_HOE
-        itemDamage: 1236
-      - name: Broomstick3
+        itemDamage: 1251
+      - name: Tank Legend Camo Forest
         SkinItem: DIAMOND_HOE
-        itemDamage: 1237
-      - name: Broomstick4
+        itemDamage: 1252
+      - name: Tank Legend Camo Marine
         SkinItem: DIAMOND_HOE
-        itemDamage: 1238
-      - name: Broomstick5
+        itemDamage: 1253
+      - name: Tank Legend Desert
         SkinItem: DIAMOND_HOE
-        itemDamage: 1239
+        itemDamage: 1254
+      - name: Tank Legend Green
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1255
+      - name: Tank Legend Sand
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1256
+  - name: "Raket"
+    vehicleType: CAR
+    skinItem: DIAMOND_HOE
+    itemDamage: 1257
+    benzineEnabled: true
+    kofferbakEnabled: true
+    acceleratieSpeed: 0.012
+    maxSpeed: 0.4
+    brakingSpeed: 0.03
+    aftrekkenSpeed: 0.008
+    rotateSpeed: 6
+    maxSpeedBackwards: 0.17
+    seats:
+      - x: 0.0
+        y: -0.8
+        z: 0.0
+    cars:
+      - name: Raket Legend Black
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1257
+      - name: Raket Legend Camo Dark
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1258
+      - name: Raket Legend Camo Forest
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1259
+      - name: Raket Legend Camo Marine
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1260
+      - name: Raket Legend Desert
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1261
+      - name: Raket Legend Green
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1262
+      - name: Raket Legend Sand
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1263
   - name: "Apache"
     vehicleType: HELICOPTER
     skinItem: DIAMOND_HOE

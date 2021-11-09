@@ -3,6 +3,7 @@ package nl.mtvehicles.core.infrastructure.helpers;
 import org.bukkit.entity.ArmorStand;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class VehicleData {
     public static HashMap<String, Double> speed = new HashMap<>();
@@ -23,4 +24,5 @@ public class VehicleData {
     public static HashMap<String, Double> fuelUsage = new HashMap<>();
     public static HashMap<String, ArmorStand> autostand = new HashMap<>();
     public static HashMap<String, ArmorStand> autostand2 = new HashMap<>();
+    public static Map<String, Long> lastUsage = new HashMap<>();
 }

@@ -5,9 +5,7 @@ import net.minecraft.server.v1_14_R1.PacketPlayInSteerVehicle;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.helpers.BossBarUtils;
 import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftArmorStand;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
@@ -17,6 +15,7 @@ import java.math.BigDecimal;
 
 public class VehicleMovement1_14 {
     public static void vehicleMovement(Player p, PacketPlayInSteerVehicle ppisv) {
+        long lastUsed = 0L;
         if (p.getVehicle() == null || p.getVehicle().getCustomName() == null) {
             return;
         }
@@ -59,8 +58,47 @@ public class VehicleMovement1_14 {
                 stand.setLocation(standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw(), standMain.getLocation().getPitch());
             }
         }
-        if (VehicleData.type.get(license).contains("HELICOPTER")) {
-            rotors(standMain, standRotors, license);
+        if (VehicleData.type.get(license) != null) {
+            if (VehicleData.type.get(license).contains("HELICOPTER")) {
+                rotors(standMain, standRotors, license);
+            }
+            if (VehicleData.type.get(license).contains("TANK")) {
+                if (ppisv.d()) {
+                    if (VehicleData.lastUsage.containsKey(p.getName())) {
+                        lastUsed = ((Long) VehicleData.lastUsage.get(p.getName())).longValue();
+                    }
+                    if (System.currentTimeMillis() - lastUsed >= Main.defaultConfig.getConfig().getInt("hornCooldown") * 1000) {
+                        standMain.getWorld().playEffect(standMain.getLocation(), Effect.BLAZE_SHOOT, 1, 1);
+                        standMain.getWorld().playEffect(standMain.getLocation(), Effect.GHAST_SHOOT, 1, 1);
+                        standMain.getWorld().playEffect(standMain.getLocation(), Effect.WITHER_BREAK_BLOCK, 1, 1);
+                        double xOffset = 4;
+                        double yOffset = 1.6;
+                        double zOffset = 0;
+                        Location locvp = standMain.getLocation().clone();
+                        Location fbvp = locvp.add(locvp.getDirection().setY(0).normalize().multiply(xOffset));
+                        float zvp = (float) (fbvp.getZ() + zOffset * Math.sin(Math.toRadians(fbvp.getYaw())));
+                        float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(fbvp.getYaw())));
+                        Location loc = new Location(standMain.getWorld(), xvp, standMain.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
+                        standMain.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, loc, 2);
+                        standMain.getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, loc, 2);
+                        standMain.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, loc, 5);
+                        VehicleData.lastUsage.put(p.getName(), Long.valueOf(System.currentTimeMillis()));
+                    }
+                }
+            }
+            if (!VehicleData.type.get(license).contains("HELICOPTER")) {
+                if (!VehicleData.type.get(license).contains("TANK")) {
+                    if (ppisv.d()) {
+                        if (VehicleData.lastUsage.containsKey(p.getName())) {
+                            lastUsed = ((Long) VehicleData.lastUsage.get(p.getName())).longValue();
+                        }
+                        if (System.currentTimeMillis() - lastUsed >= Main.defaultConfig.getConfig().getInt("hornCooldown") * 1000) {
+                            standMain.getWorld().playSound(standMain.getLocation(), Main.defaultConfig.getConfig().getString("hornType"), 0.9f, 1f);
+                            VehicleData.lastUsage.put(p.getName(), Long.valueOf(System.currentTimeMillis()));
+                        }
+                    }
+                }
+            }
         }
         if (ppisv.b() > 0.0) {
             ((org.bukkit.craftbukkit.v1_14_R1.entity.CraftArmorStand) standMain).getHandle().setLocation(standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - RotationSpeed, standMain.getLocation().getPitch());
