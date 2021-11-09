@@ -2,10 +2,9 @@ package nl.mtvehicles.core.movement;
 
 import net.minecraft.server.v1_14_R1.EntityArmorStand;
 import net.minecraft.server.v1_14_R1.PacketPlayInSteerVehicle;
+import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.helpers.BossBarUtils;
 import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
-import nl.mtvehicles.core.infrastructure.models.Vehicle;
-import nl.mtvehicles.core.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -56,7 +55,7 @@ public class VehicleMovement1_14 {
         if (VehicleData.seatsize.get(license+"addon") != null) {
             for (int i = 1; i <= VehicleData.seatsize.get(license + "addon"); i++) {
                 ArmorStand standAddon = VehicleData.autostand.get("MTVEHICLES_ADDON" + i + "_" + license);
-                net.minecraft.server.v1_12_R1.EntityArmorStand stand = ((org.bukkit.craftbukkit.v1_12_R1.entity.CraftArmorStand) standAddon).getHandle();
+                EntityArmorStand stand = ((CraftArmorStand) standAddon).getHandle();
                 stand.setLocation(standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw(), standMain.getLocation().getPitch());
             }
         }

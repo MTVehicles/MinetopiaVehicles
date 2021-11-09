@@ -2,10 +2,9 @@ package nl.mtvehicles.core.movement;
 
 import net.minecraft.server.v1_15_R1.EntityArmorStand;
 import net.minecraft.server.v1_15_R1.PacketPlayInSteerVehicle;
+import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.helpers.BossBarUtils;
 import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
-import nl.mtvehicles.core.infrastructure.models.Vehicle;
-import nl.mtvehicles.core.Main;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_15_R1.entity.CraftArmorStand;
@@ -61,12 +60,14 @@ public class VehicleMovement1_15 {
         if (VehicleData.seatsize.get(license+"addon") != null) {
             for (int i = 1; i <= VehicleData.seatsize.get(license + "addon"); i++) {
                 ArmorStand standAddon = VehicleData.autostand.get("MTVEHICLES_ADDON" + i + "_" + license);
-                net.minecraft.server.v1_12_R1.EntityArmorStand stand = ((org.bukkit.craftbukkit.v1_12_R1.entity.CraftArmorStand) standAddon).getHandle();
+                EntityArmorStand stand = ((CraftArmorStand) standAddon).getHandle();
                 stand.setLocation(standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw(), standMain.getLocation().getPitch());
             }
         }
-        if (VehicleData.type.get(license).contains("HELICOPTER")) {
-            rotors(standMain, standRotors, license);
+        if (VehicleData.type.get(license) != null) {
+            if (VehicleData.type.get(license).contains("HELICOPTER")) {
+                rotors(standMain, standRotors, license);
+            }
         }
         if (ppisv.b() > 0.0) {
             ((CraftArmorStand) standMain).getHandle().setLocation(standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - RotationSpeed, standMain.getLocation().getPitch());
@@ -135,7 +136,6 @@ public class VehicleMovement1_15 {
             }
         }
         if (locY.substring(locY.length() - 2).contains(".5")) {
-
             if (loc.getBlock().getType().toString().contains("AIR")) {
                 return;
             }
@@ -162,27 +162,31 @@ public class VehicleMovement1_15 {
     public static void updateStand(ArmorStand mainStand, String license, Boolean space) {
         Location loc = mainStand.getLocation();
         Location location = new Location(loc.getWorld(), loc.getX(), loc.getY() - 0.2, loc.getZ(), loc.getYaw(), loc.getPitch());
-        if (VehicleData.type.get(license).contains("HELICOPTER")) {
-            if (!location.getBlock().getType().equals(Material.AIR)) {
-                VehicleData.speed.put(license, 0.0);
-            }
-            if (space) {
-                if (mainStand.getLocation().getY() > Main.instance.getConfig().getInt("helicopterMaxHeight")) {
+        if (VehicleData.type.get(license) != null) {
+            if (VehicleData.type.get(license).contains("HELICOPTER")) {
+                if (!location.getBlock().getType().equals(Material.AIR)) {
+                    VehicleData.speed.put(license, 0.0);
+                }
+                if (space) {
+                    if (mainStand.getLocation().getY() > Main.instance.getConfig().getInt("helicopterMaxHeight")) {
+                        return;
+                    }
+                    mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.2, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
                     return;
                 }
-                mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.2, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
+                mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.2, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
                 return;
             }
-            mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.2, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
-            return;
         }
-        if (VehicleData.type.get(license).contains("HOVER")) {
-            if (location.getBlock().getType().equals(Material.AIR)) {
-                mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.8, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
+        if (VehicleData.type.get(license) != null) {
+            if (VehicleData.type.get(license).contains("HOVER")) {
+                if (location.getBlock().getType().equals(Material.AIR)) {
+                    mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.8, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
+                    return;
+                }
+                mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.00001, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
                 return;
             }
-            mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.00001, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
-            return;
         }
         if (location.getBlock().getType().equals(Material.AIR) || location.getBlock().getType().toString().contains("WATER")) {
             mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.8, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
