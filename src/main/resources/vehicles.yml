@@ -707,7 +707,7 @@ voertuigen:
   - name: "Tank"
     vehicleType: TANK
     skinItem: DIAMOND_HOE
-    itemDamage: 1250
+    itemDamage: 1252
     benzineEnabled: true
     kofferbakEnabled: true
     acceleratieSpeed: 0.012
@@ -745,7 +745,7 @@ voertuigen:
   - name: "Raket"
     vehicleType: CAR
     skinItem: DIAMOND_HOE
-    itemDamage: 1257
+    itemDamage: 1259
     benzineEnabled: true
     kofferbakEnabled: true
     acceleratieSpeed: 0.012
