@@ -10,23 +10,23 @@ import org.bukkit.craftbukkit.v1_17_R1.entity.CraftArmorStand;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
-
 import java.math.BigDecimal;
 
 public class VehicleMovement1_17 {
-
     public static void vehicleMovement(Player p, PacketPlayInSteerVehicle ppisv) {
         long lastUsed = 0L;
-        if (p.getVehicle() == null || p.getVehicle().getCustomName() == null) {
-            return;
-        }
-        if (p.getVehicle().getCustomName().replace("MTVEHICLES_MAINSEAT_", "").equals("")) {
-            return;
-        }
+        if (p.getVehicle() == null) return;
+
+        if (!p.getVehicle().getType().toString().contains("ARMOR_STAND")) return;
+
+        if (p.getVehicle().getCustomName() == null) return;
+
+        if (p.getVehicle().getCustomName().replace("MTVEHICLES_MAINSEAT_", "") == null) return;
+
         String license = p.getVehicle().getCustomName().replace("MTVEHICLES_MAINSEAT_", "");
-        if (VehicleData.autostand.get("MTVEHICLES_MAIN_" + license) == null) {
-            return;
-        }
+
+        if (VehicleData.autostand.get("MTVEHICLES_MAIN_" + license) == null) return;
+
         if (VehicleData.speed.get(license) == null) {
             VehicleData.speed.put(license, 0.0);
             return;
