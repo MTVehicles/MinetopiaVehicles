@@ -166,7 +166,7 @@ public class InventoryClickEvent implements Listener {
         }
         if (e.getView().getTitle().contains("Vehicle Edit")) {
             e.setCancelled(true);
-            if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Vehicle Settings")) {
+            if (e.getRawSlot() == 10) {
                 MenuUtils.menuEdit(p);
             }
             if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Benzine Settings")) {

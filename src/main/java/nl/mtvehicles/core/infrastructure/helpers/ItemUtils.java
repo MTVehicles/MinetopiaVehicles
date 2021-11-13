@@ -19,19 +19,40 @@ public class ItemUtils {
     public static HashMap<String, Boolean> edit = new HashMap<>();
 
     public static ItemStack carItem(int durability, String name, String material) {
-        Material carMaterial = Material.getMaterial(material);
-        assert carMaterial != null;
-        ItemStack carItem = new ItemStack(carMaterial);
-        ItemMeta itemMeta = new ItemStack(carMaterial).getItemMeta();
-        assert itemMeta != null;
-        itemMeta.setDisplayName(TextUtils.colorize("&6" + name));
-        List<String> itemLore = new ArrayList<>();
-        itemLore.add(TextUtils.colorize("&a"));
-        itemMeta.setLore(itemLore);
-        itemMeta.setUnbreakable(true);
-        carItem.setItemMeta(itemMeta);
-        carItem.setDurability((short) durability);
-        return carItem;
+        try {
+            Material carMaterial = Material.getMaterial(material);
+            assert carMaterial != null;
+            ItemStack carItem = new ItemStack(carMaterial);
+            ItemMeta itemMeta = new ItemStack(carMaterial).getItemMeta();
+            assert itemMeta != null;
+            itemMeta.setDisplayName(TextUtils.colorize("&6" + name));
+            List<String> itemLore = new ArrayList<>();
+            itemLore.add(TextUtils.colorize("&a"));
+            itemMeta.setLore(itemLore);
+            itemMeta.setUnbreakable(true);
+            carItem.setItemMeta(itemMeta);
+            carItem.setDurability((short) durability);
+            return carItem;
+        } catch (Exception e) {
+            try {
+                Material carMaterial = Material.getMaterial(material, true);
+                assert carMaterial != null;
+                ItemStack carItem = new ItemStack(carMaterial);
+                ItemMeta itemMeta = new ItemStack(carMaterial).getItemMeta();
+                assert itemMeta != null;
+                itemMeta.setDisplayName(TextUtils.colorize("&6" + name));
+                List<String> itemLore = new ArrayList<>();
+                itemLore.add(TextUtils.colorize("&a"));
+                itemMeta.setLore(itemLore);
+                itemMeta.setUnbreakable(true);
+                carItem.setItemMeta(itemMeta);
+                carItem.setDurability((short) durability);
+                return carItem;
+            } catch (Exception e2) {
+                e2.printStackTrace();
+                return null;
+            }
+        }
     }
 
     public static ItemStack carItem9(int durability, String name, String material, String model, String nbt) {
@@ -46,6 +67,7 @@ public class ItemUtils {
     }
 
     public static ItemStack carItem2(int id, String name, String material) {
+        try {
         String ken = generateLicencePlate();
         ItemStack car = (new ItemFactory(Material.getMaterial(material))).setDurability((short) id).setName(TextUtils.colorize("&6" + name)).setNBT("mtvehicles.kenteken", ken).setNBT("mtvehicles.naam", name).toItemStack();
         ItemMeta im = car.getItemMeta();
@@ -57,20 +79,119 @@ public class ItemUtils {
         im.setUnbreakable(true);
         car.setItemMeta(im);
         return car;
+        } catch (Exception e) {
+            try {
+                String ken = generateLicencePlate();
+                ItemStack car = (new ItemFactory(Material.getMaterial(material, true))).setDurability((short) id).setName(TextUtils.colorize("&6" + name)).setNBT("mtvehicles.kenteken", ken).setNBT("mtvehicles.naam", name).toItemStack();
+                ItemMeta im = car.getItemMeta();
+                List<String> itemlore = new ArrayList<>();
+                itemlore.add(TextUtils.colorize("&a"));
+                itemlore.add(TextUtils.colorize("&a" + ken));
+                itemlore.add(TextUtils.colorize("&a"));
+                im.setLore(itemlore);
+                im.setUnbreakable(true);
+                car.setItemMeta(im);
+                return car;
+            } catch (Exception e2) {
+                e2.printStackTrace();
+                return null;
+            }
+        }
+    }
+
+    public static ItemStack carItem5(int id, String name, String material, String ken) {
+        try {
+            ItemStack car = new ItemFactory(Material.getMaterial(material)).setDurability((short) id).setName(TextUtils.colorize("&6" + name)).setNBT("mtvehicles.kenteken", ken).setNBT("mtvehicles.naam", name).toItemStack();
+            ItemMeta im = car.getItemMeta();
+            List<String> itemlore = new ArrayList<>();
+            itemlore.add(TextUtils.colorize("&a"));
+            itemlore.add(TextUtils.colorize("&a" + ken));
+            itemlore.add(TextUtils.colorize("&a"));
+            im.setLore(itemlore);
+            im.setUnbreakable(true);
+            car.setItemMeta(im);
+            return car;
+        } catch (Exception e) {
+            try {
+                ItemStack car = new ItemFactory(Material.getMaterial(material, true)).setDurability((short) id).setName(TextUtils.colorize("&6" + name)).setNBT("mtvehicles.kenteken", ken).setNBT("mtvehicles.naam", name).toItemStack();
+                ItemMeta im = car.getItemMeta();
+                List<String> itemlore = new ArrayList<>();
+                itemlore.add(TextUtils.colorize("&a"));
+                itemlore.add(TextUtils.colorize("&a" + ken));
+                itemlore.add(TextUtils.colorize("&a"));
+                im.setLore(itemlore);
+                im.setUnbreakable(true);
+                car.setItemMeta(im);
+                return car;
+            } catch (Exception e2) {
+                e2.printStackTrace();
+                return null;
+            }
+        }
+    }
+
+    public static ItemStack carItem4(int id, String name, String material, String model, String nbt, String ken) {
+        try {
+            ItemStack car = new ItemFactory(Material.getMaterial(material)).setDurability((short) id).setName(TextUtils.colorize("&6" + name)).setNBT("mtvehicles.kenteken", ken).setNBT("mtvehicles.naam", name).setNBT(model, nbt).toItemStack();
+            ItemMeta im = car.getItemMeta();
+            List<String> itemlore = new ArrayList<>();
+            itemlore.add(TextUtils.colorize("&a"));
+            itemlore.add(TextUtils.colorize("&a" + ken));
+            itemlore.add(TextUtils.colorize("&a"));
+            im.setLore(itemlore);
+            im.setUnbreakable(true);
+            car.setItemMeta(im);
+            return car;
+        } catch (Exception e) {
+            try {
+                ItemStack car = new ItemFactory(Material.getMaterial(material, true)).setDurability((short) id).setName(TextUtils.colorize("&6" + name)).setNBT("mtvehicles.kenteken", ken).setNBT("mtvehicles.naam", name).setNBT(model, nbt).toItemStack();
+                ItemMeta im = car.getItemMeta();
+                List<String> itemlore = new ArrayList<>();
+                itemlore.add(TextUtils.colorize("&a"));
+                itemlore.add(TextUtils.colorize("&a" + ken));
+                itemlore.add(TextUtils.colorize("&a"));
+                im.setLore(itemlore);
+                im.setUnbreakable(true);
+                car.setItemMeta(im);
+                return car;
+            } catch (Exception e2) {
+                e2.printStackTrace();
+                return null;
+            }
+        }
     }
 
     public static ItemStack carItem3(int id, String name, String material, String model, String nbt) {
-        String ken = generateLicencePlate();
-        ItemStack car = (new ItemFactory(Material.getMaterial(material))).setDurability((short) id).setName(TextUtils.colorize("&6" + name)).setNBT("mtvehicles.kenteken", ken).setNBT("mtvehicles.naam", name).setNBT(model, nbt).toItemStack();
-        ItemMeta im = car.getItemMeta();
-        List<String> itemlore = new ArrayList<>();
-        itemlore.add(TextUtils.colorize("&a"));
-        itemlore.add(TextUtils.colorize("&a" + ken));
-        itemlore.add(TextUtils.colorize("&a"));
-        im.setLore(itemlore);
-        im.setUnbreakable(true);
-        car.setItemMeta(im);
-        return car;
+        try {
+            String ken = generateLicencePlate();
+            ItemStack car = new ItemFactory(Material.getMaterial(material)).setDurability((short) id).setName(TextUtils.colorize("&6" + name)).setNBT("mtvehicles.kenteken", ken).setNBT("mtvehicles.naam", name).setNBT(model, nbt).toItemStack();
+            ItemMeta im = car.getItemMeta();
+            List<String> itemlore = new ArrayList<>();
+            itemlore.add(TextUtils.colorize("&a"));
+            itemlore.add(TextUtils.colorize("&a" + ken));
+            itemlore.add(TextUtils.colorize("&a"));
+            im.setLore(itemlore);
+            im.setUnbreakable(true);
+            car.setItemMeta(im);
+            return car;
+        } catch (Exception e) {
+            try {
+                String ken = generateLicencePlate();
+                ItemStack car = new ItemFactory(Material.getMaterial(material, true)).setDurability((short) id).setName(TextUtils.colorize("&6" + name)).setNBT("mtvehicles.kenteken", ken).setNBT("mtvehicles.naam", name).setNBT(model, nbt).toItemStack();
+                ItemMeta im = car.getItemMeta();
+                List<String> itemlore = new ArrayList<>();
+                itemlore.add(TextUtils.colorize("&a"));
+                itemlore.add(TextUtils.colorize("&a" + ken));
+                itemlore.add(TextUtils.colorize("&a"));
+                im.setLore(itemlore);
+                im.setUnbreakable(true);
+                car.setItemMeta(im);
+                return car;
+            } catch (Exception e2) {
+                e2.printStackTrace();
+                return null;
+            }
+        }
     }
 
     public static String generateLicencePlate() {
@@ -217,6 +338,36 @@ public class ItemUtils {
         }
     }
 
+    public static ItemStack mItem3(String material, int amount, short durability, String text, String lores, String model, String nbt) {
+        try {
+            ItemStack car = new ItemStack(Material.getMaterial(material.toUpperCase()), amount, durability);
+            ItemStack is = new ItemFactory(car).setNBT(model, nbt).toItemStack();
+            ItemMeta im = is.getItemMeta();
+            List<String> itemlore = new ArrayList<>();
+            itemlore.add(TextUtils.colorize(lores));
+            im.setLore(itemlore);
+            im.setUnbreakable(true);
+            im.setDisplayName(TextUtils.colorize(text));
+            is.setItemMeta(im);
+            return is;
+        } catch (Exception e) {
+            try {
+                ItemStack is = new ItemStack(Material.getMaterial(material.toUpperCase(),true), amount, durability);
+                ItemMeta im = is.getItemMeta();
+                List<String> itemlore = new ArrayList<>();
+                itemlore.add(TextUtils.colorize(lores));
+                im.setLore(itemlore);
+                im.setUnbreakable(true);
+                im.setDisplayName(TextUtils.colorize(text));
+                is.setItemMeta(im);
+                return is;
+            } catch (Exception e2) {
+                e2.printStackTrace();
+                return null;
+            }
+        }
+    }
+
     public static ItemStack mItem2(String material, int amount, short durability, String text, String lores) {
         try {
             ItemStack is = new ItemStack(Material.getMaterial(material.toUpperCase()), amount, durability);
@@ -230,7 +381,7 @@ public class ItemUtils {
             return is;
         } catch (Exception e) {
             try {
-                ItemStack is = new ItemStack(Material.matchMaterial(material, true), amount, durability);
+                ItemStack is = new ItemStack(Material.getMaterial(material.toUpperCase(),true), amount, durability);
                 ItemMeta im = is.getItemMeta();
                 List<String> itemlore = new ArrayList<>();
                 itemlore.add(TextUtils.colorize(lores));
