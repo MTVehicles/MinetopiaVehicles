@@ -372,15 +372,19 @@ public class InventoryClickEvent implements Listener {
         if (e.getView().getTitle().contains("Benzine menu")) {
             e.setCancelled(true);
             p.getInventory().addItem(e.getCurrentItem());
-
         }
         if (e.getView().getTitle().contains("Voucher Redeem Menu")) {
             e.setCancelled(true);
             if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Ja")) {
+                String carUuid = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.item");
+                if (Vehicle.getByDamage(p, carUuid) == null){
+                    p.sendMessage(Main.messagesConfig.getMessage("giveCarNotFound"));
+                    p.closeInventory();
+                    return;
+                }
                 p.sendMessage(Main.messagesConfig.getMessage(TextUtils.colorize("voucherRedeem")));
-                String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.damage");
-                Vehicle.getByDamage(Integer.parseInt(ken), p);
                 p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
+                p.getInventory().addItem(Vehicle.getByDamage(p, carUuid));
                 p.closeInventory();
             }
             if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Nee")) {
