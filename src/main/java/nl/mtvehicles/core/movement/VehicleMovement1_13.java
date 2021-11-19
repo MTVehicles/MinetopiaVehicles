@@ -175,13 +175,6 @@ public class VehicleMovement1_13 {
                 if (loc.getBlock().getType().toString().contains("AIR")) {
                     return;
                 }
-                if (loc.getBlock().getType().toString().contains("STEP") || loc.getBlock().getType().toString().contains("SLAB")) {
-                    if (!loc.getBlock().getType().toString().contains("DOUBLE")) {
-                        if (data < 9) {
-                            return;
-                        }
-                    }
-                }
                 ((org.bukkit.craftbukkit.v1_13_R2.entity.CraftArmorStand) mainStand).getHandle().setLocation(mainStand.getLocation().getX(), mainStand.getLocation().getY() + 0.5, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
                 return;
             }
