@@ -5,10 +5,8 @@ import net.minecraft.server.v1_15_R1.PacketPlayInSteerVehicle;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.helpers.BossBarUtils;
 import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
-import org.bukkit.Effect;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
+import org.bukkit.*;
+import org.bukkit.block.data.type.Slab;
 import org.bukkit.craftbukkit.v1_15_R1.entity.CraftArmorStand;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
@@ -169,29 +167,61 @@ public class VehicleMovement1_15 {
         Location loc = new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
         int data = loc.getBlock().getData();
         String locY = String.valueOf(mainStand.getLocation().getY());
-        if (!locY.substring(locY.length() - 2).contains(".5")) {
-            if (!loc.getBlock().isPassable() && !loc.getBlock().getType().toString().contains("STEP") && !loc.getBlock().getType().toString().contains("SLAB")) {
-                VehicleData.speed.put(license, 0.0);
+
+        if (driveUpSlabs()){
+            if (!locY.substring(locY.length() - 2).contains(".5")) {
+                if (loc.getBlock().getBlockData() instanceof Slab) {
+                    VehicleData.speed.put(license, 0.0);
+                }
             }
-        }
-        if (locY.substring(locY.length() - 2).contains(".5")) {
-            if (loc.getBlock().getType().toString().contains("AIR")) {
+            if (locY.substring(locY.length() - 2).contains(".5")) {
+                if (loc.getBlock().getType().toString().contains("AIR")) {
+                    return;
+                }
+                if (loc.getBlock().getBlockData() instanceof Slab) {
+                    Slab slab = (Slab) loc.getBlock().getBlockData();
+                    if (slab.getType().toString().equals("BOTTOM")) {
+                        return;
+                    }
+                }
+                ((CraftArmorStand) mainStand).getHandle().setLocation(mainStand.getLocation().getX(), mainStand.getLocation().getY() + 0.5, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
                 return;
             }
-            if (loc.getBlock().getType().toString().contains("STEP") || loc.getBlock().getType().toString().contains("SLAB")) {
-                if (loc.getBlock().getType().toString().contains("DOUBLE")) {
+            if (loc.getBlock().getBlockData() instanceof Slab){
+                Slab slab = (Slab) loc.getBlock().getBlockData();
+                if (slab.getType().toString().equals("BOTTOM")){
+                    ((CraftArmorStand) mainStand).getHandle().setLocation(mainStand.getLocation().getX(), mainStand.getLocation().getY() + 0.5, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
+                } else {
                     return;
                 }
             }
-            ((CraftArmorStand) mainStand).getHandle().setLocation(mainStand.getLocation().getX(), mainStand.getLocation().getY() + 0.5, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
-            return;
-        }
-        if (loc.getBlock().getType().toString().contains("STEP") || loc.getBlock().getType().toString().contains("SLAB")) {
-            if (loc.getBlock().getType().toString().contains("DOUBLE")) {
-                return;
+        } else {
+            if (!locY.substring(locY.length() - 2).contains(".5")) {
+                if (!loc.getBlock().isPassable()) {
+                    if (loc.getBlock().getBlockData() instanceof Slab){
+                        Slab slab = (Slab) loc.getBlock().getBlockData();
+                        if (slab.getType().toString().equals("BOTTOM")){
+                            return;
+                        }
+                    }
+
+                    //TODO: IF IT'S MORE THAN 1 BLOCK HIGH
+
+                    ((CraftArmorStand) mainStand).getHandle().setLocation(mainStand.getLocation().getX(), mainStand.getLocation().getY() + 1, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
+                }
             }
-            if (data < 9) {
+            if (locY.substring(locY.length() - 2).contains(".5")) { //Only if a vehicle is placed on a slab
+                if (loc.getBlock().getType().toString().contains("AIR")) {
+                    return;
+                }
+                if (loc.getBlock().getBlockData() instanceof Slab){
+                    Slab slab = (Slab) loc.getBlock().getBlockData();
+                    if (slab.getType().toString().equals("DOUBLE")){
+                        return;
+                    }
+                }
                 ((CraftArmorStand) mainStand).getHandle().setLocation(mainStand.getLocation().getX(), mainStand.getLocation().getY() + 0.5, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
+                return;
             }
         }
     }
@@ -270,5 +300,16 @@ public class VehicleMovement1_15 {
         final Location loc = new Location(main.getWorld(), xvp, main.getLocation().getY() + yOffset, zvp, seatas.getLocation().getYaw(), fbvp.getPitch());
         EntityArmorStand stand = ((CraftArmorStand) seatas).getHandle();
         stand.setLocation(loc.getX(), loc.getY(), loc.getZ(), seatas.getLocation().getYaw() + 15, seatas.getLocation().getPitch());
+    }
+
+    private static boolean driveUpSlabs(){
+        if (Main.defaultConfig.getConfig().getString("driveUp").equals("blocks")){
+            return false;
+        }
+        return true;
+    }
+
+    private static void debugConsoleLog(String s){
+        Bukkit.getConsoleSender().sendMessage(s);
     }
 }
