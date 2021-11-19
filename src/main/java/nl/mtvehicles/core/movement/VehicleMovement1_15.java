@@ -167,6 +167,7 @@ public class VehicleMovement1_15 {
         Location loc = new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
         int data = loc.getBlock().getData();
         String locY = String.valueOf(mainStand.getLocation().getY());
+        Location locBlockAbove = new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset + 1, zvp, fbvp.getYaw(), fbvp.getPitch());;
 
         if (driveUpSlabs()){
             if (!locY.substring(locY.length() - 2).contains(".5")) {
@@ -205,7 +206,9 @@ public class VehicleMovement1_15 {
                         }
                     }
 
-                    //TODO: IF IT'S MORE THAN 1 BLOCK HIGH
+                    if (!locBlockAbove.getBlock().getType().toString().contains("AIR")) { //if more than 1 block high
+                        return;
+                    }
 
                     ((CraftArmorStand) mainStand).getHandle().setLocation(mainStand.getLocation().getX(), mainStand.getLocation().getY() + 1, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
                 }
