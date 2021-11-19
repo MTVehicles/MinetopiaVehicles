@@ -56,6 +56,7 @@ public class VehiclePlaceEvent implements Listener {
         }
         if (Main.defaultConfig.isBlockWhitelistEnabled()
                 && !Main.defaultConfig.blockWhiteList().contains(e.getClickedBlock().getType())) {
+            e.setCancelled(true);
             Main.messagesConfig.sendMessage(p, "blockNotInWhitelist");
             return;
         }
