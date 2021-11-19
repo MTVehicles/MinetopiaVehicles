@@ -181,11 +181,6 @@ public class VehicleMovement1_12 {
         Location locBlockAbove = new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset + 1, zvp, fbvp.getYaw(), fbvp.getPitch());;
 
         if (driveUpSlabs()){
-            if (!locY.substring(locY.length() - 2).contains(".5")) {
-                if (loc.getBlock().getType().toString().contains("STEP") || loc.getBlock().getType().toString().contains("SLAB")) {
-                    VehicleData.speed.put(license, 0.0);
-                }
-            }
             if (locY.substring(locY.length() - 2).contains(".5")) {
                 if (loc.getBlock().getType().toString().contains("AIR")) {
                     return;
