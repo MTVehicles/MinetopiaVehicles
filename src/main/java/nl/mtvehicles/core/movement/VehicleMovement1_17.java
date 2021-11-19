@@ -184,7 +184,7 @@ public class VehicleMovement1_17 {
             }
             if (loc.getBlock().getType().toString().contains("STEP") || loc.getBlock().getType().toString().contains("SLAB")) {
                 if (!loc.getBlock().getType().toString().contains("DOUBLE")) {
-                    if (data == 0 || data == 5) {
+                    if (data < 9) {
                         return;
                     }
                 }
@@ -198,7 +198,7 @@ public class VehicleMovement1_17 {
             if (loc.getBlock().getType().toString().contains("DOUBLE")) {
                 return;
             }
-            if (data == 0 || data == 5) {
+            if (data < 9) {
                 Bukkit.getScheduler().runTask(Main.instance, () -> {
                     ((CraftArmorStand) mainStand).getHandle().setLocation(mainStand.getLocation().getX(), mainStand.getLocation().getY() + 0.5, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
                 });
