@@ -6,7 +6,7 @@
 #---------------------------------------------------------------------------
 
 # Blijf hiervan af want je plugin gaat sowieso kapot als je dit aanpast!
-Config-Versie: 2.1.1
+Config-Versie: 2.2.1
 
 # Dont change this, else your plugin can be broke.
 messagesLanguage: ns
@@ -52,6 +52,10 @@ hornCooldown: 5
 
 # Type of horn, later will be added that you can change the types for each car
 hornType: "minetopiaclassic.horn1"
+
+# Whether the vehicles should be able to drive up hills by slabs ('slabs') or full blocks ('blocks').
+# Default: 'slabs'
+driveUp: 'slabs'
 
 # Een lijst met toegestane blokken om een auto op te kunnen plaatsen
 blockWhitelist:
