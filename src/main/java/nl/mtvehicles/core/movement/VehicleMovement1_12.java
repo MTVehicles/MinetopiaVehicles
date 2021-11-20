@@ -203,7 +203,7 @@ public class VehicleMovement1_12 {
             }
         } else {
             if (!locY.substring(locY.length() - 2).contains(".5")) {
-                if (!loc.getBlock().isPassable()) {
+                if (!loc.getBlock().getType().toString().contains("AIR")) {
                     if (loc.getBlock().getType().toString().contains("STEP") || loc.getBlock().getType().toString().contains("SLAB")) {
                         if (!loc.getBlock().getType().toString().contains("DOUBLE")) {
                             return;
