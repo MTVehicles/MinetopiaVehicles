@@ -214,7 +214,7 @@ public class VehicleMovement1_12 {
                         return;
                     }
 
-                    ((CraftArmorStand) mainStand).getHandle().setLocation(mainStand.getLocation().getX(), mainStand.getLocation().getY() + 0.5, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
+                    ((CraftArmorStand) mainStand).getHandle().setLocation(mainStand.getLocation().getX(), mainStand.getLocation().getY() + 1, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
                 }
             }
             if (locY.substring(locY.length() - 2).contains(".5")) { //Only if a vehicle is placed on a slab
@@ -222,7 +222,7 @@ public class VehicleMovement1_12 {
                     return;
                 }
                 if (loc.getBlock().getType().toString().contains("STEP") || loc.getBlock().getType().toString().contains("SLAB")) {
-                    if (loc.getBlock().getType().toString().contains("DOUBLE")) {
+                    if (!loc.getBlock().getType().toString().contains("DOUBLE")) {
                         return;
                     }
                 }

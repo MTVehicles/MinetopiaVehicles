@@ -214,7 +214,7 @@ public class VehicleMovement1_15 {
                 }
                 if (loc.getBlock().getBlockData() instanceof Slab){
                     Slab slab = (Slab) loc.getBlock().getBlockData();
-                    if (slab.getType().toString().equals("DOUBLE")){
+                    if (!slab.getType().toString().equals("DOUBLE")){
                         return;
                     }
                 }

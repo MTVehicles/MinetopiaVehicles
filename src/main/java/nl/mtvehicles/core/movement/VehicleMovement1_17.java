@@ -217,7 +217,7 @@ public class VehicleMovement1_17 {
                     }
 
                     Bukkit.getScheduler().runTask(Main.instance, () -> {
-                        ((CraftArmorStand) mainStand).getHandle().setLocation(mainStand.getLocation().getX(), mainStand.getLocation().getY() + 0.5, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
+                        ((CraftArmorStand) mainStand).getHandle().setLocation(mainStand.getLocation().getX(), mainStand.getLocation().getY() + 1, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
                     });
                 }
             }
@@ -227,7 +227,7 @@ public class VehicleMovement1_17 {
                 }
                 if (loc.getBlock().getBlockData() instanceof Slab){
                     Slab slab = (Slab) loc.getBlock().getBlockData();
-                    if (slab.getType().toString().equals("DOUBLE")){
+                    if (!slab.getType().toString().equals("DOUBLE")){
                         return;
                     }
                 }
