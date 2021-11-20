@@ -6,6 +6,7 @@ import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.helpers.BossBarUtils;
 import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
 import org.bukkit.*;
+import org.bukkit.block.data.type.Slab;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftArmorStand;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
@@ -175,34 +176,19 @@ public class VehicleMovement1_16 {
         Location loc = new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
         int data = loc.getBlock().getData();
         String locY = String.valueOf(mainStand.getLocation().getY());
-        if (!locY.substring(locY.length() - 2).contains(".5")) {
-            if (!loc.getBlock().isPassable() && !loc.getBlock().getType().toString().contains("STEP") && !loc.getBlock().getType().toString().contains("SLAB")) {
-                VehicleData.speed.put(license, 0.0);
-            }
-        }
-        if (locY.substring(locY.length() - 2).contains(".5")) {
-            if (loc.getBlock().getType().toString().contains("AIR")) {
-                return;
-            }
-            if (loc.getBlock().getType().toString().contains("STEP") || loc.getBlock().getType().toString().contains("SLAB")) {
-                if (loc.getBlock().getType().toString().contains("DOUBLE")) {
+        Location locBlockAbove = new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset + 1, zvp, fbvp.getYaw(), fbvp.getPitch());;
+
+        if (driveUpSlabs()){
+            if (locY.substring(locY.length() - 2).contains(".5")) {
+                if (loc.getBlock().getType().toString().contains("AIR")) {
                     return;
                 }
-            }
-            Bukkit.getScheduler().runTask(Main.instance, () -> {
-                try {
-                    ((CraftArmorStand) mainStand).getHandle().setLocation(mainStand.getLocation().getX(), mainStand.getLocation().getY() + 0.5, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
-                } catch (Exception e) {
-                    // e.printStackTrace();
+                if (loc.getBlock().getBlockData() instanceof Slab) {
+                    Slab slab = (Slab) loc.getBlock().getBlockData();
+                    if (slab.getType().toString().equals("BOTTOM")) {
+                        return;
+                    }
                 }
-            });
-            return;
-        }
-        if (loc.getBlock().getType().toString().contains("STEP") || loc.getBlock().getType().toString().contains("SLAB")) {
-            if (loc.getBlock().getType().toString().contains("DOUBLE")) {
-                return;
-            }
-            if (data < 9) {
                 Bukkit.getScheduler().runTask(Main.instance, () -> {
                     try {
                         ((CraftArmorStand) mainStand).getHandle().setLocation(mainStand.getLocation().getX(), mainStand.getLocation().getY() + 0.5, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
@@ -210,6 +196,63 @@ public class VehicleMovement1_16 {
                         // e.printStackTrace();
                     }
                 });
+                return;
+            }
+            if (loc.getBlock().getBlockData() instanceof Slab){
+                Slab slab = (Slab) loc.getBlock().getBlockData();
+                if (slab.getType().toString().equals("BOTTOM")){
+                    Bukkit.getScheduler().runTask(Main.instance, () -> {
+                        try {
+                            ((CraftArmorStand) mainStand).getHandle().setLocation(mainStand.getLocation().getX(), mainStand.getLocation().getY() + 0.5, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
+                        } catch (Exception e) {
+                            // e.printStackTrace();
+                        }
+                    });
+                } else {
+                    return;
+                }
+            }
+        } else {
+            if (!locY.substring(locY.length() - 2).contains(".5")) {
+                if (!loc.getBlock().isPassable()) {
+                    if (loc.getBlock().getBlockData() instanceof Slab){
+                        Slab slab = (Slab) loc.getBlock().getBlockData();
+                        if (slab.getType().toString().equals("BOTTOM")){
+                            return;
+                        }
+                    }
+
+                    if (!locBlockAbove.getBlock().getType().toString().contains("AIR")) { //if more than 1 block high
+                        return;
+                    }
+
+                    Bukkit.getScheduler().runTask(Main.instance, () -> {
+                        try {
+                            ((CraftArmorStand) mainStand).getHandle().setLocation(mainStand.getLocation().getX(), mainStand.getLocation().getY() + 1, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
+                        } catch (Exception e) {
+                            // e.printStackTrace();
+                        }
+                    });
+                }
+            }
+            if (locY.substring(locY.length() - 2).contains(".5")) { //Only if a vehicle is placed on a slab
+                if (loc.getBlock().getType().toString().contains("AIR")) {
+                    return;
+                }
+                if (loc.getBlock().getBlockData() instanceof Slab){
+                    Slab slab = (Slab) loc.getBlock().getBlockData();
+                    if (!slab.getType().toString().equals("DOUBLE")){
+                        return;
+                    }
+                }
+                Bukkit.getScheduler().runTask(Main.instance, () -> {
+                    try {
+                        ((CraftArmorStand) mainStand).getHandle().setLocation(mainStand.getLocation().getX(), mainStand.getLocation().getY() + 0.5, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
+                    } catch (Exception e) {
+                        // e.printStackTrace();
+                    }
+                });
+                return;
             }
         }
     }
@@ -309,5 +352,12 @@ public class VehicleMovement1_16 {
                 // e.printStackTrace();
             }
         });
+    }
+
+    private static boolean driveUpSlabs(){
+        if (Main.defaultConfig.getConfig().getString("driveUp").equals("blocks")){
+            return false;
+        }
+        return true;
     }
 }
