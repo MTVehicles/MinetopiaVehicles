@@ -164,7 +164,6 @@ public class VehicleMovement1_14 {
             float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(fbvp.getYaw())));
             Location loc = new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
             int data = loc.getBlock().getData();
-            System.out.println(loc.getBlock().getType().toString() + " " + data);
             String locY = String.valueOf(mainStand.getLocation().getY());
             Location locBlockAbove = new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset + 1, zvp, fbvp.getYaw(), fbvp.getPitch());;
 
