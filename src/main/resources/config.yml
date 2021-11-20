@@ -54,7 +54,7 @@ hornCooldown: 5
 hornType: "minetopiaclassic.horn1"
 
 # Whether the vehicles should be able to drive up hills by slabs ('slabs') or full blocks ('blocks').
-# Default: 'slabs'
+# Default: 'slabs' (If your input is not recognized, the default shall be used.)
 driveUp: 'slabs'
 
 # Een lijst met toegestane blokken om een auto op te kunnen plaatsen
