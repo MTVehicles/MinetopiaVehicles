@@ -143,6 +143,34 @@ public class Vehicle {
         return null;
     }
 
+    public static String getCarUuid(String plate) {
+        if (!existsByPlate(plate)) return null;
+
+        Map<?, ?> vehicleData = Main.vehicleDataConfig.getConfig()
+                .getConfigurationSection(String.format("vehicle.%s", plate)).getValues(true);
+        List<Map<?, ?>> vehicles = Main.vehiclesConfig.getConfig().getMapList("voertuigen");
+        List<Map<?, ?>> matchedVehicles = new ArrayList<>();
+        for (Map<?, ?> configVehicle : vehicles) {
+            List<Map<?, ?>> skins = (List<Map<?, ?>>) configVehicle.get("cars");
+            for (Map<?, ?> skin : skins) {
+                if (skin.get("itemDamage").equals(vehicleData.get("skinDamage"))) {
+                    if (skin.get("SkinItem").equals(vehicleData.get("skinItem"))) {
+                        if (skin.get("nbtValue") != null) {
+                            if (skin.get("nbtValue").equals(vehicleData.get("nbtValue"))) {
+                                matchedVehicles.add(configVehicle);
+                                return skin.get("uuid").toString();
+                            }
+                        } else {
+                            matchedVehicles.add(configVehicle);
+                            return skin.get("uuid").toString();
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
     public static Vehicle getByPlate(String plate) {
         if (!existsByPlate(plate)) return null;
 
