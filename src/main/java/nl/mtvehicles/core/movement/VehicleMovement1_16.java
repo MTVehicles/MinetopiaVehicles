@@ -189,6 +189,11 @@ public class VehicleMovement1_16 {
                         return;
                     }
                 }
+                if (!locBlockAbove.getBlock().getType().toString().contains("AIR")) {
+                    VehicleData.speed.put(license, 0.0);
+                    return;
+                }
+
                 Bukkit.getScheduler().runTask(Main.instance, () -> {
                     try {
                         ((CraftArmorStand) mainStand).getHandle().setLocation(mainStand.getLocation().getX(), mainStand.getLocation().getY() + 0.5, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
@@ -201,6 +206,12 @@ public class VehicleMovement1_16 {
             if (loc.getBlock().getBlockData() instanceof Slab){
                 Slab slab = (Slab) loc.getBlock().getBlockData();
                 if (slab.getType().toString().equals("BOTTOM")){
+
+                    if (!locBlockAbove.getBlock().getType().toString().contains("AIR")) {
+                        VehicleData.speed.put(license, 0.0);
+                        return;
+                    }
+
                     Bukkit.getScheduler().runTask(Main.instance, () -> {
                         try {
                             ((CraftArmorStand) mainStand).getHandle().setLocation(mainStand.getLocation().getX(), mainStand.getLocation().getY() + 0.5, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
@@ -253,6 +264,11 @@ public class VehicleMovement1_16 {
                         return;
                     }
                 }
+                if (!locBlockAbove.getBlock().getType().toString().contains("AIR")) {
+                    VehicleData.speed.put(license, 0.0);
+                    return;
+                }
+
                 Bukkit.getScheduler().runTask(Main.instance, () -> {
                     try {
                         ((CraftArmorStand) mainStand).getHandle().setLocation(mainStand.getLocation().getX(), mainStand.getLocation().getY() + 0.5, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());

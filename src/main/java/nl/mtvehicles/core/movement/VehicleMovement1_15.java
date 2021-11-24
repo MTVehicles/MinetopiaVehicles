@@ -180,12 +180,21 @@ public class VehicleMovement1_15 {
                         return;
                     }
                 }
+                if (!locBlockAbove.getBlock().getType().toString().contains("AIR")) {
+                    VehicleData.speed.put(license, 0.0);
+                    return;
+                }
+
                 ((CraftArmorStand) mainStand).getHandle().setLocation(mainStand.getLocation().getX(), mainStand.getLocation().getY() + 0.5, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
                 return;
             }
             if (loc.getBlock().getBlockData() instanceof Slab){
                 Slab slab = (Slab) loc.getBlock().getBlockData();
                 if (slab.getType().toString().equals("BOTTOM")){
+                    if (!locBlockAbove.getBlock().getType().toString().contains("AIR")) {
+                        VehicleData.speed.put(license, 0.0);
+                        return;
+                    }
                     ((CraftArmorStand) mainStand).getHandle().setLocation(mainStand.getLocation().getX(), mainStand.getLocation().getY() + 0.5, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
                 } else {
                     VehicleData.speed.put(license, 0.0);
@@ -226,6 +235,12 @@ public class VehicleMovement1_15 {
                         return;
                     }
                 }
+
+                if (!locBlockAbove.getBlock().getType().toString().contains("AIR")) {
+                    VehicleData.speed.put(license, 0.0);
+                    return;
+                }
+
                 ((CraftArmorStand) mainStand).getHandle().setLocation(mainStand.getLocation().getX(), mainStand.getLocation().getY() + 0.5, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
                 return;
             }
