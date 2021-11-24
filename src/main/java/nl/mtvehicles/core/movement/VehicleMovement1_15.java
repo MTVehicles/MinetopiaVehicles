@@ -188,6 +188,12 @@ public class VehicleMovement1_15 {
                 if (slab.getType().toString().equals("BOTTOM")){
                     ((CraftArmorStand) mainStand).getHandle().setLocation(mainStand.getLocation().getX(), mainStand.getLocation().getY() + 0.5, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
                 } else {
+                    VehicleData.speed.put(license, 0.0);
+                    return;
+                }
+            } else {
+                if (!loc.getBlock().getType().toString().contains("AIR")) {
+                    VehicleData.speed.put(license, 0.0);
                     return;
                 }
             }
@@ -197,11 +203,13 @@ public class VehicleMovement1_15 {
                     if (loc.getBlock().getBlockData() instanceof Slab){
                         Slab slab = (Slab) loc.getBlock().getBlockData();
                         if (slab.getType().toString().equals("BOTTOM")){
+                            VehicleData.speed.put(license, 0.0);
                             return;
                         }
                     }
 
                     if (!locBlockAbove.getBlock().getType().toString().contains("AIR")) { //if more than 1 block high
+                        VehicleData.speed.put(license, 0.0);
                         return;
                     }
 
@@ -214,7 +222,7 @@ public class VehicleMovement1_15 {
                 }
                 if (loc.getBlock().getBlockData() instanceof Slab){
                     Slab slab = (Slab) loc.getBlock().getBlockData();
-                    if (!slab.getType().toString().equals("DOUBLE")){
+                    if (slab.getType().toString().equals("BOTTOM")){
                         return;
                     }
                 }
