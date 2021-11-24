@@ -190,7 +190,7 @@ public class VehicleMovement1_14 {
                         return;
                     }
                 } else {
-                    if (!loc.getBlock().getType().toString().contains("AIR")) {
+                    if (!loc.getBlock().isPassable()) {
                         VehicleData.speed.put(license, 0.0);
                         return;
                     }
