@@ -1,6 +1,7 @@
 package nl.mtvehicles.core.infrastructure.helpers;
 
 import nl.mtvehicles.core.Main;
+import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import org.apache.commons.lang.RandomStringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -437,8 +438,8 @@ public class ItemUtils {
         return car;
     }
 
-    public static void createVoucher(Object damage, Object item, Object name, Player p) {
-        ItemStack is = (new ItemFactory(Material.PAPER)).setNBT("mtvehicles.item", String.valueOf(item)).setNBT("mtvehicles.damage", String.valueOf(damage)).setNBT("mtvehicles.name", String.valueOf(name)).toItemStack();
+    public static void createVoucher(String name, Player p) {
+        ItemStack is = (new ItemFactory(Material.PAPER)).setNBT("mtvehicles.item", name).toItemStack();
         ItemMeta im = is.getItemMeta();
         List<String> goldlore = new ArrayList<>();
         goldlore.add(TextUtils.colorize("&8&m                                    "));
@@ -449,7 +450,7 @@ public class ItemUtils {
         goldlore.add(TextUtils.colorize("&2permanent"));
         goldlore.add(TextUtils.colorize("&8&m                                    "));
         im.setLore(goldlore);
-        im.setDisplayName(TextUtils.colorize("&2&l" + name));
+        im.setDisplayName(TextUtils.colorize("&2&l" + Vehicle.getCar(name).getItemMeta().getDisplayName()));
         is.setItemMeta(im);
         p.getInventory().addItem(new ItemStack[]{is});
     }

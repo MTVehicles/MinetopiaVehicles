@@ -23,7 +23,7 @@ public class VehicleVoucherEvent implements Listener {
 
         if (item == null || item.getType() != Material.PAPER) return;
 
-        if (!(NBTUtils.contains(item, "mtvehicles.damage"))) return;
+        if (!(NBTUtils.contains(item, "mtvehicles.item"))) return;
 
         if (e.getHand() != EquipmentSlot.HAND) {
             e.setCancelled(true);
