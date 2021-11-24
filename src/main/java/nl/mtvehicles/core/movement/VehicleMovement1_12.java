@@ -191,7 +191,7 @@ public class VehicleMovement1_12 {
                     }
                 }
 
-                if (!isPassableCustom(loc.getBlock().getType())) {
+                if (!isPassableCustom(locBlockAbove.getBlock().getType())) {
                     VehicleData.speed.put(license, 0.0);
                     return;
                 }
@@ -201,7 +201,7 @@ public class VehicleMovement1_12 {
             }
             if (loc.getBlock().getType().toString().contains("STEP") || loc.getBlock().getType().toString().contains("SLAB")) {
                 if (!loc.getBlock().getType().toString().contains("DOUBLE") && data < 9) {
-                    if (!isPassableCustom(loc.getBlock().getType())) {
+                    if (!isPassableCustom(locBlockAbove.getBlock().getType())) {
                         VehicleData.speed.put(license, 0.0);
                         return;
                     }
@@ -226,7 +226,7 @@ public class VehicleMovement1_12 {
                         }
                     }
 
-                    if (!isPassableCustom(loc.getBlock().getType())) { //if more than 1 block high
+                    if (!isPassableCustom(locBlockAbove.getBlock().getType())) { //if more than 1 block high
                         VehicleData.speed.put(license, 0.0);
                         return;
                     }
@@ -244,7 +244,7 @@ public class VehicleMovement1_12 {
                     }
                 }
 
-                if (!isPassableCustom(loc.getBlock().getType())) {
+                if (!isPassableCustom(locBlockAbove.getBlock().getType())) {
                     VehicleData.speed.put(license, 0.0);
                     return;
                 }
