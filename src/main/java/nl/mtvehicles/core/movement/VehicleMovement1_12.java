@@ -186,7 +186,7 @@ public class VehicleMovement1_12 {
                     return;
                 }
                 if (loc.getBlock().getType().toString().contains("STEP") || loc.getBlock().getType().toString().contains("SLAB")) {
-                    if (loc.getBlock().getType().toString().contains("DOUBLE")) {
+                    if (!loc.getBlock().getType().toString().contains("DOUBLE") && data < 9) {
                         return;
                     }
                 }
@@ -194,23 +194,30 @@ public class VehicleMovement1_12 {
                 return;
             }
             if (loc.getBlock().getType().toString().contains("STEP") || loc.getBlock().getType().toString().contains("SLAB")) {
-                if (loc.getBlock().getType().toString().contains("DOUBLE")) {
+                if (!loc.getBlock().getType().toString().contains("DOUBLE") && data < 9) {
+                    ((CraftArmorStand) mainStand).getHandle().setLocation(mainStand.getLocation().getX(), mainStand.getLocation().getY() + 0.5, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
+                } else {
+                    VehicleData.speed.put(license, 0.0);
                     return;
                 }
-                if (data < 9) {
-                    ((CraftArmorStand) mainStand).getHandle().setLocation(mainStand.getLocation().getX(), mainStand.getLocation().getY() + 0.5, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
+            } else {
+                if (!loc.getBlock().getType().toString().contains("AIR")) {
+                    VehicleData.speed.put(license, 0.0);
+                    return;
                 }
             }
         } else {
             if (!locY.substring(locY.length() - 2).contains(".5")) {
                 if (!loc.getBlock().getType().toString().contains("AIR")) {
                     if (loc.getBlock().getType().toString().contains("STEP") || loc.getBlock().getType().toString().contains("SLAB")) {
-                        if (!loc.getBlock().getType().toString().contains("DOUBLE")) {
+                        if (!loc.getBlock().getType().toString().contains("DOUBLE") && data < 9) {
+                            VehicleData.speed.put(license, 0.0);
                             return;
                         }
                     }
 
                     if (!locBlockAbove.getBlock().getType().toString().contains("AIR")) { //if more than 1 block high
+                        VehicleData.speed.put(license, 0.0);
                         return;
                     }
 
@@ -222,7 +229,7 @@ public class VehicleMovement1_12 {
                     return;
                 }
                 if (loc.getBlock().getType().toString().contains("STEP") || loc.getBlock().getType().toString().contains("SLAB")) {
-                    if (!loc.getBlock().getType().toString().contains("DOUBLE")) {
+                    if (!loc.getBlock().getType().toString().contains("DOUBLE") && data < 9) {
                         return;
                     }
                 }
