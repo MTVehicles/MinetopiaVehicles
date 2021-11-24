@@ -226,7 +226,7 @@ public class VehicleMovement1_13 {
                     }
                 }
                 if (locY.substring(locY.length() - 2).contains(".5")) { //Only if a vehicle is placed on a slab
-                    if (loc.getBlock().getType().isPassable()) {
+                    if (loc.getBlock().isPassable()) {
                         return;
                     }
                     if (loc.getBlock().getBlockData() instanceof Slab){
