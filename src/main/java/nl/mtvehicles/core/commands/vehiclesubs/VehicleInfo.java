@@ -40,7 +40,7 @@ public class VehicleInfo extends MTVehicleSubCommand {
         if (vehicle == null) return true;
 
         if (p.hasPermission("mtvehicles.admin")) {
-            sendMessage("&6ID: &c" + p.getItemInHand().getDurability());
+            sendMessage("&6UUID: &c" + Vehicle.getCarUuid(ken));
         }
 
         sendMessage("&6Kenteken: &c" + ken);

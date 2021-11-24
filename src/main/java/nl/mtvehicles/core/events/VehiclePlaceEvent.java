@@ -60,6 +60,11 @@ public class VehiclePlaceEvent implements Listener {
             Main.messagesConfig.sendMessage(p, "blockNotInWhitelist");
             return;
         }
+        if (Vehicle.getByPlate(ken) == null){
+            Main.messagesConfig.sendMessage(p, "vehicleNotFound");
+            e.setCancelled(true);
+            return;
+        }
         e.setCancelled(true);
         Location loc = e.getClickedBlock().getLocation();
         Location location = new Location(loc.getWorld(), loc.getX(), loc.getY() + 1, loc.getZ());

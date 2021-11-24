@@ -19,45 +19,59 @@ voertuigen:
       - name: "Oxboard White"
         SkinItem: DIAMOND_HOE
         itemDamage: 1009
+        uuid: C4UQZJ
       - name: "Oxboard Gold"
         SkinItem: DIAMOND_HOE
         itemDamage: 1029
+        uuid: HUYM42
       - name: "Oxboard Orange"
         SkinItem: DIAMOND_HOE
         itemDamage: 1030
+        uuid: XE9C3P
       - name: "Oxboard Green"
         SkinItem: DIAMOND_HOE
         itemDamage: 1031
+        uuid: YF4P36
       - name: "Oxboard Blue"
         SkinItem: DIAMOND_HOE
         itemDamage: 1032
+        uuid: 2BSTZM
       - name: "Oxboard Red"
         SkinItem: DIAMOND_HOE
         itemDamage: 1033
+        uuid: JE4M2R
       - name: "Oxboard Yellow"
         SkinItem: DIAMOND_HOE
         itemDamage: 1034
+        uuid: 5V2PDY
       - name: "Oxboard Purple"
         SkinItem: DIAMOND_HOE
         itemDamage: 1035
+        uuid: P4FWRX
       - name: "Oxboard Babyblue"
         SkinItem: DIAMOND_HOE
         itemDamage: 1152
+        uuid: LQ53PX
       - name: "Oxboard Goldenglass"
         SkinItem: DIAMOND_HOE
         itemDamage: 1153
+        uuid: CPK3SS
       - name: "Oxboard Champagne"
         SkinItem: DIAMOND_HOE
         itemDamage: 1154
+        uuid: B259DS
       - name: "Oxboard Desert"
         SkinItem: DIAMOND_HOE
         itemDamage: 1155
+        uuid: VFVX2H
       - name: "Oxboard Ender"
         SkinItem: DIAMOND_HOE
         itemDamage: 1156
+        uuid: KC4RHD
       - name: "Oxboard Lemonyellow"
         SkinItem: DIAMOND_HOE
         itemDamage: 1157
+        uuid: SWT2JB
 
   - name: "Fiets"
     vehicleType: CAR
@@ -79,67 +93,87 @@ voertuigen:
       - name: "Fiets Man Gray"
         SkinItem: DIAMOND_HOE
         itemDamage: 1008
+        uuid: YFDZ5K
       - name: "Fiets Man Green"
         SkinItem: DIAMOND_HOE
         itemDamage: 1043
+        uuid: DSF2HK
       - name: "Fiets Man Brown"
         SkinItem: DIAMOND_HOE
         itemDamage: 1044
+        uuid: MLD9NX
       - name: "Fiets Man Blueblack"
         SkinItem: DIAMOND_HOE
         itemDamage: 1045
+        uuid: SJY2FV
       - name: "Fiets Man Bluediamond"
         SkinItem: DIAMOND_HOE
         itemDamage: 1143
+        uuid: GD9WEU
       - name: "Fiets Man Gold"
         SkinItem: DIAMOND_HOE
         itemDamage: 1144
+        uuid: 2EY6DP
       - name: "Fiets Man Pink"
         SkinItem: DIAMOND_HOE
         itemDamage: 1145
+        uuid: NMLV7G
       - name: "Fiets Man Red"
         SkinItem: DIAMOND_HOE
         itemDamage: 1146
+        uuid: 2A85ZB
       - name: "Fiets Man Koningsdag"
         SkinItem: DIAMOND_HOE
         itemDamage: 1200
+        uuid: WAB77V
       - name: "Fiets Man Babyboy"
         SkinItem: DIAMOND_HOE
         itemDamage: 1225
+        uuid: 5QCTUR
       - name: "Fiets Vrouw Gray"
         SkinItem: DIAMOND_HOE
         itemDamage: 1046
+        uuid: A7V4BN
       - name: "Fiets Vrouw Green"
         SkinItem: DIAMOND_HOE
         itemDamage: 1047
+        uuid: WV96BY
       - name: "Fiets Vrouw Brown"
         SkinItem: DIAMOND_HOE
         itemDamage: 1048
+        uuid: 3YUK29
       - name: "Fiets Vrouw Blueblack"
         SkinItem: DIAMOND_HOE
         itemDamage: 1049
+        uuid: E8K5VC
       - name: "Fiets Vrouw Bluediamond"
         SkinItem: DIAMOND_HOE
         itemDamage: 1147
+        uuid: Q54TDU
       - name: "Fiets Vrouw Gold"
         SkinItem: DIAMOND_HOE
         itemDamage: 1148
+        uuid: 2AYF36
       - name: "Fiets Vrouw Pink"
         SkinItem: DIAMOND_HOE
         itemDamage: 1149
+        uuid: T6Y89D
       - name: "Fiets Vrouw Red"
         SkinItem: DIAMOND_HOE
         itemDamage: 1150
+        uuid: XN9MKB
       - name: "Fiets Vrouw Rainbow"
         SkinItem: DIAMOND_HOE
         itemDamage: 1187
+        uuid: VM8MKX
       - name: "Fiets Vrouw Koningsdag"
         SkinItem: DIAMOND_HOE
         itemDamage: 1199
+        uuid: 3TB9UE
       - name: "Fiets Vrouw Babygirl"
         SkinItem: DIAMOND_HOE
         itemDamage: 1226
-
+        uuid: 83QL5C
   - name: "Motor"
     vehicleType: CAR
     skinItem: DIAMOND_HOE
@@ -160,33 +194,43 @@ voertuigen:
       - name: Motor Orange
         SkinItem: DIAMOND_HOE
         itemDamage: 1036
+        uuid: FV5PZP
       - name: Motor Green
         SkinItem: DIAMOND_HOE
         itemDamage: 1037
+        uuid: 4HY4A5
       - name: Motor Blue
         SkinItem: DIAMOND_HOE
         itemDamage: 1038
+        uuid: K6TBK9
       - name: Motor Gold
         SkinItem: DIAMOND_HOE
         itemDamage: 1039
+        uuid: 7WTA39
       - name: Motor Police
         SkinItem: DIAMOND_HOE
         itemDamage: 1040
+        uuid: 384A4N
       - name: Motor Red
         SkinItem: DIAMOND_HOE
         itemDamage: 1041
+        uuid: JDC78X
       - name: Motor Pink
         SkinItem: DIAMOND_HOE
         itemDamage: 1042
+        uuid: XTKK54
       - name: Motor Vierjaar
         SkinItem: DIAMOND_HOE
         itemDamage: 1194
+        uuid: 7H3U63
       - name: Motor Easter
         SkinItem: DIAMOND_HOE
         itemDamage: 1195
+        uuid: RBSX6N
       - name: Motor Koningsdag
         SkinItem: DIAMOND_HOE
         itemDamage: 1197
+        uuid: A5K4NY
   - name: "Sportief"
     vehicleType: CAR
     skinItem: DIAMOND_HOE
@@ -207,81 +251,107 @@ voertuigen:
       - name: "Sportief Navyblue"
         SkinItem: DIAMOND_HOE
         itemDamage: 1002
+        uuid: SMV4M6
       - name: "Sportief White"
         SkinItem: DIAMOND_HOE
         itemDamage: 1060
+        uuid: 5CD8N4
       - name: "Sportief Pink"
         SkinItem: DIAMOND_HOE
         itemDamage: 1061
+        uuid: MW65MB
       - name: "Sportief Blackyellow"
         SkinItem: DIAMOND_HOE
         itemDamage: 1062
+        uuid: NJWR35
       - name: "Sportief Flamered"
         SkinItem: DIAMOND_HOE
         itemDamage: 1063
+        uuid: LHBM2X
       - name: "Sportief Flameblue"
         SkinItem: DIAMOND_HOE
         itemDamage: 1064
+        uuid: 2HSGS9
       - name: "Sportief Flamewhite"
         SkinItem: DIAMOND_HOE
         itemDamage: 1065
+        uuid: W3WRM9
       - name: "Sportief Gold"
         SkinItem: DIAMOND_HOE
         itemDamage: 1066
+        uuid: 3FPCB2
       - name: "Sportief Emerald"
         SkinItem: DIAMOND_HOE
         itemDamage: 1067
+        uuid: R2VWQA
       - name: "Sportief Orange"
         SkinItem: DIAMOND_HOE
         itemDamage: 1068
+        uuid: 8CUSCG
       - name: "Sportief Diamond"
         SkinItem: DIAMOND_HOE
         itemDamage: 1069
+        uuid: 6FHXGA
       - name: "Sportief Black"
         SkinItem: DIAMOND_HOE
         itemDamage: 1070
+        uuid: W32FND
       - name: "Sportief Koningsclean"
         SkinItem: DIAMOND_HOE
         itemDamage: 1196
+        uuid: 54L2U8
       - name: "Sportief Bordeauxclean"
         SkinItem: DIAMOND_HOE
         itemDamage: 1216
+        uuid: D2VPX5
       - name: "Sportief Flamegreen"
         SkinItem: DIAMOND_HOE
         itemDamage: 1223
+        uuid: AULZ53
       - name: "Sportief Flamepink"
         SkinItem: DIAMOND_HOE
         itemDamage: 1224
+        uuid: VC255H
       - name: "Sportief Forest"
         SkinItem: DIAMOND_HOE
         itemDamage: 1240
+        uuid: 5KH7QB
       - name: "Sportief Forestclean"
         SkinItem: DIAMOND_HOE
         itemDamage: 1241
+        uuid: Y4ARH2
       - name: "Sportief Puppel"
         SkinItem: DIAMOND_HOE
         itemDamage: 1242
+        uuid: WCL6KH
       - name: "Sportief Puppelclean"
         SkinItem: DIAMOND_HOE
         itemDamage: 1243
+        uuid: GH3LXS
       - name: "Sportief Nietrood"
         SkinItem: DIAMOND_HOE
         itemDamage: 1244
+        uuid: U7PJ85
       - name: "Sportief Nietroodclean"
         SkinItem: DIAMOND_HOE
         itemDamage: 1245
+        uuid: X2L44E
       - name: "Sportief Fakegold"
         SkinItem: DIAMOND_HOE
         itemDamage: 1246
+        uuid: 6YSL3P
       - name: "Sportief Fakegoldclean"
         SkinItem: DIAMOND_HOE
         itemDamage: 1247
+        uuid: 6Y4XE9
       - name: "Sportief Peppa"
         SkinItem: DIAMOND_HOE
         itemDamage: 1248
+        uuid: RXR5MV
       - name: "Sportief Peppaclean"
         SkinItem: DIAMOND_HOE
         itemDamage: 1249
+        uuid: 4HU8G2
   - name: "Sedan"
     vehicleType: CAR
     skinItem: DIAMOND_HOE
@@ -305,111 +375,147 @@ voertuigen:
       - name: "Sedan Navyblauw"
         SkinItem: DIAMOND_HOE
         itemDamage: 1003
+        uuid: 7JWQYB
       - name: "Sedan Politie"
         SkinItem: DIAMOND_HOE
         itemDamage: 1015
+        uuid: JSJ4ST
       - name: "Sedan Red"
         SkinItem: DIAMOND_HOE
         itemDamage: 1017
+        uuid: GKAH5U
       - name: "Sedan Green"
         SkinItem: DIAMOND_HOE
         itemDamage: 1018
+        uuid: CT3EGF
       - name: "Sedan Gray"
         SkinItem: DIAMOND_HOE
         itemDamage: 1019
+        uuid: BV3W2A
       - name: "Sedan Pink"
         SkinItem: DIAMOND_HOE
         itemDamage: 1020
+        uuid: S5NU5C
       - name: "Sedan Yellow"
         SkinItem: DIAMOND_HOE
         itemDamage: 1021
+        uuid: YLSS3P
       - name: "Sedan Brown"
         SkinItem: DIAMOND_HOE
         itemDamage: 1022
+        uuid: 4LDQAQ
       - name: "Sedan Sportief Quartz"
         SkinItem: DIAMOND_HOE
         itemDamage: 1023
+        uuid: 7BEQ5K
       - name: "Sedan Purple"
         SkinItem: DIAMOND_HOE
         itemDamage: 1024
+        uuid: TTD9ZR
       - name: "Sedan Sportief Diamond"
         SkinItem: DIAMOND_HOE
         itemDamage: 1025
+        uuid: H4K4ZV
       - name: "Sedan Koningsdag"
         SkinItem: DIAMOND_HOE
         itemDamage: 1026
+        uuid: TX9HKQ
       - name: "Sedan Sportief Rainbow"
         SkinItem: DIAMOND_HOE
         itemDamage: 1027
+        uuid: XJ4Q29
       - name: "Sedan Lesauto"
         SkinItem: DIAMOND_HOE
         itemDamage: 1028
+        uuid: M9LDAV
       - name: "Sedan Sportief Gold v2"
         SkinItem: DIAMOND_HOE
         itemDamage: 1071
+        uuid: QXN6XS
       - name: "Sedan Cars"
         SkinItem: DIAMOND_HOE
         itemDamage: 1099
+        uuid: TG73T8
       - name: "Sedan Thunder"
         SkinItem: DIAMOND_HOE
         itemDamage: 1100
+        uuid: 7VW8AS
       - name: "Sedan Monster"
         SkinItem: DIAMOND_HOE
         itemDamage: 1101
+        uuid: 6U9P2A
       - name: "Sedan Babyblauw"
         SkinItem: DIAMOND_HOE
         itemDamage: 1109
+        uuid: 655LX3
       - name: "Sedan Beige"
         SkinItem: DIAMOND_HOE
         itemDamage: 1110
+        uuid: 58UUXF
       - name: "Sedan Black"
         SkinItem: DIAMOND_HOE
         itemDamage: 1111
+        uuid: FFW36Q
       - name: "Sedan Lemonyellow"
         SkinItem: DIAMOND_HOE
         itemDamage: 1113
+        uuid: A6TLAE
       - name: "Sedan Lily"
         SkinItem: DIAMOND_HOE
         itemDamage: 1114
+        uuid: YR526Z
       - name: "Sedan Sportief Emerald"
         SkinItem: DIAMOND_HOE
         itemDamage: 1115
+        uuid: RBG6HW
       - name: "Sedan Sportief Obsidian"
         SkinItem: DIAMOND_HOE
         itemDamage: 1116
+        uuid: KG59SJ
       - name: "Sedan Zalm"
         SkinItem: DIAMOND_HOE
         itemDamage: 1117
+        uuid: DD4KEN
       - name: "Sedan Sportief President"
         SkinItem: DIAMOND_HOE
         itemDamage: 1173
+        uuid: 4A56NC
       - name: "Sedan OranjeZwart"
         SkinItem: DIAMOND_HOE
         itemDamage: 1176
+        uuid: 2RD98Z
       - name: "Sedan PaarsWit"
         SkinItem: DIAMOND_HOE
         itemDamage: 1177
+        uuid: VL7YRF
       - name: "Sedan GeelZwart"
         SkinItem: DIAMOND_HOE
         itemDamage: 1178
+        uuid: 743YWW
       - name: "Sedan BlauwZwart"
         SkinItem: DIAMOND_HOE
         itemDamage: 1179
+        uuid: KV6RY9
       - name: "Sedan Kerst"
         SkinItem: DIAMOND_HOE
         itemDamage: 1189
+        uuid: U8DQDW
       - name: "Sedan RoodWit"
         SkinItem: DIAMOND_HOE
         itemDamage: 1190
+        uuid: J9WR25
       - name: "Sedan Sportief Lego"
         SkinItem: DIAMOND_HOE
         itemDamage: 1191
+        uuid: MQ694J
       - name: "Sedan Babygirl"
         SkinItem: DIAMOND_HOE
         itemDamage: 1217
+        uuid: ZJD7VR
       - name: "Sedan Babyboy"
         SkinItem: DIAMOND_HOE
         itemDamage: 1218
+        uuid: 43Z6B7
   - name: "Racecar"
     vehicleType: CAR
     skinItem: DIAMOND_HOE
@@ -430,36 +536,47 @@ voertuigen:
       - name: Racecar Black
         SkinItem: DIAMOND_HOE
         itemDamage: 1165
+        uuid: 4JXXK8
       - name: Racecar Red
         SkinItem: DIAMOND_HOE
         itemDamage: 1166
+        uuid: RD8XS9
       - name: Racecar Emerald
         SkinItem: DIAMOND_HOE
         itemDamage: 1167
+        uuid: 6XXC76
       - name: Racecar Gold
         SkinItem: DIAMOND_HOE
         itemDamage: 1168
+        uuid: KHNB73
       - name: Racecar Pink
         SkinItem: DIAMOND_HOE
         itemDamage: 1169
+        uuid: 972EKA
       - name: Racecar Diamond
         SkinItem: DIAMOND_HOE
         itemDamage: 1170
+        uuid: 8D7JLU
       - name: Racecar Orange
         SkinItem: DIAMOND_HOE
         itemDamage: 1171
+        uuid: QF6WZD
       - name: Racecar Orangeblack
         SkinItem: DIAMOND_HOE
         itemDamage: 1172
+        uuid: 63MHGZ
       - name: Racecar Ender
         SkinItem: DIAMOND_HOE
         itemDamage: 1186
+        uuid: LRGF4Y
       - name: Racecar Purplefade
         SkinItem: DIAMOND_HOE
         itemDamage: 1193
+        uuid: KS58X3
       - name: Racecar Rainbow
         SkinItem: DIAMOND_HOE
         itemDamage: 1210
+        uuid: L4SEDU
   - name: "Jeep"
     vehicleType: CAR
     skinItem: DIAMOND_HOE
@@ -483,12 +600,15 @@ voertuigen:
       - name: "Jeep Politie"
         SkinItem: DIAMOND_HOE
         itemDamage: 1005
+        uuid: 5HEGAR
       - name: "Jeep Blue"
         SkinItem: DIAMOND_HOE
         itemDamage: 1073
+        uuid: G2KQ4V
       - name: "Jeep Gold"
         SkinItem: DIAMOND_HOE
         itemDamage: 1074
+        uuid: 5Z95XA
   - name: "Hotrod"
     vehicleType: CAR
     skinItem: DIAMOND_HOE
@@ -509,30 +629,39 @@ voertuigen:
       - name: "Hotrod Red"
         SkinItem: DIAMOND_HOE
         itemDamage: 1006
+        uuid: CJF7WX
       - name: "Hotrod Blackyellow"
         SkinItem: DIAMOND_HOE
         itemDamage: 1075
+        uuid: 5PR3D5
       - name: "Hotrod Gold"
         SkinItem: DIAMOND_HOE
         itemDamage: 1158
+        uuid: 6WDK7U
       - name: "Hotrod Blue"
         SkinItem: DIAMOND_HOE
         itemDamage: 1159
+        uuid: 2FWFAS
       - name: "Hotrod Orange"
         SkinItem: DIAMOND_HOE
         itemDamage: 1160
+        uuid: E6HMVT
       - name: "Hotrod Black"
         SkinItem: DIAMOND_HOE
         itemDamage: 1161
+        uuid: 6GBKXT
       - name: "Hotrod Pink"
         SkinItem: DIAMOND_HOE
         itemDamage: 1162
+        uuid: 5F2B55
       - name: "Hotrod Army"
         SkinItem: DIAMOND_HOE
         itemDamage: 1164
+        uuid: 4ZEN6W
       - name: "Hotrod Valentijn"
         SkinItem: DIAMOND_HOE
         itemDamage: 1192
+        uuid: S5JPB9
   - name: "Hovercraft"
     vehicleType: HOVER
     skinItem: DIAMOND_HOE
@@ -553,21 +682,27 @@ voertuigen:
       - name: Hovercraft Lime
         SkinItem: DIAMOND_HOE
         itemDamage: 1121
+        uuid: 2C7UM7
       - name: Hovercraft White
         SkinItem: DIAMOND_HOE
         itemDamage: 1122
+        uuid: ABRA7A
       - name: Hovercraft Gold
         SkinItem: DIAMOND_HOE
         itemDamage: 1123
+        uuid: X24E5U
       - name: Hovercraft Orange
         SkinItem: DIAMOND_HOE
         itemDamage: 1201
+        uuid: XTD7T7
       - name: Hovercraft Black
         SkinItem: DIAMOND_HOE
         itemDamage: 1202
+        uuid: L9DN24
       - name: Hovercraft Purpleyellow
         SkinItem: DIAMOND_HOE
         itemDamage: 1211
+        uuid: F436FE
   - name: "SUV"
     vehicleType: CAR
     skinItem: DIAMOND_HOE
@@ -597,78 +732,103 @@ voertuigen:
       - name: "SUV Blue"
         SkinItem: DIAMOND_HOE
         itemDamage: 1132
+        uuid: NAXR6K
       - name: "SUV Brown"
         SkinItem: DIAMOND_HOE
         itemDamage: 1133
+        uuid: QQER7A
       - name: "SUV Gold"
         SkinItem: DIAMOND_HOE
         itemDamage: 1134
+        uuid: L6XB46
       - name: "SUV Green"
         SkinItem: DIAMOND_HOE
         itemDamage: 1135
+        uuid: YF9328
       - name: "SUV Pink"
         SkinItem: DIAMOND_HOE
         itemDamage: 1136
+        uuid: ZNF57S
       - name: "SUV Red"
         SkinItem: DIAMOND_HOE
         itemDamage: 1137
+        uuid: 8445L7
       - name: "SUV Upperblue"
         SkinItem: DIAMOND_HOE
         itemDamage: 1138
+        uuid: EZD8F5
       - name: "SUV White"
         SkinItem: DIAMOND_HOE
         itemDamage: 1139
+        uuid: 88WPRU
       - name: "SUV Yellow"
         SkinItem: DIAMOND_HOE
         itemDamage: 1140
+        uuid: 6SEXMU
       - name: "SUV Black"
         SkinItem: DIAMOND_HOE
         itemDamage: 1141
+        uuid: FC98KS
       - name: "SUV Ender"
         SkinItem: DIAMOND_HOE
         itemDamage: 1184
+        uuid: 53JTVT
       - name: "SUV Politie"
         SkinItem: DIAMOND_HOE
         itemDamage: 1185
+        uuid: HVN8HB
       - name: "SUV Stars"
         SkinItem: DIAMOND_HOE
         itemDamage: 1188
+        uuid: X4WU9V
       - name: "SUV Cabrio Orangeblack"
         SkinItem: DIAMOND_HOE
         itemDamage: 1198
+        uuid: 7BPAD8
       - name: "SUV Redblack"
         SkinItem: DIAMOND_HOE
         itemDamage: 1203
+        uuid: 85GAEH
       - name: "SUV Greenwhite"
         SkinItem: DIAMOND_HOE
         itemDamage: 1204
+        uuid: W33BEH
       - name: "SUV Lightbluewhite"
         SkinItem: DIAMOND_HOE
         itemDamage: 1207
+        uuid: Q85BXQ
       - name: "SUV Purplewhite"
         SkinItem: DIAMOND_HOE
         itemDamage: 1208
+        uuid: G7KJ8A
       - name: "SUV Pinkwhite"
         SkinItem: DIAMOND_HOE
         itemDamage: 1209
+        uuid: K6DVYQ
       - name: "SUV Lime"
         SkinItem: DIAMOND_HOE
         itemDamage: 1219
+        uuid: M2PYRY
       - name: "SUV Criminalblack"
         SkinItem: DIAMOND_HOE
         itemDamage: 1220
+        uuid: 5R7QP3
       - name: "SUV Navyblue"
         SkinItem: DIAMOND_HOE
         itemDamage: 1221
+        uuid: 3E35UU
       - name: "SUV Bordeaux"
         SkinItem: DIAMOND_HOE
         itemDamage: 1222
+        uuid: 2C8XKA
       - name: "SUV Pokémon"
         SkinItem: DIAMOND_HOE
         itemDamage: 1227
+        uuid: K5B2YL
       - name: "SUV Giraffe"
         SkinItem: DIAMOND_HOE
         itemDamage: 1228
+        uuid: 75W9X8
   - name: "UFO"
     vehicleType: HOVER
     skinItem: DIAMOND_HOE
@@ -689,21 +849,27 @@ voertuigen:
       - name: UFO
         SkinItem: DIAMOND_HOE
         itemDamage: 1230
+        uuid: U5N8WS
       - name: UFO Orange
         SkinItem: DIAMOND_HOE
         itemDamage: 1231
+        uuid: 4ZJ2TJ
       - name: UFO Blackgold
         SkinItem: DIAMOND_HOE
         itemDamage: 1232
+        uuid: BMM98D
       - name: UFO Purple
         SkinItem: DIAMOND_HOE
         itemDamage: 1233
+        uuid: J979P2
       - name: UFO Blue
         SkinItem: DIAMOND_HOE
         itemDamage: 1234
+        uuid: 9B9YNV
       - name: UFO Black
         SkinItem: DIAMOND_HOE
         itemDamage: 1235
+        uuid: KE8E77
   - name: "Tank"
     vehicleType: TANK
     skinItem: DIAMOND_HOE
@@ -724,24 +890,31 @@ voertuigen:
       - name: Tank Legend Black
         SkinItem: DIAMOND_HOE
         itemDamage: 1250
+        uuid: G87SH4
       - name: Tank Legend Camo Dark
         SkinItem: DIAMOND_HOE
         itemDamage: 1251
+        uuid: GAY8AD
       - name: Tank Legend Camo Forest
         SkinItem: DIAMOND_HOE
         itemDamage: 1252
+        uuid: 5NHQBC
       - name: Tank Legend Camo Marine
         SkinItem: DIAMOND_HOE
         itemDamage: 1253
+        uuid: E4RAHB
       - name: Tank Legend Desert
         SkinItem: DIAMOND_HOE
         itemDamage: 1254
+        uuid: Q2NQR7
       - name: Tank Legend Green
         SkinItem: DIAMOND_HOE
         itemDamage: 1255
+        uuid: 589GVK
       - name: Tank Legend Sand
         SkinItem: DIAMOND_HOE
         itemDamage: 1256
+        uuid: 98F6Q4
   - name: "Raket"
     vehicleType: CAR
     skinItem: DIAMOND_HOE
@@ -762,24 +935,31 @@ voertuigen:
       - name: Raket Legend Black
         SkinItem: DIAMOND_HOE
         itemDamage: 1257
+        uuid: 6GZYGM
       - name: Raket Legend Camo Dark
         SkinItem: DIAMOND_HOE
         itemDamage: 1258
+        uuid: VT3Y3X
       - name: Raket Legend Camo Forest
         SkinItem: DIAMOND_HOE
         itemDamage: 1259
+        uuid: VJNR2J
       - name: Raket Legend Camo Marine
         SkinItem: DIAMOND_HOE
         itemDamage: 1260
+        uuid: 4GS924
       - name: Raket Legend Desert
         SkinItem: DIAMOND_HOE
         itemDamage: 1261
+        uuid: 5HMTND
       - name: Raket Legend Green
         SkinItem: DIAMOND_HOE
         itemDamage: 1262
+        uuid: YHS5XC
       - name: Raket Legend Sand
         SkinItem: DIAMOND_HOE
         itemDamage: 1263
+        uuid: 5WA8S3
   - name: "Apache"
     vehicleType: HELICOPTER
     skinItem: DIAMOND_HOE
@@ -814,51 +994,68 @@ voertuigen:
       - name: Apache Blue
         SkinItem: DIAMOND_HOE
         itemDamage: 1124
+        uuid: JLP5XV
       - name: Apache Pink
         SkinItem: DIAMOND_HOE
         itemDamage: 1125
+        uuid: 4EVZ8U
       - name: Apache Preen
         SkinItem: DIAMOND_HOE
         itemDamage: 1126
+        uuid: FHY77D
       - name: Apache Brown
         SkinItem: DIAMOND_HOE
         itemDamage: 1127
+        uuid: E9Y9T3
       - name: Apache Gray
         SkinItem: DIAMOND_HOE
         itemDamage: 1128
+        uuid: AAJ84C
       - name: Apache Gold
         SkinItem: DIAMOND_HOE
         itemDamage: 1129
+        uuid: K3G7JG
       - name: Apache Red
         SkinItem: DIAMOND_HOE
         itemDamage: 1130
+        uuid: 5X8QSY
       - name: Apache Upperblue
         SkinItem: DIAMOND_HOE
         itemDamage: 1131
+        uuid: 43V6S2
       - name: Apache Black
         SkinItem: DIAMOND_HOE
         itemDamage: 1142
+        uuid: RJRN9P
       - name: Apache Pink
         SkinItem: DIAMOND_HOE
         itemDamage: 1180
+        uuid: SYJN6P
       - name: Apache Obsidian
         SkinItem: DIAMOND_HOE
         itemDamage: 1181
+        uuid: 92XNSC
       - name: Apache Leaves
         SkinItem: DIAMOND_HOE
         itemDamage: 1182
+        uuid: KQZ4VC
       - name: Apache Orange
         SkinItem: DIAMOND_HOE
         itemDamage: 1183
+        uuid: EG8HLM
       - name: Apache Roodze
         SkinItem: DIAMOND_HOE
         itemDamage: 1212
+        uuid: D2CW3G
       - name: Apache Bordeaux
         SkinItem: DIAMOND_HOE
         itemDamage: 1213
+        uuid: U89YH2
       - name: Apache Criminalblack
         SkinItem: DIAMOND_HOE
         itemDamage: 1214
+        uuid: 8A4A9Y
       - name: Apache Mint
         SkinItem: DIAMOND_HOE
         itemDamage: 1215
+        uuid: 6JXVBY

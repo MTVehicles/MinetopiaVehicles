@@ -35,7 +35,6 @@ public class VehicleClickEvent implements Listener {
         e.setCancelled(true);
 
         if (lastUsage.containsKey(p.getName())) {
-
             lastUsed = ((Long) lastUsage.get(p.getName())).longValue();
         }
 

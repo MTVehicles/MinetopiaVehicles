@@ -21,9 +21,6 @@ public class BossBarUtils {
 
             Double fuel = VehicleData.fuel.get(ken);
 
-            Main.vehicleDataConfig.getConfig().set(String.format("vehicle.%s.benzine", ken), fuel);
-            Main.vehicleDataConfig.save();
-
             if (fuel < 30) {
                 Fuelbar.get(ken).setColor(BarColor.RED);
                 return;
