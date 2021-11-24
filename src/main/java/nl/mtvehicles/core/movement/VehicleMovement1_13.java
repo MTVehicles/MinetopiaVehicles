@@ -169,7 +169,7 @@ public class VehicleMovement1_13 {
 
             if (driveUpSlabs()){
                 if (locY.substring(locY.length() - 2).contains(".5")) {
-                    if (loc.getBlock().getType().toString().contains("AIR")) {
+                    if (loc.getBlock().isPassable()) {
                         return;
                     }
                     if (loc.getBlock().getBlockData() instanceof Slab) {
@@ -179,7 +179,7 @@ public class VehicleMovement1_13 {
                         }
                     }
 
-                    if (!locBlockAbove.getBlock().getType().toString().contains("AIR")) {
+                    if (!locBlockAbove.getBlock().isPassable()) {
                         VehicleData.speed.put(license, 0.0);
                         return;
                     }
@@ -190,7 +190,7 @@ public class VehicleMovement1_13 {
                 if (loc.getBlock().getBlockData() instanceof Slab){
                     Slab slab = (Slab) loc.getBlock().getBlockData();
                     if (slab.getType().toString().equals("BOTTOM")){
-                        if (!locBlockAbove.getBlock().getType().toString().contains("AIR")) {
+                        if (!locBlockAbove.getBlock().isPassable()) {
                             VehicleData.speed.put(license, 0.0);
                             return;
                         }
@@ -217,7 +217,7 @@ public class VehicleMovement1_13 {
                             }
                         }
 
-                        if (!locBlockAbove.getBlock().getType().toString().contains("AIR")) { //if more than 1 block high
+                        if (!locBlockAbove.getBlock().isPassable()) { //if more than 1 block high
                             VehicleData.speed.put(license, 0.0);
                             return;
                         }
@@ -226,7 +226,7 @@ public class VehicleMovement1_13 {
                     }
                 }
                 if (locY.substring(locY.length() - 2).contains(".5")) { //Only if a vehicle is placed on a slab
-                    if (loc.getBlock().getType().toString().contains("AIR")) {
+                    if (loc.getBlock().getType().isPassable()) {
                         return;
                     }
                     if (loc.getBlock().getBlockData() instanceof Slab){
@@ -236,7 +236,7 @@ public class VehicleMovement1_13 {
                         }
                     }
 
-                    if (!locBlockAbove.getBlock().getType().toString().contains("AIR")) {
+                    if (!locBlockAbove.getBlock().isPassable()) {
                         VehicleData.speed.put(license, 0.0);
                         return;
                     }
