@@ -182,7 +182,7 @@ public class VehicleMovement1_12 {
 
         if (driveUpSlabs()){
             if (locY.substring(locY.length() - 2).contains(".5")) {
-                if (loc.getBlock().getType().toString().contains("AIR")) {
+                if (isPassableCustom(loc.getBlock().getType())) {
                     return;
                 }
                 if (loc.getBlock().getType().toString().contains("STEP") || loc.getBlock().getType().toString().contains("SLAB")) {
@@ -190,25 +190,35 @@ public class VehicleMovement1_12 {
                         return;
                     }
                 }
+
+                if (!isPassableCustom(locBlockAbove.getBlock().getType())) {
+                    VehicleData.speed.put(license, 0.0);
+                    return;
+                }
+
                 ((CraftArmorStand) mainStand).getHandle().setLocation(mainStand.getLocation().getX(), mainStand.getLocation().getY() + 0.5, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
                 return;
             }
             if (loc.getBlock().getType().toString().contains("STEP") || loc.getBlock().getType().toString().contains("SLAB")) {
                 if (!loc.getBlock().getType().toString().contains("DOUBLE") && data < 9) {
+                    if (!isPassableCustom(locBlockAbove.getBlock().getType())) {
+                        VehicleData.speed.put(license, 0.0);
+                        return;
+                    }
                     ((CraftArmorStand) mainStand).getHandle().setLocation(mainStand.getLocation().getX(), mainStand.getLocation().getY() + 0.5, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
                 } else {
                     VehicleData.speed.put(license, 0.0);
                     return;
                 }
             } else {
-                if (!loc.getBlock().getType().toString().contains("AIR")) {
+                if (!isPassableCustom(loc.getBlock().getType())) {
                     VehicleData.speed.put(license, 0.0);
                     return;
                 }
             }
         } else {
             if (!locY.substring(locY.length() - 2).contains(".5")) {
-                if (!loc.getBlock().getType().toString().contains("AIR")) {
+                if (!isPassableCustom(loc.getBlock().getType())) {
                     if (loc.getBlock().getType().toString().contains("STEP") || loc.getBlock().getType().toString().contains("SLAB")) {
                         if (!loc.getBlock().getType().toString().contains("DOUBLE") && data < 9) {
                             VehicleData.speed.put(license, 0.0);
@@ -216,7 +226,7 @@ public class VehicleMovement1_12 {
                         }
                     }
 
-                    if (!locBlockAbove.getBlock().getType().toString().contains("AIR")) { //if more than 1 block high
+                    if (!isPassableCustom(locBlockAbove.getBlock().getType())) { //if more than 1 block high
                         VehicleData.speed.put(license, 0.0);
                         return;
                     }
@@ -225,13 +235,18 @@ public class VehicleMovement1_12 {
                 }
             }
             if (locY.substring(locY.length() - 2).contains(".5")) { //Only if a vehicle is placed on a slab
-                if (loc.getBlock().getType().toString().contains("AIR")) {
+                if (isPassableCustom(loc.getBlock().getType())) {
                     return;
                 }
                 if (loc.getBlock().getType().toString().contains("STEP") || loc.getBlock().getType().toString().contains("SLAB")) {
                     if (!loc.getBlock().getType().toString().contains("DOUBLE") && data < 9) {
                         return;
                     }
+                }
+
+                if (!isPassableCustom(locBlockAbove.getBlock().getType())) {
+                    VehicleData.speed.put(license, 0.0);
+                    return;
                 }
                 ((CraftArmorStand) mainStand).getHandle().setLocation(mainStand.getLocation().getX(), mainStand.getLocation().getY() + 0.5, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
                 return;
@@ -320,5 +335,10 @@ public class VehicleMovement1_12 {
             return false;
         }
         return true;
+    }
+
+    private static boolean isPassableCustom(Material block){
+        if (block.toString().contains("AIR") || block.toString().contains("FLOWER") || block.toString().contains("ROSE") || block.toString().contains("PLANT") || block.equals(Material.BROWN_MUSHROOM) || block.equals(Material.RED_MUSHROOM) || block.toString().contains("LONG_GRASS") || block.toString().contains("SAPLING") || block.toString().contains("DEAD_BUSH") || block.toString().contains("TORCH") || block.toString().contains("BANNER")) return true;
+        else return false;
     }
 }
