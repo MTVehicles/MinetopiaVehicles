@@ -43,12 +43,12 @@ public class VehicleMovement1_16 {
         ArmorStand standMainSeat = VehicleData.autostand.get("MTVEHICLES_MAINSEAT_" + license);
         ArmorStand standRotors = VehicleData.autostand.get("MTVEHICLES_WIEKENS_" + license);
 
-        int RotationSpeed = Main.vehicleDataConfig.getConfig().getInt("vehicle."+license+".rotateSpeed");
-        double MaxSpeed = Main.vehicleDataConfig.getConfig().getDouble("vehicle."+license+".maxSpeed");
-        double AccelerationSpeed = Main.vehicleDataConfig.getConfig().getDouble("vehicle."+license+".acceleratieSpeed");
-        double BrakingSpeed = Main.vehicleDataConfig.getConfig().getDouble("vehicle."+license+".brakingSpeed");
-        double MaxSpeedBackwards = Main.vehicleDataConfig.getConfig().getDouble("vehicle."+license+".maxSpeedBackwards");
-        double FrictionSpeed = Main.vehicleDataConfig.getConfig().getDouble("vehicle."+license+".aftrekkenSpeed");
+        int RotationSpeed = Main.vehicleDataConfig.getConfig().getInt("vehicle." + license + ".rotateSpeed");
+        double MaxSpeed = Main.vehicleDataConfig.getConfig().getDouble("vehicle." + license + ".maxSpeed");
+        double AccelerationSpeed = Main.vehicleDataConfig.getConfig().getDouble("vehicle." + license + ".acceleratieSpeed");
+        double BrakingSpeed = Main.vehicleDataConfig.getConfig().getDouble("vehicle." + license + ".brakingSpeed");
+        double MaxSpeedBackwards = Main.vehicleDataConfig.getConfig().getDouble("vehicle." + license + ".maxSpeedBackwards");
+        double FrictionSpeed = Main.vehicleDataConfig.getConfig().getDouble("vehicle." + license + ".aftrekkenSpeed");
 
         Bukkit.getScheduler().runTask(Main.instance, () -> {
             try {
@@ -61,11 +61,13 @@ public class VehicleMovement1_16 {
         mainSeat(standMain, (CraftArmorStand) standMainSeat, license);
         updateStand(standMain, license, ppisv.d());
         slabCheck(standMain, license);
-        if (VehicleData.seatsize.get(license+"addon") != null) {
+        if (VehicleData.seatsize.get(license + "addon") != null) {
             for (int i = 1; i <= VehicleData.seatsize.get(license + "addon"); i++) {
                 ArmorStand standAddon = VehicleData.autostand.get("MTVEHICLES_ADDON" + i + "_" + license);
                 EntityArmorStand stand = ((CraftArmorStand) standAddon).getHandle();
-                stand.setLocation(standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw(), standMain.getLocation().getPitch());
+                Bukkit.getScheduler().runTask(Main.instance, () -> {
+                    stand.setLocation(standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw(), standMain.getLocation().getPitch());
+                });
             }
         }
         if (VehicleData.type.get(license) != null) {
@@ -143,7 +145,7 @@ public class VehicleMovement1_16 {
                 double dnum = VehicleData.fuel.get(license) - VehicleData.fuelUsage.get(license);
                 VehicleData.fuel.put(license, dnum);
             }
-            if (VehicleData.speed.get(license) < - MaxSpeedBackwards) {
+            if (VehicleData.speed.get(license) < -MaxSpeedBackwards) {
                 return;
             }
             VehicleData.speed.put(license, VehicleData.speed.get(license) - AccelerationSpeed);
@@ -176,9 +178,10 @@ public class VehicleMovement1_16 {
         Location loc = new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
         int data = loc.getBlock().getData();
         String locY = String.valueOf(mainStand.getLocation().getY());
-        Location locBlockAbove = new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset + 1, zvp, fbvp.getYaw(), fbvp.getPitch());;
+        Location locBlockAbove = new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset + 1, zvp, fbvp.getYaw(), fbvp.getPitch());
+        ;
 
-        if (driveUpSlabs()){
+        if (driveUpSlabs()) {
             if (locY.substring(locY.length() - 2).contains(".5")) {
                 if (loc.getBlock().isPassable()) {
                     return;
@@ -203,9 +206,9 @@ public class VehicleMovement1_16 {
                 });
                 return;
             }
-            if (loc.getBlock().getBlockData() instanceof Slab){
+            if (loc.getBlock().getBlockData() instanceof Slab) {
                 Slab slab = (Slab) loc.getBlock().getBlockData();
-                if (slab.getType().toString().equals("BOTTOM")){
+                if (slab.getType().toString().equals("BOTTOM")) {
 
                     if (!locBlockAbove.getBlock().isPassable()) {
                         VehicleData.speed.put(license, 0.0);
@@ -232,9 +235,9 @@ public class VehicleMovement1_16 {
         } else {
             if (!locY.substring(locY.length() - 2).contains(".5")) {
                 if (!loc.getBlock().isPassable()) {
-                    if (loc.getBlock().getBlockData() instanceof Slab){
+                    if (loc.getBlock().getBlockData() instanceof Slab) {
                         Slab slab = (Slab) loc.getBlock().getBlockData();
-                        if (slab.getType().toString().equals("BOTTOM")){
+                        if (slab.getType().toString().equals("BOTTOM")) {
                             VehicleData.speed.put(license, 0.0);
                             return;
                         }
@@ -258,9 +261,9 @@ public class VehicleMovement1_16 {
                 if (loc.getBlock().isPassable()) {
                     return;
                 }
-                if (loc.getBlock().getBlockData() instanceof Slab){
+                if (loc.getBlock().getBlockData() instanceof Slab) {
                     Slab slab = (Slab) loc.getBlock().getBlockData();
-                    if (slab.getType().toString().equals("BOTTOM")){
+                    if (slab.getType().toString().equals("BOTTOM")) {
                         return;
                     }
                 }
@@ -378,8 +381,8 @@ public class VehicleMovement1_16 {
         });
     }
 
-    private static boolean driveUpSlabs(){
-        if (Main.defaultConfig.getConfig().getString("driveUp").equals("blocks")){
+    private static boolean driveUpSlabs() {
+        if (Main.defaultConfig.getConfig().getString("driveUp").equals("blocks")) {
             return false;
         }
         return true;

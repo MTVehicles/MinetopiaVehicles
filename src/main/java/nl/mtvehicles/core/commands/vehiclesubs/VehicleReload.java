@@ -9,7 +9,7 @@ import org.bukkit.command.CommandSender;
 
 public class VehicleReload extends MTVehicleSubCommand {
     public VehicleReload() {
-        this.setPlayerCommand(true);
+        this.setPlayerCommand(false);
     }
 
     @Override

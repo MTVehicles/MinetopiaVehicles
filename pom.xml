@@ -18,7 +18,7 @@
                 </configuration>
             </plugin>
         </plugins>
-        <directory>E:\Build\1.12.2\plugins</directory>
+        <directory>E:\Build\1.12.2 - kopie\plugins</directory>
     </build>
     <repositories>
         <repository>
@@ -40,11 +40,6 @@
             <artifactId>spigot-api</artifactId>
             <version>1.15.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.comphenix.protocol</groupId>
-            <artifactId>ProtocolLib</artifactId>
-            <version>4.5.0</version>
         </dependency>
         <dependency>
             <groupId>net.minecraft</groupId>
@@ -87,6 +82,13 @@
             <version>1.0</version>
             <scope>system</scope>
             <systemPath>${basedir}/libs/spigot-1.17.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>net.minecraft</groupId>
+            <artifactId>1.18</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/libs/spigot-1.18.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.jetbrains</groupId>
