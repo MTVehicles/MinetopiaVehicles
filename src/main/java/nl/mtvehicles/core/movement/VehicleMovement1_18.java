@@ -7,7 +7,6 @@ import nl.mtvehicles.core.infrastructure.helpers.BossBarUtils;
 import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
 import org.bukkit.*;
 import org.bukkit.block.data.type.Slab;
-import org.bukkit.craftbukkit
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
