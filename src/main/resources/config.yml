@@ -57,6 +57,9 @@ hornType: "minetopiaclassic.horn1"
 # Default: 'slabs' (If your input is not recognized, the default shall be used.)
 driveUp: 'slabs'
 
+# Whether the vehicles are able to drive up carpets.
+driveOnCarpets: true
+
 # Een lijst met toegestane blokken om een auto op te kunnen plaatsen
 blockWhitelist:
   enabled: false
