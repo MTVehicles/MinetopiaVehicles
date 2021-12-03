@@ -43,6 +43,7 @@ public class Main extends JavaPlugin {
             getLogger().info("Your Server version is not supported by the plugin");
             getLogger().info("check the supported versions here https://mtvehicles.nl");
             getLogger().info("-------------------------------------------------------");
+            setEnabled(false);
             return;
         }
 
