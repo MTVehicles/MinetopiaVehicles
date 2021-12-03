@@ -267,7 +267,7 @@ public class VehicleMovement1_15 {
                     return;
                 }
 
-                pushVehicleUp(mainStand, 1);
+                pushVehicleUp(mainStand, 0.5);
                 return;
             }
         }
