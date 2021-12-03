@@ -13,10 +13,6 @@ public class MovementManager {
             PacketHandler.movement_1_13(p);
         }
 
-        if (Main.version.equals("v1_14_R1")) {
-            PacketHandler.movement_1_14(p);
-        }
-
         if (Main.version.equals("v1_15_R1")) {
             PacketHandler.movement_1_15(p);
         }
@@ -27,6 +23,10 @@ public class MovementManager {
 
         if (Main.version.contains("v1_17_R1")) {
             PacketHandler.movement_1_17(p);
+        }
+
+        if (Main.version.contains("v1_18_R1")) {
+            //add PacketHandler!
         }
     }
 }

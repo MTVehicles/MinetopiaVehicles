@@ -74,28 +74,6 @@ public class PacketHandler {
         }
     }
 
-    public static void movement_1_14(Player player) {
-        ChannelDuplexHandler channelDuplexHandler = new ChannelDuplexHandler() {
-            @Override
-            public void channelRead(ChannelHandlerContext channelHandlerContext, Object packet) throws Exception {
-                super.channelRead(channelHandlerContext, packet);
-                if (packet instanceof net.minecraft.server.v1_14_R1.PacketPlayInSteerVehicle) {
-                    net.minecraft.server.v1_14_R1.PacketPlayInSteerVehicle ppisv = (net.minecraft.server.v1_14_R1.PacketPlayInSteerVehicle) packet;
-                    VehicleMovement1_14.vehicleMovement(player, ppisv);
-                }
-            }
-        };
-        ChannelPipeline pipeline = ((org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer) player).getHandle().playerConnection.networkManager.channel.pipeline();
-        try {
-            pipeline.remove(player.getName());
-        } catch (NoSuchElementException e) { //It isn't good practice to ignore exceptions, but I'll keep it like this for now :)
-        }
-        try {
-            pipeline.addBefore("packet_handler", player.getName(), channelDuplexHandler);
-        } catch (NoSuchElementException e) { //It isn't good practice to ignore exceptions, but I'll keep it like this for now :)
-        }
-    }
-
     public static void movement_1_13(Player player) {
         ChannelDuplexHandler channelDuplexHandler = new ChannelDuplexHandler() {
             @Override
