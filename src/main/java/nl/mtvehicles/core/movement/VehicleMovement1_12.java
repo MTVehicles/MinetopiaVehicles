@@ -237,6 +237,12 @@ public class VehicleMovement1_12 {
                 }
             }
         } else {
+
+            if (loc.getBlock().getType().toString().contains("FENCE") || loc.getBlock().getType().toString().contains("WALL") || loc.getBlock().getType().toString().contains("TRAPDOOR")){
+                VehicleData.speed.put(license, 0.0);
+                return;
+            }
+
             if (!locY.substring(locY.length() - 2).contains(".5")) {
                 if (!isPassableCustom(loc.getBlock().getType())) {
                     if (loc.getBlock().getType().toString().contains("STEP") || loc.getBlock().getType().toString().contains("SLAB")) {
@@ -365,7 +371,7 @@ public class VehicleMovement1_12 {
     }
 
     private static boolean isPassableCustom(Material block){
-        if (block.toString().contains("AIR") || block.toString().contains("FLOWER") || block.toString().contains("ROSE") || block.toString().contains("PLANT") || block.equals(Material.BROWN_MUSHROOM) || block.equals(Material.RED_MUSHROOM) || block.toString().contains("LONG_GRASS") || block.toString().contains("SAPLING") || block.toString().contains("DEAD_BUSH") || block.toString().contains("TORCH") || block.toString().contains("BANNER") || block.toString().contains("PRESSURE_PLATE")) return true;
+        if (block.toString().contains("AIR") || block.toString().contains("FLOWER") || block.toString().contains("ROSE") || block.toString().contains("PLANT") || block.equals(Material.BROWN_MUSHROOM) || block.equals(Material.RED_MUSHROOM) || block.toString().contains("LONG_GRASS") || block.toString().contains("SAPLING") || block.toString().contains("DEAD_BUSH") || block.toString().contains("TORCH") || block.toString().contains("BANNER") || block.toString().contains("PLATE") || block.toString().contains("SIGN") || block.toString().contains("WEB") || block.toString().contains("LEVER") || block.toString().contains("BUTTON") || block.equals(Material.SNOW)) return true;
         else return false;
     }
 

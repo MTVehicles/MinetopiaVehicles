@@ -6,7 +6,9 @@ import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.helpers.BossBarUtils;
 import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
 import org.bukkit.*;
+import org.bukkit.block.data.type.Fence;
 import org.bukkit.block.data.type.Slab;
+import org.bukkit.block.data.type.TrapDoor;
 import org.bukkit.craftbukkit.v1_16_R3.entity.CraftArmorStand;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
@@ -237,6 +239,12 @@ public class VehicleMovement1_16 {
                 }
             }
         } else {
+
+            if (loc.getBlock().getBlockData() instanceof Fence || loc.getBlock().getType().toString().contains("WALL") || loc.getBlock().getBlockData() instanceof TrapDoor){
+                VehicleData.speed.put(license, 0.0);
+                return;
+            }
+
             if (!locY.substring(locY.length() - 2).contains(".5")) {
                 if (!loc.getBlock().isPassable()) {
                     if (loc.getBlock().getBlockData() instanceof Slab){
