@@ -182,7 +182,7 @@ public class VehicleMovement1_12 {
 
         if (loc.getBlock().getType().toString().contains("CARPET") && Main.defaultConfig.getConfig().getBoolean("driveOnCarpets")){
 
-            if (!locBlockAbove.getBlock().isPassable()) {
+            if (!isPassableCustom(loc.getBlock().getType())) {
                 VehicleData.speed.put(license, 0.0);
                 return;
             }
