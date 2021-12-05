@@ -42,7 +42,7 @@ public class VehicleInfo extends MTVehicleSubCommand {
         if (vehicle == null) return true;
 
         NumberFormat formatter = new DecimalFormat("#0.000");
-        sendMessage("&e----- &6Vehicle Information &e-----");
+        sendMessage("&e----- &6Vehicle Informatie &e-----");
         sendMessage("&8&l-&r &eType: &6" + vehicle.getVehicleType());
         sendMessage("&8&l-&r &eName: &6" + vehicle.getName());
         sendMessage("&8&l-&r &eKenteken: &6" + ken);
@@ -54,10 +54,10 @@ public class VehicleInfo extends MTVehicleSubCommand {
         sendMessage("&8&l-&r &eEigenaar: &6" + vehicle.getOwnerName());
 
         if (vehicle.getRiders().size() == 0) {
-            sendMessage("&8&l-&r &eBustuurdes: &6Geen");
+            sendMessage("&8&l-&r &eBestuurdes: &6Geen");
         } else {
             sendMessage(String.format(
-                    "&8&l-&r &eBustuurdes (%s): &6%s",
+                    "&8&l-&r &eBestuurdes (%s): &6%s",
                     vehicle.getRiders().size(),
                     vehicle.getRiders().stream()
                             .map(UUID::fromString)
