@@ -26,7 +26,7 @@ public class MovementManager {
         }
 
         if (Main.version.contains("v1_18_R1")) {
-            //add PacketHandler!
+            PacketHandler.movement_1_18(p);
         }
     }
 }
