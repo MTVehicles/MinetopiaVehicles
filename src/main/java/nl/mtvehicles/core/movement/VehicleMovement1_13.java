@@ -119,7 +119,7 @@ public class VehicleMovement1_13 {
                 double dnum = VehicleData.fuel.get(license) - VehicleData.fuelUsage.get(license);
                 VehicleData.fuel.put(license, dnum);
             }
-            if (VehicleData.speed.get(license) > MaxSpeed) {
+            if (VehicleData.speed.get(license) > MaxSpeed-AccelerationSpeed) {
                 return;
             }
             VehicleData.speed.put(license, VehicleData.speed.get(license) + AccelerationSpeed);

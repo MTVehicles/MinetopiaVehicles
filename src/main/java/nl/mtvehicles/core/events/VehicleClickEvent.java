@@ -32,6 +32,11 @@ public class VehicleClickEvent implements Listener {
             return;
         }
 
+        if (a.getCustomName().startsWith("VEHICLE")) {
+            e.setCancelled(true);
+            return;
+        }
+
         e.setCancelled(true);
 
         if (lastUsage.containsKey(p.getName())) {

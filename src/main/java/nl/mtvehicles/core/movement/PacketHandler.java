@@ -9,6 +9,27 @@ import java.util.NoSuchElementException;
 
 public class PacketHandler {
 
+    public static void movement_1_18(Player player) {
+        ChannelDuplexHandler channelDuplexHandler = new ChannelDuplexHandler() {
+            public void channelRead(ChannelHandlerContext channelHandlerContext, Object packet) throws Exception {
+                super.channelRead(channelHandlerContext, packet);
+                if (packet instanceof net.minecraft.network.protocol.game.PacketPlayInSteerVehicle) {
+                    net.minecraft.network.protocol.game.PacketPlayInSteerVehicle ppisv = (net.minecraft.network.protocol.game.PacketPlayInSteerVehicle) packet;
+                    VehicleMovement1_18.vehicleMovement(player, ppisv);
+                }
+            }
+        };
+        ChannelPipeline pipeline = ((org.bukkit.craftbukkit.v1_18_R1.entity.CraftPlayer) player).getHandle().b.a.k.pipeline();
+        try {
+            pipeline.remove(player.getName());
+        } catch (NoSuchElementException e) {
+        }
+        try {
+            pipeline.addBefore("packet_handler", player.getName(), channelDuplexHandler);
+        } catch (NoSuchElementException e) {
+        }
+    }
+
     public static void movement_1_17(Player player) {
         ChannelDuplexHandler channelDuplexHandler = new ChannelDuplexHandler() {
             public void channelRead(ChannelHandlerContext channelHandlerContext, Object packet) throws Exception {

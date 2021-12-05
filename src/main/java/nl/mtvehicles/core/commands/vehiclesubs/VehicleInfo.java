@@ -13,6 +13,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -39,18 +41,23 @@ public class VehicleInfo extends MTVehicleSubCommand {
 
         if (vehicle == null) return true;
 
+        NumberFormat formatter = new DecimalFormat("#0.000");
+        sendMessage("&e----- &6Vehicle Information &e-----");
+        sendMessage("&8&l-&r &eType: &6" + vehicle.getVehicleType());
+        sendMessage("&8&l-&r &eName: &6" + vehicle.getName());
+        sendMessage("&8&l-&r &eKenteken: &6" + ken);
         if (p.hasPermission("mtvehicles.admin")) {
-            sendMessage("&6UUID: &c" + Vehicle.getCarUuid(ken));
+            sendMessage("&8&l-&r &eUUID: &6" + Vehicle.getCarUuid(ken));
         }
-
-        sendMessage("&6Kenteken: &c" + ken);
-        sendMessage("&6Owner: &c" + vehicle.getOwnerName());
+        sendMessage("&8&l-&r &eSnelheid: &6" + formatter.format(vehicle.getMaxSpeed()*20).toString().replace(",", ".") + " blocks/sec");
+        sendMessage("&8&l-&r &eAcceleratie: &6" + formatter.format(vehicle.getAccelerationSpeed()/0.2*100).toString().replace(",", ".") + " blocks/sec^2");
+        sendMessage("&8&l-&r &eEigenaar: &6" + vehicle.getOwnerName());
 
         if (vehicle.getRiders().size() == 0) {
-            sendMessage("&6Riders: &cGeen");
+            sendMessage("&8&l-&r &eBustuurdes: &6Geen");
         } else {
             sendMessage(String.format(
-                    "&6Riders (%s): &c%s",
+                    "&8&l-&r &eBustuurdes (%s): &6%s",
                     vehicle.getRiders().size(),
                     vehicle.getRiders().stream()
                             .map(UUID::fromString)
@@ -61,10 +68,10 @@ public class VehicleInfo extends MTVehicleSubCommand {
         }
 
         if (vehicle.getMembers().size() == 0) {
-            sendMessage("&6Members: &cGeen");
+            sendMessage("&8&l-&r &ePassagiers: &6Geen");
         } else {
             sendMessage(String.format(
-                    "&6Members (%s): &c%s",
+                    "&8&l-&r &ePassagiers (%s): &6%s",
                     vehicle.getMembers().size(),
                     vehicle.getMembers().stream()
                             .map(UUID::fromString)
