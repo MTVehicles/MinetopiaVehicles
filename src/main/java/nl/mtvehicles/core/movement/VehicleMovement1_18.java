@@ -49,12 +49,12 @@ public class VehicleMovement1_18 {
             EntityArmorStand stand = ((CraftArmorStand) standSkin).getHandle();
             stand.setLocation(standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standSkin.getLocation().getYaw(), standSkin.getLocation().getPitch());
         });
-        int RotationSpeed = Main.vehicleDataConfig.getConfig().getInt("vehicle." + license + ".rotateSpeed");
-        double MaxSpeed = Main.vehicleDataConfig.getConfig().getDouble("vehicle." + license + ".maxSpeed");
-        double AccelerationSpeed = Main.vehicleDataConfig.getConfig().getDouble("vehicle." + license + ".acceleratieSpeed");
-        double BrakingSpeed = Main.vehicleDataConfig.getConfig().getDouble("vehicle." + license + ".brakingSpeed");
-        double MaxSpeedBackwards = Main.vehicleDataConfig.getConfig().getDouble("vehicle." + license + ".maxSpeedBackwards");
-        double FrictionSpeed = Main.vehicleDataConfig.getConfig().getDouble("vehicle." + license + ".aftrekkenSpeed");
+        int RotationSpeed = VehicleData.RotationSpeed.get(license);
+        double MaxSpeed = VehicleData.MaxSpeed.get(license);
+        double AccelerationSpeed = VehicleData.AccelerationSpeed.get(license);
+        double BrakingSpeed = VehicleData.BrakingSpeed.get(license);
+        double MaxSpeedBackwards = VehicleData.MaxSpeedBackwards.get(license);
+        double FrictionSpeed = VehicleData.FrictionSpeed.get(license);
 
         mainSeat(standMain, (CraftArmorStand) standMainSeat, license);
         updateStand(standMain, license, ppisv.d());

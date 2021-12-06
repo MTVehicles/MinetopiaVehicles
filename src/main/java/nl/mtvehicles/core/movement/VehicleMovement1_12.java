@@ -46,12 +46,12 @@ public class VehicleMovement1_12 {
         ArmorStand standMainSeat = VehicleData.autostand.get("MTVEHICLES_MAINSEAT_" + license);
         ArmorStand standRotors = VehicleData.autostand.get("MTVEHICLES_WIEKENS_" + license);
 
-        int RotationSpeed = Main.vehicleDataConfig.getConfig().getInt("vehicle."+license+".rotateSpeed");
-        double MaxSpeed = Main.vehicleDataConfig.getConfig().getDouble("vehicle."+license+".maxSpeed");
-        double AccelerationSpeed = Main.vehicleDataConfig.getConfig().getDouble("vehicle."+license+".acceleratieSpeed");
-        double BrakingSpeed = Main.vehicleDataConfig.getConfig().getDouble("vehicle."+license+".brakingSpeed");
-        double MaxSpeedBackwards = Main.vehicleDataConfig.getConfig().getDouble("vehicle."+license+".maxSpeedBackwards");
-        double FrictionSpeed = Main.vehicleDataConfig.getConfig().getDouble("vehicle."+license+".aftrekkenSpeed");
+        int RotationSpeed = VehicleData.RotationSpeed.get(license);
+        double MaxSpeed = VehicleData.MaxSpeed.get(license);
+        double AccelerationSpeed = VehicleData.AccelerationSpeed.get(license);
+        double BrakingSpeed = VehicleData.BrakingSpeed.get(license);
+        double MaxSpeedBackwards = VehicleData.MaxSpeedBackwards.get(license);
+        double FrictionSpeed = VehicleData.FrictionSpeed.get(license);
 
         try {
             ((CraftArmorStand) standSkin).getHandle().setLocation(standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw(), standMain.getLocation().getPitch());

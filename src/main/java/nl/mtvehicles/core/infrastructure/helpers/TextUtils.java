@@ -81,6 +81,14 @@ public class TextUtils {
                 VehicleData.fuel.put(ken, vehicle.getFuel());
                 VehicleData.fuelUsage.put(ken, Main.vehicleDataConfig.getConfig().getDouble("vehicle." + ken + ".benzineVerbruik"));
                 VehicleData.type.put(ken, Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".vehicleType"));
+
+                VehicleData.RotationSpeed.put(ken, Main.vehicleDataConfig.getConfig().getInt("vehicle."+ken+".rotateSpeed"));
+                VehicleData.MaxSpeed.put(ken, Main.vehicleDataConfig.getConfig().getDouble("vehicle."+ken+".maxSpeed"));
+                VehicleData.AccelerationSpeed.put(ken, Main.vehicleDataConfig.getConfig().getDouble("vehicle."+ken+".acceleratieSpeed"));
+                VehicleData.BrakingSpeed.put(ken, Main.vehicleDataConfig.getConfig().getDouble("vehicle."+ken+".brakingSpeed"));
+                VehicleData.MaxSpeedBackwards.put(ken, Main.vehicleDataConfig.getConfig().getDouble("vehicle."+ken+".maxSpeedBackwards"));
+                VehicleData.FrictionSpeed.put(ken, Main.vehicleDataConfig.getConfig().getDouble("vehicle."+ken+".aftrekkenSpeed"));
+
                 Location location = new Location(entity.getWorld(), entity.getLocation().getX(), entity.getLocation().getY(), entity.getLocation().getZ(), entity.getLocation().getYaw(), entity.getLocation().getPitch());
                 if (vehicleAs.getCustomName().contains("MTVEHICLES_SKIN_" + ken)) {
                     TextUtils.basicStandCreator(ken, "SKIN", location, vehicleAs.getHelmet(), false);
