@@ -42,22 +42,22 @@ public class VehicleInfo extends MTVehicleSubCommand {
         if (vehicle == null) return true;
 
         NumberFormat formatter = new DecimalFormat("#0.000");
-        sendMessage("&e----- &6Vehicle Informatie &e-----");
-        sendMessage("&8&l-&r &eType: &6" + vehicle.getVehicleType());
-        sendMessage("&8&l-&r &eName: &6" + vehicle.getName());
-        sendMessage("&8&l-&r &eKenteken: &6" + ken);
+        sendMessage(Main.messagesConfig.getMessage("vehicleInfoInformation"));
+        sendMessage(Main.messagesConfig.getMessage("vehicleInfoType") + vehicle.getVehicleType());
+        sendMessage(Main.messagesConfig.getMessage("vehicleInfoName") + vehicle.getName());
+        sendMessage(Main.messagesConfig.getMessage("vehicleInfoLicense") + ken);
         if (p.hasPermission("mtvehicles.admin")) {
-            sendMessage("&8&l-&r &eUUID: &6" + Vehicle.getCarUuid(ken));
+            sendMessage(Main.messagesConfig.getMessage("vehicleInfoUUID") + Vehicle.getCarUuid(ken));
         }
-        sendMessage("&8&l-&r &eSnelheid: &6" + formatter.format(vehicle.getMaxSpeed()*20).toString().replace(",", ".") + " blocks/sec");
-        sendMessage("&8&l-&r &eAcceleratie: &6" + formatter.format(vehicle.getAccelerationSpeed()/0.2*100).toString().replace(",", ".") + " blocks/sec^2");
-        sendMessage("&8&l-&r &eEigenaar: &6" + vehicle.getOwnerName());
+        sendMessage(Main.messagesConfig.getMessage("vehicleInfoSpeed") + formatter.format(vehicle.getMaxSpeed()*20).toString().replace(",", ".") + " blocks/sec");
+        sendMessage(Main.messagesConfig.getMessage("vehicleInfoAcceleration") + formatter.format(vehicle.getAccelerationSpeed()/0.2*100).toString().replace(",", ".") + " blocks/sec^2");
+        sendMessage(Main.messagesConfig.getMessage("vehicleInfoOwner") + vehicle.getOwnerName());
 
         if (vehicle.getRiders().size() == 0) {
-            sendMessage("&8&l-&r &eBestuurdes: &6Geen");
+            sendMessage(Main.messagesConfig.getMessage("vehicleInfoRiders"));
         } else {
             sendMessage(String.format(
-                    "&8&l-&r &eBestuurdes (%s): &6%s",
+                    Main.messagesConfig.getMessage("vehicleInfoRiders2"),
                     vehicle.getRiders().size(),
                     vehicle.getRiders().stream()
                             .map(UUID::fromString)
@@ -68,10 +68,10 @@ public class VehicleInfo extends MTVehicleSubCommand {
         }
 
         if (vehicle.getMembers().size() == 0) {
-            sendMessage("&8&l-&r &ePassagiers: &6Geen");
+            sendMessage(Main.messagesConfig.getMessage("vehicleInfoMembers"));
         } else {
             sendMessage(String.format(
-                    "&8&l-&r &ePassagiers (%s): &6%s",
+                    Main.messagesConfig.getMessage("vehicleInfoMembers2"),
                     vehicle.getMembers().size(),
                     vehicle.getMembers().stream()
                             .map(UUID::fromString)
