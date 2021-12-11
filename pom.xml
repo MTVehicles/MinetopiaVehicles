@@ -6,6 +6,22 @@
     <groupId>nl.mtvehicles.core</groupId>
     <artifactId>MTVehicles</artifactId>
     <version>2.1.1-SNAPSHOT</version>
+
+    <repositories>
+        <repository>
+            <id>spigotmc-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
+        <repository>
+            <id>dmulloy2-repo</id>
+            <url>https://repo.dmulloy2.net/nexus/repository/public/</url>
+        </repository>
+        <repository>
+            <id>maven-repo</id>
+            <url>https://repo.maven.apache.org/maven2/</url>
+        </repository>
+    </repositories>
+
     <build>
         <sourceDirectory>src/main/java</sourceDirectory>
         <plugins>
@@ -20,20 +36,6 @@
         </plugins>
         <directory>E:\Build\1.12.2\plugins</directory>
     </build>
-    <repositories>
-        <repository>
-            <id>spigotmc-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository>
-        <repository>
-            <id>dmulloy2-repo</id>
-            <url>https://repo.dmulloy2.net/nexus/repository/public/</url>
-        </repository>
-        <repository>
-            <id>maven-repo</id>
-            <url>https://repo1.maven.org/maven2/</url>
-        </repository>
-    </repositories>
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
@@ -88,7 +90,7 @@
             <artifactId>1.18</artifactId>
             <version>1.0</version>
             <scope>system</scope>
-            <systemPath>${basedir}/libs/spigot-1.18.jar</systemPath>
+            <systemPath>${basedir}/libs/spigot-1.18.1.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.jetbrains</groupId>

@@ -47,7 +47,7 @@ public class VehicleMovement1_18 {
         ArmorStand standRotors = VehicleData.autostand.get("MTVEHICLES_WIEKENS_" + license);
         Bukkit.getScheduler().runTask(Main.instance, () -> {
             EntityArmorStand stand = ((CraftArmorStand) standSkin).getHandle();
-            stand.setLocation(standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standSkin.getLocation().getYaw(), standSkin.getLocation().getPitch());
+            stand.absMoveTo(standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standSkin.getLocation().getYaw(), standSkin.getLocation().getPitch());
         });
         int RotationSpeed = VehicleData.RotationSpeed.get(license);
         double MaxSpeed = VehicleData.MaxSpeed.get(license);
@@ -57,7 +57,7 @@ public class VehicleMovement1_18 {
         double FrictionSpeed = VehicleData.FrictionSpeed.get(license);
 
         mainSeat(standMain, (CraftArmorStand) standMainSeat, license);
-        updateStand(standMain, license, ppisv.d());
+        updateStand(standMain, license, ppisv.isJumping());
         slabCheck(standMain, license);
 
 
@@ -66,7 +66,7 @@ public class VehicleMovement1_18 {
                 ArmorStand standAddon = VehicleData.autostand.get("MTVEHICLES_ADDON" + i + "_" + license);
                 Bukkit.getScheduler().runTask(Main.instance, () -> {
                     EntityArmorStand stand2 = ((CraftArmorStand) standAddon).getHandle();
-                    stand2.setLocation(standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw(), standMain.getLocation().getPitch());
+                    stand2.absMoveTo(standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw(), standMain.getLocation().getPitch());
                 });
             }
         }
@@ -75,7 +75,7 @@ public class VehicleMovement1_18 {
                 rotors(standMain, standRotors, license);
             }
             if (VehicleData.type.get(license).contains("TANK")) {
-                if (ppisv.d()) {
+                if (ppisv.isJumping()) {
                     if (VehicleData.lastUsage.containsKey(p.getName())) {
                         lastUsed = ((Long) VehicleData.lastUsage.get(p.getName())).longValue();
                     }
@@ -101,7 +101,7 @@ public class VehicleMovement1_18 {
             }
             if (!VehicleData.type.get(license).contains("HELICOPTER")) {
                 if (!VehicleData.type.get(license).contains("TANK")) {
-                    if (ppisv.d()) {
+                    if (ppisv.isJumping()) {
                         if (VehicleData.lastUsage.containsKey(p.getName())) {
                             lastUsed = ((Long) VehicleData.lastUsage.get(p.getName())).longValue();
                         }
@@ -113,16 +113,16 @@ public class VehicleMovement1_18 {
                 }
             }
         }
-        if (ppisv.b() > 0.0) {
-            ((CraftArmorStand) standMain).getHandle().setLocation(standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - RotationSpeed, standMain.getLocation().getPitch());
-            ((CraftArmorStand) standMainSeat).getHandle().setLocation(standMainSeat.getLocation().getX(), standMainSeat.getLocation().getY(), standMainSeat.getLocation().getZ(), standMainSeat.getLocation().getYaw() - RotationSpeed, standMainSeat.getLocation().getPitch());
-            ((CraftArmorStand) standSkin).getHandle().setLocation(standSkin.getLocation().getX(), standSkin.getLocation().getY(), standSkin.getLocation().getZ(), standSkin.getLocation().getYaw() - RotationSpeed, standSkin.getLocation().getPitch());
-        } else if (ppisv.b() < 0.0) {
-            ((CraftArmorStand) standSkin).getHandle().setLocation(standSkin.getLocation().getX(), standSkin.getLocation().getY(), standSkin.getLocation().getZ(), standSkin.getLocation().getYaw() + RotationSpeed, standSkin.getLocation().getPitch());
-            ((CraftArmorStand) standMainSeat).getHandle().setLocation(standMainSeat.getLocation().getX(), standMainSeat.getLocation().getY(), standMainSeat.getLocation().getZ(), standMainSeat.getLocation().getYaw() + RotationSpeed, standMainSeat.getLocation().getPitch());
-            ((CraftArmorStand) standMain).getHandle().setLocation(standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() + RotationSpeed, standMain.getLocation().getPitch());
+        if (ppisv.getXxa() > 0.0) {
+            ((CraftArmorStand) standMain).getHandle().absMoveTo(standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - RotationSpeed, standMain.getLocation().getPitch());
+            ((CraftArmorStand) standMainSeat).getHandle().absMoveTo(standMainSeat.getLocation().getX(), standMainSeat.getLocation().getY(), standMainSeat.getLocation().getZ(), standMainSeat.getLocation().getYaw() - RotationSpeed, standMainSeat.getLocation().getPitch());
+            ((CraftArmorStand) standSkin).getHandle().absMoveTo(standSkin.getLocation().getX(), standSkin.getLocation().getY(), standSkin.getLocation().getZ(), standSkin.getLocation().getYaw() - RotationSpeed, standSkin.getLocation().getPitch());
+        } else if (ppisv.getXxa() < 0.0) {
+            ((CraftArmorStand) standSkin).getHandle().absMoveTo(standSkin.getLocation().getX(), standSkin.getLocation().getY(), standSkin.getLocation().getZ(), standSkin.getLocation().getYaw() + RotationSpeed, standSkin.getLocation().getPitch());
+            ((CraftArmorStand) standMainSeat).getHandle().absMoveTo(standMainSeat.getLocation().getX(), standMainSeat.getLocation().getY(), standMainSeat.getLocation().getZ(), standMainSeat.getLocation().getYaw() + RotationSpeed, standMainSeat.getLocation().getPitch());
+            ((CraftArmorStand) standMain).getHandle().absMoveTo(standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() + RotationSpeed, standMain.getLocation().getPitch());
         }
-        if (ppisv.c() > 0.0) {
+        if (ppisv.getZza() > 0.0) {
             if (VehicleData.speed.get(license) < 0) {
                 VehicleData.speed.put(license, VehicleData.speed.get(license) + BrakingSpeed);
                 return;
@@ -136,7 +136,7 @@ public class VehicleMovement1_18 {
             }
             VehicleData.speed.put(license, VehicleData.speed.get(license) + AccelerationSpeed);
         }
-        if (ppisv.c() < 0.0) {
+        if (ppisv.getZza() < 0.0) {
             if (VehicleData.speed.get(license) > 0) {
                 VehicleData.speed.put(license, VehicleData.speed.get(license) - BrakingSpeed);
                 return;
@@ -150,7 +150,7 @@ public class VehicleMovement1_18 {
             }
             VehicleData.speed.put(license, VehicleData.speed.get(license) - AccelerationSpeed);
         }
-        if (ppisv.c() == 0.0) {
+        if (ppisv.getZza() == 0.0) {
             BigDecimal round = BigDecimal.valueOf(VehicleData.speed.get(license)).setScale(1, BigDecimal.ROUND_DOWN);
             if (Double.parseDouble(String.valueOf(round)) == 0.0) {
                 VehicleData.speed.put(license, 0.0);
@@ -339,7 +339,7 @@ public class VehicleMovement1_18 {
                 Location loc = new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
                 EntityArmorStand stand = ((CraftArmorStand) seatas).getHandle();
                 Bukkit.getScheduler().runTask(Main.instance, () -> {
-                    stand.setLocation(loc.getX(), loc.getY(), loc.getZ(), fbvp.getYaw(), loc.getPitch());
+                    stand.absMoveTo(loc.getX(), loc.getY(), loc.getZ(), fbvp.getYaw(), loc.getPitch());
                 });
             }
         }
@@ -352,7 +352,7 @@ public class VehicleMovement1_18 {
         float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(fbvp.getYaw())));
         Location loc = new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
         Bukkit.getScheduler().runTask(Main.instance, () -> {
-            mainseat.getHandle().setLocation(loc.getX(), loc.getY(), loc.getZ(), fbvp.getYaw(), loc.getPitch());
+            mainseat.getHandle().absMoveTo(loc.getX(), loc.getY(), loc.getZ(), fbvp.getYaw(), loc.getPitch());
         });
     }
 
@@ -367,7 +367,7 @@ public class VehicleMovement1_18 {
         final Location loc = new Location(main.getWorld(), xvp, main.getLocation().getY() + yOffset, zvp, seatas.getLocation().getYaw(), fbvp.getPitch());
         EntityArmorStand stand = ((CraftArmorStand) seatas).getHandle();
         Bukkit.getScheduler().runTask(Main.instance, () -> {
-            stand.setLocation(loc.getX(), loc.getY(), loc.getZ(), seatas.getLocation().getYaw() + 15, seatas.getLocation().getPitch());
+            stand.absMoveTo(loc.getX(), loc.getY(), loc.getZ(), seatas.getLocation().getYaw() + 15, seatas.getLocation().getPitch());
         });
     }
 
@@ -380,7 +380,7 @@ public class VehicleMovement1_18 {
 
     private static void pushVehicleUp(ArmorStand mainStand, double plus){
         Bukkit.getScheduler().runTask(Main.instance, () -> {
-            ((CraftArmorStand) mainStand).getHandle().setLocation(mainStand.getLocation().getX(), mainStand.getLocation().getY() + plus, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
+            ((CraftArmorStand) mainStand).getHandle().absMoveTo(mainStand.getLocation().getX(), mainStand.getLocation().getY() + plus, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
         });
     }
 }
