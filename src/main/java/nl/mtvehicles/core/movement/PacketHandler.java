@@ -1,33 +1,30 @@
 package nl.mtvehicles.core.movement;
 
+import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
+import com.comphenix.protocol.events.*;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;
+import nl.mtvehicles.core.Main;
 import org.bukkit.entity.Player;
 
 import java.util.NoSuchElementException;
 
 public class PacketHandler {
+    final static Main plugin = Main.instance;
 
     public static void movement_1_18(Player player) {
-        ChannelDuplexHandler channelDuplexHandler = new ChannelDuplexHandler() {
-            public void channelRead(ChannelHandlerContext channelHandlerContext, Object packet) throws Exception {
-                super.channelRead(channelHandlerContext, packet);
-                if (packet instanceof net.minecraft.network.protocol.game.PacketPlayInSteerVehicle) {
-                    net.minecraft.network.protocol.game.PacketPlayInSteerVehicle ppisv = (net.minecraft.network.protocol.game.PacketPlayInSteerVehicle) packet;
-                    VehicleMovement1_18.vehicleMovement(player, ppisv);
-                }
+        ProtocolManager manager = ProtocolLibrary.getProtocolManager();
+        manager.addPacketListener(new PacketAdapter(plugin, ListenerPriority.HIGH, PacketType.Play.Client.STEER_VEHICLE) {
+            @Override
+            public void onPacketReceiving(PacketEvent event) {
+                PacketContainer packet = event.getPacket();
+                VehicleMovement1_18.vehicleMovement(player, packet);
+                event.setCancelled(true);
             }
-        };
-        ChannelPipeline pipeline = ((org.bukkit.craftbukkit.v1_18_R1.entity.CraftPlayer) player).getHandle().b.a.k.pipeline();
-        try {
-            pipeline.remove(player.getName());
-        } catch (NoSuchElementException e) {
-        }
-        try {
-            pipeline.addBefore("packet_handler", player.getName(), channelDuplexHandler);
-        } catch (NoSuchElementException e) {
-        }
+        });
     }
 
     public static void movement_1_17(Player player) {
