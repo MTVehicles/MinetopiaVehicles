@@ -22,7 +22,6 @@ public class PacketHandler {
             public void onPacketReceiving(PacketEvent event) {
                 PacketContainer packet = event.getPacket();
                 VehicleMovement1_18.vehicleMovement(player, packet);
-                event.setCancelled(true);
             }
         });
     }

@@ -368,7 +368,7 @@ public class VehicleMovement1_15 {
         ((CraftArmorStand) mainStand).getHandle().setLocation(mainStand.getLocation().getX(), mainStand.getLocation().getY() + plus, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
     }
 
-    private static void debugConsoleLog(String s){
+    private static void debugLog(String s){
         Bukkit.getConsoleSender().sendMessage(s);
     }
 }
