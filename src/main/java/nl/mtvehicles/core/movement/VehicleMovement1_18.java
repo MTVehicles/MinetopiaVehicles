@@ -4,15 +4,13 @@ import com.comphenix.protocol.events.PacketContainer;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.helpers.BossBarUtils;
 import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
-import org.bukkit.Effect;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
+import org.bukkit.*;
 import org.bukkit.block.data.type.Fence;
 import org.bukkit.block.data.type.Slab;
 import org.bukkit.block.data.type.TrapDoor;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.util.Vector;
 
 import java.math.BigDecimal;
@@ -46,7 +44,7 @@ public class VehicleMovement1_18 {
         ArmorStand standSkin = VehicleData.autostand.get("MTVEHICLES_SKIN_" + license);
         ArmorStand standMainSeat = VehicleData.autostand.get("MTVEHICLES_MAINSEAT_" + license);
         ArmorStand standRotors = VehicleData.autostand.get("MTVEHICLES_WIEKENS_" + license);
-        standSkin.teleport(standMain.getLocation());
+        standSkin.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standSkin.getLocation().getYaw(), standSkin.getLocation().getPitch()));
         int RotationSpeed = VehicleData.RotationSpeed.get(license);
         double MaxSpeed = VehicleData.MaxSpeed.get(license);
         double AccelerationSpeed = VehicleData.AccelerationSpeed.get(license);
@@ -54,10 +52,9 @@ public class VehicleMovement1_18 {
         double MaxSpeedBackwards = VehicleData.MaxSpeedBackwards.get(license);
         double FrictionSpeed = VehicleData.FrictionSpeed.get(license);
 
-        mainSeat(standMain, standMainSeat, license);
         updateStand(standMain, license, ppisv.getBooleans().readSafely(0)); //isJumping
         slabCheck(standMain, license);
-
+        mainSeat(standMain, standMainSeat, license);
 
         if (VehicleData.seatsize.get(license + "addon") != null) {
             for (int i = 1; i <= VehicleData.seatsize.get(license + "addon"); i++) {
@@ -110,12 +107,12 @@ public class VehicleMovement1_18 {
         }
         if (ppisv.getFloat().readSafely(0) > 0.0) { //getXxa
             standMain.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - RotationSpeed, standMain.getLocation().getPitch()));
-            standMainSeat.teleport(new Location(standMainSeat.getLocation().getWorld(), standMainSeat.getLocation().getX(), standMainSeat.getLocation().getY(), standMainSeat.getLocation().getZ(), standMainSeat.getLocation().getYaw() - RotationSpeed, standMainSeat.getLocation().getPitch()));
+            standMainSeat.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - RotationSpeed, standMain.getLocation().getPitch()));
             standSkin.teleport(new Location(standSkin.getLocation().getWorld(), standSkin.getLocation().getX(), standSkin.getLocation().getY(), standSkin.getLocation().getZ(), standSkin.getLocation().getYaw() - RotationSpeed, standSkin.getLocation().getPitch()));
         } else if (ppisv.getFloat().readSafely(0) < 0.0) {
-            standMain.teleport(new Location(standMain.getLocation().getWorld(), standSkin.getLocation().getX(), standSkin.getLocation().getY(), standSkin.getLocation().getZ(), standSkin.getLocation().getYaw() + RotationSpeed, standSkin.getLocation().getPitch()));
-            standMainSeat.teleport(new Location(standMainSeat.getLocation().getWorld(), standMainSeat.getLocation().getX(), standMainSeat.getLocation().getY(), standMainSeat.getLocation().getZ(), standMainSeat.getLocation().getYaw() + RotationSpeed, standMainSeat.getLocation().getPitch()));
             standSkin.teleport(new Location(standSkin.getLocation().getWorld(), standSkin.getLocation().getX(), standSkin.getLocation().getY(), standSkin.getLocation().getZ(), standSkin.getLocation().getYaw() + RotationSpeed, standSkin.getLocation().getPitch()));
+            standMainSeat.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() + RotationSpeed, standMain.getLocation().getPitch()));
+            standMain.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() + RotationSpeed, standMain.getLocation().getPitch()));
         }
         if (ppisv.getFloat().readSafely(1) > 0.0) { //getZza
             if (VehicleData.speed.get(license) < 0) {
@@ -320,8 +317,8 @@ public class VehicleMovement1_18 {
         mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.0, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
     }
 
-    public static void mainSeat(ArmorStand mainStand, ArmorStand mainseat, String license) {
-        if (!(VehicleData.seatsize.get(license) == null)) {
+    public static void mainSeat(ArmorStand mainStand, ArmorStand mainSeat, String license) {
+        if (VehicleData.seatsize.get(license) != null) {
             for (int i = 2; i <= VehicleData.seatsize.get(license); i++) {
                 ArmorStand seatas = VehicleData.autostand.get("MTVEHICLES_SEAT" + i + "_" + license);
                 double xOffset = VehicleData.seatx.get("MTVEHICLES_SEAT" + i + "_" + license);
@@ -342,8 +339,12 @@ public class VehicleMovement1_18 {
         Location fbvp = locvp.add(locvp.getDirection().setY(0).normalize().multiply(xOffset));
         float zvp = (float) (fbvp.getZ() + zOffset * Math.sin(Math.toRadians(fbvp.getYaw())));
         float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(fbvp.getYaw())));
-        Location loc = new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
-        mainseat.teleport(loc);
+        Location newloc = new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
+        debugLog("---");
+        debugLog("seat before: " + mainSeat.getLocation().toString());
+        debugLog("tp: " + newloc.toString());
+        mainSeat.teleport(newloc); //THIS IS NOT WORKING
+        debugLog("seat after: " + mainSeat.getLocation().toString());
     }
 
     public static void rotors(ArmorStand main, ArmorStand seatas, String license) {
@@ -368,5 +369,9 @@ public class VehicleMovement1_18 {
     private static void pushVehicleUp(ArmorStand mainStand, double plus){
         Location newLoc = new Location(mainStand.getLocation().getWorld(), mainStand.getLocation().getX(), mainStand.getLocation().getY() + plus, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
         mainStand.teleport(newLoc);
+    }
+
+    private static void debugLog(String s){
+        Bukkit.getConsoleSender().sendMessage(s);
     }
 }
