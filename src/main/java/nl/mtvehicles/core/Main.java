@@ -38,13 +38,24 @@ public class Main extends JavaPlugin {
 
         instance = this;
 
-        if (!version.equals("v1_12_R1") && !version.equals("v1_13_R2") && !version.equals("v1_15_R1") && !version.contains("v1_16") && !version.contains("v1_17") && !version.contains("v1_18")) {
+        if (!version.equals("v1_12_R1") && !version.equals("v1_13_R2") && !version.equals("v1_15_R1") && !version.equals("v1_16_R3") && !version.contains("v1_17") && !version.contains("v1_18")) {
             getLogger().info("-------------------------------------------------------");
             getLogger().info("Your Server version is not supported by the plugin");
             getLogger().info("check the supported versions here https://mtvehicles.nl");
             getLogger().info("-------------------------------------------------------");
             setEnabled(false);
             return;
+        }
+
+        if (version.contains("v1_18") || version.contains("v1_17")){
+            if (getServer().getPluginManager().getPlugin("ProtocolLib") == null) {
+                getLogger().info("-------------------------------------------------------");
+                getLogger().info("Versions 1.17+ require ProtocolLib to work.");
+                getLogger().info("Download it here: https://github.com/dmulloy2/ProtocolLib");
+                getLogger().info("-------------------------------------------------------");
+                setEnabled(false);
+                return;
+            }
         }
 
         PluginDescriptionFile pdf = this.getDescription();
