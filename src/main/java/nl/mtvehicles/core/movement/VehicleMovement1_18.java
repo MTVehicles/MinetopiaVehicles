@@ -10,7 +10,6 @@ import org.bukkit.block.data.type.Slab;
 import org.bukkit.block.data.type.TrapDoor;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.util.Vector;
 
 import java.math.BigDecimal;
@@ -339,12 +338,9 @@ public class VehicleMovement1_18 {
         Location fbvp = locvp.add(locvp.getDirection().setY(0).normalize().multiply(xOffset));
         float zvp = (float) (fbvp.getZ() + zOffset * Math.sin(Math.toRadians(fbvp.getYaw())));
         float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(fbvp.getYaw())));
-        Location newloc = new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
-        debugLog("---");
-        debugLog("seat before: " + mainSeat.getLocation().toString());
-        debugLog("tp: " + newloc.toString());
-        mainSeat.teleport(newloc); //THIS IS NOT WORKING
-        debugLog("seat after: " + mainSeat.getLocation().toString());
+        Location loc = new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
+        //org.bukkit.craftbukkit.v1_18_R1.entity.CraftEntity seat = (org.bukkit.craftbukkit.v1_18_R1.entity.CraftEntity) mainSeat;
+        if (!mainSeat.teleport(loc)) debugLog("Unable to teleport mainSeat.");
     }
 
     public static void rotors(ArmorStand main, ArmorStand seatas, String license) {
