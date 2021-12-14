@@ -47,13 +47,15 @@ public class Main extends JavaPlugin {
             return;
         }
 
-        if (version.contains("v1_18") && getServer().getPluginManager().getPlugin("ProtocolLib") == null){
-            getLogger().info("-------------------------------------------------------");
-            getLogger().info("Versions 1.18+ require ProtocolLib to work.");
-            getLogger().info("Install it here: https://github.com/dmulloy2/ProtocolLib");
-            getLogger().info("-------------------------------------------------------");
-            setEnabled(false);
-            return;
+        if (version.contains("v1_18") || version.contains("v1_17")){
+            if (getServer().getPluginManager().getPlugin("ProtocolLib") == null) {
+                getLogger().info("-------------------------------------------------------");
+                getLogger().info("Versions 1.17+ require ProtocolLib to work.");
+                getLogger().info("Download it here: https://github.com/dmulloy2/ProtocolLib");
+                getLogger().info("-------------------------------------------------------");
+                setEnabled(false);
+                return;
+            }
         }
 
         PluginDescriptionFile pdf = this.getDescription();
