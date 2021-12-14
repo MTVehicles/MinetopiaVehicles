@@ -1,6 +1,7 @@
 package nl.mtvehicles.core.movement;
 
 import com.comphenix.protocol.events.PacketContainer;
+import net.minecraft.world.entity.Entity;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.helpers.BossBarUtils;
 import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
@@ -11,6 +12,8 @@ import org.bukkit.block.data.type.TrapDoor;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 
 public class VehicleMovement1_17 {
@@ -327,7 +330,15 @@ public class VehicleMovement1_17 {
                 float zvp = (float) (fbvp.getZ() + zOffset * Math.sin(Math.toRadians(fbvp.getYaw())));
                 float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(fbvp.getYaw())));
                 Location loc = new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
-                seatas.teleport(loc);
+                Entity seat = ((org.bukkit.craftbukkit.v1_17_R1.entity.CraftEntity) seatas).getHandle();
+                Bukkit.getScheduler().runTask(Main.instance, () -> {
+                    try {
+                        Method method = seat.getClass().getSuperclass().getSuperclass().getDeclaredMethod("setLocation", double.class, double.class, double.class, float.class, float.class);
+                        method.invoke(seat, loc.getX(), loc.getY(), loc.getZ(), fbvp.getYaw(), loc.getPitch());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
             }
         }
         double xOffset = VehicleData.mainx.get("MTVEHICLES_MAINSEAT_" + license);
@@ -338,9 +349,14 @@ public class VehicleMovement1_17 {
         float zvp = (float) (fbvp.getZ() + zOffset * Math.sin(Math.toRadians(fbvp.getYaw())));
         float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(fbvp.getYaw())));
         Location loc = new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
-        org.bukkit.craftbukkit.v1_17_R1.entity.CraftEntity seat = (org.bukkit.craftbukkit.v1_17_R1.entity.CraftEntity) mainSeat;
+        Entity seat = ((org.bukkit.craftbukkit.v1_17_R1.entity.CraftEntity) mainSeat).getHandle();
         Bukkit.getScheduler().runTask(Main.instance, () -> {
-            seat.getHandle().setLocation(loc.getX(), loc.getY(), loc.getZ(), fbvp.getYaw(), loc.getPitch());
+            try {
+                Method method = seat.getClass().getSuperclass().getSuperclass().getDeclaredMethod("setLocation", double.class, double.class, double.class, float.class, float.class);
+                method.invoke(seat, loc.getX(), loc.getY(), loc.getZ(), fbvp.getYaw(), loc.getPitch());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
     }
 
