@@ -45,7 +45,9 @@ public class VehicleMovement1_18 {
         ArmorStand standSkin = VehicleData.autostand.get("MTVEHICLES_SKIN_" + license);
         ArmorStand standMainSeat = VehicleData.autostand.get("MTVEHICLES_MAINSEAT_" + license);
         ArmorStand standRotors = VehicleData.autostand.get("MTVEHICLES_WIEKENS_" + license);
-        standSkin.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standSkin.getLocation().getYaw(), standSkin.getLocation().getPitch()));
+        Bukkit.getScheduler().runTask(Main.instance, () -> {
+            standSkin.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standSkin.getLocation().getYaw(), standSkin.getLocation().getPitch()));
+        });
         int RotationSpeed = VehicleData.RotationSpeed.get(license);
         double MaxSpeed = VehicleData.MaxSpeed.get(license);
         double AccelerationSpeed = VehicleData.AccelerationSpeed.get(license);
@@ -60,7 +62,9 @@ public class VehicleMovement1_18 {
         if (VehicleData.seatsize.get(license + "addon") != null) {
             for (int i = 1; i <= VehicleData.seatsize.get(license + "addon"); i++) {
                 ArmorStand standAddon = VehicleData.autostand.get("MTVEHICLES_ADDON" + i + "_" + license);
-                standAddon.teleport(standMain.getLocation());
+                Bukkit.getScheduler().runTask(Main.instance, () -> {
+                    standAddon.teleport(standMain.getLocation());
+                });
             }
         }
         if (VehicleData.type.get(license) != null) {
@@ -108,11 +112,9 @@ public class VehicleMovement1_18 {
         }
         if (ppisv.getFloat().readSafely(0) > 0.0) { //getXxa
             standMain.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - RotationSpeed, standMain.getLocation().getPitch()));
-            standMainSeat.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - RotationSpeed, standMain.getLocation().getPitch()));
             standSkin.teleport(new Location(standSkin.getLocation().getWorld(), standSkin.getLocation().getX(), standSkin.getLocation().getY(), standSkin.getLocation().getZ(), standSkin.getLocation().getYaw() - RotationSpeed, standSkin.getLocation().getPitch()));
         } else if (ppisv.getFloat().readSafely(0) < 0.0) {
             standSkin.teleport(new Location(standSkin.getLocation().getWorld(), standSkin.getLocation().getX(), standSkin.getLocation().getY(), standSkin.getLocation().getZ(), standSkin.getLocation().getYaw() + RotationSpeed, standSkin.getLocation().getPitch()));
-            standMainSeat.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() + RotationSpeed, standMain.getLocation().getPitch()));
             standMain.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() + RotationSpeed, standMain.getLocation().getPitch()));
         }
         if (ppisv.getFloat().readSafely(1) > 0.0) { //getZza
@@ -369,7 +371,9 @@ public class VehicleMovement1_18 {
         final float zvp = (float) (fbvp.getZ() + zOffset * Math.sin(Math.toRadians(seatas.getLocation().getYaw())));
         final float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(seatas.getLocation().getYaw())));
         final Location loc = new Location(main.getWorld(), xvp, main.getLocation().getY() + yOffset, zvp, seatas.getLocation().getYaw() + 15, seatas.getLocation().getPitch());
-        seatas.teleport(loc);
+        Bukkit.getScheduler().runTask(Main.instance, () -> {
+            seatas.teleport(loc);
+        });
     }
 
     private static boolean driveUpSlabs(){
@@ -381,7 +385,9 @@ public class VehicleMovement1_18 {
 
     private static void pushVehicleUp(ArmorStand mainStand, double plus){
         Location newLoc = new Location(mainStand.getLocation().getWorld(), mainStand.getLocation().getX(), mainStand.getLocation().getY() + plus, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
-        mainStand.teleport(newLoc);
+        Bukkit.getScheduler().runTask(Main.instance, () -> {
+            mainStand.teleport(newLoc);
+        });
     }
 
     private static void debugLog(String s){
