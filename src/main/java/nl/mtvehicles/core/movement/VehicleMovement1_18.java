@@ -1,6 +1,6 @@
 package nl.mtvehicles.core.movement;
 
-import com.comphenix.protocol.events.PacketContainer;
+import net.minecraft.network.protocol.game.PacketPlayInSteerVehicle;
 import net.minecraft.world.entity.Entity;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.helpers.BossBarUtils;
@@ -9,6 +9,7 @@ import org.bukkit.*;
 import org.bukkit.block.data.type.Fence;
 import org.bukkit.block.data.type.Slab;
 import org.bukkit.block.data.type.TrapDoor;
+import org.bukkit.craftbukkit.v1_18_R1.entity.CraftEntity;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -17,7 +18,7 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 
 public class VehicleMovement1_18 {
-    public static void vehicleMovement(Player p, PacketContainer ppisv) {
+    public static void vehicleMovement(Player p, PacketPlayInSteerVehicle ppisv) {
         long lastUsed = 0L;
         if (p.getVehicle() == null) return;
 
@@ -55,7 +56,7 @@ public class VehicleMovement1_18 {
         double MaxSpeedBackwards = VehicleData.MaxSpeedBackwards.get(license);
         double FrictionSpeed = VehicleData.FrictionSpeed.get(license);
 
-        updateStand(standMain, license, ppisv.getBooleans().readSafely(0)); //isJumping
+        updateStand(standMain, license, steerIsJumping(ppisv));
         slabCheck(standMain, license);
         mainSeat(standMain, standMainSeat, license);
 
@@ -72,7 +73,7 @@ public class VehicleMovement1_18 {
                 rotors(standMain, standRotors, license);
             }
             if (VehicleData.type.get(license).contains("TANK")) {
-                if (ppisv.getBooleans().readSafely(0)) {
+                if (steerIsJumping(ppisv)) {
                     if (VehicleData.lastUsage.containsKey(p.getName())) {
                         lastUsed = ((Long) VehicleData.lastUsage.get(p.getName())).longValue();
                     }
@@ -98,7 +99,7 @@ public class VehicleMovement1_18 {
             }
             if (!VehicleData.type.get(license).contains("HELICOPTER")) {
                 if (!VehicleData.type.get(license).contains("TANK")) {
-                    if (ppisv.getBooleans().readSafely(0)) {
+                    if (steerIsJumping(ppisv)) {
                         if (VehicleData.lastUsage.containsKey(p.getName())) {
                             lastUsed = ((Long) VehicleData.lastUsage.get(p.getName())).longValue();
                         }
@@ -110,14 +111,16 @@ public class VehicleMovement1_18 {
                 }
             }
         }
-        if (ppisv.getFloat().readSafely(0) > 0.0) { //getXxa
+        if (steerGetXxa(ppisv) > 0.0) {
             standMain.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - RotationSpeed, standMain.getLocation().getPitch()));
+            standMainSeat.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - RotationSpeed, standMain.getLocation().getPitch()));
             standSkin.teleport(new Location(standSkin.getLocation().getWorld(), standSkin.getLocation().getX(), standSkin.getLocation().getY(), standSkin.getLocation().getZ(), standSkin.getLocation().getYaw() - RotationSpeed, standSkin.getLocation().getPitch()));
-        } else if (ppisv.getFloat().readSafely(0) < 0.0) {
+        } else if (steerGetXxa(ppisv) < 0.0) {
             standSkin.teleport(new Location(standSkin.getLocation().getWorld(), standSkin.getLocation().getX(), standSkin.getLocation().getY(), standSkin.getLocation().getZ(), standSkin.getLocation().getYaw() + RotationSpeed, standSkin.getLocation().getPitch()));
+            standMainSeat.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() + RotationSpeed, standMain.getLocation().getPitch()));
             standMain.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() + RotationSpeed, standMain.getLocation().getPitch()));
         }
-        if (ppisv.getFloat().readSafely(1) > 0.0) { //getZza
+        if (steerGetZza(ppisv) > 0.0) {
             if (VehicleData.speed.get(license) < 0) {
                 VehicleData.speed.put(license, VehicleData.speed.get(license) + BrakingSpeed);
                 return;
@@ -131,7 +134,7 @@ public class VehicleMovement1_18 {
             }
             VehicleData.speed.put(license, VehicleData.speed.get(license) + AccelerationSpeed);
         }
-        if (ppisv.getFloat().readSafely(1) < 0.0) {
+        if (steerGetZza(ppisv) < 0.0) {
             if (VehicleData.speed.get(license) > 0) {
                 VehicleData.speed.put(license, VehicleData.speed.get(license) - BrakingSpeed);
                 return;
@@ -145,7 +148,7 @@ public class VehicleMovement1_18 {
             }
             VehicleData.speed.put(license, VehicleData.speed.get(license) - AccelerationSpeed);
         }
-        if (ppisv.getFloat().readSafely(1) == 0.0) {
+        if (steerGetZza(ppisv) == 0.0) {
             BigDecimal round = BigDecimal.valueOf(VehicleData.speed.get(license)).setScale(1, BigDecimal.ROUND_DOWN);
             if (Double.parseDouble(String.valueOf(round)) == 0.0) {
                 VehicleData.speed.put(license, 0.0);
@@ -332,7 +335,7 @@ public class VehicleMovement1_18 {
                 float zvp = (float) (fbvp.getZ() + zOffset * Math.sin(Math.toRadians(fbvp.getYaw())));
                 float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(fbvp.getYaw())));
                 Location loc = new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
-                Entity seat = ((org.bukkit.craftbukkit.v1_18_R1.entity.CraftEntity) seatas).getHandle();
+                Entity seat = ((CraftEntity) seatas).getHandle();
                 Bukkit.getScheduler().runTask(Main.instance, () -> {
                     try {
                         Method method = seat.getClass().getSuperclass().getSuperclass().getDeclaredMethod("a", double.class, double.class, double.class, float.class, float.class); //teleporting an occupied vehicle
@@ -351,7 +354,7 @@ public class VehicleMovement1_18 {
         float zvp = (float) (fbvp.getZ() + zOffset * Math.sin(Math.toRadians(fbvp.getYaw())));
         float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(fbvp.getYaw())));
         Location loc = new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
-        Entity seat = ((org.bukkit.craftbukkit.v1_18_R1.entity.CraftEntity) mainSeat).getHandle();
+        Entity seat = ((CraftEntity) mainSeat).getHandle();
         Bukkit.getScheduler().runTask(Main.instance, () -> {
             try {
                 Method method = seat.getClass().getSuperclass().getSuperclass().getDeclaredMethod("a", double.class, double.class, double.class, float.class, float.class); //teleporting an occupied vehicle
@@ -392,5 +395,38 @@ public class VehicleMovement1_18 {
 
     private static void debugLog(String s){
         Bukkit.getConsoleSender().sendMessage(s);
+    }
+
+    private static boolean steerIsJumping(PacketPlayInSteerVehicle packet){
+        boolean isJumping = false;
+        try {
+            Method method = packet.getClass().getDeclaredMethod("d");
+            isJumping = (Boolean) method.invoke(packet);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return isJumping;
+    }
+
+    private static float steerGetXxa(PacketPlayInSteerVehicle packet){
+        float Xxa = 0;
+        try {
+            Method method = packet.getClass().getDeclaredMethod("b");
+            Xxa = (float) method.invoke(packet);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Xxa;
+    }
+
+    private static float steerGetZza(PacketPlayInSteerVehicle packet){
+        float Zza = 0;
+        try {
+            Method method = packet.getClass().getDeclaredMethod("c");
+            Zza = (float) method.invoke(packet);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Zza;
     }
 }
