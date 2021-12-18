@@ -1,28 +1,46 @@
-# MinetopiaVehicles
-_Een realistische voertuigen plugin voor jouw Minecraft server!_
+<h1 align="center">MinetopiaVehicles</h1>
+<p align="center"><em>A realistic vehicles plugin for your Minecraft server!</em></p>
+
+<div align="center">
+  
+![Spiget Version](https://img.shields.io/spiget/version/80910?label=version)
+![Spiget Downloads](https://img.shields.io/spiget/downloads/80910)
+![Spiget Stars](https://img.shields.io/spiget/stars/80910?color=orange)
+  
+---  
+  
+### ❗FOR ENGLISH, DO /VEHICLES LANGUAGE❗</h3>
+
+---
+
+</div>
+
+## Contact:
+
+Do you have problems or need help with the plugin? Do not hesitate and contact us on discord!
 
 ```
-Heb je problemen of klopt er iets niet kun je 
-contact met ons opnemen vanuit de Discord server
-
-Site: https://mtvehicles.nl
+Website: https://mtvehicles.nl
 Discord: https://discord.gg/4nAcycckn6
-```
 
+Spigot: https://www.spigotmc.org/resources/mtvehicles-best-free-vehicle-plugin-at-the-moment.80910/
+bStats: https://bstats.org/plugin/bukkit/MTVehicles/5932
+```
 
 ## **Functions:**
 ```
-✔ Custom voertuigen toevoegen.
-✔ Voertuigen data aanpassen in game.
-✔ Reloaden/Herstarten van server kan met voertuigen in de map.
-✔ Benzine functie aanpasbaar in config.
-✔ Alle huidige voertuigen + helicopters.
-✔ ANWB als je auto ter water is.
-✔ Kofferbakken per voertuig & aanpasbaar.
-✔ Vehicle edit functie.
-✔ Per voertuig snelheid aanpasbaar.
-✔ Actieve support/developers.
-✔ Vouchers voor voertuigen.
+✔ Add custom vehicles.
+✔ Adjust vehicle data in game.
+✔ Reloading/Restarting the server is possible with vehicles in the folder.
+✔ Gasoline function customizable in config.
+✔ All current vehicles + helicopters.
+✔ ANWB if your car is in the water.
+✔ Trunks per vehicle & customizable.
+✔ Vehicle edit function.
+✔ Adjustable speed per vehicle.
+✔ Vouchers for vehicles.
+✔ Active support/developers.
+✔ Open Source.
 ```
 
 ## **Commands:**
@@ -59,5 +77,6 @@ Discord: https://discord.gg/4nAcycckn6
   mtvehicles.anwb
   mtvehicles.ride
   mtvehicles.update
+  mtvehicles.delete (NEW!)
 ```
-_Mis je een permissions of werkt hij niet meld het dan in onze **Discord**._
+_**Please report bugs on discord or in the 'Issues' tab.**_
