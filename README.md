@@ -40,7 +40,7 @@ bStats: https://bstats.org/plugin/bukkit/MTVehicles/5932
 ✔ Adjustable speed per vehicle.
 ✔ Vouchers for vehicles.
 ✔ Active support/developers.
-✔ Open Source
+✔ Open Source.
 ```
 
 ## **Commands:**

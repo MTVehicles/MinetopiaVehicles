@@ -1,53 +1,51 @@
 #---------------------------------------------------------------------------
 #
-# MTVehicles Gemaakt door GamerJoep_, downloadbaar op https://mtvehicles.nl
-# voor support kun je ook terecht in onze discord staat op onze site ^
+# Spigot Plugin MTVehicles by GamerJoep_, downloadable on https://mtvehicles.nl
+# For support, visit our official Discord. Link can be found on our site ^
 #
 #---------------------------------------------------------------------------
 
-# Blijf hiervan af want je plugin gaat sowieso kapot als je dit aanpast!
-Config-Versie: 2.1.2
-
-# Dont change this, else your plugin can be broke.
+# DO NOT MODIFY THIS! The plugin may break on change.
+Config-Versie: 2.2
 messagesLanguage: ns
 
-# Dit laat zien hoeveel rows het begin menu heeft van /vehicle menu 6 rows is de max.
+# How many rows the /vehicle menu has. Max: 6
 vehicleMenuSize: 3
 
-# Staat dit true staan de wiekens er altijd op false = wiekens komen er pas op als je instapt en gaan eraf met uitstappen.
+# If set to true, helicopter blades will always stay on top of the helicopter. If set to false they will only appear when you get in the vehicle and remove when you get out.
 wiekens-always-on: true
 
-# Als je dit op true zet kun je je voertuig niet oppakken zodra je het in het water hebt gereden. Je hebt anders de permissie mtvehicles.anwb nodig.
+# If set to true you can't pick up the vehicle after ridden on water, else you will need the permission 'mtvehicles.anwb'.
 anwb: false
 
-# Zet je dit op false kun je niet meer kofferbak openen maar.
+# If set to false you will not be able to open the trunk.
 kofferbakEnabled: true
 
-# Wil je benzine voor ALLE voertuigen uit? zet dit dan op false.
+# Whether gasoline is used for ALL cars.
 benzine: true
 
-# Jerrycan grote's voor in het jerrycan menu /vehicle benzine
+# Jerrycan size for in the /vehicle benzine menu.
 jerrycans:
   - 25
   - 50
   - 75
 
-# Laat dit op true staan als je altijd up-to date wilt zijn!
-# zet je dit uit krijg je geen melding bij een update
-# dat bericht krijg je als je de server joined en permissions mtvehicles.update hebt
-# en het /vehicle update command wordt ermee uitgeschakeld.
+# Leave it on true if you want to be up-to-date!
+# Turn it off and you will not get any messages for updates.
+# auto-update will show on server join if you have the permission mtvehicles.update
+# If set on false the /vehicle update command will not work either.
 auto-update: true
 
-# Laat spelers zelf de owner zetten
+# Give players the ability put themselves owner.
 spelerSetOwner: false
 
-# Je kunt dit instellen voor de maximumhoogte van een helicopter.
+# Maximum flying height for helicopters.
 helicopterMaxHeight: 150
 
-# Zet dit aan als je wilt dat spelers geen voertuigen kunnen oppakken
+# Turn on if you do not want players to be able to pickup vehicles.
 carPickup: false
 
-# Cooldown 10 = 10 seconds
+# Cooldown for horn in seconds.
 hornCooldown: 5
 
 # Type of horn, later will be added that you can change the types for each car
@@ -61,7 +59,7 @@ driveUp: 'slabs'
 # Whether the vehicles are able to drive up carpets.
 driveOnCarpets: true
 
-# Een lijst met toegestane blokken om een auto op te kunnen plaatsen
+# A list of allowed blocks to place a car on. If enabled is false, vehicles can be placed on every block.
 blockWhitelist:
   enabled: false
   list:
