@@ -15,68 +15,82 @@
 
 </div>
 
-## Contact:
+## How to download?
 
-Do you have problems or need help with the plugin? Do not hesitate and contact us on discord!
+The plugin works on all versions from 1.12.2 - 1.18.1, **excluding 1.14.x**!
+
+- Latest stable releases are always published on <a href="https://www.spigotmc.org/resources/80910/">Spigot.org</a>.
+- Put the downloaded plugin into your server's `plugins/` folder
+- Restart the server
+- **Et voilà, it's working!** Don't forget to set your language using `/vehicle language`
+
+### Be aware!
+```
+We support ALL LATEST PATCH VERSIONS of Spigot/Paper 1.12+, excluding 1.14.4.
+This means that 1.16.5 IS supported, whereas 1.16.3 is not (and similarly with all other versions).
+```
+If your server minecraft version is not supported by the plugin, it won't load.
+
+Versions 1.12.1 and lower are not, and will not be supported.<br>
+(Did you know that 1.8 was released in 2014? And some people still use it! Whoa.)
+
+## Contact us!
+
+Do you have problems or need help with the plugin? Do not hesitate and contact us on <a href="https://discord.gg/4nAcycckn6">Discord</a>!
+
+**Discord is also the best place to report discovered bugs!**
 
 ```
 Website: https://mtvehicles.nl
 Discord: https://discord.gg/4nAcycckn6
 
-Spigot: https://www.spigotmc.org/resources/mtvehicles-best-free-vehicle-plugin-at-the-moment.80910/
+Spigot: https://www.spigotmc.org/resources/80910/
 bStats: https://bstats.org/plugin/bukkit/MTVehicles/5932
 ```
 
-## **Functions:**
-```
-✔ Add custom vehicles.
-✔ Adjust vehicle data in game.
-✔ Reloading/Restarting the server is possible with vehicles in the folder.
-✔ Gasoline function customizable in config.
-✔ All current vehicles + helicopters.
-✔ ANWB if your car is in the water.
-✔ Trunks per vehicle & customizable.
-✔ Vehicle edit function.
-✔ Adjustable speed per vehicle.
-✔ Vouchers for vehicles.
-✔ Active support/developers.
+**You will not receive any support regarding unsupported Minecraft versions or other than latest plugin versions.**
+
+## Functions
+
+✔ Add custom vehicles.<br>
+✔ Adjust vehicle data in game.<br>
+✔ Reloading/Restarting the server is possible with vehicles in the folder.<br>
+✔ Gasoline function customizable in config.<br>
+✔ All current vehicles + helicopters.<br>
+✔ ANWB if your car is in the water.<br>
+✔ Trunks per vehicle & customizable.<br>
+✔ Vehicle edit function.<br>
+✔ Adjustable speed per vehicle.<br>
+✔ Vouchers for vehicles.<br>
+✔ Active support/developers.<br>
 ✔ Open Source.
-```
 
-## **Commands:**
-  ```
-  /vehicle info
-  /vehicle help
-  /vehicle addrider
-  /vehicle addmember
-  /vehicle removerider
-  /vehicle removemember
-  /vehicle admin
-  /vehicle edit
-  /vehicle menu
-  /vehicle benzine
-  /vehicle restore
-  /vehicle reload
-  /vehicle update
-  /vehicle setowner
-```
+## **Commands and permissions**
 
-## **Permissions:**
-  ```
-  mtvehicles.setowner
-  mtvehicles.admin
-  mtvehicles.benzine
-  mtvehicles.edit
-  mtvehicles.givecar
-  mtvehicles.givevoucher
-  mtvehicles.menu
-  mtvehicles.reload
-  mtvehicles.restore
-  mtvehicles.setowner
-  mtvehicles.oppakken
-  mtvehicles.anwb
-  mtvehicles.ride
-  mtvehicles.update
-  mtvehicles.delete (NEW!)
-```
-_**Please report bugs on discord or in the 'Issues' tab.**_
+&bull; `/vehicle info` - Get information about a vehicle; no permission necessary, `mtvehicles.admin` to display additional information<br>
+&bull; `/vehicle help` - Get a list of all the possible commands; no permission necessary, `mtvehicles.admin` to display additional information
+
+&bull; `/vehicle public` - Let everyone sit in your car; no permission necessary<br>
+&bull; `/vehicle private` - Only allow people who have access to sit in your car; no permission necessary<br>
+&bull; `/vehicle addrider` - Add a rider to your vehicle; no permission necessary<br>
+&bull; `/vehicle addmember` - Add a member to your vehicle; no permission necessary<br>
+&bull; `/vehicle removerider` - Remove a rider from your vehicle; no permission necessary<br>
+&bull; `/vehicle removemember` - Remove a member from your vehicle; no permission necessary<br>
+
+&bull; `/vehicle edit` - Adjust vehicle settings; permission `mtvehicles.edit`<br>
+&bull; `/vehicle menu` -  Open a menu containing all the vehicles; permission `mtvehicles.menu`<br>
+&bull; `/vehicle restore` - A menu to recover vehicles; permission `mtvehicles.restore`<br>
+&bull; `/vehicle benzine` - Open the menu with jerrycans for the fuel; permission `mtvehicles.benzine`<br>
+&bull; `/vehicle reload` - Reload the plugin's config files; permission `mtvehicles.reload`<br>
+&bull; `/vehicle setowner` - Set an owner of a vehicle; permission `mtvehicles.setowner`<br>
+&bull; `/vehicle delete` - Remove a vehicle in your hand from the data; permission `mtvehicles.delete`<br>
+&bull; `/vehicle update` - Update the plugin to the latest version; permission `mtvehicles.update`<br>
+
+&bull; **SOON!** /vehicle givevoucher - Give a voucher to a player; permission `mtvehicles.givevoucher`<br>
+&bull; **SOON!** /vehicle givecar - Give a vehicle to a player; permission `mtvehicles.givecar`<br>
+
+### Other permissions
+
+&bull; `mtvehicles.ride` - Whether a player can ride others' vehicles<br>
+&bull; `mtvehicles.anwb` - Whether a player can pick up vehicles from water - useless unless ANWB turned on in config<br>
+&bull; `mtvehicles.oppakken` - Whether a player can pick up vehicles<br>
