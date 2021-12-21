@@ -284,6 +284,9 @@ public class VehicleMovement1_13 {
         Bukkit.getScheduler().runTaskAsynchronously(Main.instance, () -> {
             Location loc = mainStand.getLocation();
             Location location = new Location(loc.getWorld(), loc.getX(), loc.getY() - 0.2, loc.getZ(), loc.getYaw(), loc.getPitch());
+
+            if (VehicleData.type.get(license) == null) return;
+
             if (VehicleData.type.get(license).contains("HELICOPTER")) {
                 if (!location.getBlock().getType().equals(Material.AIR)) {
                     VehicleData.speed.put(license, 0.0);
@@ -306,8 +309,13 @@ public class VehicleMovement1_13 {
                 mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.00001, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
                 return;
             }
+
             if (location.getBlock().getType().equals(Material.AIR) || location.getBlock().getType().toString().contains("WATER")) {
                 mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.8, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
+                return;
+            }
+            if (location.getBlock().getType().toString().contains("CARPET")){
+                mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.7375, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
                 return;
             }
             mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.0, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
