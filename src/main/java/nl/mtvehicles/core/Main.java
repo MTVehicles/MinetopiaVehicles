@@ -5,6 +5,7 @@ import nl.mtvehicles.core.commands.VehicleTabCompleterManager;
 import nl.mtvehicles.core.infrastructure.dataconfig.*;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.ConfigUtils;
+import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.infrastructure.modules.ListenersModule;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.modules.LoopModule;
@@ -27,11 +28,6 @@ import java.util.List;
 
 public class Main extends JavaPlugin {
     public static Main instance;
-    public static List<ConfigUtils> configList = new ArrayList<>();
-    public static MessagesConfig messagesConfig = new MessagesConfig();
-    public static VehicleDataConfig vehicleDataConfig = new VehicleDataConfig();
-    public static VehiclesConfig vehiclesConfig = new VehiclesConfig();
-    public static DefaultConfig defaultConfig = new DefaultConfig();
     public static String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
     public static HashMap<String, MTVehicleSubCommand> subcommands = new HashMap<>();
 
@@ -68,22 +64,7 @@ public class Main extends JavaPlugin {
         new ListenersModule();
         new MetricsModule();
         new LoopModule();
-
-        File defaultconfig = new File(getDataFolder(), "config.yml");
-        File vehicleconfig = new File(getDataFolder(), "vehicles.yml");
-        SimpleDateFormat formatter = new SimpleDateFormat("dd_MM_yyyy-HH_mm_ss");
-        Date date = new Date();
-        if (!getConfig().get("Config-Versie").equals(versions)) {
-            defaultconfig.renameTo(new File(getDataFolder(), "configOld_" + formatter.format(date) + ".yml"));
-            vehicleconfig.renameTo(new File(getDataFolder(), "vehiclesOld_" + formatter.format(date) + ".yml"));
-            saveDefaultConfig();
-        }
-
-        configList.add(messagesConfig);
-        configList.add(vehicleDataConfig);
-        configList.add(vehiclesConfig);
-        configList.add(defaultConfig);
-        configList.forEach(ConfigUtils::reload);
+        new ConfigModule();
     }
 
     public static String fol() {
