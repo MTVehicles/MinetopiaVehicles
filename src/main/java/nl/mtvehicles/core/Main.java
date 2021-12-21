@@ -7,6 +7,7 @@ import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.ConfigUtils;
 import nl.mtvehicles.core.infrastructure.modules.ListenersModule;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
+import nl.mtvehicles.core.infrastructure.modules.LoopModule;
 import nl.mtvehicles.core.infrastructure.modules.MetricsModule;
 import nl.mtvehicles.core.movement.MovementManager;
 import org.bukkit.Bukkit;
@@ -66,13 +67,7 @@ public class Main extends JavaPlugin {
 
         new ListenersModule();
         new MetricsModule();
-
-        for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-            if (p.isInsideVehicle()) {
-                p.kickPlayer(TextUtils.colorize(Main.messagesConfig.getMessage("reloadInVehicle")));
-            }
-            MovementManager.MovementSelector(p);
-        }
+        new LoopModule();
 
         File defaultconfig = new File(getDataFolder(), "config.yml");
         File vehicleconfig = new File(getDataFolder(), "vehicles.yml");
