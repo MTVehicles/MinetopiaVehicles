@@ -6,6 +6,7 @@ import nl.mtvehicles.core.events.*;
 import nl.mtvehicles.core.infrastructure.dataconfig.*;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.ConfigUtils;
+import nl.mtvehicles.core.infrastructure.models.ListenersModule;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.inventory.InventoryClickEvent;
 import nl.mtvehicles.core.inventory.InventoryCloseEvent;
@@ -63,16 +64,7 @@ public class Main extends JavaPlugin {
             pluginCommand.setTabCompleter(new VehicleTabCompleterManager());
         }
 
-        Bukkit.getPluginManager().registerEvents(new InventoryClickEvent(), this);
-        Bukkit.getPluginManager().registerEvents(new VehiclePlaceEvent(), this);
-        Bukkit.getPluginManager().registerEvents(new VehicleClickEvent(), this);
-        Bukkit.getPluginManager().registerEvents(new VehicleLeaveEvent(), this);
-        Bukkit.getPluginManager().registerEvents(new ChatEvent(), this);
-        Bukkit.getPluginManager().registerEvents(new VehicleEntityEvent(), this);
-        Bukkit.getPluginManager().registerEvents(new JoinEvent(), this);
-        Bukkit.getPluginManager().registerEvents(new LeaveEvent(), this);
-        Bukkit.getPluginManager().registerEvents(new VehicleVoucherEvent(), this);
-        Bukkit.getPluginManager().registerEvents(new InventoryCloseEvent(), this);
+        new ListenersModule();
 
         Metrics metrics = new Metrics(this, 5932);
         metrics.addCustomChart(new Metrics.SimplePie("used_language", () -> {
