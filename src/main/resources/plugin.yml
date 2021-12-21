@@ -1,5 +1,5 @@
 name: MTVehicles
-version: 2.2
+version: 2.2.1
 main: nl.mtvehicles.core.Main
 api-version: 1.13
 commands:

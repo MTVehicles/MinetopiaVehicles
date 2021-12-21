@@ -6,7 +6,7 @@
 #---------------------------------------------------------------------------
 
 # DO NOT MODIFY THIS! The plugin may break on change.
-Config-Versie: 2.2
+Config-Versie: 2.2.1
 messagesLanguage: ns
 
 # How many rows the /vehicle menu has. Max: 6
