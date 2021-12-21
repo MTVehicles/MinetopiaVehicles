@@ -5,6 +5,7 @@ import nl.mtvehicles.core.infrastructure.helpers.NBTUtils;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.Main;
+import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -43,7 +44,7 @@ public class VehiclePlaceEvent implements Listener {
         }
         if (e.getHand() != EquipmentSlot.HAND) {
             e.setCancelled(true);
-            e.getPlayer().sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("wrongHand")));
+            e.getPlayer().sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("wrongHand")));
             return;
         }
         String ken = NBTUtils.getString(item, "mtvehicles.kenteken");
@@ -51,21 +52,21 @@ public class VehiclePlaceEvent implements Listener {
             return;
         }
         if (!Vehicle.existsByPlate(ken)) {
-            Main.messagesConfig.sendMessage(p, "vehicleNotFound");
+            ConfigModule.messagesConfig.sendMessage(p, "vehicleNotFound");
             e.setCancelled(true);
             return;
         }
         if (!action.equals(Action.RIGHT_CLICK_BLOCK)) {
             return;
         }
-        if (Main.defaultConfig.isBlockWhitelistEnabled()
-                && !Main.defaultConfig.blockWhiteList().contains(e.getClickedBlock().getType())) {
+        if (ConfigModule.defaultConfig.isBlockWhitelistEnabled()
+                && !ConfigModule.defaultConfig.blockWhiteList().contains(e.getClickedBlock().getType())) {
             e.setCancelled(true);
-            Main.messagesConfig.sendMessage(p, "blockNotInWhitelist");
+            ConfigModule.messagesConfig.sendMessage(p, "blockNotInWhitelist");
             return;
         }
         if (Vehicle.getByPlate(ken) == null){
-            Main.messagesConfig.sendMessage(p, "vehicleNotFound");
+            ConfigModule.messagesConfig.sendMessage(p, "vehicleNotFound");
             e.setCancelled(true);
             return;
         }
@@ -82,7 +83,7 @@ public class VehiclePlaceEvent implements Listener {
         Vehicle vehicle = Vehicle.getByPlate(ken);
         List<Map<String, Double>> seats = (List<Map<String, Double>>) vehicle.getVehicleData().get("seats");
         p.getInventory().remove(p.getItemInHand());
-        p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehiclePlace").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
+        p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehiclePlace").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
         for (int i = 1; i <= seats.size(); i++) {
             Map<String, Double> seat = seats.get(i - 1);
             if (i == 1) {
@@ -94,7 +95,7 @@ public class VehiclePlaceEvent implements Listener {
             }
         }
         List<Map<String, Double>> wiekens = (List<Map<String, Double>>) vehicle.getVehicleData().get("wiekens");
-        if (Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".vehicleType").contains("HELICOPTER")) {
+        if (ConfigModule.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".vehicleType").contains("HELICOPTER")) {
             for (int i = 1; i <= wiekens.size(); i++) {
                 Map<?, ?> seat = wiekens.get(i - 1);
                 if (i == 1) {
@@ -103,7 +104,7 @@ public class VehiclePlaceEvent implements Listener {
                     as3.setCustomName("MTVEHICLES_WIEKENS_" + ken);
                     as3.setGravity(false);
                     as3.setVisible(false);
-                    if (Main.defaultConfig.getConfig().getBoolean("wiekens-always-on") == true) {
+                    if (ConfigModule.defaultConfig.getConfig().getBoolean("wiekens-always-on") == true) {
                         ItemStack car = (new ItemFactory(Material.getMaterial("DIAMOND_HOE"))).setDurability((short) 1058).setName(TextUtils.colorize("&6Wieken")).setNBT("mtvehicles.kenteken", ken).toItemStack();
                         ItemMeta im = car.getItemMeta();
                         List<String> itemlore = new ArrayList<>();

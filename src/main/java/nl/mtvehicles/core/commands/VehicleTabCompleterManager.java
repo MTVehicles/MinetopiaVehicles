@@ -1,6 +1,7 @@
 package nl.mtvehicles.core.commands;
 
 import nl.mtvehicles.core.Main;
+import nl.mtvehicles.core.infrastructure.modules.CommandModule;
 import org.bukkit.util.StringUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -15,7 +16,7 @@ public class VehicleTabCompleterManager implements org.bukkit.command.TabComplet
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
         if (strings.length == 1) {
-            return getApplicableTabCompleters(strings[0], Main.subcommands.keySet());
+            return getApplicableTabCompleters(strings[0], CommandModule.subcommands.keySet());
         }
         return null;
     }

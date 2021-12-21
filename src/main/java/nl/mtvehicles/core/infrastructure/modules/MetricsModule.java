@@ -13,7 +13,7 @@ public class MetricsModule {
     public MetricsModule() {
         Metrics metrics = new Metrics(Main.instance, 5932);
         metrics.addCustomChart(new Metrics.SimplePie("used_language", () -> {
-            return Main.defaultConfig.getConfig().getString("messagesLanguage");
+            return ConfigModule.defaultConfig.getConfig().getString("messagesLanguage");
         }));
     }
 }

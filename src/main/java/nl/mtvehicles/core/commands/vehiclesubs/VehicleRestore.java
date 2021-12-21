@@ -3,6 +3,7 @@ package nl.mtvehicles.core.commands.vehiclesubs;
 import nl.mtvehicles.core.infrastructure.helpers.MenuUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.Main;
+import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -18,7 +19,7 @@ public class VehicleRestore extends MTVehicleSubCommand {
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
         if (!checkPermission("mtvehicles.restore")) return true;
 
-        sendMessage(Main.messagesConfig.getMessage("menuOpen"));
+        sendMessage(ConfigModule.messagesConfig.getMessage("menuOpen"));
         Player p = (Player) sender;
 
         if (args.length != 2) {
@@ -29,7 +30,7 @@ public class VehicleRestore extends MTVehicleSubCommand {
         OfflinePlayer of = Bukkit.getPlayer(args[1]);
 
         if (of == null || !of.hasPlayedBefore()) {
-            sendMessage(Main.messagesConfig.getMessage("playerNotFound"));
+            sendMessage(ConfigModule.messagesConfig.getMessage("playerNotFound"));
             return true;
         }
 

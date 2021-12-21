@@ -8,6 +8,7 @@ import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
 import nl.mtvehicles.core.infrastructure.models.ConfigUtils;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.Main;
+import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -44,11 +45,11 @@ public class VehicleEntityEvent implements Listener {
                 String benval = NBTUtils.getString(item, "mtvehicles.benzineval");
                 String bensize = NBTUtils.getString(item, "mtvehicles.benzinesize");
                 if (Integer.parseInt(benval) < 1) {
-                    Main.messagesConfig.sendMessage(p, "noFuel");
+                    ConfigModule.messagesConfig.sendMessage(p, "noFuel");
                     return;
                 }
                 if (curb > 99) {
-                    Main.messagesConfig.sendMessage(p, "vehicleFull");
+                    ConfigModule.messagesConfig.sendMessage(p, "vehicleFull");
                     return;
                 }
                 if (curb + 5 > 100) {
@@ -70,7 +71,7 @@ public class VehicleEntityEvent implements Listener {
                 }
             }
             if (p.isSneaking()) {
-                Main.configList.forEach(ConfigUtils::reload);
+                ConfigModule.configList.forEach(ConfigUtils::reload);
                 String license = TextUtils.licenseReplacer(a.getCustomName());
                 kofferbak(p, license);
                 event.setCancelled(true);
@@ -79,19 +80,19 @@ public class VehicleEntityEvent implements Listener {
     }
 
     public static void kofferbak(Player p, String ken) {
-        if (Main.defaultConfig.getConfig().getBoolean("kofferbakEnabled") == true) {
+        if (ConfigModule.defaultConfig.getConfig().getBoolean("kofferbakEnabled") == true) {
             if (Vehicle.getByPlate(ken) == null) {
-                Main.messagesConfig.sendMessage(p, "vehicleNotFound");
+                ConfigModule.messagesConfig.sendMessage(p, "vehicleNotFound");
                 return;
             }
             if (Vehicle.getByPlate(ken).getOwner().equals(p.getUniqueId().toString()) || p.hasPermission("mtvehicles.kofferbak")) {
-                Main.configList.forEach(ConfigUtils::reload);
-                if (Main.vehicleDataConfig.getConfig().getBoolean("vehicle." + ken + ".kofferbak") == true) {
-                    if (Main.vehicleDataConfig.getConfig().getList("vehicle." + ken + ".kofferbakData") == null) {
+                ConfigModule.configList.forEach(ConfigUtils::reload);
+                if (ConfigModule.vehicleDataConfig.getConfig().getBoolean("vehicle." + ken + ".kofferbak") == true) {
+                    if (ConfigModule.vehicleDataConfig.getConfig().getList("vehicle." + ken + ".kofferbakData") == null) {
                         return;
                     }
-                    Inventory inv = Bukkit.createInventory(null, Main.vehicleDataConfig.getConfig().getInt("vehicle." + ken + ".kofferbakRows") * 9, "Kofferbak Vehicle: " + ken);
-                    List<ItemStack> chestContentsFromConfig = (List<ItemStack>) Main.vehicleDataConfig.getConfig().getList("vehicle." + ken + ".kofferbakData");
+                    Inventory inv = Bukkit.createInventory(null, ConfigModule.vehicleDataConfig.getConfig().getInt("vehicle." + ken + ".kofferbakRows") * 9, "Kofferbak Vehicle: " + ken);
+                    List<ItemStack> chestContentsFromConfig = (List<ItemStack>) ConfigModule.vehicleDataConfig.getConfig().getList("vehicle." + ken + ".kofferbakData");
                     for (ItemStack item : chestContentsFromConfig) {
                         if (item == null) {
                             continue;
@@ -101,7 +102,7 @@ public class VehicleEntityEvent implements Listener {
                     p.openInventory(inv);
                 }
             } else {
-                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleNoRiderKofferbak").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
+                p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehicleNoRiderKofferbak").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
             }
         }
     }

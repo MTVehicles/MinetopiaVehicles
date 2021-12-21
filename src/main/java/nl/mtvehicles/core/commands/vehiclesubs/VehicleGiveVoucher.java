@@ -4,6 +4,7 @@ import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.Main;
+import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -20,7 +21,7 @@ public class VehicleGiveVoucher extends MTVehicleSubCommand {
         if (!checkPermission("mtvehicles.givevoucher")) return true;
 
         if (args.length != 3) {
-            sendMessage(Main.messagesConfig.getMessage("useGiveVoucher"));
+            sendMessage(ConfigModule.messagesConfig.getMessage("useGiveVoucher"));
             return true;
         }
 
@@ -29,14 +30,14 @@ public class VehicleGiveVoucher extends MTVehicleSubCommand {
         String carUuid = args[2];
 
         if (of == null || !of.hasPlayedBefore()) {
-            sendMessage(Main.messagesConfig.getMessage("playerNotFound"));
+            sendMessage(ConfigModule.messagesConfig.getMessage("playerNotFound"));
             return true;
         }
 
         ItemStack car = Vehicle.getByDamage(of, carUuid);
 
         if (car == null){
-            sender.sendMessage(Main.messagesConfig.getMessage("giveCarNotFound"));
+            sender.sendMessage(ConfigModule.messagesConfig.getMessage("giveCarNotFound"));
             return true;
         }
 

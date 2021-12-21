@@ -2,6 +2,7 @@ package nl.mtvehicles.core.infrastructure.helpers;
 
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.Main;
+import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -61,16 +62,16 @@ public class TextUtils {
         }
         Vehicle vehicle = Vehicle.getByPlate(ken);
         if (vehicle == null) {
-            Main.messagesConfig.sendMessage(p, "vehicleNotFound");
+            ConfigModule.messagesConfig.sendMessage(p, "vehicleNotFound");
             return;
         }
         if (!vehicle.getOwner().equals(p.getUniqueId().toString()) && !vehicle.canRide(p) && !p.hasPermission("mtvehicles.ride")) {
-            p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleNoRiderEnter").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
+            p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehicleNoRiderEnter").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
             return;
         }
         for (Entity entity : p.getWorld().getEntities()) {
-            if (Main.defaultConfig.getConfig().getBoolean("anwb") && !p.hasPermission("mtvehicles.anwb") && (entity.getLocation().clone().add(0.0, 0.9, 0.0).getBlock().getType().toString().contains("WATER"))) {
-                Main.messagesConfig.sendMessage(p, "vehicleInWater");
+            if (ConfigModule.defaultConfig.getConfig().getBoolean("anwb") && !p.hasPermission("mtvehicles.anwb") && (entity.getLocation().clone().add(0.0, 0.9, 0.0).getBlock().getType().toString().contains("WATER"))) {
+                ConfigModule.messagesConfig.sendMessage(p, "vehicleInWater");
                 return;
             }
             if (entity.getCustomName() != null && entity.getCustomName().contains(ken)) {
@@ -79,15 +80,15 @@ public class TextUtils {
                     return;
                 }
                 VehicleData.fuel.put(ken, vehicle.getFuel());
-                VehicleData.fuelUsage.put(ken, Main.vehicleDataConfig.getConfig().getDouble("vehicle." + ken + ".benzineVerbruik"));
-                VehicleData.type.put(ken, Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".vehicleType"));
+                VehicleData.fuelUsage.put(ken, ConfigModule.vehicleDataConfig.getConfig().getDouble("vehicle." + ken + ".benzineVerbruik"));
+                VehicleData.type.put(ken, ConfigModule.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".vehicleType"));
 
-                VehicleData.RotationSpeed.put(ken, Main.vehicleDataConfig.getConfig().getInt("vehicle."+ken+".rotateSpeed"));
-                VehicleData.MaxSpeed.put(ken, Main.vehicleDataConfig.getConfig().getDouble("vehicle."+ken+".maxSpeed"));
-                VehicleData.AccelerationSpeed.put(ken, Main.vehicleDataConfig.getConfig().getDouble("vehicle."+ken+".acceleratieSpeed"));
-                VehicleData.BrakingSpeed.put(ken, Main.vehicleDataConfig.getConfig().getDouble("vehicle."+ken+".brakingSpeed"));
-                VehicleData.MaxSpeedBackwards.put(ken, Main.vehicleDataConfig.getConfig().getDouble("vehicle."+ken+".maxSpeedBackwards"));
-                VehicleData.FrictionSpeed.put(ken, Main.vehicleDataConfig.getConfig().getDouble("vehicle."+ken+".aftrekkenSpeed"));
+                VehicleData.RotationSpeed.put(ken, ConfigModule.vehicleDataConfig.getConfig().getInt("vehicle."+ken+".rotateSpeed"));
+                VehicleData.MaxSpeed.put(ken, ConfigModule.vehicleDataConfig.getConfig().getDouble("vehicle."+ken+".maxSpeed"));
+                VehicleData.AccelerationSpeed.put(ken, ConfigModule.vehicleDataConfig.getConfig().getDouble("vehicle."+ken+".acceleratieSpeed"));
+                VehicleData.BrakingSpeed.put(ken, ConfigModule.vehicleDataConfig.getConfig().getDouble("vehicle."+ken+".brakingSpeed"));
+                VehicleData.MaxSpeedBackwards.put(ken, ConfigModule.vehicleDataConfig.getConfig().getDouble("vehicle."+ken+".maxSpeedBackwards"));
+                VehicleData.FrictionSpeed.put(ken, ConfigModule.vehicleDataConfig.getConfig().getDouble("vehicle."+ken+".aftrekkenSpeed"));
 
                 Location location = new Location(entity.getWorld(), entity.getLocation().getX(), entity.getLocation().getY(), entity.getLocation().getZ(), entity.getLocation().getYaw(), entity.getLocation().getPitch());
                 if (vehicleAs.getCustomName().contains("MTVEHICLES_SKIN_" + ken)) {
@@ -99,7 +100,7 @@ public class TextUtils {
                         if (i == 1) {
                             TextUtils.mainSeatStandCreator(ken, location, p, seat.get("x"), seat.get("y"), seat.get("z"));
                             BossBarUtils.addBossBar(p, ken);
-                            p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleEnterRider").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
+                            p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehicleEnterRider").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
                         }
                         if (i > 1) {
                             VehicleData.seatsize.put(ken, seats.size());
@@ -115,9 +116,9 @@ public class TextUtils {
                         }
                     }
                     List<Map<String, Double>> wiekens = (List<Map<String, Double>>) vehicle.getVehicleData().get("wiekens");
-                    String vehicleType = Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".vehicleType");
+                    String vehicleType = ConfigModule.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".vehicleType");
                     if (vehicleType.contains("HELICOPTER")) {
-                        VehicleData.maxheight.put(ken, Main.defaultConfig.getConfig().getInt("helicopterMaxHeight"));
+                        VehicleData.maxheight.put(ken, ConfigModule.defaultConfig.getConfig().getInt("helicopterMaxHeight"));
                         if (vehicleType == null) return;
                         for (int i = 1; i <= wiekens.size(); i++) {
                             Map<?, ?> seat = wiekens.get(i - 1);
@@ -151,7 +152,7 @@ public class TextUtils {
                             if (checkInvFull(p) == false) {
                                 p.getInventory().addItem(test.getHelmet());
                             } else {
-                                Main.messagesConfig.sendMessage(p, "inventoryFull");
+                                ConfigModule.messagesConfig.sendMessage(p, "inventoryFull");
                                 return;
                             }
                         }
@@ -159,14 +160,14 @@ public class TextUtils {
                     }
                 }
             }
-            Main.messagesConfig.sendMessage(p, "vehicleNotFound");
+            ConfigModule.messagesConfig.sendMessage(p, "vehicleNotFound");
             return;
         }
-        if (Vehicle.getByPlate(ken).getOwner().equals(p.getUniqueId().toString()) && Main.defaultConfig.getConfig().getBoolean("carPickup") == false || p.hasPermission("mtvehicles.oppakken")) {
+        if (Vehicle.getByPlate(ken).getOwner().equals(p.getUniqueId().toString()) && ConfigModule.defaultConfig.getConfig().getBoolean("carPickup") == false || p.hasPermission("mtvehicles.oppakken")) {
             for (World world : Bukkit.getServer().getWorlds()) {
                 for (Entity entity : world.getEntities()) {
-                    if (Main.defaultConfig.getConfig().getBoolean("anwb") && !p.hasPermission("mtvehicles.anwb") && entity.getLocation().clone().add(0.0, 0.9, 0.0).getBlock().getType().toString().contains("WATER")) {
-                        Main.messagesConfig.sendMessage(p, "vehicleInWater");
+                    if (ConfigModule.defaultConfig.getConfig().getBoolean("anwb") && !p.hasPermission("mtvehicles.anwb") && entity.getLocation().clone().add(0.0, 0.9, 0.0).getBlock().getType().toString().contains("WATER")) {
+                        ConfigModule.messagesConfig.sendMessage(p, "vehicleInWater");
                         return;
                     }
                     if (entity.getCustomName() != null && entity.getCustomName().contains(ken)) {
@@ -174,9 +175,9 @@ public class TextUtils {
                         if (test.getCustomName().contains("MTVEHICLES_SKIN_" + ken)) {
                             if (checkInvFull(p) == false) {
                                 p.getInventory().addItem(test.getHelmet());
-                                p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehiclePickup").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
+                                p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehiclePickup").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
                             } else {
-                                Main.messagesConfig.sendMessage(p, "inventoryFull");
+                                ConfigModule.messagesConfig.sendMessage(p, "inventoryFull");
                                 return;
                             }
                         }
@@ -185,11 +186,11 @@ public class TextUtils {
                 }
             }
         } else {
-            if (Main.defaultConfig.getConfig().getBoolean("carPickup") == true) {
+            if (ConfigModule.defaultConfig.getConfig().getBoolean("carPickup") == true) {
                 p.sendMessage(TextUtils.colorize("&cVoertuigen oppakken staat uitgeschakeld"));
                 return;
             }
-            p.sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("vehicleNoOwnerPickup").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
+            p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehicleNoOwnerPickup").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
             return;
         }
     }

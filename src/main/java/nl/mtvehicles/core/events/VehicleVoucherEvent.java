@@ -3,6 +3,7 @@ package nl.mtvehicles.core.events;
 import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
 import nl.mtvehicles.core.infrastructure.helpers.NBTUtils;
 import nl.mtvehicles.core.Main;
+import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -27,7 +28,7 @@ public class VehicleVoucherEvent implements Listener {
 
         if (e.getHand() != EquipmentSlot.HAND) {
             e.setCancelled(true);
-            p.sendMessage(Main.messagesConfig.getMessage("wrongHand"));
+            p.sendMessage(ConfigModule.messagesConfig.getMessage("wrongHand"));
             return;
         }
 

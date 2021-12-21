@@ -2,6 +2,7 @@ package nl.mtvehicles.core.infrastructure.models;
 
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.Main;
+import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -18,7 +19,7 @@ public abstract class MTVehicleSubCommand {
         this.player = isPlayer ? (Player) sender : null;
 
         if (isPlayerCommand && !isPlayer) {
-            sendMessage(Main.messagesConfig.getMessage("notForConsole"));
+            sendMessage(ConfigModule.messagesConfig.getMessage("notForConsole"));
             return true;
         }
 
@@ -36,7 +37,7 @@ public abstract class MTVehicleSubCommand {
             return true;
         }
 
-        Main.messagesConfig.sendMessage(commandSender, "noPerms");
+        ConfigModule.messagesConfig.sendMessage(commandSender, "noPerms");
 
         return false;
     }

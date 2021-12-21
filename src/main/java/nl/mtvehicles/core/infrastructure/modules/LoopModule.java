@@ -16,7 +16,7 @@ public class LoopModule {
     public LoopModule() {
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
             if (p.isInsideVehicle()) {
-                p.kickPlayer(TextUtils.colorize(Main.messagesConfig.getMessage("reloadInVehicle")));
+                p.kickPlayer(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("reloadInVehicle")));
             }
             MovementManager.MovementSelector(p);
         }

@@ -1,35 +1,17 @@
 package nl.mtvehicles.core;
 
-import nl.mtvehicles.core.commands.VehicleSubCommandManager;
-import nl.mtvehicles.core.commands.VehicleTabCompleterManager;
-import nl.mtvehicles.core.infrastructure.dataconfig.*;
-import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
-import nl.mtvehicles.core.infrastructure.models.ConfigUtils;
-import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
-import nl.mtvehicles.core.infrastructure.modules.ListenersModule;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
-import nl.mtvehicles.core.infrastructure.modules.LoopModule;
-import nl.mtvehicles.core.infrastructure.modules.MetricsModule;
-import nl.mtvehicles.core.movement.MovementManager;
+import nl.mtvehicles.core.infrastructure.modules.*;
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.PluginCommand;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 
 public class Main extends JavaPlugin {
     public static Main instance;
     public static String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
-    public static HashMap<String, MTVehicleSubCommand> subcommands = new HashMap<>();
 
     @Override
     public void onEnable() {
@@ -54,13 +36,7 @@ public class Main extends JavaPlugin {
         getLogger().info("Thanks for using our plugin.");
         getLogger().info("--------------------------");
 
-        PluginCommand pluginCommand = Main.instance.getCommand("minetopiavehicles");
-
-        if (pluginCommand != null) {
-            pluginCommand.setExecutor(new VehicleSubCommandManager());
-            pluginCommand.setTabCompleter(new VehicleTabCompleterManager());
-        }
-
+        new CommandModule();
         new ListenersModule();
         new MetricsModule();
         new LoopModule();

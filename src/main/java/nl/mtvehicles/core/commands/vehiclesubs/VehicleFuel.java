@@ -4,6 +4,7 @@ import nl.mtvehicles.core.infrastructure.helpers.ItemFactory;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.Main;
+import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -29,7 +30,7 @@ public class VehicleFuel extends MTVehicleSubCommand {
 
         Inventory inv = Bukkit.createInventory(null, 9, "Benzine menu");
 
-        List<Integer> jerrycans = (List<Integer>) Main.defaultConfig.getConfig().getList("jerrycans");
+        List<Integer> jerrycans = (List<Integer>) ConfigModule.defaultConfig.getConfig().getList("jerrycans");
         assert jerrycans != null;
 
         for (int jerrycan : jerrycans) {

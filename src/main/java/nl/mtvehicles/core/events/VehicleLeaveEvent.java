@@ -5,6 +5,7 @@ import nl.mtvehicles.core.infrastructure.helpers.BossBarUtils;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
+import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Material;
 import org.bukkit.boss.BarColor;
 import org.bukkit.entity.ArmorStand;
@@ -48,10 +49,10 @@ public class VehicleLeaveEvent implements Listener {
             }
             VehicleData.type.remove(ken+"b");
 
-            if (Main.defaultConfig.getConfig().getBoolean("benzine") && Main.vehicleDataConfig.getConfig().getBoolean("vehicle." + ken + ".benzineEnabled")) {
+            if (ConfigModule.defaultConfig.getConfig().getBoolean("benzine") && ConfigModule.vehicleDataConfig.getConfig().getBoolean("vehicle." + ken + ".benzineEnabled")) {
                 Double fuel = VehicleData.fuel.get(ken);
-                Main.vehicleDataConfig.getConfig().set(String.format("vehicle.%s.benzine", ken), fuel);
-                Main.vehicleDataConfig.save();
+                ConfigModule.vehicleDataConfig.getConfig().set(String.format("vehicle.%s.benzine", ken), fuel);
+                ConfigModule.vehicleDataConfig.save();
             }
         }
     }

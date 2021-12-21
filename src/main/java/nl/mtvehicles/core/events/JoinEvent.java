@@ -4,6 +4,7 @@ import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.ConfigUtils;
 import nl.mtvehicles.core.Main;
+import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.movement.MovementManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -28,13 +29,13 @@ public class JoinEvent implements Listener {
         Player p = e.getPlayer();
         MovementManager.MovementSelector(p);
 
-        if (Main.defaultConfig.getConfig().getString("messagesLanguage").contains("ns")) {
+        if (ConfigModule.defaultConfig.getConfig().getString("messagesLanguage").contains("ns")) {
             if (p.hasPermission("mtvehicles.language")) {
                 p.sendMessage(TextUtils.colorize("&cHey! You have not yet changed the language of the plugin. Do this by with &4/vehicle language&c!"));
             }
         }
 
-        if (!p.hasPermission("mtvehicles.update") || !Main.defaultConfig.getConfig().getBoolean("auto-update")) {
+        if (!p.hasPermission("mtvehicles.update") || !ConfigModule.defaultConfig.getConfig().getBoolean("auto-update")) {
             return;
         }
 
@@ -58,7 +59,7 @@ public class JoinEvent implements Listener {
         PrintWriter writer = new PrintWriter("plugins/MTVehicles/messages.yml");
         writer.print(sb.toString());
         writer.close();
-        Main.configList.forEach(ConfigUtils::reload);
+        ConfigModule.configList.forEach(ConfigUtils::reload);
     }
 
     public static void changeLanguageDutch() {

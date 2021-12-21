@@ -5,6 +5,7 @@ import net.minecraft.server.v1_15_R1.PacketPlayInSteerVehicle;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.helpers.BossBarUtils;
 import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
+import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.*;
 import org.bukkit.block.data.type.Fence;
 import org.bukkit.block.data.type.Slab;
@@ -75,7 +76,7 @@ public class VehicleMovement1_15 {
                     if (VehicleData.lastUsage.containsKey(p.getName())) {
                         lastUsed = ((Long) VehicleData.lastUsage.get(p.getName())).longValue();
                     }
-                    if (System.currentTimeMillis() - lastUsed >= Main.defaultConfig.getConfig().getInt("hornCooldown") * 1000) {
+                    if (System.currentTimeMillis() - lastUsed >= ConfigModule.defaultConfig.getConfig().getInt("hornCooldown") * 1000) {
                         standMain.getWorld().playEffect(standMain.getLocation(), Effect.BLAZE_SHOOT, 1, 1);
                         standMain.getWorld().playEffect(standMain.getLocation(), Effect.GHAST_SHOOT, 1, 1);
                         standMain.getWorld().playEffect(standMain.getLocation(), Effect.WITHER_BREAK_BLOCK, 1, 1);
@@ -100,8 +101,8 @@ public class VehicleMovement1_15 {
                         if (VehicleData.lastUsage.containsKey(p.getName())) {
                             lastUsed = ((Long) VehicleData.lastUsage.get(p.getName())).longValue();
                         }
-                        if (System.currentTimeMillis() - lastUsed >= Main.defaultConfig.getConfig().getInt("hornCooldown") * 1000) {
-                            standMain.getWorld().playSound(standMain.getLocation(), Main.defaultConfig.getConfig().getString("hornType"), 0.9f, 1f);
+                        if (System.currentTimeMillis() - lastUsed >= ConfigModule.defaultConfig.getConfig().getInt("hornCooldown") * 1000) {
+                            standMain.getWorld().playSound(standMain.getLocation(), ConfigModule.defaultConfig.getConfig().getString("hornType"), 0.9f, 1f);
                             VehicleData.lastUsage.put(p.getName(), Long.valueOf(System.currentTimeMillis()));
                         }
                     }
@@ -118,7 +119,7 @@ public class VehicleMovement1_15 {
                 VehicleData.speed.put(license, VehicleData.speed.get(license) + BrakingSpeed);
                 return;
             }
-            if (Main.defaultConfig.getConfig().getBoolean("benzine") && Main.vehicleDataConfig.getConfig().getBoolean("vehicle." + license + ".benzineEnabled")) {
+            if (ConfigModule.defaultConfig.getConfig().getBoolean("benzine") && ConfigModule.vehicleDataConfig.getConfig().getBoolean("vehicle." + license + ".benzineEnabled")) {
                 double dnum = VehicleData.fuel.get(license) - VehicleData.fuelUsage.get(license);
                 VehicleData.fuel.put(license, dnum);
             }
@@ -132,7 +133,7 @@ public class VehicleMovement1_15 {
                 VehicleData.speed.put(license, VehicleData.speed.get(license) - BrakingSpeed);
                 return;
             }
-            if (Main.defaultConfig.getConfig().getBoolean("benzine") && Main.vehicleDataConfig.getConfig().getBoolean("vehicle." + license + ".benzineEnabled")) {
+            if (ConfigModule.defaultConfig.getConfig().getBoolean("benzine") && ConfigModule.vehicleDataConfig.getConfig().getBoolean("vehicle." + license + ".benzineEnabled")) {
                 double dnum = VehicleData.fuel.get(license) - VehicleData.fuelUsage.get(license);
                 VehicleData.fuel.put(license, dnum);
             }
@@ -170,7 +171,7 @@ public class VehicleMovement1_15 {
         String locY = String.valueOf(mainStand.getLocation().getY());
         Location locBlockAbove = new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset + 1, zvp, fbvp.getYaw(), fbvp.getPitch());;
 
-        if (loc.getBlock().getType().toString().contains("CARPET") && Main.defaultConfig.getConfig().getBoolean("driveOnCarpets")){
+        if (loc.getBlock().getType().toString().contains("CARPET") && ConfigModule.defaultConfig.getConfig().getBoolean("driveOnCarpets")){
 
             if (!locBlockAbove.getBlock().isPassable()) {
                 VehicleData.speed.put(license, 0.0);
@@ -363,7 +364,7 @@ public class VehicleMovement1_15 {
     }
 
     private static boolean driveUpSlabs(){
-        if (Main.defaultConfig.getConfig().getString("driveUp").equals("blocks")){
+        if (ConfigModule.defaultConfig.getConfig().getString("driveUp").equals("blocks")){
             return false;
         }
         return true;

@@ -2,6 +2,7 @@ package nl.mtvehicles.core.infrastructure.helpers;
 
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
+import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.apache.commons.lang.RandomStringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -266,10 +267,10 @@ public class ItemUtils {
             ItemStack is = new ItemStack(Material.getMaterial(material.toUpperCase()), amount, durability);
             ItemMeta im = is.getItemMeta();
             List<String> itemlore = new ArrayList<>();
-            if (Main.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".riders").size() == 0) {
+            if (ConfigModule.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".riders").size() == 0) {
                 itemlore.add(TextUtils.colorize((("&7Riders: &eGeen"))));
             } else {
-                for (String subj : Main.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".riders")) {
+                for (String subj : ConfigModule.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".riders")) {
                     itemlore.add(TextUtils.colorize(("&7- &e" + Bukkit.getOfflinePlayer(UUID.fromString(subj)).getName())));
                 }
             }
@@ -282,10 +283,10 @@ public class ItemUtils {
                 ItemStack is = new ItemStack(Material.matchMaterial(material, true), amount, durability);
                 ItemMeta im = is.getItemMeta();
                 List<String> itemlore = new ArrayList<>();
-                if (Main.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".riders").size() == 0) {
+                if (ConfigModule.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".riders").size() == 0) {
                     itemlore.add(TextUtils.colorize((("&7Riders: &eGeen"))));
                 } else {
-                    for (String subj : Main.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".riders")) {
+                    for (String subj : ConfigModule.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".riders")) {
                         itemlore.add(TextUtils.colorize(("&7- &e" + Bukkit.getOfflinePlayer(UUID.fromString(subj)).getName())));
                     }
                 }
@@ -305,10 +306,10 @@ public class ItemUtils {
             ItemStack is = new ItemStack(Material.getMaterial(material.toUpperCase()), amount, durability);
             ItemMeta im = is.getItemMeta();
             List<String> itemlore = new ArrayList<>();
-            if (Main.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".members").size() == 0) {
+            if (ConfigModule.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".members").size() == 0) {
                 itemlore.add(TextUtils.colorize((("&7Members: &eGeen"))));
             } else {
-                for (String subj : Main.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".members")) {
+                for (String subj : ConfigModule.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".members")) {
                     itemlore.add(TextUtils.colorize(("&7- &e" + Bukkit.getOfflinePlayer(UUID.fromString(subj)).getName())));
                 }
             }
@@ -321,10 +322,10 @@ public class ItemUtils {
                 ItemStack is = new ItemStack(Material.matchMaterial(material, true), amount, durability);
                 ItemMeta im = is.getItemMeta();
                 List<String> itemlore = new ArrayList<>();
-                if (Main.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".members").size() == 0) {
+                if (ConfigModule.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".members").size() == 0) {
                     itemlore.add(TextUtils.colorize((("&7Members: &eGeen"))));
                 } else {
-                    for (String subj : Main.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".members")) {
+                    for (String subj : ConfigModule.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".members")) {
                         itemlore.add(TextUtils.colorize(("&7- &e" + Bukkit.getOfflinePlayer(UUID.fromString(subj)).getName())));
                     }
                 }

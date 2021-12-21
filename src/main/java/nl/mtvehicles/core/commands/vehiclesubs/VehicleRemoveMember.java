@@ -5,6 +5,7 @@ import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.Main;
+import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -25,12 +26,12 @@ public class VehicleRemoveMember extends MTVehicleSubCommand {
         ItemStack item = p.getInventory().getItemInMainHand();
 
         if (!item.hasItemMeta() || !NBTUtils.contains(item, "mtvehicles.kenteken")) {
-            sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("noVehicleInHand")));
+            sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("noVehicleInHand")));
             return true;
         }
 
         if (args.length != 2) {
-            p.sendMessage(Main.messagesConfig.getMessage("useRemoveMember"));
+            p.sendMessage(ConfigModule.messagesConfig.getMessage("useRemoveMember"));
             return true;
         }
 
@@ -40,7 +41,7 @@ public class VehicleRemoveMember extends MTVehicleSubCommand {
         Vehicle vehicle = Vehicle.getByPlate(ken);
 
         if (of == null || !of.hasPlayedBefore()) {
-            p.sendMessage(Main.messagesConfig.getMessage("playerNotFound"));
+            p.sendMessage(ConfigModule.messagesConfig.getMessage("playerNotFound"));
             return true;
         }
 
@@ -50,7 +51,7 @@ public class VehicleRemoveMember extends MTVehicleSubCommand {
         vehicle.setMembers(members);
         vehicle.save();
 
-        p.sendMessage(Main.messagesConfig.getMessage("memberChange"));
+        p.sendMessage(ConfigModule.messagesConfig.getMessage("memberChange"));
 
         return true;
     }

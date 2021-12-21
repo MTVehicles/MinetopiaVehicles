@@ -6,6 +6,7 @@ import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.ConfigUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.Main;
+import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -27,13 +28,13 @@ public class VehicleEdit extends MTVehicleSubCommand {
         final ItemStack item = p.getInventory().getItemInMainHand();
 
         if (!item.hasItemMeta() || !NBTUtils.contains(item, "mtvehicles.kenteken")) {
-            sendMessage(TextUtils.colorize(Main.messagesConfig.getMessage("noVehicleInHand")));
+            sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("noVehicleInHand")));
             return true;
         }
 
-        Main.configList.forEach(ConfigUtils::reload);
+        ConfigModule.configList.forEach(ConfigUtils::reload);
 
-        sendMessage(Main.messagesConfig.getMessage("menuOpen"));
+        sendMessage(ConfigModule.messagesConfig.getMessage("menuOpen"));
         editMenu(p, item);
 
         return true;
@@ -42,7 +43,7 @@ public class VehicleEdit extends MTVehicleSubCommand {
     public static void editMenu(Player p, ItemStack item) {
         String ken = NBTUtils.getString(item, "mtvehicles.kenteken");
         Inventory inv = Bukkit.createInventory(null, 27, "Vehicle Edit");
-        inv.setItem(10, ItemUtils.mItem3(Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".skinItem"), 1, (short) Main.vehicleDataConfig.getConfig().getInt("vehicle." + ken + ".skinDamage"), "&6Vehicle Settings", "", "mtcustom", Main.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".nbtValue")));
+        inv.setItem(10, ItemUtils.mItem3(ConfigModule.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".skinItem"), 1, (short) ConfigModule.vehicleDataConfig.getConfig().getInt("vehicle." + ken + ".skinDamage"), "&6Vehicle Settings", "", "mtcustom", ConfigModule.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".nbtValue")));
         inv.setItem(11, ItemUtils.mItem2("DIAMOND_HOE", 1, (short) 58, "&6Benzine Settings", ""));
         inv.setItem(12, ItemUtils.mItem("CHEST", 1, (short) 0, "&6Kofferbak Settings", ""));
         inv.setItem(13, ItemUtils.mItem("PAPER", 1, (short) 0, "&6Member Settings", ""));

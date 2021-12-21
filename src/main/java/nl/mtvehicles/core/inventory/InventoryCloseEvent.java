@@ -3,6 +3,7 @@ package nl.mtvehicles.core.inventory;
 import nl.mtvehicles.core.events.JoinEvent;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.Main;
+import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,12 +19,12 @@ public class InventoryCloseEvent implements Listener {
     public void onInventoryClose(org.bukkit.event.inventory.InventoryCloseEvent e) {
         if (e.getView().getTitle().contains("Kofferbak Vehicle: ")) {
             String ken = e.getView().getTitle().replace("Kofferbak Vehicle: ", "");
-            List<ItemStack> chest = (List<ItemStack>) Main.vehicleDataConfig.getConfig().getList("vehicle." + ken + ".kofferbakData");
+            List<ItemStack> chest = (List<ItemStack>) ConfigModule.vehicleDataConfig.getConfig().getList("vehicle." + ken + ".kofferbakData");
             chest.removeAll(chest);
             for (ItemStack item : e.getInventory().getContents()) {
                 chest.add(item);
-                Main.vehicleDataConfig.getConfig().set("vehicle." + ken + ".kofferbakData", chest);
-                Main.vehicleDataConfig.save();
+                ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + ken + ".kofferbakData", chest);
+                ConfigModule.vehicleDataConfig.save();
             }
         }
         if (e.getView().getTitle().contains("Choose your language")) {

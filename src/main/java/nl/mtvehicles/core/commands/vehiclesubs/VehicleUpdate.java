@@ -3,6 +3,7 @@ package nl.mtvehicles.core.commands.vehiclesubs;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.Main;
+import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -20,8 +21,8 @@ public class VehicleUpdate extends MTVehicleSubCommand {
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
         if (!checkPermission("mtvehicles.update")) return true;
 
-        if (!Main.defaultConfig.getConfig().getBoolean("auto-update")) {
-            sendMessage(Main.messagesConfig.getMessage("updateDisabled"));
+        if (!ConfigModule.defaultConfig.getConfig().getBoolean("auto-update")) {
+            sendMessage(ConfigModule.messagesConfig.getMessage("updateDisabled"));
             return false;
         }
 
@@ -79,11 +80,11 @@ public class VehicleUpdate extends MTVehicleSubCommand {
             os.flush();
             is.close();
             os.close();
-            sendMessage(Main.messagesConfig.getMessage("updatedSucces2"));
+            sendMessage(ConfigModule.messagesConfig.getMessage("updatedSucces2"));
 
 
         } catch (Exception ec) {
-            sendMessage(Main.messagesConfig.getMessage("updateFailed"));
+            sendMessage(ConfigModule.messagesConfig.getMessage("updateFailed"));
             ec.printStackTrace();
         }
     }

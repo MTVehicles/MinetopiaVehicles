@@ -3,6 +3,7 @@ package nl.mtvehicles.core.infrastructure.models;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
 import nl.mtvehicles.core.infrastructure.helpers.NBTUtils;
+import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -61,8 +62,8 @@ public class Vehicle {
         map.put("nbtValue", this.getNbtValue());
         map.put("riders", this.getRiders());
         map.put("members", this.getMembers());
-        Main.vehicleDataConfig.getConfig().set(String.format("vehicle.%s", this.getLicensePlate()), map);
-        Main.vehicleDataConfig.save();
+        ConfigModule.vehicleDataConfig.getConfig().set(String.format("vehicle.%s", this.getLicensePlate()), map);
+        ConfigModule.vehicleDataConfig.save();
     }
 
     public String getOwnerName() {
@@ -70,7 +71,7 @@ public class Vehicle {
     }
 
     public static ItemStack getByDamage(Player p, String damage) {
-        List<Map<?, ?>> vehicles = Main.vehiclesConfig.getConfig().getMapList("voertuigen");
+        List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getConfig().getMapList("voertuigen");
         List<Map<?, ?>> matchedVehicles = new ArrayList<>();
         for (Map<?, ?> configVehicle : vehicles) {
             List<Map<?, ?>> skins = (List<Map<?, ?>>) configVehicle.get("cars");
@@ -88,9 +89,9 @@ public class Vehicle {
                             String kenteken = NBTUtils.getString((is), "mtvehicles.kenteken");
                             matchedVehicles.add(configVehicle);
                             Vehicle vehicle = new Vehicle();
-                            List<String> members = Main.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".members");
-                            List<String> riders = Main.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".riders");
-                            List<String> kof = Main.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".kofferbakData");
+                            List<String> members = ConfigModule.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".members");
+                            List<String> riders = ConfigModule.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".riders");
+                            List<String> kof = ConfigModule.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".kofferbakData");
                             vehicle.setLicensePlate(kenteken);
                             vehicle.setName((String) skin.get("name"));
                             vehicle.setVehicleType((String) configVehicle.get("vehicleType"));
@@ -124,7 +125,7 @@ public class Vehicle {
     }
 
     public static ItemStack getCar(String carUuid) {
-        List<Map<?, ?>> vehicles = Main.vehiclesConfig.getConfig().getMapList("voertuigen");
+        List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getConfig().getMapList("voertuigen");
         List<Map<?, ?>> matchedVehicles = new ArrayList<>();
         for (Map<?, ?> configVehicle : vehicles) {
             List<Map<?, ?>> skins = (List<Map<?, ?>>) configVehicle.get("cars");
@@ -146,9 +147,9 @@ public class Vehicle {
     public static String getCarUuid(String plate) {
         if (!existsByPlate(plate)) return null;
 
-        Map<?, ?> vehicleData = Main.vehicleDataConfig.getConfig()
+        Map<?, ?> vehicleData = ConfigModule.vehicleDataConfig.getConfig()
                 .getConfigurationSection(String.format("vehicle.%s", plate)).getValues(true);
-        List<Map<?, ?>> vehicles = Main.vehiclesConfig.getConfig().getMapList("voertuigen");
+        List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getConfig().getMapList("voertuigen");
         List<Map<?, ?>> matchedVehicles = new ArrayList<>();
         for (Map<?, ?> configVehicle : vehicles) {
             List<Map<?, ?>> skins = (List<Map<?, ?>>) configVehicle.get("cars");
@@ -174,9 +175,9 @@ public class Vehicle {
     public static Vehicle getByPlate(String plate) {
         if (!existsByPlate(plate)) return null;
 
-        Map<?, ?> vehicleData = Main.vehicleDataConfig.getConfig()
+        Map<?, ?> vehicleData = ConfigModule.vehicleDataConfig.getConfig()
                 .getConfigurationSection(String.format("vehicle.%s", plate)).getValues(true);
-        List<Map<?, ?>> vehicles = Main.vehiclesConfig.getConfig().getMapList("voertuigen");
+        List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getConfig().getMapList("voertuigen");
         List<Map<?, ?>> matchedVehicles = new ArrayList<>();
         for (Map<?, ?> configVehicle : vehicles) {
             List<Map<?, ?>> skins = (List<Map<?, ?>>) configVehicle.get("cars");
@@ -224,7 +225,7 @@ public class Vehicle {
     }
 
     public static boolean existsByPlate(String plate) {
-        return Main.vehicleDataConfig.getConfig().get(String.format("vehicle.%s", plate)) != null;
+        return ConfigModule.vehicleDataConfig.getConfig().get(String.format("vehicle.%s", plate)) != null;
     }
 
     public String getLicensePlate() {
@@ -412,31 +413,31 @@ public class Vehicle {
     }
 
     public boolean canRide(Player p) {
-        return Main.vehicleDataConfig.getConfig().getStringList("vehicle." + this.licensePlate + ".riders").contains(p.getUniqueId().toString());
+        return ConfigModule.vehicleDataConfig.getConfig().getStringList("vehicle." + this.licensePlate + ".riders").contains(p.getUniqueId().toString());
     }
 
     public static boolean canRide(Player p, String ken) {
-        return Main.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".riders").contains(p.getUniqueId().toString());
+        return ConfigModule.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".riders").contains(p.getUniqueId().toString());
     }
 
     public boolean canSit(Player p) {
-        return Main.vehicleDataConfig.getConfig().getStringList("vehicle." + this.licensePlate + ".members").contains(p.getUniqueId().toString());
+        return ConfigModule.vehicleDataConfig.getConfig().getStringList("vehicle." + this.licensePlate + ".members").contains(p.getUniqueId().toString());
     }
 
     public static boolean canSit(Player p, String ken) {
-        return Main.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".members").contains(p.getUniqueId().toString());
+        return ConfigModule.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".members").contains(p.getUniqueId().toString());
     }
 
     public static UUID getOwner(String plate) {
-        if (Main.vehicleDataConfig.getConfig().getString("vehicle." + plate + ".owner") == null) {
+        if (ConfigModule.vehicleDataConfig.getConfig().getString("vehicle." + plate + ".owner") == null) {
             return null;
         }
-        return UUID.fromString(Main.vehicleDataConfig.getConfig().getString("vehicle." + plate + ".owner"));
+        return UUID.fromString(ConfigModule.vehicleDataConfig.getConfig().getString("vehicle." + plate + ".owner"));
     }
 
     public static String getRidersAsString(String plate) {
         StringBuilder sb = new StringBuilder();
-        for (String s : Main.vehicleDataConfig.getConfig().getStringList("vehicle." + plate + ".riders")) {
+        for (String s : ConfigModule.vehicleDataConfig.getConfig().getStringList("vehicle." + plate + ".riders")) {
             if (!UUID.fromString(s).equals(getOwner(plate))) {
                 sb.append(Bukkit.getOfflinePlayer(UUID.fromString(s)).getName()).append(", ");
             }
