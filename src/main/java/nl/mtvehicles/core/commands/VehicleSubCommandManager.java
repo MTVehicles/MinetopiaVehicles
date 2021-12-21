@@ -33,6 +33,7 @@ public class VehicleSubCommandManager extends MTVehicleCommand {
         CommandModule.subcommands.put("update", new VehicleUpdate());
         CommandModule.subcommands.put("delete", new VehicleDelete());
         CommandModule.subcommands.put("language", new VehicleLanguage());
+        CommandModule.subcommands.put("version", new VehicleVersion());
     }
 
     @Override
