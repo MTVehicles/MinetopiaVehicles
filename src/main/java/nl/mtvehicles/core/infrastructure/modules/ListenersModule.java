@@ -1,4 +1,4 @@
-package nl.mtvehicles.core.infrastructure.models;
+package nl.mtvehicles.core.infrastructure.modules;
 
 import lombok.Getter;
 import lombok.Setter;

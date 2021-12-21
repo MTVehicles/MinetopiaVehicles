@@ -2,18 +2,18 @@ package nl.mtvehicles.core;
 
 import nl.mtvehicles.core.commands.VehicleSubCommandManager;
 import nl.mtvehicles.core.commands.VehicleTabCompleterManager;
-import nl.mtvehicles.core.events.*;
 import nl.mtvehicles.core.infrastructure.dataconfig.*;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.ConfigUtils;
-import nl.mtvehicles.core.infrastructure.models.ListenersModule;
+import nl.mtvehicles.core.infrastructure.modules.ListenersModule;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
-import nl.mtvehicles.core.inventory.InventoryClickEvent;
-import nl.mtvehicles.core.inventory.InventoryCloseEvent;
+import nl.mtvehicles.core.infrastructure.modules.MetricsModule;
 import nl.mtvehicles.core.movement.MovementManager;
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -65,11 +65,7 @@ public class Main extends JavaPlugin {
         }
 
         new ListenersModule();
-
-        Metrics metrics = new Metrics(this, 5932);
-        metrics.addCustomChart(new Metrics.SimplePie("used_language", () -> {
-            return defaultConfig.getConfig().getString("messagesLanguage");
-        }));
+        new MetricsModule();
 
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
             if (p.isInsideVehicle()) {
@@ -97,5 +93,9 @@ public class Main extends JavaPlugin {
 
     public static String fol() {
         return String.valueOf(Main.instance.getFile());
+    }
+
+    public void registerListener(Listener listener) {
+        Bukkit.getPluginManager().registerEvents(listener, this);
     }
 }
