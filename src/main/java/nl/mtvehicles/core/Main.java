@@ -38,11 +38,11 @@ public class Main extends JavaPlugin {
 
         instance = this;
 
-        if (!version.equals("v1_12_R1") && !version.equals("v1_13_R2") && !version.equals("v1_15_R1") && !version.equals("v1_16_R3") && !version.contains("v1_17") && !version.contains("v1_18")) {
-            getLogger().info("-------------------------------------------------------");
-            getLogger().info("Your Server version is not supported by the plugin.");
-            getLogger().info("Check the supported versions here https://mtvehicles.nl");
-            getLogger().info("-------------------------------------------------------");
+        if (!version.equals("v1_12_R1") && !version.equals("v1_13_R2") && !version.equals("v1_15_R1") && !version.equals("v1_16_R3") && !version.equals("v1_17_R1") && !version.equals("v1_18_R1")) {
+            getLogger().info("§c-------------------------------------------------------");
+            getLogger().info("§cYour Server version is not supported by the plugin. The plugin will NOT load.");
+            getLogger().info("§cCheck the supported versions here: https://mtvehicles.nl");
+            getLogger().info("§c-------------------------------------------------------");
             setEnabled(false);
             return;
         }
@@ -52,9 +52,16 @@ public class Main extends JavaPlugin {
 
         getLogger().info("Plugin has been loaded!");
         getLogger().info("--------------------------");
-        getLogger().info("Welcome by MTVehicles " + versions + " !");
+        getLogger().info("Welcome by MTVehicles " + versions + "!");
         getLogger().info("Thanks for using our plugin.");
         getLogger().info("--------------------------");
+
+        if (!Bukkit.getVersion().contains("1.12.2") && !Bukkit.getVersion().contains("1.13.2") && !Bukkit.getVersion().contains("1.15.2") && !Bukkit.getVersion().contains("1.16.5") && !Bukkit.getVersion().contains("1.17.1") && !Bukkit.getVersion().contains("1.18.1")) {
+            getLogger().info("§e-------------------------------------------------------");
+            getLogger().info("§eYour Server does not run the latest patch version (e.g. you may be running 1.16.3 instead of 1.16.5 etc...).");
+            getLogger().info("§eThe plugin WILL load but you are NOT eligible for any support unless you update the server.");
+            getLogger().info("§e-------------------------------------------------------");
+        }
 
         PluginCommand pluginCommand = Main.instance.getCommand("minetopiavehicles");
 

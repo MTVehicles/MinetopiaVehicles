@@ -30,6 +30,10 @@ public class VehiclePlaceEvent implements Listener {
         final Action action = e.getAction();
         final ItemStack item = e.getItem();
 
+        if (e.getItem() != null && NBTUtils.contains(item, "mtvehicles.benzinesize")) {
+            e.setCancelled(true); //Jerrycans could farm grass (they're diamond hoes after all)
+        }
+
         if (e.getItem() == null
                 || (!e.getItem().hasItemMeta()
                 || !(NBTUtils.contains(item, "mtvehicles.kenteken")))
