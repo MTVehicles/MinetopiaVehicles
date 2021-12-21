@@ -50,9 +50,9 @@ public class CheckVersionModule {
             logger.info(ChatColor.YELLOW + "--------------------------");
         }
 
-        else if (!serverSoftware.equals("Spigot") && !serverSoftware.equals("Paper")){
+        else if (!serverSoftware.equals("Spigot") && !serverSoftware.equals("Paper") && !serverSoftware.equals("CraftBukkit")){
             logger.info(ChatColor.YELLOW + "--------------------------");
-            logger.info(ChatColor.YELLOW + "Your Server is not running Spigot, nor Paper.");
+            logger.info(ChatColor.YELLOW + "Your Server is not running Spigot, nor Paper (" + serverSoftware + " detected).");
             logger.info(ChatColor.YELLOW + "The plugin WILL load but you are NOT eligible for any support unless you switch to Spigot/Paper.");
             logger.info(ChatColor.YELLOW + "--------------------------");
         }
