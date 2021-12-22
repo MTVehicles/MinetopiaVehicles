@@ -4,6 +4,7 @@ import nl.mtvehicles.core.commands.vehiclesubs.VehicleEdit;
 import nl.mtvehicles.core.commands.vehiclesubs.VehicleMenu;
 import nl.mtvehicles.core.events.JoinEvent;
 import nl.mtvehicles.core.events.VehicleEntityEvent;
+import nl.mtvehicles.core.infrastructure.dataconfig.MessagesConfig;
 import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
 import nl.mtvehicles.core.infrastructure.helpers.MenuUtils;
 import nl.mtvehicles.core.infrastructure.helpers.NBTUtils;
@@ -12,6 +13,7 @@ import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,6 +22,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import sun.security.krb5.Config;
 
 import java.util.HashMap;
 import java.util.List;
@@ -85,20 +88,37 @@ public class InventoryClickEvent implements Listener {
         }
         if (e.getView().getTitle().contains("Choose your language")) {
             e.setCancelled(true);
-            if (e.getRawSlot() == 11) {
+            if (e.getRawSlot() == 11) { //English
                 JoinEvent.languageCheck.put(p.getUniqueId(), false);
-                p.sendMessage(TextUtils.colorize("&aYour language has changed!"));
-                JoinEvent.changeLanguageEnglish();
-                ConfigModule.defaultConfig.getConfig().set("messagesLanguage", "en");
-                ConfigModule.defaultConfig.save();
+                if (ConfigModule.messagesConfig.setLanguageFile("en")){
+                    p.sendMessage(ConfigModule.messagesConfig.getMessage("languageHasChanged"));
+                    ConfigModule.defaultConfig.getConfig().set("messagesLanguage", "en");
+                    ConfigModule.defaultConfig.save();
+                } else {
+                    p.sendMessage(ChatColor.RED + "An error occurred whilst trying to set a new language.");
+                }
                 p.closeInventory();
             }
-            if (e.getRawSlot() == 15) {
+            if (e.getRawSlot() == 13) { //Dutch
                 JoinEvent.languageCheck.put(p.getUniqueId(), false);
-                p.sendMessage(TextUtils.colorize("&aJouw taal is veranderd!!"));
-                JoinEvent.changeLanguageDutch();
-                ConfigModule.defaultConfig.getConfig().set("messagesLanguage", "nl");
-                ConfigModule.defaultConfig.save();
+                if (ConfigModule.messagesConfig.setLanguageFile("nl")){
+                    p.sendMessage(ConfigModule.messagesConfig.getMessage("languageHasChanged"));
+                    ConfigModule.defaultConfig.getConfig().set("messagesLanguage", "nl");
+                    ConfigModule.defaultConfig.save();
+                } else {
+                    p.sendMessage(ChatColor.RED + "An error occurred whilst trying to set a new language.");
+                }
+                p.closeInventory();
+            }
+            if (e.getRawSlot() == 15) { //Spanish
+                JoinEvent.languageCheck.put(p.getUniqueId(), false);
+                if (ConfigModule.messagesConfig.setLanguageFile("es")){
+                    p.sendMessage(ConfigModule.messagesConfig.getMessage("languageHasChanged"));
+                    ConfigModule.defaultConfig.getConfig().set("messagesLanguage", "es");
+                    ConfigModule.defaultConfig.save();
+                } else {
+                    p.sendMessage(ChatColor.RED + "An error occurred whilst trying to set a new language.");
+                }
                 p.closeInventory();
             }
         }

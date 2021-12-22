@@ -1,15 +1,19 @@
 package nl.mtvehicles.core.infrastructure.dataconfig;
 
+import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.ConfigUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.io.File;
 import java.util.List;
 
 public class MessagesConfig extends ConfigUtils {
     public MessagesConfig() {
-        this.setFileName("messages.yml");
+        this.setFileName("messages/messages_en.yml");
+        saveLanguageFile("nl");
+        saveLanguageFile("es");
     }
 
     public String getMessage(String key) {
@@ -34,5 +38,27 @@ public class MessagesConfig extends ConfigUtils {
             }
         }
         player.sendMessage(TextUtils.colorize(String.valueOf(object)));
+    }
+
+    public boolean setLanguageFile(String countryCode){
+        if (!countryCode.equals("en") && !countryCode.equals("nl") && !countryCode.equals("es")) return false;
+
+        String fileName = "messages/messages_" + countryCode + ".yml";
+        File languageFile = new File(Main.instance.getDataFolder(), fileName);
+        if (!languageFile.exists()) return false;
+
+        this.setFileName(fileName);
+        this.setCustomConfigFile(new File(Main.instance.getDataFolder(), fileName));
+        this.reload();
+        return true;
+    }
+
+    private void saveLanguageFile(String countryCode){
+        String fileName = "messages/messages_" + countryCode + ".yml";
+
+        File languageFile = new File(Main.instance.getDataFolder(), fileName);
+        if (!languageFile.exists()){
+            Main.instance.saveResource(fileName, false);
+        }
     }
 }
