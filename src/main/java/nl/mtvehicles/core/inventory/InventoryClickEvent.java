@@ -88,7 +88,7 @@ public class InventoryClickEvent implements Listener {
         }
         if (e.getView().getTitle().contains("Choose your language")) {
             e.setCancelled(true);
-            if (e.getRawSlot() == 11) { //English
+            if (e.getRawSlot() == 10) { //English
                 JoinEvent.languageCheck.put(p.getUniqueId(), false);
                 if (ConfigModule.messagesConfig.setLanguageFile("en")){
                     p.sendMessage(ConfigModule.messagesConfig.getMessage("languageHasChanged"));
@@ -99,7 +99,7 @@ public class InventoryClickEvent implements Listener {
                 }
                 p.closeInventory();
             }
-            if (e.getRawSlot() == 13) { //Dutch
+            if (e.getRawSlot() == 12) { //Dutch
                 JoinEvent.languageCheck.put(p.getUniqueId(), false);
                 if (ConfigModule.messagesConfig.setLanguageFile("nl")){
                     p.sendMessage(ConfigModule.messagesConfig.getMessage("languageHasChanged"));
@@ -110,11 +110,22 @@ public class InventoryClickEvent implements Listener {
                 }
                 p.closeInventory();
             }
-            if (e.getRawSlot() == 15) { //Spanish
+            if (e.getRawSlot() == 14) { //Spanish
                 JoinEvent.languageCheck.put(p.getUniqueId(), false);
                 if (ConfigModule.messagesConfig.setLanguageFile("es")){
                     p.sendMessage(ConfigModule.messagesConfig.getMessage("languageHasChanged"));
                     ConfigModule.defaultConfig.getConfig().set("messagesLanguage", "es");
+                    ConfigModule.defaultConfig.save();
+                } else {
+                    p.sendMessage(ChatColor.RED + "An error occurred whilst trying to set a new language.");
+                }
+                p.closeInventory();
+            }
+            if (e.getRawSlot() == 16) { //Czech
+                JoinEvent.languageCheck.put(p.getUniqueId(), false);
+                if (ConfigModule.messagesConfig.setLanguageFile("cs")){
+                    p.sendMessage(ConfigModule.messagesConfig.getMessage("languageHasChanged"));
+                    ConfigModule.defaultConfig.getConfig().set("messagesLanguage", "cs");
                     ConfigModule.defaultConfig.save();
                 } else {
                     p.sendMessage(ChatColor.RED + "An error occurred whilst trying to set a new language.");

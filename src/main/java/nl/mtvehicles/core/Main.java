@@ -8,6 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
     public static Main instance;
+    public static boolean isPreRelease = false;
     public static String pluginVersion;
     public static String serverVersion = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
 

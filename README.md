@@ -79,6 +79,7 @@ bStats: https://bstats.org/plugin/bukkit/MTVehicles/5932
 &bull; `/vehicle info` - Get information about a vehicle; no permission necessary, `mtvehicles.admin` to display additional information<br>
 &bull; `/vehicle help` - Get a list of all the possible commands; no permission necessary, `mtvehicles.admin` to display additional information<br>
 &bull; `/vehicle version` - Get the server and plugin version; permission `mtvehicles.admin`<br>
+&bull; `/vehicle language` - Change the plugin language; permission `mtvehicles.language`<br>
 
 &bull; `/vehicle public` - Let everyone sit in your car; no permission necessary<br>
 &bull; `/vehicle private` - Only allow people who have access to sit in your car; no permission necessary<br>

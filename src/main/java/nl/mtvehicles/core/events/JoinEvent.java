@@ -39,14 +39,15 @@ public class JoinEvent implements Listener {
             return;
         }
 
-        checkNewVersion(p);
+        if (!Main.isPreRelease) checkNewVersion(p);
     }
 
     public static void checkLanguage(Player p) {
         Inventory inv = Bukkit.createInventory(null, 27, "Choose your language");
-        inv.setItem(11, ItemUtils.mItem("GOLD_BLOCK", 1, (short) 0, "&eEnglish", "&7Press to set all messages to English."));
-        inv.setItem(13, ItemUtils.mItem("DIAMOND_BLOCK", 1, (short) 0, "&9Dutch (Nederlands)", "&7Druk om alle berichten op Nederlands te zetten."));
-        inv.setItem(15, ItemUtils.mItem("EMERALD_BLOCK", 1, (short) 0, "&2Spanish (Español)", "&7Presione para configurar todos los mensajes en español."));
+        inv.setItem(10, ItemUtils.mItem("GOLD_BLOCK", 1, (short) 0, "&eEnglish", "&7Press to set all messages to English."));
+        inv.setItem(12, ItemUtils.mItem("DIAMOND_BLOCK", 1, (short) 0, "&9Dutch (Nederlands)", "&7Druk om alle berichten op Nederlands te zetten."));
+        inv.setItem(14, ItemUtils.mItem("EMERALD_BLOCK", 1, (short) 0, "&2Spanish (Español)", "&7Presione para configurar todos los mensajes en español."));
+        inv.setItem(16, ItemUtils.mItem("REDSTONE_BLOCK", 1, (short) 0, "&4Czech (Čeština)", "&7Klikni pro nastavení všech zpráv do češtiny."));
         p.openInventory(inv);
         languageCheck.put(p.getUniqueId(), true);
     }

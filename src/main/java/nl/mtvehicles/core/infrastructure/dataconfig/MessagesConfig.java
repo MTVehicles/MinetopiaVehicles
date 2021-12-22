@@ -14,6 +14,7 @@ public class MessagesConfig extends ConfigUtils {
         this.setFileName("messages/messages_en.yml");
         saveLanguageFile("nl");
         saveLanguageFile("es");
+        saveLanguageFile("cs");
     }
 
     public String getMessage(String key) {
@@ -41,7 +42,7 @@ public class MessagesConfig extends ConfigUtils {
     }
 
     public boolean setLanguageFile(String countryCode){
-        if (!countryCode.equals("en") && !countryCode.equals("nl") && !countryCode.equals("es")) return false;
+        if (!countryCode.equals("en") && !countryCode.equals("nl") && !countryCode.equals("es") && !countryCode.equals("cs")) return false;
 
         String fileName = "messages/messages_" + countryCode + ".yml";
         File languageFile = new File(Main.instance.getDataFolder(), fileName);
