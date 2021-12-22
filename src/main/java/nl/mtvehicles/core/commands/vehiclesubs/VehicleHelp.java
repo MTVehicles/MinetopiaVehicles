@@ -24,7 +24,8 @@ public class VehicleHelp extends MTVehicleSubCommand {
         sendMessage(String.format("&2/vehicle &aremovemember &f- &2%s", ConfigModule.messagesConfig.getMessage("helpRemoveMember")));
         if (sender.hasPermission("mtvehicles.admin")) {
             sendMessage("");
-            sendMessage(String.format("&2/vehicle &aversion &f- &2Get the server and plugin version")); //needs a translation!
+            sendMessage(String.format("&2/vehicle &alanguage &f- &2%s", ConfigModule.messagesConfig.getMessage("adminLanguage")));
+            sendMessage(String.format("&2/vehicle &aversion &f- &2%s", ConfigModule.messagesConfig.getMessage("adminVersion")));
             sendMessage(String.format("&2/vehicle &aedit &f- &2%s", ConfigModule.messagesConfig.getMessage("adminEdit")));
             sendMessage(String.format("&2/vehicle &amenu &f- &2%s", ConfigModule.messagesConfig.getMessage("adminMenu")));
             sendMessage(String.format("&2/vehicle &afuel &f- &2%s", ConfigModule.messagesConfig.getMessage("adminBenzine")));

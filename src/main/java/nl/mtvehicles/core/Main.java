@@ -2,12 +2,14 @@ package nl.mtvehicles.core;
 
 import nl.mtvehicles.core.infrastructure.modules.*;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
     public static Main instance;
+    public static boolean isPreRelease = false;
     public static String pluginVersion;
     public static String serverVersion = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
 
@@ -25,6 +27,7 @@ public class Main extends JavaPlugin {
         }
 
         getLogger().info("Plugin has been loaded!");
+        if (isPreRelease) getLogger().info(ChatColor.YELLOW + "Be aware: You are using a pre-release. It might not be stable and it's generally not advised to use it on a production server.");
         getLogger().info("--------------------------");
         getLogger().info("Welcome by MTVehicles v" + pluginVersion + "!");
         getLogger().info("Thanks for using our plugin.");

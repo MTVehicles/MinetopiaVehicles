@@ -20,7 +20,7 @@ public class ConfigUtils implements ConfigInterface {
 
     public void reload() {
         if (customConfigFile == null) {
-            customConfigFile = new File(Main.instance.getDataFolder(), fileName);
+            setCustomConfigFile(new File(Main.instance.getDataFolder(), fileName));
         }
         if (!customConfigFile.exists())
             this.saveDefaultConfig();
@@ -65,5 +65,9 @@ public class ConfigUtils implements ConfigInterface {
 
     public void setFileName(String fileName) {
         this.fileName = fileName;
+    }
+
+    public void setCustomConfigFile(File customConfigFile){
+        this.customConfigFile = customConfigFile;
     }
 }
