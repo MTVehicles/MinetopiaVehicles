@@ -21,6 +21,8 @@ public class ConfigModule {
     @Setter
     ConfigModule instance;
 
+    final public static String configVersion = "2.2.1"; //We might not change config in every version, why bother creating a new config file then? Change this only when necessary.
+
     public static List<ConfigUtils> configList = new ArrayList<>();
     public static MessagesConfig messagesConfig = new MessagesConfig();
     public static VehicleDataConfig vehicleDataConfig = new VehicleDataConfig();
@@ -35,7 +37,7 @@ public class ConfigModule {
         File vehicleconfig = new File(Main.instance.getDataFolder(), "vehicles.yml");
         SimpleDateFormat formatter = new SimpleDateFormat("dd_MM_yyyy-HH_mm_ss");
         Date date = new Date();
-        if (!Main.instance.getConfig().get("Config-Versie").equals(versions)) {
+        if (!Main.instance.getConfig().get("Config-Versie").equals(configVersion)) {
             defaultconfig.renameTo(new File(Main.instance.getDataFolder(), "configOld_" + formatter.format(date) + ".yml"));
             vehicleconfig.renameTo(new File(Main.instance.getDataFolder(), "vehiclesOld_" + formatter.format(date) + ".yml"));
             messagesConfig.saveNewLanguageFiles(formatter.format(date));
