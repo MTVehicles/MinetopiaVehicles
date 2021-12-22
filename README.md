@@ -89,15 +89,14 @@ bStats: https://bstats.org/plugin/bukkit/MTVehicles/5932
 
 &bull; `/vehicle edit` - Adjust vehicle settings; permission `mtvehicles.edit`<br>
 &bull; `/vehicle menu` -  Open a menu containing all the vehicles; permission `mtvehicles.menu`<br>
+&bull; `/vehicle givevoucher` - Give a voucher to a player; permission `mtvehicles.givevoucher`<br>
+&bull; `/vehicle givecar` - Give a vehicle to a player; permission `mtvehicles.givecar`<br>
 &bull; `/vehicle restore` - A menu to recover vehicles; permission `mtvehicles.restore`<br>
 &bull; `/vehicle benzine` - Open the menu with jerrycans for the fuel; permission `mtvehicles.benzine`<br>
 &bull; `/vehicle reload` - Reload the plugin's config files; permission `mtvehicles.reload`<br>
 &bull; `/vehicle setowner` - Set an owner of a vehicle; permission `mtvehicles.setowner`<br>
 &bull; `/vehicle delete` - Remove a vehicle in your hand from the data; permission `mtvehicles.delete`<br>
 &bull; `/vehicle update` - Update the plugin to the latest version; permission `mtvehicles.update`<br>
-
-&bull; **SOON!** /vehicle givevoucher - Give a voucher to a player; permission `mtvehicles.givevoucher`<br>
-&bull; **SOON!** /vehicle givecar - Give a vehicle to a player; permission `mtvehicles.givecar`<br>
 
 ### Other permissions
 

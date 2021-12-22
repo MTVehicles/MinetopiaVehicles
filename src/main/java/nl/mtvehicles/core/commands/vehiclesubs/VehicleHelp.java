@@ -30,8 +30,8 @@ public class VehicleHelp extends MTVehicleSubCommand {
             sendMessage(String.format("&2/vehicle &afuel &f- &2%s", ConfigModule.messagesConfig.getMessage("adminBenzine")));
             sendMessage(String.format("&2/vehicle &arestore &f- &2%s", ConfigModule.messagesConfig.getMessage("adminRestore")));
             sendMessage(String.format("&2/vehicle &areload &f- &2%s", ConfigModule.messagesConfig.getMessage("adminReload")));
-            //sendMessage(String.format("&2/vehicle &agivevoucher &f- &2%s", Main.messagesConfig.getMessage("adminGivevoucher")));
-            //sendMessage(String.format("&2/vehicle &agivecar &f- &2%s", Main.messagesConfig.getMessage("adminGivecar")));
+            sendMessage(String.format("&2/vehicle &agivevoucher &f- &2%s", ConfigModule.messagesConfig.getMessage("adminGivevoucher")));
+            sendMessage(String.format("&2/vehicle &agivecar &f- &2%s", ConfigModule.messagesConfig.getMessage("adminGivecar")));
             sendMessage(String.format("&2/vehicle &asetowner &f- &2%s", ConfigModule.messagesConfig.getMessage("adminSetowner")));
             sendMessage(String.format("&2/vehicle &aupdate &f- &2%s", ConfigModule.messagesConfig.getMessage("adminUpdate")));
             sendMessage(String.format("&2/vehicle &adelete &f- &2%s", ConfigModule.messagesConfig.getMessage("adminDelete")));
