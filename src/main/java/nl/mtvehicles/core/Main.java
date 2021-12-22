@@ -10,6 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Main extends JavaPlugin {
     public static Main instance;
     public static boolean isPreRelease = false;
+    public static String configVersion = "2.2.1"; //We might not change config in every version, why bother creating a new config file then? Change this only when necessary.;
     public static String pluginVersion;
     public static String serverVersion = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
 

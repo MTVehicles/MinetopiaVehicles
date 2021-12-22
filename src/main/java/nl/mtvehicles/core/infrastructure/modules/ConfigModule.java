@@ -21,7 +21,7 @@ public class ConfigModule {
     @Setter
     ConfigModule instance;
 
-    final public static String configVersion = "2.2.1"; //We might not change config in every version, why bother creating a new config file then? Change this only when necessary.
+    final public static String configVersion = Main.configVersion;
 
     public static List<ConfigUtils> configList = new ArrayList<>();
     public static MessagesConfig messagesConfig = new MessagesConfig();
