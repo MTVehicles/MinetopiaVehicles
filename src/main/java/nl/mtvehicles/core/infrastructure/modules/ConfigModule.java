@@ -40,7 +40,7 @@ public class ConfigModule {
         if (!Main.instance.getConfig().get("Config-Versie").equals(configVersion)) {
             defaultconfig.renameTo(new File(Main.instance.getDataFolder(), "configOld_" + formatter.format(date) + ".yml"));
             vehicleconfig.renameTo(new File(Main.instance.getDataFolder(), "vehiclesOld_" + formatter.format(date) + ".yml"));
-            messagesConfig.saveNewLanguageFiles(formatter.format(date));
+            messagesConfig.saveNewLanguageFiles(formatter.format(date)); //Messages might have been updated too - changes the files
             Main.instance.saveDefaultConfig();
         }
 

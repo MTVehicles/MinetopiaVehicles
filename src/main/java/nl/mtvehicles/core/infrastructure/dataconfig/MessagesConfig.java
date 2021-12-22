@@ -10,7 +10,7 @@ import java.io.File;
 import java.util.List;
 
 public class MessagesConfig extends ConfigUtils {
-    public String[] foreignLanguages = {"nl", "es", "cs"}; //english isn't here, it's default
+    public String[] foreignLanguages = {"nl", "es", "cs"}; //All the message files, except English, which is default
 
     public MessagesConfig() {
         this.setFileName("messages/messages_en.yml");
