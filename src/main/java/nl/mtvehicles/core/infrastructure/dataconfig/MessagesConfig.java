@@ -42,8 +42,6 @@ public class MessagesConfig extends ConfigUtils {
     }
 
     public boolean setLanguageFile(String countryCode){
-        if (!countryCode.equals("en") && !countryCode.equals("nl") && !countryCode.equals("es") && !countryCode.equals("cs")) return false;
-
         String fileName = "messages/messages_" + countryCode + ".yml";
         File languageFile = new File(Main.instance.getDataFolder(), fileName);
         if (!languageFile.exists()) return false;
