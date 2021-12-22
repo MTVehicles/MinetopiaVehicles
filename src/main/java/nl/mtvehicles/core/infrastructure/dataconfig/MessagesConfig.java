@@ -10,11 +10,13 @@ import java.io.File;
 import java.util.List;
 
 public class MessagesConfig extends ConfigUtils {
+    public String[] foreignLanguages = {"nl", "es", "cs"}; //english isn't here, it's default
+
     public MessagesConfig() {
         this.setFileName("messages/messages_en.yml");
-        saveLanguageFile("nl");
-        saveLanguageFile("es");
-        saveLanguageFile("cs");
+        for (String lang : foreignLanguages) {
+            saveLanguageFile(lang);
+        }
     }
 
     public String getMessage(String key) {
@@ -58,6 +60,19 @@ public class MessagesConfig extends ConfigUtils {
         File languageFile = new File(Main.instance.getDataFolder(), fileName);
         if (!languageFile.exists()){
             Main.instance.saveResource(fileName, false);
+        }
+    }
+
+    public void saveNewLanguageFiles(String time){
+        File enMessagesFile = new File(Main.instance.getDataFolder(), "messages/messages_en.yml");
+        enMessagesFile.renameTo(new File(Main.instance.getDataFolder(), "messages/messages_enOld_" + time + ".yml"));
+        Main.instance.saveResource("messages/messages_en.yml", true);
+
+        for (String lang : foreignLanguages) {
+            File messagesFile = new File(Main.instance.getDataFolder(), "messages/messages_" + lang + ".yml");
+            if (!messagesFile.exists()) continue;
+            messagesFile.renameTo(new File(Main.instance.getDataFolder(), "messages/messages_" + lang + "Old_" + time + ".yml"));
+            Main.instance.saveResource("messages/messages_" + lang + ".yml", true);
         }
     }
 }
