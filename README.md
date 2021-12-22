@@ -21,9 +21,17 @@
 The plugin works on all versions from 1.12.2 - 1.18.1, **excluding 1.14.x**!
 
 - Latest stable releases are always published on <a href="https://www.spigotmc.org/resources/80910/">Spigot.org</a>.
-- Put the downloaded plugin into your server's `plugins/` folder
-- Restart the server
-- **Et voilà, it's working!** Don't forget to set your language using `/vehicle language`
+- **Download the resource pack.** Link can be found on our <a href="https://discord.gg/4nAcycckn6">Discord server</a> (We've created a&nbsp;<a href="https://www.youtube.com/watch?v=rSXNd-6rhQk">YouTube tutorial</a>).
+
+You may set it as a server resource pack, or everyone would have to download the resource pack individually.
+
+```
+The vehicles WON'T look properly without the resource pack.
+```
+
+- Put the downloaded plugin into your server's `plugins/` folder.
+- Restart the server.
+- **Et voilà, it's working!** Don't forget to set your language using `/vehicle language`.
 
 ### Be aware!
 ```
@@ -96,3 +104,7 @@ bStats: https://bstats.org/plugin/bukkit/MTVehicles/5932
 &bull; `mtvehicles.ride` - Whether a player can ride others' vehicles<br>
 &bull; `mtvehicles.anwb` - Whether a player can pick up vehicles from water - useless unless ANWB turned on in config<br>
 &bull; `mtvehicles.oppakken` - Whether a player can pick up vehicles<br>
+
+<div align="right">
+  <sub>README.md by <a href="https://github.com/Zettovec">Nikd0</a></sub>
+</div>
