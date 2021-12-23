@@ -9,7 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
     public static Main instance;
-    public static boolean isPreRelease = false;
+    public static boolean isPreRelease;
     public static String configVersion = "2.2.1"; //We might not change config in every version, why bother creating a new config file then? Change this only when necessary.;
     public static String pluginVersion;
     public static String serverVersion = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
@@ -21,6 +21,7 @@ public class Main extends JavaPlugin {
 
         PluginDescriptionFile pdf = this.getDescription();
         pluginVersion = pdf.getVersion();
+        isPreRelease = pluginVersion.toLowerCase().contains("pre"); //Pre-releases should thus be named "vX.Y.Z-preU" etc...
 
         if (!new CheckVersionModule().isSupportedVersion()) {
             this.setEnabled(false);
