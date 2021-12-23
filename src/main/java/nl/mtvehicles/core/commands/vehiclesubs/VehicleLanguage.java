@@ -13,7 +13,7 @@ public class VehicleLanguage extends MTVehicleSubCommand {
 
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
-        if (!checkPermission("mtvehicles.reload")) return true;
+        if (!checkPermission("mtvehicles.language")) return true;
 
         JoinEvent.checkLanguage((Player) sender);
 

@@ -39,53 +39,17 @@ public class JoinEvent implements Listener {
             return;
         }
 
-        checkNewVersion(p);
+        if (!Main.isPreRelease) checkNewVersion(p);
     }
 
     public static void checkLanguage(Player p) {
         Inventory inv = Bukkit.createInventory(null, 27, "Choose your language");
-        inv.setItem(11, ItemUtils.mItem("GOLD_BLOCK", 1, (short) 0, "&eEnglish", "&7When you press this, your messages will be sent in English."));
-        inv.setItem(15, ItemUtils.mItem("DIAMOND_BLOCK", 1, (short) 0, "&9Dutch (Nederlands)", "&7Wanneer je hierop drukt worden jouw berichten in het Nederlands gestuurd"));
+        inv.setItem(10, ItemUtils.mItem("GOLD_BLOCK", 1, (short) 0, "&eEnglish", "&7Press to set all messages to English."));
+        inv.setItem(12, ItemUtils.mItem("DIAMOND_BLOCK", 1, (short) 0, "&9Dutch (Nederlands)", "&7Druk om alle berichten op Nederlands te zetten."));
+        inv.setItem(14, ItemUtils.mItem("EMERALD_BLOCK", 1, (short) 0, "&2Spanish (Español)", "&7Presione para configurar todos los mensajes en español."));
+        inv.setItem(16, ItemUtils.mItem("REDSTONE_BLOCK", 1, (short) 0, "&4Czech (Čeština)", "&7Klikni pro nastavení všech zpráv do češtiny."));
         p.openInventory(inv);
         languageCheck.put(p.getUniqueId(), true);
-    }
-
-    private static void readAll(Reader rd) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        int cp;
-        while ((cp = rd.read()) != -1) {
-            sb.append((char) cp);
-        }
-        PrintWriter writer = new PrintWriter("plugins/MTVehicles/messages.yml");
-        writer.print(sb.toString());
-        writer.close();
-        ConfigModule.configList.forEach(ConfigUtils::reload);
-    }
-
-    public static void changeLanguageDutch() {
-        try {
-            URLConnection connection = new URL("https://minetopiavehicles.nl/api/translate-nl.php").openConnection();
-            connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
-            connection.connect();
-            BufferedReader r = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
-            readAll(r);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            Bukkit.getLogger().info("We hebben geen verbinding kunnen maken met de servers van MinetopiaVehicles.");
-        }
-    }
-
-    public static void changeLanguageEnglish() {
-        try {
-            URLConnection connection = new URL("https://minetopiavehicles.nl/api/translate-en.php").openConnection();
-            connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
-            connection.connect();
-            BufferedReader r = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
-            readAll(r);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            Bukkit.getLogger().info("We hebben geen verbinding kunnen maken met de servers van MinetopiaVehicles.");
-        }
     }
 
     public void getUpdateMessage(Player p) {

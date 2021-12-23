@@ -1,38 +1,37 @@
 package nl.mtvehicles.core;
 
-import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.modules.*;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.HashMap;
-
 public class Main extends JavaPlugin {
     public static Main instance;
-    public static String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+    public static boolean isPreRelease;
+    public static String configVersion = "2.2.1"; //We might not change config in every version, why bother creating a new config file then? Change this only when necessary.;
+    public static String pluginVersion;
+    public static String serverVersion = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
 
     @Override
     public void onEnable() {
 
         instance = this;
 
-        if (!version.equals("v1_12_R1") && !version.equals("v1_13_R2") && !version.equals("v1_15_R1") && !version.equals("v1_16_R3") && !version.contains("v1_17") && !version.contains("v1_18")) {
-            getLogger().info("-------------------------------------------------------");
-            getLogger().info("Your Server version is not supported by the plugin.");
-            getLogger().info("Check the supported versions here https://mtvehicles.nl");
-            getLogger().info("-------------------------------------------------------");
-            setEnabled(false);
+        PluginDescriptionFile pdf = this.getDescription();
+        pluginVersion = pdf.getVersion();
+        isPreRelease = pluginVersion.toLowerCase().contains("pre"); //Pre-releases should thus be named "vX.Y.Z-preU" etc...
+
+        if (!new CheckVersionModule().isSupportedVersion()) {
+            this.setEnabled(false);
             return;
         }
 
-        PluginDescriptionFile pdf = this.getDescription();
-        String versions = pdf.getVersion();
-
         getLogger().info("Plugin has been loaded!");
+        if (isPreRelease) getLogger().info(ChatColor.YELLOW + "Be aware: You are using a pre-release. It might not be stable and it's generally not advised to use it on a production server.");
         getLogger().info("--------------------------");
-        getLogger().info("Welcome by MTVehicles " + versions + " !");
+        getLogger().info("Welcome by MTVehicles v" + pluginVersion + "!");
         getLogger().info("Thanks for using our plugin.");
         getLogger().info("--------------------------");
 
