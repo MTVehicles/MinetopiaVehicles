@@ -373,8 +373,4 @@ public class VehicleMovement1_15 {
     private static void pushVehicleUp(ArmorStand mainStand, double plus){
         ((CraftArmorStand) mainStand).getHandle().setLocation(mainStand.getLocation().getX(), mainStand.getLocation().getY() + plus, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
     }
-
-    private static void debugLog(String s){
-        Bukkit.getConsoleSender().sendMessage(s);
-    }
 }
