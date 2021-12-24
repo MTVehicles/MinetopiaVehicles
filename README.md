@@ -21,7 +21,7 @@
 The plugin works on all versions from 1.12.2 - 1.18.1, **excluding 1.14.x**!
 
 - Latest stable releases are always published on <a href="https://www.spigotmc.org/resources/80910/">Spigot.org</a>.
-- **Download the resource pack.** Link can be found on our <a href="https://discord.gg/4nAcycckn6">Discord server</a> (We've created a&nbsp;<a href="https://www.youtube.com/watch?v=rSXNd-6rhQk">YouTube tutorial</a>).
+- **Download the resource pack.** Link can be found on our <a href="https://discord.gg/vehicle">Discord server</a> (We've created a&nbsp;<a href="https://www.youtube.com/watch?v=rSXNd-6rhQk">YouTube tutorial</a>).
 
 You may set it as a server resource pack, or everyone would have to download the resource pack individually.
 
@@ -51,7 +51,7 @@ Do you have problems or need help with the plugin? Do not hesitate and contact u
 
 ```
 Website: https://mtvehicles.nl
-Discord: https://discord.gg/4nAcycckn6
+Discord: https://discord.gg/vehicle
 
 Spigot: https://www.spigotmc.org/resources/80910/
 bStats: https://bstats.org/plugin/bukkit/MTVehicles/5932
