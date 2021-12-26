@@ -4,6 +4,7 @@ import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.ConfigUtils;
 import org.bukkit.Material;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -18,6 +19,18 @@ public class DefaultConfig extends ConfigUtils {
 
     public boolean isBlockWhitelistEnabled() {
         return getConfig().getBoolean("blockWhitelist.enabled");
+    }
+
+    public boolean areGasStationsEnabled(){
+        return getConfig().getBoolean("gasStations.enabled");
+    }
+
+    public boolean canUseJerryCanOutsideOfGasStation(){
+        return getConfig().getBoolean("gasStations.canUseJerryCanOutsideOfGasStation");
+    }
+
+    public List<String> gasStationList() {
+        return new ArrayList<>(getConfig().getStringList("gasStations.list"));
     }
 
     public List<Material> blockWhiteList() {

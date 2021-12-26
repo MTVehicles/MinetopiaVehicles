@@ -9,6 +9,7 @@ import nl.mtvehicles.core.infrastructure.models.ConfigUtils;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
+import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -44,6 +45,16 @@ public class VehicleEntityEvent implements Listener {
                 double curb = VehicleData.fuel.get(licensePlate);
                 String benval = NBTUtils.getString(item, "mtvehicles.benzineval");
                 String bensize = NBTUtils.getString(item, "mtvehicles.benzinesize");
+                if (ConfigModule.defaultConfig.areGasStationsEnabled() && !ConfigModule.defaultConfig.canUseJerryCanOutsideOfGasStation() && DependencyModule.isDependencyEnabled("WorldGuard")){
+                    boolean isInAGasStation = false;
+                    for (String region : ConfigModule.defaultConfig.gasStationList()){
+                        if (DependencyModule.worldGuard.isWithinRegion(p, region)) isInAGasStation = true;
+                    } //If player is in at least 1 gas station, variable is set to true
+                    if (!isInAGasStation) {
+                        ConfigModule.messagesConfig.sendMessage(p, "notInAGasStation");
+                        return;
+                    }
+                }
                 if (Integer.parseInt(benval) < 1) {
                     ConfigModule.messagesConfig.sendMessage(p, "noFuel");
                     return;

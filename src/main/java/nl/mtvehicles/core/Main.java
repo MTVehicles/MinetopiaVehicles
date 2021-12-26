@@ -32,6 +32,7 @@ public class Main extends JavaPlugin {
         new MetricsModule();
         new LoopModule();
         new ConfigModule();
+        new DependencyModule();
     }
 
     public static String fol() {

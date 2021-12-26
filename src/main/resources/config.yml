@@ -36,6 +36,16 @@ jerrycans:
   - 50
   - 75
 
+# Enables WorldGuard region based gas stations.
+# If you do not have WorldGuard installed, this is automatically DISABLED.
+gasStations:
+  # If this is not enabled, stuff bellow will be ignored.
+  enabled: false
+  # Set this to false and players will only be able to use jerry cans in gas station regions. (Gas Stations must be enabled!)
+  canUseJerryCanOutsideOfGasStation: true
+  list:
+    - 'myRegion'
+
 # Leave it on true if you want to be up-to-date!
 # Turn it off and you will not get any messages for updates.
 # auto-update will show on server join if you have the permission mtvehicles.update
