@@ -64,14 +64,14 @@ public class VehiclePlaceEvent implements Listener {
 
         Location loc = e.getClickedBlock().getLocation();
 
-        if (ConfigModule.defaultConfig.isBlockWhitelistEnabled()
-                && !ConfigModule.defaultConfig.blockWhiteList().contains(e.getClickedBlock().getType())) {
+        if (ConfigModule.defaultConfig.blockWhitelist.isBlockWhitelistEnabled()
+                && !ConfigModule.defaultConfig.blockWhitelist.blockWhiteList().contains(e.getClickedBlock().getType())) {
             e.setCancelled(true);
             ConfigModule.messagesConfig.sendMessage(p, "blockNotInWhitelist");
             return;
         }
-        if (ConfigModule.defaultConfig.isRegionWhitelistEnabled(RegionWhitelistAction.PLACE) && DependencyModule.isDependencyEnabled("WorldGuard")){
-            if (!DependencyModule.worldGuard.isInAtLeastOneRegion(loc, ConfigModule.defaultConfig.regionWhitelist(RegionWhitelistAction.PLACE))) {
+        if (ConfigModule.defaultConfig.regionWhitelist.isRegionWhitelistEnabled(RegionWhitelistAction.PLACE) && DependencyModule.isDependencyEnabled("WorldGuard")){
+            if (!DependencyModule.worldGuard.isInAtLeastOneRegion(loc, ConfigModule.defaultConfig.regionWhitelist.getRegionWhitelist(RegionWhitelistAction.PLACE))) {
                 e.setCancelled(true);
                 ConfigModule.messagesConfig.sendMessage(p, "notInAWhitelistedRegion");
                 return;

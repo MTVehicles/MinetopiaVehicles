@@ -15,6 +15,13 @@ public class Main extends JavaPlugin {
 
         instance = this;
 
+        new CommandModule();
+        new ListenersModule();
+        new MetricsModule();
+        new LoopModule();
+        new ConfigModule();
+        new DependencyModule();
+
         if (!new VersionModule().isSupportedVersion()) {
             this.setEnabled(false);
             return;
@@ -27,12 +34,6 @@ public class Main extends JavaPlugin {
         getLogger().info("Thanks for using our plugin.");
         getLogger().info("--------------------------");
 
-        new CommandModule();
-        new ListenersModule();
-        new MetricsModule();
-        new LoopModule();
-        new ConfigModule();
-        new DependencyModule();
     }
 
     public static String fol() {
