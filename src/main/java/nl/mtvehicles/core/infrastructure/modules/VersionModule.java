@@ -23,7 +23,8 @@ public class VersionModule {
     public VersionModule() {
         PluginDescriptionFile pdf = Main.instance.getDescription();
         pluginVersion = pdf.getVersion();
-        isPreRelease = pluginVersion.toLowerCase().contains("pre"); //Pre-releases should thus be named "vX.Y.Z-preU" etc...
+        //Pre-releases should thus be named "vX.Y.Z-preU" etc... (Instead of pre, dev for developing and rc for release candidates are acceptable too.)
+        isPreRelease = pluginVersion.toLowerCase().contains("pre") || pluginVersion.toLowerCase().contains("rc") || pluginVersion.toLowerCase().contains("dev");
 
         serverVersion = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
         serverSoftware = Bukkit.getName();
