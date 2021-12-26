@@ -32,7 +32,6 @@ public class VehiclePlaceEvent implements Listener {
         final Player p = e.getPlayer();
         final Action action = e.getAction();
         final ItemStack item = e.getItem();
-        Location loc = e.getClickedBlock().getLocation();
 
         if (e.getItem() != null && NBTUtils.contains(item, "mtvehicles.benzinesize")) {
             e.setCancelled(true); //Jerrycans could farm grass (they're diamond hoes after all)
@@ -62,6 +61,8 @@ public class VehiclePlaceEvent implements Listener {
         if (!action.equals(Action.RIGHT_CLICK_BLOCK)) {
             return;
         }
+
+        Location loc = e.getClickedBlock().getLocation();
 
         if (ConfigModule.defaultConfig.isBlockWhitelistEnabled()
                 && !ConfigModule.defaultConfig.blockWhiteList().contains(e.getClickedBlock().getType())) {
