@@ -25,6 +25,8 @@ public class VehicleVersion extends MTVehicleSubCommand {
         sendMessage(String.format("§2Your server is running §a" + serverVersion + "§2."));
         if (!DependencyModule.loadedDependencies.isEmpty())
             sendMessage(String.format("§2Loaded dependencies: §a" + String.join(", ", DependencyModule.loadedDependencies) + "§2."));
+        else
+            sendMessage(String.format("§2There are no loaded dependencies."));
         if (VersionModule.isPreRelease)
             sendMessage(String.format(ConfigModule.messagesConfig.getMessage("usingPreRelease")));
 
