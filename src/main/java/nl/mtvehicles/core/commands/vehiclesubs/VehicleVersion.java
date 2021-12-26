@@ -3,6 +3,7 @@ package nl.mtvehicles.core.commands.vehiclesubs;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
+import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
 import nl.mtvehicles.core.infrastructure.modules.VersionModule;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -22,6 +23,8 @@ public class VehicleVersion extends MTVehicleSubCommand {
 
         sendMessage(String.format("§2Running §aMTVehicles v" + pluginVersion + "§2."));
         sendMessage(String.format("§2Your server is running §a" + serverVersion + "§2."));
+        if (!DependencyModule.loadedDependencies.isEmpty())
+            sendMessage(String.format("§2Loaded dependencies: §a" + String.join(", ", DependencyModule.loadedDependencies) + "§2."));
         if (VersionModule.isPreRelease)
             sendMessage(String.format(ConfigModule.messagesConfig.getMessage("usingPreRelease")));
 
