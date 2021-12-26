@@ -1,11 +1,15 @@
 package nl.mtvehicles.core.infrastructure.dependencies;
 
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
+import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -23,8 +27,11 @@ public class WorldGuardUtils {
     }
 
     public boolean isWithinRegion(Location loc, String regionName){
-        RegionManager regions = container.get((com.sk89q.worldedit.world.World) loc.getWorld());
-        if (regions == null) return false; //The world has no region support or region data failed to load.
+        RegionManager regions = container.get(BukkitAdapter.adapt(loc.getWorld()));
+        if (regions == null) {
+            Main.instance.getLogger().info(ChatColor.RED + "Unable to obtain region data.");
+            return false; //The world has no region support or region data failed to load.
+        }
         if (!regions.hasRegion(regionName)) return false; //There is no such region in the world.
 
         ProtectedRegion region = regions.getRegion(regionName);

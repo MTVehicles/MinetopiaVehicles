@@ -1,8 +1,10 @@
 package nl.mtvehicles.core.infrastructure.helpers;
 
+import nl.mtvehicles.core.infrastructure.enums.RegionWhitelistAction;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
+import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -91,6 +93,14 @@ public class TextUtils {
                 VehicleData.FrictionSpeed.put(ken, ConfigModule.vehicleDataConfig.getConfig().getDouble("vehicle."+ken+".aftrekkenSpeed"));
 
                 Location location = new Location(entity.getWorld(), entity.getLocation().getX(), entity.getLocation().getY(), entity.getLocation().getZ(), entity.getLocation().getYaw(), entity.getLocation().getPitch());
+
+                if (ConfigModule.defaultConfig.isRegionWhitelistEnabled(RegionWhitelistAction.ENTER) && DependencyModule.isDependencyEnabled("WorldGuard")){
+                    if (!DependencyModule.worldGuard.isInAtLeastOneRegion(location, ConfigModule.defaultConfig.regionWhitelist(RegionWhitelistAction.ENTER))) {
+                        ConfigModule.messagesConfig.sendMessage(p, "notInAWhitelistedRegion");
+                        return;
+                    }
+                }
+
                 if (vehicleAs.getCustomName().contains("MTVEHICLES_SKIN_" + ken)) {
                     TextUtils.basicStandCreator(ken, "SKIN", location, vehicleAs.getHelmet(), false);
                     TextUtils.basicStandCreator(ken, "MAIN", location, null, true);

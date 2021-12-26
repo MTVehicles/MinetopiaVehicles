@@ -77,14 +77,6 @@ public class VehicleClickEvent implements Listener {
             }
             if (ConfigModule.vehicleDataConfig.getConfig().getBoolean("vehicle."+license+".isOpen") || vehicle.getOwner().equals(p.getUniqueId().toString()) || vehicle.canSit(p) || p.hasPermission("mtvehicles.ride")) {
                 if (a.isEmpty()) {
-
-                    if (ConfigModule.defaultConfig.isRegionWhitelistEnabled(RegionWhitelistAction.ENTER) && DependencyModule.isDependencyEnabled("WorldGuard")){
-                        if (!DependencyModule.worldGuard.isInAtLeastOneRegion(e.getRightClicked().getLocation(), ConfigModule.defaultConfig.regionWhitelist(RegionWhitelistAction.ENTER))) {
-                            ConfigModule.messagesConfig.sendMessage(p, "notInAWhitelistedRegion");
-                            return;
-                        }
-                    }
-
                     a.addPassenger(p);
                     p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehicleEnterMember").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(license).getOwner())).getName())));
                 }
