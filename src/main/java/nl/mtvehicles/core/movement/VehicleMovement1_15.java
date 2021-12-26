@@ -120,7 +120,9 @@ public class VehicleMovement1_15 {
                 return;
             }
             if (ConfigModule.defaultConfig.getConfig().getBoolean("benzine") && ConfigModule.vehicleDataConfig.getConfig().getBoolean("vehicle." + license + ".benzineEnabled")) {
-                double dnum = VehicleData.fuel.get(license) - VehicleData.fuelUsage.get(license);
+                double fuelMultiplier = ConfigModule.defaultConfig.getConfig().getDouble("fuelMultiplier");
+                if (fuelMultiplier < 0.1 || fuelMultiplier > 10) fuelMultiplier = 1; //Must be between 0.1 and 10. Default: 1
+                double dnum = VehicleData.fuel.get(license) - (fuelMultiplier * VehicleData.fuelUsage.get(license));
                 VehicleData.fuel.put(license, dnum);
             }
             if (VehicleData.speed.get(license) > MaxSpeed-AccelerationSpeed) {
@@ -134,7 +136,9 @@ public class VehicleMovement1_15 {
                 return;
             }
             if (ConfigModule.defaultConfig.getConfig().getBoolean("benzine") && ConfigModule.vehicleDataConfig.getConfig().getBoolean("vehicle." + license + ".benzineEnabled")) {
-                double dnum = VehicleData.fuel.get(license) - VehicleData.fuelUsage.get(license);
+                double fuelMultiplier = ConfigModule.defaultConfig.getConfig().getDouble("fuelMultiplier");
+                if (fuelMultiplier < 0.1 || fuelMultiplier > 10) fuelMultiplier = 1; //Must be between 0.1 and 10. Default: 1
+                double dnum = VehicleData.fuel.get(license) - (fuelMultiplier * VehicleData.fuelUsage.get(license));
                 VehicleData.fuel.put(license, dnum);
             }
             if (VehicleData.speed.get(license) < -MaxSpeedBackwards) {
