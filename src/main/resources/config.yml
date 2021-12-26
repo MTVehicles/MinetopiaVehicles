@@ -38,10 +38,10 @@ jerrycans:
 
 # Enables WorldGuard region based gas stations.
 # If you do not have WorldGuard installed, this is automatically DISABLED.
+# If gas stations are not enabled, stuff bellow will be ignored.
+# Set canUseJerryCanOutsideOfGasStation to false and players will only be able to use jerry cans in gas station regions. (Gas Stations must be enabled!)
 gasStations:
-  # If this is not enabled, stuff bellow will be ignored.
   enabled: false
-  # Set this to false and players will only be able to use jerry cans in gas station regions. (Gas Stations must be enabled!)
   canUseJerryCanOutsideOfGasStation: true
   list:
     - 'myGasStationRegion'
@@ -83,6 +83,7 @@ blockWhitelist:
 
 # Whether vehicles can be placed/picked up/entered only in certain regions.
 # If you do not have WorldGuard installed, this is automatically DISABLED.
+# The PICKUP section is quite hazardous. You might not be able to pick up vehicles freely. Use cautiously.
 regionWhitelist:
   place:
     enable: false
@@ -92,7 +93,6 @@ regionWhitelist:
     enable: false
     list:
       - 'myRegionForEntering'
-  # The following PICKUP section is quite hazardous. You might not be able to pick up vehicles freely. Use cautiously.
   pickup:
     enable: false
     list:
