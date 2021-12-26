@@ -94,8 +94,8 @@ public class TextUtils {
 
                 Location location = new Location(entity.getWorld(), entity.getLocation().getX(), entity.getLocation().getY(), entity.getLocation().getZ(), entity.getLocation().getYaw(), entity.getLocation().getPitch());
 
-                if (ConfigModule.defaultConfig.regionWhitelist.isRegionWhitelistEnabled(RegionWhitelistAction.ENTER) && DependencyModule.isDependencyEnabled("WorldGuard")){
-                    if (!DependencyModule.worldGuard.isInAtLeastOneRegion(location, ConfigModule.defaultConfig.regionWhitelist.getRegionWhitelist(RegionWhitelistAction.ENTER))) {
+                if (ConfigModule.defaultConfig.isRegionWhitelistEnabled(RegionWhitelistAction.ENTER) && DependencyModule.isDependencyEnabled("WorldGuard")){
+                    if (!DependencyModule.worldGuard.isInAtLeastOneRegion(location, ConfigModule.defaultConfig.regionWhitelist(RegionWhitelistAction.ENTER))) {
                         ConfigModule.messagesConfig.sendMessage(p, "notInAWhitelistedRegion");
                         return;
                     }

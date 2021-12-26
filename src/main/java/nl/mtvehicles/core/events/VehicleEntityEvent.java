@@ -45,8 +45,8 @@ public class VehicleEntityEvent implements Listener {
                 double curb = VehicleData.fuel.get(licensePlate);
                 String benval = NBTUtils.getString(item, "mtvehicles.benzineval");
                 String bensize = NBTUtils.getString(item, "mtvehicles.benzinesize");
-                if (ConfigModule.defaultConfig.gasStation.areGasStationsEnabled() && !ConfigModule.defaultConfig.gasStation.canUseJerryCanOutsideOfGasStation() && DependencyModule.isDependencyEnabled("WorldGuard")){
-                    if (!DependencyModule.worldGuard.isInAtLeastOneRegion(p.getLocation(), ConfigModule.defaultConfig.gasStation.gasStationList())) {
+                if (ConfigModule.defaultConfig.areGasStationsEnabled() && !ConfigModule.defaultConfig.canUseJerryCanOutsideOfGasStation() && DependencyModule.isDependencyEnabled("WorldGuard")){
+                    if (!DependencyModule.worldGuard.isInAtLeastOneRegion(p.getLocation(), ConfigModule.defaultConfig.gasStationList())) {
                         ConfigModule.messagesConfig.sendMessage(p, "notInAGasStation");
                         return;
                     }
