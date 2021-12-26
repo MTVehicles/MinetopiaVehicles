@@ -3,13 +3,13 @@ package nl.mtvehicles.core.movement;
 import net.minecraft.network.protocol.game.PacketPlayInSteerVehicle;
 import net.minecraft.world.entity.Entity;
 import nl.mtvehicles.core.Main;
+import nl.mtvehicles.core.infrastructure.enums.DriveUp;
 import nl.mtvehicles.core.infrastructure.helpers.BossBarUtils;
 import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.*;
-import org.bukkit.block.data.type.Fence;
-import org.bukkit.block.data.type.Slab;
-import org.bukkit.block.data.type.TrapDoor;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.type.*;
 import org.bukkit.craftbukkit.v1_18_R1.entity.CraftEntity;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
@@ -185,113 +185,168 @@ public class VehicleMovement1_18 {
         String locY = String.valueOf(mainStand.getLocation().getY());
         Location locBlockAbove = new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset + 1, zvp, fbvp.getYaw(), fbvp.getPitch());;
 
-        if (loc.getBlock().getType().toString().contains("CARPET") && ConfigModule.defaultConfig.getConfig().getBoolean("driveOnCarpets")){
+        boolean isOnGround = locY.substring(locY.length() - 2).contains(".0");
+        boolean isOnSlab = locY.substring(locY.length() - 2).contains(".5");
+        boolean isPassable = loc.getBlock().isPassable();
+        boolean isAbovePassable = locBlockAbove.getBlock().isPassable();
 
-            if (!locBlockAbove.getBlock().isPassable()) {
+        double difference = Double.parseDouble("0." + locY.split("\\.")[1]);
+        BlockData blockData = loc.getBlock().getBlockData();
+
+        if (loc.getBlock().getType().toString().contains("CARPET") && ConfigModule.defaultConfig.getConfig().getBoolean("driveOnCarpets")){
+            if (!isAbovePassable) {
                 VehicleData.speed.put(license, 0.0);
                 return;
             }
 
-            if (locY.substring(locY.length() - 2).contains(".0")) {
-                pushVehicleUp(mainStand, 0.0625);
-            }
+            if (isOnGround) pushVehicleUp(mainStand, 0.0625);
             return;
         }
 
-        if (driveUpSlabs()){
-            if (locY.substring(locY.length() - 2).contains(".5")) {
-                if (loc.getBlock().isPassable()) {
-                    return;
-                }
-                if (loc.getBlock().getBlockData() instanceof Slab) {
-                    Slab slab = (Slab) loc.getBlock().getBlockData();
+        if (blockData instanceof Snow){
+            //Reserved for future update concerning Snow. Just stop for now.
+            //Does not include snow block - that's considered a full block.
+            VehicleData.speed.put(license, 0.0);
+            return;
+        }
+
+        if (blockData instanceof Fence || blockData instanceof Wall || blockData instanceof TrapDoor){
+            VehicleData.speed.put(license, 0.0);
+            return;
+        }
+
+        if (ConfigModule.defaultConfig.driveUpSlabs().equals(DriveUp.SLABS)){
+            if (isOnSlab) {
+                if (isPassable) return; //Vehicle will go down
+
+                if (blockData instanceof Slab) {
+                    Slab slab = (Slab) blockData;
                     if (slab.getType().toString().equals("BOTTOM")) {
-                        return;
+                        return; //Vehicle will continue on the slabs
                     }
-                }
-                if (!locBlockAbove.getBlock().isPassable()) {
-                    VehicleData.speed.put(license, 0.0);
-                    return;
                 }
 
-                pushVehicleUp(mainStand, 0.5);
+                if (!isAbovePassable) {
+                    VehicleData.speed.put(license, 0.0);
+                    return; //Vehicle won't continue if there's a barrier above
+                }
+
+                pushVehicleUp(mainStand, 0.5); //Vehicle will go up if there's a full block or a top/double slab
                 return;
             }
-            if (loc.getBlock().getBlockData() instanceof Slab){
-                Slab slab = (Slab) loc.getBlock().getBlockData();
-                if (slab.getType().toString().equals("BOTTOM")){
-                    if (!locBlockAbove.getBlock().isPassable()) {
-                        VehicleData.speed.put(license, 0.0);
-                        return;
-                    }
-                    if (locY.substring(locY.length() - 2).contains(".0")) {
-                        pushVehicleUp(mainStand, 0.5);
-                    } else {
-                        double difference = Double.parseDouble("0." + locY.split("\\.")[1]);
-                        if ((0.5 - difference) > 0){
-                            pushVehicleUp(mainStand, 0.5 - difference);
+
+            if (!isPassable) {
+                if (blockData instanceof Slab) {
+                    Slab slab = (Slab) blockData;
+                    if (slab.getType().toString().equals("BOTTOM")) {
+
+                        if (!isAbovePassable) {
+                            VehicleData.speed.put(license, 0.0);
+                            return; //Vehicle won't go up the slab if there's a barrier above
+                        }
+
+                        if (isOnGround) {
+                            pushVehicleUp(mainStand, 0.5);
+                        } else { //Maybe they're on a carpet
+                            if ((0.5 - difference) > 0) pushVehicleUp(mainStand, 0.5 - difference);
+
                         }
                     }
-                } else {
-                    VehicleData.speed.put(license, 0.0);
-                    return;
                 }
-            } else {
-                if (!loc.getBlock().isPassable()) {
-                    VehicleData.speed.put(license, 0.0);
-                    return;
-                }
-            }
-        } else {
 
-            if (loc.getBlock().getBlockData() instanceof Fence || loc.getBlock().getType().toString().contains("WALL") || loc.getBlock().getBlockData() instanceof TrapDoor){
                 VehicleData.speed.put(license, 0.0);
-                return;
+                return; //If you're on the ground and there isn't bottom slab or a passable block, stop
             }
 
-            if (!locY.substring(locY.length() - 2).contains(".5")) {
-                if (!loc.getBlock().isPassable()) {
-                    if (loc.getBlock().getBlockData() instanceof Slab){
-                        Slab slab = (Slab) loc.getBlock().getBlockData();
+        } else if (ConfigModule.defaultConfig.driveUpSlabs().equals(DriveUp.BLOCKS)) {
+
+            if (!isOnSlab) {
+                if (!isPassable) {
+                    if (blockData instanceof Slab){
+                        Slab slab = (Slab) blockData;
                         if (slab.getType().toString().equals("BOTTOM")){
                             VehicleData.speed.put(license, 0.0);
-                            return;
+                            return; //If it's a bottom slab, stop.
                         }
                     }
 
-                    if (!locBlockAbove.getBlock().isPassable()) { //if more than 1 block high
+                    if (!isAbovePassable) { //if more than 1 block high
                         VehicleData.speed.put(license, 0.0);
                         return;
                     }
 
-                    if (locY.substring(locY.length() - 2).contains(".0")) {
+                    if (isOnGround) {
                         pushVehicleUp(mainStand, 1);
-                    } else {
-                        double difference = Double.parseDouble("0." + locY.split("\\.")[1]);
-                        if ((1 - difference) > 0){
-                            pushVehicleUp(mainStand, 1 - difference);
-                        }
+                    } else { //Maybe they're on a carpet
+                        if ((1 - difference) > 0) pushVehicleUp(mainStand, 1 - difference);
                     }
                 }
             }
-            if (locY.substring(locY.length() - 2).contains(".5")) { //Only if a vehicle is placed on a slab
-                if (loc.getBlock().isPassable()) {
-                    return;
+            //If it's on a slab (might have been placed there)
+            if (isPassable) return; //Vehicle will go down
+
+            if (blockData instanceof Slab) {
+                Slab slab = (Slab) blockData;
+                if (slab.getType().toString().equals("BOTTOM")) {
+                    return; //Vehicle will continue on the slabs
                 }
-                if (loc.getBlock().getBlockData() instanceof Slab){
-                    Slab slab = (Slab) loc.getBlock().getBlockData();
-                    if (slab.getType().toString().equals("BOTTOM")){
-                        return;
+            }
+
+            if (!isAbovePassable) {
+                VehicleData.speed.put(license, 0.0);
+                return; //Vehicle won't continue if there's a barrier above
+            }
+
+            pushVehicleUp(mainStand, 0.5); //Vehicle will go up if there's a full block or a top/double slab
+            return;
+
+        } else if (ConfigModule.defaultConfig.driveUpSlabs().equals(DriveUp.BOTH)) {
+
+            if (isOnSlab) {
+                if (isPassable) return; //Vehicle will go down
+
+                if (blockData instanceof Slab) {
+                    Slab slab = (Slab) blockData;
+                    if (slab.getType().toString().equals("BOTTOM")) {
+                        return; //Vehicle will continue on the slabs
                     }
                 }
 
-                if (!locBlockAbove.getBlock().isPassable()) {
+                if (!isAbovePassable) {
+                    VehicleData.speed.put(license, 0.0);
+                    return; //Vehicle won't continue if there's a barrier above
+                }
+
+                pushVehicleUp(mainStand, 0.5); //Vehicle will go up if there's a full block or a top/double slab
+                return;
+            }
+
+            if (!isPassable) {
+
+                if (!isAbovePassable) { //If more than 1 block high
                     VehicleData.speed.put(license, 0.0);
                     return;
                 }
 
-                pushVehicleUp(mainStand, 0.5);
-                return;
+                if (blockData instanceof Slab){
+                    Slab slab = (Slab) blockData;
+                    if (slab.getType().toString().equals("BOTTOM")){ //If it's a bottom slab
+                        if (isOnGround) {
+                            pushVehicleUp(mainStand, 0.5);
+                        } else { //Maybe they're on a carpet
+                            if ((0.5 - difference) > 0) pushVehicleUp(mainStand, 0.5 - difference);
+                        }
+                        return;
+                    }
+                }
+
+                //If it's another block or a top/double slab
+                if (isOnGround) {
+                    pushVehicleUp(mainStand, 1);
+                } else { //Maybe they're on a carpet
+                    if ((1 - difference) > 0) pushVehicleUp(mainStand, 1 - difference);
+                }
+
             }
         }
     }
@@ -391,13 +446,6 @@ public class VehicleMovement1_18 {
         Bukkit.getScheduler().runTask(Main.instance, () -> {
             seatas.teleport(loc);
         });
-    }
-
-    private static boolean driveUpSlabs(){
-        if (ConfigModule.defaultConfig.getConfig().getString("driveUp").equals("blocks")){
-            return false;
-        }
-        return true;
     }
 
     private static void pushVehicleUp(ArmorStand mainStand, double plus){

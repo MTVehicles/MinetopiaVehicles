@@ -1,12 +1,15 @@
 package nl.mtvehicles.core.infrastructure.dataconfig;
 
+import nl.mtvehicles.core.infrastructure.enums.DriveUp;
 import nl.mtvehicles.core.infrastructure.enums.RegionWhitelistAction;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.ConfigUtils;
+import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Material;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class DefaultConfig extends ConfigUtils {
@@ -16,6 +19,22 @@ public class DefaultConfig extends ConfigUtils {
 
     public String getMessage(String key) {
         return TextUtils.colorize((String) this.getConfig().get(key));
+    }
+
+    //--- DriveUp ---
+    public DriveUp driveUpSlabs(){
+        DriveUp returns = DriveUp.BOTH; //default value
+        try {
+            switch (Objects.requireNonNull(getConfig().getString("driveUp"))){
+                case "blocks":
+                    returns = DriveUp.BLOCKS; break;
+                case "slabs":
+                    returns = DriveUp.SLABS; break;
+            }
+        } catch (NullPointerException e){
+            //driveUp was not set up correctly in config and thus it's using the default = both.
+        }
+        return returns;
     }
 
     //--- Gas stations ---

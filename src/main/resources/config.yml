@@ -68,9 +68,9 @@ hornCooldown: 5
 # This is just added as beta function to find bugs or problems
 hornType: "minetopiaclassic.horn1"
 
-# Whether the vehicles should be able to drive up hills by slabs ('slabs') or full blocks ('blocks').
-# Default: 'slabs' (If your input is not recognized, the default shall be used.)
-driveUp: 'slabs'
+# Whether the vehicles should be able to drive up hills by slabs ('slabs'), full blocks ('blocks') or both ('both').
+# Default: 'both' (If your input is not recognized, the default shall be used.)
+driveUp: 'both'
 
 # Whether the vehicles are able to drive up carpets.
 driveOnCarpets: true
