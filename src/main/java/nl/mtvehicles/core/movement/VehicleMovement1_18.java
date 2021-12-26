@@ -403,10 +403,6 @@ public class VehicleMovement1_18 {
         });
     }
 
-    private static void debugLog(String s){
-        Bukkit.getConsoleSender().sendMessage(s);
-    }
-
     private static boolean steerIsJumping(PacketPlayInSteerVehicle packet){
         boolean isJumping = false;
         try {
