@@ -1,9 +1,11 @@
 package nl.mtvehicles.core.events;
 
+import nl.mtvehicles.core.infrastructure.enums.RegionWhitelistAction;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
+import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -53,6 +55,15 @@ public class VehicleClickEvent implements Listener {
         String license = TextUtils.licenseReplacer(a.getCustomName());
 
         if (p.isSneaking()) {
+
+            if (ConfigModule.defaultConfig.isRegionWhitelistEnabled(RegionWhitelistAction.PICKUP) && DependencyModule.isDependencyEnabled("WorldGuard")){
+                if (!DependencyModule.worldGuard.isInAtLeastOneRegion(e.getRightClicked().getLocation(), ConfigModule.defaultConfig.regionWhitelist(RegionWhitelistAction.PICKUP))) {
+                    e.setCancelled(true);
+                    ConfigModule.messagesConfig.sendMessage(p, "notInAWhitelistedRegion");
+                    return;
+                }
+            }
+
             TextUtils.pickupVehicle(license, p);
             e.setCancelled(true);
             return;
@@ -66,6 +77,14 @@ public class VehicleClickEvent implements Listener {
             }
             if (ConfigModule.vehicleDataConfig.getConfig().getBoolean("vehicle."+license+".isOpen") || vehicle.getOwner().equals(p.getUniqueId().toString()) || vehicle.canSit(p) || p.hasPermission("mtvehicles.ride")) {
                 if (a.isEmpty()) {
+
+                    if (ConfigModule.defaultConfig.isRegionWhitelistEnabled(RegionWhitelistAction.ENTER) && DependencyModule.isDependencyEnabled("WorldGuard")){
+                        if (!DependencyModule.worldGuard.isInAtLeastOneRegion(e.getRightClicked().getLocation(), ConfigModule.defaultConfig.regionWhitelist(RegionWhitelistAction.ENTER))) {
+                            ConfigModule.messagesConfig.sendMessage(p, "notInAWhitelistedRegion");
+                            return;
+                        }
+                    }
+
                     a.addPassenger(p);
                     p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehicleEnterMember").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(license).getOwner())).getName())));
                 }

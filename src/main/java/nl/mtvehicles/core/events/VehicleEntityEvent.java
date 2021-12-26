@@ -46,11 +46,7 @@ public class VehicleEntityEvent implements Listener {
                 String benval = NBTUtils.getString(item, "mtvehicles.benzineval");
                 String bensize = NBTUtils.getString(item, "mtvehicles.benzinesize");
                 if (ConfigModule.defaultConfig.areGasStationsEnabled() && !ConfigModule.defaultConfig.canUseJerryCanOutsideOfGasStation() && DependencyModule.isDependencyEnabled("WorldGuard")){
-                    boolean isInAGasStation = false;
-                    for (String region : ConfigModule.defaultConfig.gasStationList()){
-                        if (DependencyModule.worldGuard.isWithinRegion(p, region)) isInAGasStation = true;
-                    } //If player is in at least 1 gas station, variable is set to true
-                    if (!isInAGasStation) {
+                    if (!DependencyModule.worldGuard.isInAtLeastOneRegion(p.getLocation(), ConfigModule.defaultConfig.gasStationList())) {
                         ConfigModule.messagesConfig.sendMessage(p, "notInAGasStation");
                         return;
                     }

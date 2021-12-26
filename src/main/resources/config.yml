@@ -44,7 +44,7 @@ gasStations:
   # Set this to false and players will only be able to use jerry cans in gas station regions. (Gas Stations must be enabled!)
   canUseJerryCanOutsideOfGasStation: true
   list:
-    - 'myRegion'
+    - 'myGasStationRegion'
 
 # Leave it on true if you want to be up-to-date!
 # Turn it off and you will not get any messages for updates.
@@ -58,7 +58,7 @@ spelerSetOwner: false
 # Maximum flying height for helicopters.
 helicopterMaxHeight: 150
 
-# Turn on if you do not want players to be able to pickup vehicles.
+# Turn on if you do not want players to be able to pickup vehicles. Use cautiously.
 carPickup: false
 
 # Cooldown for horn in seconds.
@@ -80,3 +80,20 @@ blockWhitelist:
   enabled: false
   list:
     - GRAY_CONCRETE
+
+# Whether vehicles can be placed/picked up/entered only in certain regions.
+# If you do not have WorldGuard installed, this is automatically DISABLED.
+regionWhitelist:
+  place:
+    enable: false
+    list:
+      - 'myRegionForPlacing'
+  enter:
+    enable: false
+    list:
+      - 'myRegionForEntering'
+  # The following PICKUP section is quite hazardous. You might not be able to pick up vehicles freely. Use cautiously.
+  pickup:
+    enable: false
+    list:
+      - 'myRegionForPickingUp'
