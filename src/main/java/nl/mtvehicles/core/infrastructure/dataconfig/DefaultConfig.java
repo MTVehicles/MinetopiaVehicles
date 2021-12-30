@@ -26,9 +26,9 @@ public class DefaultConfig extends ConfigUtils {
         DriveUp returns = DriveUp.BOTH; //default value
         try {
             switch (Objects.requireNonNull(getConfig().getString("driveUp"))){
-                case "blocks":
+                case "blocks": case "block":
                     returns = DriveUp.BLOCKS; break;
-                case "slabs":
+                case "slabs": case "slab":
                     returns = DriveUp.SLABS; break;
             }
         } catch (NullPointerException e){
