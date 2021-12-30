@@ -1,9 +1,9 @@
-#---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 #
 # Spigot Plugin MTVehicles by GamerJoep_, downloadable on https://mtvehicles.nl
 # For support, visit our official Discord. Link can be found on our site ^
 #
-#---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 # DO NOT MODIFY THIS! The plugin may break on change.
 Config-Versie: 2.2.1
@@ -26,8 +26,8 @@ kofferbakEnabled: true
 # Whether gasoline is used for ALL cars.
 benzine: true
 
-#Multiplier of the fuel consumption of ALL vehicles. 2 means 2× faster consumption, 0.5 means 2× slower, etc...
-#Must be between 0.1 and 10. Default: 1 (If lower/higher, the default will be used.)
+# Multiplier of the fuel consumption of ALL vehicles. 2 means 2× faster consumption, 0.5 means 2× slower, etc...
+# Must be between 0.1 and 10. Default: 1 (If lower/higher, the default will be used.)
 fuelMultiplier: 1
 
 # Jerrycan size for in the /vehicle benzine menu.
