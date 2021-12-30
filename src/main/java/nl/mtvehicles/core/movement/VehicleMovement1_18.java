@@ -245,10 +245,8 @@ public class VehicleMovement1_18 {
                         }
 
                         if (isOnGround) {
-                            Main.instance.getLogger().info("slab-onground");
                             pushVehicleUp(mainStand, 0.5);
                         } else { //Maybe they're on a carpet
-                            Main.instance.getLogger().info("slab-oncarpet");
                             if ((0.5 - difference) > 0) pushVehicleUp(mainStand, 0.5 - difference);
                         }
                     }
