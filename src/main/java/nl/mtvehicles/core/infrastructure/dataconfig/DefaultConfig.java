@@ -4,7 +4,6 @@ import nl.mtvehicles.core.infrastructure.enums.DriveUp;
 import nl.mtvehicles.core.infrastructure.enums.RegionWhitelistAction;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.ConfigUtils;
-import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Material;
 
 import java.util.ArrayList;

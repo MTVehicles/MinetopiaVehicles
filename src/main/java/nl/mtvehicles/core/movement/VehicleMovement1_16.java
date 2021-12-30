@@ -1,20 +1,21 @@
 package nl.mtvehicles.core.movement;
 
-import net.minecraft.server.v1_16_R3.EntityArmorStand;
+import net.minecraft.server.v1_16_R3.Entity;
 import net.minecraft.server.v1_16_R3.PacketPlayInSteerVehicle;
 import nl.mtvehicles.core.Main;
+import nl.mtvehicles.core.infrastructure.enums.DriveUp;
 import nl.mtvehicles.core.infrastructure.helpers.BossBarUtils;
 import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.*;
-import org.bukkit.block.data.type.Fence;
-import org.bukkit.block.data.type.Slab;
-import org.bukkit.block.data.type.TrapDoor;
-import org.bukkit.craftbukkit.v1_16_R3.entity.CraftArmorStand;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.type.*;
+import org.bukkit.craftbukkit.v1_16_R3.entity.CraftEntity;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 
 public class VehicleMovement1_16 {
@@ -40,12 +41,15 @@ public class VehicleMovement1_16 {
             BossBarUtils.setBossBarValue(0 / 100.0D, license);
             return;
         }
+
         BossBarUtils.setBossBarValue(VehicleData.fuel.get(license) / 100.0D, license);
         ArmorStand standMain = VehicleData.autostand.get("MTVEHICLES_MAIN_" + license);
         ArmorStand standSkin = VehicleData.autostand.get("MTVEHICLES_SKIN_" + license);
         ArmorStand standMainSeat = VehicleData.autostand.get("MTVEHICLES_MAINSEAT_" + license);
         ArmorStand standRotors = VehicleData.autostand.get("MTVEHICLES_WIEKENS_" + license);
-
+        Bukkit.getScheduler().runTask(Main.instance, () -> {
+            standSkin.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standSkin.getLocation().getYaw(), standSkin.getLocation().getPitch()));
+        });
         int RotationSpeed = VehicleData.RotationSpeed.get(license);
         double MaxSpeed = VehicleData.MaxSpeed.get(license);
         double AccelerationSpeed = VehicleData.AccelerationSpeed.get(license);
@@ -53,23 +57,15 @@ public class VehicleMovement1_16 {
         double MaxSpeedBackwards = VehicleData.MaxSpeedBackwards.get(license);
         double FrictionSpeed = VehicleData.FrictionSpeed.get(license);
 
-        Bukkit.getScheduler().runTask(Main.instance, () -> {
-            try {
-                EntityArmorStand stand = ((CraftArmorStand) standSkin).getHandle();
-                stand.setLocation(standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standSkin.getLocation().getYaw(), standSkin.getLocation().getPitch());
-            } catch (Exception e) {
-                // e.printStackTrace();
-            }
-        });
-        mainSeat(standMain, (CraftArmorStand) standMainSeat, license);
-        updateStand(standMain, license, ppisv.d());
-        slabCheck(standMain, license);
+        boolean isMovingUpwards = slabCheck(standMain, license);
+        updateStand(standMain, license, steerIsJumping(ppisv), isMovingUpwards);
+        mainSeat(standMain, standMainSeat, license);
+
         if (VehicleData.seatsize.get(license + "addon") != null) {
             for (int i = 1; i <= VehicleData.seatsize.get(license + "addon"); i++) {
                 ArmorStand standAddon = VehicleData.autostand.get("MTVEHICLES_ADDON" + i + "_" + license);
-                EntityArmorStand stand = ((CraftArmorStand) standAddon).getHandle();
                 Bukkit.getScheduler().runTask(Main.instance, () -> {
-                    stand.setLocation(standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw(), standMain.getLocation().getPitch());
+                    standAddon.teleport(standMain.getLocation());
                 });
             }
         }
@@ -78,7 +74,7 @@ public class VehicleMovement1_16 {
                 rotors(standMain, standRotors, license);
             }
             if (VehicleData.type.get(license).contains("TANK")) {
-                if (ppisv.d()) {
+                if (steerIsJumping(ppisv)) {
                     if (VehicleData.lastUsage.containsKey(p.getName())) {
                         lastUsed = ((Long) VehicleData.lastUsage.get(p.getName())).longValue();
                     }
@@ -97,13 +93,14 @@ public class VehicleMovement1_16 {
                         standMain.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, loc, 2);
                         standMain.getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, loc, 2);
                         standMain.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, loc, 5);
+                        standMain.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, loc, 5);
                         VehicleData.lastUsage.put(p.getName(), Long.valueOf(System.currentTimeMillis()));
                     }
                 }
             }
             if (!VehicleData.type.get(license).contains("HELICOPTER")) {
                 if (!VehicleData.type.get(license).contains("TANK")) {
-                    if (ppisv.d()) {
+                    if (steerIsJumping(ppisv)) {
                         if (VehicleData.lastUsage.containsKey(p.getName())) {
                             lastUsed = ((Long) VehicleData.lastUsage.get(p.getName())).longValue();
                         }
@@ -115,17 +112,20 @@ public class VehicleMovement1_16 {
                 }
             }
         }
-
-        if (ppisv.b() > 0.0) {
-            ((CraftArmorStand) standMain).getHandle().setLocation(standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - RotationSpeed, standMain.getLocation().getPitch());
-            ((CraftArmorStand) standMainSeat).getHandle().setLocation(standMainSeat.getLocation().getX(), standMainSeat.getLocation().getY(), standMainSeat.getLocation().getZ(), standMainSeat.getLocation().getYaw() - RotationSpeed, standMainSeat.getLocation().getPitch());
-            ((CraftArmorStand) standSkin).getHandle().setLocation(standSkin.getLocation().getX(), standSkin.getLocation().getY(), standSkin.getLocation().getZ(), standSkin.getLocation().getYaw() - RotationSpeed, standSkin.getLocation().getPitch());
-        } else if (ppisv.b() < 0.0) {
-            ((CraftArmorStand) standSkin).getHandle().setLocation(standSkin.getLocation().getX(), standSkin.getLocation().getY(), standSkin.getLocation().getZ(), standSkin.getLocation().getYaw() + RotationSpeed, standSkin.getLocation().getPitch());
-            ((CraftArmorStand) standMainSeat).getHandle().setLocation(standMainSeat.getLocation().getX(), standMainSeat.getLocation().getY(), standMainSeat.getLocation().getZ(), standMainSeat.getLocation().getYaw() + RotationSpeed, standMainSeat.getLocation().getPitch());
-            ((CraftArmorStand) standMain).getHandle().setLocation(standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() + RotationSpeed, standMain.getLocation().getPitch());
+        if (steerGetXxa(ppisv) > 0.0) {
+            Bukkit.getScheduler().runTask(Main.instance, () -> {
+                standMain.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - RotationSpeed, standMain.getLocation().getPitch()));
+                standMainSeat.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - RotationSpeed, standMain.getLocation().getPitch()));
+                standSkin.teleport(new Location(standSkin.getLocation().getWorld(), standSkin.getLocation().getX(), standSkin.getLocation().getY(), standSkin.getLocation().getZ(), standSkin.getLocation().getYaw() - RotationSpeed, standSkin.getLocation().getPitch()));
+            });
+        } else if (steerGetXxa(ppisv) < 0.0) {
+            Bukkit.getScheduler().runTask(Main.instance, () -> {
+                standSkin.teleport(new Location(standSkin.getLocation().getWorld(), standSkin.getLocation().getX(), standSkin.getLocation().getY(), standSkin.getLocation().getZ(), standSkin.getLocation().getYaw() + RotationSpeed, standSkin.getLocation().getPitch()));
+                standMainSeat.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() + RotationSpeed, standMain.getLocation().getPitch()));
+                standMain.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() + RotationSpeed, standMain.getLocation().getPitch()));
+            });
         }
-        if (ppisv.c() > 0.0) {
+        if (steerGetZza(ppisv) > 0.0) {
             if (VehicleData.speed.get(license) < 0) {
                 VehicleData.speed.put(license, VehicleData.speed.get(license) + BrakingSpeed);
                 return;
@@ -141,7 +141,7 @@ public class VehicleMovement1_16 {
             }
             VehicleData.speed.put(license, VehicleData.speed.get(license) + AccelerationSpeed);
         }
-        if (ppisv.c() < 0.0) {
+        if (steerGetZza(ppisv) < 0.0) {
             if (VehicleData.speed.get(license) > 0) {
                 VehicleData.speed.put(license, VehicleData.speed.get(license) - BrakingSpeed);
                 return;
@@ -156,9 +156,8 @@ public class VehicleMovement1_16 {
                 return;
             }
             VehicleData.speed.put(license, VehicleData.speed.get(license) - AccelerationSpeed);
-
         }
-        if (ppisv.c() == 0.0) {
+        if (steerGetZza(ppisv) == 0.0) {
             BigDecimal round = BigDecimal.valueOf(VehicleData.speed.get(license)).setScale(1, BigDecimal.ROUND_DOWN);
             if (Double.parseDouble(String.valueOf(round)) == 0.0) {
                 VehicleData.speed.put(license, 0.0);
@@ -174,131 +173,194 @@ public class VehicleMovement1_16 {
         }
     }
 
-    public static void slabCheck(ArmorStand mainStand, String license) {
-        double xOffset = 0.7;
-        double yOffset = 0.4;
-        double zOffset = 0.0;
-        Location locvp = mainStand.getLocation().clone();
-        Location fbvp = locvp.add(locvp.getDirection().setY(0).normalize().multiply(xOffset));
-        float zvp = (float) (fbvp.getZ() + zOffset * Math.sin(Math.toRadians(fbvp.getYaw())));
-        float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(fbvp.getYaw())));
-        Location loc = new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
+    public static boolean slabCheck(ArmorStand mainStand, String license) { //Returns true if is moving upwards (in any way)
+        Location loc = getLocationOfBlockAhead(mainStand);
         String locY = String.valueOf(mainStand.getLocation().getY());
-        Location locBlockAbove = new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset + 1, zvp, fbvp.getYaw(), fbvp.getPitch());
+        Location locBlockAbove = new Location(loc.getWorld(), loc.getX(), loc.getY() + 1, loc.getZ(), loc.getYaw(), loc.getPitch());
 
-        if (loc.getBlock().getType().toString().contains("CARPET") && ConfigModule.defaultConfig.getConfig().getBoolean("driveOnCarpets")){
+        boolean isOnGround = locY.substring(locY.length() - 2).contains(".0");
+        boolean isOnSlab = locY.substring(locY.length() - 2).contains(".5");
+        boolean isPassable = loc.getBlock().isPassable();
+        boolean isAbovePassable = locBlockAbove.getBlock().isPassable();
 
-            if (!locBlockAbove.getBlock().isPassable()) {
+        double difference = Double.parseDouble("0." + locY.split("\\.")[1]);
+        BlockData blockData = loc.getBlock().getBlockData();
+
+        if (loc.getBlock().getType().toString().contains("CARPET")){
+            if (!ConfigModule.defaultConfig.getConfig().getBoolean("driveOnCarpets")){ //if carpets are turned off in config
                 VehicleData.speed.put(license, 0.0);
-                return;
+                return false;
             }
 
-            if (locY.substring(locY.length() - 2).contains(".0")) {
-                pushVehicleUp(mainStand, 0.0625);
+            if (!isAbovePassable) {
+                VehicleData.speed.put(license, 0.0);
+                return false;
             }
-            return;
+
+            if (isOnGround) pushVehicleUp(mainStand, 0.0625);
+            return true;
         }
 
-        if (driveUpSlabs()){
-            if (locY.substring(locY.length() - 2).contains(".5")) {
-                if (loc.getBlock().isPassable()) {
-                    return;
-                }
-                if (loc.getBlock().getBlockData() instanceof Slab) {
-                    Slab slab = (Slab) loc.getBlock().getBlockData();
+        if (blockData instanceof Snow){
+            //Reserved for future update concerning Snow. Just stop for now.
+            //Does not include snow block - that's considered a full block.
+            VehicleData.speed.put(license, 0.0);
+            return false;
+        }
+
+        if (blockData instanceof Fence || blockData instanceof Wall || blockData instanceof TrapDoor){
+            VehicleData.speed.put(license, 0.0);
+            return false;
+        }
+
+        if (ConfigModule.defaultConfig.driveUpSlabs().equals(DriveUp.SLABS)){
+            if (isOnSlab) {
+                if (isPassable) return false; //Vehicle will go down
+
+                if (blockData instanceof Slab) {
+                    Slab slab = (Slab) blockData;
                     if (slab.getType().toString().equals("BOTTOM")) {
-                        return;
+                        return false; //Vehicle will continue on the slabs
                     }
-                }
-                if (!locBlockAbove.getBlock().isPassable()) {
-                    VehicleData.speed.put(license, 0.0);
-                    return;
                 }
 
-                pushVehicleUp(mainStand, 0.5);
-                return;
+                if (!isAbovePassable) {
+                    VehicleData.speed.put(license, 0.0);
+                    return false; //Vehicle won't continue if there's a barrier above
+                }
+
+
+                pushVehicleUp(mainStand, 0.5); //Vehicle will go up if there's a full block or a top/double slab
+                return true;
             }
-            if (loc.getBlock().getBlockData() instanceof Slab){
-                Slab slab = (Slab) loc.getBlock().getBlockData();
-                if (slab.getType().toString().equals("BOTTOM")){
-                    if (!locBlockAbove.getBlock().isPassable()) {
-                        VehicleData.speed.put(license, 0.0);
-                        return;
-                    }
-                    if (locY.substring(locY.length() - 2).contains(".0")) {
-                        pushVehicleUp(mainStand, 0.5);
-                    } else {
-                        double difference = Double.parseDouble("0." + locY.split("\\.")[1]);
-                        if ((0.5 - difference) > 0){
-                            pushVehicleUp(mainStand, 0.5 - difference);
+
+            if (!isPassable) {
+                if (blockData instanceof Slab) {
+                    Slab slab = (Slab) blockData;
+                    if (slab.getType().toString().equals("BOTTOM")) {
+
+                        if (!isAbovePassable) {
+                            VehicleData.speed.put(license, 0.0);
+                            return false; //Vehicle won't go up the slab if there's a barrier above
+                        }
+
+                        if (isOnGround) {
+                            Main.instance.getLogger().info("slab-onground");
+                            pushVehicleUp(mainStand, 0.5);
+                        } else { //Maybe they're on a carpet
+                            Main.instance.getLogger().info("slab-oncarpet");
+                            if ((0.5 - difference) > 0) pushVehicleUp(mainStand, 0.5 - difference);
                         }
                     }
-                } else {
-                    VehicleData.speed.put(license, 0.0);
-                    return;
                 }
-            } else {
-                if (!loc.getBlock().isPassable()) {
-                    VehicleData.speed.put(license, 0.0);
-                    return;
-                }
-            }
-        } else {
 
-            if (loc.getBlock().getBlockData() instanceof Fence || loc.getBlock().getType().toString().contains("WALL") || loc.getBlock().getBlockData() instanceof TrapDoor){
                 VehicleData.speed.put(license, 0.0);
-                return;
+                return false; //If you're on the ground and there isn't bottom slab or a passable block, stop
             }
 
-            if (!locY.substring(locY.length() - 2).contains(".5")) {
-                if (!loc.getBlock().isPassable()) {
-                    if (loc.getBlock().getBlockData() instanceof Slab){
-                        Slab slab = (Slab) loc.getBlock().getBlockData();
+        } else if (ConfigModule.defaultConfig.driveUpSlabs().equals(DriveUp.BLOCKS)) {
+
+            if (!isOnSlab) {
+                if (!isPassable) {
+                    if (blockData instanceof Slab){
+                        Slab slab = (Slab) blockData;
                         if (slab.getType().toString().equals("BOTTOM")){
                             VehicleData.speed.put(license, 0.0);
-                            return;
+                            return false; //If it's a bottom slab, stop.
                         }
                     }
 
-                    if (!locBlockAbove.getBlock().isPassable()) { //if more than 1 block high
+                    if (!isAbovePassable) { //if more than 1 block high
                         VehicleData.speed.put(license, 0.0);
-                        return;
+                        return false;
                     }
 
-                    if (locY.substring(locY.length() - 2).contains(".0")) {
+                    if (isOnGround) {
                         pushVehicleUp(mainStand, 1);
-                    } else {
-                        double difference = Double.parseDouble("0." + locY.split("\\.")[1]);
-                        if ((1 - difference) > 0){
-                            pushVehicleUp(mainStand, 1 - difference);
-                        }
+                    } else { //Maybe they're on a carpet
+                        if ((1 - difference) > 0) pushVehicleUp(mainStand, 1 - difference);
                     }
+
+                    return true;
                 }
             }
-            if (locY.substring(locY.length() - 2).contains(".5")) { //Only if a vehicle is placed on a slab
-                if (loc.getBlock().isPassable()) {
-                    return;
+            //If it's on a slab (might have been placed there)
+            if (isPassable) return false; //Vehicle will go down
+
+            if (blockData instanceof Slab) {
+                Slab slab = (Slab) blockData;
+                if (slab.getType().toString().equals("BOTTOM")) {
+                    return false; //Vehicle will continue on the slabs
                 }
-                if (loc.getBlock().getBlockData() instanceof Slab){
-                    Slab slab = (Slab) loc.getBlock().getBlockData();
-                    if (slab.getType().toString().equals("BOTTOM")){
-                        return;
+            }
+
+            if (!isAbovePassable) {
+                VehicleData.speed.put(license, 0.0);
+                return false; //Vehicle won't continue if there's a barrier above
+            }
+
+            pushVehicleUp(mainStand, 0.5); //Vehicle will go up if there's a full block or a top/double slab
+            return true;
+
+        } else if (ConfigModule.defaultConfig.driveUpSlabs().equals(DriveUp.BOTH)) {
+
+            if (isOnSlab) {
+                if (isPassable) return false; //Vehicle will go down
+
+                if (blockData instanceof Slab) {
+                    Slab slab = (Slab) blockData;
+                    if (slab.getType().toString().equals("BOTTOM")) {
+                        return false; //Vehicle will continue on the slabs
                     }
                 }
 
-                if (!locBlockAbove.getBlock().isPassable()) {
+                if (!isAbovePassable) {
                     VehicleData.speed.put(license, 0.0);
-                    return;
+                    return false; //Vehicle won't continue if there's a barrier above
                 }
 
-                pushVehicleUp(mainStand, 0.5);
-                return;
+                pushVehicleUp(mainStand, 0.5); //Vehicle will go up if there's a full block or a top/double slab
+                return true;
+            }
+
+            if (!isPassable) {
+
+                if (!isAbovePassable) { //If more than 1 block high
+                    VehicleData.speed.put(license, 0.0);
+                    return false;
+                }
+
+                if (blockData instanceof Slab){
+                    Slab slab = (Slab) blockData;
+                    if (slab.getType().toString().equals("BOTTOM")){ //If it's a bottom slab
+                        if (isOnGround) {
+                            pushVehicleUp(mainStand, 0.5);
+                        } else { //Maybe they're on a carpet
+                            if ((0.5 - difference) > 0) pushVehicleUp(mainStand, 0.5 - difference);
+                        }
+                        return true;
+                    }
+                }
+
+                //If it's another block or a top/double slab
+                if (isOnGround) {
+                    pushVehicleUp(mainStand, 1);
+                } else { //Maybe they're on a carpet
+                    if ((1 - difference) > 0) pushVehicleUp(mainStand, 1 - difference);
+                }
+
+                return true;
+
             }
         }
+
+        return false;
     }
 
-    public static void updateStand(ArmorStand mainStand, String license, Boolean space) {
+    public static void updateStand(ArmorStand mainStand, String license, boolean space, boolean isMovingUpwards) {
         Location loc = mainStand.getLocation();
+        Location locBlockAhead = getLocationOfBlockAhead(mainStand);
+        Location locBlockAheadAndBelow = new Location(locBlockAhead.getWorld(), locBlockAhead.getX(), locBlockAhead.getY() - 1, locBlockAhead.getZ(), locBlockAhead.getPitch(), locBlockAhead.getYaw());
         Location location = new Location(loc.getWorld(), loc.getX(), loc.getY() - 0.2, loc.getZ(), loc.getYaw(), loc.getPitch());
 
         if (VehicleData.type.get(license) == null) return;
@@ -318,7 +380,6 @@ public class VehicleMovement1_16 {
             return;
         }
 
-
         if (VehicleData.type.get(license).contains("HOVER")) {
             if (location.getBlock().getType().toString().contains("AIR")) {
                 mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.8, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
@@ -328,20 +389,28 @@ public class VehicleMovement1_16 {
             return;
         }
 
-        if (location.getBlock().getType().toString().contains("AIR") || location.getBlock().getType().toString().contains("WATER")) {
+        if (location.getBlock().getType().toString().contains("WATER")) {
             mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.8, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
             return;
         }
-        if (location.getBlock().getType().toString().contains("CARPET")){
-            mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.7375, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
-            return;
+
+        if (!isMovingUpwards && locBlockAheadAndBelow.getBlock().isPassable()){
+            if (location.getBlock().isPassable()){
+                mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.8, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
+                return;
+            }
+
+            if (location.getBlock().getType().toString().contains("CARPET")){
+                mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.7375, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
+                return;
+            }
         }
 
         mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.0, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
     }
 
-    public static void mainSeat(ArmorStand mainStand, CraftArmorStand mainseat, String license) {
-        if (!(VehicleData.seatsize.get(license) == null)) {
+    public static void mainSeat(ArmorStand mainStand, ArmorStand mainSeat, String license) {
+        if (VehicleData.seatsize.get(license) != null) {
             for (int i = 2; i <= VehicleData.seatsize.get(license); i++) {
                 ArmorStand seatas = VehicleData.autostand.get("MTVEHICLES_SEAT" + i + "_" + license);
                 double xOffset = VehicleData.seatx.get("MTVEHICLES_SEAT" + i + "_" + license);
@@ -352,14 +421,14 @@ public class VehicleMovement1_16 {
                 float zvp = (float) (fbvp.getZ() + zOffset * Math.sin(Math.toRadians(fbvp.getYaw())));
                 float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(fbvp.getYaw())));
                 Location loc = new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
-                EntityArmorStand stand = ((CraftArmorStand) seatas).getHandle();
+                Entity seat = ((CraftEntity) seatas).getHandle();
                 Bukkit.getScheduler().runTask(Main.instance, () -> {
                     try {
-                        stand.setLocation(loc.getX(), loc.getY(), loc.getZ(), fbvp.getYaw(), loc.getPitch());
+                        Method method = seat.getClass().getSuperclass().getSuperclass().getDeclaredMethod("a", double.class, double.class, double.class, float.class, float.class); //teleporting an occupied vehicle
+                        method.invoke(seat, loc.getX(), loc.getY(), loc.getZ(), fbvp.getYaw(), loc.getPitch());
                     } catch (Exception e) {
-                        // e.printStackTrace();
+                        e.printStackTrace();
                     }
-
                 });
             }
         }
@@ -371,14 +440,14 @@ public class VehicleMovement1_16 {
         float zvp = (float) (fbvp.getZ() + zOffset * Math.sin(Math.toRadians(fbvp.getYaw())));
         float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(fbvp.getYaw())));
         Location loc = new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
+        Entity seat = ((CraftEntity) mainSeat).getHandle();
         Bukkit.getScheduler().runTask(Main.instance, () -> {
             try {
-                mainseat.getHandle().setLocation(loc.getX(), loc.getY(), loc.getZ(), fbvp.getYaw(), loc.getPitch());
+                Method method = seat.getClass().getSuperclass().getSuperclass().getDeclaredMethod("setLocation", double.class, double.class, double.class, float.class, float.class);
+                method.invoke(seat, loc.getX(), loc.getY(), loc.getZ(), fbvp.getYaw(), loc.getPitch());
             } catch (Exception e) {
-                // e.printStackTrace();
+                e.printStackTrace();
             }
-
-
         });
     }
 
@@ -390,31 +459,61 @@ public class VehicleMovement1_16 {
         final Location fbvp = locvp.add(locvp.getDirection().setY(0).normalize().multiply(xOffset));
         final float zvp = (float) (fbvp.getZ() + zOffset * Math.sin(Math.toRadians(seatas.getLocation().getYaw())));
         final float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(seatas.getLocation().getYaw())));
-        final Location loc = new Location(main.getWorld(), xvp, main.getLocation().getY() + yOffset, zvp, seatas.getLocation().getYaw(), fbvp.getPitch());
-        EntityArmorStand stand = ((CraftArmorStand) seatas).getHandle();
+        final Location loc = new Location(main.getWorld(), xvp, main.getLocation().getY() + yOffset, zvp, seatas.getLocation().getYaw() + 15, seatas.getLocation().getPitch());
         Bukkit.getScheduler().runTask(Main.instance, () -> {
-            try {
-                stand.setLocation(loc.getX(), loc.getY(), loc.getZ(), seatas.getLocation().getYaw() + 15, seatas.getLocation().getPitch());
-            } catch (Exception e) {
-                // e.printStackTrace();
-            }
+            seatas.teleport(loc);
         });
-    }
-
-    private static boolean driveUpSlabs() {
-        if (ConfigModule.defaultConfig.getConfig().getString("driveUp").equals("blocks")) {
-            return false;
-        }
-        return true;
     }
 
     private static void pushVehicleUp(ArmorStand mainStand, double plus){
+        Location newLoc = new Location(mainStand.getLocation().getWorld(), mainStand.getLocation().getX(), mainStand.getLocation().getY() + plus, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
         Bukkit.getScheduler().runTask(Main.instance, () -> {
-            try {
-                ((CraftArmorStand) mainStand).getHandle().setLocation(mainStand.getLocation().getX(), mainStand.getLocation().getY() + plus, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
-            } catch (Exception e) {
-                // e.printStackTrace();
-            }
+            mainStand.teleport(newLoc);
         });
+    }
+
+    private static boolean steerIsJumping(PacketPlayInSteerVehicle packet){
+        boolean isJumping;
+        try {
+            Method method = packet.getClass().getDeclaredMethod("d");
+            isJumping = (Boolean) method.invoke(packet);
+        } catch (Exception e) {
+            isJumping = false;
+            e.printStackTrace();
+        }
+        return isJumping;
+    }
+
+    private static float steerGetXxa(PacketPlayInSteerVehicle packet){
+        float Xxa = 0;
+        try {
+            Method method = packet.getClass().getDeclaredMethod("b");
+            Xxa = (float) method.invoke(packet);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Xxa;
+    }
+
+    private static float steerGetZza(PacketPlayInSteerVehicle packet){
+        float Zza = 0;
+        try {
+            Method method = packet.getClass().getDeclaredMethod("c");
+            Zza = (float) method.invoke(packet);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Zza;
+    }
+
+    private static Location getLocationOfBlockAhead(ArmorStand mainStand){
+        double xOffset = 0.7;
+        double yOffset = 0.4;
+        double zOffset = 0.0;
+        Location locvp = mainStand.getLocation().clone();
+        Location fbvp = locvp.add(locvp.getDirection().setY(0).normalize().multiply(xOffset));
+        float zvp = (float) (fbvp.getZ() + zOffset * Math.sin(Math.toRadians(fbvp.getYaw())));
+        float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(fbvp.getYaw())));
+        return new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
     }
 }
