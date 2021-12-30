@@ -15,5 +15,17 @@ public class MetricsModule {
         metrics.addCustomChart(new Metrics.SimplePie("used_language", () -> {
             return ConfigModule.defaultConfig.getConfig().getString("messagesLanguage");
         }));
+        metrics.addCustomChart(new Metrics.SimplePie("used_driveUp", () -> {
+            String returns;
+            switch (ConfigModule.defaultConfig.driveUpSlabs()){
+                case SLABS:
+                    returns = "slabs"; break;
+                case BLOCKS:
+                    returns = "blocks"; break;
+                case BOTH: default:
+                    returns = "both"; break;
+            }
+            return returns;
+        }));
     }
 }
