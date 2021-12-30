@@ -57,8 +57,8 @@ public class VehicleMovement1_18 {
         double MaxSpeedBackwards = VehicleData.MaxSpeedBackwards.get(license);
         double FrictionSpeed = VehicleData.FrictionSpeed.get(license);
 
-        updateStand(standMain, license, steerIsJumping(ppisv));
-        slabCheck(standMain, license);
+        boolean isMovingUpwards = slabCheck(standMain, license);
+        updateStand(standMain, license, steerIsJumping(ppisv), isMovingUpwards);
         mainSeat(standMain, standMainSeat, license);
 
         if (VehicleData.seatsize.get(license + "addon") != null) {
@@ -173,17 +173,10 @@ public class VehicleMovement1_18 {
         }
     }
 
-    public static void slabCheck(ArmorStand mainStand, String license) {
-        double xOffset = 0.7;
-        double yOffset = 0.4;
-        double zOffset = 0.0;
-        Location locvp = mainStand.getLocation().clone();
-        Location fbvp = locvp.add(locvp.getDirection().setY(0).normalize().multiply(xOffset));
-        float zvp = (float) (fbvp.getZ() + zOffset * Math.sin(Math.toRadians(fbvp.getYaw())));
-        float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(fbvp.getYaw())));
-        Location loc = new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
+    public static boolean slabCheck(ArmorStand mainStand, String license) { //Returns true if is moving upwards (in any way)
+        Location loc = getLocationOfBlockAhead(mainStand);
         String locY = String.valueOf(mainStand.getLocation().getY());
-        Location locBlockAbove = new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset + 1, zvp, fbvp.getYaw(), fbvp.getPitch());;
+        Location locBlockAbove = new Location(loc.getWorld(), loc.getX(), loc.getY() + 1, loc.getZ(), loc.getYaw(), loc.getPitch());
 
         boolean isOnGround = locY.substring(locY.length() - 2).contains(".0");
         boolean isOnSlab = locY.substring(locY.length() - 2).contains(".5");
@@ -193,46 +186,52 @@ public class VehicleMovement1_18 {
         double difference = Double.parseDouble("0." + locY.split("\\.")[1]);
         BlockData blockData = loc.getBlock().getBlockData();
 
-        if (loc.getBlock().getType().toString().contains("CARPET") && ConfigModule.defaultConfig.getConfig().getBoolean("driveOnCarpets")){
+        if (loc.getBlock().getType().toString().contains("CARPET")){
+            if (!ConfigModule.defaultConfig.getConfig().getBoolean("driveOnCarpets")){ //if carpets are turned off in config
+                VehicleData.speed.put(license, 0.0);
+                return false;
+            }
+
             if (!isAbovePassable) {
                 VehicleData.speed.put(license, 0.0);
-                return;
+                return false;
             }
 
             if (isOnGround) pushVehicleUp(mainStand, 0.0625);
-            return;
+            return true;
         }
 
         if (blockData instanceof Snow){
             //Reserved for future update concerning Snow. Just stop for now.
             //Does not include snow block - that's considered a full block.
             VehicleData.speed.put(license, 0.0);
-            return;
+            return false;
         }
 
         if (blockData instanceof Fence || blockData instanceof Wall || blockData instanceof TrapDoor){
             VehicleData.speed.put(license, 0.0);
-            return;
+            return false;
         }
 
         if (ConfigModule.defaultConfig.driveUpSlabs().equals(DriveUp.SLABS)){
             if (isOnSlab) {
-                if (isPassable) return; //Vehicle will go down
+                if (isPassable) return false; //Vehicle will go down
 
                 if (blockData instanceof Slab) {
                     Slab slab = (Slab) blockData;
                     if (slab.getType().toString().equals("BOTTOM")) {
-                        return; //Vehicle will continue on the slabs
+                        return false; //Vehicle will continue on the slabs
                     }
                 }
 
                 if (!isAbovePassable) {
                     VehicleData.speed.put(license, 0.0);
-                    return; //Vehicle won't continue if there's a barrier above
+                    return false; //Vehicle won't continue if there's a barrier above
                 }
 
+
                 pushVehicleUp(mainStand, 0.5); //Vehicle will go up if there's a full block or a top/double slab
-                return;
+                return true;
             }
 
             if (!isPassable) {
@@ -242,20 +241,21 @@ public class VehicleMovement1_18 {
 
                         if (!isAbovePassable) {
                             VehicleData.speed.put(license, 0.0);
-                            return; //Vehicle won't go up the slab if there's a barrier above
+                            return false; //Vehicle won't go up the slab if there's a barrier above
                         }
 
                         if (isOnGround) {
+                            Main.instance.getLogger().info("slab-onground");
                             pushVehicleUp(mainStand, 0.5);
                         } else { //Maybe they're on a carpet
+                            Main.instance.getLogger().info("slab-oncarpet");
                             if ((0.5 - difference) > 0) pushVehicleUp(mainStand, 0.5 - difference);
-
                         }
                     }
                 }
 
                 VehicleData.speed.put(license, 0.0);
-                return; //If you're on the ground and there isn't bottom slab or a passable block, stop
+                return false; //If you're on the ground and there isn't bottom slab or a passable block, stop
             }
 
         } else if (ConfigModule.defaultConfig.driveUpSlabs().equals(DriveUp.BLOCKS)) {
@@ -266,13 +266,13 @@ public class VehicleMovement1_18 {
                         Slab slab = (Slab) blockData;
                         if (slab.getType().toString().equals("BOTTOM")){
                             VehicleData.speed.put(license, 0.0);
-                            return; //If it's a bottom slab, stop.
+                            return false; //If it's a bottom slab, stop.
                         }
                     }
 
                     if (!isAbovePassable) { //if more than 1 block high
                         VehicleData.speed.put(license, 0.0);
-                        return;
+                        return false;
                     }
 
                     if (isOnGround) {
@@ -280,52 +280,54 @@ public class VehicleMovement1_18 {
                     } else { //Maybe they're on a carpet
                         if ((1 - difference) > 0) pushVehicleUp(mainStand, 1 - difference);
                     }
+
+                    return true;
                 }
             }
             //If it's on a slab (might have been placed there)
-            if (isPassable) return; //Vehicle will go down
+            if (isPassable) return false; //Vehicle will go down
 
             if (blockData instanceof Slab) {
                 Slab slab = (Slab) blockData;
                 if (slab.getType().toString().equals("BOTTOM")) {
-                    return; //Vehicle will continue on the slabs
+                    return false; //Vehicle will continue on the slabs
                 }
             }
 
             if (!isAbovePassable) {
                 VehicleData.speed.put(license, 0.0);
-                return; //Vehicle won't continue if there's a barrier above
+                return false; //Vehicle won't continue if there's a barrier above
             }
 
             pushVehicleUp(mainStand, 0.5); //Vehicle will go up if there's a full block or a top/double slab
-            return;
+            return true;
 
         } else if (ConfigModule.defaultConfig.driveUpSlabs().equals(DriveUp.BOTH)) {
 
             if (isOnSlab) {
-                if (isPassable) return; //Vehicle will go down
+                if (isPassable) return false; //Vehicle will go down
 
                 if (blockData instanceof Slab) {
                     Slab slab = (Slab) blockData;
                     if (slab.getType().toString().equals("BOTTOM")) {
-                        return; //Vehicle will continue on the slabs
+                        return false; //Vehicle will continue on the slabs
                     }
                 }
 
                 if (!isAbovePassable) {
                     VehicleData.speed.put(license, 0.0);
-                    return; //Vehicle won't continue if there's a barrier above
+                    return false; //Vehicle won't continue if there's a barrier above
                 }
 
                 pushVehicleUp(mainStand, 0.5); //Vehicle will go up if there's a full block or a top/double slab
-                return;
+                return true;
             }
 
             if (!isPassable) {
 
                 if (!isAbovePassable) { //If more than 1 block high
                     VehicleData.speed.put(license, 0.0);
-                    return;
+                    return false;
                 }
 
                 if (blockData instanceof Slab){
@@ -336,7 +338,7 @@ public class VehicleMovement1_18 {
                         } else { //Maybe they're on a carpet
                             if ((0.5 - difference) > 0) pushVehicleUp(mainStand, 0.5 - difference);
                         }
-                        return;
+                        return true;
                     }
                 }
 
@@ -347,12 +349,18 @@ public class VehicleMovement1_18 {
                     if ((1 - difference) > 0) pushVehicleUp(mainStand, 1 - difference);
                 }
 
+                return true;
+
             }
         }
+
+        return false;
     }
 
-    public static void updateStand(ArmorStand mainStand, String license, Boolean space) {
+    public static void updateStand(ArmorStand mainStand, String license, boolean space, boolean isMovingUpwards) {
         Location loc = mainStand.getLocation();
+        Location locBlockAhead = getLocationOfBlockAhead(mainStand);
+        Location locBlockAheadAndBelow = new Location(locBlockAhead.getWorld(), locBlockAhead.getX(), locBlockAhead.getY() - 1, locBlockAhead.getZ(), locBlockAhead.getPitch(), locBlockAhead.getYaw());
         Location location = new Location(loc.getWorld(), loc.getX(), loc.getY() - 0.2, loc.getZ(), loc.getYaw(), loc.getPitch());
 
         if (VehicleData.type.get(license) == null) return;
@@ -381,14 +389,23 @@ public class VehicleMovement1_18 {
             return;
         }
 
-        if (location.getBlock().getType().toString().contains("AIR") || location.getBlock().getType().toString().contains("WATER")) {
+        if (location.getBlock().getType().toString().contains("WATER")) {
             mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.8, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
             return;
         }
-        if (location.getBlock().getType().toString().contains("CARPET")){
-            mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.7375, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
-            return;
+
+        if (!isMovingUpwards && locBlockAheadAndBelow.getBlock().isPassable()){
+            if (location.getBlock().isPassable()){
+                mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.8, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
+                return;
+            }
+
+            if (location.getBlock().getType().toString().contains("CARPET")){
+                mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.7375, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
+                return;
+            }
         }
+
         mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.0, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
     }
 
@@ -456,11 +473,12 @@ public class VehicleMovement1_18 {
     }
 
     private static boolean steerIsJumping(PacketPlayInSteerVehicle packet){
-        boolean isJumping = false;
+        boolean isJumping;
         try {
             Method method = packet.getClass().getDeclaredMethod("d");
             isJumping = (Boolean) method.invoke(packet);
         } catch (Exception e) {
+            isJumping = false;
             e.printStackTrace();
         }
         return isJumping;
@@ -486,5 +504,16 @@ public class VehicleMovement1_18 {
             e.printStackTrace();
         }
         return Zza;
+    }
+
+    private static Location getLocationOfBlockAhead(ArmorStand mainStand){
+        double xOffset = 0.7;
+        double yOffset = 0.4;
+        double zOffset = 0.0;
+        Location locvp = mainStand.getLocation().clone();
+        Location fbvp = locvp.add(locvp.getDirection().setY(0).normalize().multiply(xOffset));
+        float zvp = (float) (fbvp.getZ() + zOffset * Math.sin(Math.toRadians(fbvp.getYaw())));
+        float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(fbvp.getYaw())));
+        return new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
     }
 }
