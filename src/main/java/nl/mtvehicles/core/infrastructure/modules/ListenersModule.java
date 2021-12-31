@@ -4,8 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.events.*;
-import nl.mtvehicles.core.inventory.InventoryClickEvent;
-import nl.mtvehicles.core.inventory.InventoryCloseEvent;
+import nl.mtvehicles.core.events.inventory.InventoryClickEvent;
+import nl.mtvehicles.core.events.inventory.InventoryCloseEvent;
 
 public class ListenersModule {
     private static @Getter
