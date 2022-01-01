@@ -4,7 +4,9 @@ import nl.mtvehicles.core.infrastructure.enums.DriveUp;
 import nl.mtvehicles.core.infrastructure.enums.RegionWhitelistAction;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.ConfigUtils;
+import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,11 +40,34 @@ public class DefaultConfig extends ConfigUtils {
 
     //--- Gas stations ---
     public boolean areGasStationsEnabled(){
+        if (!DependencyModule.isDependencyEnabled("WorldGuard")) return false; //If WorldGuard isn't installed, say it's not enabled.
+
         return getConfig().getBoolean("gasStations.enabled");
     }
 
     public boolean canUseJerryCanOutsideOfGasStation(){
         return getConfig().getBoolean("gasStations.canUseJerryCanOutsideOfGasStation");
+    }
+
+    public boolean isFillJerryCansEnabled(){
+        if (!areGasStationsEnabled()) return false;
+
+        return getConfig().getBoolean("gasStations.fillJerryCans.enabled");
+    }
+
+    public boolean hasFillJerryCansPermission(Player p){
+        if (!getConfig().getBoolean("gasStations.fillJerryCans.needPermission")) return true; //if there's set that they don't need the permission, just pretend they have it
+
+        if (p.hasPermission("mtvehicles.filljerrycans")) return true;
+        else return false;
+    }
+
+    public boolean isFillJerryCansLeverEnabled(){
+        return getConfig().getBoolean("gasStations.fillJerryCans.lever");
+    }
+
+    public boolean isFillJerryCansTripwireHookEnabled(){
+        return getConfig().getBoolean("gasStations.fillJerryCans.tripwireHook");
     }
 
     public List<String> gasStationList() {
