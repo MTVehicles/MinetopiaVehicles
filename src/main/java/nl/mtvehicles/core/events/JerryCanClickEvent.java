@@ -63,14 +63,24 @@ public class JerryCanClickEvent implements Listener {
         Integer bensize = Integer.parseInt(NBTUtils.getString(item, "mtvehicles.benzinesize"));
 
         if ((benval + 5) <= bensize){
-            p.setItemInHand(VehicleFuel.benzineItem(bensize, benval + 5));
-            //p.getWorld().playSound(p.getLocation(), "minecraft:entity.player.swim", 3.0F, 0.5F);
-            //I'm not sure whether sounds/their names have been changed through the versions... It would be nice having a sound here.
+            if (makePlayerPay(p, 5)){
+                p.setItemInHand(VehicleFuel.benzineItem(bensize, benval + 5));
+                //p.getWorld().playSound(p.getLocation(), "minecraft:entity.player.swim", 3.0F, 0.5F);
+                //I'm not sure whether sounds/their names have been changed through the versions... It would be nice having a sound here.
+            }
         }
         else if (benval == bensize) { ConfigModule.messagesConfig.sendMessage(p, "jerrycanFull"); }
         else {
-            p.setItemInHand(VehicleFuel.benzineItem(bensize, bensize));
-            //p.getWorld().playSound(p.getLocation(), "minecraft:entity.player.swim", 3.0F, 0.5F);
+            if (makePlayerPay(p, (bensize - benval))){
+                p.setItemInHand(VehicleFuel.benzineItem(bensize, bensize));
+                //p.getWorld().playSound(p.getLocation(), "minecraft:entity.player.swim", 3.0F, 0.5F);
+            }
         }
+    }
+
+    private boolean makePlayerPay(Player p, int litres){ //returns true if payed/doesn't have to, false if didn't pay/error
+        if (!ConfigModule.defaultConfig.isFillJerryCanPriceEnabled()) return true; //it isn't enabled, so just fill the jerrycan...
+
+        return DependencyModule.vault.withdrawMoneyPlayer(p, litres * ConfigModule.defaultConfig.getFillJerryCanPrice());
     }
 }

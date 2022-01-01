@@ -20,15 +20,23 @@ public class VaultUtils {
         economy = rsp.getProvider();
     }
 
+    public boolean isEconomySetUp(){
+        return !(economy == null);
+    }
+
+    public String getEconomyName(){
+        return economy.getName();
+    }
+
     public boolean depositMoneyPlayer(OfflinePlayer p, double price){ //true - successful, false - error
-        if (!isPriceOk(price)) return false;
+        if (!isPriceOk(price) || !isEconomySetUp()) return false;
         if (!economy.hasAccount(p)) return false;
 
         return economy.depositPlayer(p, price).transactionSuccess();
     }
 
     public boolean withdrawMoneyPlayer(OfflinePlayer p, double price){ //true - payed, false - didn't
-        if (!isPriceOk(price)) return false;
+        if (!isPriceOk(price) || !isEconomySetUp()) return false;
         if (!economy.hasAccount(p)) return false;
         if (!economy.has(p, price)) return false;
 

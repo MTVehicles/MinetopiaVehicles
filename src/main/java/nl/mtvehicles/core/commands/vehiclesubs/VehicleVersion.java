@@ -1,6 +1,5 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
-import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
@@ -23,10 +22,15 @@ public class VehicleVersion extends MTVehicleSubCommand {
 
         sendMessage(String.format("§2Running §aMTVehicles v" + pluginVersion + "§2."));
         sendMessage(String.format("§2Your server is running §a" + serverVersion + "§2."));
-        if (!DependencyModule.loadedDependencies.isEmpty())
-            sendMessage(String.format("§2Loaded dependencies: §a" + String.join(", ", DependencyModule.loadedDependencies) + "§2."));
-        else
+        if (!DependencyModule.loadedDependencies.isEmpty()) {
+            String dependencies = String.join(", ", DependencyModule.loadedDependencies);
+            if (DependencyModule.isDependencyEnabled("Vault")) {
+                if (!DependencyModule.vault.isEconomySetUp()) dependencies = dependencies.replace("Vault", "§a§mVault§a");
+            }
+            sendMessage(String.format("§2Loaded dependencies: §a" + dependencies + "§2."));
+        } else {
             sendMessage(String.format("§2There are no loaded dependencies."));
+        }
         if (VersionModule.isPreRelease)
             sendMessage(String.format(ConfigModule.messagesConfig.getMessage("usingPreRelease")));
 

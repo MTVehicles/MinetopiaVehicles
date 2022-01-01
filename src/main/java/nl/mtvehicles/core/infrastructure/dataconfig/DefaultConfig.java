@@ -70,6 +70,19 @@ public class DefaultConfig extends ConfigUtils {
         return getConfig().getBoolean("gasStations.fillJerryCans.tripwireHook");
     }
 
+    public boolean isFillJerryCanPriceEnabled(){
+        if (!areGasStationsEnabled()) return false;
+        if (!DependencyModule.isDependencyEnabled("Vault")) return false; //If Vault isn't installed, say it's not enabled.
+        if (!DependencyModule.vault.isEconomySetUp()) return false; //There is no Vault Economy plugin, disable it.
+
+        return getConfig().getBoolean("gasStations.fillJerryCans.price.enabled");
+    }
+
+    public double getFillJerryCanPrice(){
+        if (getConfig().getDouble("gasStations.fillJerryCans.price.pricePerLitre") <= 0) return 30.0;
+        else return getConfig().getDouble("gasStations.fillJerryCans.price.pricePerLitre");
+    }
+
     public List<String> gasStationList() {
         return new ArrayList<>(getConfig().getStringList("gasStations.list"));
     }
