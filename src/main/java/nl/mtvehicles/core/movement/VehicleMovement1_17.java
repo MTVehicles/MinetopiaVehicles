@@ -348,7 +348,6 @@ public class VehicleMovement1_17 {
                 }
 
                 return true;
-
             }
         }
 
@@ -462,7 +461,6 @@ public class VehicleMovement1_17 {
             seatas.teleport(loc);
         });
     }
-
     private static void pushVehicleUp(ArmorStand mainStand, double plus){
         Location newLoc = new Location(mainStand.getLocation().getWorld(), mainStand.getLocation().getX(), mainStand.getLocation().getY() + plus, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
         Bukkit.getScheduler().runTask(Main.instance, () -> {
