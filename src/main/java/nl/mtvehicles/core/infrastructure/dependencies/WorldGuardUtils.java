@@ -36,7 +36,9 @@ public class WorldGuardUtils {
 
         boolean returns = false;
         for (ProtectedRegion region: regions) {
-            if (region.getFlag(flag).equals(flagState)) returns = true;
+            StateFlag.State regionFlagState = region.getFlag(flag);
+            if (regionFlagState != null)
+                if (regionFlagState.equals(flagState)) returns = true;
         } //If location is in at least 1 region with the flag
         return returns;
     }
@@ -62,8 +64,8 @@ public class WorldGuardUtils {
             MTV_PLACE_FLAG = mtvPlaceFlag;
             MTV_ENTER_FLAG = mtvEnterFlag;
             MTV_PICKUP_FLAG = mtvPickupFlag;
-        } catch (FlagConflictException e) {
-            Bukkit.getLogger().info(ChatColor.RED + "[MTVehicles] Custom WorldGuard flags could not be created for MTVehicles. Disabling as a softdepend...");
+        } catch (Exception e) {
+            Bukkit.getLogger().info(ChatColor.RED + "[MTVehicles] Custom WorldGuard flags could not be created for MTVehicles. Disabling as a softdepend... (If you've just reloaded the plugin with PlugMan, try restarting the server.)");
             DependencyModule.disableDependency("WorldGuard");
         }
     }
