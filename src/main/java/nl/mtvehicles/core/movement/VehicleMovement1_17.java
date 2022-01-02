@@ -391,10 +391,7 @@ public class VehicleMovement1_17 {
     }
 
     private static boolean driveUpSlabs(){
-        if (ConfigModule.defaultConfig.getConfig().getString("driveUp").equals("blocks")){
-            return false;
-        }
-        return true;
+        return !ConfigModule.defaultConfig.getConfig().getString("driveUp").equals("blocks");
     }
 
     private static void pushVehicleUp(ArmorStand mainStand, double plus){
