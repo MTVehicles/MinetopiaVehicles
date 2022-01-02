@@ -2,9 +2,9 @@ package nl.mtvehicles.core.infrastructure.modules;
 
 import lombok.Getter;
 import lombok.Setter;
-import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.dependencies.VaultUtils;
 import nl.mtvehicles.core.infrastructure.dependencies.WorldGuardUtils;
+import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +19,11 @@ public class DependencyModule {
     public static VaultUtils vault;
 
     public DependencyModule() {
-        if (Main.instance.getServer().getPluginManager().getPlugin("WorldGuard") != null) {
+        if (Bukkit.getServer().getPluginManager().getPlugin("WorldGuard") != null) {
             loadedDependencies.add("WorldGuard");
             worldGuard = new WorldGuardUtils();
         }
-        if (Main.instance.getServer().getPluginManager().getPlugin("Vault") != null) {
+        if (Bukkit.getServer().getPluginManager().getPlugin("Vault") != null) {
             loadedDependencies.add("Vault");
             vault = new VaultUtils();
         }

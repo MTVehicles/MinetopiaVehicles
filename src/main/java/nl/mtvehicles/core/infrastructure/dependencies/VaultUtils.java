@@ -2,9 +2,9 @@ package nl.mtvehicles.core.infrastructure.dependencies;
 
 import net.milkbowl.vault.economy.Economy;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.RegisteredServiceProvider;
-import nl.mtvehicles.core.Main;
 
 public class VaultUtils {
     //This is only called if DependencyModule made sure that Vault is installed.
@@ -16,7 +16,7 @@ public class VaultUtils {
     }
 
     private static void setupEconomy(){
-        RegisteredServiceProvider<Economy> rsp = Main.instance.getServer().getServicesManager().getRegistration(Economy.class);
+        RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp == null) return;
         economy = rsp.getProvider();
     }

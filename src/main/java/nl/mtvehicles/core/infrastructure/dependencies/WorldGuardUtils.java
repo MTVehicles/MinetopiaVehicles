@@ -8,9 +8,8 @@ import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import com.sk89q.worldguard.protection.regions.RegionContainer;
-import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
@@ -64,7 +63,7 @@ public class WorldGuardUtils {
             MTV_ENTER_FLAG = mtvEnterFlag;
             MTV_PICKUP_FLAG = mtvPickupFlag;
         } catch (FlagConflictException e) {
-            Main.instance.getLogger().info(ChatColor.RED + "Custom WorldGuard flags could not be created for MTVehicles. Disabling as a softdepend...");
+            Bukkit.getLogger().info(ChatColor.RED + "[MTVehicles] Custom WorldGuard flags could not be created for MTVehicles. Disabling as a softdepend...");
             DependencyModule.disableDependency("WorldGuard");
         }
     }

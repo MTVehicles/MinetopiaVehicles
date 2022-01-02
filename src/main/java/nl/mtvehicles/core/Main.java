@@ -32,6 +32,10 @@ public class Main extends JavaPlugin {
         new MetricsModule();
         new LoopModule();
         new ConfigModule();
+    }
+
+    @Override
+    public void onLoad(){
         new DependencyModule();
     }
 
