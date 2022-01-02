@@ -178,8 +178,9 @@ public class VehicleMovement1_17 {
         String locY = String.valueOf(mainStand.getLocation().getY());
         Location locBlockAbove = new Location(loc.getWorld(), loc.getX(), loc.getY() + 1, loc.getZ(), loc.getYaw(), loc.getPitch());
 
-        boolean isOnGround = locY.substring(locY.length() - 2).contains(".0");
-        boolean isOnSlab = locY.substring(locY.length() - 2).contains(".5");
+        final String drivingOnY = locY.substring(locY.length() - 2);
+        boolean isOnGround = drivingOnY.contains(".0");
+        boolean isOnSlab = drivingOnY.contains(".5");
         boolean isPassable = loc.getBlock().isPassable();
         boolean isAbovePassable = locBlockAbove.getBlock().isPassable();
 
