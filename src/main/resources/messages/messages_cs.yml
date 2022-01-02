@@ -88,3 +88,4 @@ usingPreRelease: "&ePoužíváš pre-release. Přestože tato skutečnost dovolu
 notInAGasStation: "&cTohle tu nemůžeš udělat. Nejsi na benzínce."
 notInAWhitelistedRegion: "&cTohle tu nemůžeš udělat."
 insufficientFunds: "&cNa tohle nemáš dost peněz."
+transactionSuccessful: "&aÚspěšně zaplaceno &2%s&a."

@@ -88,3 +88,4 @@ usingPreRelease: "&eThis is a pre-release. While it enables you to try the lates
 notInAGasStation: "&cYou can't do that here. You're not in a gas station."
 notInAWhitelistedRegion: "&cYou can't do that here."
 insufficientFunds: "&cYou don't have enough money for that."
+transactionSuccessful: "&aSuccessfully payed &2%s&a."

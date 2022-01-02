@@ -29,22 +29,26 @@ public class VaultUtils {
         return economy.getName();
     }
 
-    public boolean depositMoneyPlayer(OfflinePlayer p, double price){ //true - successful, false - error
-        if (!isPriceOk(price) || !isEconomySetUp()) return false;
+    public boolean depositMoneyPlayer(OfflinePlayer p, double amount){ //true - successful, false - error
+        if (!isPriceOk(amount) || !isEconomySetUp()) return false;
         if (!economy.hasAccount(p)) return false;
 
-        return economy.depositPlayer(p, price).transactionSuccess();
+        return economy.depositPlayer(p, amount).transactionSuccess();
     }
 
-    public boolean withdrawMoneyPlayer(OfflinePlayer p, double price){ //true - payed, false - didn't
-        if (!isPriceOk(price) || !isEconomySetUp()) return false;
+    public boolean withdrawMoneyPlayer(OfflinePlayer p, double amount){ //true - payed, false - didn't
+        if (!isPriceOk(amount) || !isEconomySetUp()) return false;
         if (!economy.hasAccount(p)) return false;
-        if (!economy.has(p, price)){
-            if (p.isOnline()) p.getPlayer().sendMessage(ConfigModule.messagesConfig.getMessage("insufficientFunds"));
+        if (!economy.has(p, amount)){
+            if (p.isOnline()) ConfigModule.messagesConfig.sendMessage(p.getPlayer(), "insufficientFunds");
             return false;
         }
 
-        return economy.withdrawPlayer(p, price).transactionSuccess();
+        return economy.withdrawPlayer(p, amount).transactionSuccess();
+    }
+
+    public String getMoneyFormat(double amount){
+        return economy.format(amount);
     }
 
     private boolean isPriceOk(double price){ //returns true if ok

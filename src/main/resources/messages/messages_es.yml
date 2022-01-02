@@ -89,3 +89,4 @@ usingPreRelease: "&eEste es un prelanzamiento. Si bien le permite probar las úl
 notInAGasStation: "&cNo puedes hacer eso aquí. No estás en una gasolinera."
 notInAWhitelistedRegion: "&cNo puedes hacer eso aquí."
 insufficientFunds: "&cNo tienes suficiente dinero para eso."
+transactionSuccessful: "&aPagado con éxito &2%s&a."
