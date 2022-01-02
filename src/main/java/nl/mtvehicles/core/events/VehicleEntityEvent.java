@@ -74,7 +74,7 @@ public class VehicleEntityEvent implements Listener {
                 } else {
                     VehicleData.fuel.put(licensePlate, Double.valueOf(VehicleData.fuel.get(licensePlate) + benval));
                     BossBarUtils.setBossBarValue(curb / 100.0D, licensePlate);
-                    p.setItemInHand(VehicleFuel.benzineItem(Integer.parseInt(bensize), Integer.parseInt(benval) - Integer.parseInt(benval)));
+                    p.setItemInHand(VehicleFuel.benzineItem(Integer.parseInt(bensize), 0));
                 }
             }
             if (p.isSneaking()) {
