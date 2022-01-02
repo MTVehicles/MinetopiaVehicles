@@ -59,7 +59,7 @@ If this did not work don't hesitate to contact the support on our Discord server
 
 **Discord is the best place to report discovered bugs!**
 <a href="https://www.youtube.com/channel/UCxxK71QFN4_PrBhCFmH2Jmw"><img widhtsrc="https://raw.githubusercontent.com/MikeCodesDotNET/ColoredBadges/master/png/streaming/youtube%402x.png"></a></br>
-<a href="https://discord.gg/vehicle"><img src="https://discord.com/api/guilds/694809233819959308/widget.png?style=banner2"></a>
+<a href="https://discord.gg/vehicle" taget="_blank"><img src="https://discord.com/api/guilds/694809233819959308/widget.png?style=banner2"></a>
 
 Other ways to contact us:
 
