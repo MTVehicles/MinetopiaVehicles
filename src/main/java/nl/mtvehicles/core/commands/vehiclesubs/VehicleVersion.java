@@ -19,10 +19,10 @@ public class VehicleVersion extends MTVehicleSubCommand {
         String pluginVersion = Main.pluginVersion;
         String serverVersion = Bukkit.getVersion();
 
-        sendMessage(String.format("§2Running §aMTVehicles v" + pluginVersion + "§2."));
-        sendMessage(String.format("§2Your server is running §a" + serverVersion + "§2."));
+        sendMessage(String.format("§2Running §aMTVehicles v%s§2.", pluginVersion));
+        sendMessage(String.format("§2Your server is running §a%s§2.", serverVersion));
         if (Main.isPreRelease)
-            sendMessage(String.format(ConfigModule.messagesConfig.getMessage("usingPreRelease")));
+            sendMessage(ConfigModule.messagesConfig.getMessage("usingPreRelease"));
 
         return true;
     }
