@@ -29,7 +29,11 @@ public class DependencyModule {
         }
     }
 
-    public boolean isDependencyEnabled(String name){
+    public static boolean isDependencyEnabled(String name){
         return loadedDependencies.contains(name);
+    }
+
+    public static void disableDependency(String name){
+        if (isDependencyEnabled(name)) loadedDependencies.remove(name);
     }
 }

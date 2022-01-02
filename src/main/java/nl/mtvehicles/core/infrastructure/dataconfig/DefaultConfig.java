@@ -2,10 +2,12 @@ package nl.mtvehicles.core.infrastructure.dataconfig;
 
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.enums.DriveUp;
-import nl.mtvehicles.core.infrastructure.enums.RegionWhitelistAction;
+import nl.mtvehicles.core.infrastructure.enums.RegionAction;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.ConfigUtils;
+import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -27,7 +29,7 @@ public class DefaultConfig extends ConfigUtils {
     public DriveUp driveUpSlabs(){
         DriveUp returns = DriveUp.BOTH; //default value
         try {
-            switch (Objects.requireNonNull(getConfig().getString("driveUp"))){
+            switch (Objects.requireNonNull(getConfig().getString("driveUp").toLowerCase())){
                 case "blocks": case "block":
                     returns = DriveUp.BLOCKS; break;
                 case "slabs": case "slab":
@@ -40,27 +42,60 @@ public class DefaultConfig extends ConfigUtils {
     }
 
     //--- Gas stations ---
-    public boolean areGasStationsEnabled(){
-        if (!Main.dependencies.isDependencyEnabled("WorldGuard")) return false; //If WorldGuard isn't installed, say it's not enabled.
 
-        return getConfig().getBoolean("gasStations.enabled");
+    GasStationConfig gasStations = new GasStationConfig();
+
+    public boolean canUseJerryCan(Location loc){
+        if (!gasStations.areGasStationsEnabled()) return true;
+
+        //If a player is in region with 'mtvgasstation=deny', they can't use jerrycans.
+        if (DependencyModule.worldGuard.isInRegionWithFlag(loc, "mtv-gasstation", false)) return false;
+
+        if (gasStations.canUseJerryCanOutsideOfGasStation()) return true;
+
+        return gasStations.isInsideGasStation(loc);
     }
 
-    public boolean canUseJerryCanOutsideOfGasStation(){
-        return getConfig().getBoolean("gasStations.canUseJerryCanOutsideOfGasStation");
+    public boolean canUseJerryCan(Player p){
+        return canUseJerryCan(p.getLocation());
     }
 
-    public boolean isFillJerryCansEnabled(){
-        if (!areGasStationsEnabled()) return false;
+    public boolean canFillJerryCans(Player p, Location loc){
+        if (!gasStations.areGasStationsEnabled()) return false;
+        if (!gasStations.isFillJerryCansEnabled()) return false;
+        if (!gasStations.isInsideGasStation(loc)) return false;
 
-        return getConfig().getBoolean("gasStations.fillJerryCans.enabled");
+        if (!gasStations.hasFillJerryCansPermission(p)){
+            p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("noPerms")));
+            return false;
+        } return true;
     }
 
-    public boolean hasFillJerryCansPermission(Player p){
-        if (!getConfig().getBoolean("gasStations.fillJerryCans.needPermission")) return true; //if there's set that they don't need the permission, just pretend they have it
+    private class GasStationConfig {
 
-        if (p.hasPermission("mtvehicles.filljerrycans")) return true;
-        else return false;
+        private boolean areGasStationsEnabled(){
+            if (!DependencyModule.isDependencyEnabled("WorldGuard")) return false; //If WorldGuard isn't installed, say it's not enabled.
+
+            return getConfig().getBoolean("gasStations.enabled");
+        }
+
+        private boolean canUseJerryCanOutsideOfGasStation(){
+            return getConfig().getBoolean("gasStations.canUseJerryCanOutsideOfGasStation");
+        }
+
+        private boolean isInsideGasStation(Location loc){
+            return DependencyModule.worldGuard.isInRegionWithFlag(loc, "mtv-gasstation", true);
+        }
+
+        private boolean isFillJerryCansEnabled(){
+            return getConfig().getBoolean("gasStations.fillJerryCans.enabled");
+        }
+
+        private boolean hasFillJerryCansPermission(Player p){
+            if (!getConfig().getBoolean("gasStations.fillJerryCans.needPermission")) return true; //if there's set that they don't need the permission, just pretend they have it
+            return p.hasPermission("mtvehicles.filljerrycans");
+        }
+
     }
 
     public boolean isFillJerryCansLeverEnabled(){
@@ -72,22 +107,18 @@ public class DefaultConfig extends ConfigUtils {
     }
 
     public boolean isFillJerryCanPriceEnabled(){
-        if (!areGasStationsEnabled()) return false;
-        if (!Main.dependencies.isDependencyEnabled("Vault")) return false; //If Vault isn't installed, say it's not enabled.
+        if (!gasStations.areGasStationsEnabled()) return false;
+        if (!gasStations.isFillJerryCansEnabled()) return false;
+        if (!DependencyModule.isDependencyEnabled("Vault")) return false; //If Vault isn't installed, say it's not enabled.
         if (!DependencyModule.vault.isEconomySetUp()) return false; //There is no Vault Economy plugin, disable it.
 
         return getConfig().getBoolean("gasStations.fillJerryCans.price.enabled");
     }
 
     public double getFillJerryCanPrice(){
-        if (getConfig().getDouble("gasStations.fillJerryCans.price.pricePerLitre") <= 0) return 30.0;
+        if (getConfig().getDouble("gasStations.fillJerryCans.price.pricePerLitre") <= 0) return 30.0; //Default, if it's not greater than 0
         else return getConfig().getDouble("gasStations.fillJerryCans.price.pricePerLitre");
     }
-
-    public List<String> gasStationList() {
-        return new ArrayList<>(getConfig().getStringList("gasStations.list"));
-    }
-
 
     //--- Block Whitelist ---
     public boolean isBlockWhitelistEnabled() {
@@ -98,37 +129,51 @@ public class DefaultConfig extends ConfigUtils {
         return getConfig().getStringList("blockWhitelist.list").stream().map(Material::getMaterial).collect(Collectors.toList());
     }
 
-    //--- Region Whitelist ---
-    public boolean isRegionWhitelistEnabled(RegionWhitelistAction action){
-        boolean returns = false;
+    //--- Region Actions ---
+
+    private RegionAction.ListType getRegionActionListType(RegionAction action){
+        String configOption = "disabled"; //Default
         switch (action){
             case PLACE:
-                returns = getConfig().getBoolean("regionWhitelist.place.enable");
+                configOption = getConfig().getString("regionActions.place");
                 break;
             case PICKUP:
-                returns = getConfig().getBoolean("regionWhitelist.pickup.enable");
+                configOption = getConfig().getString("regionActions.pickup");
                 break;
             case ENTER:
-                returns = getConfig().getBoolean("regionWhitelist.enter.enable");
+                configOption = getConfig().getString("regionActions.enter");
                 break;
         }
-        return returns;
+        if (configOption.equalsIgnoreCase("whitelist")) return RegionAction.ListType.WHITELIST;
+        else if (configOption.equalsIgnoreCase("blacklist")) return RegionAction.ListType.BLACKLIST;
+        else return RegionAction.ListType.DISABLED;
     }
 
-    public List<String> regionWhitelist(RegionWhitelistAction action){
-        List<String> returns;
+    public boolean canProceedWithAction(RegionAction action, Location loc){
+        if (!DependencyModule.isDependencyEnabled("WorldGuard")) return true;
+
+        boolean returns = true;
+        RegionAction.ListType listType = getRegionActionListType(action);
+        boolean isWhitelist = listType.equals(RegionAction.ListType.WHITELIST);
+        boolean isBlacklist = listType.equals(RegionAction.ListType.BLACKLIST);
         switch (action){
             case PLACE:
-                returns = new ArrayList<>(getConfig().getStringList("regionWhitelist.place.list"));
+                if (isWhitelist)
+                    returns = DependencyModule.worldGuard.isInRegionWithFlag(loc, "mtv-place", true);
+                else if (isBlacklist)
+                    returns = !DependencyModule.worldGuard.isInRegionWithFlag(loc, "mtv-place", false);
                 break;
             case PICKUP:
-                returns = new ArrayList<>(getConfig().getStringList("regionWhitelist.pickup.list"));
+                if (isWhitelist)
+                    returns = DependencyModule.worldGuard.isInRegionWithFlag(loc, "mtv-pickup", true);
+                else if (isBlacklist)
+                    returns = !DependencyModule.worldGuard.isInRegionWithFlag(loc, "mtv-pickup", false);
                 break;
             case ENTER:
-                returns = new ArrayList<>(getConfig().getStringList("regionWhitelist.enter.list"));
-                break;
-            default:
-                returns = new ArrayList<>();
+                if (isWhitelist)
+                    returns = DependencyModule.worldGuard.isInRegionWithFlag(loc, "mtv-enter", true);
+                else if (isBlacklist)
+                    returns = !DependencyModule.worldGuard.isInRegionWithFlag(loc, "mtv-enter", false);
                 break;
         }
         return returns;

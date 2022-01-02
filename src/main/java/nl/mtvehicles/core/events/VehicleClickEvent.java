@@ -1,6 +1,6 @@
 package nl.mtvehicles.core.events;
 
-import nl.mtvehicles.core.infrastructure.enums.RegionWhitelistAction;
+import nl.mtvehicles.core.infrastructure.enums.RegionAction;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.Main;
@@ -56,12 +56,10 @@ public class VehicleClickEvent implements Listener {
 
         if (p.isSneaking()) {
 
-            if (ConfigModule.defaultConfig.isRegionWhitelistEnabled(RegionWhitelistAction.PICKUP) && Main.dependencies.isDependencyEnabled("WorldGuard")){
-                if (!DependencyModule.worldGuard.isInAtLeastOneRegion(e.getRightClicked().getLocation(), ConfigModule.defaultConfig.regionWhitelist(RegionWhitelistAction.PICKUP))) {
-                    e.setCancelled(true);
-                    ConfigModule.messagesConfig.sendMessage(p, "notInAWhitelistedRegion");
-                    return;
-                }
+            if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.PICKUP, e.getRightClicked().getLocation())){
+                e.setCancelled(true);
+                ConfigModule.messagesConfig.sendMessage(p, "notInAWhitelistedRegion");
+                return;
             }
 
             TextUtils.pickupVehicle(license, p);

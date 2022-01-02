@@ -36,25 +36,14 @@ public class JerryCanClickEvent implements Listener {
 
         if (!action.equals(Action.RIGHT_CLICK_BLOCK)) return;
 
-        if (!ConfigModule.defaultConfig.isFillJerryCansEnabled()) return;
-
         Block clickedBlock = e.getClickedBlock();
 
-        if (!DependencyModule.worldGuard.isInAtLeastOneRegion(clickedBlock.getLocation(), ConfigModule.defaultConfig.gasStationList())) return;
+        if (!ConfigModule.defaultConfig.canFillJerryCans(p, clickedBlock.getLocation())) return;
 
-        if (clickedBlock.getType().toString().contains("LEVER") && ConfigModule.defaultConfig.isFillJerryCansLeverEnabled() && hasFillJerryCansPermission(p)) {
+        if (clickedBlock.getType().toString().contains("LEVER") && ConfigModule.defaultConfig.isFillJerryCansLeverEnabled()) {
             fillJerryCan(p, item);
-        } else if (clickedBlock.getType().toString().contains("TRIPWIRE_HOOK") && ConfigModule.defaultConfig.isFillJerryCansTripwireHookEnabled() && hasFillJerryCansPermission(p)) {
+        } else if (clickedBlock.getType().toString().contains("TRIPWIRE_HOOK") && ConfigModule.defaultConfig.isFillJerryCansTripwireHookEnabled()) {
             fillJerryCan(p, item);
-        }
-    }
-
-    private boolean hasFillJerryCansPermission(Player p){
-        if (!ConfigModule.defaultConfig.hasFillJerryCansPermission(p)) {
-            p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("noPerms")));
-            return false;
-        } else {
-            return true;
         }
     }
 

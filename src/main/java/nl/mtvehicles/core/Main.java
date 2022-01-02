@@ -8,8 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
     public static Main instance;
-    public static DependencyModule dependencies = new DependencyModule();
-    public static String configVersion = "2.3.0-dev7"; //We might not change config in every version, why bother creating a new config file then? Change this only when necessary.;
+    public static String configVersion = "2.3.0-dev8"; //We might not change config in every version, why bother creating a new config file then? Change this only when necessary.;
 
     @Override
     public void onEnable() {
@@ -33,6 +32,7 @@ public class Main extends JavaPlugin {
         new MetricsModule();
         new LoopModule();
         new ConfigModule();
+        new DependencyModule();
     }
 
     public static String fol() {
