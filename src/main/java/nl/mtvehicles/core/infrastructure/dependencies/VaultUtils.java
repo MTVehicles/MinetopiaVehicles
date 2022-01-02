@@ -1,6 +1,7 @@
 package nl.mtvehicles.core.infrastructure.dependencies;
 
 import net.milkbowl.vault.economy.Economy;
+import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import nl.mtvehicles.core.Main;
@@ -38,7 +39,10 @@ public class VaultUtils {
     public boolean withdrawMoneyPlayer(OfflinePlayer p, double price){ //true - payed, false - didn't
         if (!isPriceOk(price) || !isEconomySetUp()) return false;
         if (!economy.hasAccount(p)) return false;
-        if (!economy.has(p, price)) return false;
+        if (!economy.has(p, price)){
+            if (p.isOnline()) p.getPlayer().sendMessage(ConfigModule.messagesConfig.getMessage("insufficientFunds"));
+            return false;
+        }
 
         return economy.withdrawPlayer(p, price).transactionSuccess();
     }
