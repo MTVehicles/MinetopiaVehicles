@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.events;
 
+import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.enums.RegionWhitelistAction;
 import nl.mtvehicles.core.infrastructure.helpers.ItemFactory;
 import nl.mtvehicles.core.infrastructure.helpers.NBTUtils;
@@ -65,7 +66,7 @@ public class VehiclePlaceEvent implements Listener {
             ConfigModule.messagesConfig.sendMessage(p, "blockNotInWhitelist");
             return;
         }
-        if (ConfigModule.defaultConfig.isRegionWhitelistEnabled(RegionWhitelistAction.PLACE) && DependencyModule.isDependencyEnabled("WorldGuard")){
+        if (ConfigModule.defaultConfig.isRegionWhitelistEnabled(RegionWhitelistAction.PLACE) && Main.dependencies.isDependencyEnabled("WorldGuard")){
             if (!DependencyModule.worldGuard.isInAtLeastOneRegion(loc, ConfigModule.defaultConfig.regionWhitelist(RegionWhitelistAction.PLACE))) {
                 e.setCancelled(true);
                 ConfigModule.messagesConfig.sendMessage(p, "notInAWhitelistedRegion");

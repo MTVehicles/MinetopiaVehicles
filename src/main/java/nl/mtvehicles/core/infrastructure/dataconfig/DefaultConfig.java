@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.infrastructure.dataconfig;
 
+import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.enums.DriveUp;
 import nl.mtvehicles.core.infrastructure.enums.RegionWhitelistAction;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
@@ -40,7 +41,7 @@ public class DefaultConfig extends ConfigUtils {
 
     //--- Gas stations ---
     public boolean areGasStationsEnabled(){
-        if (!DependencyModule.isDependencyEnabled("WorldGuard")) return false; //If WorldGuard isn't installed, say it's not enabled.
+        if (!Main.dependencies.isDependencyEnabled("WorldGuard")) return false; //If WorldGuard isn't installed, say it's not enabled.
 
         return getConfig().getBoolean("gasStations.enabled");
     }
@@ -72,7 +73,7 @@ public class DefaultConfig extends ConfigUtils {
 
     public boolean isFillJerryCanPriceEnabled(){
         if (!areGasStationsEnabled()) return false;
-        if (!DependencyModule.isDependencyEnabled("Vault")) return false; //If Vault isn't installed, say it's not enabled.
+        if (!Main.dependencies.isDependencyEnabled("Vault")) return false; //If Vault isn't installed, say it's not enabled.
         if (!DependencyModule.vault.isEconomySetUp()) return false; //There is no Vault Economy plugin, disable it.
 
         return getConfig().getBoolean("gasStations.fillJerryCans.price.enabled");

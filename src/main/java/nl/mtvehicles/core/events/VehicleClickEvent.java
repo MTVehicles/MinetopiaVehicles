@@ -56,7 +56,7 @@ public class VehicleClickEvent implements Listener {
 
         if (p.isSneaking()) {
 
-            if (ConfigModule.defaultConfig.isRegionWhitelistEnabled(RegionWhitelistAction.PICKUP) && DependencyModule.isDependencyEnabled("WorldGuard")){
+            if (ConfigModule.defaultConfig.isRegionWhitelistEnabled(RegionWhitelistAction.PICKUP) && Main.dependencies.isDependencyEnabled("WorldGuard")){
                 if (!DependencyModule.worldGuard.isInAtLeastOneRegion(e.getRightClicked().getLocation(), ConfigModule.defaultConfig.regionWhitelist(RegionWhitelistAction.PICKUP))) {
                     e.setCancelled(true);
                     ConfigModule.messagesConfig.sendMessage(p, "notInAWhitelistedRegion");

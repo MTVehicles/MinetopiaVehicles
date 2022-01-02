@@ -29,8 +29,7 @@ public class DependencyModule {
         }
     }
 
-    public static boolean isDependencyEnabled(String name){
-        if (loadedDependencies.contains(name)) return true;
-        else return false;
+    public boolean isDependencyEnabled(String name){
+        return loadedDependencies.contains(name);
     }
 }
