@@ -39,17 +39,22 @@ public class JerryCanClickEvent implements Listener {
         Block clickedBlock = e.getClickedBlock();
 
         if (!ConfigModule.defaultConfig.canFillJerryCans(p, clickedBlock.getLocation())) return;
+        final boolean isSneaking = p.isSneaking();
 
         if (clickedBlock.getType().toString().contains("LEVER") && ConfigModule.defaultConfig.isFillJerryCansLeverEnabled()) {
-            fillJerryCan(p, item);
+            if (isSneaking) fillWholeJerryCan(p, item);
+            else fillJerryCan(p, item);
         } else if (clickedBlock.getType().toString().contains("TRIPWIRE_HOOK") && ConfigModule.defaultConfig.isFillJerryCansTripwireHookEnabled()) {
-            fillJerryCan(p, item);
+            if (isSneaking) fillWholeJerryCan(p, item);
+            else fillJerryCan(p, item);
         }
     }
 
     private void fillJerryCan(Player p, ItemStack item){
-        Integer benval = Integer.parseInt(NBTUtils.getString(item, "mtvehicles.benzineval"));
-        Integer bensize = Integer.parseInt(NBTUtils.getString(item, "mtvehicles.benzinesize"));
+        int benval = Integer.parseInt(NBTUtils.getString(item, "mtvehicles.benzineval"));
+        int bensize = Integer.parseInt(NBTUtils.getString(item, "mtvehicles.benzinesize"));
+
+        if (benval == bensize) ConfigModule.messagesConfig.sendMessage(p, "jerrycanFull");
 
         if ((benval + 1) <= bensize){
             double price = getFuelPrice();
@@ -60,7 +65,21 @@ public class JerryCanClickEvent implements Listener {
                 //I'm not sure whether sounds/their names have been changed through the versions... It would be nice having a sound here.
             }
         }
-        else if (benval == bensize) { ConfigModule.messagesConfig.sendMessage(p, "jerrycanFull"); }
+    }
+
+    private void fillWholeJerryCan(Player p, ItemStack item){
+        int benval = Integer.parseInt(NBTUtils.getString(item, "mtvehicles.benzineval"));
+        int bensize = Integer.parseInt(NBTUtils.getString(item, "mtvehicles.benzinesize"));
+        if (benval == bensize) ConfigModule.messagesConfig.sendMessage(p, "jerrycanFull");
+
+        int difference = bensize - benval;
+        double price = getFuelPrice(difference);
+        if (makePlayerPay(p, price)){
+            p.setItemInHand(VehicleFuel.benzineItem(bensize, bensize));
+            p.sendMessage(String.format(ConfigModule.messagesConfig.getMessage("transactionSuccessful"), DependencyModule.vault.getMoneyFormat(price)));
+            //p.getWorld().playSound(p.getLocation(), "minecraft:entity.player.swim", 3.0F, 0.5F);
+            //I'm not sure whether sounds/their names have been changed through the versions... It would be nice having a sound here.
+        }
     }
 
     private boolean makePlayerPay(Player p, double price){ //returns true if payed/doesn't have to, false if didn't pay/error
@@ -73,7 +92,7 @@ public class JerryCanClickEvent implements Listener {
         return ConfigModule.defaultConfig.getFillJerryCanPrice();
     }
 
-    private double getFuelPrice(int litres){ //Might be used later
+    private double getFuelPrice(int litres){
         return litres * ConfigModule.defaultConfig.getFillJerryCanPrice();
     }
 }
