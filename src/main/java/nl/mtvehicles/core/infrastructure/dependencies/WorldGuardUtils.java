@@ -4,6 +4,7 @@ import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
@@ -13,6 +14,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
+import java.util.Arrays;
+import java.util.List;
+
 
 public class WorldGuardUtils {
     //This is only called if DependencyModule made sure that WorldGuard is installed.
@@ -20,10 +24,7 @@ public class WorldGuardUtils {
     WorldGuard instance = WorldGuard.getInstance();
     FlagRegistry registry = instance.getFlagRegistry();
 
-    public static StateFlag MTV_GASSTATION_FLAG;
-    public static StateFlag MTV_PLACE_FLAG;
-    public static StateFlag MTV_PICKUP_FLAG;
-    public static StateFlag MTV_ENTER_FLAG;
+    public final List<String> flagList = Arrays.asList("mtv-gasstation", "mtv-place", "mtv-enter", "mtv-pickup"); //All the used custom flags
 
     public WorldGuardUtils(){
         registerFlags();
@@ -50,23 +51,33 @@ public class WorldGuardUtils {
 
     private void registerFlags(){
         try {
-            StateFlag mtvGasStationFlag = new StateFlag("mtv-gasstation", true);
-            registry.register(mtvGasStationFlag);
-            StateFlag mtvPlaceFlag = new StateFlag("mtv-place", true);
-            registry.register(mtvPlaceFlag);
-            StateFlag mtvEnterFlag = new StateFlag("mtv-enter", true);
-            registry.register(mtvEnterFlag);
-            StateFlag mtvPickupFlag = new StateFlag("mtv-pickup", true);
-            registry.register(mtvPickupFlag);
-
-            //Only set our fields if there was no error
-            MTV_GASSTATION_FLAG = mtvGasStationFlag;
-            MTV_PLACE_FLAG = mtvPlaceFlag;
-            MTV_ENTER_FLAG = mtvEnterFlag;
-            MTV_PICKUP_FLAG = mtvPickupFlag;
+            for (String flagName: flagList) {
+                StateFlag flag = new StateFlag(flagName, true);
+                registry.register(flag);
+            }
         } catch (Exception e) {
-            Bukkit.getLogger().info(ChatColor.RED + "[MTVehicles] Custom WorldGuard flags could not be created for MTVehicles. Disabling as a softdepend... (If you've just reloaded the plugin with PlugMan, try restarting the server.)");
-            DependencyModule.disableDependency("WorldGuard");
+            if (e instanceof FlagConflictException){ //The flags are already registered
+                if (areFlagsOkay()) Bukkit.getLogger().info(ChatColor.YELLOW + "[MTVehicles] Another plugin has already registered MTVehicles' custom WorldGuard flags. They might interfere with each other!");
+                else disableDependency();
+            } else if (e instanceof IllegalStateException){ //New flags cannot be registered at this time
+                if (areFlagsOkay()) Bukkit.getLogger().info(ChatColor.YELLOW + "[MTVehicles] MTVehicles' custom WorldGuard flags have already been registered and/or are also used by another plugin. This might happen because you've just reloaded the plugin with PlugMan.");
+                else disableDependency();
+            }
+            else disableDependency();
         }
+    }
+
+    private void disableDependency(){
+        Bukkit.getLogger().info(ChatColor.RED + "[MTVehicles] Custom WorldGuard flags could not be created for MTVehicles. Disabling as a softdepend... (If you've just reloaded the plugin with PlugMan, try restarting the server.)");
+        DependencyModule.disableDependency("WorldGuard");
+    }
+
+    private boolean areFlagsOkay(){
+        boolean allAreOkay = true;
+        for (String flagName: flagList) {
+            Flag<?> existing = registry.get(flagName);
+            if (!(existing instanceof StateFlag)) allAreOkay = false;
+        }
+        return allAreOkay;
     }
 }
