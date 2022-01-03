@@ -1,6 +1,5 @@
 package nl.mtvehicles.core.movement;
 
-import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.modules.VersionModule;
 import org.bukkit.entity.Player;
 
