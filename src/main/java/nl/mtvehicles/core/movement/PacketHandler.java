@@ -14,7 +14,8 @@ public class PacketHandler {
                 super.channelRead(channelHandlerContext, packet);
                 if (packet instanceof net.minecraft.network.protocol.game.PacketPlayInSteerVehicle) {
                     net.minecraft.network.protocol.game.PacketPlayInSteerVehicle ppisv = (net.minecraft.network.protocol.game.PacketPlayInSteerVehicle) packet;
-                    VehicleMovement1_18.vehicleMovement(player, ppisv);
+                    VehicleMovement1_18 movement = new VehicleMovement1_18();
+                    movement.vehicleMovement(player, ppisv);
                 }
             }
         };
@@ -35,7 +36,8 @@ public class PacketHandler {
                 super.channelRead(channelHandlerContext, packet);
                 if (packet instanceof net.minecraft.network.protocol.game.PacketPlayInSteerVehicle) {
                     net.minecraft.network.protocol.game.PacketPlayInSteerVehicle ppisv = (net.minecraft.network.protocol.game.PacketPlayInSteerVehicle) packet;
-                    VehicleMovement1_17.vehicleMovement(player, ppisv);
+                    VehicleMovement1_17 movement = new VehicleMovement1_17();
+                    movement.vehicleMovement(player, ppisv);
                 }
             }
         };
@@ -57,7 +59,8 @@ public class PacketHandler {
                 super.channelRead(channelHandlerContext, packet);
                 if (packet instanceof net.minecraft.server.v1_16_R3.PacketPlayInSteerVehicle) {
                     net.minecraft.server.v1_16_R3.PacketPlayInSteerVehicle ppisv = (net.minecraft.server.v1_16_R3.PacketPlayInSteerVehicle) packet;
-                    VehicleMovement1_16.vehicleMovement(player, ppisv);
+                    VehicleMovement1_16 movement = new VehicleMovement1_16();
+                    movement.vehicleMovement(player, ppisv);
                 }
             }
         };
@@ -79,7 +82,8 @@ public class PacketHandler {
                 super.channelRead(channelHandlerContext, packet);
                 if (packet instanceof net.minecraft.server.v1_15_R1.PacketPlayInSteerVehicle) {
                     net.minecraft.server.v1_15_R1.PacketPlayInSteerVehicle ppisv = (net.minecraft.server.v1_15_R1.PacketPlayInSteerVehicle) packet;
-                    VehicleMovement1_15.vehicleMovement(player, ppisv);
+                    VehicleMovement1_15 movement = new VehicleMovement1_15();
+                    movement.vehicleMovement(player, ppisv);
                 }
             }
         };
@@ -101,7 +105,8 @@ public class PacketHandler {
                 super.channelRead(channelHandlerContext, packet);
                 if (packet instanceof net.minecraft.server.v1_13_R2.PacketPlayInSteerVehicle) {
                     net.minecraft.server.v1_13_R2.PacketPlayInSteerVehicle ppisv = (net.minecraft.server.v1_13_R2.PacketPlayInSteerVehicle) packet;
-                    VehicleMovement1_13.vehicleMovement(player, ppisv);
+                    VehicleMovement1_13 movement = new VehicleMovement1_13();
+                    movement.vehicleMovement(player, ppisv);
                 }
             }
         };
@@ -123,7 +128,8 @@ public class PacketHandler {
                 super.channelRead(channelHandlerContext, packet);
                 if (packet instanceof net.minecraft.server.v1_12_R1.PacketPlayInSteerVehicle) {
                     net.minecraft.server.v1_12_R1.PacketPlayInSteerVehicle ppisv = (net.minecraft.server.v1_12_R1.PacketPlayInSteerVehicle) packet;
-                    VehicleMovement1_12.vehicleMovement(player, ppisv);
+                    VehicleMovement1_12 movement = new VehicleMovement1_12();
+                    movement.vehicleMovement(player, ppisv);
                 }
             }
         };

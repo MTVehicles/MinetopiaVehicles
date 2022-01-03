@@ -2,6 +2,7 @@ package nl.mtvehicles.core.movement;
 
 import net.minecraft.server.v1_12_R1.EntityArmorStand;
 import net.minecraft.server.v1_12_R1.PacketPlayInSteerVehicle;
+import net.minecraft.server.v1_12_R1.Entity;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.enums.DriveUp;
 import nl.mtvehicles.core.infrastructure.helpers.BossBarUtils;
@@ -9,15 +10,15 @@ import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftArmorStand;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftEntity;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
-
 import java.math.BigDecimal;
 import java.util.NoSuchElementException;
 
-public class VehicleMovement1_12 {
-    public static void vehicleMovement(Player p, PacketPlayInSteerVehicle ppisv) {
+public class VehicleMovement1_12 extends VehicleMovement{
+    public void vehicleMovement(Player p, PacketPlayInSteerVehicle ppisv) {
         long lastUsed = 0L;
         if (p.getVehicle() == null) return;
 
@@ -56,7 +57,7 @@ public class VehicleMovement1_12 {
             ((CraftArmorStand) standSkin).getHandle().setLocation(standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw(), standMain.getLocation().getPitch());
             boolean isMovingUpwards = slabCheck(standMain, license);
             updateStand(standMain, license, ppisv.c(), isMovingUpwards);
-            mainSeat(standMain, (CraftArmorStand) standMainSeat, license);
+            mainSeat(standMain, standMainSeat, license);
         } catch (NoSuchElementException e) { //It isn't good practice to ignore exceptions, but I'll keep it like this for now :)
             System.out.println(e);
         }
@@ -170,7 +171,8 @@ public class VehicleMovement1_12 {
         }
     }
 
-    public static boolean slabCheck(ArmorStand mainStand, String license) {
+    @Override
+    protected boolean slabCheck(ArmorStand mainStand, String license) {
         Location loc = getLocationOfBlockAhead(mainStand);
         String locY = String.valueOf(mainStand.getLocation().getY());
         Location locBlockAbove = new Location(loc.getWorld(), loc.getX(), loc.getY() + 1, loc.getZ(), loc.getYaw(), loc.getPitch());
@@ -346,7 +348,8 @@ public class VehicleMovement1_12 {
         return false;
     }
 
-    public static void updateStand(ArmorStand mainStand, String license, boolean space, boolean isMovingUpwards) {
+    @Override
+    protected void updateStand(ArmorStand mainStand, String license, boolean space, boolean isMovingUpwards) {
         Location loc = mainStand.getLocation();
         Location locBlockAhead = getLocationOfBlockAhead(mainStand);
         Location locBlockAheadAndBelow = new Location(locBlockAhead.getWorld(), locBlockAhead.getX(), locBlockAhead.getY() - 1, locBlockAhead.getZ(), locBlockAhead.getPitch(), locBlockAhead.getYaw());
@@ -398,34 +401,16 @@ public class VehicleMovement1_12 {
         mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.0, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
     }
 
-    public static void mainSeat(ArmorStand mainStand, CraftArmorStand mainseat, String license) {
-        if (!(VehicleData.seatsize.get(license) == null)) {
-            for (int i = 2; i <= VehicleData.seatsize.get(license); i++) {
-                ArmorStand seatas = VehicleData.autostand.get("MTVEHICLES_SEAT" + i + "_" + license);
-                double xOffset = VehicleData.seatx.get("MTVEHICLES_SEAT" + i + "_" + license);
-                double yOffset = VehicleData.seaty.get("MTVEHICLES_SEAT" + i + "_" + license);
-                double zOffset = VehicleData.seatz.get("MTVEHICLES_SEAT" + i + "_" + license);
-                Location locvp = mainStand.getLocation().clone();
-                Location fbvp = locvp.add(locvp.getDirection().setY(0).normalize().multiply(xOffset));
-                float zvp = (float) (fbvp.getZ() + zOffset * Math.sin(Math.toRadians(fbvp.getYaw())));
-                float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(fbvp.getYaw())));
-                Location loc = new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
-                EntityArmorStand stand = ((CraftArmorStand) seatas).getHandle();
-                stand.setLocation(loc.getX(), loc.getY(), loc.getZ(), fbvp.getYaw(), loc.getPitch());
-            }
-        }
-        double xOffset = VehicleData.mainx.get("MTVEHICLES_MAINSEAT_" + license);
-        double yOffset = VehicleData.mainy.get("MTVEHICLES_MAINSEAT_" + license);
-        double zOffset = VehicleData.mainz.get("MTVEHICLES_MAINSEAT_" + license);
-        Location locvp = mainStand.getLocation().clone();
-        Location fbvp = locvp.add(locvp.getDirection().setY(0).normalize().multiply(xOffset));
-        float zvp = (float) (fbvp.getZ() + zOffset * Math.sin(Math.toRadians(fbvp.getYaw())));
-        float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(fbvp.getYaw())));
-        Location loc = new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
-        mainseat.getHandle().setLocation(loc.getX(), loc.getY(), loc.getZ(), fbvp.getYaw(), loc.getPitch());
+    protected void teleportSeat(ArmorStand seat, Location loc){
+        teleportSeat(((CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
     }
 
-    public static void rotors(ArmorStand main, ArmorStand seatas, String license) {
+    protected void teleportSeat(Entity seat, double x, double y, double z, float yaw, float pitch){
+        seat.setLocation(x, y, z, yaw, pitch);
+    }
+
+    @Override
+    protected void rotors(ArmorStand main, ArmorStand seatas, String license) {
         double xOffset = VehicleData.wiekenx.get("MTVEHICLES_WIEKENS_" + license);
         double yOffset = VehicleData.wiekeny.get("MTVEHICLES_WIEKENS_" + license);
         double zOffset = VehicleData.wiekenz.get("MTVEHICLES_WIEKENS_" + license);
@@ -438,26 +423,8 @@ public class VehicleMovement1_12 {
         stand.setLocation(loc.getX(), loc.getY(), loc.getZ(), seatas.getLocation().getYaw() + 15, seatas.getLocation().getPitch());
     }
 
-    private static boolean isPassableCustom(Material block){
+    private boolean isPassableCustom(Material block){
         if (block.toString().contains("AIR") || block.toString().contains("FLOWER") || block.toString().contains("ROSE") || block.toString().contains("PLANT") || block.equals(Material.BROWN_MUSHROOM) || block.equals(Material.RED_MUSHROOM) || block.toString().contains("LONG_GRASS") || block.toString().contains("SAPLING") || block.toString().contains("DEAD_BUSH") || block.toString().contains("TORCH") || block.toString().contains("BANNER")) return true;
         else return false;
-    }
-
-    private static void pushVehicleUp(ArmorStand mainStand, double plus){
-        Location newLoc = new Location(mainStand.getLocation().getWorld(), mainStand.getLocation().getX(), mainStand.getLocation().getY() + plus, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
-        Bukkit.getScheduler().runTask(Main.instance, () -> {
-            mainStand.teleport(newLoc);
-        });
-    }
-
-    private static Location getLocationOfBlockAhead(ArmorStand mainStand){
-        double xOffset = 0.7;
-        double yOffset = 0.4;
-        double zOffset = 0.0;
-        Location locvp = mainStand.getLocation().clone();
-        Location fbvp = locvp.add(locvp.getDirection().setY(0).normalize().multiply(xOffset));
-        float zvp = (float) (fbvp.getZ() + zOffset * Math.sin(Math.toRadians(fbvp.getYaw())));
-        float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(fbvp.getYaw())));
-        return new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
     }
 }

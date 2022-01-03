@@ -5,7 +5,7 @@
 #
 # ---------------------------------------------------------------------------
 
-# DO NOT MODIFY THIS! The plugin may break on change.
+# DO NOT MODIFY THIS! The plugin may break on change. (This doesn't have to be the same as your plugin version!)
 Config-Versie: 2.3.0-dev8
 
 # DO NOT MODIFY THIS AS WELL! Change your language using /vehicle language!
