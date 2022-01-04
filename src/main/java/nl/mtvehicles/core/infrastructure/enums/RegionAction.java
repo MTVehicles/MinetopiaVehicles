@@ -9,5 +9,17 @@ public enum RegionAction {
         DISABLED,
         WHITELIST,
         BLACKLIST;
+
+        public boolean isEnabled(){
+            return !(this.equals(ListType.DISABLED));
+        }
+
+        public boolean isWhitelist(){
+            return !(this.equals(ListType.WHITELIST));
+        }
+
+        public boolean isBlacklist(){
+            return !(this.equals(ListType.BLACKLIST));
+        }
     }
 }

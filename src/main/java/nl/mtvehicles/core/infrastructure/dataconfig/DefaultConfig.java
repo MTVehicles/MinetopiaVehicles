@@ -154,8 +154,10 @@ public class DefaultConfig extends ConfigUtils {
 
         boolean returns = true;
         RegionAction.ListType listType = getRegionActionListType(action);
-        boolean isWhitelist = listType.equals(RegionAction.ListType.WHITELIST);
-        boolean isBlacklist = listType.equals(RegionAction.ListType.BLACKLIST);
+        if (!listType.isEnabled()) return true;
+
+        boolean isWhitelist = listType.isWhitelist();
+        boolean isBlacklist = listType.isBlacklist();
         switch (action){
             case PLACE:
                 if (isWhitelist)

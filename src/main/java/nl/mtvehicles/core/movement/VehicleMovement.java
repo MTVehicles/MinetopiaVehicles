@@ -1,7 +1,6 @@
 package nl.mtvehicles.core.movement;
 
 import nl.mtvehicles.core.Main;
-import nl.mtvehicles.core.infrastructure.enums.DriveUp;
 import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
@@ -58,7 +57,7 @@ public abstract class VehicleMovement {
             return false;
         }
 
-        if (ConfigModule.defaultConfig.driveUpSlabs().equals(DriveUp.SLABS)){
+        if (ConfigModule.defaultConfig.driveUpSlabs().isSlabs()){
             if (isOnSlab) {
                 if (isPassable) return false; //Vehicle will go down
 
@@ -101,7 +100,7 @@ public abstract class VehicleMovement {
                 return false; //If you're on the ground and there isn't bottom slab or a passable block, stop
             }
 
-        } else if (ConfigModule.defaultConfig.driveUpSlabs().equals(DriveUp.BLOCKS)) {
+        } else if (ConfigModule.defaultConfig.driveUpSlabs().isBlocks()) {
 
             if (!isOnSlab) {
                 if (!isPassable) {
@@ -145,7 +144,7 @@ public abstract class VehicleMovement {
             pushVehicleUp(mainStand, 0.5); //Vehicle will go up if there's a full block or a top/double slab
             return true;
 
-        } else if (ConfigModule.defaultConfig.driveUpSlabs().equals(DriveUp.BOTH)) {
+        } else if (ConfigModule.defaultConfig.driveUpSlabs().isBoth()) {
 
             if (isOnSlab) {
                 if (isPassable) return false; //Vehicle will go down
