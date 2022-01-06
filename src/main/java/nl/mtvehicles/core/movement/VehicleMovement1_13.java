@@ -182,38 +182,4 @@ public class VehicleMovement1_13 extends VehicleMovement {
             }
         });
     }
-
-    private boolean steerIsJumping(PacketPlayInSteerVehicle packet){
-        boolean isJumping;
-        try {
-            Method method = packet.getClass().getDeclaredMethod("d");
-            isJumping = (Boolean) method.invoke(packet);
-        } catch (Exception e) {
-            isJumping = false;
-            e.printStackTrace();
-        }
-        return isJumping;
-    }
-
-    private float steerGetXxa(PacketPlayInSteerVehicle packet){
-        float Xxa = 0;
-        try {
-            Method method = packet.getClass().getDeclaredMethod("b");
-            Xxa = (float) method.invoke(packet);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return Xxa;
-    }
-
-    private float steerGetZza(PacketPlayInSteerVehicle packet){
-        float Zza = 0;
-        try {
-            Method method = packet.getClass().getDeclaredMethod("c");
-            Zza = (float) method.invoke(packet);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return Zza;
-    }
 }

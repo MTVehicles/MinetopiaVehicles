@@ -14,6 +14,8 @@ import org.bukkit.block.data.type.TrapDoor;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.util.Vector;
 
+import java.lang.reflect.Method;
+
 public abstract class VehicleMovement {
 
     protected boolean slabCheck(ArmorStand mainStand, String license) { //Returns true if is moving upwards (in any way)
@@ -309,6 +311,40 @@ public abstract class VehicleMovement {
         float zvp = (float) (fbvp.getZ() + zOffset * Math.sin(Math.toRadians(fbvp.getYaw())));
         float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(fbvp.getYaw())));
         return new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
+    }
+
+    protected boolean steerIsJumping(Object packet){
+        boolean isJumping;
+        try {
+            Method method = packet.getClass().getDeclaredMethod("d");
+            isJumping = (Boolean) method.invoke(packet);
+        } catch (Exception e) {
+            isJumping = false;
+            e.printStackTrace();
+        }
+        return isJumping;
+    }
+
+    protected float steerGetXxa(Object packet){
+        float Xxa = 0;
+        try {
+            Method method = packet.getClass().getDeclaredMethod("b");
+            Xxa = (float) method.invoke(packet);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Xxa;
+    }
+
+    protected float steerGetZza(Object packet){
+        float Zza = 0;
+        try {
+            Method method = packet.getClass().getDeclaredMethod("c");
+            Zza = (float) method.invoke(packet);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Zza;
     }
 
 }

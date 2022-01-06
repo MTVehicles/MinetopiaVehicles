@@ -6,7 +6,10 @@ import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.helpers.BossBarUtils;
 import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Effect;
+import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftEntity;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
@@ -182,39 +185,5 @@ public class VehicleMovement1_17 extends VehicleMovement {
                 e.printStackTrace();
             }
         });
-    }
-
-    private boolean steerIsJumping(PacketPlayInSteerVehicle packet){
-        boolean isJumping;
-        try {
-            Method method = packet.getClass().getDeclaredMethod("d");
-            isJumping = (Boolean) method.invoke(packet);
-        } catch (Exception e) {
-            isJumping = false;
-            e.printStackTrace();
-        }
-        return isJumping;
-    }
-
-    private float steerGetXxa(PacketPlayInSteerVehicle packet){
-        float Xxa = 0;
-        try {
-            Method method = packet.getClass().getDeclaredMethod("b");
-            Xxa = (float) method.invoke(packet);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return Xxa;
-    }
-
-    private float steerGetZza(PacketPlayInSteerVehicle packet){
-        float Zza = 0;
-        try {
-            Method method = packet.getClass().getDeclaredMethod("c");
-            Zza = (float) method.invoke(packet);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return Zza;
     }
 }
