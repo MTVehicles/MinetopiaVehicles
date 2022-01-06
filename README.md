@@ -9,7 +9,7 @@
 <a href="https://www.spigotmc.org/resources/80910/"><img alt="Spiget Stars" src="https://img.shields.io/spiget/stars/80910?color=yellow"></a>
 ---  
 
-### ❗USE `/VEHICLES LANGUAGE` TO CHANGE THE LANGUAGE❗</h3>
+### ❗USE `/VEHICLE LANGUAGE` TO CHANGE THE LANGUAGE❗</h3>
 Messages in the plugin can be displayed in multiple languages. (Default: English) You can find them <a href="https://github.com/GamerJoep/MinetopiaVehicles/tree/master/src/main/resources/messages">here</a>.
 
 ---
