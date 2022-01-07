@@ -313,19 +313,30 @@ public abstract class VehicleMovement {
         return new Location(mainStand.getWorld(), xvp, mainStand.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
     }
 
+    protected abstract void isObjectPacket(Object object) throws IllegalArgumentException;
+
     protected boolean steerIsJumping(Object packet){
-        boolean isJumping;
+        try {
+            isObjectPacket(packet);
+        } catch (IllegalArgumentException e){
+            e.printStackTrace();
+        }
+        boolean isJumping = false;
         try {
             Method method = packet.getClass().getDeclaredMethod("d");
             isJumping = (Boolean) method.invoke(packet);
         } catch (Exception e) {
-            isJumping = false;
             e.printStackTrace();
         }
         return isJumping;
     }
 
     protected float steerGetXxa(Object packet){
+        try {
+            isObjectPacket(packet);
+        } catch (IllegalArgumentException e){
+            e.printStackTrace();
+        }
         float Xxa = 0;
         try {
             Method method = packet.getClass().getDeclaredMethod("b");
@@ -337,6 +348,11 @@ public abstract class VehicleMovement {
     }
 
     protected float steerGetZza(Object packet){
+        try {
+            isObjectPacket(packet);
+        } catch (IllegalArgumentException e){
+            e.printStackTrace();
+        }
         float Zza = 0;
         try {
             Method method = packet.getClass().getDeclaredMethod("c");

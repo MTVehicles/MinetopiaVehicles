@@ -427,4 +427,9 @@ public class VehicleMovement1_12 extends VehicleMovement{
         if (block.toString().contains("AIR") || block.toString().contains("FLOWER") || block.toString().contains("ROSE") || block.toString().contains("PLANT") || block.equals(Material.BROWN_MUSHROOM) || block.equals(Material.RED_MUSHROOM) || block.toString().contains("LONG_GRASS") || block.toString().contains("SAPLING") || block.toString().contains("DEAD_BUSH") || block.toString().contains("TORCH") || block.toString().contains("BANNER")) return true;
         else return false;
     }
+
+    @Override
+    protected void isObjectPacket(Object object) throws IllegalArgumentException {
+        if (!(object instanceof PacketPlayInSteerVehicle)) throw new IllegalArgumentException();
+    }
 }

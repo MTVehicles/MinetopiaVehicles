@@ -172,6 +172,7 @@ public class VehicleMovement1_17 extends VehicleMovement {
         }
     }
 
+    @Override
     protected void teleportSeat(ArmorStand seat, Location loc){
         teleportSeat(((CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
     }
@@ -185,5 +186,10 @@ public class VehicleMovement1_17 extends VehicleMovement {
                 e.printStackTrace();
             }
         });
+    }
+
+    @Override
+    protected void isObjectPacket(Object object) throws IllegalArgumentException {
+        if (!(object instanceof PacketPlayInSteerVehicle)) throw new IllegalArgumentException();
     }
 }
