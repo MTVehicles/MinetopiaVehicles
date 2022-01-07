@@ -264,4 +264,37 @@ public class VehicleMovement1_12 extends VehicleMovement{
         stand.getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, loc, 2);
         stand.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, loc, 5);
     }
+
+    @Override
+    protected boolean steerIsJumping(Object packet){
+        try {
+            isObjectPacket(packet);
+        } catch (IllegalArgumentException e){
+            e.printStackTrace();
+        }
+        PacketPlayInSteerVehicle ppisv = (PacketPlayInSteerVehicle) packet;
+        return ppisv.c();
+    }
+
+    @Override
+    protected float steerGetXxa(Object packet){
+        try {
+            isObjectPacket(packet);
+        } catch (IllegalArgumentException e){
+            e.printStackTrace();
+        }
+        PacketPlayInSteerVehicle ppisv = (PacketPlayInSteerVehicle) packet;
+        return ppisv.a();
+    }
+
+    @Override
+    protected float steerGetZza(Object packet){
+        try {
+            isObjectPacket(packet);
+        } catch (IllegalArgumentException e){
+            e.printStackTrace();
+        }
+        PacketPlayInSteerVehicle ppisv = (PacketPlayInSteerVehicle) packet;
+        return ppisv.b();
+    }
 }

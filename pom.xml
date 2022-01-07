@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>nl.mtvehicles.core</groupId>
     <artifactId>MTVehicles</artifactId>
-    <version>2.3.0-dev10</version> <!-- As this is used in plugin.yml, do not include "SNAPSHOT" anymore. -->
+    <version>2.3.0-dev11</version> <!-- As this is used in plugin.yml, do not include "SNAPSHOT" anymore. -->
 
     <repositories>
         <repository>
