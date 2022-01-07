@@ -1,10 +1,11 @@
-package nl.mtvehicles.core.movement;
+package nl.mtvehicles.core.movement.versions;
 
 import net.minecraft.server.v1_12_R1.PacketPlayInSteerVehicle;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.enums.DriveUp;
 import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
+import nl.mtvehicles.core.movement.VehicleMovement;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
@@ -12,7 +13,7 @@ import org.bukkit.craftbukkit.v1_12_R1.entity.CraftEntity;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.util.Vector;
 
-public class VehicleMovement1_12 extends VehicleMovement{
+public class VehicleMovement1_12 extends VehicleMovement {
 
     @Override
     protected boolean slabCheck(ArmorStand mainStand, String license) {

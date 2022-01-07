@@ -1,18 +1,11 @@
-package nl.mtvehicles.core.movement;
+package nl.mtvehicles.core.movement.versions;
 
-import net.minecraft.server.v1_13_R2.Entity;
 import net.minecraft.server.v1_13_R2.PacketPlayInSteerVehicle;
-import nl.mtvehicles.core.Main;
-import nl.mtvehicles.core.infrastructure.helpers.BossBarUtils;
-import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
-import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
-import org.bukkit.*;
+import nl.mtvehicles.core.movement.VehicleMovement;
+import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftEntity;
 import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Player;
-
-import java.lang.reflect.Method;
-import java.math.BigDecimal;
 
 public class VehicleMovement1_13 extends VehicleMovement {
 

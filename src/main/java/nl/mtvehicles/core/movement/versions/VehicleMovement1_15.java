@@ -1,11 +1,12 @@
-package nl.mtvehicles.core.movement;
+package nl.mtvehicles.core.movement.versions;
 
-import net.minecraft.network.protocol.game.PacketPlayInSteerVehicle;
+import net.minecraft.server.v1_15_R1.PacketPlayInSteerVehicle;
+import nl.mtvehicles.core.movement.VehicleMovement;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_17_R1.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_15_R1.entity.CraftEntity;
 import org.bukkit.entity.ArmorStand;
 
-public class VehicleMovement1_17 extends VehicleMovement {
+public class VehicleMovement1_15 extends VehicleMovement {
 
     @Override
     protected void teleportSeat(ArmorStand seat, Location loc){
