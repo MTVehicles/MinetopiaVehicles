@@ -1,9 +1,11 @@
 package nl.mtvehicles.core.events;
 
+import nl.mtvehicles.core.infrastructure.enums.RegionAction;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
+import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -53,6 +55,13 @@ public class VehicleClickEvent implements Listener {
         String license = TextUtils.licenseReplacer(a.getCustomName());
 
         if (p.isSneaking()) {
+
+            if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.PICKUP, e.getRightClicked().getLocation())){
+                e.setCancelled(true);
+                ConfigModule.messagesConfig.sendMessage(p, "notInAWhitelistedRegion");
+                return;
+            }
+
             TextUtils.pickupVehicle(license, p);
             e.setCancelled(true);
             return;

@@ -5,6 +5,7 @@ import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.ConfigUtils;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
+import nl.mtvehicles.core.infrastructure.modules.VersionModule;
 import nl.mtvehicles.core.movement.MovementManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -39,7 +40,7 @@ public class JoinEvent implements Listener {
             return;
         }
 
-        if (!Main.isPreRelease) checkNewVersion(p);
+        if (!VersionModule.isPreRelease) checkNewVersion(p);
     }
 
     public static void checkLanguage(Player p) {

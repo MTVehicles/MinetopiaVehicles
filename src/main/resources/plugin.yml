@@ -2,6 +2,7 @@ name: MTVehicles
 version: ${project.version}
 main: nl.mtvehicles.core.Main
 api-version: 1.13
+softdepend: [ WorldGuard, Vault ]
 commands:
   minetopiavehicles:
     usage: /minetopiavehicles

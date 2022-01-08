@@ -1,11 +1,13 @@
 package nl.mtvehicles.core.events;
 
+import nl.mtvehicles.core.Main;
+import nl.mtvehicles.core.infrastructure.enums.RegionAction;
 import nl.mtvehicles.core.infrastructure.helpers.ItemFactory;
 import nl.mtvehicles.core.infrastructure.helpers.NBTUtils;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
-import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
+import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -31,10 +33,6 @@ public class VehiclePlaceEvent implements Listener {
         final Action action = e.getAction();
         final ItemStack item = e.getItem();
 
-        if (e.getItem() != null && NBTUtils.contains(item, "mtvehicles.benzinesize")) {
-            e.setCancelled(true); //Jerrycans could farm grass (they're diamond hoes after all)
-        }
-
         if (e.getItem() == null
                 || (!e.getItem().hasItemMeta()
                 || !(NBTUtils.contains(item, "mtvehicles.kenteken")))
@@ -59,19 +57,27 @@ public class VehiclePlaceEvent implements Listener {
         if (!action.equals(Action.RIGHT_CLICK_BLOCK)) {
             return;
         }
+
+        Location loc = e.getClickedBlock().getLocation();
+
         if (ConfigModule.defaultConfig.isBlockWhitelistEnabled()
                 && !ConfigModule.defaultConfig.blockWhiteList().contains(e.getClickedBlock().getType())) {
             e.setCancelled(true);
             ConfigModule.messagesConfig.sendMessage(p, "blockNotInWhitelist");
             return;
         }
+        if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.PLACE, loc)){
+            e.setCancelled(true);
+            ConfigModule.messagesConfig.sendMessage(p, "notInAWhitelistedRegion");
+            return;
+        }
+
         if (Vehicle.getByPlate(ken) == null){
             ConfigModule.messagesConfig.sendMessage(p, "vehicleNotFound");
             e.setCancelled(true);
             return;
         }
         e.setCancelled(true);
-        Location loc = e.getClickedBlock().getLocation();
         Location location = new Location(loc.getWorld(), loc.getX(), loc.getY() + 1, loc.getZ());
         ArmorStand as = location.getWorld().spawn(location, ArmorStand.class);
         as.setVisible(false);

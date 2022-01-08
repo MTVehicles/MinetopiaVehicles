@@ -1,16 +1,14 @@
-package nl.mtvehicles.core.inventory;
+package nl.mtvehicles.core.events.inventory;
 
 import nl.mtvehicles.core.commands.vehiclesubs.VehicleEdit;
 import nl.mtvehicles.core.commands.vehiclesubs.VehicleMenu;
 import nl.mtvehicles.core.events.JoinEvent;
 import nl.mtvehicles.core.events.VehicleEntityEvent;
-import nl.mtvehicles.core.infrastructure.dataconfig.MessagesConfig;
 import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
 import nl.mtvehicles.core.infrastructure.helpers.MenuUtils;
 import nl.mtvehicles.core.infrastructure.helpers.NBTUtils;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
-import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -22,7 +20,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import sun.security.krb5.Config;
 
 import java.util.HashMap;
 import java.util.List;

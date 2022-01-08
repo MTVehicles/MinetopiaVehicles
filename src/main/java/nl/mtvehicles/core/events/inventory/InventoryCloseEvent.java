@@ -1,8 +1,7 @@
-package nl.mtvehicles.core.inventory;
+package nl.mtvehicles.core.events.inventory;
 
 import nl.mtvehicles.core.events.JoinEvent;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
-import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

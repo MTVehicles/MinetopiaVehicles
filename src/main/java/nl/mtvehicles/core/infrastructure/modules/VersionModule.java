@@ -5,26 +5,29 @@ import lombok.Setter;
 import nl.mtvehicles.core.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.plugin.PluginDescriptionFile;
 
 import java.util.logging.Logger;
 
-public class CheckVersionModule {
+public class VersionModule {
     private static @Getter
     @Setter
-    CheckVersionModule instance;
+    VersionModule instance;
 
-    String pluginVersion;
-    String serverVersion;
-    String serverSoftware;
-    Main plugin;
-    Logger logger;
+    public static String pluginVersion;
+    public static boolean isPreRelease;
+    public static String serverVersion;
+    public static String serverSoftware;
+    Logger logger = Main.instance.getLogger();
 
-    public CheckVersionModule() {
-        pluginVersion = Main.pluginVersion;
-        serverVersion = Main.serverVersion;
+    public VersionModule() {
+        PluginDescriptionFile pdf = Main.instance.getDescription();
+        pluginVersion = pdf.getVersion();
+        //Pre-releases should thus be named "vX.Y.Z-preU" etc... (Instead of pre, dev for developing and rc for release candidates are acceptable too.)
+        isPreRelease = pluginVersion.toLowerCase().contains("pre") || pluginVersion.toLowerCase().contains("rc") || pluginVersion.toLowerCase().contains("dev");
+
+        serverVersion = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
         serverSoftware = Bukkit.getName();
-        plugin = Main.instance;
-        logger = plugin.getLogger();
     }
 
     public boolean isSupportedVersion(){

@@ -9,6 +9,7 @@ import nl.mtvehicles.core.infrastructure.models.ConfigUtils;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
+import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -44,6 +45,10 @@ public class VehicleEntityEvent implements Listener {
                 double curb = VehicleData.fuel.get(licensePlate);
                 String benval = NBTUtils.getString(item, "mtvehicles.benzineval");
                 String bensize = NBTUtils.getString(item, "mtvehicles.benzinesize");
+                if (!ConfigModule.defaultConfig.canUseJerryCan(p)){
+                    ConfigModule.messagesConfig.sendMessage(p, "notInAGasStation");
+                    return;
+                }
                 if (Integer.parseInt(benval) < 1) {
                     ConfigModule.messagesConfig.sendMessage(p, "noFuel");
                     return;
@@ -67,7 +72,7 @@ public class VehicleEntityEvent implements Listener {
                 } else {
                     VehicleData.fuel.put(licensePlate, Double.valueOf(VehicleData.fuel.get(licensePlate) + benval));
                     BossBarUtils.setBossBarValue(curb / 100.0D, licensePlate);
-                    p.setItemInHand(VehicleFuel.benzineItem(Integer.parseInt(bensize), Integer.parseInt(benval) - Integer.parseInt(benval)));
+                    p.setItemInHand(VehicleFuel.benzineItem(Integer.parseInt(bensize), 0));
                 }
             }
             if (p.isSneaking()) {
