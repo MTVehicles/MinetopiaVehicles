@@ -58,7 +58,7 @@ public class VehicleClickEvent implements Listener {
 
             if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.PICKUP, e.getRightClicked().getLocation())){
                 e.setCancelled(true);
-                ConfigModule.messagesConfig.sendMessage(p, "notInAWhitelistedRegion");
+                ConfigModule.messagesConfig.sendMessage(p, "cannotDoThatHere");
                 return;
             }
 

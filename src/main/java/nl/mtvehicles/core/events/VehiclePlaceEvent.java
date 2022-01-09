@@ -68,7 +68,7 @@ public class VehiclePlaceEvent implements Listener {
         }
         if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.PLACE, loc)){
             e.setCancelled(true);
-            ConfigModule.messagesConfig.sendMessage(p, "notInAWhitelistedRegion");
+            ConfigModule.messagesConfig.sendMessage(p, "cannotDoThatHere");
             return;
         }
 

@@ -95,7 +95,7 @@ public class TextUtils {
                 Location location = new Location(entity.getWorld(), entity.getLocation().getX(), entity.getLocation().getY(), entity.getLocation().getZ(), entity.getLocation().getYaw(), entity.getLocation().getPitch());
 
                 if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.ENTER, location)){
-                    ConfigModule.messagesConfig.sendMessage(p, "notInAWhitelistedRegion");
+                    ConfigModule.messagesConfig.sendMessage(p, "cannotDoThatHere");
                     return;
                 }
 
