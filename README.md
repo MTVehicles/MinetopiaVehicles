@@ -91,7 +91,7 @@ If this did not work don't hesitate to contact the support on our Discord server
 | /vehicle info     | Get information about a vehicle                   | `None`, `mtvehicles.admin` to display admin info |
 | /vehicle help     | Get a list of all the possible commands           | `None`, `mtvehicles.admin` to display admin info |
 | /vehicle version  | Get info about the plugin _(use this on discord)_ | `mtvehicles.admin`                               |
-| /vehicle language | Change the plugin language                        | `mtvehicles.language`                            |
+| /vehicle language | Change the plugin language                        | `mtvehicles.admin` or `mtvehicles.language`      |
 
 ### Vehicle specific commands
 These commands can only be executed by the owner of the vehicle
