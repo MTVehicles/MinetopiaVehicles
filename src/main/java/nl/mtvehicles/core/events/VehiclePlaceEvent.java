@@ -1,13 +1,11 @@
 package nl.mtvehicles.core.events;
 
-import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.enums.RegionAction;
 import nl.mtvehicles.core.infrastructure.helpers.ItemFactory;
 import nl.mtvehicles.core.infrastructure.helpers.NBTUtils;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
-import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -34,17 +32,17 @@ public class VehiclePlaceEvent implements Listener {
         final ItemStack item = e.getItem();
 
         if (e.getItem() == null
-                || (!e.getItem().hasItemMeta()
-                || !(NBTUtils.contains(item, "mtvehicles.kenteken")))
+                || !e.getItem().hasItemMeta()
+                || !(NBTUtils.contains(item, "mtvehicles.kenteken"))
                 || e.getClickedBlock() == null
-        ) {
-            return;
-        }
+        ) return;
+
         if (e.getHand() != EquipmentSlot.HAND) {
             e.setCancelled(true);
             e.getPlayer().sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("wrongHand")));
             return;
         }
+
         String ken = NBTUtils.getString(item, "mtvehicles.kenteken");
         if (ken == null) {
             return;

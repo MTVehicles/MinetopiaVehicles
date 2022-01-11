@@ -5,6 +5,8 @@ import nl.mtvehicles.core.infrastructure.helpers.NBTUtils;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
+import nl.mtvehicles.core.infrastructure.modules.VersionModule;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,8 +24,8 @@ public class JerryCanClickEvent implements Listener {
         final ItemStack item = e.getItem();
 
         if (e.getItem() == null
-                || (!e.getItem().hasItemMeta()
-                || !(NBTUtils.contains(item, "mtvehicles.benzinesize")))
+                || !e.getItem().hasItemMeta()
+                || !(NBTUtils.contains(item, "mtvehicles.benzinesize"))
                 || e.getClickedBlock() == null
         ) return;
 
@@ -61,8 +63,7 @@ public class JerryCanClickEvent implements Listener {
             if (makePlayerPay(p, price)){
                 p.setItemInHand(VehicleFuel.benzineItem(bensize, benval + 1));
                 p.sendMessage(String.format(ConfigModule.messagesConfig.getMessage("transactionSuccessful"), DependencyModule.vault.getMoneyFormat(price)));
-                //p.getWorld().playSound(p.getLocation(), "minecraft:entity.player.swim", 3.0F, 0.5F);
-                //I'm not sure whether sounds/their names have been changed through the versions... It would be nice having a sound here.
+                playJerryCanSound(p);
             }
         }
     }
@@ -77,8 +78,7 @@ public class JerryCanClickEvent implements Listener {
         if (makePlayerPay(p, price)){
             p.setItemInHand(VehicleFuel.benzineItem(bensize, bensize));
             p.sendMessage(String.format(ConfigModule.messagesConfig.getMessage("transactionSuccessful"), DependencyModule.vault.getMoneyFormat(price)));
-            //p.getWorld().playSound(p.getLocation(), "minecraft:entity.player.swim", 3.0F, 0.5F);
-            //I'm not sure whether sounds/their names have been changed through the versions... It would be nice having a sound here.
+            playJerryCanSound(p);
         }
     }
 
@@ -94,5 +94,21 @@ public class JerryCanClickEvent implements Listener {
 
     private double getFuelPrice(int litres){
         return litres * ConfigModule.defaultConfig.getFillJerryCanPrice();
+    }
+
+    private void playJerryCanSound(Player p){
+        if (VersionModule.serverVersion.equals("v1_12_R1")) { //1.12 has different names
+            try {
+                p.getWorld().playSound(p.getLocation(), Sound.valueOf("BLOCK_NOTE_PLING"), 3.0F, 0.5F);
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace(); //The sound could not be played, hmmm.
+            }
+        } else {
+            try {
+                p.getWorld().playSound(p.getLocation(), Sound.valueOf("BLOCK_NOTE_BLOCK_PLING"), 3.0F, 0.5F);
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace(); //The sound could not be played, hmmm.
+            }
+        }
     }
 }
