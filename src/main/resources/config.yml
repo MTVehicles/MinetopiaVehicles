@@ -6,7 +6,7 @@
 # ---------------------------------------------------------------------------
 
 # DO NOT MODIFY THIS! The plugin may break on change. (This doesn't have to be the same as your plugin version!)
-Config-Versie: 2.3.0-pre1
+Config-Versie: 2.3.0-dev12
 
 # DO NOT MODIFY THIS AS WELL! Change your language using /vehicle language!
 messagesLanguage: ns
@@ -59,6 +59,7 @@ gasStations:
   fillJerryCans:
     enabled: true
     needPermission: false
+    playSound: true
     lever: true
     tripwireHook: false
     price:

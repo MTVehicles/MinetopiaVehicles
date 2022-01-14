@@ -70,6 +70,10 @@ public class DefaultConfig extends ConfigUtils {
         } return true;
     }
 
+    public boolean jerryCanPlaySound(){
+        return getConfig().getBoolean("gasStations.fillJerryCans.playSound");
+    }
+
     private class GasStationConfig {
 
         private boolean areGasStationsEnabled(){
