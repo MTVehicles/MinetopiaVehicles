@@ -402,9 +402,11 @@ public class InventoryClickEvent implements Listener {
             e.setCancelled(true);
             p.getInventory().addItem(e.getCurrentItem());
         }
+
         if (e.getView().getTitle().contains("Voucher Redeem Menu")) {
             e.setCancelled(true);
-            if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Ja")) {
+
+            if (e.getRawSlot() == 15) { //Yes
                 String carUuid = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.item");
                 if (Vehicle.getByDamage(p, carUuid) == null){
                     p.sendMessage(ConfigModule.messagesConfig.getMessage("giveCarNotFound"));
@@ -416,7 +418,8 @@ public class InventoryClickEvent implements Listener {
                 p.getInventory().addItem(Vehicle.getByDamage(p, carUuid));
                 p.closeInventory();
             }
-            if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Nee")) {
+
+            else if (e.getRawSlot() == 11) { //No
                 p.closeInventory();
             }
         }

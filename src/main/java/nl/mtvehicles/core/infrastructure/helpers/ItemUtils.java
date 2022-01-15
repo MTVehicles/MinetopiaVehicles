@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.infrastructure.helpers;
 
+import nl.mtvehicles.core.infrastructure.dataconfig.MessagesConfig;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.apache.commons.lang.RandomStringUtils;
@@ -441,16 +442,16 @@ public class ItemUtils {
     public static void createVoucher(String name, Player p) {
         ItemStack is = (new ItemFactory(Material.PAPER)).setNBT("mtvehicles.item", name).toItemStack();
         ItemMeta im = is.getItemMeta();
+        MessagesConfig msg = ConfigModule.messagesConfig;
         List<String> goldlore = new ArrayList<>();
         goldlore.add(TextUtils.colorize("&8&m                                    "));
-        goldlore.add(TextUtils.colorize("&7Gebruik &2rechterklik&r&7 op deze voucher om"));
-        goldlore.add(TextUtils.colorize("&7hem te verzilveren"));
+        goldlore.add(TextUtils.colorize(msg.getMessage("voucherDescription")));
         goldlore.add(TextUtils.colorize("&2&l"));
-        goldlore.add(TextUtils.colorize("&7Deze &2voucher &r&7is houdbaar tot:"));
-        goldlore.add(TextUtils.colorize("&2permanent"));
+        goldlore.add(TextUtils.colorize(msg.getMessage("voucherValidity")));
+        goldlore.add(TextUtils.colorize("&2> Permanent"));
         goldlore.add(TextUtils.colorize("&8&m                                    "));
         im.setLore(goldlore);
-        im.setDisplayName(TextUtils.colorize("&2&l" + Vehicle.getCar(name).getItemMeta().getDisplayName()));
+        im.setDisplayName(TextUtils.colorize(Vehicle.getCar(name).getItemMeta().getDisplayName() + " Voucher"));
         is.setItemMeta(im);
         p.getInventory().addItem(new ItemStack[]{is});
     }
