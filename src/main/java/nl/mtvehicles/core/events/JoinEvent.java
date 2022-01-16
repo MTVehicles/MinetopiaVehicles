@@ -1,9 +1,8 @@
 package nl.mtvehicles.core.events;
 
+import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
-import nl.mtvehicles.core.infrastructure.models.ConfigUtils;
-import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.infrastructure.modules.VersionModule;
 import nl.mtvehicles.core.movement.MovementManager;
@@ -15,7 +14,9 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.PluginDescriptionFile;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;

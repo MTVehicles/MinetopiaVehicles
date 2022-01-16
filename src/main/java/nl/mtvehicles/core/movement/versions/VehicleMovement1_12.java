@@ -2,7 +2,6 @@ package nl.mtvehicles.core.movement.versions;
 
 import net.minecraft.server.v1_12_R1.PacketPlayInSteerVehicle;
 import nl.mtvehicles.core.Main;
-import nl.mtvehicles.core.infrastructure.enums.DriveUp;
 import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.movement.VehicleMovement;
@@ -57,7 +56,7 @@ public class VehicleMovement1_12 extends VehicleMovement {
             return false;
         }
 
-        if (ConfigModule.defaultConfig.driveUpSlabs().equals(DriveUp.SLABS)){
+        if (ConfigModule.defaultConfig.driveUpSlabs().isSlabs()){
             if (isOnSlab) {
                 if (isPassable) return false; //Vehicle will go down
 
@@ -97,7 +96,7 @@ public class VehicleMovement1_12 extends VehicleMovement {
                 VehicleData.speed.put(license, 0.0);
                 return false; //If you're on the ground and there isn't bottom slab or a passable block, stop
             }
-        } else if (ConfigModule.defaultConfig.driveUpSlabs().equals(DriveUp.BLOCKS)) {
+        } else if (ConfigModule.defaultConfig.driveUpSlabs().isBlocks()) {
 
             if (!isOnSlab) {
                 if (!isPassable) {
@@ -139,7 +138,7 @@ public class VehicleMovement1_12 extends VehicleMovement {
             pushVehicleUp(mainStand, 0.5); //Vehicle will go up if there's a full block or a top/double slab
             return true;
 
-        } else if (ConfigModule.defaultConfig.driveUpSlabs().equals(DriveUp.BOTH)) {
+        } else if (ConfigModule.defaultConfig.driveUpSlabs().isBoth()) {
 
             if (isOnSlab) {
                 if (isPassable) return false; //Vehicle will go down

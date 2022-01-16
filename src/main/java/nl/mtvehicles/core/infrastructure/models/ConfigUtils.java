@@ -1,7 +1,7 @@
 package nl.mtvehicles.core.infrastructure.models;
 
-import nl.mtvehicles.core.infrastructure.interfaces.ConfigInterface;
 import nl.mtvehicles.core.Main;
+import nl.mtvehicles.core.infrastructure.interfaces.ConfigInterface;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 

@@ -1,7 +1,7 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
-import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.Main;
+import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -38,7 +38,7 @@ public class VehicleHelp extends MTVehicleSubCommand {
             sendMessage(String.format("&2/vehicle &adelete &f- &2%s", ConfigModule.messagesConfig.getMessage("adminDelete")));
         }
         sendMessage("");
-        sendMessage("&7&oDownload it free on mtvehicles.nl by GamerJoep_.");
+        sendMessage("&7&oDownload it for free at mtvehicles.nl, by GamerJoep_.");
         return true;
     }
 }

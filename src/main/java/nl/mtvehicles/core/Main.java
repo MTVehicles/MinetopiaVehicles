@@ -38,7 +38,7 @@ public class Main extends JavaPlugin {
         new DependencyModule();
     }
 
-    public static String fol() {
+    public static String getFileAsString() {
         return String.valueOf(Main.instance.getFile());
     }
 
