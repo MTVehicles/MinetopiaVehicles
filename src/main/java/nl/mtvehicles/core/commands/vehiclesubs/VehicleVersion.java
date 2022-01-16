@@ -31,6 +31,7 @@ public class VehicleVersion extends MTVehicleSubCommand {
         } else {
             sendMessage(String.format("§2There are no loaded dependencies."));
         }
+
         if (VersionModule.isPreRelease)
             sendMessage(String.format(ConfigModule.messagesConfig.getMessage("usingPreRelease")));
 

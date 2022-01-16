@@ -20,7 +20,13 @@ public class MessagesConfig extends ConfigUtils {
     }
 
     public String getMessage(String key) {
-        return TextUtils.colorize((String) this.getConfig().get(key));
+        String msg = "";
+        try {
+            msg = TextUtils.colorize((String) this.getConfig().get(key));
+        } catch (Exception e){
+            Main.instance.getLogger().severe("An error occurred while retrieving a custom message from the messages.yml!");
+        }
+        return msg;
     }
 
     public void sendMessage(CommandSender sender, String key) {
