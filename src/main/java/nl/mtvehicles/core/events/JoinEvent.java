@@ -26,7 +26,7 @@ public class JoinEvent implements Listener {
         Player p = e.getPlayer();
         MovementManager.MovementSelector(p);
 
-        if (ConfigModule.defaultConfig.getConfig().getString("messagesLanguage").contains("ns")) {
+        if (ConfigModule.secretSettings.getMessagesLanguage().contains("ns")) {
             if (p.hasPermission("mtvehicles.language") || p.hasPermission("mtvehicles.admin")) {
                 p.sendMessage(TextUtils.colorize("&cHey! You have not yet changed the language of the plugin. Do this by with &4/vehicle language&c!"));
             }
