@@ -11,7 +11,10 @@ import java.io.File;
 import java.util.List;
 
 public class MessagesConfig extends ConfigUtils {
-    public String[] languages = {"en", "nl", "es", "cs"}; //All the message files, except English, which is default
+    /**
+     * Language codes of all the message files.
+     */
+    public String[] languages = {"en", "nl", "es", "cs"};
 
     public MessagesConfig() {
         for (String lang : languages) {
@@ -41,13 +44,7 @@ public class MessagesConfig extends ConfigUtils {
     }
 
     public void sendMessage(Player player, String key) {
-        Object object = this.getConfig().get(key);
-        if (object instanceof List) {
-            for (String s : this.getConfig().getStringList(key)) {
-                player.sendMessage(TextUtils.colorize(s));
-            }
-        }
-        player.sendMessage(TextUtils.colorize(String.valueOf(object)));
+        sendMessage((CommandSender) player, key);
     }
 
     public boolean setLanguageFile(String countryCode){
