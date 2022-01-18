@@ -26,8 +26,8 @@ public class LanguageUtils {
         languageCheck.put(p.getUniqueId(), false);
         if (ConfigModule.messagesConfig.setLanguageFile(languageCode)){
             p.sendMessage(ConfigModule.messagesConfig.getMessage("languageHasChanged"));
-            ConfigModule.defaultConfig.getConfig().set("messagesLanguage", languageCode);
-            ConfigModule.defaultConfig.save();
+            ConfigModule.secretSettings.setMessagesLanguage(languageCode);
+            ConfigModule.secretSettings.save();
         } else {
             p.sendMessage(ChatColor.RED + "An error occurred whilst trying to set a new language.");
         }

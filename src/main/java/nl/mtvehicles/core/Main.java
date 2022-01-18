@@ -7,7 +7,16 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
     public static Main instance;
-    public static String configVersion = "2.3.0-dev14"; //We might not change config in every version, why bother creating a new config file then? Change this only when necessary.;
+
+    /**
+     * We might not change config in every version, why bother creating a new config file on every update then?
+     * Change this EVERY TIME you edit config. OTHERWISE, DON'T TOUCH IT.
+     * (The same applies for Main.messagesVersion, it controls message files.)
+     *
+     * @see nl.mtvehicles.core.infrastructure.dataconfig.SecretSettingsConfig
+     */
+    public static String configVersion = "2.3.0-dev15";
+    public static String messagesVersion = "2.3.0-dev14";
 
     @Override
     public void onEnable() {
