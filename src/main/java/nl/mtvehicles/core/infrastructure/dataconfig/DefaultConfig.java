@@ -20,7 +20,11 @@ public class DefaultConfig extends ConfigUtils {
     }
 
     public String getMessage(String key) {
-        return TextUtils.colorize((String) this.getConfig().get(key));
+        return TextUtils.colorize(this.getConfig().getString(key));
+    }
+
+    public boolean hasOldVersionChecking(){
+        return this.getConfig().get("Config-Versie") != null;
     }
 
     //--- DriveUp ---

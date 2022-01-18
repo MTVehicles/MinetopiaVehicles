@@ -33,13 +33,13 @@ public class ConfigModule {
         File vehicleconfig = new File(Main.instance.getDataFolder(), "vehicles.yml");
         SimpleDateFormat formatter = new SimpleDateFormat("dd_MM_yyyy-HH_mm_ss");
         Date date = new Date();
-        if (!secretSettings.getConfigVersion().equals(configVersion)) {
+        if (!secretSettings.getConfigVersion().equals(configVersion) || defaultConfig.hasOldVersionChecking()) {
             defaultconfig.renameTo(new File(Main.instance.getDataFolder(), "configOld_" + formatter.format(date) + ".yml"));
             vehicleconfig.renameTo(new File(Main.instance.getDataFolder(), "vehiclesOld_" + formatter.format(date) + ".yml"));
             Main.instance.saveDefaultConfig();
         }
 
-        if (!secretSettings.getMessagesVersion().equals(messagesVersion)) {
+        if (!secretSettings.getMessagesVersion().equals(messagesVersion) || defaultConfig.hasOldVersionChecking()) {
             messagesConfig.saveNewLanguageFiles(formatter.format(date));
             Main.instance.saveDefaultConfig();
         }
