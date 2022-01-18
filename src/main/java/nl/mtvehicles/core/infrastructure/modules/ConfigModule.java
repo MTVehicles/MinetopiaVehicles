@@ -22,10 +22,10 @@ public class ConfigModule {
     final private String messagesVersion = Main.messagesVersion;
 
     public static List<ConfigUtils> configList = new ArrayList<>();
+    public static SecretSettingsConfig secretSettings = new SecretSettingsConfig();
     public static MessagesConfig messagesConfig = new MessagesConfig();
     public static VehicleDataConfig vehicleDataConfig = new VehicleDataConfig();
     public static VehiclesConfig vehiclesConfig = new VehiclesConfig();
-    public static SecretSettingsConfig secretSettings = new SecretSettingsConfig();
     public static DefaultConfig defaultConfig = new DefaultConfig();
 
     public ConfigModule() {
@@ -49,6 +49,11 @@ public class ConfigModule {
         configList.add(vehiclesConfig);
         configList.add(secretSettings);
         configList.add(defaultConfig);
+        reloadConfigs();
+    }
+
+    public static void reloadConfigs(){
         configList.forEach(ConfigUtils::reload);
+        messagesConfig.setLanguageFile(secretSettings.getMessagesLanguage());
     }
 }

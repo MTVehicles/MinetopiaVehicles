@@ -3,6 +3,7 @@ package nl.mtvehicles.core.infrastructure.dataconfig;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.ConfigUtils;
+import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -10,13 +11,13 @@ import java.io.File;
 import java.util.List;
 
 public class MessagesConfig extends ConfigUtils {
-    public String[] foreignLanguages = {"nl", "es", "cs"}; //All the message files, except English, which is default
+    public String[] languages = {"en", "nl", "es", "cs"}; //All the message files, except English, which is default
 
     public MessagesConfig() {
-        this.setFileName("messages/messages_en.yml");
-        for (String lang : foreignLanguages) {
+        for (String lang : languages) {
             saveLanguageFile(lang);
         }
+        setLanguageFile(ConfigModule.secretSettings.getMessagesLanguage());
     }
 
     public String getMessage(String key) {
@@ -72,9 +73,8 @@ public class MessagesConfig extends ConfigUtils {
     public void saveNewLanguageFiles(String time){
         File enMessagesFile = new File(Main.instance.getDataFolder(), "messages/messages_en.yml");
         enMessagesFile.renameTo(new File(Main.instance.getDataFolder(), "messages/messages_enOld_" + time + ".yml"));
-        Main.instance.saveResource("messages/messages_en.yml", true);
 
-        for (String lang : foreignLanguages) {
+        for (String lang : languages) {
             File messagesFile = new File(Main.instance.getDataFolder(), "messages/messages_" + lang + ".yml");
             if (!messagesFile.exists()) continue;
             messagesFile.renameTo(new File(Main.instance.getDataFolder(), "messages/messages_" + lang + "Old_" + time + ".yml"));

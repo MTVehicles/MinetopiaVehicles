@@ -17,7 +17,7 @@ public class VehicleReload extends MTVehicleSubCommand {
         if (!checkPermission("mtvehicles.reload")) return true;
 
         Bukkit.getLogger().info("Reload config files..");
-        ConfigModule.configList.forEach(ConfigUtils::reload);
+        ConfigModule.reloadConfigs();
         Bukkit.getLogger().info("Files loaded!");
         sendMessage(ConfigModule.messagesConfig.getMessage("reloadSuccesvol"));
 
