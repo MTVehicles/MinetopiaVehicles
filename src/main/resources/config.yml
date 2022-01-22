@@ -1,15 +1,9 @@
+# If you can't see comments in the config, you can always find them here: https://github.com/GamerJoep/MinetopiaVehicles/blob/master/src/main/resources/config.yml
+
 # ---------------------------------------------------------------------------
-#
 # Spigot Plugin MTVehicles by GamerJoep_, downloadable on https://mtvehicles.nl
 # For support, visit our official Discord. Link can be found on our site ^
-#
 # ---------------------------------------------------------------------------
-
-# DO NOT MODIFY THIS! The plugin may break on change. (This doesn't have to be the same as your plugin version!)
-Config-Versie: 2.3.0-dev8
-
-# DO NOT MODIFY THIS AS WELL! Change your language using /vehicle language!
-messagesLanguage: ns
 
 # How many rows the /vehicle menu has. Max: 6
 vehicleMenuSize: 3
@@ -59,6 +53,7 @@ gasStations:
   fillJerryCans:
     enabled: true
     needPermission: false
+    playSound: true
     lever: true
     tripwireHook: false
     price:
@@ -101,7 +96,11 @@ blockWhitelist:
   list:
     - GRAY_CONCRETE
 
-# Whether vehicles can/can't be placed/picked up/entered in certain regions.
+# Provide a list of worlds where using vehicles is disabled.
+disabledWorlds: []
+
+
+# Whether vehicles can/can't be used in certain regions.
 # If you do not have WorldGuard installed, this is automatically DISABLED.
 # The PICKUP section is quite hazardous. You might not be able to pick up vehicles freely. Use cautiously.
 

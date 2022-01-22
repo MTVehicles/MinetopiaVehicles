@@ -1,6 +1,5 @@
 package nl.mtvehicles.core.infrastructure.dataconfig;
 
-import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.enums.DriveUp;
 import nl.mtvehicles.core.infrastructure.enums.RegionAction;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
@@ -11,7 +10,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -22,7 +20,11 @@ public class DefaultConfig extends ConfigUtils {
     }
 
     public String getMessage(String key) {
-        return TextUtils.colorize((String) this.getConfig().get(key));
+        return TextUtils.colorize(this.getConfig().getString(key));
+    }
+
+    public boolean hasOldVersionChecking(){
+        return this.getConfig().get("Config-Versie") != null;
     }
 
     //--- DriveUp ---
@@ -69,6 +71,10 @@ public class DefaultConfig extends ConfigUtils {
             p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("noPerms")));
             return false;
         } return true;
+    }
+
+    public boolean jerryCanPlaySound(){
+        return getConfig().getBoolean("gasStations.fillJerryCans.playSound");
     }
 
     private class GasStationConfig {
@@ -120,6 +126,16 @@ public class DefaultConfig extends ConfigUtils {
         else return getConfig().getDouble("gasStations.fillJerryCans.price.pricePerLitre");
     }
 
+    //--- Disabled Worlds ---
+    public boolean isWorldDisabled(String worldName){
+        if (getDisabledWorlds().isEmpty()) return false;
+        return getDisabledWorlds().contains(worldName);
+    }
+
+    private List<String> getDisabledWorlds(){
+        return getConfig().getStringList("disabledWorlds");
+    }
+
     //--- Block Whitelist ---
     public boolean isBlockWhitelistEnabled() {
         return getConfig().getBoolean("blockWhitelist.enabled");
@@ -150,6 +166,8 @@ public class DefaultConfig extends ConfigUtils {
     }
 
     public boolean canProceedWithAction(RegionAction action, Location loc){
+        if (isWorldDisabled(loc.getWorld().getName())) return false;
+
         if (!DependencyModule.isDependencyEnabled("WorldGuard")) return true;
 
         boolean returns = true;

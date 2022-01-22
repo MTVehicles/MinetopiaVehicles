@@ -1,7 +1,6 @@
 package nl.mtvehicles.core.infrastructure.models;
 
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
-import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

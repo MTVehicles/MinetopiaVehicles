@@ -1,6 +1,6 @@
 package nl.mtvehicles.core.events.inventory;
 
-import nl.mtvehicles.core.events.JoinEvent;
+import nl.mtvehicles.core.infrastructure.helpers.LanguageUtils;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.entity.Player;
@@ -28,8 +28,8 @@ public class InventoryCloseEvent implements Listener {
         }
         if (e.getView().getTitle().contains("Choose your language")) {
             Player p = (Player) e.getPlayer();
-            if (JoinEvent.languageCheck.get(p.getUniqueId())) {
-                p.sendMessage(TextUtils.colorize("&cThe language settings have not changed because the menu is closed. Do you want to change this anyway? Then do /vehicle language"));
+            if (LanguageUtils.languageCheck.get(p.getUniqueId())) {
+                p.sendMessage(TextUtils.colorize("&cThe language settings have not changed because the menu is closed. Do you want to change this anyway? Execute /vehicle language"));
             }
         }
     }

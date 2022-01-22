@@ -13,7 +13,6 @@ import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 public class VehicleUpdate extends MTVehicleSubCommand {
@@ -65,7 +64,7 @@ public class VehicleUpdate extends MTVehicleSubCommand {
     public void download(URL file, File dest) {
         try {
             InputStream is = file.openStream();
-            File finaldest = new File(dest + "/" + file.getFile().replace("/api/MTVehicles.jar", "/" + Main.fol().replace("plugins", "")));
+            File finaldest = new File(dest + "/" + file.getFile().replace("/api/MTVehicles.jar", "/" + Main.getFileAsString().replace("plugins", "")));
             // File finaldest = new File(dest + "/" + file.getFile());
             finaldest.getParentFile().mkdirs();
             finaldest.createNewFile();

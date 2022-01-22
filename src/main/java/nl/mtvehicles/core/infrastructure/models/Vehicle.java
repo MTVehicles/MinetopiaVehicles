@@ -1,6 +1,5 @@
 package nl.mtvehicles.core.infrastructure.models;
 
-import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
 import nl.mtvehicles.core.infrastructure.helpers.NBTUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;

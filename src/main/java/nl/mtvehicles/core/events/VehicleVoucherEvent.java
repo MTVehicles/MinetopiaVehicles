@@ -1,8 +1,8 @@
 package nl.mtvehicles.core.events;
 
+import nl.mtvehicles.core.infrastructure.dataconfig.MessagesConfig;
 import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
 import nl.mtvehicles.core.infrastructure.helpers.NBTUtils;
-import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -24,7 +24,7 @@ public class VehicleVoucherEvent implements Listener {
 
         if (item == null || item.getType() != Material.PAPER) return;
 
-        if (!(NBTUtils.contains(item, "mtvehicles.item"))) return;
+        if (!NBTUtils.contains(item, "mtvehicles.item")) return;
 
         if (e.getHand() != EquipmentSlot.HAND) {
             e.setCancelled(true);
@@ -34,8 +34,9 @@ public class VehicleVoucherEvent implements Listener {
 
         if (action.equals(Action.RIGHT_CLICK_BLOCK) || action.equals(Action.RIGHT_CLICK_AIR)) {
             Inventory inv = Bukkit.createInventory(null, 27, "Voucher Redeem Menu");
-            inv.setItem(11, ItemUtils.woolItem("WOOL", "RED_WOOL", 1, (short) 14, "&cNee", "&7Als je op deze knop drukt@&7zal het keuzemenu sluiten@&7en zul je je item houden."));
-            inv.setItem(15, ItemUtils.woolItem("WOOL", "LIME_WOOL", 1, (short) 5, "&aJa", "&7Als je op deze knop drukt@&7zul je je voertuig ontvangen@&7en zul je niet meer in staat@&7zijn om je voertuig te verkopen."));
+            MessagesConfig msg = ConfigModule.messagesConfig;
+            inv.setItem(11, ItemUtils.woolItem("WOOL", "RED_WOOL", 1, (short) 14, "&c" + msg.getMessage("cancel"), String.format("&7%s@&7%s", msg.getMessage("cancelAction"), msg.getMessage("cancelVoucher"))));
+            inv.setItem(15, ItemUtils.woolItem("WOOL", "LIME_WOOL", 1, (short) 5, "&a"  + msg.getMessage("confirm"), String.format("&7%s@&7%s", msg.getMessage("confirmAction"), msg.getMessage("confirmVoucher"))));
             p.openInventory(inv);
         }
     }

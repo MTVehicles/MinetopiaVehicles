@@ -2,16 +2,12 @@ package nl.mtvehicles.core.events.inventory;
 
 import nl.mtvehicles.core.commands.vehiclesubs.VehicleEdit;
 import nl.mtvehicles.core.commands.vehiclesubs.VehicleMenu;
-import nl.mtvehicles.core.events.JoinEvent;
 import nl.mtvehicles.core.events.VehicleEntityEvent;
-import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
-import nl.mtvehicles.core.infrastructure.helpers.MenuUtils;
-import nl.mtvehicles.core.infrastructure.helpers.NBTUtils;
-import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
+import nl.mtvehicles.core.infrastructure.dataconfig.MessagesConfig;
+import nl.mtvehicles.core.infrastructure.helpers.*;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -79,56 +75,24 @@ public class InventoryClickEvent implements Listener {
             e.setCancelled(true);
             vehicleMenu.put(p.getUniqueId(), e.getCurrentItem());
             Inventory inv = Bukkit.createInventory(null, 27, "Confirm getting vehicle");
-            inv.setItem(11, ItemUtils.woolItem("WOOL", "RED_WOOL", 1, (short) 14, "&4Annuleren", "&7Druk hier om het te annuleren."));
-            inv.setItem(15, ItemUtils.woolItem("WOOL", "LIME_WOOL", 1, (short) 5, "&aCreate Vehicle", "&7Druk hier als je het voertuigen wilt aanmaken en op je naam wilt zetten"));
+            MessagesConfig msg = ConfigModule.messagesConfig;
+            inv.setItem(11, ItemUtils.woolItem("WOOL", "RED_WOOL", 1, (short) 14, "&c" + msg.getMessage("cancel"), String.format("&7%s", msg.getMessage("cancelAction"))));
+            inv.setItem(15, ItemUtils.woolItem("WOOL", "LIME_WOOL", 1, (short) 5, "&a"  + msg.getMessage("confirm"), String.format("&7%s@&7%s", msg.getMessage("confirmAction"), msg.getMessage("confirmVehicleMenu"))));
             p.openInventory(inv);
         }
         if (e.getView().getTitle().contains("Choose your language")) {
             e.setCancelled(true);
-            if (e.getRawSlot() == 10) { //English
-                JoinEvent.languageCheck.put(p.getUniqueId(), false);
-                if (ConfigModule.messagesConfig.setLanguageFile("en")){
-                    p.sendMessage(ConfigModule.messagesConfig.getMessage("languageHasChanged"));
-                    ConfigModule.defaultConfig.getConfig().set("messagesLanguage", "en");
-                    ConfigModule.defaultConfig.save();
-                } else {
-                    p.sendMessage(ChatColor.RED + "An error occurred whilst trying to set a new language.");
-                }
-                p.closeInventory();
-            }
-            if (e.getRawSlot() == 12) { //Dutch
-                JoinEvent.languageCheck.put(p.getUniqueId(), false);
-                if (ConfigModule.messagesConfig.setLanguageFile("nl")){
-                    p.sendMessage(ConfigModule.messagesConfig.getMessage("languageHasChanged"));
-                    ConfigModule.defaultConfig.getConfig().set("messagesLanguage", "nl");
-                    ConfigModule.defaultConfig.save();
-                } else {
-                    p.sendMessage(ChatColor.RED + "An error occurred whilst trying to set a new language.");
-                }
-                p.closeInventory();
-            }
-            if (e.getRawSlot() == 14) { //Spanish
-                JoinEvent.languageCheck.put(p.getUniqueId(), false);
-                if (ConfigModule.messagesConfig.setLanguageFile("es")){
-                    p.sendMessage(ConfigModule.messagesConfig.getMessage("languageHasChanged"));
-                    ConfigModule.defaultConfig.getConfig().set("messagesLanguage", "es");
-                    ConfigModule.defaultConfig.save();
-                } else {
-                    p.sendMessage(ChatColor.RED + "An error occurred whilst trying to set a new language.");
-                }
-                p.closeInventory();
-            }
-            if (e.getRawSlot() == 16) { //Czech
-                JoinEvent.languageCheck.put(p.getUniqueId(), false);
-                if (ConfigModule.messagesConfig.setLanguageFile("cs")){
-                    p.sendMessage(ConfigModule.messagesConfig.getMessage("languageHasChanged"));
-                    ConfigModule.defaultConfig.getConfig().set("messagesLanguage", "cs");
-                    ConfigModule.defaultConfig.save();
-                } else {
-                    p.sendMessage(ChatColor.RED + "An error occurred whilst trying to set a new language.");
-                }
-                p.closeInventory();
-            }
+            if (e.getRawSlot() == 9) //English
+                LanguageUtils.changeLanguage(p, "en");
+            if (e.getRawSlot() == 11) //Dutch
+                LanguageUtils.changeLanguage(p, "nl");
+            if (e.getRawSlot() == 13) //Spanish
+                LanguageUtils.changeLanguage(p, "es");
+            if (e.getRawSlot() == 15) //Czech
+                LanguageUtils.changeLanguage(p, "cs");
+
+            if (e.getRawSlot() == 17) return;
+            p.closeInventory();
         }
         if (e.getView().getTitle().contains("Confirm getting vehicle")) {
             e.setCancelled(true);
@@ -402,9 +366,11 @@ public class InventoryClickEvent implements Listener {
             e.setCancelled(true);
             p.getInventory().addItem(e.getCurrentItem());
         }
+
         if (e.getView().getTitle().contains("Voucher Redeem Menu")) {
             e.setCancelled(true);
-            if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Ja")) {
+
+            if (e.getRawSlot() == 15) { //Yes
                 String carUuid = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.item");
                 if (Vehicle.getByDamage(p, carUuid) == null){
                     p.sendMessage(ConfigModule.messagesConfig.getMessage("giveCarNotFound"));
@@ -416,7 +382,8 @@ public class InventoryClickEvent implements Listener {
                 p.getInventory().addItem(Vehicle.getByDamage(p, carUuid));
                 p.closeInventory();
             }
-            if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Nee")) {
+
+            else if (e.getRawSlot() == 11) { //No
                 p.closeInventory();
             }
         }

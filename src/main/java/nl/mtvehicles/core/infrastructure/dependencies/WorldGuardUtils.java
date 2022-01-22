@@ -11,7 +11,6 @@ import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
 import java.util.Arrays;
@@ -57,10 +56,10 @@ public class WorldGuardUtils {
             }
         } catch (Exception e) {
             if (e instanceof FlagConflictException){ //The flags are already registered
-                if (areFlagsOkay()) Bukkit.getLogger().info(ChatColor.YELLOW + "[MTVehicles] Another plugin has already registered MTVehicles' custom WorldGuard flags. They might interfere with each other!");
+                if (areFlagsOkay()) Bukkit.getLogger().warning("[MTVehicles] Another plugin has already registered MTVehicles' custom WorldGuard flags. They might interfere with each other!");
                 else disableDependency();
             } else if (e instanceof IllegalStateException){ //New flags cannot be registered at this time
-                if (areFlagsOkay()) Bukkit.getLogger().info(ChatColor.YELLOW + "[MTVehicles] MTVehicles' custom WorldGuard flags have already been registered and/or are also used by another plugin. This might happen because you've just reloaded the plugin with PlugMan.");
+                if (areFlagsOkay()) Bukkit.getLogger().warning("[MTVehicles] MTVehicles' custom WorldGuard flags have already been registered and/or are also used by another plugin. This might happen because you've just reloaded the plugin with PlugMan.");
                 else disableDependency();
             }
             else disableDependency();
@@ -68,7 +67,7 @@ public class WorldGuardUtils {
     }
 
     private void disableDependency(){
-        Bukkit.getLogger().info(ChatColor.RED + "[MTVehicles] Custom WorldGuard flags could not be created for MTVehicles. Disabling as a softdepend... (If you've just reloaded the plugin with PlugMan, try restarting the server.)");
+        Bukkit.getLogger().severe("[MTVehicles] Custom WorldGuard flags could not be created for MTVehicles. Disabling as a softdepend... (If you've just reloaded the plugin with PlugMan, try restarting the server.)");
         DependencyModule.disableDependency("WorldGuard");
     }
 

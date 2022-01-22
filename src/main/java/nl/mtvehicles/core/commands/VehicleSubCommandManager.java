@@ -2,7 +2,6 @@ package nl.mtvehicles.core.commands;
 
 import nl.mtvehicles.core.commands.vehiclesubs.*;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleCommand;
-import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.modules.CommandModule;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.command.Command;

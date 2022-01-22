@@ -2,9 +2,7 @@ package nl.mtvehicles.core.infrastructure.helpers;
 
 import nl.mtvehicles.core.infrastructure.enums.RegionAction;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
-import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
-import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -95,7 +93,7 @@ public class TextUtils {
                 Location location = new Location(entity.getWorld(), entity.getLocation().getX(), entity.getLocation().getY(), entity.getLocation().getZ(), entity.getLocation().getYaw(), entity.getLocation().getPitch());
 
                 if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.ENTER, location)){
-                    ConfigModule.messagesConfig.sendMessage(p, "notInAWhitelistedRegion");
+                    ConfigModule.messagesConfig.sendMessage(p, "cannotDoThatHere");
                     return;
                 }
 
