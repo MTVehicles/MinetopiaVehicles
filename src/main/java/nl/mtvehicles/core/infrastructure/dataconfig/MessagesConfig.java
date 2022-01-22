@@ -47,7 +47,8 @@ public class MessagesConfig extends ConfigUtils {
         sendMessage((CommandSender) player, key);
     }
 
-    public boolean setLanguageFile(String countryCode){
+    public boolean setLanguageFile(String languageCode){
+        String countryCode = (languageCode.equals("ns")) ? "en" : languageCode;
         String fileName = "messages/messages_" + countryCode + ".yml";
         File languageFile = new File(Main.instance.getDataFolder(), fileName);
         if (!languageFile.exists()) return false;
@@ -68,9 +69,6 @@ public class MessagesConfig extends ConfigUtils {
     }
 
     public void saveNewLanguageFiles(String time){
-        File enMessagesFile = new File(Main.instance.getDataFolder(), "messages/messages_en.yml");
-        enMessagesFile.renameTo(new File(Main.instance.getDataFolder(), "messages/messages_enOld_" + time + ".yml"));
-
         for (String lang : languages) {
             File messagesFile = new File(Main.instance.getDataFolder(), "messages/messages_" + lang + ".yml");
             if (!messagesFile.exists()) continue;

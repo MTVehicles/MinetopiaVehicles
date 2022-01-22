@@ -82,22 +82,17 @@ public class InventoryClickEvent implements Listener {
         }
         if (e.getView().getTitle().contains("Choose your language")) {
             e.setCancelled(true);
-            if (e.getRawSlot() == 10) { //English
+            if (e.getRawSlot() == 9) //English
                 LanguageUtils.changeLanguage(p, "en");
-                p.closeInventory();
-            }
-            if (e.getRawSlot() == 12) { //Dutch
+            if (e.getRawSlot() == 11) //Dutch
                 LanguageUtils.changeLanguage(p, "nl");
-                p.closeInventory();
-            }
-            if (e.getRawSlot() == 14) { //Spanish
+            if (e.getRawSlot() == 13) //Spanish
                 LanguageUtils.changeLanguage(p, "es");
-                p.closeInventory();
-            }
-            if (e.getRawSlot() == 16) { //Czech
+            if (e.getRawSlot() == 15) //Czech
                 LanguageUtils.changeLanguage(p, "cs");
-                p.closeInventory();
-            }
+
+            if (e.getRawSlot() == 17) return;
+            p.closeInventory();
         }
         if (e.getView().getTitle().contains("Confirm getting vehicle")) {
             e.setCancelled(true);
