@@ -104,16 +104,16 @@ public abstract class VehicleMovement {
                     }
                 }
             }
-            if (!VehicleData.type.get(license).contains("HELICOPTER")) {
-                if (!VehicleData.type.get(license).contains("TANK")) {
-                    if (steerIsJumping(ppisv)) {
-                        if (VehicleData.lastUsage.containsKey(p.getName())) {
-                            lastUsed = ((Long) VehicleData.lastUsage.get(p.getName())).longValue();
-                        }
-                        if (System.currentTimeMillis() - lastUsed >= ConfigModule.defaultConfig.getConfig().getInt("hornCooldown") * 1000) {
-                            standMain.getWorld().playSound(standMain.getLocation(), ConfigModule.defaultConfig.getConfig().getString("hornType"), 0.9f, 1f);
-                            VehicleData.lastUsage.put(p.getName(), Long.valueOf(System.currentTimeMillis()));
-                        }
+
+            // Horn
+            if (ConfigModule.vehicleDataConfig.getConfig().getBoolean("vehicle." + license + ".hornEnabled")) {
+                if (steerIsJumping(ppisv)) {
+                    if (VehicleData.lastUsage.containsKey(p.getName())) {
+                        lastUsed = ((Long) VehicleData.lastUsage.get(p.getName())).longValue();
+                    }
+                    if (System.currentTimeMillis() - lastUsed >= ConfigModule.defaultConfig.getConfig().getInt("hornCooldown") * 1000) {
+                        standMain.getWorld().playSound(standMain.getLocation(), ConfigModule.defaultConfig.getConfig().getString("hornType"), 0.9f, 1f);
+                        VehicleData.lastUsage.put(p.getName(), Long.valueOf(System.currentTimeMillis()));
                     }
                 }
             }

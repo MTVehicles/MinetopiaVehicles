@@ -36,6 +36,7 @@ public class VersionModule {
             logger.severe("Your Server version is not supported. The plugin will NOT load.");
             logger.severe("Check the supported versions here: https://mtvehicles.nl");
             logger.severe("--------------------------");
+            Main.disablePlugin();
             return false;
         }
 

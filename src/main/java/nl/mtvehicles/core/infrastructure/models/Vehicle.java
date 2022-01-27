@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.infrastructure.models;
 
+import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
 import nl.mtvehicles.core.infrastructure.helpers.NBTUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
@@ -19,6 +20,7 @@ public class Vehicle {
     private boolean benzineEnabled;
     private double benzine;
     private double benzineVerbruik;
+    private boolean hornEnabled;
     private boolean kofferbak;
     private int kofferbakRows;
     private List<String> kofferbakData;
@@ -48,6 +50,7 @@ public class Vehicle {
         map.put("benzineEnabled", this.isFuelEnabled());
         map.put("benzine", this.getFuel());
         map.put("benzineVerbruik", this.getFuelUsage());
+        map.put("hornEnabled", this.isHornEnabled());
         map.put("kofferbak", this.isTrunkEnabled());
         map.put("kofferbakRows", this.getTrunkRows());
         map.put("kofferbakData", this.getTrunkData());
@@ -99,6 +102,7 @@ public class Vehicle {
                             vehicle.setGlow(false);
                             vehicle.setBenzineEnabled((Boolean) configVehicle.get("benzineEnabled"));
                             vehicle.setBenzine(100);
+                            vehicle.setHornEnabled((Boolean) configVehicle.get("hornEnabled"));
                             vehicle.setTrunk((Boolean) configVehicle.get("kofferbakEnabled"));
                             vehicle.setTrunkRows(1);
                             vehicle.setFuelUsage(0.01);
@@ -205,6 +209,7 @@ public class Vehicle {
         vehicle.setSkinDamage((Integer) vehicleData.get("skinDamage"));
         vehicle.setSkinItem((String) vehicleData.get("skinItem"));
         vehicle.setGlow((Boolean) vehicleData.get("isGlow"));
+        vehicle.setHornEnabled((Boolean) vehicleData.get("hornEnabled"));
         vehicle.setBenzineEnabled((Boolean) vehicleData.get("benzineEnabled"));
         vehicle.setBenzine((Double) vehicleData.get("benzine"));
         vehicle.setFuelUsage((Double) vehicleData.get("benzineVerbruik"));
@@ -257,6 +262,10 @@ public class Vehicle {
 
     public boolean isFuelEnabled() {
         return benzineEnabled;
+    }
+
+    public boolean isHornEnabled() {
+        return hornEnabled;
     }
 
     public double getFuel() {
@@ -337,6 +346,10 @@ public class Vehicle {
 
     public void setBenzineEnabled(boolean benzineEnabled) {
         this.benzineEnabled = benzineEnabled;
+    }
+
+    public void setHornEnabled(boolean hornEnabled) {
+        this.hornEnabled = hornEnabled;
     }
 
     public void setBenzine(double benzine) {

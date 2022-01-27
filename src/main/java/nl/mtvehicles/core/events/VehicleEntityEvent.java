@@ -35,7 +35,6 @@ public class VehicleEntityEvent implements Listener {
             if (eventEntity.getCustomName() == null) return;
 
             if (p.isSneaking() && !p.isInsideVehicle()) {
-                ConfigModule.configList.forEach(ConfigUtils::reload);
                 String license = TextUtils.licenseReplacer(eventEntity.getCustomName());
                 kofferbak(p, license);
                 event.setCancelled(true);
