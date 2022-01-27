@@ -34,14 +34,15 @@ public class VehicleEntityEvent implements Listener {
             Player p = (Player) damager;
             if (eventEntity.getCustomName() == null) return;
 
-            if (p.isSneaking()) {
+            if (p.isSneaking() && !p.isInsideVehicle()) {
                 ConfigModule.configList.forEach(ConfigUtils::reload);
                 String license = TextUtils.licenseReplacer(eventEntity.getCustomName());
                 kofferbak(p, license);
                 event.setCancelled(true);
+                return;
             }
 
-            if (!p.isInsideVehicle()) return;
+            if (p.isInsideVehicle()) return;
 
             ItemStack item = p.getInventory().getItemInMainHand();
             if (!item.hasItemMeta() || !NBTUtils.contains(item, "mtvehicles.benzineval")) return;
