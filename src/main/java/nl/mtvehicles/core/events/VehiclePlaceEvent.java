@@ -57,36 +57,33 @@ public class VehiclePlaceEvent implements Listener {
         }
 
         Location loc = e.getClickedBlock().getLocation();
+        e.setCancelled(true);
 
         if (ConfigModule.defaultConfig.isBlockWhitelistEnabled()
                 && !ConfigModule.defaultConfig.blockWhiteList().contains(e.getClickedBlock().getType())) {
-            e.setCancelled(true);
             ConfigModule.messagesConfig.sendMessage(p, "blockNotInWhitelist");
             return;
         }
         if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.PLACE, loc)){
-            e.setCancelled(true);
             ConfigModule.messagesConfig.sendMessage(p, "cannotDoThatHere");
             return;
         }
 
         if (Vehicle.getByPlate(ken) == null){
             ConfigModule.messagesConfig.sendMessage(p, "vehicleNotFound");
-            e.setCancelled(true);
             return;
         }
-        e.setCancelled(true);
         Location location = new Location(loc.getWorld(), loc.getX(), loc.getY() + 1, loc.getZ());
         ArmorStand as = location.getWorld().spawn(location, ArmorStand.class);
         as.setVisible(false);
         as.setCustomName("MTVEHICLES_SKIN_" + ken);
-        as.setHelmet(item);
+        as.getEquipment().setHelmet(item);
         ArmorStand as2 = location.getWorld().spawn(location, ArmorStand.class);
         as2.setVisible(false);
         as2.setCustomName("MTVEHICLES_MAIN_" + ken);
         Vehicle vehicle = Vehicle.getByPlate(ken);
         List<Map<String, Double>> seats = (List<Map<String, Double>>) vehicle.getVehicleData().get("seats");
-        p.getInventory().remove(p.getItemInHand());
+        p.getInventory().remove(p.getEquipment().getItemInHand());
         p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehiclePlace").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
         for (int i = 1; i <= seats.size(); i++) {
             Map<String, Double> seat = seats.get(i - 1);

@@ -32,7 +32,7 @@ public class VehicleGiveCar extends MTVehicleSubCommand {
             return true;
         }
 
-        ItemStack car = Vehicle.getByDamage(of, carUuid);
+        ItemStack car = Vehicle.getByUUID(of, carUuid);
 
         if (car == null){
             sender.sendMessage(ConfigModule.messagesConfig.getMessage("giveCarNotFound"));

@@ -373,14 +373,14 @@ public class InventoryClickEvent implements Listener {
 
             if (e.getRawSlot() == 15) { //Yes
                 String carUuid = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.item");
-                if (Vehicle.getByDamage(p, carUuid) == null){
+                if (Vehicle.getByUUID(p, carUuid) == null){
                     p.sendMessage(ConfigModule.messagesConfig.getMessage("giveCarNotFound"));
                     p.closeInventory();
                     return;
                 }
                 p.sendMessage(ConfigModule.messagesConfig.getMessage(TextUtils.colorize("voucherRedeem")));
                 p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
-                p.getInventory().addItem(Vehicle.getByDamage(p, carUuid));
+                p.getInventory().addItem(Vehicle.getByUUID(p, carUuid));
                 p.closeInventory();
             }
 
