@@ -1,14 +1,26 @@
 # If you can't see comments in the config, you can always find them here: https://github.com/GamerJoep/MinetopiaVehicles/blob/master/src/main/resources/config.yml
 
 # ---------------------------------------------------------------------------
-# Spigot Plugin MTVehicles by GamerJoep_, downloadable on https://mtvehicles.nl
-# For support, visit our official Discord. Link can be found on our site ^
+# MTVehicles - Spigot/Paper plugin, available at https://mtvehicles.nl
+# For support, visit our official discord server: https://discord.gg/vehicle
 # ---------------------------------------------------------------------------
 
-# How many rows the /vehicle menu has. Max: 6
+
+# Leave this on true if you want to be up-to-date!
+# Turn it off and you will not get any messages for updates.
+# Auto-update message will show on server join if you have the permission 'mtvehicles.update'.
+# If set on false the /vehicle update command will not work either.
+auto-update: true
+
+
+# --- General ---
+
+# How many rows the /vehicle menu has. Must be between 3 and 6.
+# Default: 3 (If your input is not accepted, the default shall be used.)
 vehicleMenuSize: 3
 
-# If set to true, helicopter blades will always stay on top of the helicopter. If set to false they will only appear when you get in the vehicle and remove when you get out.
+# If set to true, helicopter blades will always stay on top of the helicopter.
+# If set to false they will only appear when you get in the vehicle and remove when you get out.
 wiekens-always-on: true
 
 # If set to true you can't pick up the vehicle after ridden on water, else you will need the permission 'mtvehicles.anwb'.
@@ -17,10 +29,22 @@ anwb: false
 # If set to false you will not be able to open the trunk.
 kofferbakEnabled: true
 
+# Give players the ability put themselves owner.
+spelerSetOwner: false
+
+# Maximum flying height for helicopters.
+helicopterMaxHeight: 150
+
+# Turn on if you do not want players to be able to pickup vehicles. Use cautiously.
+carPickup: false
+
+
+# --- Gas ---
+
 # Whether gasoline is used for ALL cars.
 benzine: true
 
-# Multiplier of the fuel consumption of ALL vehicles. 2 means 2× faster consumption, 0.5 means 2× slower, etc...
+# Multiplier of the fuel consumption of ALL vehicles. (2 means 2× faster consumption, 0.5 means 2× slower, etc...)
 # Must be between 0.1 and 10. Default: 1 (If lower/higher, the default will be used.)
 fuelMultiplier: 1
 
@@ -29,6 +53,41 @@ jerrycans:
   - 25
   - 50
   - 75
+
+
+# --- Horn ---
+
+# Cooldown for horn in seconds.
+hornCooldown: 5
+
+# Type of horn, later will be added that you can change the types for each car
+# This is just added as beta function to find bugs or problems
+hornType: "minetopiaclassic.horn1"
+
+
+# --- Driving ---
+
+# Whether the vehicles should be able to drive up hills by slabs ('slabs'), full blocks ('blocks') or both ('both').
+# Default: 'both' (If your input is not recognized, the default shall be used.)
+driveUp: 'both'
+
+# Whether the vehicles are able to drive up carpets.
+driveOnCarpets: true
+
+
+# --- Blocks and worlds ---
+
+# A list of allowed blocks to place a car on. If enabled is false, vehicles can be placed on every block.
+blockWhitelist:
+  enabled: false
+  list:
+    - GRAY_CONCRETE
+
+# Provide a list of worlds where using vehicles is disabled.
+disabledWorlds: []
+
+
+# ----- OPTIONS BELOW REQUIRE SOFT-DEPENDENCIES -----
 
 
 # Enables WorldGuard region based gas stations.
@@ -59,45 +118,6 @@ gasStations:
     price:
       enabled: true
       pricePerLitre: 30.0
-
-
-# Leave it on true if you want to be up-to-date!
-# Turn it off and you will not get any messages for updates.
-# auto-update will show on server join if you have the permission mtvehicles.update
-# If set on false the /vehicle update command will not work either.
-auto-update: true
-
-# Give players the ability put themselves owner.
-spelerSetOwner: false
-
-# Maximum flying height for helicopters.
-helicopterMaxHeight: 150
-
-# Turn on if you do not want players to be able to pickup vehicles. Use cautiously.
-carPickup: false
-
-# Cooldown for horn in seconds.
-hornCooldown: 5
-
-# Type of horn, later will be added that you can change the types for each car
-# This is just added as beta function to find bugs or problems
-hornType: "minetopiaclassic.horn1"
-
-# Whether the vehicles should be able to drive up hills by slabs ('slabs'), full blocks ('blocks') or both ('both').
-# Default: 'both' (If your input is not recognized, the default shall be used.)
-driveUp: 'both'
-
-# Whether the vehicles are able to drive up carpets.
-driveOnCarpets: true
-
-# A list of allowed blocks to place a car on. If enabled is false, vehicles can be placed on every block.
-blockWhitelist:
-  enabled: false
-  list:
-    - GRAY_CONCRETE
-
-# Provide a list of worlds where using vehicles is disabled.
-disabledWorlds: []
 
 
 # Whether vehicles can/can't be used in certain regions.

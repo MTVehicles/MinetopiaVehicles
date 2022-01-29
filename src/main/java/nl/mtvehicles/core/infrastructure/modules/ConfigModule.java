@@ -53,6 +53,9 @@ public class ConfigModule {
 
     public static void reloadConfigs(){
         configList.forEach(ConfigUtils::reload);
-        messagesConfig.setLanguageFile(secretSettings.getMessagesLanguage());
+        if (!messagesConfig.setLanguageFile(secretSettings.getMessagesLanguage())){
+            Main.instance.getLogger().severe("Messages.yml for your desired language could not be found. Disabling the plugin...");
+            Main.disablePlugin();
+        }
     }
 }

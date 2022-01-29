@@ -15,7 +15,7 @@ public class Main extends JavaPlugin {
      *
      * @see nl.mtvehicles.core.infrastructure.dataconfig.SecretSettingsConfig
      */
-    public static String configVersion = "2.3.0-dev15";
+    public static String configVersion = "2.3.0-dev19";
     public static String messagesVersion = "2.3.0-dev14";
 
     @Override
@@ -23,10 +23,7 @@ public class Main extends JavaPlugin {
 
         instance = this;
 
-        if (!new VersionModule().isSupportedVersion()) {
-            this.setEnabled(false);
-            return;
-        }
+        if (!new VersionModule().isSupportedVersion()) return;
 
         getLogger().info("Plugin has been loaded!");
         if (VersionModule.isPreRelease) getLogger().warning("Be aware: You are using a pre-release. It might not be stable and it's generally not advised to use it on a production server.");
@@ -53,5 +50,9 @@ public class Main extends JavaPlugin {
 
     public void registerListener(Listener listener) {
         Bukkit.getPluginManager().registerEvents(listener, this);
+    }
+
+    public static void disablePlugin(){
+        instance.setEnabled(false);
     }
 }

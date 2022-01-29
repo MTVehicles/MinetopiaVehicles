@@ -20,7 +20,10 @@ public class MessagesConfig extends ConfigUtils {
         for (String lang : languages) {
             saveLanguageFile(lang);
         }
-        setLanguageFile(ConfigModule.secretSettings.getMessagesLanguage());
+        if (!setLanguageFile(ConfigModule.secretSettings.getMessagesLanguage())){
+            Main.instance.getLogger().severe("Messages.yml for your desired language could not be found. Disabling the plugin...");
+            Main.disablePlugin();
+        }
     }
 
     public String getMessage(String key) {
@@ -63,9 +66,7 @@ public class MessagesConfig extends ConfigUtils {
         String fileName = "messages/messages_" + countryCode + ".yml";
 
         File languageFile = new File(Main.instance.getDataFolder(), fileName);
-        if (!languageFile.exists()){
-            Main.instance.saveResource(fileName, false);
-        }
+        if (!languageFile.exists()) Main.instance.saveResource(fileName, false);
     }
 
     public void saveNewLanguageFiles(String time){

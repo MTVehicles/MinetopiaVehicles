@@ -104,16 +104,16 @@ public abstract class VehicleMovement {
                     }
                 }
             }
-            if (!VehicleData.type.get(license).contains("HELICOPTER")) {
-                if (!VehicleData.type.get(license).contains("TANK")) {
-                    if (steerIsJumping(ppisv)) {
-                        if (VehicleData.lastUsage.containsKey(p.getName())) {
-                            lastUsed = ((Long) VehicleData.lastUsage.get(p.getName())).longValue();
-                        }
-                        if (System.currentTimeMillis() - lastUsed >= ConfigModule.defaultConfig.getConfig().getInt("hornCooldown") * 1000) {
-                            standMain.getWorld().playSound(standMain.getLocation(), ConfigModule.defaultConfig.getConfig().getString("hornType"), 0.9f, 1f);
-                            VehicleData.lastUsage.put(p.getName(), Long.valueOf(System.currentTimeMillis()));
-                        }
+
+            // Horn
+            if (ConfigModule.vehicleDataConfig.isHornEnabled(license)) {
+                if (steerIsJumping(ppisv)) {
+                    if (VehicleData.lastUsage.containsKey(p.getName())) {
+                        lastUsed = ((Long) VehicleData.lastUsage.get(p.getName())).longValue();
+                    }
+                    if (System.currentTimeMillis() - lastUsed >= ConfigModule.defaultConfig.getConfig().getInt("hornCooldown") * 1000) {
+                        standMain.getWorld().playSound(standMain.getLocation(), ConfigModule.defaultConfig.getConfig().getString("hornType"), 0.9f, 1f);
+                        VehicleData.lastUsage.put(p.getName(), Long.valueOf(System.currentTimeMillis()));
                     }
                 }
             }
@@ -139,7 +139,7 @@ public abstract class VehicleMovement {
             if (ConfigModule.defaultConfig.getConfig().getBoolean("benzine") && ConfigModule.vehicleDataConfig.getConfig().getBoolean("vehicle." + license + ".benzineEnabled")) {
                 double fuelMultiplier = ConfigModule.defaultConfig.getConfig().getDouble("fuelMultiplier");
                 if (fuelMultiplier < 0.1 || fuelMultiplier > 10) fuelMultiplier = 1; //Must be between 0.1 and 10. Default: 1
-                double dnum = VehicleData.fuel.get(license) - (fuelMultiplier * VehicleData.fuelUsage.get(license));
+                final double dnum = VehicleData.fuel.get(license) - (fuelMultiplier * VehicleData.fuelUsage.get(license));
                 VehicleData.fuel.put(license, dnum);
             }
             if (VehicleData.speed.get(license) > MaxSpeed-AccelerationSpeed) {

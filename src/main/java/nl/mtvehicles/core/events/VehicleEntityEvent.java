@@ -9,6 +9,7 @@ import nl.mtvehicles.core.infrastructure.models.ConfigUtils;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -33,15 +34,16 @@ public class VehicleEntityEvent implements Listener {
         if (damager instanceof Player) {
             Player p = (Player) damager;
             if (eventEntity.getCustomName() == null) return;
+            if (!(eventEntity instanceof ArmorStand)) return;
 
-            if (p.isSneaking()) {
-                ConfigModule.configList.forEach(ConfigUtils::reload);
+            if (p.isSneaking() && !p.isInsideVehicle()) {
                 String license = TextUtils.licenseReplacer(eventEntity.getCustomName());
                 kofferbak(p, license);
                 event.setCancelled(true);
+                return;
             }
 
-            if (!p.isInsideVehicle()) return;
+            if (p.isInsideVehicle()) return;
 
             ItemStack item = p.getInventory().getItemInMainHand();
             if (!item.hasItemMeta() || !NBTUtils.contains(item, "mtvehicles.benzineval")) return;
