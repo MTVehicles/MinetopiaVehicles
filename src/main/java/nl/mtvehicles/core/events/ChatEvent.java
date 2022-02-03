@@ -164,28 +164,36 @@ public class ChatEvent implements Listener {
         if (ItemUtils.edit.get(p.getUniqueId() + ".kofferbakRows")) {
             e.setCancelled(true);
 
+            if (e.getMessage().toLowerCase().contains("annule")) {
+                MenuUtils.kofferbakEdit(p);
+                ConfigModule.messagesConfig.sendMessage(p, "actionCanceled");
+                ItemUtils.edit.put(p.getUniqueId() + ".kofferbakRows", false);
+
+                if (e.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.kofferbakEdit(p));
+            }
+
             if (!isI(e.getMessage(), p)) {
                 MenuUtils.kofferbakEdit(p);
                 ItemUtils.edit.put(p.getUniqueId() + ".kofferbakRows", false);
                 return;
             }
 
-            if (!e.getMessage().toLowerCase().contains("annule")) {
-                String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
-                ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + ken + ".kofferbakRows", Integer.parseInt(e.getMessage()));
-                ConfigModule.vehicleDataConfig.save();
-                ConfigModule.messagesConfig.sendMessage(p, "actionSuccessful");
+            int input = Integer.parseInt(e.getMessage());
+            if (input < 1 || input > 6) {
+                MenuUtils.kofferbakEdit(p);
+                ConfigModule.messagesConfig.sendMessage(p, "invalidInput");
                 ItemUtils.edit.put(p.getUniqueId() + ".kofferbakRows", false);
-
-                if (e.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.kofferbakEdit(p));
                 return;
             }
 
-            MenuUtils.benzineEdit(p);
-            ConfigModule.messagesConfig.sendMessage(p, "actionCanceled");
+            String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
+            ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + ken + ".kofferbakRows", input);
+            ConfigModule.vehicleDataConfig.save();
+            ConfigModule.messagesConfig.sendMessage(p, "actionSuccessful");
             ItemUtils.edit.put(p.getUniqueId() + ".kofferbakRows", false);
 
             if (e.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.kofferbakEdit(p));
+
         }
     }
 
