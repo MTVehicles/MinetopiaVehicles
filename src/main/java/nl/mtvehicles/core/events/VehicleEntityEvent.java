@@ -28,8 +28,8 @@ public class VehicleEntityEvent implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerInteractAtEntity(EntityDamageByEntityEvent event) {
-        Entity eventEntity = event.getEntity();
-        Entity damager = event.getDamager();
+        final Entity eventEntity = event.getEntity();
+        final Entity damager = event.getDamager();
 
         if (damager instanceof Player) {
             Player p = (Player) damager;

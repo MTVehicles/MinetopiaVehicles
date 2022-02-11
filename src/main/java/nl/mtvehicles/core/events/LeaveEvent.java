@@ -9,7 +9,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 public class LeaveEvent implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onLeaveEventPlayer(PlayerQuitEvent e) {
-        Player p = e.getPlayer();
+        final Player p = e.getPlayer();
         if (p.isInsideVehicle())
             p.leaveVehicle();
     }

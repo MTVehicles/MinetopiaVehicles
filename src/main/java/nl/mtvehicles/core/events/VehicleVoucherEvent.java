@@ -18,9 +18,9 @@ import org.bukkit.inventory.ItemStack;
 public class VehicleVoucherEvent implements Listener {
     @EventHandler
     public void onVoucherRedeem(PlayerInteractEvent e) {
-        Player p = e.getPlayer();
-        Action action = e.getAction();
-        ItemStack item = e.getItem();
+        final Player p = e.getPlayer();
+        final Action action = e.getAction();
+        final ItemStack item = e.getItem();
 
         if (item == null || item.getType() != Material.PAPER) return;
 

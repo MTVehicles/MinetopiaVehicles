@@ -23,7 +23,7 @@ public class JoinEvent implements Listener {
 
     @EventHandler
     public void onJoinEventPlayer(PlayerJoinEvent e) {
-        Player p = e.getPlayer();
+        final Player p = e.getPlayer();
         MovementManager.MovementSelector(p);
 
         if (ConfigModule.secretSettings.getMessagesLanguage().contains("ns")) {
