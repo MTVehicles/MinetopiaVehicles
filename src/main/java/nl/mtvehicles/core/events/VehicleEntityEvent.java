@@ -27,26 +27,30 @@ public class VehicleEntityEvent implements Listener {
     public static HashMap<String, Double> speed = new HashMap<>();
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerInteractAtEntity(EntityDamageByEntityEvent event) {
-        final Entity eventEntity = event.getEntity();
-        final Entity damager = event.getDamager();
+    public void onPlayerInteractAtEntity(EntityDamageByEntityEvent e) {
+        final Entity eventEntity = e.getEntity();
+        final Entity damager = e.getDamager();
+
+        if (eventEntity.getCustomName() == null) return;
+        if (!(eventEntity instanceof ArmorStand)) return;
 
         if (damager instanceof Player) {
             Player p = (Player) damager;
-            if (eventEntity.getCustomName() == null) return;
-            if (!(eventEntity instanceof ArmorStand)) return;
 
             if (p.isSneaking() && !p.isInsideVehicle()) {
                 String license = TextUtils.licenseReplacer(eventEntity.getCustomName());
                 kofferbak(p, license);
-                event.setCancelled(true);
+                e.setCancelled(true);
                 return;
             }
 
             if (p.isInsideVehicle()) return;
 
             ItemStack item = p.getInventory().getItemInMainHand();
-            if (!item.hasItemMeta() || !NBTUtils.contains(item, "mtvehicles.benzineval")) return;
+            if (!item.hasItemMeta() || !NBTUtils.contains(item, "mtvehicles.benzineval")){
+                checkDamage(e);
+                return;
+            }
 
             String licensePlate = p.getVehicle().getCustomName().replace("MTVEHICLES_MAINSEAT_", "");
             double curb = VehicleData.fuel.get(licensePlate);
@@ -85,7 +89,17 @@ public class VehicleEntityEvent implements Listener {
                 BossBarUtils.setBossBarValue(curb / 100.0D, licensePlate);
                 p.setItemInHand(VehicleFuel.benzineItem(Integer.parseInt(bensize), 0));
             }
+        } else {
+            checkDamage(e);
         }
+    }
+
+    public static void checkDamage(EntityDamageByEntityEvent e){
+        final double damage = e.getDamage();
+
+        if (!ConfigModule.defaultConfig.getConfig().getBoolean("damageEnabled")) return;
+
+        //checking damage
     }
 
     public static void kofferbak(Player p, String ken) {

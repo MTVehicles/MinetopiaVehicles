@@ -38,6 +38,8 @@ helicopterMaxHeight: 150
 # Turn on if you do not want players to be able to pickup vehicles. Use cautiously.
 carPickup: false
 
+# Whether vehicles can be damaged.
+damageEnabled: false
 
 # --- Gas ---
 
