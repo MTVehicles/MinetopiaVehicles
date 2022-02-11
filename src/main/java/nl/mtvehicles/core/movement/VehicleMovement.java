@@ -11,7 +11,9 @@ import org.bukkit.block.data.type.Slab;
 import org.bukkit.block.data.type.Snow;
 import org.bukkit.block.data.type.TrapDoor;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.TNTPrimed;
 import org.bukkit.util.Vector;
 
 import java.lang.reflect.Method;
@@ -82,7 +84,18 @@ public abstract class VehicleMovement {
             if (VehicleData.type.get(license).contains("HELICOPTER")) {
                 rotors(standMain, standRotors, license);
             }
-            if (VehicleData.type.get(license).contains("TANK")) {
+            // Horn
+            if (ConfigModule.vehicleDataConfig.isHornEnabled(license)) {
+                if (steerIsJumping(ppisv)) {
+                    if (VehicleData.lastUsage.containsKey(p.getName())) {
+                        lastUsed = ((Long) VehicleData.lastUsage.get(p.getName())).longValue();
+                    }
+                    if (System.currentTimeMillis() - lastUsed >= ConfigModule.defaultConfig.getConfig().getInt("hornCooldown") * 1000) {
+                        standMain.getWorld().playSound(standMain.getLocation(), ConfigModule.defaultConfig.getConfig().getString("hornType"), 0.9f, 1f);
+                        VehicleData.lastUsage.put(p.getName(), Long.valueOf(System.currentTimeMillis()));
+                    }
+                }
+            } else if (VehicleData.type.get(license).contains("TANK")) {
                 if (steerIsJumping(ppisv)) {
                     if (VehicleData.lastUsage.containsKey(p.getName())) {
                         lastUsed = ((Long) VehicleData.lastUsage.get(p.getName())).longValue();
@@ -100,19 +113,7 @@ public abstract class VehicleMovement {
                         float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(fbvp.getYaw())));
                         Location loc = new Location(standMain.getWorld(), xvp, standMain.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
                         spawnParticles(standMain, loc);
-                        VehicleData.lastUsage.put(p.getName(), Long.valueOf(System.currentTimeMillis()));
-                    }
-                }
-            }
-
-            // Horn
-            if (ConfigModule.vehicleDataConfig.isHornEnabled(license)) {
-                if (steerIsJumping(ppisv)) {
-                    if (VehicleData.lastUsage.containsKey(p.getName())) {
-                        lastUsed = ((Long) VehicleData.lastUsage.get(p.getName())).longValue();
-                    }
-                    if (System.currentTimeMillis() - lastUsed >= ConfigModule.defaultConfig.getConfig().getInt("hornCooldown") * 1000) {
-                        standMain.getWorld().playSound(standMain.getLocation(), ConfigModule.defaultConfig.getConfig().getString("hornType"), 0.9f, 1f);
+                        spawnTNT(standMain, loc);
                         VehicleData.lastUsage.put(p.getName(), Long.valueOf(System.currentTimeMillis()));
                     }
                 }
@@ -542,6 +543,16 @@ public abstract class VehicleMovement {
         stand.getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, loc, 2);
         stand.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, loc, 5);
         stand.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, loc, 5);
+    }
+
+    protected void spawnTNT(ArmorStand stand, Location loc){
+        if (!ConfigModule.defaultConfig.getConfig().getBoolean("tankTNT")) return;
+
+        Bukkit.getScheduler().runTask(Main.instance, () -> {
+            Entity tnt = loc.getWorld().spawn(loc, TNTPrimed.class);
+            ((TNTPrimed) tnt).setFuseTicks(20);
+            tnt.setVelocity(stand.getLocation().getDirection().multiply(3.0));
+        });
     }
 
     protected abstract void isObjectPacket(Object object) throws IllegalArgumentException;
