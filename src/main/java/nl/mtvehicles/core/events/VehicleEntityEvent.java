@@ -96,10 +96,12 @@ public class VehicleEntityEvent implements Listener {
 
     public static void checkDamage(EntityDamageByEntityEvent e){
         final double damage = e.getDamage();
+        final String license = TextUtils.licenseReplacer(e.getEntity().getCustomName());
 
         if (!ConfigModule.defaultConfig.getConfig().getBoolean("damageEnabled")) return;
+        if (Vehicle.getByPlate(license) == null) return;
 
-        //checking damage
+        ConfigModule.vehicleDataConfig.damageVehicle(license, damage / 2);
     }
 
     public static void kofferbak(Player p, String ken) {
