@@ -38,9 +38,6 @@ helicopterMaxHeight: 150
 # Turn on if you do not want players to be able to pickup vehicles. Use cautiously.
 carPickup: false
 
-# Whether tanks shoot TNTs.
-tankTNT: false
-
 
 # --- Gas ---
 
@@ -66,6 +63,15 @@ hornCooldown: 5
 # Type of horn, later will be added that you can change the types for each car
 # This is just added as beta function to find bugs or problems
 hornType: "minetopiaclassic.horn1"
+
+
+# --- Tanks ---
+
+# Whether tanks shoot TNTs.
+tankTNT: false
+
+# Tank shooting cooldown
+tankCooldown: 10
 
 
 # --- Driving ---
