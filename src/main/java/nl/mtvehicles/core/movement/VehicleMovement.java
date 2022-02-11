@@ -58,9 +58,16 @@ public abstract class VehicleMovement {
         ArmorStand standSkin = VehicleData.autostand.get("MTVEHICLES_SKIN_" + license);
         ArmorStand standMainSeat = VehicleData.autostand.get("MTVEHICLES_MAINSEAT_" + license);
         ArmorStand standRotors = VehicleData.autostand.get("MTVEHICLES_WIEKENS_" + license);
+
+        if (ConfigModule.defaultConfig.getConfig().getBoolean("damageEnabled") && ConfigModule.vehicleDataConfig.getHealth(license) == 0) { //Vehicle is broken
+            standMain.getWorld().spawnParticle(Particle.SMOKE_NORMAL, standMain.getLocation(), 2);
+            return;
+        }
+
         Bukkit.getScheduler().runTask(Main.instance, () -> {
             standSkin.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standSkin.getLocation().getYaw(), standSkin.getLocation().getPitch()));
         });
+
         int RotationSpeed = VehicleData.RotationSpeed.get(license);
         double MaxSpeed = VehicleData.MaxSpeed.get(license);
         double AccelerationSpeed = VehicleData.AccelerationSpeed.get(license);

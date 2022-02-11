@@ -1,6 +1,5 @@
 package nl.mtvehicles.core.infrastructure.dataconfig;
 
-import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.models.ConfigUtils;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 
