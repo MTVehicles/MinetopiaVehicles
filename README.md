@@ -90,7 +90,7 @@ If this did not work don't hesitate to contact the support on our Discord server
 |-------------------|---------------------------------------------------|--------------------------------------------------|
 | /vehicle info     | Get information about a vehicle                   | `None`, `mtvehicles.admin` to display admin info |
 | /vehicle help     | Get a list of all the possible commands           | `None`, `mtvehicles.admin` to display admin info |
-| /vehicle version  | Get info about the plugin _(use this on discord)_ | `mtvehicles.admin`                               |
+| /vehicle version  | Get info about the plugin *(use this on discord)* | `mtvehicles.admin`                               |
 | /vehicle language | Change the plugin language                        | `mtvehicles.admin` or `mtvehicles.language`      |
 
 ### Vehicle specific commands
@@ -104,6 +104,7 @@ These commands can only be executed by the owner of the vehicle
 | /vehicle addmember    | Add a member to your vehicle                         | `None`     |
 | /vehicle removerider  | Remove a rider from your vehicle                     | `None`     |
 | /vehicle removemember | Remove a member from your vehicle                    | `None`     |
+| /vehicle repair       | Restore the health of a vehicle (vehicle damage must be enabled in the [config.yml]) | `mtvehicles.repair` |
 
 ### Moderation commands
 
