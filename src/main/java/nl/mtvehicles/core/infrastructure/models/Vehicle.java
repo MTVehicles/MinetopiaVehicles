@@ -142,7 +142,7 @@ public class Vehicle {
         return false;
     }
 
-    public static double getHealthByDamage(int damage){
+    public static double getMaxHealthByDamage(int damage){
         List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getConfig().getMapList("voertuigen");
         for (Map<?, ?> configVehicle : vehicles) {
             List<Map<?, ?>> skins = (List<Map<?, ?>>) configVehicle.get("cars");
