@@ -16,18 +16,18 @@ public class VehicleMovement1_12 extends VehicleMovement {
 
     @Override
     protected boolean slabCheck(ArmorStand mainStand, String license) {
-        Location loc = getLocationOfBlockAhead(mainStand);
-        String locY = String.valueOf(mainStand.getLocation().getY());
-        Location locBlockAbove = new Location(loc.getWorld(), loc.getX(), loc.getY() + 1, loc.getZ(), loc.getYaw(), loc.getPitch());
-
+        final Location loc = getLocationOfBlockAhead(mainStand);
+        final String locY = String.valueOf(mainStand.getLocation().getY());
+        final Location locBlockAbove = new Location(loc.getWorld(), loc.getX(), loc.getY() + 1, loc.getZ(), loc.getYaw(), loc.getPitch());
         final String drivingOnY = locY.substring(locY.length() - 2);
-        boolean isOnGround = drivingOnY.contains(".0");
-        boolean isOnSlab = drivingOnY.contains(".5");
-        boolean isPassable = isPassableCustom(loc.getBlock().getType());
-        boolean isAbovePassable = isPassableCustom(locBlockAbove.getBlock().getType());
 
-        double difference = Double.parseDouble("0." + locY.split("\\.")[1]);
-        int data = loc.getBlock().getData();
+        final boolean isOnGround = drivingOnY.contains(".0");
+        final boolean isOnSlab = drivingOnY.contains(".5");
+        final boolean isPassable = isPassableCustom(loc.getBlock().getType());
+        final boolean isAbovePassable = isPassableCustom(locBlockAbove.getBlock().getType());
+
+        final double difference = Double.parseDouble("0." + locY.split("\\.")[1]);
+        final int data = loc.getBlock().getData();
 
         if (loc.getBlock().getType().toString().contains("CARPET")){
             if (!ConfigModule.defaultConfig.getConfig().getBoolean("driveOnCarpets")){ //if carpets are turned off in config
@@ -249,8 +249,7 @@ public class VehicleMovement1_12 extends VehicleMovement {
     }
 
     private boolean isPassableCustom(Material block){
-        if (block.toString().contains("AIR") || block.toString().contains("FLOWER") || block.toString().contains("ROSE") || block.toString().contains("PLANT") || block.equals(Material.BROWN_MUSHROOM) || block.equals(Material.RED_MUSHROOM) || block.toString().contains("LONG_GRASS") || block.toString().contains("SAPLING") || block.toString().contains("DEAD_BUSH") || block.toString().contains("TORCH") || block.toString().contains("BANNER")) return true;
-        else return false;
+        return block.toString().contains("AIR") || block.toString().contains("FLOWER") || block.toString().contains("ROSE") || block.toString().contains("PLANT") || block.equals(Material.BROWN_MUSHROOM) || block.equals(Material.RED_MUSHROOM) || block.toString().contains("LONG_GRASS") || block.toString().contains("SAPLING") || block.toString().contains("DEAD_BUSH") || block.toString().contains("TORCH") || block.toString().contains("BANNER");
     }
 
     @Override
