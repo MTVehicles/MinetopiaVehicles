@@ -101,7 +101,9 @@ public class VehicleEntityEvent implements Listener {
         if (!ConfigModule.defaultConfig.getConfig().getBoolean("damageEnabled")) return;
         if (Vehicle.getByPlate(license) == null) return;
 
-        ConfigModule.vehicleDataConfig.damageVehicle(license, damage / 2);
+        double damageMultiplier = ConfigModule.defaultConfig.getConfig().getDouble("damageMultiplier");
+        if (damageMultiplier < 0.1 || damageMultiplier > 5) damageMultiplier = 0.5; //Must be between 0.1 and 5. Default: 0.5
+        ConfigModule.vehicleDataConfig.damageVehicle(license, damage * damageMultiplier);
     }
 
     public static void kofferbak(Player p, String ken) {

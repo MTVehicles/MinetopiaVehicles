@@ -38,9 +38,6 @@ helicopterMaxHeight: 150
 # Turn on if you do not want players to be able to pickup vehicles. Use cautiously.
 carPickup: false
 
-# Whether vehicles can be damaged.
-damageEnabled: false
-
 # --- Gas ---
 
 # Whether gasoline is used for ALL cars.
@@ -55,6 +52,16 @@ jerrycans:
   - 25
   - 50
   - 75
+
+
+# --- Vehicle Health and Damage ---
+
+# Whether vehicles can be damaged.
+damageEnabled: false
+
+# Multiplier of the damage of ALL vehicles. Works similarly to fuelMultiplier.
+# Must be between 0.1 and 5. Default: 0.5 (If lower/higher, the default will be used.)
+damageMultiplier: 0.5
 
 
 # --- Horn ---
