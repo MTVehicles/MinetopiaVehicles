@@ -25,9 +25,7 @@ public class VehicleClickEvent implements Listener {
         final Player p = e.getPlayer();
         long lastUsed = 0L;
 
-        if (entity.getCustomName() == null) return;
-
-        if (!entity.getCustomName().contains("MTVEHICLES")) return;
+        if (!Vehicle.isVehicle(entity)) return;
 
         e.setCancelled(true);
 
@@ -39,7 +37,7 @@ public class VehicleClickEvent implements Listener {
         if (System.currentTimeMillis() - lastUsed >= 500) lastUsage.put(p.getName(), Long.valueOf(System.currentTimeMillis()));
         else return;
 
-        String license = TextUtils.licenseReplacer(entity.getCustomName());
+        final String license = Vehicle.getLicense(entity);
 
         if (p.isSneaking()) {
 

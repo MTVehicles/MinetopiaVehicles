@@ -2,8 +2,11 @@ package nl.mtvehicles.core.infrastructure.models;
 
 import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
 import nl.mtvehicles.core.infrastructure.helpers.NBTUtils;
+import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -175,6 +178,14 @@ public class Vehicle {
             }
         }
         return null;
+    }
+
+    public static boolean isVehicle(Entity entity){
+        return entity.getCustomName() != null && entity instanceof ArmorStand && entity.getCustomName().contains("MTVEHICLES");
+    }
+
+    public static String getLicense(Entity entity){
+        return TextUtils.licenseReplacer(Objects.requireNonNull(entity.getCustomName()));
     }
 
     public static String getCarUuid(String plate) {
