@@ -400,7 +400,7 @@ public class InventoryClickEvent implements Listener {
     
     private boolean canGetVehicleFromMenu(Player p){
         final int owned = ConfigModule.vehicleDataConfig.getNumberOfOwnedVehicles(p);
-        int limit = 0;
+        int limit = -1; //If permission is not specified, players can get as many as they want
 
         for (PermissionAttachmentInfo permission: p.getEffectivePermissions()) {
             String permName = permission.getPermission();
@@ -411,13 +411,14 @@ public class InventoryClickEvent implements Listener {
                     limit = Integer.parseInt(permName.replace("mtvehicles.limit.", ""));
                     break;
                 } catch (Exception e) {
+                    limit = 0;
                     Main.instance.getLogger().severe("An error occurred whilst trying to retrieve player's 'mtvehicles.limit.X' permission. You must have done something wrong when setting it.");
                     break;
                 }
             }
         }
 
-        final boolean returns = limit < owned;
+        final boolean returns = limit == -1 || limit > owned;
         if (!returns) ConfigModule.messagesConfig.sendMessage(p, "tooManyVehicles");
 
         return returns;
