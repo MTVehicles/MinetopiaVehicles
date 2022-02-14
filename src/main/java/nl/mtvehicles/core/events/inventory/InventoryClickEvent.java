@@ -402,11 +402,11 @@ public class InventoryClickEvent implements Listener {
         final int owned = ConfigModule.vehicleDataConfig.getNumberOfOwnedVehicles(p);
         int limit = -1; //If permission is not specified, players can get as many as they want
 
+        if (p.hasPermission("mtvehicles.limit.*")) return true;
+
         for (PermissionAttachmentInfo permission: p.getEffectivePermissions()) {
             String permName = permission.getPermission();
             if (permName.contains("mtvehicles.limit.") && permission.getValue()){
-
-                if (permName.equals("mtvehicles.limit.*")) return true;
                 try {
                     limit = Integer.parseInt(permName.replace("mtvehicles.limit.", ""));
                     break;
