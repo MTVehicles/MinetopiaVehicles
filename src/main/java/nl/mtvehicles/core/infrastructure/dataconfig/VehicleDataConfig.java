@@ -1,7 +1,15 @@
 package nl.mtvehicles.core.infrastructure.dataconfig;
 
+import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
 import nl.mtvehicles.core.infrastructure.models.ConfigUtils;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
+import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class VehicleDataConfig extends ConfigUtils {
     public VehicleDataConfig() {
@@ -62,5 +70,17 @@ public class VehicleDataConfig extends ConfigUtils {
         final String path = "vehicle." + license + ".health";
         getConfig().set(path, health);
         save();
+    }
+
+    public int getNumberOfOwnedVehicles(Player p){
+        final String playerUUID = p.getUniqueId().toString();
+        int owned = 0;
+
+        List<Map<?, ?>> vehicleData = getConfig().getMapList("vehicle");
+        for (Map<?, ?> vehicle : vehicleData) {
+            if (String.valueOf(vehicle.get("owner")).equals(playerUUID)) owned++;
+        }
+
+        return owned;
     }
 }
