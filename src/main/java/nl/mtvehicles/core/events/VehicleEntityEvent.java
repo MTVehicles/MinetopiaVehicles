@@ -43,7 +43,7 @@ public class VehicleEntityEvent implements Listener {
                 return;
             }
 
-            if (p.isInsideVehicle()) return;
+            if (!p.isInsideVehicle()) return;
 
             ItemStack item = p.getInventory().getItemInMainHand();
             if (!item.hasItemMeta() || !NBTUtils.contains(item, "mtvehicles.benzineval")){
