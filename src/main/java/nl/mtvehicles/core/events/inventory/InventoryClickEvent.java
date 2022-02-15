@@ -412,7 +412,7 @@ public class InventoryClickEvent implements Listener {
                     break;
                 } catch (Exception e) {
                     limit = 0;
-                    Main.instance.getLogger().severe("An error occurred whilst trying to retrieve player's 'mtvehicles.limit.X' permission. You must have done something wrong when setting it.");
+                    Main.logSevere("An error occurred whilst trying to retrieve player's 'mtvehicles.limit.X' permission. You must have done something wrong when setting it.");
                     break;
                 }
             }

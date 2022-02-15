@@ -56,4 +56,16 @@ public class Main extends JavaPlugin {
     public static void disablePlugin(){
         instance.setEnabled(false);
     }
+
+    public static void logInfo(String text){
+        instance.getLogger().info(text);
+    }
+
+    public static void logWarning(String text){
+        instance.getLogger().warning(text);
+    }
+
+    public static void logSevere(String text){
+        instance.getLogger().severe(text);
+    }
 }
