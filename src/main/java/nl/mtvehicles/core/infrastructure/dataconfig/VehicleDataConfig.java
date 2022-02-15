@@ -1,14 +1,9 @@
 package nl.mtvehicles.core.infrastructure.dataconfig;
 
-import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
 import nl.mtvehicles.core.infrastructure.models.ConfigUtils;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
-import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public class VehicleDataConfig extends ConfigUtils {
@@ -74,13 +69,9 @@ public class VehicleDataConfig extends ConfigUtils {
 
     public int getNumberOfOwnedVehicles(Player p){
         final String playerUUID = p.getUniqueId().toString();
-        int owned = 0;
-
-        List<Map<?, ?>> vehicleData = getConfig().getMapList("vehicle");
-        for (Map<?, ?> vehicle : vehicleData) {
-            if (String.valueOf(vehicle.get("owner")).equals(playerUUID)) owned++;
-        }
-
+        int owned;
+        Map<String, Object> vehicleData = getConfig().getValues(true);
+        owned = (int) vehicleData.keySet().stream().filter(key -> key.contains(".owner") && String.valueOf(vehicleData.get(key)).equals(playerUUID)).count();
         return owned;
     }
 }
