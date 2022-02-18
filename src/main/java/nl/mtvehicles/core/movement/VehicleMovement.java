@@ -83,9 +83,9 @@ public abstract class VehicleMovement {
         double MaxSpeedBackwards = VehicleData.MaxSpeedBackwards.get(license);
         double FrictionSpeed = VehicleData.FrictionSpeed.get(license);
 
-        boolean isMovingUpwards = slabCheck(standMain, license);
         boolean space = !helicopterFalling && steerIsJumping(packet);
-        updateStand(standMain, license, space, isMovingUpwards);
+        updateStand(standMain, license, space);
+        slabCheck(standMain, license);
         mainSeat(standMain, standMainSeat, license);
 
         if (VehicleData.seatsize.get(license + "addon") != null) {
@@ -413,7 +413,7 @@ public abstract class VehicleMovement {
         });
     }
 
-    protected void updateStand(ArmorStand mainStand, String license, boolean space, boolean isMovingUpwards) {
+    protected void updateStand(ArmorStand mainStand, String license, boolean space) {
         final Location loc = mainStand.getLocation();
         final Location locBlockAhead = getLocationOfBlockAhead(mainStand);
         final Location locBlockAheadAndBelow = new Location(locBlockAhead.getWorld(), locBlockAhead.getX(), locBlockAhead.getY() - 1, locBlockAhead.getZ(), locBlockAhead.getPitch(), locBlockAhead.getYaw());
@@ -454,7 +454,7 @@ public abstract class VehicleMovement {
             return;
         }
 
-        if (!isMovingUpwards && locBlockAheadAndBelow.getBlock().isPassable()){
+        if (locBlockAheadAndBelow.getBlock().isPassable()){
             if (location.getBlock().isPassable()){
                 mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.8, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
                 return;

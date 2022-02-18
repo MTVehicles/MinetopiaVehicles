@@ -192,7 +192,7 @@ public class VehicleMovement1_12 extends VehicleMovement {
     }
 
     @Override
-    protected void updateStand(ArmorStand mainStand, String license, boolean space, boolean isMovingUpwards) {
+    protected void updateStand(ArmorStand mainStand, String license, boolean space) {
         Location loc = mainStand.getLocation();
         Location locBlockAhead = getLocationOfBlockAhead(mainStand);
         Location locBlockAheadAndBelow = new Location(locBlockAhead.getWorld(), locBlockAhead.getX(), locBlockAhead.getY() - 1, locBlockAhead.getZ(), locBlockAhead.getPitch(), locBlockAhead.getYaw());
@@ -229,7 +229,7 @@ public class VehicleMovement1_12 extends VehicleMovement {
             return;
         }
 
-        if (!isMovingUpwards && isPassableCustom(locBlockAheadAndBelow.getBlock().getType())){
+        if (isPassableCustom(locBlockAheadAndBelow.getBlock().getType())){
             if (isPassableCustom(location.getBlock().getType())){
                 mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.8, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
                 return;
