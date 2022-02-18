@@ -4,6 +4,7 @@ import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.helpers.BossBarUtils;
 import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
+import nl.mtvehicles.core.infrastructure.modules.VersionModule;
 import org.bukkit.*;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Fence;
@@ -20,7 +21,7 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public abstract class VehicleMovement {
+public class VehicleMovement {
 
     public void vehicleMovement(Player p, Object packet) {
 
@@ -396,10 +397,18 @@ public abstract class VehicleMovement {
         teleportSeat(mainSeat, loc);
     }
 
-    protected abstract void teleportSeat(ArmorStand seat, Location loc);
+    protected void teleportSeat(ArmorStand seat, Location loc){
+        if (VersionModule.getServerVersion().is1_12()) teleportSeat(((org.bukkit.craftbukkit.v1_12_R1.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+        else if (VersionModule.getServerVersion().is1_13()) teleportSeat(((org.bukkit.craftbukkit.v1_13_R2.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+        else if (VersionModule.getServerVersion().is1_15()) teleportSeat(((org.bukkit.craftbukkit.v1_15_R1.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+        else if (VersionModule.getServerVersion().is1_16()) teleportSeat(((org.bukkit.craftbukkit.v1_16_R3.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+        else if (VersionModule.getServerVersion().is1_17()) teleportSeat(((org.bukkit.craftbukkit.v1_17_R1.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+        else if (VersionModule.getServerVersion().is1_18()) teleportSeat(((org.bukkit.craftbukkit.v1_18_R1.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+    }
 
     protected String getTeleportMethod(){
-        return "setLocation";
+        if (VersionModule.getServerVersion().is1_18()) return "a";
+        else return "setLocation";
     }
 
     protected void teleportSeat(Object seat, double x, double y, double z, float yaw, float pitch){
@@ -561,7 +570,9 @@ public abstract class VehicleMovement {
         stand.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, loc, 2);
         stand.getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, loc, 2);
         stand.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, loc, 5);
-        stand.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, loc, 5);
+        if (!VersionModule.getServerVersion().is1_12() && !VersionModule.getServerVersion().is1_13()) {
+            stand.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, loc, 5);
+        }
     }
 
     protected void spawnTNT(ArmorStand stand, Location loc){
@@ -574,7 +585,23 @@ public abstract class VehicleMovement {
         });
     }
 
-    protected abstract void isObjectPacket(Object object) throws IllegalArgumentException;
+    protected void isObjectPacket(Object object) throws IllegalArgumentException {
+        if (VersionModule.getServerVersion().is1_12()) {
+            if (!(object instanceof net.minecraft.server.v1_12_R1.PacketPlayInSteerVehicle)) throw new IllegalArgumentException();
+        } else if (VersionModule.getServerVersion().is1_13()) {
+            if (!(object instanceof net.minecraft.server.v1_13_R2.PacketPlayInSteerVehicle))
+                throw new IllegalArgumentException();
+        } else if (VersionModule.getServerVersion().is1_15()) {
+            if (!(object instanceof net.minecraft.server.v1_15_R1.PacketPlayInSteerVehicle))
+                throw new IllegalArgumentException();
+        } else if (VersionModule.getServerVersion().is1_16()) {
+            if (!(object instanceof net.minecraft.server.v1_16_R3.PacketPlayInSteerVehicle))
+                throw new IllegalArgumentException();
+        } else if (VersionModule.getServerVersion().is1_17() || VersionModule.getServerVersion().is1_18()) {
+            if (!(object instanceof net.minecraft.network.protocol.game.PacketPlayInSteerVehicle))
+                throw new IllegalArgumentException();
+        }
+    }
 
 }
 

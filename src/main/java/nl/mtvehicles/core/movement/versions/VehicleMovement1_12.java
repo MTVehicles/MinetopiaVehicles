@@ -7,8 +7,6 @@ import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.movement.VehicleMovement;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftEntity;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.util.Vector;
 
@@ -244,24 +242,8 @@ public class VehicleMovement1_12 extends VehicleMovement {
         mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.0, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
     }
 
-    protected void teleportSeat(ArmorStand seat, Location loc){
-        teleportSeat(((CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
-    }
-
     private boolean isPassableCustom(Material block){
         return block.toString().contains("AIR") || block.toString().contains("FLOWER") || block.toString().contains("ROSE") || block.toString().contains("PLANT") || block.equals(Material.BROWN_MUSHROOM) || block.equals(Material.RED_MUSHROOM) || block.toString().contains("LONG_GRASS") || block.toString().contains("SAPLING") || block.toString().contains("DEAD_BUSH") || block.toString().contains("TORCH") || block.toString().contains("BANNER");
-    }
-
-    @Override
-    protected void isObjectPacket(Object object) throws IllegalArgumentException {
-        if (!(object instanceof PacketPlayInSteerVehicle)) throw new IllegalArgumentException();
-    }
-
-    @Override
-    protected void spawnParticles(ArmorStand stand, Location loc){
-        stand.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, loc, 2);
-        stand.getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, loc, 2);
-        stand.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, loc, 5);
     }
 
     @Override
@@ -296,4 +278,5 @@ public class VehicleMovement1_12 extends VehicleMovement {
         PacketPlayInSteerVehicle ppisv = (PacketPlayInSteerVehicle) packet;
         return ppisv.b();
     }
+
 }
