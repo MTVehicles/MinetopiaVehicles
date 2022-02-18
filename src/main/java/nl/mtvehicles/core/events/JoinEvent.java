@@ -28,7 +28,7 @@ public class JoinEvent implements Listener {
 
         if (ConfigModule.secretSettings.getMessagesLanguage().contains("ns")) {
             if (p.hasPermission("mtvehicles.language") || p.hasPermission("mtvehicles.admin")) {
-                p.sendMessage(TextUtils.colorize("&cHey! You have not yet changed the language of the plugin. Do this by with &4/vehicle language&c!"));
+                p.sendMessage(TextUtils.colorize("&cHey! You have not changed the language of the plugin yet. Do this by executing &4/vehicle language&c!"));
             }
         }
 
@@ -56,8 +56,8 @@ public class JoinEvent implements Listener {
                 p.sendMessage(TextUtils.colorize(s.replace("<oldVer>", pdf.getVersion())));
             }
         } catch (IOException ex) {
+            Main.logSevere("The plugin cannot connect to MTVehicles servers. Try again later...");
             ex.printStackTrace();
-            Bukkit.getLogger().info("We hebben geen verbinding kunnen maken met de servers van MinetopiaVehicles.");
         }
     }
 
@@ -78,8 +78,8 @@ public class JoinEvent implements Listener {
                 getUpdateMessage(p);
             }
         } catch (IOException ex) {
+            Main.logSevere("The plugin cannot connect to MTVehicles servers. Try again later...");
             ex.printStackTrace();
-            Bukkit.getLogger().info("We hebben geen verbinding kunnen maken met de servers van MinetopiaVehicles.");
         }
     }
 }
