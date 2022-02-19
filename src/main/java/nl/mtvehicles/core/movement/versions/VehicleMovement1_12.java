@@ -10,6 +10,8 @@ import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.util.Vector;
 
+import static nl.mtvehicles.core.movement.PacketHandler.isObjectPacket;
+
 public class VehicleMovement1_12 extends VehicleMovement {
 
     @Override
@@ -248,33 +250,24 @@ public class VehicleMovement1_12 extends VehicleMovement {
 
     @Override
     protected boolean steerIsJumping(Object packet){
-        try {
-            isObjectPacket(packet);
-        } catch (IllegalArgumentException e){
-            e.printStackTrace();
-        }
+        if (!isObjectPacket(packet)) return false;
+
         PacketPlayInSteerVehicle ppisv = (PacketPlayInSteerVehicle) packet;
         return ppisv.c();
     }
 
     @Override
     protected float steerGetXxa(Object packet){
-        try {
-            isObjectPacket(packet);
-        } catch (IllegalArgumentException e){
-            e.printStackTrace();
-        }
+        if (!isObjectPacket(packet)) return 0;
+
         PacketPlayInSteerVehicle ppisv = (PacketPlayInSteerVehicle) packet;
         return ppisv.a();
     }
 
     @Override
     protected float steerGetZza(Object packet){
-        try {
-            isObjectPacket(packet);
-        } catch (IllegalArgumentException e){
-            e.printStackTrace();
-        }
+        if (!isObjectPacket(packet)) return 0;
+
         PacketPlayInSteerVehicle ppisv = (PacketPlayInSteerVehicle) packet;
         return ppisv.b();
     }

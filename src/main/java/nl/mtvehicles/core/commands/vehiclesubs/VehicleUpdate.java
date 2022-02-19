@@ -84,6 +84,7 @@ public class VehicleUpdate extends MTVehicleSubCommand {
 
         } catch (Exception ec) {
             sendMessage(ConfigModule.messagesConfig.getMessage("updateFailed"));
+            Main.logSevere("An error occurred whilst trying to download the plugin. (Java 11+ required)");
             ec.printStackTrace();
         }
     }

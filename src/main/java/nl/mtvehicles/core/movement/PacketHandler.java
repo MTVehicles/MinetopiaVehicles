@@ -3,10 +3,13 @@ package nl.mtvehicles.core.movement;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;
+import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.movement.versions.*;
 import org.bukkit.entity.Player;
 
 import java.util.NoSuchElementException;
+
+import static nl.mtvehicles.core.infrastructure.modules.VersionModule.getServerVersion;
 
 public class PacketHandler {
 
@@ -147,4 +150,37 @@ public class PacketHandler {
             System.out.println(e);
         }
     }
+
+    public static boolean isObjectPacket(Object object) {
+        final String errorMessage = "An unexpected error occurred. Try reinstalling the plugin or contact the developer: https://discord.gg/vehicle";
+
+        if (getServerVersion().is1_12()) {
+            if (!(object instanceof net.minecraft.server.v1_12_R1.PacketPlayInSteerVehicle)) {
+                Main.logSevere(errorMessage);
+                return false;
+            }
+        } else if (getServerVersion().is1_13()) {
+            if (!(object instanceof net.minecraft.server.v1_13_R2.PacketPlayInSteerVehicle)){
+                Main.logSevere(errorMessage);
+                return false;
+            }
+        } else if (getServerVersion().is1_15()) {
+            if (!(object instanceof net.minecraft.server.v1_15_R1.PacketPlayInSteerVehicle)){
+                Main.logSevere(errorMessage);
+                return false;
+            }
+        } else if (getServerVersion().is1_16()) {
+            if (!(object instanceof net.minecraft.server.v1_16_R3.PacketPlayInSteerVehicle)){
+                Main.logSevere(errorMessage);
+                return false;
+            }
+        } else if (getServerVersion().is1_17() || getServerVersion().is1_18()) {
+            if (!(object instanceof net.minecraft.network.protocol.game.PacketPlayInSteerVehicle)){
+                Main.logSevere(errorMessage);
+                return false;
+            }
+        }
+        return true;
+    }
+
 }

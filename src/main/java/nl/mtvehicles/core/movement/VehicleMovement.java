@@ -21,6 +21,8 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+import static nl.mtvehicles.core.movement.PacketHandler.isObjectPacket;
+
 public class VehicleMovement {
 
     public void vehicleMovement(Player p, Object packet) {
@@ -569,38 +571,6 @@ public class VehicleMovement {
             ((TNTPrimed) tnt).setFuseTicks(20);
             tnt.setVelocity(stand.getLocation().getDirection().multiply(3.0));
         });
-    }
-
-    protected boolean isObjectPacket(Object object) {
-        final String errorMessage = "An unexpected error occurred. Try reinstalling the plugin or contact the developer: https://discord.gg/vehicle";
-
-        if (VersionModule.getServerVersion().is1_12()) {
-            if (!(object instanceof net.minecraft.server.v1_12_R1.PacketPlayInSteerVehicle)) {
-                Main.logSevere(errorMessage);
-                return false;
-            }
-        } else if (VersionModule.getServerVersion().is1_13()) {
-            if (!(object instanceof net.minecraft.server.v1_13_R2.PacketPlayInSteerVehicle)){
-                Main.logSevere(errorMessage);
-                return false;
-            }
-        } else if (VersionModule.getServerVersion().is1_15()) {
-            if (!(object instanceof net.minecraft.server.v1_15_R1.PacketPlayInSteerVehicle)){
-                Main.logSevere(errorMessage);
-                return false;
-            }
-        } else if (VersionModule.getServerVersion().is1_16()) {
-            if (!(object instanceof net.minecraft.server.v1_16_R3.PacketPlayInSteerVehicle)){
-                Main.logSevere(errorMessage);
-                return false;
-            }
-        } else if (VersionModule.getServerVersion().is1_17() || VersionModule.getServerVersion().is1_18()) {
-            if (!(object instanceof net.minecraft.network.protocol.game.PacketPlayInSteerVehicle)){
-                Main.logSevere(errorMessage);
-                return false;
-            }
-        }
-        return true;
     }
 
 }
