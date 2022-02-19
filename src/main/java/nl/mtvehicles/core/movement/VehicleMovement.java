@@ -4,7 +4,6 @@ import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.helpers.BossBarUtils;
 import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
-import nl.mtvehicles.core.infrastructure.modules.VersionModule;
 import org.bukkit.*;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Fence;
@@ -21,6 +20,7 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+import static nl.mtvehicles.core.infrastructure.modules.VersionModule.getServerVersion;
 import static nl.mtvehicles.core.movement.PacketHandler.isObjectPacket;
 
 public class VehicleMovement {
@@ -38,7 +38,7 @@ public class VehicleMovement {
         if (!(vehicle instanceof ArmorStand)) return;
         if (vehicle.getCustomName() == null) return;
 
-        if (vehicle.getCustomName().replace("MTVEHICLES_MAINSEAT_", "") == null) return; //Not sure what this line is supposed to be doing here but I'm keeping it, just in case
+        if (vehicle.getCustomName().replace("MTVEHICLES_MAINSEAT_", "").isEmpty()) return; //Not sure what this line is supposed to be doing here but I'm keeping it, just in case
         final String license = vehicle.getCustomName().replace("MTVEHICLES_MAINSEAT_", "");
 
         if (VehicleData.autostand.get("MTVEHICLES_MAIN_" + license) == null) return;
@@ -70,9 +70,7 @@ public class VehicleMovement {
             return;
         }
 
-        Bukkit.getScheduler().runTask(Main.instance, () -> {
-            standSkin.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standSkin.getLocation().getYaw(), standSkin.getLocation().getPitch()));
-        });
+        schedulerRun(() -> standSkin.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standSkin.getLocation().getYaw(), standSkin.getLocation().getPitch())));
 
         int RotationSpeed = VehicleData.RotationSpeed.get(license);
         double MaxSpeed = VehicleData.MaxSpeed.get(license);
@@ -89,9 +87,7 @@ public class VehicleMovement {
         if (VehicleData.seatsize.get(license + "addon") != null) {
             for (int i = 1; i <= VehicleData.seatsize.get(license + "addon"); i++) {
                 ArmorStand standAddon = VehicleData.autostand.get("MTVEHICLES_ADDON" + i + "_" + license);
-                Bukkit.getScheduler().runTask(Main.instance, () -> {
-                    standAddon.teleport(standMain.getLocation());
-                });
+                schedulerRun(() -> standAddon.teleport(standMain.getLocation()));
             }
         }
 
@@ -131,16 +127,28 @@ public class VehicleMovement {
         final float xxa = (helicopterFalling) ? 0.0f : steerGetXxa(packet);
         final float zza = (helicopterFalling) ? 0.0f : steerGetZza(packet);
         if (xxa > 0.0) {
-            Bukkit.getScheduler().runTask(Main.instance, () -> {
-                standMain.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - RotationSpeed, standMain.getLocation().getPitch()));
-                standMainSeat.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - RotationSpeed, standMain.getLocation().getPitch()));
-                standSkin.teleport(new Location(standSkin.getLocation().getWorld(), standSkin.getLocation().getX(), standSkin.getLocation().getY(), standSkin.getLocation().getZ(), standSkin.getLocation().getYaw() - RotationSpeed, standSkin.getLocation().getPitch()));
+            schedulerRun(() -> {
+                if (getServerVersion().is1_12()){
+                    standMain.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - RotationSpeed, standMain.getLocation().getPitch()));
+                    standMainSeat.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - RotationSpeed, standMain.getLocation().getPitch()));
+                    standSkin.teleport(new Location(standSkin.getLocation().getWorld(), standSkin.getLocation().getX(), standSkin.getLocation().getY(), standSkin.getLocation().getZ(), standSkin.getLocation().getYaw() - RotationSpeed, standSkin.getLocation().getPitch()));
+                } else {
+                    standMain.setRotation(standMain.getLocation().getYaw() - RotationSpeed, standMain.getLocation().getPitch());
+                    standMainSeat.setRotation(standMain.getLocation().getYaw() - RotationSpeed, standMain.getLocation().getPitch());
+                    standSkin.setRotation(standSkin.getLocation().getYaw() - RotationSpeed, standSkin.getLocation().getPitch());
+                }
             });
         } else if (xxa < 0.0) {
-            Bukkit.getScheduler().runTask(Main.instance, () -> {
-                standSkin.teleport(new Location(standSkin.getLocation().getWorld(), standSkin.getLocation().getX(), standSkin.getLocation().getY(), standSkin.getLocation().getZ(), standSkin.getLocation().getYaw() + RotationSpeed, standSkin.getLocation().getPitch()));
-                standMainSeat.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() + RotationSpeed, standMain.getLocation().getPitch()));
-                standMain.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() + RotationSpeed, standMain.getLocation().getPitch()));
+            schedulerRun(() -> {
+                if (getServerVersion().is1_12()){
+                    standMain.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() + RotationSpeed, standMain.getLocation().getPitch()));
+                    standMainSeat.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() + RotationSpeed, standMain.getLocation().getPitch()));
+                    standSkin.teleport(new Location(standSkin.getLocation().getWorld(), standSkin.getLocation().getX(), standSkin.getLocation().getY(), standSkin.getLocation().getZ(), standSkin.getLocation().getYaw() + RotationSpeed, standSkin.getLocation().getPitch()));
+                } else {
+                    standMain.setRotation(standMain.getLocation().getYaw() + RotationSpeed, standMain.getLocation().getPitch());
+                    standMainSeat.setRotation(standMain.getLocation().getYaw() + RotationSpeed, standMain.getLocation().getPitch());
+                    standSkin.setRotation(standSkin.getLocation().getYaw() + RotationSpeed, standSkin.getLocation().getPitch());
+                }
             });
         }
         if (zza > 0.0) {
@@ -151,9 +159,7 @@ public class VehicleMovement {
             if (ConfigModule.defaultConfig.getConfig().getBoolean("benzine") && ConfigModule.vehicleDataConfig.getConfig().getBoolean("vehicle." + license + ".benzineEnabled")) {
                 putFuelUsage(license);
             }
-            if (VehicleData.speed.get(license) > MaxSpeed-AccelerationSpeed) {
-                return;
-            }
+            if (VehicleData.speed.get(license) > MaxSpeed - AccelerationSpeed) return;
             VehicleData.speed.put(license, VehicleData.speed.get(license) + AccelerationSpeed);
         }
         if (zza < 0.0) {
@@ -164,9 +170,7 @@ public class VehicleMovement {
             if (ConfigModule.defaultConfig.getConfig().getBoolean("benzine") && ConfigModule.vehicleDataConfig.getConfig().getBoolean("vehicle." + license + ".benzineEnabled")) {
                 putFuelUsage(license);
             }
-            if (VehicleData.speed.get(license) < -MaxSpeedBackwards) {
-                return;
-            }
+            if (VehicleData.speed.get(license) < -MaxSpeedBackwards) return;
             VehicleData.speed.put(license, VehicleData.speed.get(license) - AccelerationSpeed);
         }
         if (zza == 0.0) {
@@ -395,21 +399,21 @@ public class VehicleMovement {
     }
 
     protected void teleportSeat(ArmorStand seat, Location loc){
-        if (VersionModule.getServerVersion().is1_12()) teleportSeat(((org.bukkit.craftbukkit.v1_12_R1.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
-        else if (VersionModule.getServerVersion().is1_13()) teleportSeat(((org.bukkit.craftbukkit.v1_13_R2.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
-        else if (VersionModule.getServerVersion().is1_15()) teleportSeat(((org.bukkit.craftbukkit.v1_15_R1.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
-        else if (VersionModule.getServerVersion().is1_16()) teleportSeat(((org.bukkit.craftbukkit.v1_16_R3.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
-        else if (VersionModule.getServerVersion().is1_17()) teleportSeat(((org.bukkit.craftbukkit.v1_17_R1.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
-        else if (VersionModule.getServerVersion().is1_18()) teleportSeat(((org.bukkit.craftbukkit.v1_18_R1.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+        if (getServerVersion().is1_12()) teleportSeat(((org.bukkit.craftbukkit.v1_12_R1.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+        else if (getServerVersion().is1_13()) teleportSeat(((org.bukkit.craftbukkit.v1_13_R2.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+        else if (getServerVersion().is1_15()) teleportSeat(((org.bukkit.craftbukkit.v1_15_R1.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+        else if (getServerVersion().is1_16()) teleportSeat(((org.bukkit.craftbukkit.v1_16_R3.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+        else if (getServerVersion().is1_17()) teleportSeat(((org.bukkit.craftbukkit.v1_17_R1.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+        else if (getServerVersion().is1_18()) teleportSeat(((org.bukkit.craftbukkit.v1_18_R1.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
     }
 
     protected String getTeleportMethod(){
-        if (VersionModule.getServerVersion().is1_18()) return "a";
+        if (getServerVersion().is1_18()) return "a";
         else return "setLocation";
     }
 
     protected void teleportSeat(Object seat, double x, double y, double z, float yaw, float pitch){
-        Bukkit.getScheduler().runTask(Main.instance, () -> {
+        schedulerRun(() -> {
             try {
                 Method method = seat.getClass().getSuperclass().getSuperclass().getDeclaredMethod(getTeleportMethod(), double.class, double.class, double.class, float.class, float.class);
                 method.invoke(seat, x, y, z, yaw, pitch);
@@ -492,16 +496,12 @@ public class VehicleMovement {
         final float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(seatas.getLocation().getYaw())));
         final float yawAdd = (slowDown) ? 5 : 15;
         final Location loc = new Location(main.getWorld(), xvp, main.getLocation().getY() + yOffset, zvp, seatas.getLocation().getYaw() + yawAdd, seatas.getLocation().getPitch());
-        Bukkit.getScheduler().runTask(Main.instance, () -> {
-            seatas.teleport(loc);
-        });
+        schedulerRun(() -> seatas.teleport(loc));
     }
 
     protected void pushVehicleUp(ArmorStand mainStand, double plus){
         final Location newLoc = new Location(mainStand.getLocation().getWorld(), mainStand.getLocation().getX(), mainStand.getLocation().getY() + plus, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
-        Bukkit.getScheduler().runTask(Main.instance, () -> {
-            mainStand.teleport(newLoc);
-        });
+        schedulerRun(() -> mainStand.teleport(newLoc));
     }
 
     protected Location getLocationOfBlockAhead(ArmorStand mainStand){
@@ -558,19 +558,22 @@ public class VehicleMovement {
         stand.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, loc, 2);
         stand.getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, loc, 2);
         stand.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, loc, 5);
-        if (!VersionModule.getServerVersion().is1_12() && !VersionModule.getServerVersion().is1_13()) {
+        if (!getServerVersion().is1_12() && !getServerVersion().is1_13())
             stand.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, loc, 5);
-        }
     }
 
     protected void spawnTNT(ArmorStand stand, Location loc){
         if (!ConfigModule.defaultConfig.getConfig().getBoolean("tankTNT")) return;
 
-        Bukkit.getScheduler().runTask(Main.instance, () -> {
-            Entity tnt = loc.getWorld().spawn(loc, TNTPrimed.class);
-            ((TNTPrimed) tnt).setFuseTicks(20);
+        schedulerRun(() -> {
+            TNTPrimed tnt = loc.getWorld().spawn(loc, TNTPrimed.class);
+            tnt.setFuseTicks(20);
             tnt.setVelocity(stand.getLocation().getDirection().multiply(3.0));
         });
+    }
+
+    protected static void schedulerRun(Runnable task){
+        Bukkit.getScheduler().runTask(Main.instance, task);
     }
 
 }

@@ -20,7 +20,6 @@ public class ListenersModule {
         Main.instance.registerListener(new ChatEvent());
         Main.instance.registerListener(new VehicleEntityEvent());
         Main.instance.registerListener(new JoinEvent());
-        Main.instance.registerListener(new LeaveEvent());
         Main.instance.registerListener(new VehicleVoucherEvent());
         Main.instance.registerListener(new InventoryCloseEvent());
         Main.instance.registerListener(new JerryCanClickEvent());
