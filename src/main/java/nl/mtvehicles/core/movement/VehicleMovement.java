@@ -11,34 +11,35 @@ import org.bukkit.block.data.type.Slab;
 import org.bukkit.block.data.type.Snow;
 import org.bukkit.block.data.type.TrapDoor;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.TNTPrimed;
 import org.bukkit.util.Vector;
 
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.util.Objects;
 
-public abstract class VehicleMovement {
-    public void vehicleMovement(Player p, Object ppisv) {
+import static nl.mtvehicles.core.infrastructure.modules.VersionModule.getServerVersion;
+import static nl.mtvehicles.core.movement.PacketHandler.isObjectPacket;
+
+public class VehicleMovement {
+
+    public void vehicleMovement(Player p, Object packet) {
 
         //Do not continue if the correct packet has not been given
-        try {
-            isObjectPacket(ppisv);
-        } catch (IllegalArgumentException e){
-            e.printStackTrace();
-            return;
-        }
-
+        if (!isObjectPacket(packet)) return;
 
         long lastUsed = 0L;
+
         if (p.getVehicle() == null) return;
+        final Entity vehicle = p.getVehicle();
 
-        if (!p.getVehicle().getType().toString().contains("ARMOR_STAND")) return;
+        if (!(vehicle instanceof ArmorStand)) return;
+        if (vehicle.getCustomName() == null) return;
 
-        if (p.getVehicle().getCustomName() == null) return;
-
-        if (p.getVehicle().getCustomName().replace("MTVEHICLES_MAINSEAT_", "") == null) return;
-
-        String license = p.getVehicle().getCustomName().replace("MTVEHICLES_MAINSEAT_", "");
+        if (vehicle.getCustomName().replace("MTVEHICLES_MAINSEAT_", "").isEmpty()) return; //Not sure what this line is supposed to be doing here but I'm keeping it, just in case
+        final String license = vehicle.getCustomName().replace("MTVEHICLES_MAINSEAT_", "");
 
         if (VehicleData.autostand.get("MTVEHICLES_MAIN_" + license) == null) return;
 
@@ -46,19 +47,31 @@ public abstract class VehicleMovement {
             VehicleData.speed.put(license, 0.0);
             return;
         }
+
+        final String vehicleType = VehicleData.type.get(license);
+        if (vehicleType == null) return;
+
+        boolean helicopterFalling = false;
         if (VehicleData.fuel.get(license) < 1) {
             BossBarUtils.setBossBarValue(0 / 100.0D, license);
-            return;
+            if (vehicleType.contains("HELICOPTER")) helicopterFalling = true;
+            else return;
         }
 
         BossBarUtils.setBossBarValue(VehicleData.fuel.get(license) / 100.0D, license);
-        ArmorStand standMain = VehicleData.autostand.get("MTVEHICLES_MAIN_" + license);
-        ArmorStand standSkin = VehicleData.autostand.get("MTVEHICLES_SKIN_" + license);
-        ArmorStand standMainSeat = VehicleData.autostand.get("MTVEHICLES_MAINSEAT_" + license);
-        ArmorStand standRotors = VehicleData.autostand.get("MTVEHICLES_WIEKENS_" + license);
-        Bukkit.getScheduler().runTask(Main.instance, () -> {
-            standSkin.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standSkin.getLocation().getYaw(), standSkin.getLocation().getPitch()));
-        });
+
+        final ArmorStand standMain = VehicleData.autostand.get("MTVEHICLES_MAIN_" + license);
+        final ArmorStand standSkin = VehicleData.autostand.get("MTVEHICLES_SKIN_" + license);
+        final ArmorStand standMainSeat = VehicleData.autostand.get("MTVEHICLES_MAINSEAT_" + license);
+        final ArmorStand standRotors = VehicleData.autostand.get("MTVEHICLES_WIEKENS_" + license);
+
+        if (ConfigModule.defaultConfig.getConfig().getBoolean("damageEnabled") && ConfigModule.vehicleDataConfig.getHealth(license) == 0) { //Vehicle is broken
+            standMain.getWorld().spawnParticle(Particle.SMOKE_NORMAL, standMain.getLocation(), 2);
+            return;
+        }
+
+        schedulerRun(() -> standSkin.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standSkin.getLocation().getYaw(), standSkin.getLocation().getPitch())));
+
         int RotationSpeed = VehicleData.RotationSpeed.get(license);
         double MaxSpeed = VehicleData.MaxSpeed.get(license);
         double AccelerationSpeed = VehicleData.AccelerationSpeed.get(license);
@@ -66,104 +79,101 @@ public abstract class VehicleMovement {
         double MaxSpeedBackwards = VehicleData.MaxSpeedBackwards.get(license);
         double FrictionSpeed = VehicleData.FrictionSpeed.get(license);
 
-        boolean isMovingUpwards = slabCheck(standMain, license);
-        updateStand(standMain, license, steerIsJumping(ppisv), isMovingUpwards);
+        boolean space = !helicopterFalling && steerIsJumping(packet);
+        updateStand(standMain, license, space);
+        slabCheck(standMain, license);
         mainSeat(standMain, standMainSeat, license);
 
         if (VehicleData.seatsize.get(license + "addon") != null) {
             for (int i = 1; i <= VehicleData.seatsize.get(license + "addon"); i++) {
                 ArmorStand standAddon = VehicleData.autostand.get("MTVEHICLES_ADDON" + i + "_" + license);
-                Bukkit.getScheduler().runTask(Main.instance, () -> {
-                    standAddon.teleport(standMain.getLocation());
-                });
+                schedulerRun(() -> standAddon.teleport(standMain.getLocation()));
             }
         }
-        if (VehicleData.type.get(license) != null) {
-            if (VehicleData.type.get(license).contains("HELICOPTER")) {
-                rotors(standMain, standRotors, license);
-            }
-            if (VehicleData.type.get(license).contains("TANK")) {
-                if (steerIsJumping(ppisv)) {
-                    if (VehicleData.lastUsage.containsKey(p.getName())) {
-                        lastUsed = ((Long) VehicleData.lastUsage.get(p.getName())).longValue();
-                    }
-                    if (System.currentTimeMillis() - lastUsed >= ConfigModule.defaultConfig.getConfig().getInt("hornCooldown") * 1000) {
-                        standMain.getWorld().playEffect(standMain.getLocation(), Effect.BLAZE_SHOOT, 1, 1);
-                        standMain.getWorld().playEffect(standMain.getLocation(), Effect.GHAST_SHOOT, 1, 1);
-                        standMain.getWorld().playEffect(standMain.getLocation(), Effect.WITHER_BREAK_BLOCK, 1, 1);
-                        double xOffset = 4;
-                        double yOffset = 1.6;
-                        double zOffset = 0;
-                        Location locvp = standMain.getLocation().clone();
-                        Location fbvp = locvp.add(locvp.getDirection().setY(0).normalize().multiply(xOffset));
-                        float zvp = (float) (fbvp.getZ() + zOffset * Math.sin(Math.toRadians(fbvp.getYaw())));
-                        float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(fbvp.getYaw())));
-                        Location loc = new Location(standMain.getWorld(), xvp, standMain.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
-                        spawnParticles(standMain, loc);
-                        VehicleData.lastUsage.put(p.getName(), Long.valueOf(System.currentTimeMillis()));
-                    }
-                }
-            }
 
-            // Horn
-            if (ConfigModule.vehicleDataConfig.isHornEnabled(license)) {
-                if (steerIsJumping(ppisv)) {
-                    if (VehicleData.lastUsage.containsKey(p.getName())) {
-                        lastUsed = ((Long) VehicleData.lastUsage.get(p.getName())).longValue();
-                    }
-                    if (System.currentTimeMillis() - lastUsed >= ConfigModule.defaultConfig.getConfig().getInt("hornCooldown") * 1000) {
-                        standMain.getWorld().playSound(standMain.getLocation(), ConfigModule.defaultConfig.getConfig().getString("hornType"), 0.9f, 1f);
-                        VehicleData.lastUsage.put(p.getName(), Long.valueOf(System.currentTimeMillis()));
-                    }
-                }
+        if (vehicleType.contains("HELICOPTER")) rotors(standMain, standRotors, license, helicopterFalling);
+
+        // Horn
+        if (ConfigModule.vehicleDataConfig.isHornEnabled(license) && steerIsJumping(packet) && !helicopterFalling) {
+            if (VehicleData.lastUsage.containsKey(p.getName())) lastUsed = VehicleData.lastUsage.get(p.getName());
+
+            if (System.currentTimeMillis() - lastUsed >= ConfigModule.defaultConfig.getConfig().getInt("hornCooldown") * 1000L) {
+                standMain.getWorld().playSound(standMain.getLocation(), Objects.requireNonNull(ConfigModule.defaultConfig.getConfig().getString("hornType")), 0.9f, 1f);
+                VehicleData.lastUsage.put(p.getName(), System.currentTimeMillis());
             }
         }
-        if (steerGetXxa(ppisv) > 0.0) {
-            Bukkit.getScheduler().runTask(Main.instance, () -> {
-                standMain.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - RotationSpeed, standMain.getLocation().getPitch()));
-                standMainSeat.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - RotationSpeed, standMain.getLocation().getPitch()));
-                standSkin.teleport(new Location(standSkin.getLocation().getWorld(), standSkin.getLocation().getX(), standSkin.getLocation().getY(), standSkin.getLocation().getZ(), standSkin.getLocation().getYaw() - RotationSpeed, standSkin.getLocation().getPitch()));
+
+        if (vehicleType.contains("TANK") && steerIsJumping(packet)) {
+            if (VehicleData.lastUsage.containsKey(p.getName())) lastUsed = VehicleData.lastUsage.get(p.getName());
+
+            if (System.currentTimeMillis() - lastUsed >= ConfigModule.defaultConfig.getConfig().getInt("tankCooldown") * 1000L) {
+                standMain.getWorld().playEffect(standMain.getLocation(), Effect.BLAZE_SHOOT, 1, 1);
+                standMain.getWorld().playEffect(standMain.getLocation(), Effect.GHAST_SHOOT, 1, 1);
+                standMain.getWorld().playEffect(standMain.getLocation(), Effect.WITHER_BREAK_BLOCK, 1, 1);
+                double xOffset = 4;
+                double yOffset = 1.6;
+                double zOffset = 0;
+                Location locvp = standMain.getLocation().clone();
+                Location fbvp = locvp.add(locvp.getDirection().setY(0).normalize().multiply(xOffset));
+                float zvp = (float) (fbvp.getZ() + zOffset * Math.sin(Math.toRadians(fbvp.getYaw())));
+                float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(fbvp.getYaw())));
+                Location loc = new Location(standMain.getWorld(), xvp, standMain.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
+                spawnParticles(standMain, loc);
+                spawnTNT(standMain, loc);
+                VehicleData.lastUsage.put(p.getName(), System.currentTimeMillis());
+            }
+        }
+
+        final float xxa = (helicopterFalling) ? 0.0f : steerGetXxa(packet);
+        final float zza = (helicopterFalling) ? 0.0f : steerGetZza(packet);
+        if (xxa > 0.0) {
+            schedulerRun(() -> {
+                if (getServerVersion().is1_12()){
+                    standMain.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - RotationSpeed, standMain.getLocation().getPitch()));
+                    standMainSeat.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - RotationSpeed, standMain.getLocation().getPitch()));
+                    standSkin.teleport(new Location(standSkin.getLocation().getWorld(), standSkin.getLocation().getX(), standSkin.getLocation().getY(), standSkin.getLocation().getZ(), standSkin.getLocation().getYaw() - RotationSpeed, standSkin.getLocation().getPitch()));
+                } else {
+                    standMain.setRotation(standMain.getLocation().getYaw() - RotationSpeed, standMain.getLocation().getPitch());
+                    standMainSeat.setRotation(standMain.getLocation().getYaw() - RotationSpeed, standMain.getLocation().getPitch());
+                    standSkin.setRotation(standSkin.getLocation().getYaw() - RotationSpeed, standSkin.getLocation().getPitch());
+                }
             });
-        } else if (steerGetXxa(ppisv) < 0.0) {
-            Bukkit.getScheduler().runTask(Main.instance, () -> {
-                standSkin.teleport(new Location(standSkin.getLocation().getWorld(), standSkin.getLocation().getX(), standSkin.getLocation().getY(), standSkin.getLocation().getZ(), standSkin.getLocation().getYaw() + RotationSpeed, standSkin.getLocation().getPitch()));
-                standMainSeat.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() + RotationSpeed, standMain.getLocation().getPitch()));
-                standMain.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() + RotationSpeed, standMain.getLocation().getPitch()));
+        } else if (xxa < 0.0) {
+            schedulerRun(() -> {
+                if (getServerVersion().is1_12()){
+                    standMain.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() + RotationSpeed, standMain.getLocation().getPitch()));
+                    standMainSeat.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() + RotationSpeed, standMain.getLocation().getPitch()));
+                    standSkin.teleport(new Location(standSkin.getLocation().getWorld(), standSkin.getLocation().getX(), standSkin.getLocation().getY(), standSkin.getLocation().getZ(), standSkin.getLocation().getYaw() + RotationSpeed, standSkin.getLocation().getPitch()));
+                } else {
+                    standMain.setRotation(standMain.getLocation().getYaw() + RotationSpeed, standMain.getLocation().getPitch());
+                    standMainSeat.setRotation(standMain.getLocation().getYaw() + RotationSpeed, standMain.getLocation().getPitch());
+                    standSkin.setRotation(standSkin.getLocation().getYaw() + RotationSpeed, standSkin.getLocation().getPitch());
+                }
             });
         }
-        if (steerGetZza(ppisv) > 0.0) {
+        if (zza > 0.0) {
             if (VehicleData.speed.get(license) < 0) {
                 VehicleData.speed.put(license, VehicleData.speed.get(license) + BrakingSpeed);
                 return;
             }
             if (ConfigModule.defaultConfig.getConfig().getBoolean("benzine") && ConfigModule.vehicleDataConfig.getConfig().getBoolean("vehicle." + license + ".benzineEnabled")) {
-                double fuelMultiplier = ConfigModule.defaultConfig.getConfig().getDouble("fuelMultiplier");
-                if (fuelMultiplier < 0.1 || fuelMultiplier > 10) fuelMultiplier = 1; //Must be between 0.1 and 10. Default: 1
-                final double dnum = VehicleData.fuel.get(license) - (fuelMultiplier * VehicleData.fuelUsage.get(license));
-                VehicleData.fuel.put(license, dnum);
+                putFuelUsage(license);
             }
-            if (VehicleData.speed.get(license) > MaxSpeed-AccelerationSpeed) {
-                return;
-            }
+            if (VehicleData.speed.get(license) > MaxSpeed - AccelerationSpeed) return;
             VehicleData.speed.put(license, VehicleData.speed.get(license) + AccelerationSpeed);
         }
-        if (steerGetZza(ppisv) < 0.0) {
+        if (zza < 0.0) {
             if (VehicleData.speed.get(license) > 0) {
                 VehicleData.speed.put(license, VehicleData.speed.get(license) - BrakingSpeed);
                 return;
             }
             if (ConfigModule.defaultConfig.getConfig().getBoolean("benzine") && ConfigModule.vehicleDataConfig.getConfig().getBoolean("vehicle." + license + ".benzineEnabled")) {
-                double fuelMultiplier = ConfigModule.defaultConfig.getConfig().getDouble("fuelMultiplier");
-                if (fuelMultiplier < 0.1 || fuelMultiplier > 10) fuelMultiplier = 1; //Must be between 0.1 and 10. Default: 1
-                double dnum = VehicleData.fuel.get(license) - (fuelMultiplier * VehicleData.fuelUsage.get(license));
-                VehicleData.fuel.put(license, dnum);
+                putFuelUsage(license);
             }
-            if (VehicleData.speed.get(license) < -MaxSpeedBackwards) {
-                return;
-            }
+            if (VehicleData.speed.get(license) < -MaxSpeedBackwards) return;
             VehicleData.speed.put(license, VehicleData.speed.get(license) - AccelerationSpeed);
         }
-        if (steerGetZza(ppisv) == 0.0) {
+        if (zza == 0.0) {
             BigDecimal round = BigDecimal.valueOf(VehicleData.speed.get(license)).setScale(1, BigDecimal.ROUND_DOWN);
             if (Double.parseDouble(String.valueOf(round)) == 0.0) {
                 VehicleData.speed.put(license, 0.0);
@@ -180,18 +190,18 @@ public abstract class VehicleMovement {
     }
 
     protected boolean slabCheck(ArmorStand mainStand, String license) { //Returns true if is moving upwards (in any way)
-        Location loc = getLocationOfBlockAhead(mainStand);
-        String locY = String.valueOf(mainStand.getLocation().getY());
-        Location locBlockAbove = new Location(loc.getWorld(), loc.getX(), loc.getY() + 1, loc.getZ(), loc.getYaw(), loc.getPitch());
-
+        final Location loc = getLocationOfBlockAhead(mainStand);
+        final String locY = String.valueOf(mainStand.getLocation().getY());
+        final Location locBlockAbove = new Location(loc.getWorld(), loc.getX(), loc.getY() + 1, loc.getZ(), loc.getYaw(), loc.getPitch());
         final String drivingOnY = locY.substring(locY.length() - 2);
-        boolean isOnGround = drivingOnY.contains(".0");
-        boolean isOnSlab = drivingOnY.contains(".5");
-        boolean isPassable = loc.getBlock().isPassable();
-        boolean isAbovePassable = locBlockAbove.getBlock().isPassable();
 
-        double difference = Double.parseDouble("0." + locY.split("\\.")[1]);
-        BlockData blockData = loc.getBlock().getBlockData();
+        final boolean isOnGround = drivingOnY.contains(".0");
+        final boolean isOnSlab = drivingOnY.contains(".5");
+        final boolean isPassable = loc.getBlock().isPassable();
+        final boolean isAbovePassable = locBlockAbove.getBlock().isPassable();
+
+        final double difference = Double.parseDouble("0." + locY.split("\\.")[1]);
+        final BlockData blockData = loc.getBlock().getBlockData();
 
         if (loc.getBlock().getType().toString().contains("CARPET")){
             if (!ConfigModule.defaultConfig.getConfig().getBoolean("driveOnCarpets")){ //if carpets are turned off in config
@@ -388,14 +398,22 @@ public abstract class VehicleMovement {
         teleportSeat(mainSeat, loc);
     }
 
-    protected abstract void teleportSeat(ArmorStand seat, Location loc);
+    protected void teleportSeat(ArmorStand seat, Location loc){
+        if (getServerVersion().is1_12()) teleportSeat(((org.bukkit.craftbukkit.v1_12_R1.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+        else if (getServerVersion().is1_13()) teleportSeat(((org.bukkit.craftbukkit.v1_13_R2.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+        else if (getServerVersion().is1_15()) teleportSeat(((org.bukkit.craftbukkit.v1_15_R1.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+        else if (getServerVersion().is1_16()) teleportSeat(((org.bukkit.craftbukkit.v1_16_R3.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+        else if (getServerVersion().is1_17()) teleportSeat(((org.bukkit.craftbukkit.v1_17_R1.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+        else if (getServerVersion().is1_18()) teleportSeat(((org.bukkit.craftbukkit.v1_18_R1.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+    }
 
     protected String getTeleportMethod(){
-        return "setLocation";
+        if (getServerVersion().is1_18()) return "a";
+        else return "setLocation";
     }
 
     protected void teleportSeat(Object seat, double x, double y, double z, float yaw, float pitch){
-        Bukkit.getScheduler().runTask(Main.instance, () -> {
+        schedulerRun(() -> {
             try {
                 Method method = seat.getClass().getSuperclass().getSuperclass().getDeclaredMethod(getTeleportMethod(), double.class, double.class, double.class, float.class, float.class);
                 method.invoke(seat, x, y, z, yaw, pitch);
@@ -405,22 +423,26 @@ public abstract class VehicleMovement {
         });
     }
 
-    protected void updateStand(ArmorStand mainStand, String license, boolean space, boolean isMovingUpwards) {
-        Location loc = mainStand.getLocation();
-        Location locBlockAhead = getLocationOfBlockAhead(mainStand);
-        Location locBlockAheadAndBelow = new Location(locBlockAhead.getWorld(), locBlockAhead.getX(), locBlockAhead.getY() - 1, locBlockAhead.getZ(), locBlockAhead.getPitch(), locBlockAhead.getYaw());
-        Location location = new Location(loc.getWorld(), loc.getX(), loc.getY() - 0.2, loc.getZ(), loc.getYaw(), loc.getPitch());
+    protected void updateStand(ArmorStand mainStand, String license, boolean space) {
+        final Location loc = mainStand.getLocation();
+        final Location locBlockAhead = getLocationOfBlockAhead(mainStand);
+        final Location locBlockAheadAndBelow = new Location(locBlockAhead.getWorld(), locBlockAhead.getX(), locBlockAhead.getY() - 1, locBlockAhead.getZ(), locBlockAhead.getPitch(), locBlockAhead.getYaw());
+        final Location location = new Location(loc.getWorld(), loc.getX(), loc.getY() - 0.2, loc.getZ(), loc.getYaw(), loc.getPitch());
 
         if (VehicleData.type.get(license) == null) return;
+        final String vehicleType = VehicleData.type.get(license);
+        final Material block = location.getBlock().getType();
+        final String blockName = block.toString();
 
-        if (VehicleData.type.get(license).contains("HELICOPTER")) {
-            if (!location.getBlock().getType().equals(Material.AIR)) {
+        if (vehicleType.contains("HELICOPTER")) {
+            if (!block.equals(Material.AIR)) {
                 VehicleData.speed.put(license, 0.0);
             }
             if (space) {
                 if (mainStand.getLocation().getY() > Main.instance.getConfig().getInt("helicopterMaxHeight")) {
                     return;
                 }
+                putFuelUsage(license);
                 mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.2, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
                 return;
             }
@@ -429,7 +451,7 @@ public abstract class VehicleMovement {
         }
 
         if (VehicleData.type.get(license).contains("HOVER")) {
-            if (location.getBlock().getType().toString().contains("AIR")) {
+            if (block.equals(Material.AIR)) {
                 mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.8, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
                 return;
             }
@@ -437,18 +459,18 @@ public abstract class VehicleMovement {
             return;
         }
 
-        if (location.getBlock().getType().toString().contains("WATER")) {
+        if (blockName.contains("WATER")) {
             mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.8, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
             return;
         }
 
-        if (!isMovingUpwards && locBlockAheadAndBelow.getBlock().isPassable()){
+        if (locBlockAheadAndBelow.getBlock().isPassable()){
             if (location.getBlock().isPassable()){
                 mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.8, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
                 return;
             }
 
-            if (location.getBlock().getType().toString().contains("CARPET")){
+            if (blockName.contains("CARPET")){
                 mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.7375, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
                 return;
             }
@@ -457,7 +479,14 @@ public abstract class VehicleMovement {
         mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.0, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
     }
 
-    protected void rotors(ArmorStand main, ArmorStand seatas, String license) {
+    private void putFuelUsage(String license) {
+        double fuelMultiplier = ConfigModule.defaultConfig.getConfig().getDouble("fuelMultiplier");
+        if (fuelMultiplier < 0.1 || fuelMultiplier > 10) fuelMultiplier = 1; //Must be between 0.1 and 10. Default: 1
+        final double dnum = VehicleData.fuel.get(license) - (fuelMultiplier * VehicleData.fuelUsage.get(license));
+        VehicleData.fuel.put(license, dnum);
+    }
+
+    protected void rotors(ArmorStand main, ArmorStand seatas, String license, boolean slowDown) {
         double xOffset = VehicleData.wiekenx.get("MTVEHICLES_WIEKENS_" + license);
         double yOffset = VehicleData.wiekeny.get("MTVEHICLES_WIEKENS_" + license);
         double zOffset = VehicleData.wiekenz.get("MTVEHICLES_WIEKENS_" + license);
@@ -465,17 +494,14 @@ public abstract class VehicleMovement {
         final Location fbvp = locvp.add(locvp.getDirection().setY(0).normalize().multiply(xOffset));
         final float zvp = (float) (fbvp.getZ() + zOffset * Math.sin(Math.toRadians(seatas.getLocation().getYaw())));
         final float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(seatas.getLocation().getYaw())));
-        final Location loc = new Location(main.getWorld(), xvp, main.getLocation().getY() + yOffset, zvp, seatas.getLocation().getYaw() + 15, seatas.getLocation().getPitch());
-        Bukkit.getScheduler().runTask(Main.instance, () -> {
-            seatas.teleport(loc);
-        });
+        final float yawAdd = (slowDown) ? 5 : 15;
+        final Location loc = new Location(main.getWorld(), xvp, main.getLocation().getY() + yOffset, zvp, seatas.getLocation().getYaw() + yawAdd, seatas.getLocation().getPitch());
+        schedulerRun(() -> seatas.teleport(loc));
     }
 
     protected void pushVehicleUp(ArmorStand mainStand, double plus){
-        Location newLoc = new Location(mainStand.getLocation().getWorld(), mainStand.getLocation().getX(), mainStand.getLocation().getY() + plus, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
-        Bukkit.getScheduler().runTask(Main.instance, () -> {
-            mainStand.teleport(newLoc);
-        });
+        final Location newLoc = new Location(mainStand.getLocation().getWorld(), mainStand.getLocation().getX(), mainStand.getLocation().getY() + plus, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
+        schedulerRun(() -> mainStand.teleport(newLoc));
     }
 
     protected Location getLocationOfBlockAhead(ArmorStand mainStand){
@@ -490,11 +516,8 @@ public abstract class VehicleMovement {
     }
 
     protected boolean steerIsJumping(Object packet){
-        try {
-            isObjectPacket(packet);
-        } catch (IllegalArgumentException e){
-            e.printStackTrace();
-        }
+        if (!isObjectPacket(packet)) return false;
+
         boolean isJumping = false;
         try {
             Method method = packet.getClass().getDeclaredMethod("d");
@@ -506,11 +529,8 @@ public abstract class VehicleMovement {
     }
 
     protected float steerGetXxa(Object packet){
-        try {
-            isObjectPacket(packet);
-        } catch (IllegalArgumentException e){
-            e.printStackTrace();
-        }
+        if (!isObjectPacket(packet)) return 0;
+
         float Xxa = 0;
         try {
             Method method = packet.getClass().getDeclaredMethod("b");
@@ -522,11 +542,8 @@ public abstract class VehicleMovement {
     }
 
     protected float steerGetZza(Object packet){
-        try {
-            isObjectPacket(packet);
-        } catch (IllegalArgumentException e){
-            e.printStackTrace();
-        }
+        if (!isObjectPacket(packet)) return 0;
+
         float Zza = 0;
         try {
             Method method = packet.getClass().getDeclaredMethod("c");
@@ -541,10 +558,23 @@ public abstract class VehicleMovement {
         stand.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, loc, 2);
         stand.getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, loc, 2);
         stand.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, loc, 5);
-        stand.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, loc, 5);
+        if (!getServerVersion().is1_12() && !getServerVersion().is1_13())
+            stand.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, loc, 5);
     }
 
-    protected abstract void isObjectPacket(Object object) throws IllegalArgumentException;
+    protected void spawnTNT(ArmorStand stand, Location loc){
+        if (!ConfigModule.defaultConfig.getConfig().getBoolean("tankTNT")) return;
+
+        schedulerRun(() -> {
+            TNTPrimed tnt = loc.getWorld().spawn(loc, TNTPrimed.class);
+            tnt.setFuseTicks(20);
+            tnt.setVelocity(stand.getLocation().getDirection().multiply(3.0));
+        });
+    }
+
+    protected static void schedulerRun(Runnable task){
+        Bukkit.getScheduler().runTask(Main.instance, task);
+    }
 
 }
 

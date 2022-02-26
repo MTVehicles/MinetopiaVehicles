@@ -9,29 +9,27 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
 
-public class VehiclePublic extends MTVehicleSubCommand {
-    public VehiclePublic() {
+public class VehicleRepair extends MTVehicleSubCommand {
+    public VehicleRepair() {
         this.setPlayerCommand(true);
     }
 
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
-        ItemStack item = player.getInventory().getItemInMainHand();
+        if (!checkPermission("mtvehicles.repair")) return true;
+
+        final ItemStack item = player.getInventory().getItemInMainHand();
         if (!item.hasItemMeta() || !NBTUtils.contains(item, "mtvehicles.kenteken")) {
             sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("noVehicleInHand")));
             return true;
         }
 
-        String licensePlate = NBTUtils.getString(item, "mtvehicles.kenteken");
+        final String license = NBTUtils.getString(item, "mtvehicles.kenteken");
+        final int damage = ConfigModule.vehicleDataConfig.getDamage(license);
+        final double maxHealth = Vehicle.getMaxHealthByDamage(damage);
 
-        Vehicle vehicle = Vehicle.getByPlate(licensePlate);
-
-        assert vehicle != null;
-        vehicle.setOpen(true);
-        vehicle.save();
-
+        ConfigModule.vehicleDataConfig.setHealth(license, maxHealth);
         sendMessage(ConfigModule.messagesConfig.getMessage("actionSuccessful"));
-
         return true;
     }
 }

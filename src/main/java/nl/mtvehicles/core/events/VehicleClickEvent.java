@@ -21,17 +21,15 @@ public class VehicleClickEvent implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent e) {
-        Entity a = e.getRightClicked();
-        Player p = e.getPlayer();
+        final Entity entity = e.getRightClicked();
+        final Player p = e.getPlayer();
         long lastUsed = 0L;
 
-        if (a.getCustomName() == null) return;
-
-        if (!a.getCustomName().contains("MTVEHICLES")) return;
+        if (!Vehicle.isVehicle(entity)) return;
 
         e.setCancelled(true);
 
-        if (a.getCustomName().startsWith("VEHICLE")) return;
+        if (entity.getCustomName().startsWith("VEHICLE")) return;
 
         if (lastUsage.containsKey(p.getName()))
             lastUsed = ((Long) lastUsage.get(p.getName())).longValue();
@@ -39,7 +37,7 @@ public class VehicleClickEvent implements Listener {
         if (System.currentTimeMillis() - lastUsed >= 500) lastUsage.put(p.getName(), Long.valueOf(System.currentTimeMillis()));
         else return;
 
-        String license = TextUtils.licenseReplacer(a.getCustomName());
+        final String license = Vehicle.getLicense(entity);
 
         if (p.isSneaking()) {
 
@@ -52,13 +50,13 @@ public class VehicleClickEvent implements Listener {
             return;
         }
 
-        if (a.getCustomName().contains("MTVEHICLES_SEAT")) {
+        if (entity.getCustomName().contains("MTVEHICLES_SEAT")) {
             Vehicle vehicle = Vehicle.getByPlate(license);
             if (vehicle == null) return;
 
             if (ConfigModule.vehicleDataConfig.getConfig().getBoolean("vehicle."+license+".isOpen") || vehicle.getOwner().equals(p.getUniqueId().toString()) || vehicle.canSit(p) || p.hasPermission("mtvehicles.ride")) {
-                if (a.isEmpty()) {
-                    a.addPassenger(p);
+                if (entity.isEmpty()) {
+                    entity.addPassenger(p);
                     p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehicleEnterMember").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(license).getOwner())).getName())));
                 }
             } else {

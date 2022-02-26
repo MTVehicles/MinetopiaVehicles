@@ -90,7 +90,7 @@ If this did not work don't hesitate to contact the support on our Discord server
 |-------------------|---------------------------------------------------|--------------------------------------------------|
 | /vehicle info     | Get information about a vehicle                   | `None`, `mtvehicles.admin` to display admin info |
 | /vehicle help     | Get a list of all the possible commands           | `None`, `mtvehicles.admin` to display admin info |
-| /vehicle version  | Get info about the plugin _(use this on discord)_ | `mtvehicles.admin`                               |
+| /vehicle version  | Get info about the plugin *(use this on discord)* | `mtvehicles.admin`                               |
 | /vehicle language | Change the plugin language                        | `mtvehicles.admin` or `mtvehicles.language`      |
 
 ### Vehicle specific commands
@@ -104,6 +104,7 @@ These commands can only be executed by the owner of the vehicle
 | /vehicle addmember    | Add a member to your vehicle                         | `None`     |
 | /vehicle removerider  | Remove a rider from your vehicle                     | `None`     |
 | /vehicle removemember | Remove a member from your vehicle                    | `None`     |
+| /vehicle repair       | Restore the health of a vehicle (vehicle damage must be enabled in the [config.yml]) | `mtvehicles.repair` |
 
 ### Moderation commands
 
@@ -122,13 +123,14 @@ These commands can only be executed by the owner of the vehicle
 
 ### Other permissions
 
-| Permission                        | Description                                                                                |
-|-----------------------------------|--------------------------------------------------------------------------------------------|
-| `mtvehicles.ride`                 | Whether a player can ride others' vehicles                                                 |
-| `mtvehicles.anwb`                 | Whether a player can pick up vehicles from water - useless unless ANWB turned on in config |
-| `mtvehicles.oppakken`             | Whether a player can pick up vehicles                                                      |
-| `mtvehicles.filljerrycans`        | Whether a player can fill up a jerry can - can be turned on/off in config                  |
-| `mtvehicles.filljerrycansforfree` | Whether a player can fill up a jerry can for free (Economy plugin + Vault necessary)       |
+| Permission                        | Description                                                                                    |
+|-----------------------------------|------------------------------------------------------------------------------------------------|
+| `mtvehicles.ride`                 | Whether a player can ride others' vehicles                                                     |
+| `mtvehicles.anwb`                 | Whether a player can pick up vehicles from water - useless unless ANWB turned on in config     |
+| `mtvehicles.oppakken`             | Whether a player can pick up vehicles                                                          |
+| `mtvehicles.filljerrycans`        | Whether a player can fill up a jerry can - can be turned on/off in config                      |
+| `mtvehicles.filljerrycansforfree` | Whether a player can fill up a jerry can for free (Economy plugin + Vault necessary)           |
+| `mtvehicles.limit.X`              | Number of vehicles obtainable from /vehicle menu (Change X to an integer, use * for unlimited) |
 
 ## **Softdependencies**
 

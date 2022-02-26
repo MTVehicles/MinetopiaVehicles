@@ -38,7 +38,6 @@ helicopterMaxHeight: 150
 # Turn on if you do not want players to be able to pickup vehicles. Use cautiously.
 carPickup: false
 
-
 # --- Gas ---
 
 # Whether gasoline is used for ALL cars.
@@ -55,6 +54,16 @@ jerrycans:
   - 75
 
 
+# --- Vehicle Health and Damage ---
+
+# Whether vehicles can be damaged.
+damageEnabled: false
+
+# Multiplier of the damage of ALL vehicles. Works similarly to fuelMultiplier.
+# Must be between 0.1 and 5. Default: 0.5 (If lower/higher, the default will be used.)
+damageMultiplier: 0.5
+
+
 # --- Horn ---
 
 # Cooldown for horn in seconds.
@@ -63,6 +72,15 @@ hornCooldown: 5
 # Type of horn, later will be added that you can change the types for each car
 # This is just added as beta function to find bugs or problems
 hornType: "minetopiaclassic.horn1"
+
+
+# --- Tanks ---
+
+# Whether tanks shoot TNTs.
+tankTNT: false
+
+# Tank shooting cooldown
+tankCooldown: 10
 
 
 # --- Driving ---
