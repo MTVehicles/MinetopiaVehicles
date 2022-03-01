@@ -11,13 +11,12 @@ public class Main extends JavaPlugin {
     /**
      * We might not change config in every version, why bother creating a new config file on every update then?
      * Change this EVERY TIME you edit config. OTHERWISE, DON'T TOUCH IT.
-     * This must always be equal to the versions in SuperSecretSettings.
      * (The same applies for Main.messagesVersion, it controls message files.)
      *
      * @see nl.mtvehicles.core.infrastructure.dataconfig.SecretSettingsConfig
      */
-    public static String configVersion = "2.3.0-dev25";
-    public static String messagesVersion = "2.3.0-dev27";
+    public static String configVersion = "2.3.0-dev19";
+    public static String messagesVersion = "2.3.0-dev14";
 
     @Override
     public void onEnable() {
@@ -55,17 +54,5 @@ public class Main extends JavaPlugin {
 
     public static void disablePlugin(){
         instance.setEnabled(false);
-    }
-
-    public static void logInfo(String text){
-        instance.getLogger().info(text);
-    }
-
-    public static void logWarning(String text){
-        instance.getLogger().warning(text);
-    }
-
-    public static void logSevere(String text){
-        instance.getLogger().severe(text);
     }
 }

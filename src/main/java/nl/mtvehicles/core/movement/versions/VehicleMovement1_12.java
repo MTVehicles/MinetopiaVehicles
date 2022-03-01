@@ -7,27 +7,27 @@ import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.movement.VehicleMovement;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftEntity;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.util.Vector;
-
-import static nl.mtvehicles.core.movement.PacketHandler.isObjectPacket;
 
 public class VehicleMovement1_12 extends VehicleMovement {
 
     @Override
     protected boolean slabCheck(ArmorStand mainStand, String license) {
-        final Location loc = getLocationOfBlockAhead(mainStand);
-        final String locY = String.valueOf(mainStand.getLocation().getY());
-        final Location locBlockAbove = new Location(loc.getWorld(), loc.getX(), loc.getY() + 1, loc.getZ(), loc.getYaw(), loc.getPitch());
+        Location loc = getLocationOfBlockAhead(mainStand);
+        String locY = String.valueOf(mainStand.getLocation().getY());
+        Location locBlockAbove = new Location(loc.getWorld(), loc.getX(), loc.getY() + 1, loc.getZ(), loc.getYaw(), loc.getPitch());
+
         final String drivingOnY = locY.substring(locY.length() - 2);
+        boolean isOnGround = drivingOnY.contains(".0");
+        boolean isOnSlab = drivingOnY.contains(".5");
+        boolean isPassable = isPassableCustom(loc.getBlock().getType());
+        boolean isAbovePassable = isPassableCustom(locBlockAbove.getBlock().getType());
 
-        final boolean isOnGround = drivingOnY.contains(".0");
-        final boolean isOnSlab = drivingOnY.contains(".5");
-        final boolean isPassable = isPassableCustom(loc.getBlock().getType());
-        final boolean isAbovePassable = isPassableCustom(locBlockAbove.getBlock().getType());
-
-        final double difference = Double.parseDouble("0." + locY.split("\\.")[1]);
-        final int data = loc.getBlock().getData();
+        double difference = Double.parseDouble("0." + locY.split("\\.")[1]);
+        int data = loc.getBlock().getData();
 
         if (loc.getBlock().getType().toString().contains("CARPET")){
             if (!ConfigModule.defaultConfig.getConfig().getBoolean("driveOnCarpets")){ //if carpets are turned off in config
@@ -192,7 +192,7 @@ public class VehicleMovement1_12 extends VehicleMovement {
     }
 
     @Override
-    protected void updateStand(ArmorStand mainStand, String license, boolean space) {
+    protected void updateStand(ArmorStand mainStand, String license, boolean space, boolean isMovingUpwards) {
         Location loc = mainStand.getLocation();
         Location locBlockAhead = getLocationOfBlockAhead(mainStand);
         Location locBlockAheadAndBelow = new Location(locBlockAhead.getWorld(), locBlockAhead.getX(), locBlockAhead.getY() - 1, locBlockAhead.getZ(), locBlockAhead.getPitch(), locBlockAhead.getYaw());
@@ -229,7 +229,7 @@ public class VehicleMovement1_12 extends VehicleMovement {
             return;
         }
 
-        if (isPassableCustom(locBlockAheadAndBelow.getBlock().getType())){
+        if (!isMovingUpwards && isPassableCustom(locBlockAheadAndBelow.getBlock().getType())){
             if (isPassableCustom(location.getBlock().getType())){
                 mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.8, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
                 return;
@@ -244,32 +244,57 @@ public class VehicleMovement1_12 extends VehicleMovement {
         mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.0, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
     }
 
+    protected void teleportSeat(ArmorStand seat, Location loc){
+        teleportSeat(((CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+    }
+
     private boolean isPassableCustom(Material block){
-        return block.toString().contains("AIR") || block.toString().contains("FLOWER") || block.toString().contains("ROSE") || block.toString().contains("PLANT") || block.equals(Material.BROWN_MUSHROOM) || block.equals(Material.RED_MUSHROOM) || block.toString().contains("LONG_GRASS") || block.toString().contains("SAPLING") || block.toString().contains("DEAD_BUSH") || block.toString().contains("TORCH") || block.toString().contains("BANNER");
+        if (block.toString().contains("AIR") || block.toString().contains("FLOWER") || block.toString().contains("ROSE") || block.toString().contains("PLANT") || block.equals(Material.BROWN_MUSHROOM) || block.equals(Material.RED_MUSHROOM) || block.toString().contains("LONG_GRASS") || block.toString().contains("SAPLING") || block.toString().contains("DEAD_BUSH") || block.toString().contains("TORCH") || block.toString().contains("BANNER")) return true;
+        else return false;
+    }
+
+    @Override
+    protected void isObjectPacket(Object object) throws IllegalArgumentException {
+        if (!(object instanceof PacketPlayInSteerVehicle)) throw new IllegalArgumentException();
+    }
+
+    @Override
+    protected void spawnParticles(ArmorStand stand, Location loc){
+        stand.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, loc, 2);
+        stand.getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, loc, 2);
+        stand.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, loc, 5);
     }
 
     @Override
     protected boolean steerIsJumping(Object packet){
-        if (!isObjectPacket(packet)) return false;
-
+        try {
+            isObjectPacket(packet);
+        } catch (IllegalArgumentException e){
+            e.printStackTrace();
+        }
         PacketPlayInSteerVehicle ppisv = (PacketPlayInSteerVehicle) packet;
         return ppisv.c();
     }
 
     @Override
     protected float steerGetXxa(Object packet){
-        if (!isObjectPacket(packet)) return 0;
-
+        try {
+            isObjectPacket(packet);
+        } catch (IllegalArgumentException e){
+            e.printStackTrace();
+        }
         PacketPlayInSteerVehicle ppisv = (PacketPlayInSteerVehicle) packet;
         return ppisv.a();
     }
 
     @Override
     protected float steerGetZza(Object packet){
-        if (!isObjectPacket(packet)) return 0;
-
+        try {
+            isObjectPacket(packet);
+        } catch (IllegalArgumentException e){
+            e.printStackTrace();
+        }
         PacketPlayInSteerVehicle ppisv = (PacketPlayInSteerVehicle) packet;
         return ppisv.b();
     }
-
 }

@@ -99,7 +99,7 @@ public class JerryCanClickEvent implements Listener {
     private void playJerryCanSound(Player p){
         if (!ConfigModule.defaultConfig.jerryCanPlaySound()) return;
 
-        if (VersionModule.getServerVersion().is1_12()) { //1.12 has different names
+        if (VersionModule.serverVersion.equals("v1_12_R1")) { //1.12 has different names
             try {
                 p.getWorld().playSound(p.getLocation(), Sound.valueOf("BLOCK_NOTE_PLING"), 3.0F, 0.5F);
             } catch (IllegalArgumentException e) {

@@ -2,11 +2,8 @@ package nl.mtvehicles.core.infrastructure.models;
 
 import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
 import nl.mtvehicles.core.infrastructure.helpers.NBTUtils;
-import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -23,7 +20,6 @@ public class Vehicle {
     private double benzine;
     private double benzineVerbruik;
     private boolean hornEnabled;
-    private double health;
     private boolean kofferbak;
     private int kofferbakRows;
     private List<String> kofferbakData;
@@ -54,7 +50,6 @@ public class Vehicle {
         map.put("benzine", this.getFuel());
         map.put("benzineVerbruik", this.getFuelUsage());
         map.put("hornEnabled", this.isHornEnabled());
-        map.put("health", this.getHealth());
         map.put("kofferbak", this.isTrunkEnabled());
         map.put("kofferbakRows", this.getTrunkRows());
         map.put("kofferbakData", this.getTrunkData());
@@ -106,7 +101,6 @@ public class Vehicle {
                         vehicle.setBenzineEnabled((Boolean) configVehicle.get("benzineEnabled"));
                         vehicle.setBenzine(100);
                         vehicle.setHornEnabled((Boolean) configVehicle.get("hornEnabled"));
-                        vehicle.setHealth((double) configVehicle.get("maxHealth"));
                         vehicle.setTrunk((Boolean) configVehicle.get("kofferbakEnabled"));
                         vehicle.setTrunkRows(1);
                         vehicle.setFuelUsage(0.01);
@@ -145,21 +139,6 @@ public class Vehicle {
         return false;
     }
 
-    public static double getMaxHealthByDamage(int damage){
-        List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getConfig().getMapList("voertuigen");
-        for (Map<?, ?> configVehicle : vehicles) {
-            List<Map<?, ?>> skins = (List<Map<?, ?>>) configVehicle.get("cars");
-            for (Map<?, ?> skin : skins) {
-                if (skin.get("itemDamage") != null) {
-                    if (skin.get("itemDamage").equals(damage)) {
-                        return (double) configVehicle.get("maxHealth");
-                    }
-                }
-            }
-        }
-        return 0;
-    }
-
     public static ItemStack getCar(String carUuid) {
         List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getConfig().getMapList("voertuigen");
         List<Map<?, ?>> matchedVehicles = new ArrayList<>();
@@ -178,14 +157,6 @@ public class Vehicle {
             }
         }
         return null;
-    }
-
-    public static boolean isVehicle(Entity entity){
-        return entity.getCustomName() != null && entity instanceof ArmorStand && entity.getCustomName().contains("MTVEHICLES");
-    }
-
-    public static String getLicense(Entity entity){
-        return TextUtils.licenseReplacer(Objects.requireNonNull(entity.getCustomName()));
     }
 
     public static String getCarUuid(String plate) {
@@ -251,7 +222,6 @@ public class Vehicle {
         vehicle.setSkinItem((String) vehicleData.get("skinItem"));
         vehicle.setGlow((Boolean) vehicleData.get("isGlow"));
         vehicle.setHornEnabled(ConfigModule.vehicleDataConfig.isHornSet(plate) ? (boolean) vehicleData.get("hornEnabled") : ConfigModule.vehicleDataConfig.isHornEnabled(plate));
-        vehicle.setHealth(ConfigModule.vehicleDataConfig.isHealthSet(plate) ? (double) vehicleData.get("health") : ConfigModule.vehicleDataConfig.getHealth(plate));
         vehicle.setBenzineEnabled((Boolean) vehicleData.get("benzineEnabled"));
         vehicle.setBenzine((Double) vehicleData.get("benzine"));
         vehicle.setFuelUsage((Double) vehicleData.get("benzineVerbruik"));
@@ -308,10 +278,6 @@ public class Vehicle {
 
     public boolean isHornEnabled() {
         return hornEnabled;
-    }
-
-    public double getHealth(){
-        return health;
     }
 
     public double getFuel() {
@@ -396,10 +362,6 @@ public class Vehicle {
 
     public void setHornEnabled(boolean hornEnabled) {
         this.hornEnabled = hornEnabled;
-    }
-
-    public void setHealth(double health) {
-        this.health = health;
     }
 
     public void setBenzine(double benzine) {

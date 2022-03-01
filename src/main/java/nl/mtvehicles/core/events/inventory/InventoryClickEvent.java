@@ -1,6 +1,5 @@
 package nl.mtvehicles.core.events.inventory;
 
-import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.commands.vehiclesubs.VehicleEdit;
 import nl.mtvehicles.core.commands.vehiclesubs.VehicleMenu;
 import nl.mtvehicles.core.events.VehicleEntityEvent;
@@ -17,7 +16,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.permissions.PermissionAttachmentInfo;
 
 import java.util.HashMap;
 import java.util.List;
@@ -102,11 +100,6 @@ public class InventoryClickEvent implements Listener {
                 p.openInventory(skinMenu.get(p.getUniqueId()));
             }
             if (e.getRawSlot() == 15) { //accepting getting vehicle
-                if (!canGetVehicleFromMenu(p)) {
-                    p.closeInventory();
-                    return;
-                }
-
                 List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getConfig().getMapList("voertuigen");
                 ConfigModule.messagesConfig.sendMessage(p, "completedvehiclegive");
                 p.getInventory().addItem(vehicleMenu.get(p.getUniqueId()));
@@ -123,7 +116,6 @@ public class InventoryClickEvent implements Listener {
                 vehicle.setSkinItem(vehicleMenu.get(p.getUniqueId()).getType().toString());
                 vehicle.setGlow(false);
                 vehicle.setHornEnabled((Boolean) vehicles.get(intSave.get(p.getUniqueId())).get("hornEnabled"));
-                vehicle.setHealth((double) vehicles.get(intSave.get(p.getUniqueId())).get("maxHealth"));
                 vehicle.setBenzineEnabled((Boolean) vehicles.get(intSave.get(p.getUniqueId())).get("benzineEnabled"));
                 vehicle.setBenzine(100);
                 vehicle.setTrunk((Boolean) vehicles.get(intSave.get(p.getUniqueId())).get("kofferbakEnabled"));
@@ -396,31 +388,5 @@ public class InventoryClickEvent implements Listener {
                 p.closeInventory();
             }
         }
-    }
-    
-    private boolean canGetVehicleFromMenu(Player p){
-        final int owned = ConfigModule.vehicleDataConfig.getNumberOfOwnedVehicles(p);
-        int limit = -1; //If permission is not specified, players can get as many as they want
-
-        if (p.hasPermission("mtvehicles.limit.*")) return true;
-
-        for (PermissionAttachmentInfo permission: p.getEffectivePermissions()) {
-            String permName = permission.getPermission();
-            if (permName.contains("mtvehicles.limit.") && permission.getValue()){
-                try {
-                    limit = Integer.parseInt(permName.replace("mtvehicles.limit.", ""));
-                    break;
-                } catch (Exception e) {
-                    limit = 0;
-                    Main.logSevere("An error occurred whilst trying to retrieve player's 'mtvehicles.limit.X' permission. You must have done something wrong when setting it.");
-                    break;
-                }
-            }
-        }
-
-        final boolean returns = limit == -1 || limit > owned;
-        if (!returns) ConfigModule.messagesConfig.sendMessage(p, "tooManyVehicles");
-
-        return returns;
     }
 }

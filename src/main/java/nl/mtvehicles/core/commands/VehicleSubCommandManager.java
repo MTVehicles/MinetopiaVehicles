@@ -32,9 +32,7 @@ public class VehicleSubCommandManager extends MTVehicleCommand {
         CommandModule.subcommands.put("update", new VehicleUpdate());
         CommandModule.subcommands.put("delete", new VehicleDelete());
         CommandModule.subcommands.put("language", new VehicleLanguage());
-        CommandModule.subcommands.put("about", new VehicleVersion());
         CommandModule.subcommands.put("version", new VehicleVersion());
-        CommandModule.subcommands.put("repair", new VehicleRepair());
     }
 
     @Override
@@ -44,13 +42,12 @@ public class VehicleSubCommandManager extends MTVehicleCommand {
             return true;
         }
 
-        final String subcommand = args[0].toLowerCase();
-        if (CommandModule.subcommands.get(subcommand) == null) {
+        if (CommandModule.subcommands.get(args[0].toLowerCase()) == null) {
             sendMessage(ConfigModule.messagesConfig.getMessage("cmdNotExists"));
             return true;
         }
 
-        CommandModule.subcommands.get(subcommand).onExecute(sender, cmd, s, args);
+        CommandModule.subcommands.get(args[0].toLowerCase()).onExecute(sender, cmd, s, args);
         return true;
     }
 }

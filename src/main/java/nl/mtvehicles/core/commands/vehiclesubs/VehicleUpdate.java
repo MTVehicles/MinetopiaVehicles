@@ -44,7 +44,7 @@ public class VehicleUpdate extends MTVehicleSubCommand {
             String value = sb.toString();
             PluginDescriptionFile pdf = Main.instance.getDescription();
             if (!value.contains(pdf.getVersion())) {
-                sendMessage(TextUtils.colorize("&aPlugin update in process..."));
+                sendMessage(TextUtils.colorize("&aWe hebben een update gevonden heb even geduld!"));
                 File dest = new File("plugins");
                 try {
                     download(new URL("https://minetopiavehicles.nl/api/MTVehicles.jar"), dest);
@@ -52,12 +52,12 @@ public class VehicleUpdate extends MTVehicleSubCommand {
                     e.printStackTrace();
                 }
             } else {
-                sendMessage(TextUtils.colorize("&cNo update has been found. You can contact us at https://discord.gg/vehicle"));
+                sendMessage(TextUtils.colorize("&cEr is geen update gevonden, is dit een fout meld het dan in de discord. https://mtvehicles.nl"));
             }
 
         } catch (IOException ex) {
-            Main.logSevere("The plugin cannot connect to MTVehicles servers. Try again later...");
             ex.printStackTrace();
+            Bukkit.getLogger().info("We hebben geen verbinding kunnen maken met de servers van MinetopiaVehicles.");
         }
     }
 
@@ -68,7 +68,7 @@ public class VehicleUpdate extends MTVehicleSubCommand {
             // File finaldest = new File(dest + "/" + file.getFile());
             finaldest.getParentFile().mkdirs();
             finaldest.createNewFile();
-            Main.logInfo("Now reload the server to finish the plugin update!");
+            System.out.println("Voor de laatste stap moeten we even de server herladen!");
 
             OutputStream os = new FileOutputStream(finaldest);
             byte[] data = new byte[1024];
@@ -84,7 +84,6 @@ public class VehicleUpdate extends MTVehicleSubCommand {
 
         } catch (Exception ec) {
             sendMessage(ConfigModule.messagesConfig.getMessage("updateFailed"));
-            Main.logSevere("An error occurred whilst trying to download the plugin. (Java 11+ required)");
             ec.printStackTrace();
         }
     }

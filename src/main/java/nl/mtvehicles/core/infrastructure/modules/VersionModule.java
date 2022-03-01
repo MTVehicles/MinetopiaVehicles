@@ -3,8 +3,6 @@ package nl.mtvehicles.core.infrastructure.modules;
 import lombok.Getter;
 import lombok.Setter;
 import nl.mtvehicles.core.Main;
-import nl.mtvehicles.core.infrastructure.enums.Version;
-import nl.mtvehicles.core.movement.PacketHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginDescriptionFile;
 
@@ -17,7 +15,7 @@ public class VersionModule {
 
     public static String pluginVersion;
     public static boolean isPreRelease;
-    private static String serverVersion;
+    public static String serverVersion;
     public static String serverSoftware;
     Logger logger = Main.instance.getLogger();
 
@@ -32,33 +30,8 @@ public class VersionModule {
         serverSoftware = Bukkit.getName();
     }
 
-    public static Version getServerVersion(){
-        Version returns = null;
-        switch (serverVersion) {
-            case "v1_12_R1":
-                returns = Version.v1_12;
-                break;
-            case "v1_13_R2":
-                returns = Version.v1_13;
-                break;
-            case "v1_15_R1":
-                returns = Version.v1_15;
-                break;
-            case "v1_16_R3":
-                returns = Version.v1_16;
-                break;
-            case "v1_17_R1":
-                returns = Version.v1_17;
-                break;
-            case "v1_18_R1":
-                returns = Version.v1_18;
-                break;
-        }
-        return returns;
-    }
-
     public boolean isSupportedVersion(){
-        if (!getServerVersion().is1_12() && !getServerVersion().is1_13() && !getServerVersion().is1_15() && !getServerVersion().is1_16() && !getServerVersion().is1_17() && !getServerVersion().is1_18()) {
+        if (!serverVersion.equals("v1_12_R1") && !serverVersion.equals("v1_13_R2") && !serverVersion.equals("v1_15_R1") && !serverVersion.equals("v1_16_R3") && !serverVersion.contains("v1_17_R1") && !serverVersion.contains("v1_18_R1")) {
             logger.severe("--------------------------");
             logger.severe("Your Server version is not supported. The plugin will NOT load.");
             logger.severe("Check the supported versions here: https://mtvehicles.nl");
