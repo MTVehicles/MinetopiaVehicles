@@ -5,6 +5,8 @@ voertuigen:
     itemDamage: 1009
     benzineEnabled: false
     kofferbakEnabled: false
+    hornEnabled: false
+    maxHealth: 150.0
     acceleratieSpeed: 0.007
     maxSpeed: 0.34
     brakingSpeed: 0.03
@@ -79,6 +81,8 @@ voertuigen:
     itemDamage: 1008
     benzineEnabled: false
     kofferbakEnabled: false
+    hornEnabled: false
+    maxHealth: 150.0
     acceleratieSpeed: 0.006
     maxSpeed: 0.45
     brakingSpeed: 0.03
@@ -180,6 +184,8 @@ voertuigen:
     itemDamage: 1036
     benzineEnabled: true
     kofferbakEnabled: true
+    hornEnabled: true
+    maxHealth: 200.0
     acceleratieSpeed: 0.015
     maxSpeed: 0.7
     brakingSpeed: 0.03
@@ -237,6 +243,8 @@ voertuigen:
     itemDamage: 1002
     benzineEnabled: true
     kofferbakEnabled: true
+    hornEnabled: true
+    maxHealth: 250.0
     acceleratieSpeed: 0.012
     maxSpeed: 0.67
     brakingSpeed: 0.03
@@ -358,6 +366,8 @@ voertuigen:
     itemDamage: 1003
     benzineEnabled: true
     kofferbakEnabled: true
+    hornEnabled: true
+    maxHealth: 300.0
     acceleratieSpeed: 0.009
     maxSpeed: 0.65
     brakingSpeed: 0.03
@@ -522,6 +532,8 @@ voertuigen:
     itemDamage: 1165
     benzineEnabled: true
     kofferbakEnabled: true
+    hornEnabled: true
+    maxHealth: 300.0
     acceleratieSpeed: 0.021
     maxSpeed: 0.92
     brakingSpeed: 0.03
@@ -583,6 +595,8 @@ voertuigen:
     itemDamage: 1074
     benzineEnabled: true
     kofferbakEnabled: true
+    hornEnabled: true
+    maxHealth: 350.0
     acceleratieSpeed: 0.009
     maxSpeed: 0.65
     brakingSpeed: 0.03
@@ -615,6 +629,8 @@ voertuigen:
     itemDamage: 1006
     benzineEnabled: true
     kofferbakEnabled: true
+    hornEnabled: true
+    maxHealth: 250.0
     acceleratieSpeed: 0.012
     maxSpeed: 0.7
     brakingSpeed: 0.03
@@ -668,6 +684,8 @@ voertuigen:
     itemDamage: 1121
     benzineEnabled: true
     kofferbakEnabled: true
+    hornEnabled: false
+    maxHealth: 200.0
     acceleratieSpeed: 0.012
     maxSpeed: 0.67
     brakingSpeed: 0.03
@@ -709,6 +727,8 @@ voertuigen:
     itemDamage: 1132
     benzineEnabled: true
     kofferbakEnabled: true
+    hornEnabled: true
+    maxHealth: 300.0
     acceleratieSpeed: 0.009
     maxSpeed: 0.6
     brakingSpeed: 0.03
@@ -835,6 +855,8 @@ voertuigen:
     itemDamage: 1234
     benzineEnabled: true
     kofferbakEnabled: true
+    hornEnabled: false
+    maxHealth: 300.0
     acceleratieSpeed: 0.012
     maxSpeed: 0.67
     brakingSpeed: 0.03
@@ -876,6 +898,8 @@ voertuigen:
     itemDamage: 1252
     benzineEnabled: true
     kofferbakEnabled: true
+    hornEnabled: false
+    maxHealth: 800.0
     acceleratieSpeed: 0.012
     maxSpeed: 0.4
     brakingSpeed: 0.03
@@ -921,6 +945,8 @@ voertuigen:
     itemDamage: 1259
     benzineEnabled: true
     kofferbakEnabled: true
+    hornEnabled: false
+    maxHealth: 500.0
     acceleratieSpeed: 0.012
     maxSpeed: 0.4
     brakingSpeed: 0.03
@@ -966,6 +992,8 @@ voertuigen:
     itemDamage: 1124
     benzineEnabled: true
     kofferbakEnabled: true
+    hornEnabled: false
+    maxHealth: 400.0
     acceleratieSpeed: 0.01
     maxSpeed: 0.7
     brakingSpeed: 0.03

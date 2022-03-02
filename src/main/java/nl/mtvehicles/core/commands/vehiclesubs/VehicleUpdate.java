@@ -13,7 +13,6 @@ import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 public class VehicleUpdate extends MTVehicleSubCommand {
@@ -45,7 +44,7 @@ public class VehicleUpdate extends MTVehicleSubCommand {
             String value = sb.toString();
             PluginDescriptionFile pdf = Main.instance.getDescription();
             if (!value.contains(pdf.getVersion())) {
-                sendMessage(TextUtils.colorize("&aWe hebben een update gevonden heb even geduld!"));
+                sendMessage(TextUtils.colorize("&aPlugin update in process..."));
                 File dest = new File("plugins");
                 try {
                     download(new URL("https://minetopiavehicles.nl/api/MTVehicles.jar"), dest);
@@ -53,23 +52,23 @@ public class VehicleUpdate extends MTVehicleSubCommand {
                     e.printStackTrace();
                 }
             } else {
-                sendMessage(TextUtils.colorize("&cEr is geen update gevonden, is dit een fout meld het dan in de discord. https://mtvehicles.nl"));
+                sendMessage(TextUtils.colorize("&cNo update has been found. You can contact us at https://discord.gg/vehicle"));
             }
 
         } catch (IOException ex) {
+            Main.logSevere("The plugin cannot connect to MTVehicles servers. Try again later...");
             ex.printStackTrace();
-            Bukkit.getLogger().info("We hebben geen verbinding kunnen maken met de servers van MinetopiaVehicles.");
         }
     }
 
     public void download(URL file, File dest) {
         try {
             InputStream is = file.openStream();
-            File finaldest = new File(dest + "/" + file.getFile().replace("/api/MTVehicles.jar", "/" + Main.fol().replace("plugins", "")));
+            File finaldest = new File(dest + "/" + file.getFile().replace("/api/MTVehicles.jar", "/" + Main.getFileAsString().replace("plugins", "")));
             // File finaldest = new File(dest + "/" + file.getFile());
             finaldest.getParentFile().mkdirs();
             finaldest.createNewFile();
-            System.out.println("Voor de laatste stap moeten we even de server herladen!");
+            Main.logInfo("Now reload the server to finish the plugin update!");
 
             OutputStream os = new FileOutputStream(finaldest);
             byte[] data = new byte[1024];
@@ -85,6 +84,7 @@ public class VehicleUpdate extends MTVehicleSubCommand {
 
         } catch (Exception ec) {
             sendMessage(ConfigModule.messagesConfig.getMessage("updateFailed"));
+            Main.logSevere("An error occurred whilst trying to download the plugin. (Java 11+ required)");
             ec.printStackTrace();
         }
     }

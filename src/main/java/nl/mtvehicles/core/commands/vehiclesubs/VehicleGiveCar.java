@@ -1,9 +1,7 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
-import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
-import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -34,7 +32,7 @@ public class VehicleGiveCar extends MTVehicleSubCommand {
             return true;
         }
 
-        ItemStack car = Vehicle.getByDamage(of, carUuid);
+        ItemStack car = Vehicle.getByUUID(of, carUuid);
 
         if (car == null){
             sender.sendMessage(ConfigModule.messagesConfig.getMessage("giveCarNotFound"));

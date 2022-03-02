@@ -3,7 +3,6 @@ package nl.mtvehicles.core.commands.vehiclesubs;
 import nl.mtvehicles.core.infrastructure.helpers.ItemFactory;
 import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
-import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -30,7 +29,8 @@ public class VehicleMenu extends MTVehicleSubCommand {
         Player p = (Player) sender;
         sendMessage(ConfigModule.messagesConfig.getMessage("menuOpen"));
 
-        int menuSize = ConfigModule.defaultConfig.getConfig().getInt("vehicleMenuSize") * 9;
+        int menuRows = ConfigModule.defaultConfig.getConfig().getInt("vehicleMenuSize");
+        final int menuSize = (menuRows >= 3 && menuRows <= 6) ? menuRows * 9 : 27;
 
         Inventory inv = Bukkit.createInventory(null, menuSize, "Vehicle Menu");
 

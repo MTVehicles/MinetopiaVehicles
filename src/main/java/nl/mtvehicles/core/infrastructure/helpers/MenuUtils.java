@@ -1,10 +1,9 @@
 package nl.mtvehicles.core.infrastructure.helpers;
 
+import nl.mtvehicles.core.events.inventory.InventoryClickEvent;
 import nl.mtvehicles.core.infrastructure.models.ConfigUtils;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
-import nl.mtvehicles.core.inventory.InventoryClickEvent;
-import nl.mtvehicles.core.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;

@@ -13,7 +13,19 @@ public class MetricsModule {
     public MetricsModule() {
         Metrics metrics = new Metrics(Main.instance, 5932);
         metrics.addCustomChart(new Metrics.SimplePie("used_language", () -> {
-            return ConfigModule.defaultConfig.getConfig().getString("messagesLanguage");
+            return ConfigModule.secretSettings.getMessagesLanguage();
+        }));
+        metrics.addCustomChart(new Metrics.SimplePie("used_driveUp", () -> {
+            String returns;
+            switch (ConfigModule.defaultConfig.driveUpSlabs()){
+                case SLABS:
+                    returns = "slabs"; break;
+                case BLOCKS:
+                    returns = "blocks"; break;
+                case BOTH: default:
+                    returns = "both"; break;
+            }
+            return returns;
         }));
     }
 }

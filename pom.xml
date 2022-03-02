@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>nl.mtvehicles.core</groupId>
     <artifactId>MTVehicles</artifactId>
-    <version>2.2.1</version> <!-- As this is used in plugin.yml, do not include "SNAPSHOT" anymore. -->
+    <version>2.3.0-rc1</version> <!-- As this is used in plugin.yml, do not include "SNAPSHOT" anymore. -->
 
     <repositories>
         <repository>
@@ -19,6 +19,14 @@
         <repository>
             <id>maven-repo</id>
             <url>https://repo.maven.apache.org/maven2/</url>
+        </repository>
+        <repository>
+            <id>sk89q-repo</id>
+            <url>https://maven.enginehub.org/repo/</url>
+        </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
         </repository>
     </repositories>
 
@@ -88,14 +96,20 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>RELEASE</version>
+            <version>1.18.22</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>RELEASE</version>
-            <scope>compile</scope>
+            <groupId>com.sk89q.worldguard</groupId>
+            <artifactId>worldguard-bukkit</artifactId>
+            <version>7.0.3</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.MilkBowl</groupId>
+            <artifactId>VaultAPI</artifactId>
+            <version>1.7</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
@@ -118,11 +132,12 @@
             </plugin>
         </plugins>
         <finalName>MTVehicles</finalName>
-        <directory>E:\Build\1.12.2\plugins</directory>
     </build>
 
     <properties>
         <maven.compiler.source>16</maven.compiler.source>
         <maven.compiler.target>16</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 </project>

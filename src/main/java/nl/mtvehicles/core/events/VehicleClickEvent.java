@@ -1,8 +1,8 @@
 package nl.mtvehicles.core.events;
 
+import nl.mtvehicles.core.infrastructure.enums.RegionAction;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
-import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
@@ -21,52 +21,42 @@ public class VehicleClickEvent implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent e) {
-        Entity a = e.getRightClicked();
-        Player p = e.getPlayer();
+        final Entity entity = e.getRightClicked();
+        final Player p = e.getPlayer();
         long lastUsed = 0L;
 
-        if (a.getCustomName() == null) {
-            return;
-        }
-
-        if (!a.getCustomName().contains("MTVEHICLES")) {
-            return;
-        }
-
-        if (a.getCustomName().startsWith("VEHICLE")) {
-            e.setCancelled(true);
-            return;
-        }
+        if (!Vehicle.isVehicle(entity)) return;
 
         e.setCancelled(true);
 
-        if (lastUsage.containsKey(p.getName())) {
+        if (entity.getCustomName().startsWith("VEHICLE")) return;
+
+        if (lastUsage.containsKey(p.getName()))
             lastUsed = ((Long) lastUsage.get(p.getName())).longValue();
-        }
 
-        if (System.currentTimeMillis() - lastUsed >= 500) {
-            lastUsage.put(p.getName(), Long.valueOf(System.currentTimeMillis()));
-        } else {
-            return;
-        }
+        if (System.currentTimeMillis() - lastUsed >= 500) lastUsage.put(p.getName(), Long.valueOf(System.currentTimeMillis()));
+        else return;
 
-        String license = TextUtils.licenseReplacer(a.getCustomName());
+        final String license = Vehicle.getLicense(entity);
 
         if (p.isSneaking()) {
+
+            if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.PICKUP, e.getRightClicked().getLocation())){
+                ConfigModule.messagesConfig.sendMessage(p, "cannotDoThatHere");
+                return;
+            }
+
             TextUtils.pickupVehicle(license, p);
-            e.setCancelled(true);
             return;
         }
 
-        if (a.getCustomName().contains("MTVEHICLES_SEAT")) {
-            e.setCancelled(true);
+        if (entity.getCustomName().contains("MTVEHICLES_SEAT")) {
             Vehicle vehicle = Vehicle.getByPlate(license);
-            if (vehicle == null) {
-                return;
-            }
+            if (vehicle == null) return;
+
             if (ConfigModule.vehicleDataConfig.getConfig().getBoolean("vehicle."+license+".isOpen") || vehicle.getOwner().equals(p.getUniqueId().toString()) || vehicle.canSit(p) || p.hasPermission("mtvehicles.ride")) {
-                if (a.isEmpty()) {
-                    a.addPassenger(p);
+                if (entity.isEmpty()) {
+                    entity.addPassenger(p);
                     p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehicleEnterMember").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(license).getOwner())).getName())));
                 }
             } else {
@@ -75,6 +65,5 @@ public class VehicleClickEvent implements Listener {
             return;
         }
         TextUtils.createVehicle(license, p);
-        e.setCancelled(true);
     }
 }

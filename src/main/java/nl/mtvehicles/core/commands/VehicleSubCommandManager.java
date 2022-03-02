@@ -2,7 +2,6 @@ package nl.mtvehicles.core.commands;
 
 import nl.mtvehicles.core.commands.vehiclesubs.*;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleCommand;
-import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.modules.CommandModule;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.command.Command;
@@ -33,7 +32,9 @@ public class VehicleSubCommandManager extends MTVehicleCommand {
         CommandModule.subcommands.put("update", new VehicleUpdate());
         CommandModule.subcommands.put("delete", new VehicleDelete());
         CommandModule.subcommands.put("language", new VehicleLanguage());
+        CommandModule.subcommands.put("about", new VehicleVersion());
         CommandModule.subcommands.put("version", new VehicleVersion());
+        CommandModule.subcommands.put("repair", new VehicleRepair());
     }
 
     @Override
@@ -43,12 +44,13 @@ public class VehicleSubCommandManager extends MTVehicleCommand {
             return true;
         }
 
-        if (CommandModule.subcommands.get(args[0].toLowerCase()) == null) {
+        final String subcommand = args[0].toLowerCase();
+        if (CommandModule.subcommands.get(subcommand) == null) {
             sendMessage(ConfigModule.messagesConfig.getMessage("cmdNotExists"));
             return true;
         }
 
-        CommandModule.subcommands.get(args[0].toLowerCase()).onExecute(sender, cmd, s, args);
+        CommandModule.subcommands.get(subcommand).onExecute(sender, cmd, s, args);
         return true;
     }
 }

@@ -1,10 +1,9 @@
 package nl.mtvehicles.core.commands;
 
-import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.modules.CommandModule;
-import org.bukkit.util.StringUtil;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

@@ -1,6 +1,5 @@
 package nl.mtvehicles.core.infrastructure.helpers;
 
-import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
@@ -9,7 +8,6 @@ import org.bukkit.boss.BossBar;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
-import java.util.UUID;
 
 public class BossBarUtils {
     public static BossBar Benzine;

@@ -2,36 +2,34 @@ package nl.mtvehicles.core;
 
 import nl.mtvehicles.core.infrastructure.modules.*;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
     public static Main instance;
-    public static boolean isPreRelease;
-    public static String configVersion = "2.2.1"; //We might not change config in every version, why bother creating a new config file then? Change this only when necessary.;
-    public static String pluginVersion;
-    public static String serverVersion = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+
+    /**
+     * We might not change config in every version, why bother creating a new config file on every update then?
+     * Change this EVERY TIME you edit config. OTHERWISE, DON'T TOUCH IT.
+     * This must always be equal to the versions in SuperSecretSettings.
+     * (The same applies for Main.messagesVersion, it controls message files.)
+     *
+     * @see nl.mtvehicles.core.infrastructure.dataconfig.SecretSettingsConfig
+     */
+    public static String configVersion = "2.3.0-dev25";
+    public static String messagesVersion = "2.3.0-dev27";
 
     @Override
     public void onEnable() {
 
         instance = this;
 
-        PluginDescriptionFile pdf = this.getDescription();
-        pluginVersion = pdf.getVersion();
-        isPreRelease = pluginVersion.toLowerCase().contains("pre"); //Pre-releases should thus be named "vX.Y.Z-preU" etc...
-
-        if (!new CheckVersionModule().isSupportedVersion()) {
-            this.setEnabled(false);
-            return;
-        }
+        if (!new VersionModule().isSupportedVersion()) return;
 
         getLogger().info("Plugin has been loaded!");
-        if (isPreRelease) getLogger().info(ChatColor.YELLOW + "Be aware: You are using a pre-release. It might not be stable and it's generally not advised to use it on a production server.");
+        if (VersionModule.isPreRelease) getLogger().warning("Be aware: You are using a pre-release. It might not be stable and it's generally not advised to use it on a production server.");
         getLogger().info("--------------------------");
-        getLogger().info("Welcome by MTVehicles v" + pluginVersion + "!");
+        getLogger().info("Welcome by MTVehicles v" + VersionModule.pluginVersion + "!");
         getLogger().info("Thanks for using our plugin.");
         getLogger().info("--------------------------");
 
@@ -42,11 +40,32 @@ public class Main extends JavaPlugin {
         new ConfigModule();
     }
 
-    public static String fol() {
+    @Override
+    public void onLoad(){
+        new DependencyModule();
+    }
+
+    public static String getFileAsString() {
         return String.valueOf(Main.instance.getFile());
     }
 
     public void registerListener(Listener listener) {
         Bukkit.getPluginManager().registerEvents(listener, this);
+    }
+
+    public static void disablePlugin(){
+        instance.setEnabled(false);
+    }
+
+    public static void logInfo(String text){
+        instance.getLogger().info(text);
+    }
+
+    public static void logWarning(String text){
+        instance.getLogger().warning(text);
+    }
+
+    public static void logSevere(String text){
+        instance.getLogger().severe(text);
     }
 }

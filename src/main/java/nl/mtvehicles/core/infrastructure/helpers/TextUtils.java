@@ -1,7 +1,7 @@
 package nl.mtvehicles.core.infrastructure.helpers;
 
+import nl.mtvehicles.core.infrastructure.enums.RegionAction;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
-import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -91,6 +91,12 @@ public class TextUtils {
                 VehicleData.FrictionSpeed.put(ken, ConfigModule.vehicleDataConfig.getConfig().getDouble("vehicle."+ken+".aftrekkenSpeed"));
 
                 Location location = new Location(entity.getWorld(), entity.getLocation().getX(), entity.getLocation().getY(), entity.getLocation().getZ(), entity.getLocation().getYaw(), entity.getLocation().getPitch());
+
+                if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.ENTER, location)){
+                    ConfigModule.messagesConfig.sendMessage(p, "cannotDoThatHere");
+                    return;
+                }
+
                 if (vehicleAs.getCustomName().contains("MTVEHICLES_SKIN_" + ken)) {
                     TextUtils.basicStandCreator(ken, "SKIN", location, vehicleAs.getHelmet(), false);
                     TextUtils.basicStandCreator(ken, "MAIN", location, null, true);

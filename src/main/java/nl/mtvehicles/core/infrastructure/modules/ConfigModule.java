@@ -3,12 +3,8 @@ package nl.mtvehicles.core.infrastructure.modules;
 import lombok.Getter;
 import lombok.Setter;
 import nl.mtvehicles.core.Main;
-import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
-import nl.mtvehicles.core.infrastructure.dataconfig.MessagesConfig;
-import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
-import nl.mtvehicles.core.infrastructure.dataconfig.VehiclesConfig;
+import nl.mtvehicles.core.infrastructure.dataconfig.*;
 import nl.mtvehicles.core.infrastructure.models.ConfigUtils;
-import org.bukkit.plugin.PluginDescriptionFile;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -21,33 +17,45 @@ public class ConfigModule {
     @Setter
     ConfigModule instance;
 
-    final public static String configVersion = Main.configVersion;
-
     public static List<ConfigUtils> configList = new ArrayList<>();
+    public static SecretSettingsConfig secretSettings = new SecretSettingsConfig();
     public static MessagesConfig messagesConfig = new MessagesConfig();
     public static VehicleDataConfig vehicleDataConfig = new VehicleDataConfig();
     public static VehiclesConfig vehiclesConfig = new VehiclesConfig();
     public static DefaultConfig defaultConfig = new DefaultConfig();
 
     public ConfigModule() {
-        PluginDescriptionFile pdf = Main.instance.getDescription();
-        String versions = pdf.getVersion();
-
-        File defaultconfig = new File(Main.instance.getDataFolder(), "config.yml");
-        File vehicleconfig = new File(Main.instance.getDataFolder(), "vehicles.yml");
         SimpleDateFormat formatter = new SimpleDateFormat("dd_MM_yyyy-HH_mm_ss");
         Date date = new Date();
-        if (!Main.instance.getConfig().get("Config-Versie").equals(configVersion)) {
-            defaultconfig.renameTo(new File(Main.instance.getDataFolder(), "configOld_" + formatter.format(date) + ".yml"));
-            vehicleconfig.renameTo(new File(Main.instance.getDataFolder(), "vehiclesOld_" + formatter.format(date) + ".yml"));
-            messagesConfig.saveNewLanguageFiles(formatter.format(date)); //Messages might have been updated too - changes the files
+        String configVersion = Main.configVersion;
+        if (!secretSettings.getConfigVersion().equals(configVersion) || defaultConfig.hasOldVersionChecking()) {
+            File dc = new File(Main.instance.getDataFolder(), "config.yml");
+            File vc = new File(Main.instance.getDataFolder(), "vehicles.yml");
+            File sss = new File(Main.instance.getDataFolder(), "supersecretsettings.yml");
+            dc.renameTo(new File(Main.instance.getDataFolder(), "configOld_" + formatter.format(date) + ".yml"));
+            vc.renameTo(new File(Main.instance.getDataFolder(), "vehiclesOld_" + formatter.format(date) + ".yml"));
+            sss.delete();
             Main.instance.saveDefaultConfig();
         }
 
+        String messagesVersion = Main.messagesVersion;
+        if (!secretSettings.getMessagesVersion().equals(messagesVersion) || defaultConfig.hasOldVersionChecking()) {
+            messagesConfig.saveNewLanguageFiles(formatter.format(date));
+        }
+
+        configList.add(secretSettings);
         configList.add(messagesConfig);
         configList.add(vehicleDataConfig);
         configList.add(vehiclesConfig);
         configList.add(defaultConfig);
+        reloadConfigs();
+    }
+
+    public static void reloadConfigs(){
         configList.forEach(ConfigUtils::reload);
+        if (!messagesConfig.setLanguageFile(secretSettings.getMessagesLanguage())){
+            Main.instance.getLogger().severe("Messages.yml for your desired language could not be found. Disabling the plugin...");
+            Main.disablePlugin();
+        }
     }
 }
