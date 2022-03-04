@@ -1,7 +1,7 @@
 package nl.mtvehicles.core.infrastructure.models;
 
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
-import nl.mtvehicles.core.infrastructure.helpers.NBTUtils;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
@@ -76,6 +76,11 @@ public class Vehicle {
         return Bukkit.getOfflinePlayer(UUID.fromString(this.getOwner())).getName();
     }
 
+    public static String getLicensePlate(ItemStack item){
+        NBTItem nbt = new NBTItem(item);
+        return nbt.getString("mtvehicles.kenteken");
+    }
+
     public static ItemStack getByUUID(Player p, String uuid) {
         List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getConfig().getMapList("voertuigen");
         List<Map<?, ?>> matchedVehicles = new ArrayList<>();
@@ -91,7 +96,8 @@ public class Vehicle {
                             nbtVal = skin.get("nbtValue").toString();
                         }
                         ItemStack is = ItemUtils.carItem3((Integer) skin.get("itemDamage"), ((String) skin.get("name")), (String) skin.get("SkinItem"), "mtcustom", nbtVal);
-                        String kenteken = NBTUtils.getString((is), "mtvehicles.kenteken");
+                        NBTItem nbt = new NBTItem(is);
+                        String kenteken = nbt.getString("mtvehicles.kenteken");
                         matchedVehicles.add(configVehicle);
                         Vehicle vehicle = new Vehicle();
                         List<String> members = ConfigModule.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".members");

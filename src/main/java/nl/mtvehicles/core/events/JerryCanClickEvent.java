@@ -1,7 +1,7 @@
 package nl.mtvehicles.core.events;
 
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.commands.vehiclesubs.VehicleFuel;
-import nl.mtvehicles.core.infrastructure.helpers.NBTUtils;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
@@ -23,9 +23,10 @@ public class JerryCanClickEvent implements Listener {
         final Action action = e.getAction();
         final ItemStack item = e.getItem();
 
-        if (e.getItem() == null
-                || !e.getItem().hasItemMeta()
-                || !(NBTUtils.contains(item, "mtvehicles.benzinesize"))
+        if (e.getItem() == null) return;
+
+        if (!e.getItem().hasItemMeta()
+                || !(new NBTItem(e.getItem())).hasKey("mtvehicles.benzinesize")
                 || e.getClickedBlock() == null
         ) return;
 
@@ -53,8 +54,8 @@ public class JerryCanClickEvent implements Listener {
     }
 
     private void fillJerryCan(Player p, ItemStack item){
-        int benval = Integer.parseInt(NBTUtils.getString(item, "mtvehicles.benzineval"));
-        int bensize = Integer.parseInt(NBTUtils.getString(item, "mtvehicles.benzinesize"));
+        int benval = (new NBTItem(item)).getInteger("mtvehicles.benzineval");
+        int bensize = (new NBTItem(item)).getInteger("mtvehicles.benzinesize");
 
         if (benval == bensize) ConfigModule.messagesConfig.sendMessage(p, "jerrycanFull");
 
@@ -69,8 +70,8 @@ public class JerryCanClickEvent implements Listener {
     }
 
     private void fillWholeJerryCan(Player p, ItemStack item){
-        int benval = Integer.parseInt(NBTUtils.getString(item, "mtvehicles.benzineval"));
-        int bensize = Integer.parseInt(NBTUtils.getString(item, "mtvehicles.benzinesize"));
+        int benval = (new NBTItem(item)).getInteger("mtvehicles.benzineval");
+        int bensize = (new NBTItem(item)).getInteger("mtvehicles.benzinesize");
         if (benval == bensize) ConfigModule.messagesConfig.sendMessage(p, "jerrycanFull");
 
         int difference = bensize - benval;

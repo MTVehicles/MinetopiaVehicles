@@ -1,6 +1,6 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
-import nl.mtvehicles.core.infrastructure.helpers.NBTUtils;
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
@@ -22,7 +22,9 @@ public class VehicleAddMember extends MTVehicleSubCommand {
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
         Player player = (Player) sender;
         ItemStack item = player.getInventory().getItemInMainHand();
-        if (!item.hasItemMeta() || !NBTUtils.contains(item, "mtvehicles.kenteken")) {
+        NBTItem nbt = new NBTItem(item);
+
+        if (!item.hasItemMeta() || !nbt.hasKey("mtvehicles.kenteken")) {
             sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("noVehicleInHand")));
             return true;
         }
@@ -33,7 +35,7 @@ public class VehicleAddMember extends MTVehicleSubCommand {
         }
 
         Player offlinePlayer = Bukkit.getPlayer(args[1]);
-        String licensePlate = NBTUtils.getString(item, "mtvehicles.kenteken");
+        String licensePlate = nbt.getString("mtvehicles.kenteken");
 
         if (offlinePlayer == null || !offlinePlayer.hasPlayedBefore()) {
             sendMessage(ConfigModule.messagesConfig.getMessage("playerNotFound"));

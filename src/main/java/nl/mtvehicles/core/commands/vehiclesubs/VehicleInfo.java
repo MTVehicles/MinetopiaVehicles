@@ -1,6 +1,6 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
-import nl.mtvehicles.core.infrastructure.helpers.NBTUtils;
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.ConfigUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
@@ -29,14 +29,14 @@ public class VehicleInfo extends MTVehicleSubCommand {
 
         ItemStack item = p.getInventory().getItemInMainHand();
 
-        if (!item.hasItemMeta() || !(NBTUtils.contains(item, "mtvehicles.kenteken"))) {
+        if (!item.hasItemMeta() || !(new NBTItem(item)).hasKey("mtvehicles.kenteken")) {
             sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("noVehicleInHand")));
             return true;
         }
 
         ConfigModule.configList.forEach(ConfigUtils::reload);
 
-        String ken = NBTUtils.getString(item, "mtvehicles.kenteken");
+        String ken = Vehicle.getLicensePlate(item);
         Vehicle vehicle = Vehicle.getByPlate(ken);
 
         if (vehicle == null) return true;

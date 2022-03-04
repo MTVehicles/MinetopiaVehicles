@@ -33,6 +33,8 @@ public class Main extends JavaPlugin {
         getLogger().info("Thanks for using our plugin.");
         getLogger().info("--------------------------");
 
+        disableNBTAPIVersionMessages();
+
         new CommandModule();
         new ListenersModule();
         new MetricsModule();
@@ -53,7 +55,12 @@ public class Main extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(listener, this);
     }
 
+    private void disableNBTAPIVersionMessages(){
+        de.tr7zw.changeme.nbtapi.utils.MinecraftVersion.disableUpdateCheck();
+    }
+
     public static void disablePlugin(){
+        logSevere("Disabling the plugin (a critical bug might have occurred)...");
         instance.setEnabled(false);
     }
 

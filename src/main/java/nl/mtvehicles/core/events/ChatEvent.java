@@ -1,8 +1,8 @@
 package nl.mtvehicles.core.events;
 
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
 import nl.mtvehicles.core.infrastructure.helpers.MenuUtils;
-import nl.mtvehicles.core.infrastructure.helpers.NBTUtils;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
@@ -24,7 +24,7 @@ public class ChatEvent implements Listener {
             e.setCancelled(true);
 
             if (!e.getMessage().toLowerCase().contains("annule")) {
-                String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
+                String ken = getLicensePlate(p);
 
                 if (!(ConfigModule.vehicleDataConfig.getConfig().get("vehicle." + e.getMessage() + ".skinItem") == null)) {
                     ConfigModule.messagesConfig.sendMessage(p, "actionFailedDupLicense");
@@ -64,7 +64,7 @@ public class ChatEvent implements Listener {
             e.setCancelled(true);
 
             if (!e.getMessage().toLowerCase().contains("annule")) {
-                String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
+                String ken = getLicensePlate(p);
                 ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + ken + ".name", e.getMessage());
                 ConfigModule.vehicleDataConfig.save();
                 p.getInventory().setItemInMainHand(ItemUtils.carItem2(ConfigModule.vehicleDataConfig.getConfig().getInt("vehicle." + ken + ".skinDamage"), e.getMessage(), ConfigModule.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".skinItem"), ken));
@@ -105,7 +105,7 @@ public class ChatEvent implements Listener {
             }
 
             if (!e.getMessage().toLowerCase().contains("annule")) {
-                String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
+                String ken = getLicensePlate(p);
                 ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + ken + ".benzine", Double.valueOf(e.getMessage()));
                 ConfigModule.vehicleDataConfig.save();
                 ConfigModule.messagesConfig.sendMessage(p, "actionSuccessful");
@@ -138,7 +138,7 @@ public class ChatEvent implements Listener {
             }
 
             if (!e.getMessage().toLowerCase().contains("annule")) {
-                String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
+                String ken = getLicensePlate(p);
                 ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + ken + ".benzineVerbruik", Double.valueOf(e.getMessage()));
                 ConfigModule.vehicleDataConfig.save();
                 ConfigModule.messagesConfig.sendMessage(p, "actionSuccessful");
@@ -186,7 +186,7 @@ public class ChatEvent implements Listener {
                 return;
             }
 
-            String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
+            String ken = getLicensePlate(p);
             ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + ken + ".kofferbakRows", input);
             ConfigModule.vehicleDataConfig.save();
             ConfigModule.messagesConfig.sendMessage(p, "actionSuccessful");
@@ -212,7 +212,7 @@ public class ChatEvent implements Listener {
             }
 
             if (!e.getMessage().toLowerCase().contains("annule")) {
-                String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
+                String ken = getLicensePlate(p);
                 ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + ken + ".acceleratieSpeed", Double.valueOf(e.getMessage()));
                 ConfigModule.vehicleDataConfig.save();
                 ConfigModule.messagesConfig.sendMessage(p, "actionSuccessful");
@@ -244,7 +244,7 @@ public class ChatEvent implements Listener {
             }
 
             if (!e.getMessage().toLowerCase().contains("annule")) {
-                String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
+                String ken = getLicensePlate(p);
                 ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + ken + ".maxSpeed", Double.valueOf(e.getMessage()));
                 ConfigModule.vehicleDataConfig.save();
                 ConfigModule.messagesConfig.sendMessage(p, "actionSuccessful");
@@ -277,7 +277,7 @@ public class ChatEvent implements Listener {
             }
 
             if (!e.getMessage().toLowerCase().contains("annule")) {
-                String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
+                String ken = getLicensePlate(p);
                 ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + ken + ".brakingSpeed", Double.valueOf(e.getMessage()));
                 ConfigModule.vehicleDataConfig.save();
                 ConfigModule.messagesConfig.sendMessage(p, "actionSuccessful");
@@ -310,7 +310,7 @@ public class ChatEvent implements Listener {
             }
 
             if (!e.getMessage().toLowerCase().contains("annule")) {
-                String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
+                String ken = getLicensePlate(p);
                 ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + ken + ".aftrekkenSpeed", Double.valueOf(e.getMessage()));
                 ConfigModule.vehicleDataConfig.save();
                 ConfigModule.messagesConfig.sendMessage(p, "actionSuccessful");
@@ -343,7 +343,7 @@ public class ChatEvent implements Listener {
             }
 
             if (!e.getMessage().toLowerCase().contains("annule")) {
-                String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
+                String ken = getLicensePlate(p);
                 ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + ken + ".maxSpeedBackwards", Double.valueOf(e.getMessage()));
                 ConfigModule.vehicleDataConfig.save();
                 ConfigModule.messagesConfig.sendMessage(p, "actionSuccessful");
@@ -376,7 +376,7 @@ public class ChatEvent implements Listener {
             }
 
             if (!e.getMessage().toLowerCase().contains("annule")) {
-                String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
+                String ken = getLicensePlate(p);
                 ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + ken + ".rotateSpeed", Integer.parseInt(e.getMessage()));
                 ConfigModule.vehicleDataConfig.save();
                 ConfigModule.messagesConfig.sendMessage(p, "actionSuccessful");
@@ -412,5 +412,15 @@ public class ChatEvent implements Listener {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Get license plate of player's held vehicle
+     * @param player Player
+     * @return License plate of player's held vehicle
+     */
+    private String getLicensePlate(Player player){
+        NBTItem nbt = new NBTItem(player.getInventory().getItemInMainHand());
+        return nbt.getString("mtvehicles.kenteken");
     }
 }

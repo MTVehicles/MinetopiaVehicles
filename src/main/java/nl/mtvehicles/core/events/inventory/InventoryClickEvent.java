@@ -1,11 +1,15 @@
 package nl.mtvehicles.core.events.inventory;
 
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.commands.vehiclesubs.VehicleEdit;
 import nl.mtvehicles.core.commands.vehiclesubs.VehicleMenu;
 import nl.mtvehicles.core.events.VehicleEntityEvent;
 import nl.mtvehicles.core.infrastructure.dataconfig.MessagesConfig;
-import nl.mtvehicles.core.infrastructure.helpers.*;
+import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
+import nl.mtvehicles.core.infrastructure.helpers.LanguageUtils;
+import nl.mtvehicles.core.infrastructure.helpers.MenuUtils;
+import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
@@ -110,8 +114,11 @@ public class InventoryClickEvent implements Listener {
                 List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getConfig().getMapList("voertuigen");
                 ConfigModule.messagesConfig.sendMessage(p, "completedvehiclegive");
                 p.getInventory().addItem(vehicleMenu.get(p.getUniqueId()));
-                String kenteken = NBTUtils.getString(vehicleMenu.get(p.getUniqueId()), "mtvehicles.kenteken");
-                String naam = NBTUtils.getString(vehicleMenu.get(p.getUniqueId()), "mtvehicles.naam");
+
+                NBTItem nbt = new NBTItem(vehicleMenu.get(p.getUniqueId()));
+                String kenteken = nbt.getString("mtvehicles.kenteken");
+                String naam = nbt.getString("mtvehicles.naam");
+
                 Vehicle vehicle = new Vehicle();
                 List<String> members = ConfigModule.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".members");
                 List<String> riders = ConfigModule.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".riders");
@@ -137,7 +144,7 @@ public class InventoryClickEvent implements Listener {
                 vehicle.setRotateSpeed((Integer) vehicles.get(intSave.get(p.getUniqueId())).get("rotateSpeed"));
                 vehicle.setMaxSpeedBackwards((Double) vehicles.get(intSave.get(p.getUniqueId())).get("maxSpeedBackwards"));
                 vehicle.setOwner(p.getUniqueId().toString());
-                vehicle.setNbtValue(NBTUtils.getString(vehicleMenu.get(p.getUniqueId()), "mtcustom"));
+                vehicle.setNbtValue(nbt.getString("mtcustom"));
                 vehicle.setRiders(riders);
                 vehicle.setMembers(members);
                 vehicle.save();
@@ -184,7 +191,8 @@ public class InventoryClickEvent implements Listener {
                 MenuUtils.speedEdit(p);
             }
             if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Delete Vehicle")) {
-                String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
+                NBTItem nbt = new NBTItem(p.getInventory().getItemInMainHand());
+                String ken = nbt.getString("mtvehicles.kenteken");
                 ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + ken, null);
                 ConfigModule.vehicleDataConfig.save();
                 p.getInventory().getItemInMainHand().setAmount(0);
@@ -194,7 +202,8 @@ public class InventoryClickEvent implements Listener {
 
         if (e.getView().getTitle().contains("Vehicle Settings")) {
             e.setCancelled(true);
-            String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
+            NBTItem nbt = new NBTItem(p.getInventory().getItemInMainHand());
+            String ken = nbt.getString("mtvehicles.kenteken");
             if (e.getCurrentItem().equals(ItemUtils.mItem("BARRIER", 1, (short) 0, "&4Sluiten", "&cDruk hier om het menu te sluiten!"))) {
                 e.setCancelled(true);
                 p.closeInventory();
@@ -240,7 +249,8 @@ public class InventoryClickEvent implements Listener {
         }
         if (e.getView().getTitle().contains("Vehicle Benzine")) {
             e.setCancelled(true);
-            String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
+            NBTItem nbt = new NBTItem(p.getInventory().getItemInMainHand());
+            String ken = nbt.getString("mtvehicles.kenteken");
             if (e.getCurrentItem().equals(ItemUtils.mItem("BARRIER", 1, (short) 0, "&4Sluiten", "&cDruk hier om het menu te sluiten!"))) {
                 e.setCancelled(true);
                 p.closeInventory();
@@ -251,7 +261,7 @@ public class InventoryClickEvent implements Listener {
                 e.setCancelled(true);
                 return;
             }
-            String menuitem = NBTUtils.getString(e.getCurrentItem(), "mtvehicles.item");
+            String menuitem = new NBTItem(e.getCurrentItem()).getString("mtvehicles.item");
             if (menuitem.contains("1")) {
                 if (ConfigModule.vehicleDataConfig.getConfig().getBoolean("vehicle." + ken + ".benzineEnabled")) {
                     ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + ken + ".benzineEnabled", false);
@@ -287,8 +297,9 @@ public class InventoryClickEvent implements Listener {
                 e.setCancelled(true);
                 return;
             }
-            String ken = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.kenteken");
-            String menuitem = NBTUtils.getString(e.getCurrentItem(), "mtvehicles.item");
+            NBTItem nbt = new NBTItem(p.getInventory().getItemInMainHand());
+            String ken = nbt.getString("mtvehicles.kenteken");
+            String menuitem = new NBTItem(e.getCurrentItem()).getString("mtvehicles.item");
             if (menuitem.contains("1")) {
                 if (ConfigModule.vehicleDataConfig.getConfig().getBoolean("vehicle." + ken + ".kofferbak")) {
                     ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + ken + ".kofferbak", false);
@@ -336,7 +347,7 @@ public class InventoryClickEvent implements Listener {
                 e.setCancelled(true);
                 return;
             }
-            String menuitem = NBTUtils.getString(e.getCurrentItem(), "mtvehicles.item");
+            String menuitem = new NBTItem(e.getCurrentItem()).getString("mtvehicles.item");
             if (menuitem.contains("1")) {
                 p.closeInventory();
                 ConfigModule.messagesConfig.sendMessage(p, "typeSpeedInChat");
@@ -380,7 +391,7 @@ public class InventoryClickEvent implements Listener {
             e.setCancelled(true);
 
             if (e.getRawSlot() == 15) { //Yes
-                String carUuid = NBTUtils.getString(p.getInventory().getItemInMainHand(), "mtvehicles.item");
+                String carUuid = new NBTItem(p.getInventory().getItemInMainHand()).getString("mtvehicles.item");
                 if (Vehicle.getByUUID(p, carUuid) == null){
                     p.sendMessage(ConfigModule.messagesConfig.getMessage("giveCarNotFound"));
                     p.closeInventory();

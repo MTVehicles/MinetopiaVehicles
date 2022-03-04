@@ -1,8 +1,8 @@
 package nl.mtvehicles.core.events;
 
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.infrastructure.enums.RegionAction;
 import nl.mtvehicles.core.infrastructure.helpers.ItemFactory;
-import nl.mtvehicles.core.infrastructure.helpers.NBTUtils;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
@@ -31,9 +31,10 @@ public class VehiclePlaceEvent implements Listener {
         final Action action = e.getAction();
         final ItemStack item = e.getItem();
 
-        if (e.getItem() == null
-                || !e.getItem().hasItemMeta()
-                || !(NBTUtils.contains(item, "mtvehicles.kenteken"))
+        if (e.getItem() == null) return;
+
+        if (!e.getItem().hasItemMeta()
+                || !(new NBTItem(e.getItem())).hasKey("mtvehicles.kenteken")
                 || e.getClickedBlock() == null
         ) return;
 
@@ -43,7 +44,7 @@ public class VehiclePlaceEvent implements Listener {
             return;
         }
 
-        String license = NBTUtils.getString(item, "mtvehicles.kenteken");
+        String license = Vehicle.getLicensePlate(item);
         if (license == null) {
             return;
         }

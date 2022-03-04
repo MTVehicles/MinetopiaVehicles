@@ -1,9 +1,12 @@
 package nl.mtvehicles.core.infrastructure.helpers;
 
+import de.tr7zw.changeme.nbtapi.NBTItem;
+import de.tr7zw.changeme.nbtapi.NbtApiException;
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -30,16 +33,14 @@ public class ItemFactory {
         this.is = new ItemStack(material, amount);
     }
 
-    public ItemFactory(Material material, int amount, byte durability) {
-        this.is = new ItemStack(material, amount, durability);
-    }
-
     public ItemFactory clone() {
         return new ItemFactory(this.is);
     }
 
-    public ItemFactory setDurability(short durability) {
-        this.is.setDurability(durability);
+    public ItemFactory setDurability(int durability) {
+        ItemMeta im = this.is.getItemMeta();
+        ((Damageable) im).setDamage(durability);
+        this.is.setItemMeta(im);
         return this;
     }
 
@@ -159,7 +160,9 @@ public class ItemFactory {
     }
 
     public ItemFactory setNBT(String key, String value) {
-        is = NBTUtils.set(is, value, key);
+        NBTItem nbt = new NBTItem(this.is);
+        nbt.setString(key, value);
+        nbt.mergeNBT(this.is);
         return this;
     }
 

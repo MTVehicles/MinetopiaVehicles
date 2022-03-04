@@ -1,15 +1,14 @@
 package nl.mtvehicles.core.events;
 
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.commands.vehiclesubs.VehicleFuel;
 import nl.mtvehicles.core.infrastructure.helpers.BossBarUtils;
-import nl.mtvehicles.core.infrastructure.helpers.NBTUtils;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
 import nl.mtvehicles.core.infrastructure.models.ConfigUtils;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -46,14 +45,17 @@ public class VehicleEntityEvent implements Listener {
             if (!p.isInsideVehicle()) return;
 
             ItemStack item = p.getInventory().getItemInMainHand();
-            if (!item.hasItemMeta() || !NBTUtils.contains(item, "mtvehicles.benzineval")){
+
+            if (!item.hasItemMeta() || !new NBTItem(item).hasKey("mtvehicles.benzineval")){
                 checkDamage(e);
                 return;
             }
 
+            NBTItem nbt = new NBTItem(item);
+
             double curb = VehicleData.fuel.get(license);
-            String benval = NBTUtils.getString(item, "mtvehicles.benzineval");
-            String bensize = NBTUtils.getString(item, "mtvehicles.benzinesize");
+            String benval = nbt.getString("mtvehicles.benzineval");
+            String bensize = nbt.getString("mtvehicles.benzinesize");
 
             if (!ConfigModule.defaultConfig.canUseJerryCan(p)){
                 ConfigModule.messagesConfig.sendMessage(p, "notInAGasStation");
