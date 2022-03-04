@@ -70,14 +70,14 @@ public class VehicleMovement {
             return;
         }
 
-        schedulerRun(() -> standSkin.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standSkin.getLocation().getYaw(), standSkin.getLocation().getPitch())));
+        schedulerRun(() -> standSkin.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw(), standMain.getLocation().getPitch())));
 
-        int RotationSpeed = VehicleData.RotationSpeed.get(license);
-        double MaxSpeed = VehicleData.MaxSpeed.get(license);
-        double AccelerationSpeed = VehicleData.AccelerationSpeed.get(license);
-        double BrakingSpeed = VehicleData.BrakingSpeed.get(license);
-        double MaxSpeedBackwards = VehicleData.MaxSpeedBackwards.get(license);
-        double FrictionSpeed = VehicleData.FrictionSpeed.get(license);
+        final int RotationSpeed = VehicleData.RotationSpeed.get(license);
+        final double MaxSpeed = VehicleData.MaxSpeed.get(license);
+        final double AccelerationSpeed = VehicleData.AccelerationSpeed.get(license);
+        final double BrakingSpeed = VehicleData.BrakingSpeed.get(license);
+        final double MaxSpeedBackwards = VehicleData.MaxSpeedBackwards.get(license);
+        final double FrictionSpeed = VehicleData.FrictionSpeed.get(license);
 
         boolean space = !helicopterFalling && steerIsJumping(packet);
         updateStand(standMain, license, space);
@@ -131,11 +131,11 @@ public class VehicleMovement {
                 if (getServerVersion().is1_12()){
                     standMain.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - RotationSpeed, standMain.getLocation().getPitch()));
                     standMainSeat.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - RotationSpeed, standMain.getLocation().getPitch()));
-                    standSkin.teleport(new Location(standSkin.getLocation().getWorld(), standSkin.getLocation().getX(), standSkin.getLocation().getY(), standSkin.getLocation().getZ(), standSkin.getLocation().getYaw() - RotationSpeed, standSkin.getLocation().getPitch()));
+                    standSkin.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - RotationSpeed, standMain.getLocation().getPitch()));
                 } else {
                     standMain.setRotation(standMain.getLocation().getYaw() - RotationSpeed, standMain.getLocation().getPitch());
                     standMainSeat.setRotation(standMain.getLocation().getYaw() - RotationSpeed, standMain.getLocation().getPitch());
-                    standSkin.setRotation(standSkin.getLocation().getYaw() - RotationSpeed, standSkin.getLocation().getPitch());
+                    standSkin.setRotation(standMain.getLocation().getYaw() - RotationSpeed, standMain.getLocation().getPitch());
                 }
             });
         } else if (xxa < 0.0) {
@@ -143,11 +143,11 @@ public class VehicleMovement {
                 if (getServerVersion().is1_12()){
                     standMain.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() + RotationSpeed, standMain.getLocation().getPitch()));
                     standMainSeat.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() + RotationSpeed, standMain.getLocation().getPitch()));
-                    standSkin.teleport(new Location(standSkin.getLocation().getWorld(), standSkin.getLocation().getX(), standSkin.getLocation().getY(), standSkin.getLocation().getZ(), standSkin.getLocation().getYaw() + RotationSpeed, standSkin.getLocation().getPitch()));
+                    standSkin.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() + RotationSpeed, standMain.getLocation().getPitch()));
                 } else {
                     standMain.setRotation(standMain.getLocation().getYaw() + RotationSpeed, standMain.getLocation().getPitch());
                     standMainSeat.setRotation(standMain.getLocation().getYaw() + RotationSpeed, standMain.getLocation().getPitch());
-                    standSkin.setRotation(standSkin.getLocation().getYaw() + RotationSpeed, standSkin.getLocation().getPitch());
+                    standSkin.setRotation(standMain.getLocation().getYaw() + RotationSpeed, standMain.getLocation().getPitch());
                 }
             });
         }
