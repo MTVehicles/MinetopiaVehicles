@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.infrastructure.helpers;
 
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -12,6 +13,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static nl.mtvehicles.core.infrastructure.modules.VersionModule.getServerVersion;
 
 public class ItemFactory {
     private ItemStack is;
@@ -31,15 +34,21 @@ public class ItemFactory {
     }
 
     public ItemFactory(Material material, int amount, byte durability) {
-        this.is = new ItemStack(material, amount, durability);
+        this.is = new ItemStack(material, amount);
+        this.setDurability(durability);
     }
 
     public ItemFactory clone() {
         return new ItemFactory(this.is);
     }
 
-    public ItemFactory setDurability(short durability) {
-        this.is.setDurability(durability);
+    public ItemFactory setDurability(int durability) {
+        if (getServerVersion().is1_12()) this.is.setDurability((short) durability);
+        else {
+            ItemMeta im = this.is.getItemMeta();
+            ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
+            this.is.setItemMeta(im);
+        }
         return this;
     }
 
@@ -159,7 +168,9 @@ public class ItemFactory {
     }
 
     public ItemFactory setNBT(String key, String value) {
-        is = NBTUtils.set(is, value, key);
+        NBTItem nbt = new NBTItem(this.is);
+        nbt.setString(key, value);
+        nbt.mergeNBT(this.is);
         return this;
     }
 

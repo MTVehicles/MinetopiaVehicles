@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
+import static nl.mtvehicles.core.infrastructure.modules.VersionModule.getServerVersion;
+
 public class ItemUtils {
     public static HashMap<String, Boolean> edit = new HashMap<>();
 
@@ -31,9 +33,10 @@ public class ItemUtils {
             List<String> itemLore = new ArrayList<>();
             itemLore.add(TextUtils.colorize("&a"));
             itemMeta.setLore(itemLore);
+            if (getServerVersion().is1_12()) carItem.setDurability((short) durability);
+            else ((org.bukkit.inventory.meta.Damageable) itemMeta).setDamage(durability);
             itemMeta.setUnbreakable(true);
             carItem.setItemMeta(itemMeta);
-            carItem.setDurability((short) durability);
             return carItem;
         } catch (Exception e) {
             try {
@@ -46,9 +49,10 @@ public class ItemUtils {
                 List<String> itemLore = new ArrayList<>();
                 itemLore.add(TextUtils.colorize("&a"));
                 itemMeta.setLore(itemLore);
+                if (getServerVersion().is1_12()) carItem.setDurability((short) durability);
+                else ((org.bukkit.inventory.meta.Damageable) itemMeta).setDamage(durability);
                 itemMeta.setUnbreakable(true);
                 carItem.setItemMeta(itemMeta);
-                carItem.setDurability((short) durability);
                 return carItem;
             } catch (Exception e2) {
                 e2.printStackTrace();
@@ -58,7 +62,7 @@ public class ItemUtils {
     }
 
     public static ItemStack carItem9(int durability, String name, String material, String model, String nbt) {
-        ItemStack car = (new ItemFactory(Material.getMaterial(material))).setDurability((short) durability).setName(TextUtils.colorize("&6" + name)).toItemStack();
+        ItemStack car = (new ItemFactory(Material.getMaterial(material))).setDurability(durability).setName(TextUtils.colorize("&6" + name)).toItemStack();
         ItemMeta im = car.getItemMeta();
         List<String> itemlore = new ArrayList<>();
         itemlore.add(TextUtils.colorize("&a"));
@@ -70,21 +74,21 @@ public class ItemUtils {
 
     public static ItemStack carItem2(int id, String name, String material) {
         try {
-        String ken = generateLicencePlate();
-        ItemStack car = (new ItemFactory(Material.getMaterial(material))).setDurability((short) id).setName(TextUtils.colorize("&6" + name)).setNBT("mtvehicles.kenteken", ken).setNBT("mtvehicles.naam", name).toItemStack();
-        ItemMeta im = car.getItemMeta();
-        List<String> itemlore = new ArrayList<>();
-        itemlore.add(TextUtils.colorize("&a"));
-        itemlore.add(TextUtils.colorize("&a" + ken));
-        itemlore.add(TextUtils.colorize("&a"));
-        im.setLore(itemlore);
-        im.setUnbreakable(true);
-        car.setItemMeta(im);
-        return car;
+            String ken = generateLicencePlate();
+            ItemStack car = (new ItemFactory(Material.getMaterial(material))).setDurability(id).setName(TextUtils.colorize("&6" + name)).setNBT("mtvehicles.kenteken", ken).setNBT("mtvehicles.naam", name).toItemStack();
+            ItemMeta im = car.getItemMeta();
+            List<String> itemlore = new ArrayList<>();
+            itemlore.add(TextUtils.colorize("&a"));
+            itemlore.add(TextUtils.colorize("&a" + ken));
+            itemlore.add(TextUtils.colorize("&a"));
+            im.setLore(itemlore);
+            im.setUnbreakable(true);
+            car.setItemMeta(im);
+            return car;
         } catch (Exception e) {
             try {
                 String ken = generateLicencePlate();
-                ItemStack car = (new ItemFactory(Material.getMaterial(material, true))).setDurability((short) id).setName(TextUtils.colorize("&6" + name)).setNBT("mtvehicles.kenteken", ken).setNBT("mtvehicles.naam", name).toItemStack();
+                ItemStack car = (new ItemFactory(Material.getMaterial(material, true))).setDurability(id).setName(TextUtils.colorize("&6" + name)).setNBT("mtvehicles.kenteken", ken).setNBT("mtvehicles.naam", name).toItemStack();
                 ItemMeta im = car.getItemMeta();
                 List<String> itemlore = new ArrayList<>();
                 itemlore.add(TextUtils.colorize("&a"));
@@ -103,7 +107,7 @@ public class ItemUtils {
 
     public static ItemStack carItem5(int id, String name, String material, String ken) {
         try {
-            ItemStack car = new ItemFactory(Material.getMaterial(material)).setDurability((short) id).setName(TextUtils.colorize("&6" + name)).setNBT("mtvehicles.kenteken", ken).setNBT("mtvehicles.naam", name).toItemStack();
+            ItemStack car = new ItemFactory(Material.getMaterial(material)).setDurability(id).setName(TextUtils.colorize("&6" + name)).setNBT("mtvehicles.kenteken", ken).setNBT("mtvehicles.naam", name).toItemStack();
             ItemMeta im = car.getItemMeta();
             List<String> itemlore = new ArrayList<>();
             itemlore.add(TextUtils.colorize("&a"));
@@ -115,7 +119,7 @@ public class ItemUtils {
             return car;
         } catch (Exception e) {
             try {
-                ItemStack car = new ItemFactory(Material.getMaterial(material, true)).setDurability((short) id).setName(TextUtils.colorize("&6" + name)).setNBT("mtvehicles.kenteken", ken).setNBT("mtvehicles.naam", name).toItemStack();
+                ItemStack car = new ItemFactory(Material.getMaterial(material, true)).setDurability(id).setName(TextUtils.colorize("&6" + name)).setNBT("mtvehicles.kenteken", ken).setNBT("mtvehicles.naam", name).toItemStack();
                 ItemMeta im = car.getItemMeta();
                 List<String> itemlore = new ArrayList<>();
                 itemlore.add(TextUtils.colorize("&a"));
@@ -134,7 +138,7 @@ public class ItemUtils {
 
     public static ItemStack carItem4(int id, String name, String material, String model, String nbt, String ken) {
         try {
-            ItemStack car = new ItemFactory(Material.getMaterial(material)).setDurability((short) id).setName(TextUtils.colorize("&6" + name)).setNBT("mtvehicles.kenteken", ken).setNBT("mtvehicles.naam", name).setNBT(model, nbt).toItemStack();
+            ItemStack car = new ItemFactory(Material.getMaterial(material)).setDurability(id).setName(TextUtils.colorize("&6" + name)).setNBT("mtvehicles.kenteken", ken).setNBT("mtvehicles.naam", name).setNBT(model, nbt).toItemStack();
             ItemMeta im = car.getItemMeta();
             List<String> itemlore = new ArrayList<>();
             itemlore.add(TextUtils.colorize("&a"));
@@ -146,7 +150,7 @@ public class ItemUtils {
             return car;
         } catch (Exception e) {
             try {
-                ItemStack car = new ItemFactory(Material.getMaterial(material, true)).setDurability((short) id).setName(TextUtils.colorize("&6" + name)).setNBT("mtvehicles.kenteken", ken).setNBT("mtvehicles.naam", name).setNBT(model, nbt).toItemStack();
+                ItemStack car = new ItemFactory(Material.getMaterial(material, true)).setDurability(id).setName(TextUtils.colorize("&6" + name)).setNBT("mtvehicles.kenteken", ken).setNBT("mtvehicles.naam", name).setNBT(model, nbt).toItemStack();
                 ItemMeta im = car.getItemMeta();
                 List<String> itemlore = new ArrayList<>();
                 itemlore.add(TextUtils.colorize("&a"));
@@ -166,7 +170,7 @@ public class ItemUtils {
     public static ItemStack carItem3(int id, String name, String material, String model, String nbt) {
         try {
             String ken = generateLicencePlate();
-            ItemStack car = new ItemFactory(Material.getMaterial(material)).setDurability((short) id).setName(TextUtils.colorize("&6" + name)).setNBT("mtvehicles.kenteken", ken).setNBT("mtvehicles.naam", name).setNBT(model, nbt).toItemStack();
+            ItemStack car = new ItemFactory(Material.getMaterial(material)).setDurability(id).setName(TextUtils.colorize("&6" + name)).setNBT("mtvehicles.kenteken", ken).setNBT("mtvehicles.naam", name).setNBT(model, nbt).toItemStack();
             ItemMeta im = car.getItemMeta();
             List<String> itemlore = new ArrayList<>();
             itemlore.add(TextUtils.colorize("&a"));
@@ -179,7 +183,7 @@ public class ItemUtils {
         } catch (Exception e) {
             try {
                 String ken = generateLicencePlate();
-                ItemStack car = new ItemFactory(Material.getMaterial(material, true)).setDurability((short) id).setName(TextUtils.colorize("&6" + name)).setNBT("mtvehicles.kenteken", ken).setNBT("mtvehicles.naam", name).setNBT(model, nbt).toItemStack();
+                ItemStack car = new ItemFactory(Material.getMaterial(material, true)).setDurability(id).setName(TextUtils.colorize("&6" + name)).setNBT("mtvehicles.kenteken", ken).setNBT("mtvehicles.naam", name).setNBT(model, nbt).toItemStack();
                 ItemMeta im = car.getItemMeta();
                 List<String> itemlore = new ArrayList<>();
                 itemlore.add(TextUtils.colorize("&a"));
@@ -203,7 +207,7 @@ public class ItemUtils {
 
     public static ItemStack woolItem(String mat1, String mat2, int amount, short durability, String text, String lores) {
         try {
-            ItemStack is = new ItemStack(Material.getMaterial(mat1.toUpperCase()), amount, durability);
+            ItemStack is = new ItemStack(Material.getMaterial(mat1.toUpperCase()), amount);
             ItemMeta im = is.getItemMeta();
             List<String> itemlore = new ArrayList<>();
             String[] lorem = lores.split("@");
@@ -211,12 +215,14 @@ public class ItemUtils {
                 itemlore.add((TextUtils.colorize(s)));
             }
             im.setLore(itemlore);
+            if (getServerVersion().is1_12()) is.setDurability(durability);
+            else ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
             im.setDisplayName(TextUtils.colorize(text));
             is.setItemMeta(im);
             return is;
         } catch (Exception e) {
             try {
-                ItemStack is = new ItemStack(Material.matchMaterial(mat2), amount, durability);
+                ItemStack is = new ItemStack(Material.matchMaterial(mat2), amount);
                 ItemMeta im = is.getItemMeta();
                 List<String> itemlore = new ArrayList<>();
                 String[] lorem = lores.split("@");
@@ -224,6 +230,8 @@ public class ItemUtils {
                     itemlore.add((TextUtils.colorize(s)));
                 }
                 im.setLore(itemlore);
+                if (getServerVersion().is1_12()) is.setDurability(durability);
+                else ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
                 im.setDisplayName(TextUtils.colorize(text));
                 is.setItemMeta(im);
                 return is;
@@ -237,21 +245,25 @@ public class ItemUtils {
 
     public static ItemStack mItem(String material, int amount, short durability, String text, String lores) {
         try {
-            ItemStack is = new ItemStack(Material.getMaterial(material.toUpperCase()), amount, durability);
+            ItemStack is = new ItemStack(Material.getMaterial(material.toUpperCase()), amount);
             ItemMeta im = is.getItemMeta();
             List<String> itemlore = new ArrayList<>();
             itemlore.add(TextUtils.colorize(lores));
             im.setLore(itemlore);
+            if (getServerVersion().is1_12()) is.setDurability(durability);
+            else ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
             im.setDisplayName(TextUtils.colorize(text));
             is.setItemMeta(im);
             return is;
         } catch (Exception e) {
             try {
-                ItemStack is = new ItemStack(Material.matchMaterial(material, true), amount, durability);
+                ItemStack is = new ItemStack(Material.matchMaterial(material, true), amount);
                 ItemMeta im = is.getItemMeta();
                 List<String> itemlore = new ArrayList<>();
                 itemlore.add(TextUtils.colorize(lores));
                 im.setLore(itemlore);
+                if (getServerVersion().is1_12()) is.setDurability(durability);
+                else ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
                 im.setDisplayName(TextUtils.colorize(text));
                 is.setItemMeta(im);
                 return is;
@@ -264,7 +276,7 @@ public class ItemUtils {
 
     public static ItemStack mItemRiders(String material, int amount, short durability, String text, String ken) {
         try {
-            ItemStack is = new ItemStack(Material.getMaterial(material.toUpperCase()), amount, durability);
+            ItemStack is = new ItemStack(Material.getMaterial(material.toUpperCase()), amount);
             ItemMeta im = is.getItemMeta();
             List<String> itemlore = new ArrayList<>();
             if (ConfigModule.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".riders").size() == 0) {
@@ -275,12 +287,14 @@ public class ItemUtils {
                 }
             }
             im.setLore(itemlore);
+            if (getServerVersion().is1_12()) is.setDurability(durability);
+            else ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
             im.setDisplayName(TextUtils.colorize(text));
             is.setItemMeta(im);
             return is;
         } catch (Exception e) {
             try {
-                ItemStack is = new ItemStack(Material.matchMaterial(material, true), amount, durability);
+                ItemStack is = new ItemStack(Material.matchMaterial(material, true), amount);
                 ItemMeta im = is.getItemMeta();
                 List<String> itemlore = new ArrayList<>();
                 if (ConfigModule.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".riders").size() == 0) {
@@ -291,6 +305,8 @@ public class ItemUtils {
                     }
                 }
                 im.setLore(itemlore);
+                if (getServerVersion().is1_12()) is.setDurability(durability);
+                else ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
                 im.setDisplayName(TextUtils.colorize(text));
                 is.setItemMeta(im);
                 return is;
@@ -303,7 +319,7 @@ public class ItemUtils {
 
     public static ItemStack mItemMembers(String material, int amount, short durability, String text, String ken) {
         try {
-            ItemStack is = new ItemStack(Material.getMaterial(material.toUpperCase()), amount, durability);
+            ItemStack is = new ItemStack(Material.getMaterial(material.toUpperCase()), amount);
             ItemMeta im = is.getItemMeta();
             List<String> itemlore = new ArrayList<>();
             if (ConfigModule.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".members").size() == 0) {
@@ -314,12 +330,14 @@ public class ItemUtils {
                 }
             }
             im.setLore(itemlore);
+            if (getServerVersion().is1_12()) is.setDurability(durability);
+            else ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
             im.setDisplayName(TextUtils.colorize(text));
             is.setItemMeta(im);
             return is;
         } catch (Exception e) {
             try {
-                ItemStack is = new ItemStack(Material.matchMaterial(material, true), amount, durability);
+                ItemStack is = new ItemStack(Material.matchMaterial(material, true), amount);
                 ItemMeta im = is.getItemMeta();
                 List<String> itemlore = new ArrayList<>();
                 if (ConfigModule.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".members").size() == 0) {
@@ -330,6 +348,8 @@ public class ItemUtils {
                     }
                 }
                 im.setLore(itemlore);
+                if (getServerVersion().is1_12()) is.setDurability(durability);
+                else ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
                 im.setDisplayName(TextUtils.colorize(text));
                 is.setItemMeta(im);
                 return is;
@@ -342,23 +362,27 @@ public class ItemUtils {
 
     public static ItemStack mItem3(String material, int amount, short durability, String text, String lores, String model, String nbt) {
         try {
-            ItemStack car = new ItemStack(Material.getMaterial(material.toUpperCase()), amount, durability);
+            ItemStack car = new ItemStack(Material.getMaterial(material.toUpperCase()), amount);
             ItemStack is = new ItemFactory(car).setNBT(model, nbt).toItemStack();
             ItemMeta im = is.getItemMeta();
             List<String> itemlore = new ArrayList<>();
             itemlore.add(TextUtils.colorize(lores));
             im.setLore(itemlore);
+            if (getServerVersion().is1_12()) is.setDurability(durability);
+            else ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
             im.setUnbreakable(true);
             im.setDisplayName(TextUtils.colorize(text));
             is.setItemMeta(im);
             return is;
         } catch (Exception e) {
             try {
-                ItemStack is = new ItemStack(Material.getMaterial(material.toUpperCase(),true), amount, durability);
+                ItemStack is = new ItemStack(Material.getMaterial(material.toUpperCase(),true), amount);
                 ItemMeta im = is.getItemMeta();
                 List<String> itemlore = new ArrayList<>();
                 itemlore.add(TextUtils.colorize(lores));
                 im.setLore(itemlore);
+                if (getServerVersion().is1_12()) is.setDurability(durability);
+                else ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
                 im.setUnbreakable(true);
                 im.setDisplayName(TextUtils.colorize(text));
                 is.setItemMeta(im);
@@ -372,22 +396,26 @@ public class ItemUtils {
 
     public static ItemStack mItem2(String material, int amount, short durability, String text, String lores) {
         try {
-            ItemStack is = new ItemStack(Material.getMaterial(material.toUpperCase()), amount, durability);
+            ItemStack is = new ItemStack(Material.getMaterial(material.toUpperCase()), amount);
             ItemMeta im = is.getItemMeta();
             List<String> itemlore = new ArrayList<>();
             itemlore.add(TextUtils.colorize(lores));
             im.setLore(itemlore);
+            if (getServerVersion().is1_12()) is.setDurability(durability);
+            else ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
             im.setUnbreakable(true);
             im.setDisplayName(TextUtils.colorize(text));
             is.setItemMeta(im);
             return is;
         } catch (Exception e) {
             try {
-                ItemStack is = new ItemStack(Material.getMaterial(material.toUpperCase(),true), amount, durability);
+                ItemStack is = new ItemStack(Material.getMaterial(material.toUpperCase(),true), amount);
                 ItemMeta im = is.getItemMeta();
                 List<String> itemlore = new ArrayList<>();
                 itemlore.add(TextUtils.colorize(lores));
                 im.setLore(itemlore);
+                if (getServerVersion().is1_12()) is.setDurability(durability);
+                else ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
                 im.setUnbreakable(true);
                 im.setDisplayName(TextUtils.colorize(text));
                 is.setItemMeta(im);
@@ -400,7 +428,7 @@ public class ItemUtils {
     }
 
     public static ItemStack carItem2(int id, String name, String material, String ken) {
-        ItemStack car = (new ItemFactory(Material.getMaterial(material))).setDurability((short) id).setName(TextUtils.colorize("&6" + name)).setNBT("mtvehicles.kenteken", ken).setNBT("mtvehicles.naam", name).toItemStack();
+        ItemStack car = (new ItemFactory(Material.getMaterial(material))).setDurability(id).setName(TextUtils.colorize("&6" + name)).setNBT("mtvehicles.kenteken", ken).setNBT("mtvehicles.naam", name).toItemStack();
         ItemMeta im = car.getItemMeta();
         List<String> itemlore = new ArrayList<>();
         itemlore.add(TextUtils.colorize("&a"));
@@ -413,7 +441,7 @@ public class ItemUtils {
     }
 
     public static ItemStack carItem2glow(int id, String name, String material, String ken) {
-        ItemStack car = (new ItemFactory(Material.getMaterial(material))).setDurability((short) id).setName(TextUtils.colorize("&6" + name)).setNBT("mtvehicles.kenteken", ken).setNBT("mtvehicles.naam", name).toItemStack();
+        ItemStack car = (new ItemFactory(Material.getMaterial(material))).setDurability(id).setName(TextUtils.colorize("&6" + name)).setNBT("mtvehicles.kenteken", ken).setNBT("mtvehicles.naam", name).toItemStack();
         ItemMeta im = car.getItemMeta();
         List<String> itemlore = new ArrayList<>();
         itemlore.add(TextUtils.colorize("&a"));

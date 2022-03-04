@@ -7,8 +7,10 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="MTVehicles" />
-        <module name="MinetopiaVehicles" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="MinetopiaVehicles" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

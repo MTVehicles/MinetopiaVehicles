@@ -1,6 +1,6 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
-import nl.mtvehicles.core.infrastructure.helpers.NBTUtils;
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
@@ -22,7 +22,7 @@ public class VehicleRemoveRider extends MTVehicleSubCommand {
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
         ItemStack item = player.getInventory().getItemInMainHand();
 
-        if (!item.hasItemMeta() || !(NBTUtils.contains(item, "mtvehicles.kenteken"))) {
+        if (!item.hasItemMeta() || !(new NBTItem(item)).hasKey("mtvehicles.kenteken")) {
             sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("noVehicleInHand")));
             return true;
         }
@@ -32,7 +32,7 @@ public class VehicleRemoveRider extends MTVehicleSubCommand {
             return true;
         }
 
-        String ken = NBTUtils.getString(item, "mtvehicles.kenteken");
+        String ken = Vehicle.getLicensePlate(item);
         Player of = Bukkit.getPlayer(args[1]);
         Vehicle vehicle = Vehicle.getByPlate(ken);
 

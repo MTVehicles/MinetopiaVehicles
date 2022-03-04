@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.movement;
 
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;
@@ -7,6 +8,7 @@ import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.movement.versions.*;
 import org.bukkit.entity.Player;
 
+import java.lang.reflect.Field;
 import java.util.NoSuchElementException;
 
 import static nl.mtvehicles.core.infrastructure.modules.VersionModule.getServerVersion;
@@ -24,7 +26,17 @@ public class PacketHandler {
                 }
             }
         };
-        ChannelPipeline pipeline = ((org.bukkit.craftbukkit.v1_18_R1.entity.CraftPlayer) player).getHandle().b.a.k.pipeline();
+        ChannelPipeline pipeline;
+        try {
+            Object networkManager = ((org.bukkit.craftbukkit.v1_18_R2.entity.CraftPlayer) player).getHandle().b.a;
+            Field m = networkManager.getClass().getField("m");
+            Channel channel = (Channel) m.get(networkManager);
+            pipeline = channel.pipeline();
+        } catch (Exception e){
+            e.printStackTrace();
+            Main.disablePlugin();
+            return;
+        }
         try {
             pipeline.remove(player.getName());
         } catch (NoSuchElementException e) {

@@ -1,8 +1,8 @@
 package nl.mtvehicles.core.events;
 
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.infrastructure.dataconfig.MessagesConfig;
 import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
-import nl.mtvehicles.core.infrastructure.helpers.NBTUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -23,8 +23,9 @@ public class VehicleVoucherEvent implements Listener {
         final ItemStack item = e.getItem();
 
         if (item == null || item.getType() != Material.PAPER) return;
+        NBTItem nbt = new NBTItem(item);
 
-        if (!NBTUtils.contains(item, "mtvehicles.item")) return;
+        if (!nbt.hasKey("mtvehicles.item")) return;
 
         if (e.getHand() != EquipmentSlot.HAND) {
             e.setCancelled(true);

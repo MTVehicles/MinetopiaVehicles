@@ -1,8 +1,9 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
-import nl.mtvehicles.core.infrastructure.helpers.NBTUtils;
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
+import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -22,12 +23,12 @@ public class VehicleDelete extends MTVehicleSubCommand {
 
         ItemStack item = p.getInventory().getItemInMainHand();
 
-        if (!item.hasItemMeta() || !NBTUtils.contains(item, "mtvehicles.kenteken")) {
+        if (!item.hasItemMeta() || !(new NBTItem(item)).hasKey("mtvehicles.kenteken")) {
             sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("noVehicleInHand")));
             return true;
         }
 
-        String ken = NBTUtils.getString(item, "mtvehicles.kenteken");
+        String ken = Vehicle.getLicensePlate(item);
         ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + ken, null);
         ConfigModule.vehicleDataConfig.save();
         p.getInventory().getItemInMainHand().setAmount(0);

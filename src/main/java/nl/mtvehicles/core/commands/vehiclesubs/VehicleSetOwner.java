@@ -1,6 +1,6 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
-import nl.mtvehicles.core.infrastructure.helpers.NBTUtils;
+import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
@@ -29,7 +29,7 @@ public class VehicleSetOwner extends MTVehicleSubCommand {
             return true;
         }
 
-        if (!item.hasItemMeta() || !(NBTUtils.contains(item, "mtvehicles.kenteken"))) {
+        if (!item.hasItemMeta() || !(new NBTItem(item)).hasKey("mtvehicles.kenteken")) {
             sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("noVehicleInHand")));
             return true;
         }
@@ -39,7 +39,7 @@ public class VehicleSetOwner extends MTVehicleSubCommand {
             return true;
         }
 
-        String licensePlate = NBTUtils.getString(item, "mtvehicles.kenteken");
+        String licensePlate = Vehicle.getLicensePlate(item);
 
         if (!Vehicle.existsByPlate(licensePlate)) {
             player.sendMessage(ConfigModule.messagesConfig.getMessage("vehicleNotFound"));

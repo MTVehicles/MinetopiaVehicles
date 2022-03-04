@@ -50,7 +50,7 @@ public class VersionModule {
             case "v1_17_R1":
                 returns = Version.v1_17;
                 break;
-            case "v1_18_R1":
+            case "v1_18_R2":
                 returns = Version.v1_18;
                 break;
         }
@@ -67,7 +67,7 @@ public class VersionModule {
             return false;
         }
 
-        else if (!Bukkit.getVersion().contains("1.12.2") && !Bukkit.getVersion().contains("1.13.2") && !Bukkit.getVersion().contains("1.15.2") && !Bukkit.getVersion().contains("1.16.5") && !Bukkit.getVersion().contains("1.17.1") && !Bukkit.getVersion().contains("1.18.1")) {
+        else if (!Bukkit.getVersion().contains("1.12.2") && !Bukkit.getVersion().contains("1.13.2") && !Bukkit.getVersion().contains("1.15.2") && !Bukkit.getVersion().contains("1.16.5") && !Bukkit.getVersion().contains("1.17.1") && !Bukkit.getVersion().contains("1.18.2")) {
             logger.warning("--------------------------");
             logger.warning("Your Server does not run the latest patch version (e.g. you may be running 1.16.3 instead of 1.16.5 etc...).");
             logger.warning("The plugin WILL load but you are NOT eligible for any support unless you update the server.");
