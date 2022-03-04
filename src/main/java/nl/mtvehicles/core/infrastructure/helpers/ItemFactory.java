@@ -33,15 +33,22 @@ public class ItemFactory {
         this.is = new ItemStack(material, amount);
     }
 
+    public ItemFactory(Material material, int amount, byte durability) {
+        this.is = new ItemStack(material, amount);
+        this.setDurability(durability);
+    }
+
     public ItemFactory clone() {
         return new ItemFactory(this.is);
     }
 
     public ItemFactory setDurability(int durability) {
-        ItemMeta im = this.is.getItemMeta();
-        if (getServerVersion().is1_12()) is.setDurability((short) durability);
-        else ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
-        this.is.setItemMeta(im);
+        if (getServerVersion().is1_12()) this.is.setDurability((short) durability);
+        else {
+            ItemMeta im = this.is.getItemMeta();
+            ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
+            this.is.setItemMeta(im);
+        }
         return this;
     }
 
