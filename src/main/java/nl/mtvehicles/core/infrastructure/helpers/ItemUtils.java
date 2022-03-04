@@ -1,6 +1,5 @@
 package nl.mtvehicles.core.infrastructure.helpers;
 
-import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.dataconfig.MessagesConfig;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
@@ -11,13 +10,14 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+
+import static nl.mtvehicles.core.infrastructure.modules.VersionModule.getServerVersion;
 
 public class ItemUtils {
     public static HashMap<String, Boolean> edit = new HashMap<>();
@@ -33,7 +33,8 @@ public class ItemUtils {
             List<String> itemLore = new ArrayList<>();
             itemLore.add(TextUtils.colorize("&a"));
             itemMeta.setLore(itemLore);
-            ((Damageable) itemMeta).setDamage(durability);
+            if (getServerVersion().is1_12()) carItem.setDurability((short) durability);
+            else ((org.bukkit.inventory.meta.Damageable) itemMeta).setDamage(durability);
             itemMeta.setUnbreakable(true);
             carItem.setItemMeta(itemMeta);
             return carItem;
@@ -48,7 +49,8 @@ public class ItemUtils {
                 List<String> itemLore = new ArrayList<>();
                 itemLore.add(TextUtils.colorize("&a"));
                 itemMeta.setLore(itemLore);
-                ((Damageable) itemMeta).setDamage(durability);
+                if (getServerVersion().is1_12()) carItem.setDurability((short) durability);
+                else ((org.bukkit.inventory.meta.Damageable) itemMeta).setDamage(durability);
                 itemMeta.setUnbreakable(true);
                 carItem.setItemMeta(itemMeta);
                 return carItem;
@@ -213,7 +215,8 @@ public class ItemUtils {
                 itemlore.add((TextUtils.colorize(s)));
             }
             im.setLore(itemlore);
-            ((Damageable) im).setDamage(durability);
+            if (getServerVersion().is1_12()) is.setDurability(durability);
+            else ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
             im.setDisplayName(TextUtils.colorize(text));
             is.setItemMeta(im);
             return is;
@@ -227,7 +230,8 @@ public class ItemUtils {
                     itemlore.add((TextUtils.colorize(s)));
                 }
                 im.setLore(itemlore);
-                ((Damageable) im).setDamage(durability);
+                if (getServerVersion().is1_12()) is.setDurability(durability);
+                else ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
                 im.setDisplayName(TextUtils.colorize(text));
                 is.setItemMeta(im);
                 return is;
@@ -246,7 +250,8 @@ public class ItemUtils {
             List<String> itemlore = new ArrayList<>();
             itemlore.add(TextUtils.colorize(lores));
             im.setLore(itemlore);
-            ((Damageable) im).setDamage(durability);
+            if (getServerVersion().is1_12()) is.setDurability(durability);
+            else ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
             im.setDisplayName(TextUtils.colorize(text));
             is.setItemMeta(im);
             return is;
@@ -257,7 +262,8 @@ public class ItemUtils {
                 List<String> itemlore = new ArrayList<>();
                 itemlore.add(TextUtils.colorize(lores));
                 im.setLore(itemlore);
-                ((Damageable) im).setDamage(durability);
+                if (getServerVersion().is1_12()) is.setDurability(durability);
+                else ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
                 im.setDisplayName(TextUtils.colorize(text));
                 is.setItemMeta(im);
                 return is;
@@ -281,7 +287,8 @@ public class ItemUtils {
                 }
             }
             im.setLore(itemlore);
-            ((Damageable) im).setDamage(durability);
+            if (getServerVersion().is1_12()) is.setDurability(durability);
+            else ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
             im.setDisplayName(TextUtils.colorize(text));
             is.setItemMeta(im);
             return is;
@@ -298,7 +305,8 @@ public class ItemUtils {
                     }
                 }
                 im.setLore(itemlore);
-                ((Damageable) im).setDamage(durability);
+                if (getServerVersion().is1_12()) is.setDurability(durability);
+                else ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
                 im.setDisplayName(TextUtils.colorize(text));
                 is.setItemMeta(im);
                 return is;
@@ -322,7 +330,8 @@ public class ItemUtils {
                 }
             }
             im.setLore(itemlore);
-            ((Damageable) im).setDamage(durability);
+            if (getServerVersion().is1_12()) is.setDurability(durability);
+            else ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
             im.setDisplayName(TextUtils.colorize(text));
             is.setItemMeta(im);
             return is;
@@ -339,7 +348,8 @@ public class ItemUtils {
                     }
                 }
                 im.setLore(itemlore);
-                ((Damageable) im).setDamage(durability);
+                if (getServerVersion().is1_12()) is.setDurability(durability);
+                else ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
                 im.setDisplayName(TextUtils.colorize(text));
                 is.setItemMeta(im);
                 return is;
@@ -358,7 +368,8 @@ public class ItemUtils {
             List<String> itemlore = new ArrayList<>();
             itemlore.add(TextUtils.colorize(lores));
             im.setLore(itemlore);
-            ((Damageable) im).setDamage(durability);
+            if (getServerVersion().is1_12()) is.setDurability(durability);
+            else ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
             im.setUnbreakable(true);
             im.setDisplayName(TextUtils.colorize(text));
             is.setItemMeta(im);
@@ -370,7 +381,8 @@ public class ItemUtils {
                 List<String> itemlore = new ArrayList<>();
                 itemlore.add(TextUtils.colorize(lores));
                 im.setLore(itemlore);
-                ((Damageable) im).setDamage(durability);
+                if (getServerVersion().is1_12()) is.setDurability(durability);
+                else ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
                 im.setUnbreakable(true);
                 im.setDisplayName(TextUtils.colorize(text));
                 is.setItemMeta(im);
@@ -389,7 +401,8 @@ public class ItemUtils {
             List<String> itemlore = new ArrayList<>();
             itemlore.add(TextUtils.colorize(lores));
             im.setLore(itemlore);
-            ((Damageable) im).setDamage(durability);
+            if (getServerVersion().is1_12()) is.setDurability(durability);
+            else ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
             im.setUnbreakable(true);
             im.setDisplayName(TextUtils.colorize(text));
             is.setItemMeta(im);
@@ -401,7 +414,8 @@ public class ItemUtils {
                 List<String> itemlore = new ArrayList<>();
                 itemlore.add(TextUtils.colorize(lores));
                 im.setLore(itemlore);
-                ((Damageable) im).setDamage(durability);
+                if (getServerVersion().is1_12()) is.setDurability(durability);
+                else ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
                 im.setUnbreakable(true);
                 im.setDisplayName(TextUtils.colorize(text));
                 is.setItemMeta(im);

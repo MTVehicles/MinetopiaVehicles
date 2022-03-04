@@ -1,12 +1,10 @@
 package nl.mtvehicles.core.infrastructure.helpers;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
-import de.tr7zw.changeme.nbtapi.NbtApiException;
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -15,6 +13,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static nl.mtvehicles.core.infrastructure.modules.VersionModule.getServerVersion;
 
 public class ItemFactory {
     private ItemStack is;
@@ -39,7 +39,8 @@ public class ItemFactory {
 
     public ItemFactory setDurability(int durability) {
         ItemMeta im = this.is.getItemMeta();
-        ((Damageable) im).setDamage(durability);
+        if (getServerVersion().is1_12()) is.setDurability((short) durability);
+        else ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
         this.is.setItemMeta(im);
         return this;
     }
