@@ -18,14 +18,14 @@ Messages in the plugin can be displayed in multiple languages. (Default: English
 
 ## How to download?
 
-The plugin works on all spigot versions from 1.12.2 - 1.18.1, **except 1.14.x**!
+The plugin works on all spigot versions from 1.12.2 - 1.18.2, **except 1.14.x**!
 
 ### Be aware!
 
 
 If your server minecraft version is not supported by the plugin, it won't load.
 
-Versions 1.12.1 and lower are not, and will not be supported.<br>
+Versions 1.12.1 and lower are NOT, and will NOT be supported.<br>
 (Did you know that 1.8 was released in 2014? And some people still use it! Whoa.)
 
 
@@ -73,11 +73,13 @@ If this did not work don't hesitate to contact the support on our Discord server
 ✔ Reloading/Restarting the server is possible with vehicles in the folder.<br>
 ✔ Gasoline function customizable in config.<br>
 ✔ All current vehicles + helicopters.<br>
-✔ ANWB if your car is in the water.<br>
+✔ Tanks which can shoot TNTs (must be enabled in config.yml)!<br>
+✔ ANWB - Disable picking up vehicles if it is in the water.<br>
 ✔ Trunks per vehicle & customizable.<br>
 ✔ Vehicle edit function.<br>
 ✔ Adjustable speed per vehicle.<br>
 ✔ Vouchers for vehicles.<br>
+✔ Vehicles can take damage and be broken (must be enabled in config.yml).<br>
 ✔ Integration with WorldGuard and Vault.<br>
 ✔ Active support/developers.<br>
 ✔ Open Source.
