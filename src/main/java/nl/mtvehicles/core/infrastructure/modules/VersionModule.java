@@ -58,7 +58,7 @@ public class VersionModule {
     }
 
     public boolean isSupportedVersion(){
-        if (!getServerVersion().is1_12() && !getServerVersion().is1_13() && !getServerVersion().is1_15() && !getServerVersion().is1_16() && !getServerVersion().is1_17() && !getServerVersion().is1_18()) {
+        if (getServerVersion() == null) {
             logger.severe("--------------------------");
             logger.severe("Your Server version is not supported. The plugin will NOT load.");
             logger.severe("Check the supported versions here: https://mtvehicles.nl");
