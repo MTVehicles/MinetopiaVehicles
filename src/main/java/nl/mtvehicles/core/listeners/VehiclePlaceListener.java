@@ -65,6 +65,9 @@ public class VehiclePlaceListener implements Listener {
         // You can set more things take a look at VehiclePlaceEvent
         Bukkit.getPluginManager().callEvent(vehiclePlaceEvent);
 
+        if (vehiclePlaceEvent.isCancelled()) {
+            return;
+        }
 
         Location loc = e.getClickedBlock().getLocation();
         e.setCancelled(true);
