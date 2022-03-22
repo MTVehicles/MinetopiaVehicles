@@ -22,6 +22,8 @@ public class VehicleVoucherListener implements Listener {
         final Action action = e.getAction();
         final ItemStack item = e.getItem();
 
+        if (e.isCancelled()) return;
+
         if (item == null || item.getType() != Material.PAPER) return;
         NBTItem nbt = new NBTItem(item);
 

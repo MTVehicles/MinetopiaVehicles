@@ -23,6 +23,8 @@ public class JerryCanClickListener implements Listener {
         final Action action = e.getAction();
         final ItemStack item = e.getItem();
 
+        if (e.isCancelled()) return;
+
         if (e.getItem() == null) return;
 
         if (!e.getItem().hasItemMeta()
