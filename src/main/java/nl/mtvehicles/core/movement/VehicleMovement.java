@@ -1,6 +1,7 @@
 package nl.mtvehicles.core.movement;
 
 import nl.mtvehicles.core.Main;
+import nl.mtvehicles.core.infrastructure.enums.VehicleType;
 import nl.mtvehicles.core.infrastructure.helpers.BossBarUtils;
 import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
@@ -48,13 +49,13 @@ public class VehicleMovement {
             return;
         }
 
-        final String vehicleType = VehicleData.type.get(license);
+        final VehicleType vehicleType = VehicleType.valueOf(VehicleData.type.get(license));
         if (vehicleType == null) return;
 
         boolean helicopterFalling = false;
         if (VehicleData.fuel.get(license) < 1) {
             BossBarUtils.setBossBarValue(0 / 100.0D, license);
-            if (vehicleType.contains("HELICOPTER")) helicopterFalling = true;
+            if (vehicleType.isHelicopter()) helicopterFalling = true;
             else return;
         }
 
@@ -91,7 +92,7 @@ public class VehicleMovement {
             }
         }
 
-        if (vehicleType.contains("HELICOPTER")) rotors(standMain, standRotors, license, helicopterFalling);
+        if (vehicleType.isHelicopter()) rotors(standMain, standRotors, license, helicopterFalling);
 
         // Horn
         if (ConfigModule.vehicleDataConfig.isHornEnabled(license) && steerIsJumping(packet) && !helicopterFalling) {
@@ -103,7 +104,7 @@ public class VehicleMovement {
             }
         }
 
-        if (vehicleType.contains("TANK") && steerIsJumping(packet)) {
+        if (vehicleType.isTank() && steerIsJumping(packet)) {
             if (VehicleData.lastUsage.containsKey(p.getName())) lastUsed = VehicleData.lastUsage.get(p.getName());
 
             if (System.currentTimeMillis() - lastUsed >= ConfigModule.defaultConfig.getConfig().getInt("tankCooldown") * 1000L) {
@@ -127,29 +128,35 @@ public class VehicleMovement {
         final float xxa = (helicopterFalling) ? 0.0f : steerGetXxa(packet);
         final float zza = (helicopterFalling) ? 0.0f : steerGetZza(packet);
         if (xxa > 0.0) {
-            schedulerRun(() -> {
-                if (getServerVersion().is1_12()){
-                    standMain.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - RotationSpeed, standMain.getLocation().getPitch()));
-                    standMainSeat.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - RotationSpeed, standMain.getLocation().getPitch()));
-                    standSkin.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - RotationSpeed, standMain.getLocation().getPitch()));
-                } else {
-                    standMain.setRotation(standMain.getLocation().getYaw() - RotationSpeed, standMain.getLocation().getPitch());
-                    standMainSeat.setRotation(standMain.getLocation().getYaw() - RotationSpeed, standMain.getLocation().getPitch());
-                    standSkin.setRotation(standMain.getLocation().getYaw() - RotationSpeed, standMain.getLocation().getPitch());
-                }
-            });
+            if (VehicleData.speed.get(license) != 0) {
+                final int rotation = (VehicleData.speed.get(license) < 0.1) ? RotationSpeed / 2 : RotationSpeed;
+                schedulerRun(() -> {
+                    if (getServerVersion().is1_12()) {
+                        standMain.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - rotation, standMain.getLocation().getPitch()));
+                        standMainSeat.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - rotation, standMain.getLocation().getPitch()));
+                        standSkin.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - rotation, standMain.getLocation().getPitch()));
+                    } else {
+                        standMain.setRotation(standMain.getLocation().getYaw() - rotation, standMain.getLocation().getPitch());
+                        standMainSeat.setRotation(standMain.getLocation().getYaw() - rotation, standMain.getLocation().getPitch());
+                        standSkin.setRotation(standMain.getLocation().getYaw() - rotation, standMain.getLocation().getPitch());
+                    }
+                });
+            }
         } else if (xxa < 0.0) {
-            schedulerRun(() -> {
-                if (getServerVersion().is1_12()){
-                    standMain.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() + RotationSpeed, standMain.getLocation().getPitch()));
-                    standMainSeat.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() + RotationSpeed, standMain.getLocation().getPitch()));
-                    standSkin.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() + RotationSpeed, standMain.getLocation().getPitch()));
-                } else {
-                    standMain.setRotation(standMain.getLocation().getYaw() + RotationSpeed, standMain.getLocation().getPitch());
-                    standMainSeat.setRotation(standMain.getLocation().getYaw() + RotationSpeed, standMain.getLocation().getPitch());
-                    standSkin.setRotation(standMain.getLocation().getYaw() + RotationSpeed, standMain.getLocation().getPitch());
-                }
-            });
+            if (VehicleData.speed.get(license) != 0) {
+                final int rotation = (VehicleData.speed.get(license) < 0.1) ? RotationSpeed / 2 : RotationSpeed;
+                schedulerRun(() -> {
+                    if (getServerVersion().is1_12()) {
+                        standMain.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() + rotation, standMain.getLocation().getPitch()));
+                        standMainSeat.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() + rotation, standMain.getLocation().getPitch()));
+                        standSkin.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() + rotation, standMain.getLocation().getPitch()));
+                    } else {
+                        standMain.setRotation(standMain.getLocation().getYaw() + rotation, standMain.getLocation().getPitch());
+                        standMainSeat.setRotation(standMain.getLocation().getYaw() + rotation, standMain.getLocation().getPitch());
+                        standSkin.setRotation(standMain.getLocation().getYaw() + rotation, standMain.getLocation().getPitch());
+                    }
+                });
+            }
         }
         if (zza > 0.0) {
             if (VehicleData.speed.get(license) < 0) {
@@ -407,7 +414,7 @@ public class VehicleMovement {
         else if (getServerVersion().is1_18()) teleportSeat(((org.bukkit.craftbukkit.v1_18_R2.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
     }
 
-    protected String getTeleportMethod(){
+    protected static String getTeleportMethod(){
         if (getServerVersion().is1_18()) return "a";
         else return "setLocation";
     }
