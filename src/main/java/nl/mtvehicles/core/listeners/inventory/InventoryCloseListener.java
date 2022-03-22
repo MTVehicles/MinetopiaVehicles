@@ -1,4 +1,4 @@
-package nl.mtvehicles.core.events.inventory;
+package nl.mtvehicles.core.listeners.inventory;
 
 import nl.mtvehicles.core.infrastructure.helpers.LanguageUtils;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;

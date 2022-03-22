@@ -1,11 +1,10 @@
-package nl.mtvehicles.core.events;
+package nl.mtvehicles.core.listeners;
 
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.infrastructure.modules.VersionModule;
 import nl.mtvehicles.core.movement.MovementManager;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

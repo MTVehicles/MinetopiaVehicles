@@ -3,9 +3,9 @@ package nl.mtvehicles.core.infrastructure.modules;
 import lombok.Getter;
 import lombok.Setter;
 import nl.mtvehicles.core.Main;
-import nl.mtvehicles.core.events.*;
-import nl.mtvehicles.core.events.inventory.InventoryClickListener;
-import nl.mtvehicles.core.events.inventory.InventoryCloseListener;
+import nl.mtvehicles.core.listeners.*;
+import nl.mtvehicles.core.listeners.inventory.InventoryClickListener;
+import nl.mtvehicles.core.listeners.inventory.InventoryCloseListener;
 
 public class ListenersModule {
     private static @Getter
