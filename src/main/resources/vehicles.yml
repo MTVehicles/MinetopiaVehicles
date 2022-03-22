@@ -1,3 +1,9 @@
+# ---- WARNING! ----
+# If you already have a vehicle in game, do NOT change this file. A critical bug may occur and such vehicles may become unusable.
+#
+# Should you need help or have any questions, contact us:
+# https://mtvehicles.nl
+
 voertuigen:
   - name: "Oxboard"
     vehicleType: CAR
