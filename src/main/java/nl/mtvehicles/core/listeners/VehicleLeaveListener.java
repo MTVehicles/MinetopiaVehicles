@@ -22,6 +22,9 @@ public class VehicleLeaveListener implements Listener {
         final Entity entity = e.getDismounted();
         if (!(e.getEntity() instanceof Player)) return;
         final Player player = (Player) e.getEntity();
+
+        if (e.isCancelled()) return;
+
         if (!Vehicle.isVehicle(entity)) return;
 
         if (entity.getCustomName().contains("MTVEHICLES_MAINSEAT_")) {

@@ -30,6 +30,8 @@ public class VehicleEntityListener implements Listener {
         final Entity eventEntity = e.getEntity();
         final Entity damager = e.getDamager();
 
+        if (e.isCancelled()) return;
+
         if (!Vehicle.isVehicle(eventEntity)) return;
 
         if (damager instanceof Player) {

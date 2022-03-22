@@ -25,6 +25,8 @@ public class VehicleClickListener implements Listener {
         final Player p = e.getPlayer();
         long lastUsed = 0L;
 
+        if (e.isCancelled()) return;
+
         if (!Vehicle.isVehicle(entity)) return;
 
         e.setCancelled(true);
