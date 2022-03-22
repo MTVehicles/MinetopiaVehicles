@@ -1,7 +1,7 @@
-# WARNING! If you already have a car in game dont change things in
-# here because it will be lost or you will get errors
+# ---- WARNING! ----
+# If you already have a vehicle in game, do NOT change this file. A critical bug may occur and such vehicles may become unusable.
 #
-# If you need some help or do you have question ask us
+# Should you need help or have any questions, contact us:
 # https://mtvehicles.nl
 
 voertuigen:
