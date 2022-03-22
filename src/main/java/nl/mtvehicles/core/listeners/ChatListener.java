@@ -1,4 +1,4 @@
-package nl.mtvehicles.core.events;
+package nl.mtvehicles.core.listeners;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
@@ -13,7 +13,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-public class ChatEvent implements Listener {
+public class ChatListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onLicenseChat(AsyncPlayerChatEvent e) {

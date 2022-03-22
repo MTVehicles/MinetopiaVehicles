@@ -1,4 +1,4 @@
-package nl.mtvehicles.core.events;
+package nl.mtvehicles.core.listeners;
 
 import nl.mtvehicles.core.infrastructure.enums.RegionAction;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class VehicleClickEvent implements Listener {
+public class VehicleClickListener implements Listener {
     private Map<String, Long> lastUsage = new HashMap<>();
 
     @EventHandler(priority = EventPriority.MONITOR)

@@ -1,4 +1,4 @@
-package nl.mtvehicles.core.events;
+package nl.mtvehicles.core.listeners;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.commands.vehiclesubs.VehicleFuel;
@@ -16,7 +16,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
-public class JerryCanClickEvent implements Listener {
+public class JerryCanClickListener implements Listener {
     @EventHandler
     public void onJerryCanClick(final PlayerInteractEvent e) {
         final Player p = e.getPlayer();

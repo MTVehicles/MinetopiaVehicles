@@ -1,4 +1,4 @@
-package nl.mtvehicles.core.events.inventory;
+package nl.mtvehicles.core.listeners.inventory;
 
 import nl.mtvehicles.core.infrastructure.helpers.LanguageUtils;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.HashMap;
 import java.util.List;
 
-public class InventoryCloseEvent implements Listener {
+public class InventoryCloseListener implements Listener {
     public static HashMap<String, Double> speed = new HashMap<>();
 
     @EventHandler

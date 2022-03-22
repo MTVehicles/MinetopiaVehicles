@@ -1,4 +1,4 @@
-package nl.mtvehicles.core.events;
+package nl.mtvehicles.core.listeners;
 
 import nl.mtvehicles.core.infrastructure.helpers.BossBarUtils;
 import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
@@ -15,7 +15,7 @@ import org.spigotmc.event.entity.EntityDismountEvent;
 import java.util.List;
 import java.util.Map;
 
-public class VehicleLeaveEvent implements Listener {
+public class VehicleLeaveListener implements Listener {
 
     @EventHandler
     public void onVehicleLeave(EntityDismountEvent e) {

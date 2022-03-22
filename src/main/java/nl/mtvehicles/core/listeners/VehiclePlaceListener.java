@@ -1,4 +1,4 @@
-package nl.mtvehicles.core.events;
+package nl.mtvehicles.core.listeners;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.infrastructure.enums.RegionAction;
@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class VehiclePlaceEvent implements Listener {
+public class VehiclePlaceListener implements Listener {
     @EventHandler
     public void onVehiclePlace(final PlayerInteractEvent e) {
         final Player p = e.getPlayer();
