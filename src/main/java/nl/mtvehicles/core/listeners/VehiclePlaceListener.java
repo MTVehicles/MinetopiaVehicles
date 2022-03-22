@@ -1,6 +1,7 @@
 package nl.mtvehicles.core.listeners;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
+import nl.mtvehicles.core.events.VehiclePlaceEvent;
 import nl.mtvehicles.core.infrastructure.enums.RegionAction;
 import nl.mtvehicles.core.infrastructure.helpers.ItemFactory;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
@@ -57,6 +58,14 @@ public class VehiclePlaceListener implements Listener {
             return;
         }
 
+
+        VehiclePlaceEvent vehiclePlaceEvent = new VehiclePlaceEvent();
+        vehiclePlaceEvent.setLocation(e.getClickedBlock().getLocation());
+        vehiclePlaceEvent.setPlayer(e.getPlayer());
+        // You can set more things take a look at VehiclePlaceEvent
+        Bukkit.getPluginManager().callEvent(vehiclePlaceEvent);
+
+
         Location loc = e.getClickedBlock().getLocation();
         e.setCancelled(true);
 
@@ -65,15 +74,16 @@ public class VehiclePlaceListener implements Listener {
             ConfigModule.messagesConfig.sendMessage(p, "blockNotInWhitelist");
             return;
         }
-        if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.PLACE, loc)){
+        if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.PLACE, loc)) {
             ConfigModule.messagesConfig.sendMessage(p, "cannotDoThatHere");
             return;
         }
 
-        if (Vehicle.getByPlate(license) == null){
+        if (Vehicle.getByPlate(license) == null) {
             ConfigModule.messagesConfig.sendMessage(p, "vehicleNotFound");
             return;
         }
+
         Location location = new Location(loc.getWorld(), loc.getX(), loc.getY() + 1, loc.getZ());
         ArmorStand as = location.getWorld().spawn(location, ArmorStand.class);
         as.setVisible(false);
