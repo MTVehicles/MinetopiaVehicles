@@ -1,3 +1,9 @@
+# WARNING! If you already have a car in game dont change things in
+# here because it will be lost or you will get errors
+#
+# If you need some help or do you have question ask us
+# https://mtvehicles.nl
+
 voertuigen:
   - name: "Oxboard"
     vehicleType: CAR
