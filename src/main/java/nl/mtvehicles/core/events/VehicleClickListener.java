@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class VehicleClickEvent implements Listener {
+public class VehicleClickListener implements Listener {
     private Map<String, Long> lastUsage = new HashMap<>();
 
     @EventHandler(priority = EventPriority.MONITOR)

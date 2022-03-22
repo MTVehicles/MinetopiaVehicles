@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class VehiclePlaceEvent implements Listener {
+public class VehiclePlaceListener implements Listener {
     @EventHandler
     public void onVehiclePlace(final PlayerInteractEvent e) {
         final Player p = e.getPlayer();

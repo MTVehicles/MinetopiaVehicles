@@ -4,7 +4,7 @@ import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.commands.vehiclesubs.VehicleEdit;
 import nl.mtvehicles.core.commands.vehiclesubs.VehicleMenu;
-import nl.mtvehicles.core.events.VehicleEntityEvent;
+import nl.mtvehicles.core.events.VehicleEntityListener;
 import nl.mtvehicles.core.infrastructure.dataconfig.MessagesConfig;
 import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
 import nl.mtvehicles.core.infrastructure.helpers.LanguageUtils;
@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class InventoryClickEvent implements Listener {
+public class InventoryClickListener implements Listener {
 
     public HashMap<UUID, ItemStack> vehicleMenu = new HashMap<>();
     public static HashMap<UUID, Inventory> skinMenu = new HashMap<>();
@@ -319,7 +319,7 @@ public class InventoryClickEvent implements Listener {
             }
             if (menuitem.contains("3")) {
                 p.closeInventory();
-                VehicleEntityEvent.kofferbak(p, ken);
+                VehicleEntityListener.kofferbak(p, ken);
             }
         }
         if (e.getView().getTitle().contains("Vehicle Members")) {

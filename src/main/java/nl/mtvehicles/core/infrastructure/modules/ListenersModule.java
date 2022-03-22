@@ -4,8 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.events.*;
-import nl.mtvehicles.core.events.inventory.InventoryClickEvent;
-import nl.mtvehicles.core.events.inventory.InventoryCloseEvent;
+import nl.mtvehicles.core.events.inventory.InventoryClickListener;
+import nl.mtvehicles.core.events.inventory.InventoryCloseListener;
 
 public class ListenersModule {
     private static @Getter
@@ -13,15 +13,15 @@ public class ListenersModule {
     ListenersModule instance;
 
     public ListenersModule() {
-        Main.instance.registerListener(new InventoryClickEvent());
-        Main.instance.registerListener(new VehiclePlaceEvent());
-        Main.instance.registerListener(new VehicleClickEvent());
-        Main.instance.registerListener(new VehicleLeaveEvent());
-        Main.instance.registerListener(new ChatEvent());
-        Main.instance.registerListener(new VehicleEntityEvent());
-        Main.instance.registerListener(new JoinEvent());
-        Main.instance.registerListener(new VehicleVoucherEvent());
-        Main.instance.registerListener(new InventoryCloseEvent());
-        Main.instance.registerListener(new JerryCanClickEvent());
+        Main.instance.registerListener(new InventoryClickListener());
+        Main.instance.registerListener(new VehiclePlaceListener());
+        Main.instance.registerListener(new VehicleClickListener());
+        Main.instance.registerListener(new VehicleLeaveListener());
+        Main.instance.registerListener(new ChatListener());
+        Main.instance.registerListener(new VehicleEntityListener());
+        Main.instance.registerListener(new JoinListener());
+        Main.instance.registerListener(new VehicleVoucherListener());
+        Main.instance.registerListener(new InventoryCloseListener());
+        Main.instance.registerListener(new JerryCanClickListener());
     }
 }

@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
-public class VehicleEntityEvent implements Listener {
+public class VehicleEntityListener implements Listener {
     public static HashMap<String, Double> speed = new HashMap<>();
 
     @EventHandler(priority = EventPriority.MONITOR)

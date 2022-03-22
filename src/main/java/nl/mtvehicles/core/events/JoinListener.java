@@ -19,7 +19,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 
-public class JoinEvent implements Listener {
+public class JoinListener implements Listener {
 
     @EventHandler
     public void onJoinEventPlayer(PlayerJoinEvent e) {

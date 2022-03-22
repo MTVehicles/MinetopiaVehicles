@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.HashMap;
 import java.util.List;
 
-public class InventoryCloseEvent implements Listener {
+public class InventoryCloseListener implements Listener {
     public static HashMap<String, Double> speed = new HashMap<>();
 
     @EventHandler

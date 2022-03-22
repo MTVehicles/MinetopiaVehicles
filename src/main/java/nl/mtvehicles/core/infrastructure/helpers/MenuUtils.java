@@ -1,7 +1,7 @@
 package nl.mtvehicles.core.infrastructure.helpers;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
-import nl.mtvehicles.core.events.inventory.InventoryClickEvent;
+import nl.mtvehicles.core.events.inventory.InventoryClickListener;
 import nl.mtvehicles.core.infrastructure.models.ConfigUtils;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
@@ -135,7 +135,7 @@ public class MenuUtils {
     public static void getvehicleCMD(Player p, int id, int slot) {
         List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getConfig().getMapList("voertuigen");
         List<Map<?, ?>> skins = (List<Map<?, ?>>) vehicles.get(slot).get("cars");
-        InventoryClickEvent.intSave.put(p.getUniqueId(), slot);
+        InventoryClickListener.intSave.put(p.getUniqueId(), slot);
         Inventory inv = Bukkit.createInventory(null, 54, "Choose your vehicle");
         for (int i = 36; i <= 44; i++) {
             inv.setItem(i, ItemUtils.mItem("STAINED_GLASS_PANE", 1, (short) 0, "&c", "&c"));
@@ -163,7 +163,7 @@ public class MenuUtils {
         inv.setItem(53, ItemUtils.mItem("SPECTRAL_ARROW", 1, (short) 0, "&cVolgende Pagina", "&c"));
         inv.setItem(45, ItemUtils.mItem("SPECTRAL_ARROW", 1, (short) 0, "&cVorige Pagina", "&c"));
 
-        InventoryClickEvent.skinMenu.put(p.getUniqueId(), inv);
+        InventoryClickListener.skinMenu.put(p.getUniqueId(), inv);
         p.openInventory(inv);
     }
 

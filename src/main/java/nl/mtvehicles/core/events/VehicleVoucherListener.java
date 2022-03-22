@@ -15,7 +15,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-public class VehicleVoucherEvent implements Listener {
+public class VehicleVoucherListener implements Listener {
     @EventHandler
     public void onVoucherRedeem(PlayerInteractEvent e) {
         final Player p = e.getPlayer();
