@@ -35,6 +35,7 @@ public class VehicleSubCommandManager extends MTVehicleCommand {
         CommandModule.subcommands.put("about", new VehicleVersion());
         CommandModule.subcommands.put("version", new VehicleVersion());
         CommandModule.subcommands.put("repair", new VehicleRepair());
+        CommandModule.subcommands.put("refill", new VehicleRefill());
     }
 
     @Override

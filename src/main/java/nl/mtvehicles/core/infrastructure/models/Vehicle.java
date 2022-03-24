@@ -1,18 +1,12 @@
 package nl.mtvehicles.core.infrastructure.models;
 
-import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.enums.VehicleType;
-import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
-import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
@@ -24,7 +18,7 @@ public class Vehicle {
     private String skinItem;
     private boolean isGlow;
     private boolean benzineEnabled;
-    private double benzine;
+    private double fuel;
     private double fuelUsage;
     private boolean hornEnabled;
     private double health;
@@ -124,7 +118,7 @@ public class Vehicle {
     }
 
     public double getFuel() {
-        return benzine;
+        return fuel;
     }
 
     public boolean isTrunkEnabled() {
@@ -224,8 +218,8 @@ public class Vehicle {
         this.health = health;
     }
 
-    public void setBenzine(double benzine) {
-        this.benzine = benzine;
+    public void setFuel(double fuel) {
+        this.fuel = fuel;
     }
 
     public void setTrunk(boolean trunk) {

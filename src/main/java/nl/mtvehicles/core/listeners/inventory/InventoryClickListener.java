@@ -133,7 +133,7 @@ public class InventoryClickListener implements Listener {
                 vehicle.setHornEnabled((Boolean) vehicles.get(intSave.get(p.getUniqueId())).get("hornEnabled"));
                 vehicle.setHealth((double) vehicles.get(intSave.get(p.getUniqueId())).get("maxHealth"));
                 vehicle.setBenzineEnabled((Boolean) vehicles.get(intSave.get(p.getUniqueId())).get("benzineEnabled"));
-                vehicle.setBenzine(100);
+                vehicle.setFuel(100);
                 vehicle.setTrunk((Boolean) vehicles.get(intSave.get(p.getUniqueId())).get("kofferbakEnabled"));
                 vehicle.setTrunkRows(1);
                 vehicle.setFuelUsage(0.01);

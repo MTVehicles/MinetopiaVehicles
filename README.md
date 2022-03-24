@@ -96,7 +96,7 @@ If this did not work don't hesitate to contact the support on our Discord server
 | /vehicle language | Change the plugin language                        | `mtvehicles.admin` or `mtvehicles.language`      |
 
 ### Vehicle specific commands
-These commands can only be executed by the owner of the vehicle
+These commands can only be executed by the owner of the vehicle. **Hold a vehicle in your hand while executing these.**
 
 | Command               | Description                                          | Permission |
 |-----------------------|------------------------------------------------------|------------|
@@ -107,6 +107,7 @@ These commands can only be executed by the owner of the vehicle
 | /vehicle removerider  | Remove a rider from your vehicle                     | `None`     |
 | /vehicle removemember | Remove a member from your vehicle                    | `None`     |
 | /vehicle repair       | Restore the health of a vehicle (vehicle damage must be enabled in the [config.yml]) | `mtvehicles.repair` |
+| /vehicle refill       | Refill the vehicle's fuel                            | `mtvehicles.refill` |
 
 ### Moderation commands
 

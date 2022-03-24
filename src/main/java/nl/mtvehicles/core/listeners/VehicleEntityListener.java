@@ -54,9 +54,9 @@ public class VehicleEntityListener implements Listener {
 
             NBTItem nbt = new NBTItem(item);
 
-            double curb = VehicleData.fuel.get(license);
-            String benval = nbt.getString("mtvehicles.benzineval");
-            String bensize = nbt.getString("mtvehicles.benzinesize");
+            final double fuel = VehicleData.fuel.get(license);
+            final String benval = nbt.getString("mtvehicles.benzineval");
+            final String bensize = nbt.getString("mtvehicles.benzinesize");
 
             if (!ConfigModule.defaultConfig.canUseJerryCan(p)){
                 ConfigModule.messagesConfig.sendMessage(p, "notInAGasStation");
@@ -68,26 +68,26 @@ public class VehicleEntityListener implements Listener {
                 return;
             }
 
-            if (curb > 99) {
+            if (fuel > 99) {
                 ConfigModule.messagesConfig.sendMessage(p, "vehicleFull");
                 return;
             }
 
-            if (curb + 5 > 100) {
-                int test = (int) (100 - curb);
-                p.setItemInHand(VehicleFuel.benzineItem(Integer.parseInt(bensize), Integer.parseInt(benval) - test));
-                VehicleData.fuel.put(license, VehicleData.fuel.get(license) + test);
-                BossBarUtils.setBossBarValue(curb / 100.0D, license);
+            if (fuel + 5 > 100) {
+                int rest = (int) (100 - fuel);
+                p.setItemInHand(VehicleFuel.benzineItem(Integer.parseInt(bensize), Integer.parseInt(benval) - rest));
+                VehicleData.fuel.put(license, VehicleData.fuel.get(license) + rest);
+                BossBarUtils.setBossBarValue(fuel / 100.0D, license);
                 return;
             }
 
             if (!(Integer.parseInt(benval) < 5)) {
                 VehicleData.fuel.put(license, VehicleData.fuel.get(license) + 5);
-                BossBarUtils.setBossBarValue(curb / 100.0D, license);
+                BossBarUtils.setBossBarValue(fuel / 100.0D, license);
                 p.setItemInHand(VehicleFuel.benzineItem(Integer.parseInt(bensize), Integer.parseInt(benval) - 5));
             } else {
                 VehicleData.fuel.put(license, Double.valueOf(VehicleData.fuel.get(license) + benval));
-                BossBarUtils.setBossBarValue(curb / 100.0D, license);
+                BossBarUtils.setBossBarValue(fuel / 100.0D, license);
                 p.setItemInHand(VehicleFuel.benzineItem(Integer.parseInt(bensize), 0));
             }
         } else {

@@ -51,7 +51,7 @@ public final class VehicleUtils {
                         vehicle.setSkinItem((String) skin.get("SkinItem"));
                         vehicle.setGlow(false);
                         vehicle.setBenzineEnabled((Boolean) configVehicle.get("benzineEnabled"));
-                        vehicle.setBenzine(100);
+                        vehicle.setFuel(100);
                         vehicle.setHornEnabled((Boolean) configVehicle.get("hornEnabled"));
                         vehicle.setHealth((double) configVehicle.get("maxHealth"));
                         vehicle.setTrunk((Boolean) configVehicle.get("kofferbakEnabled"));
@@ -200,7 +200,7 @@ public final class VehicleUtils {
         vehicle.setHornEnabled(ConfigModule.vehicleDataConfig.isHornSet(licensePlate) ? (boolean) vehicleData.get("hornEnabled") : ConfigModule.vehicleDataConfig.isHornEnabled(licensePlate));
         vehicle.setHealth(ConfigModule.vehicleDataConfig.isHealthSet(licensePlate) ? (double) vehicleData.get("health") : ConfigModule.vehicleDataConfig.getHealth(licensePlate));
         vehicle.setBenzineEnabled((Boolean) vehicleData.get("benzineEnabled"));
-        vehicle.setBenzine((Double) vehicleData.get("benzine"));
+        vehicle.setFuel((Double) vehicleData.get("benzine"));
         vehicle.setFuelUsage((Double) vehicleData.get("benzineVerbruik"));
         vehicle.setTrunk((Boolean) vehicleData.get("kofferbak"));
         vehicle.setTrunkRows((Integer) vehicleData.get("kofferbakRows"));
