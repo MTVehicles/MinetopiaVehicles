@@ -2,9 +2,10 @@ package nl.mtvehicles.core.commands.vehiclesubs;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
-import nl.mtvehicles.core.infrastructure.models.ConfigUtils;
+import nl.mtvehicles.core.infrastructure.models.Config;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
+import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -34,20 +35,20 @@ public class VehicleInfo extends MTVehicleSubCommand {
             return true;
         }
 
-        ConfigModule.configList.forEach(ConfigUtils::reload);
+        ConfigModule.configList.forEach(Config::reload);
 
-        String ken = Vehicle.getLicensePlate(item);
-        Vehicle vehicle = Vehicle.getByPlate(ken);
+        String ken = VehicleUtils.getLicensePlate(item);
+        Vehicle vehicle = VehicleUtils.getByLicensePlate(ken);
 
         if (vehicle == null) return true;
 
         NumberFormat formatter = new DecimalFormat("#0.000");
         sendMessage(ConfigModule.messagesConfig.getMessage("vehicleInfoInformation"));
-        sendMessage(ConfigModule.messagesConfig.getMessage("vehicleInfoType") + vehicle.getVehicleType());
+        sendMessage(ConfigModule.messagesConfig.getMessage("vehicleInfoType") + vehicle.getVehicleType().getName());
         sendMessage(ConfigModule.messagesConfig.getMessage("vehicleInfoName") + vehicle.getName());
         sendMessage(ConfigModule.messagesConfig.getMessage("vehicleInfoLicense") + ken);
         if (p.hasPermission("mtvehicles.admin")) {
-            sendMessage(ConfigModule.messagesConfig.getMessage("vehicleInfoUUID") + Vehicle.getCarUuid(ken));
+            sendMessage(ConfigModule.messagesConfig.getMessage("vehicleInfoUUID") + VehicleUtils.getCarUUID(ken));
         }
         sendMessage(ConfigModule.messagesConfig.getMessage("vehicleInfoSpeed") + formatter.format(vehicle.getMaxSpeed()*20).toString().replace(",", ".") + " blocks/sec");
         sendMessage(ConfigModule.messagesConfig.getMessage("vehicleInfoAcceleration") + formatter.format(vehicle.getAccelerationSpeed()/0.2*100).toString().replace(",", ".") + " blocks/sec^2");

@@ -1,14 +1,15 @@
 package nl.mtvehicles.core.infrastructure.dataconfig;
 
-import nl.mtvehicles.core.infrastructure.models.ConfigUtils;
-import nl.mtvehicles.core.infrastructure.models.Vehicle;
+import nl.mtvehicles.core.infrastructure.enums.ConfigType;
+import nl.mtvehicles.core.infrastructure.models.Config;
+import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import org.bukkit.entity.Player;
 
 import java.util.Map;
 
-public class VehicleDataConfig extends ConfigUtils {
+public class VehicleDataConfig extends Config {
     public VehicleDataConfig() {
-        this.setFileName("vehicleData.yml");
+        super(ConfigType.VEHICLE_DATA);
     }
 
     public int getDamage(String license){
@@ -28,7 +29,7 @@ public class VehicleDataConfig extends ConfigUtils {
 
     public void setInitialHorn(String license){
         final String path = "vehicle." + license + ".hornEnabled";
-        boolean state = Vehicle.getHornByDamage(getDamage(license));
+        boolean state = VehicleUtils.getHornByDamage(getDamage(license));
         getConfig().set(path, state);
         save();
     }
@@ -48,7 +49,7 @@ public class VehicleDataConfig extends ConfigUtils {
     public void setInitialHealth(String license){
         final String path = "vehicle." + license + ".health";
         final int damage = getConfig().getInt("vehicle." + license + ".skinDamage");
-        double state = Vehicle.getMaxHealthByDamage(damage);
+        double state = VehicleUtils.getMaxHealthByDamage(damage);
         getConfig().set(path, state);
         save();
     }

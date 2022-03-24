@@ -1,24 +1,29 @@
 package nl.mtvehicles.core.infrastructure.dataconfig;
 
+import nl.mtvehicles.core.infrastructure.enums.ConfigType;
 import nl.mtvehicles.core.infrastructure.enums.DriveUp;
 import nl.mtvehicles.core.infrastructure.enums.RegionAction;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
-import nl.mtvehicles.core.infrastructure.models.ConfigUtils;
+import nl.mtvehicles.core.infrastructure.models.Config;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class DefaultConfig extends ConfigUtils {
+public class DefaultConfig extends Config {
     public DefaultConfig() {
-        this.setFileName("config.yml");
+        super(ConfigType.DEFAULT);
     }
 
+    @Deprecated
     public String getMessage(String key) {
         return TextUtils.colorize(this.getConfig().getString(key));
     }
@@ -197,6 +202,90 @@ public class DefaultConfig extends ConfigUtils {
                 break;
         }
         return returns;
+    }
+
+    /**
+     * Options available in MTV's default configuration file (config.yml)
+     */
+    public enum Option {
+        AUTO_UPDATE("auto-update", true),
+        VEHICLE_MENU_SIZE("vehicleMenuSize", 3),
+        /**
+         * Can be found as 'wiekens-always-on' in config.yml
+         */
+        HELICOPTER_BLADES_ALWAYS_ON("wiekens-always-on", true),
+        /**
+         * Can be found as 'anwb' in config.yml
+         */
+        PICKUP_FROM_WATER("anwb", false),
+        /**
+         * Can be found as 'kofferbakEnabled' in config.yml
+         */
+        TRUNK_ENABLED("kofferbakEnabled", true),
+        /**
+         * Can be found as 'spelerSetOwner' in config.yml
+         */
+        PUT_ONESELF_AS_OWNER("spelerSetOwner", false),
+        HELICOPTER_MAX_HEIGHT("helicopterMaxHeight", 150),
+        CAR_PICKUP("carPickup", false),
+        BENZINE("benzine", true),
+        FUEL_MULTIPLIER("fuelMultiplier", 1),
+        JERRYCANS("jerrycans", new ArrayList<>(Arrays.asList(25, 50, 75))),
+        DAMAGE_ENABLED("damageEnabled", false),
+        DAMAGE_MULTIPLIER("damageMultiplier", 0.5),
+        HORN_COOLDOWN("hornCooldown", 5),
+        HORN_TYPE("hornType", "minetopiaclassic.horn1"),
+        TANK_TNT("tankTNT", false),
+        TANK_COOLDOWN("tankCooldown", 10),
+        DRIVE_UP("driveUp", "both"),
+        DRIVE_ON_CARPETS("driveOnCarpets", true),
+        BLOCK_WHITELIST_ENABLED("blockWhitelist.enabled", false),
+        BLOCK_WHITELIST_LIST("blockWhitelist.list", new ArrayList<>().add("GRAY_CONCRETE")),
+        DISABLED_WORLDS("disabledWorlds", new ArrayList<>()),
+        GAS_STATIONS_ENABLED("gasStations.enabled", false),
+        GAS_STATIONS_CAN_USE_JERRYCAN_OUTSIDE_OF_GAS_STATION("gasStations.canUseJerryCanOutsideOfGasStation", true),
+        GAS_STATIONS_FILL_JERRYCANS_ENABLED("gasStations.fillJerryCans.enabled", true),
+        GAS_STATIONS_FILL_JERRYCANS_NEED_PERMISSION("gasStations.fillJerryCans.needPermission", false),
+        GAS_STATIONS_FILL_JERRYCANS_PLAY_SOUND("gasStations.fillJerryCans.playSound", true),
+        GAS_STATIONS_FILL_JERRYCANS_LEVER("gasStations.fillJerryCans.lever", true),
+        GAS_STATIONS_FILL_JERRYCANS_TRIPWIRE_HOOK("gasStations.fillJerryCans.tripwireHook", false),
+        GAS_STATIONS_FILL_JERRYCANS_PRICE_ENABLED("gasStations.fillJerryCans.price.enabled", true),
+        GAS_STATIONS_FILL_JERRYCANS_PRICE_PER_LITRE("gasStations.fillJerryCans.price.pricePerLitre", 30.0),
+        REGION_ACTIONS_PLACE("regionActions.place", "disabled"),
+        REGION_ACTIONS_ENTER("regionActions.enter", "disabled"),
+        REGION_ACTIONS_PICKUP("regionActions.pickup", "disabled");
+
+        final private String path;
+        final private Object defaultValue;
+
+        private Option(String path, Object defaultValue){
+            this.path = path;
+            this.defaultValue = defaultValue;
+        }
+
+        /**
+         * Get default value of option
+         * @return Default value of option
+         */
+        public Object getDefaultValue() {
+            return defaultValue;
+        }
+
+        /**
+         * Get string path of option
+         * @return Path of option
+         */
+        public String getPath() {
+            return path;
+        }
+
+        /**
+         * Get (default) type of option
+         * @return Default type of option
+         */
+        public Type getValueType() {
+            return this.getDefaultValue().getClass();
+        }
     }
 
 }

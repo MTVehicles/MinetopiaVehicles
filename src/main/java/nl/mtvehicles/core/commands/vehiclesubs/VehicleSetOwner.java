@@ -4,6 +4,7 @@ import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
+import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -39,9 +40,9 @@ public class VehicleSetOwner extends MTVehicleSubCommand {
             return true;
         }
 
-        String licensePlate = Vehicle.getLicensePlate(item);
+        String licensePlate = VehicleUtils.getLicensePlate(item);
 
-        if (!Vehicle.existsByPlate(licensePlate)) {
+        if (!VehicleUtils.existsByLicensePlate(licensePlate)) {
             player.sendMessage(ConfigModule.messagesConfig.getMessage("vehicleNotFound"));
             return true;
         }
@@ -53,10 +54,10 @@ public class VehicleSetOwner extends MTVehicleSubCommand {
             return true;
         }
 
-        Vehicle vehicle = Vehicle.getByPlate(licensePlate);
+        Vehicle vehicle = VehicleUtils.getByLicensePlate(licensePlate);
         assert vehicle != null;
 
-        if ((playerSetOwner || !player.hasPermission("mtvehicles.setowner")) && !vehicle.getOwner().equals(player.getUniqueId().toString())) {
+        if ((playerSetOwner || !player.hasPermission("mtvehicles.setowner")) && !vehicle.isOwner(player)) {
             player.sendMessage(ConfigModule.messagesConfig.getMessage("notYourCar"));
             return true;
         }

@@ -3,8 +3,8 @@ package nl.mtvehicles.core.listeners;
 import nl.mtvehicles.core.infrastructure.enums.RegionAction;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
+import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,7 +14,6 @@ import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 public class VehicleClickListener implements Listener {
     private Map<String, Long> lastUsage = new HashMap<>();
@@ -27,7 +26,7 @@ public class VehicleClickListener implements Listener {
 
         if (e.isCancelled()) return;
 
-        if (!Vehicle.isVehicle(entity)) return;
+        if (!VehicleUtils.isVehicle(entity)) return;
 
         e.setCancelled(true);
 
@@ -39,7 +38,7 @@ public class VehicleClickListener implements Listener {
         if (System.currentTimeMillis() - lastUsed >= 500) lastUsage.put(p.getName(), Long.valueOf(System.currentTimeMillis()));
         else return;
 
-        final String license = Vehicle.getLicense(entity);
+        final String license = VehicleUtils.getLicensePlate(entity);
 
         if (p.isSneaking()) {
 
@@ -53,16 +52,16 @@ public class VehicleClickListener implements Listener {
         }
 
         if (entity.getCustomName().contains("MTVEHICLES_SEAT")) {
-            Vehicle vehicle = Vehicle.getByPlate(license);
+            Vehicle vehicle = VehicleUtils.getByLicensePlate(license);
             if (vehicle == null) return;
 
-            if (ConfigModule.vehicleDataConfig.getConfig().getBoolean("vehicle."+license+".isOpen") || vehicle.getOwner().equals(p.getUniqueId().toString()) || vehicle.canSit(p) || p.hasPermission("mtvehicles.ride")) {
+            if (ConfigModule.vehicleDataConfig.getConfig().getBoolean("vehicle."+license+".isOpen") || vehicle.isOwner(p) || vehicle.canSit(p) || p.hasPermission("mtvehicles.ride")) {
                 if (entity.isEmpty()) {
                     entity.addPassenger(p);
-                    p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehicleEnterMember").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(license).getOwner())).getName())));
+                    p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehicleEnterMember").replace("%p%", VehicleUtils.getByLicensePlate(license).getOwnerName())));
                 }
             } else {
-                p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehicleNoRiderEnter").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(license).getOwner())).getName())));
+                p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehicleNoRiderEnter").replace("%p%", VehicleUtils.getByLicensePlate(license).getOwnerName())));
             }
             return;
         }

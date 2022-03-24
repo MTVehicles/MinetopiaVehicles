@@ -1,8 +1,9 @@
 package nl.mtvehicles.core.infrastructure.helpers;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
+import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.listeners.inventory.InventoryClickListener;
-import nl.mtvehicles.core.infrastructure.models.ConfigUtils;
+import nl.mtvehicles.core.infrastructure.models.Config;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
@@ -50,7 +51,7 @@ public class MenuUtils {
         NBTItem nbt = new NBTItem(p.getInventory().getItemInMainHand());
         String licensePlate = nbt.getString("mtvehicles.kenteken");
 
-        Vehicle vehicle = Vehicle.getByPlate(licensePlate);
+        Vehicle vehicle = VehicleUtils.getByLicensePlate(licensePlate);
 
         if (vehicle == null) {
             return;
@@ -89,13 +90,13 @@ public class MenuUtils {
         NBTItem nbt = new NBTItem(p.getInventory().getItemInMainHand());
         String licensePlate = nbt.getString("mtvehicles.kenteken");
 
-        Vehicle vehicle = Vehicle.getByPlate(licensePlate);
+        Vehicle vehicle = VehicleUtils.getByLicensePlate(licensePlate);
 
         if (vehicle == null) {
             return;
         }
 
-        ItemStack test = ItemUtils.mItem("PAPER", 1, (short) 0, "&6Owners", "&7Naam: &e" + Bukkit.getOfflinePlayer(UUID.fromString(vehicle.getOwner())).getName());
+        ItemStack test = ItemUtils.mItem("PAPER", 1, (short) 0, "&6Owners", "&7Naam: &e" + Bukkit.getOfflinePlayer(vehicle.getOwnerUUID()).getName());
         ItemStack test2 = ItemUtils.mItemRiders("PAPER", 1, (short) 0, "&6Riders", licensePlate);
         ItemStack test3 = ItemUtils.mItemMembers("PAPER", 1, (short) 0, "&6Members", licensePlate);
         ItemStack car = (new ItemFactory(test).setNBT("mtvehicles.item", "1").toItemStack());
@@ -169,7 +170,7 @@ public class MenuUtils {
 
     public static void restoreCMD(Player p, int id, UUID of) {
         Inventory inv = Bukkit.createInventory(null, 54, "Vehicle Restore " + id);
-        ConfigModule.configList.forEach(ConfigUtils::reload);
+        ConfigModule.configList.forEach(Config::reload);
         if (ConfigModule.vehicleDataConfig.getConfig().getConfigurationSection("vehicle") != null) {
             List<String> dataVehicle = new ArrayList<>();
             for (String entry : ConfigModule.vehicleDataConfig.getConfig().getConfigurationSection("vehicle").getKeys(false)) {

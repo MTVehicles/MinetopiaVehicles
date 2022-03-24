@@ -3,9 +3,9 @@ package nl.mtvehicles.core.commands.vehiclesubs;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
-import nl.mtvehicles.core.infrastructure.models.ConfigUtils;
+import nl.mtvehicles.core.infrastructure.models.Config;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
-import nl.mtvehicles.core.infrastructure.models.Vehicle;
+import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -32,7 +32,7 @@ public class VehicleEdit extends MTVehicleSubCommand {
             return true;
         }
 
-        ConfigModule.configList.forEach(ConfigUtils::reload);
+        ConfigModule.configList.forEach(Config::reload);
 
         sendMessage(ConfigModule.messagesConfig.getMessage("menuOpen"));
         editMenu(p, item);
@@ -41,7 +41,7 @@ public class VehicleEdit extends MTVehicleSubCommand {
     }
 
     public static void editMenu(Player p, ItemStack item) {
-        String ken = Vehicle.getLicensePlate(item);
+        String ken = VehicleUtils.getLicensePlate(item);
         Inventory inv = Bukkit.createInventory(null, 27, "Vehicle Edit");
         inv.setItem(10, ItemUtils.mItem3(ConfigModule.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".skinItem"), 1, (short) ConfigModule.vehicleDataConfig.getConfig().getInt("vehicle." + ken + ".skinDamage"), "&6Vehicle Settings", "", "mtcustom", ConfigModule.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".nbtValue")));
         inv.setItem(11, ItemUtils.mItem2("DIAMOND_HOE", 1, (short) 58, "&6Benzine Settings", ""));

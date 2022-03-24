@@ -1,11 +1,12 @@
 package nl.mtvehicles.core.infrastructure.dataconfig;
 
-import nl.mtvehicles.core.infrastructure.models.ConfigUtils;
+import nl.mtvehicles.core.infrastructure.enums.ConfigType;
+import nl.mtvehicles.core.infrastructure.models.Config;
 
-public class SecretSettingsConfig extends ConfigUtils {
+public class SecretSettingsConfig extends Config {
 
     public SecretSettingsConfig(){
-        this.setFileName("supersecretsettings.yml");
+        super(ConfigType.SUPERSECRETSETTINGS);
     }
 
     public String getConfigVersion(){

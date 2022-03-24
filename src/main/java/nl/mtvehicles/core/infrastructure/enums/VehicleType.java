@@ -1,5 +1,7 @@
 package nl.mtvehicles.core.infrastructure.enums;
 
+import java.util.Locale;
+
 /**
  * Type of vehicle
  */
@@ -20,6 +22,10 @@ public enum VehicleType {
      * Helicopters - with the ability to fly, with blades
      */
     HELICOPTER;
+
+    public String getName(){
+        return this.toString().substring(0, 1).toUpperCase() + this.toString().substring(1).toLowerCase(Locale.ROOT);
+    }
 
     public boolean isCar(){
         return this.equals(CAR);

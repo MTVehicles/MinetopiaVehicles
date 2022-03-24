@@ -1,6 +1,7 @@
 package nl.mtvehicles.core.infrastructure.models;
 
 import nl.mtvehicles.core.Main;
+import nl.mtvehicles.core.infrastructure.enums.ConfigType;
 import nl.mtvehicles.core.infrastructure.interfaces.ConfigInterface;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -13,52 +14,58 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.logging.Level;
 
-public class ConfigUtils implements ConfigInterface {
-    private FileConfiguration customConfig;
-    private File customConfigFile = null;
+public abstract class Config implements ConfigInterface {
+    final protected ConfigType configType;
+    protected FileConfiguration config;
+    private File configFile = null;
     private String fileName;
 
+    public Config(ConfigType configType){
+        this.configType = configType;
+        if (!configType.isMessages()) this.fileName = configType.getFileName();
+    }
+
     public void reload() {
-        if (customConfigFile == null) {
-            setCustomConfigFile(new File(Main.instance.getDataFolder(), fileName));
+        if (configFile == null) {
+            setConfigFile(new File(Main.instance.getDataFolder(), fileName));
         }
-        if (!customConfigFile.exists())
+        if (!configFile.exists())
             this.saveDefaultConfig();
 
-        customConfig = YamlConfiguration.loadConfiguration(customConfigFile);
+        config = YamlConfiguration.loadConfiguration(configFile);
 
         Reader defConfigStream;
         defConfigStream = new InputStreamReader(Objects.requireNonNull(Main.instance.getResource(fileName)), StandardCharsets.UTF_8);
         YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
-        customConfig.setDefaults(defConfig);
+        config.setDefaults(defConfig);
     }
 
 
     public FileConfiguration getConfig() {
-        if (customConfig == null) {
+        if (config == null) {
             reload();
         }
-        return customConfig;
+        return config;
     }
 
     public boolean save() {
-        if (customConfig == null || customConfigFile == null) {
+        if (config == null || configFile == null) {
             return false;
         }
         try {
-            getConfig().save(customConfigFile);
+            getConfig().save(configFile);
         } catch (IOException ex) {
-            Main.instance.getLogger().log(Level.SEVERE, "Could not save config to " + customConfigFile, ex);
+            Main.instance.getLogger().log(Level.SEVERE, "Could not save config to " + configFile, ex);
         }
         this.reload();
         return true;
     }
 
     public void saveDefaultConfig() {
-        if (customConfigFile == null) {
-            customConfigFile = new File(Main.instance.getDataFolder(), fileName);
+        if (configFile == null) {
+            configFile = new File(Main.instance.getDataFolder(), fileName);
         }
-        if (!customConfigFile.exists()) {
+        if (!configFile.exists()) {
             Main.instance.saveResource(fileName, false);
         }
     }
@@ -67,7 +74,7 @@ public class ConfigUtils implements ConfigInterface {
         this.fileName = fileName;
     }
 
-    public void setCustomConfigFile(File customConfigFile){
-        this.customConfigFile = customConfigFile;
+    public void setConfigFile(File configFile){
+        this.configFile = configFile;
     }
 }

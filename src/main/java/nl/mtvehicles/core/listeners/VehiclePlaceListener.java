@@ -6,6 +6,7 @@ import nl.mtvehicles.core.infrastructure.enums.RegionAction;
 import nl.mtvehicles.core.infrastructure.helpers.ItemFactory;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
+import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -23,7 +24,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 public class VehiclePlaceListener implements Listener {
     @EventHandler
@@ -47,11 +47,11 @@ public class VehiclePlaceListener implements Listener {
             return;
         }
 
-        String license = Vehicle.getLicensePlate(item);
+        String license = VehicleUtils.getLicensePlate(item);
         if (license == null) {
             return;
         }
-        if (!Vehicle.existsByPlate(license)) {
+        if (!VehicleUtils.existsByLicensePlate(license)) {
             ConfigModule.messagesConfig.sendMessage(p, "vehicleNotFound");
             e.setCancelled(true);
             return;
@@ -84,7 +84,7 @@ public class VehiclePlaceListener implements Listener {
             return;
         }
 
-        if (Vehicle.getByPlate(license) == null) {
+        if (VehicleUtils.getByLicensePlate(license) == null) {
             ConfigModule.messagesConfig.sendMessage(p, "vehicleNotFound");
             return;
         }
@@ -97,10 +97,10 @@ public class VehiclePlaceListener implements Listener {
         ArmorStand as2 = location.getWorld().spawn(location, ArmorStand.class);
         as2.setVisible(false);
         as2.setCustomName("MTVEHICLES_MAIN_" + license);
-        Vehicle vehicle = Vehicle.getByPlate(license);
+        Vehicle vehicle = VehicleUtils.getByLicensePlate(license);
         List<Map<String, Double>> seats = (List<Map<String, Double>>) vehicle.getVehicleData().get("seats");
         p.getInventory().remove(p.getEquipment().getItemInHand());
-        p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehiclePlace").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(license).getOwner().toString())).getName())));
+        p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehiclePlace").replace("%p%", VehicleUtils.getByLicensePlate(license).getOwnerName())));
         for (int i = 1; i <= seats.size(); i++) {
             Map<String, Double> seat = seats.get(i - 1);
             if (i == 1) {

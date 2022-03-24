@@ -3,6 +3,7 @@ package nl.mtvehicles.core.listeners;
 import nl.mtvehicles.core.infrastructure.helpers.BossBarUtils;
 import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
+import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
@@ -25,15 +26,15 @@ public class VehicleLeaveListener implements Listener {
 
         if (e.isCancelled()) return;
 
-        if (!Vehicle.isVehicle(entity)) return;
+        if (!VehicleUtils.isVehicle(entity)) return;
 
         if (entity.getCustomName().contains("MTVEHICLES_MAINSEAT_")) {
 
-            final String license = Vehicle.getLicense(entity);
+            final String license = VehicleUtils.getLicensePlate(entity);
             if (VehicleData.autostand.get("MTVEHICLES_MAIN_" + license) == null) return;
 
-            Vehicle vehicle = Vehicle.getByPlate(license);
-            if (vehicle.getVehicleType().contains("HELICOPTER")) {
+            Vehicle vehicle = VehicleUtils.getByLicensePlate(license);
+            if (vehicle.getVehicleType().isHelicopter()) {
                 ArmorStand as4 = VehicleData.autostand.get("MTVEHICLES_WIEKENS_" + license);
                 as4.setGravity(as4.getLocation().getBlock().getType().equals(Material.AIR));
             }
