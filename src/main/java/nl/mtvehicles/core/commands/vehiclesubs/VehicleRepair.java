@@ -3,7 +3,7 @@ package nl.mtvehicles.core.commands.vehiclesubs;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
-import nl.mtvehicles.core.infrastructure.models.Vehicle;
+import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -25,9 +25,9 @@ public class VehicleRepair extends MTVehicleSubCommand {
             return true;
         }
 
-        final String license = Vehicle.getLicensePlate(item);
+        final String license = VehicleUtils.getLicensePlate(item);
         final int damage = ConfigModule.vehicleDataConfig.getDamage(license);
-        final double maxHealth = Vehicle.getMaxHealthByDamage(damage);
+        final double maxHealth = VehicleUtils.getMaxHealthByDamage(damage);
 
         ConfigModule.vehicleDataConfig.setHealth(license, maxHealth);
         sendMessage(ConfigModule.messagesConfig.getMessage("actionSuccessful"));

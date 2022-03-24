@@ -4,6 +4,7 @@ import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
+import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -32,9 +33,9 @@ public class VehicleRemoveRider extends MTVehicleSubCommand {
             return true;
         }
 
-        String ken = Vehicle.getLicensePlate(item);
+        String ken = VehicleUtils.getLicensePlate(item);
         Player of = Bukkit.getPlayer(args[1]);
-        Vehicle vehicle = Vehicle.getByPlate(ken);
+        Vehicle vehicle = VehicleUtils.getByLicensePlate(ken);
 
         if (of == null || !of.hasPlayedBefore()) {
             player.sendMessage(ConfigModule.messagesConfig.getMessage("playerNotFound"));

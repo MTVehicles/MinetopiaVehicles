@@ -4,6 +4,7 @@ import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
+import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -42,7 +43,7 @@ public class VehicleAddMember extends MTVehicleSubCommand {
             return true;
         }
 
-        Vehicle vehicle = Vehicle.getByPlate(licensePlate);
+        Vehicle vehicle = VehicleUtils.getByLicensePlate(licensePlate);
 
         assert vehicle != null;
         List<String> members = vehicle.getMembers();

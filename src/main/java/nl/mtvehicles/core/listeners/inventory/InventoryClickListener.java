@@ -4,6 +4,7 @@ import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.commands.vehiclesubs.VehicleEdit;
 import nl.mtvehicles.core.commands.vehiclesubs.VehicleMenu;
+import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.listeners.VehicleEntityListener;
 import nl.mtvehicles.core.infrastructure.dataconfig.MessagesConfig;
 import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
@@ -392,14 +393,14 @@ public class InventoryClickListener implements Listener {
 
             if (e.getRawSlot() == 15) { //Yes
                 String carUuid = new NBTItem(p.getInventory().getItemInMainHand()).getString("mtvehicles.item");
-                if (Vehicle.getByUUID(p, carUuid) == null){
+                if (VehicleUtils.getItemByUUID(p, carUuid) == null){
                     p.sendMessage(ConfigModule.messagesConfig.getMessage("giveCarNotFound"));
                     p.closeInventory();
                     return;
                 }
                 p.sendMessage(ConfigModule.messagesConfig.getMessage(TextUtils.colorize("voucherRedeem")));
                 p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
-                p.getInventory().addItem(Vehicle.getByUUID(p, carUuid));
+                p.getInventory().addItem(VehicleUtils.getItemByUUID(p, carUuid));
                 p.closeInventory();
             }
 

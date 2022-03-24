@@ -1,6 +1,7 @@
 package nl.mtvehicles.core.infrastructure.helpers;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
+import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.listeners.inventory.InventoryClickListener;
 import nl.mtvehicles.core.infrastructure.models.Config;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
@@ -50,7 +51,7 @@ public class MenuUtils {
         NBTItem nbt = new NBTItem(p.getInventory().getItemInMainHand());
         String licensePlate = nbt.getString("mtvehicles.kenteken");
 
-        Vehicle vehicle = Vehicle.getByPlate(licensePlate);
+        Vehicle vehicle = VehicleUtils.getByLicensePlate(licensePlate);
 
         if (vehicle == null) {
             return;
@@ -89,7 +90,7 @@ public class MenuUtils {
         NBTItem nbt = new NBTItem(p.getInventory().getItemInMainHand());
         String licensePlate = nbt.getString("mtvehicles.kenteken");
 
-        Vehicle vehicle = Vehicle.getByPlate(licensePlate);
+        Vehicle vehicle = VehicleUtils.getByLicensePlate(licensePlate);
 
         if (vehicle == null) {
             return;

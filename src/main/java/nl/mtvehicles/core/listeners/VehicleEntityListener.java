@@ -6,7 +6,7 @@ import nl.mtvehicles.core.infrastructure.helpers.BossBarUtils;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
 import nl.mtvehicles.core.infrastructure.models.Config;
-import nl.mtvehicles.core.infrastructure.models.Vehicle;
+import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
@@ -20,7 +20,6 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 public class VehicleEntityListener implements Listener {
     public static HashMap<String, Double> speed = new HashMap<>();
@@ -32,11 +31,11 @@ public class VehicleEntityListener implements Listener {
 
         if (e.isCancelled()) return;
 
-        if (!Vehicle.isVehicle(eventEntity)) return;
+        if (!VehicleUtils.isVehicle(eventEntity)) return;
 
         if (damager instanceof Player) {
             final Player p = (Player) damager;
-            final String license = Vehicle.getLicense(eventEntity);
+            final String license = VehicleUtils.getLicensePlate(eventEntity);
 
             if (p.isSneaking() && !p.isInsideVehicle()) {
                 kofferbak(p, license);
@@ -98,10 +97,10 @@ public class VehicleEntityListener implements Listener {
 
     public static void checkDamage(EntityDamageByEntityEvent e){
         final double damage = e.getDamage();
-        final String license = Vehicle.getLicense(e.getEntity());
+        final String license = VehicleUtils.getLicensePlate(e.getEntity());
 
         if (!ConfigModule.defaultConfig.getConfig().getBoolean("damageEnabled")) return;
-        if (Vehicle.getByPlate(license) == null) return;
+        if (VehicleUtils.getByLicensePlate(license) == null) return;
 
         double damageMultiplier = ConfigModule.defaultConfig.getConfig().getDouble("damageMultiplier");
         if (damageMultiplier < 0.1 || damageMultiplier > 5) damageMultiplier = 0.5; //Must be between 0.1 and 5. Default: 0.5
@@ -110,12 +109,12 @@ public class VehicleEntityListener implements Listener {
 
     public static void kofferbak(Player p, String license) {
         if (ConfigModule.defaultConfig.getConfig().getBoolean("kofferbakEnabled")) {
-            if (Vehicle.getByPlate(license) == null) {
+            if (VehicleUtils.getByLicensePlate(license) == null) {
                 ConfigModule.messagesConfig.sendMessage(p, "vehicleNotFound");
                 return;
             }
 
-            if (Vehicle.getByPlate(license).isOwner(p) || p.hasPermission("mtvehicles.kofferbak")) {
+            if (VehicleUtils.getByLicensePlate(license).isOwner(p) || p.hasPermission("mtvehicles.kofferbak")) {
                 ConfigModule.configList.forEach(Config::reload);
                 if (ConfigModule.vehicleDataConfig.getConfig().getBoolean("vehicle." + license + ".kofferbak")) {
 
@@ -131,7 +130,7 @@ public class VehicleEntityListener implements Listener {
                     p.openInventory(inv);
                 }
             } else {
-                p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehicleNoRiderKofferbak").replace("%p%", Vehicle.getByPlate(license).getOwnerName())));
+                p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehicleNoRiderKofferbak").replace("%p%", VehicleUtils.getByLicensePlate(license).getOwnerName())));
             }
         }
     }

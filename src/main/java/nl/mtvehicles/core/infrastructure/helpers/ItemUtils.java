@@ -1,7 +1,7 @@
 package nl.mtvehicles.core.infrastructure.helpers;
 
 import nl.mtvehicles.core.infrastructure.dataconfig.MessagesConfig;
-import nl.mtvehicles.core.infrastructure.models.Vehicle;
+import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.apache.commons.lang.RandomStringUtils;
 import org.bukkit.Bukkit;
@@ -479,7 +479,7 @@ public class ItemUtils {
         goldlore.add(TextUtils.colorize("&2> Permanent"));
         goldlore.add(TextUtils.colorize("&8&m                                    "));
         im.setLore(goldlore);
-        im.setDisplayName(TextUtils.colorize(Vehicle.getCar(name).getItemMeta().getDisplayName() + " Voucher"));
+        im.setDisplayName(TextUtils.colorize(VehicleUtils.getCarItem(name).getItemMeta().getDisplayName() + " Voucher"));
         is.setItemMeta(im);
         p.getInventory().addItem(new ItemStack[]{is});
     }
