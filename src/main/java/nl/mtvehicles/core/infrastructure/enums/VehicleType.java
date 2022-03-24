@@ -21,7 +21,11 @@ public enum VehicleType {
     /**
      * Helicopters - with the ability to fly, with blades
      */
-    HELICOPTER;
+    HELICOPTER,
+    /**
+     * Airplanes - with the ability to fly, without blades
+     */
+    AIRPLANE;
 
     public String getName(){
         return this.toString().substring(0, 1).toUpperCase() + this.toString().substring(1).toLowerCase(Locale.ROOT);
@@ -41,5 +45,9 @@ public enum VehicleType {
 
     public boolean isHelicopter(){
         return this.equals(HELICOPTER);
+    }
+
+    public boolean isAirplane(){
+        return this.equals(AIRPLANE);
     }
 }
