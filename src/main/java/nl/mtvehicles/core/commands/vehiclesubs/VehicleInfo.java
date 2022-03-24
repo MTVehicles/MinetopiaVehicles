@@ -2,7 +2,7 @@ package nl.mtvehicles.core.commands.vehiclesubs;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
-import nl.mtvehicles.core.infrastructure.models.ConfigUtils;
+import nl.mtvehicles.core.infrastructure.models.Config;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
@@ -34,7 +34,7 @@ public class VehicleInfo extends MTVehicleSubCommand {
             return true;
         }
 
-        ConfigModule.configList.forEach(ConfigUtils::reload);
+        ConfigModule.configList.forEach(Config::reload);
 
         String ken = Vehicle.getLicensePlate(item);
         Vehicle vehicle = Vehicle.getByPlate(ken);
@@ -43,7 +43,7 @@ public class VehicleInfo extends MTVehicleSubCommand {
 
         NumberFormat formatter = new DecimalFormat("#0.000");
         sendMessage(ConfigModule.messagesConfig.getMessage("vehicleInfoInformation"));
-        sendMessage(ConfigModule.messagesConfig.getMessage("vehicleInfoType") + vehicle.getVehicleType());
+        sendMessage(ConfigModule.messagesConfig.getMessage("vehicleInfoType") + vehicle.getVehicleType().getName());
         sendMessage(ConfigModule.messagesConfig.getMessage("vehicleInfoName") + vehicle.getName());
         sendMessage(ConfigModule.messagesConfig.getMessage("vehicleInfoLicense") + ken);
         if (p.hasPermission("mtvehicles.admin")) {

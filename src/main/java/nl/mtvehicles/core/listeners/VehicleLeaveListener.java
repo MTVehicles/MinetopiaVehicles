@@ -33,7 +33,7 @@ public class VehicleLeaveListener implements Listener {
             if (VehicleData.autostand.get("MTVEHICLES_MAIN_" + license) == null) return;
 
             Vehicle vehicle = Vehicle.getByPlate(license);
-            if (vehicle.getVehicleType().contains("HELICOPTER")) {
+            if (vehicle.getVehicleType().isHelicopter()) {
                 ArmorStand as4 = VehicleData.autostand.get("MTVEHICLES_WIEKENS_" + license);
                 as4.setGravity(as4.getLocation().getBlock().getType().equals(Material.AIR));
             }

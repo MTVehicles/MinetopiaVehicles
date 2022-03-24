@@ -28,12 +28,15 @@ public class VehicleDelete extends MTVehicleSubCommand {
             return true;
         }
 
-        String ken = Vehicle.getLicensePlate(item);
-        ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + ken, null);
-        ConfigModule.vehicleDataConfig.save();
-        p.getInventory().getItemInMainHand().setAmount(0);
-        sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehicleDeleted")));
+        try {
+            String licensePlate = Vehicle.getLicensePlate(item);
+            Vehicle.getByPlate(licensePlate).delete();
+            sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehicleDeleted")));
+        } catch (Exception e){
+            sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehicleAlreadyDeleted")));
+        }
 
+        p.getInventory().getItemInMainHand().setAmount(0);
         return true;
     }
 }

@@ -100,7 +100,7 @@ public class VehiclePlaceListener implements Listener {
         Vehicle vehicle = Vehicle.getByPlate(license);
         List<Map<String, Double>> seats = (List<Map<String, Double>>) vehicle.getVehicleData().get("seats");
         p.getInventory().remove(p.getEquipment().getItemInHand());
-        p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehiclePlace").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(license).getOwner().toString())).getName())));
+        p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehiclePlace").replace("%p%", Vehicle.getByPlate(license).getOwnerName())));
         for (int i = 1; i <= seats.size(); i++) {
             Map<String, Double> seat = seats.get(i - 1);
             if (i == 1) {

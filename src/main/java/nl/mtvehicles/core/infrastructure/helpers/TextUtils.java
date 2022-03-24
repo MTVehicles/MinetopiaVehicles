@@ -65,8 +65,8 @@ public class TextUtils {
             ConfigModule.messagesConfig.sendMessage(p, "vehicleNotFound");
             return;
         }
-        if (!vehicle.getOwner().equals(p.getUniqueId().toString()) && !vehicle.canRide(p) && !p.hasPermission("mtvehicles.ride")) {
-            p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehicleNoRiderEnter").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
+        if (!vehicle.isOwner(p) && !vehicle.canRide(p) && !p.hasPermission("mtvehicles.ride")) {
+            p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehicleNoRiderEnter").replace("%p%", Vehicle.getByPlate(ken).getOwnerName())));
             return;
         }
         for (Entity entity : p.getWorld().getEntities()) {
@@ -106,7 +106,7 @@ public class TextUtils {
                         if (i == 1) {
                             TextUtils.mainSeatStandCreator(ken, location, p, seat.get("x"), seat.get("y"), seat.get("z"));
                             BossBarUtils.addBossBar(p, ken);
-                            p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehicleEnterRider").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
+                            p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehicleEnterRider").replace("%p%", Vehicle.getByPlate(ken).getOwnerName())));
                         }
                         if (i > 1) {
                             VehicleData.seatsize.put(ken, seats.size());
@@ -169,7 +169,7 @@ public class TextUtils {
             ConfigModule.messagesConfig.sendMessage(p, "vehicleNotFound");
             return;
         }
-        if (Vehicle.getByPlate(ken).getOwner().equals(p.getUniqueId().toString()) && ConfigModule.defaultConfig.getConfig().getBoolean("carPickup") == false || p.hasPermission("mtvehicles.oppakken")) {
+        if (Vehicle.getByPlate(ken).isOwner(p) && ConfigModule.defaultConfig.getConfig().getBoolean("carPickup") == false || p.hasPermission("mtvehicles.oppakken")) {
             for (World world : Bukkit.getServer().getWorlds()) {
                 for (Entity entity : world.getEntities()) {
                     if (ConfigModule.defaultConfig.getConfig().getBoolean("anwb") && !p.hasPermission("mtvehicles.anwb") && entity.getLocation().clone().add(0.0, 0.9, 0.0).getBlock().getType().toString().contains("WATER")) {
@@ -181,7 +181,7 @@ public class TextUtils {
                         if (test.getCustomName().contains("MTVEHICLES_SKIN_" + ken)) {
                             if (checkInvFull(p) == false) {
                                 p.getInventory().addItem(test.getHelmet());
-                                p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehiclePickup").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
+                                p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehiclePickup").replace("%p%", Vehicle.getByPlate(ken).getOwnerName())));
                             } else {
                                 ConfigModule.messagesConfig.sendMessage(p, "inventoryFull");
                                 return;
@@ -196,7 +196,7 @@ public class TextUtils {
                 p.sendMessage(TextUtils.colorize("&cVoertuigen oppakken staat uitgeschakeld"));
                 return;
             }
-            p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehicleNoOwnerPickup").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(ken).getOwner().toString())).getName())));
+            p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehicleNoOwnerPickup").replace("%p%", Vehicle.getByPlate(ken).getOwnerName())));
             return;
         }
     }

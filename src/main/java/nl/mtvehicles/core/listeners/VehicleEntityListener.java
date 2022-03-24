@@ -5,7 +5,7 @@ import nl.mtvehicles.core.commands.vehiclesubs.VehicleFuel;
 import nl.mtvehicles.core.infrastructure.helpers.BossBarUtils;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
-import nl.mtvehicles.core.infrastructure.models.ConfigUtils;
+import nl.mtvehicles.core.infrastructure.models.Config;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
@@ -115,8 +115,8 @@ public class VehicleEntityListener implements Listener {
                 return;
             }
 
-            if (Vehicle.getByPlate(license).getOwner().equals(p.getUniqueId().toString()) || p.hasPermission("mtvehicles.kofferbak")) {
-                ConfigModule.configList.forEach(ConfigUtils::reload);
+            if (Vehicle.getByPlate(license).isOwner(p) || p.hasPermission("mtvehicles.kofferbak")) {
+                ConfigModule.configList.forEach(Config::reload);
                 if (ConfigModule.vehicleDataConfig.getConfig().getBoolean("vehicle." + license + ".kofferbak")) {
 
                     if (ConfigModule.vehicleDataConfig.getConfig().getList("vehicle." + license + ".kofferbakData") == null) return;
@@ -131,7 +131,7 @@ public class VehicleEntityListener implements Listener {
                     p.openInventory(inv);
                 }
             } else {
-                p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehicleNoRiderKofferbak").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(license).getOwner())).getName())));
+                p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehicleNoRiderKofferbak").replace("%p%", Vehicle.getByPlate(license).getOwnerName())));
             }
         }
     }

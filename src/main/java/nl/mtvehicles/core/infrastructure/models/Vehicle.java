@@ -1,10 +1,14 @@
 package nl.mtvehicles.core.infrastructure.models;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
+import nl.mtvehicles.core.Main;
+import nl.mtvehicles.core.infrastructure.enums.VehicleType;
 import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -15,26 +19,26 @@ import java.util.*;
 public class Vehicle {
     private String licensePlate;
     private String name;
-    private String vehicleType;
+    private VehicleType vehicleType;
     private int skinDamage;
     private String skinItem;
     private boolean isGlow;
     private boolean benzineEnabled;
     private double benzine;
-    private double benzineVerbruik;
+    private double fuelUsage;
     private boolean hornEnabled;
     private double health;
-    private boolean kofferbak;
-    private int kofferbakRows;
+    private boolean trunkEnabled;
+    private int trunkRows;
     private List<String> kofferbakData;
     private double acceleratieSpeed;
     private double maxSpeed;
     private double brakingSpeed;
-    private double aftrekkenSpeed;
+    private double frictionSpeed;
     private int rotateSpeed;
     private double maxSpeedBackwards;
     private boolean isOpen;
-    private String owner;
+    private UUID owner;
     private String nbtValue;
     private List<String> riders;
     private List<String> members;
@@ -45,7 +49,7 @@ public class Vehicle {
     public void save() {
         Map<String, Object> map = new HashMap<>();
         map.put("name", this.getName());
-        map.put("vehicleType", this.getVehicleType());
+        map.put("vehicleType", this.getVehicleType().toString());
         map.put("skinDamage", this.getSkinDamage());
         map.put("skinItem", this.getSkinItem());
         map.put("isOpen", this.isOpen());
@@ -64,7 +68,7 @@ public class Vehicle {
         map.put("aftrekkenSpeed", this.getFrictionSpeed());
         map.put("rotateSpeed", this.getRotateSpeed());
         map.put("maxSpeedBackwards", this.getMaxSpeedBackwards());
-        map.put("owner", this.getOwner());
+        map.put("owner", this.getOwnerUUIDString());
         map.put("nbtValue", this.getNbtValue());
         map.put("riders", this.getRiders());
         map.put("members", this.getMembers());
@@ -72,8 +76,11 @@ public class Vehicle {
         ConfigModule.vehicleDataConfig.save();
     }
 
-    public String getOwnerName() {
-        return Bukkit.getOfflinePlayer(UUID.fromString(this.getOwner())).getName();
+    public void delete() throws IllegalStateException {
+        FileConfiguration dataConfig = ConfigModule.vehicleDataConfig.getConfig();
+        final String path = "vehicle." + this.getLicensePlate();
+        if (!dataConfig.isSet(path)) throw new IllegalStateException("An error occurred while trying to delete a vehicle. Vehicle is already deleted.");
+        else dataConfig.set(path, null);
     }
 
     public static String getLicensePlate(ItemStack item){
@@ -325,11 +332,11 @@ public class Vehicle {
     }
 
     public boolean isTrunkEnabled() {
-        return kofferbak;
+        return trunkEnabled;
     }
 
     public int getTrunkRows() {
-        return kofferbakRows;
+        return trunkRows;
     }
 
     public double getAccelerationSpeed() {
@@ -345,7 +352,7 @@ public class Vehicle {
     }
 
     public double getFrictionSpeed() {
-        return aftrekkenSpeed;
+        return frictionSpeed;
     }
 
     public int getRotateSpeed() {
@@ -356,8 +363,21 @@ public class Vehicle {
         return maxSpeedBackwards;
     }
 
-    public String getOwner() {
+    @Deprecated
+    public String getOwnerUUIDString() {
+        return owner.toString();
+    }
+
+    public UUID getOwnerUUID() {
         return owner;
+    }
+
+    public String getOwnerName() {
+        return Bukkit.getOfflinePlayer(this.getOwnerUUID()).getName();
+    }
+
+    public boolean isOwner(OfflinePlayer player){
+        return this.owner.equals(player.getUniqueId());
     }
 
     public String getNbtValue() {
@@ -373,7 +393,7 @@ public class Vehicle {
     }
 
     public double getFuelUsage() {
-        return benzineVerbruik;
+        return fuelUsage;
     }
 
     public void setName(String name) {
@@ -389,11 +409,11 @@ public class Vehicle {
     }
 
     public void setGlow(boolean glow) {
-        isGlow = glow;
+        this.isGlow = glow;
     }
 
     public void setOpen(boolean open) {
-        isOpen = open;
+        this.isOpen = open;
     }
 
     public void setBenzineEnabled(boolean benzineEnabled) {
@@ -413,11 +433,11 @@ public class Vehicle {
     }
 
     public void setTrunk(boolean trunk) {
-        this.kofferbak = trunk;
+        this.trunkEnabled = trunk;
     }
 
     public void setTrunkRows(int trunkRows) {
-        this.kofferbakRows = trunkRows;
+        this.trunkRows = trunkRows;
     }
 
     public List<String> getTrunkData() {
@@ -440,8 +460,8 @@ public class Vehicle {
         this.brakingSpeed = brakingSpeed;
     }
 
-    public void setFrictionSpeed(double aftrekkenSpeed) {
-        this.aftrekkenSpeed = aftrekkenSpeed;
+    public void setFrictionSpeed(double frictionSpeed) {
+        this.frictionSpeed = frictionSpeed;
     }
 
     public void setRotateSpeed(int rotateSpeed) {
@@ -452,7 +472,16 @@ public class Vehicle {
         this.maxSpeedBackwards = maxSpeedBackwards;
     }
 
-    public void setOwner(String owner) {
+    @Deprecated
+    public void setOwner(String ownerUUID) {
+        try {
+            this.owner = UUID.fromString(ownerUUID);
+        } catch (IllegalArgumentException e){
+            Main.logSevere("An error occurred while setting a vehicle's owner. This may lead to further issues...");
+        }
+    }
+
+    public void setOwner(UUID owner){
         this.owner = owner;
     }
 
@@ -468,8 +497,8 @@ public class Vehicle {
         this.members = members;
     }
 
-    public void setFuelUsage(double benzineVerbruik) {
-        this.benzineVerbruik = benzineVerbruik;
+    public void setFuelUsage(double fuelUsage) {
+        this.fuelUsage = fuelUsage;
     }
 
     public Map<?, ?> getVehicleData() {
@@ -480,33 +509,34 @@ public class Vehicle {
         this.vehicleData = vehicleData;
     }
 
-    public boolean canRide(Player p) {
-        return ConfigModule.vehicleDataConfig.getConfig().getStringList("vehicle." + this.licensePlate + ".riders").contains(p.getUniqueId().toString());
+    public boolean canRide(Player player) {
+        return ConfigModule.vehicleDataConfig.getConfig().getStringList("vehicle." + this.licensePlate + ".riders").contains(player.getUniqueId().toString());
     }
 
-    public static boolean canRide(Player p, String ken) {
-        return ConfigModule.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".riders").contains(p.getUniqueId().toString());
+    public static boolean canRide(Player player, String licensePlate) {
+        return ConfigModule.vehicleDataConfig.getConfig().getStringList("vehicle." + licensePlate + ".riders").contains(player.getUniqueId().toString());
     }
 
-    public boolean canSit(Player p) {
-        return ConfigModule.vehicleDataConfig.getConfig().getStringList("vehicle." + this.licensePlate + ".members").contains(p.getUniqueId().toString());
+    public boolean canSit(Player player) {
+        return ConfigModule.vehicleDataConfig.getConfig().getStringList("vehicle." + this.licensePlate + ".members").contains(player.getUniqueId().toString());
     }
 
-    public static boolean canSit(Player p, String ken) {
-        return ConfigModule.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".members").contains(p.getUniqueId().toString());
+    public static boolean canSit(Player player, String licensePlate) {
+        return ConfigModule.vehicleDataConfig.getConfig().getStringList("vehicle." + licensePlate + ".members").contains(player.getUniqueId().toString());
     }
 
-    public static UUID getOwner(String plate) {
-        if (ConfigModule.vehicleDataConfig.getConfig().getString("vehicle." + plate + ".owner") == null) {
+    public static UUID getOwnerUUID(String licensePlate) {
+        if (ConfigModule.vehicleDataConfig.getConfig().getString("vehicle." + licensePlate + ".owner") == null) {
             return null;
         }
-        return UUID.fromString(ConfigModule.vehicleDataConfig.getConfig().getString("vehicle." + plate + ".owner"));
+        return UUID.fromString(ConfigModule.vehicleDataConfig.getConfig().getString("vehicle." + licensePlate + ".owner"));
     }
 
-    public static String getRidersAsString(String plate) {
+    @Deprecated
+    public static String getRidersAsString(String licensePlate) {
         StringBuilder sb = new StringBuilder();
-        for (String s : ConfigModule.vehicleDataConfig.getConfig().getStringList("vehicle." + plate + ".riders")) {
-            if (!UUID.fromString(s).equals(getOwner(plate))) {
+        for (String s : ConfigModule.vehicleDataConfig.getConfig().getStringList("vehicle." + licensePlate + ".riders")) {
+            if (!UUID.fromString(s).equals(getOwnerUUID(licensePlate))) {
                 sb.append(Bukkit.getOfflinePlayer(UUID.fromString(s)).getName()).append(", ");
             }
         }
@@ -516,11 +546,21 @@ public class Vehicle {
         return sb.toString();
     }
 
-    public String getVehicleType() {
+    public VehicleType getVehicleType() {
         return vehicleType;
     }
 
+    @Deprecated
     public void setVehicleType(String vehicleType) {
+        try {
+            this.vehicleType = VehicleType.valueOf(vehicleType.toUpperCase(Locale.ROOT));
+        } catch (IllegalArgumentException e){
+            Main.logSevere("An error occurred while setting a vehicle's type. Using default (CAR)...");
+            this.vehicleType = VehicleType.CAR;
+        }
+    }
+
+    public void setVehicleType(VehicleType vehicleType){
         this.vehicleType = vehicleType;
     }
 }
