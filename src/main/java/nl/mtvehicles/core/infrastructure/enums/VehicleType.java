@@ -23,7 +23,7 @@ public enum VehicleType {
      */
     HELICOPTER,
     /**
-     * Airplanes - with the ability to fly, without blades
+     * Airplanes - with the ability to fly, their movement differs from helicopters
      */
     AIRPLANE;
 

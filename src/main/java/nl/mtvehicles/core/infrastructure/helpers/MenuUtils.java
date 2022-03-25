@@ -1,6 +1,7 @@
 package nl.mtvehicles.core.infrastructure.helpers;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
+import nl.mtvehicles.core.infrastructure.annotations.ToDo;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.listeners.inventory.InventoryClickListener;
 import nl.mtvehicles.core.infrastructure.models.Config;
@@ -13,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
+@ToDo(comment = "To be translated.")
 public class MenuUtils {
     public static HashMap<String, Integer> restoreId = new HashMap<>();
     public static HashMap<String, UUID> restoreUUID = new HashMap<>();

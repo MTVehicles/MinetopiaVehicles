@@ -1,6 +1,8 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
+import nl.mtvehicles.core.infrastructure.dataconfig.MessagesConfig;
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.Config;
@@ -41,14 +43,15 @@ public class VehicleEdit extends MTVehicleSubCommand {
     }
 
     public static void editMenu(Player p, ItemStack item) {
-        String ken = VehicleUtils.getLicensePlate(item);
+        String licensePlate = VehicleUtils.getLicensePlate(item);
+        MessagesConfig msg = ConfigModule.messagesConfig;
         Inventory inv = Bukkit.createInventory(null, 27, "Vehicle Edit");
-        inv.setItem(10, ItemUtils.mItem3(ConfigModule.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".skinItem"), 1, (short) ConfigModule.vehicleDataConfig.getConfig().getInt("vehicle." + ken + ".skinDamage"), "&6Vehicle Settings", "", "mtcustom", ConfigModule.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".nbtValue")));
-        inv.setItem(11, ItemUtils.mItem2("DIAMOND_HOE", 1, (short) 58, "&6Benzine Settings", ""));
-        inv.setItem(12, ItemUtils.mItem("CHEST", 1, (short) 0, "&6Kofferbak Settings", ""));
-        inv.setItem(13, ItemUtils.mItem("PAPER", 1, (short) 0, "&6Member Settings", ""));
-        inv.setItem(14, ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Speed Settings", ""));
-        inv.setItem(16, ItemUtils.mItem("BARRIER", 1, (short) 0, "&4Delete Vehicle", "&7LETOP! Je kunt het item niet meer terug krijgen!"));
+        inv.setItem(10, ItemUtils.mItem3(ConfigModule.vehicleDataConfig.getConfig().getString("vehicle." + licensePlate + ".skinItem"), 1, (short) ConfigModule.vehicleDataConfig.getConfig().getInt("vehicle." + licensePlate + ".skinDamage"), msg.getMessage(Message.VEHICLE_SETTINGS), "", "mtcustom", ConfigModule.vehicleDataConfig.getConfig().getString("vehicle." + licensePlate + ".nbtValue")));
+        inv.setItem(11, ItemUtils.mItem2("DIAMOND_HOE", 1, (short) 58, msg.getMessage(Message.FUEL_SETTINGS), ""));
+        inv.setItem(12, ItemUtils.mItem("CHEST", 1, (short) 0, msg.getMessage(Message.TRUNK_SETTINGS), ""));
+        inv.setItem(13, ItemUtils.mItem("PAPER", 1, (short) 0, msg.getMessage(Message.MEMBER_SETTINGS), ""));
+        inv.setItem(14, ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, msg.getMessage(Message.SPEED_SETTINGS), ""));
+        inv.setItem(16, ItemUtils.mItem("BARRIER", 1, (short) 0, msg.getMessage(Message.DELETE_VEHICLE), msg.getMessage(Message.DELETE_WARNING_LORE)));
         p.openInventory(inv);
     }
 }

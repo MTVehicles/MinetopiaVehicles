@@ -4,6 +4,7 @@ import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.commands.vehiclesubs.VehicleEdit;
 import nl.mtvehicles.core.commands.vehiclesubs.VehicleMenu;
+import nl.mtvehicles.core.infrastructure.annotations.ToDo;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.listeners.VehicleEntityListener;
 import nl.mtvehicles.core.infrastructure.dataconfig.MessagesConfig;
@@ -29,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+@ToDo(comment = "To be translated.")
 public class InventoryClickListener implements Listener {
 
     public HashMap<UUID, ItemStack> vehicleMenu = new HashMap<>();
@@ -176,28 +178,29 @@ public class InventoryClickListener implements Listener {
         }
         if (e.getView().getTitle().contains("Vehicle Edit")) {
             e.setCancelled(true);
-            if (e.getRawSlot() == 10) {
-                MenuUtils.menuEdit(p);
-            }
-            if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Benzine Settings")) {
-                MenuUtils.benzineEdit(p);
-            }
-            if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Kofferbak Settings")) {
-                MenuUtils.kofferbakEdit(p);
-            }
-            if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Member Settings")) {
-                MenuUtils.membersEdit(p);
-            }
-            if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Speed Settings")) {
-                MenuUtils.speedEdit(p);
-            }
-            if (e.getCurrentItem().getItemMeta().getDisplayName().contains("Delete Vehicle")) {
-                NBTItem nbt = new NBTItem(p.getInventory().getItemInMainHand());
-                String ken = nbt.getString("mtvehicles.kenteken");
-                ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + ken, null);
-                ConfigModule.vehicleDataConfig.save();
-                p.getInventory().getItemInMainHand().setAmount(0);
-                p.closeInventory();
+            switch (e.getRawSlot()) {
+                case 10:
+                    MenuUtils.menuEdit(p);
+                    break;
+                case 11:
+                    MenuUtils.benzineEdit(p);
+                    break;
+                case 12:
+                    MenuUtils.kofferbakEdit(p);
+                    break;
+                case 13:
+                    MenuUtils.membersEdit(p);
+                    break;
+                case 14:
+                    MenuUtils.speedEdit(p);
+                    break;
+                case 16: //Delete
+                    NBTItem nbt = new NBTItem(p.getInventory().getItemInMainHand());
+                    String licensePlate = nbt.getString("mtvehicles.kenteken");
+                    VehicleUtils.getByLicensePlate(licensePlate).delete();
+                    p.getInventory().getItemInMainHand().setAmount(0);
+                    p.closeInventory();
+                    break;
             }
         }
 

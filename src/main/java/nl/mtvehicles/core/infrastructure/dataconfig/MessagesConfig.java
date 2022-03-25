@@ -3,6 +3,7 @@ package nl.mtvehicles.core.infrastructure.dataconfig;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.enums.ConfigType;
 import nl.mtvehicles.core.infrastructure.enums.Language;
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.Config;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
@@ -27,10 +28,21 @@ public class MessagesConfig extends Config {
         }
     }
 
+    @Deprecated
     public String getMessage(String key) {
         String msg = "";
         try {
             msg = TextUtils.colorize((String) this.getConfig().get(key));
+        } catch (Exception e){
+            Main.instance.getLogger().severe("An error occurred while retrieving a custom message from the messages.yml!");
+        }
+        return msg;
+    }
+
+    public String getMessage(Message message){
+        String msg = "";
+        try {
+            msg = TextUtils.colorize(this.getConfig().getString(message.getKey()));
         } catch (Exception e){
             Main.instance.getLogger().severe("An error occurred while retrieving a custom message from the messages.yml!");
         }
