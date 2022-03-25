@@ -26,7 +26,7 @@ The plugin works on all spigot versions from 1.12.2 - 1.18.2, **except 1.14.x**!
 If your server minecraft version is not supported by the plugin, it won't load.
 
 Versions 1.12.1 and lower are NOT, and will NOT be supported.<br>
-(Did you know that 1.8 was released in 2014? And some people still use it! Whoa.)
+(Frankly, 1.8 was released [a pretty long time ago](https://howoldisminecraft189.today/). And some people still use it, right? I don't get it.)
 
 
 > ⚠ We support ALL LATEST PATCH VERSIONS of Spigot/Paper 1.12+, except 1.14.4.<br>
