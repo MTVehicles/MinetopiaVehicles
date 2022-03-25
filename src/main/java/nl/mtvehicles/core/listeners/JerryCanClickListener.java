@@ -2,6 +2,7 @@ package nl.mtvehicles.core.listeners;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.commands.vehiclesubs.VehicleFuel;
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
@@ -35,7 +36,7 @@ public class JerryCanClickListener implements Listener {
         e.setCancelled(true);
 
         if (e.getHand() != EquipmentSlot.HAND) {
-            e.getPlayer().sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("wrongHand")));
+            e.getPlayer().sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.WRONG_HAND)));
             return;
         }
 
@@ -65,7 +66,7 @@ public class JerryCanClickListener implements Listener {
             double price = getFuelPrice();
             if (makePlayerPay(p, price)){
                 p.setItemInHand(VehicleFuel.benzineItem(bensize, benval + 1));
-                p.sendMessage(String.format(ConfigModule.messagesConfig.getMessage("transactionSuccessful"), DependencyModule.vault.getMoneyFormat(price)));
+                p.sendMessage(String.format(ConfigModule.messagesConfig.getMessage(Message.TRANSACTION_SUCCESSFUL), DependencyModule.vault.getMoneyFormat(price)));
                 playJerryCanSound(p);
             }
         }
@@ -80,7 +81,7 @@ public class JerryCanClickListener implements Listener {
         double price = getFuelPrice(difference);
         if (makePlayerPay(p, price)){
             p.setItemInHand(VehicleFuel.benzineItem(bensize, bensize));
-            p.sendMessage(String.format(ConfigModule.messagesConfig.getMessage("transactionSuccessful"), DependencyModule.vault.getMoneyFormat(price)));
+            p.sendMessage(String.format(ConfigModule.messagesConfig.getMessage(Message.TRANSACTION_SUCCESSFUL), DependencyModule.vault.getMoneyFormat(price)));
             playJerryCanSound(p);
         }
     }

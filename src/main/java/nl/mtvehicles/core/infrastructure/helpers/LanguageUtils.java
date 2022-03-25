@@ -1,6 +1,7 @@
 package nl.mtvehicles.core.infrastructure.helpers;
 
 import nl.mtvehicles.core.Main;
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -27,7 +28,7 @@ public class LanguageUtils {
     public static void changeLanguage(Player p, String languageCode){
         languageCheck.put(p.getUniqueId(), false);
         if (ConfigModule.messagesConfig.setLanguageFile(languageCode)){
-            p.sendMessage(ConfigModule.messagesConfig.getMessage("languageHasChanged"));
+            p.sendMessage(ConfigModule.messagesConfig.getMessage(Message.LANGUAGE_HAS_CHANGED));
             ConfigModule.secretSettings.setMessagesLanguage(languageCode);
             ConfigModule.secretSettings.save();
         } else {

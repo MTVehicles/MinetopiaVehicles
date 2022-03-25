@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.infrastructure.helpers;
 
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
@@ -16,7 +17,7 @@ public class BossBarUtils {
     public static void setBossBarValue(double counter, String ken) {
         if (ConfigModule.defaultConfig.getConfig().getBoolean("benzine") && ConfigModule.vehicleDataConfig.getConfig().getBoolean("vehicle." + ken + ".benzineEnabled")) {
             Fuelbar.get(ken).setProgress(counter);
-            Fuelbar.get(ken).setTitle(Math.round(counter * 100.0D) + "% " + TextUtils.colorize(ConfigModule.messagesConfig.getMessage("bossbarFuel")));
+            Fuelbar.get(ken).setTitle(Math.round(counter * 100.0D) + "% " + TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.BOSSBAR_FUEL)));
 
             Double fuel = VehicleData.fuel.get(ken);
 
@@ -44,7 +45,7 @@ public class BossBarUtils {
         if (ConfigModule.defaultConfig.getConfig().getBoolean("benzine") && ConfigModule.vehicleDataConfig.getConfig().getBoolean("vehicle." + ken + ".benzineEnabled")) {
             double fuel = ConfigModule.vehicleDataConfig.getConfig().getDouble(String.format("vehicle.%s.benzine", player.getVehicle().getCustomName().replace("MTVEHICLES_MAINSEAT_", "")));
             String fuelString = String.valueOf(fuel);
-            BossBar bar = Bukkit.createBossBar(Math.round(Double.parseDouble(fuelString)) + "% " + TextUtils.colorize(ConfigModule.messagesConfig.getMessage("bossbarFuel")), BarColor.GREEN, BarStyle.SOLID);
+            BossBar bar = Bukkit.createBossBar(Math.round(Double.parseDouble(fuelString)) + "% " + TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.BOSSBAR_FUEL)), BarColor.GREEN, BarStyle.SOLID);
             Fuelbar.put(ken, bar);
             if (fuel < 30) {
                 Fuelbar.get(ken).setColor(BarColor.RED);

@@ -2,6 +2,7 @@ package nl.mtvehicles.core.listeners;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.events.VehiclePlaceEvent;
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.enums.RegionAction;
 import nl.mtvehicles.core.infrastructure.helpers.ItemFactory;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
@@ -43,7 +44,7 @@ public class VehiclePlaceListener implements Listener {
 
         if (e.getHand() != EquipmentSlot.HAND) {
             e.setCancelled(true);
-            e.getPlayer().sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("wrongHand")));
+            e.getPlayer().sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.WRONG_HAND)));
             return;
         }
 
@@ -100,7 +101,7 @@ public class VehiclePlaceListener implements Listener {
         Vehicle vehicle = VehicleUtils.getByLicensePlate(license);
         List<Map<String, Double>> seats = (List<Map<String, Double>>) vehicle.getVehicleData().get("seats");
         p.getInventory().remove(p.getEquipment().getItemInHand());
-        p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehiclePlace").replace("%p%", VehicleUtils.getByLicensePlate(license).getOwnerName())));
+        p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_PLACE).replace("%p%", VehicleUtils.getByLicensePlate(license).getOwnerName())));
         for (int i = 1; i <= seats.size(); i++) {
             Map<String, Double> seat = seats.get(i - 1);
             if (i == 1) {

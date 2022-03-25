@@ -49,18 +49,13 @@ public class MessagesConfig extends Config {
         return msg;
     }
 
+    @Deprecated
     public void sendMessage(CommandSender sender, String key) {
-        Object object = this.getConfig().get(key);
-        if (object instanceof List) {
-            for (String s : this.getConfig().getStringList(key)) {
-                sender.sendMessage(TextUtils.colorize(s));
-            }
-        }
-        sender.sendMessage(TextUtils.colorize(String.valueOf(object)));
+        sender.sendMessage(getMessage(key));
     }
 
-    public void sendMessage(Player player, String key) {
-        sendMessage((CommandSender) player, key);
+    public void sendMessage(CommandSender sender, Message message) {
+        sender.sendMessage(getMessage(message));
     }
 
     public boolean setLanguageFile(String languageCode){

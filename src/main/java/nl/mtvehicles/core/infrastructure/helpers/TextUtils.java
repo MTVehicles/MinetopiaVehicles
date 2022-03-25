@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.infrastructure.helpers;
 
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.enums.RegionAction;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
@@ -66,7 +67,7 @@ public class TextUtils {
             return;
         }
         if (!vehicle.isOwner(p) && !vehicle.canRide(p) && !p.hasPermission("mtvehicles.ride")) {
-            p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehicleNoRiderEnter").replace("%p%", VehicleUtils.getByLicensePlate(ken).getOwnerName())));
+            p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_NO_RIDER_ENTER).replace("%p%", VehicleUtils.getByLicensePlate(ken).getOwnerName())));
             return;
         }
         for (Entity entity : p.getWorld().getEntities()) {
@@ -106,7 +107,7 @@ public class TextUtils {
                         if (i == 1) {
                             TextUtils.mainSeatStandCreator(ken, location, p, seat.get("x"), seat.get("y"), seat.get("z"));
                             BossBarUtils.addBossBar(p, ken);
-                            p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehicleEnterRider").replace("%p%", VehicleUtils.getByLicensePlate(ken).getOwnerName())));
+                            p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_ENTER_RIDER).replace("%p%", VehicleUtils.getByLicensePlate(ken).getOwnerName())));
                         }
                         if (i > 1) {
                             VehicleData.seatsize.put(ken, seats.size());
@@ -181,7 +182,7 @@ public class TextUtils {
                         if (test.getCustomName().contains("MTVEHICLES_SKIN_" + ken)) {
                             if (checkInvFull(p) == false) {
                                 p.getInventory().addItem(test.getHelmet());
-                                p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehiclePickup").replace("%p%", VehicleUtils.getByLicensePlate(ken).getOwnerName())));
+                                p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_PICKUP).replace("%p%", VehicleUtils.getByLicensePlate(ken).getOwnerName())));
                             } else {
                                 ConfigModule.messagesConfig.sendMessage(p, "inventoryFull");
                                 return;
@@ -196,7 +197,7 @@ public class TextUtils {
                 p.sendMessage(TextUtils.colorize("&cVoertuigen oppakken staat uitgeschakeld"));
                 return;
             }
-            p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehicleNoOwnerPickup").replace("%p%", VehicleUtils.getByLicensePlate(ken).getOwnerName())));
+            p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_NO_OWNER_PICKUP).replace("%p%", VehicleUtils.getByLicensePlate(ken).getOwnerName())));
             return;
         }
     }

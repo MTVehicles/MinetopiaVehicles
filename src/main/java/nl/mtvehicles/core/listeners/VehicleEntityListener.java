@@ -2,6 +2,7 @@ package nl.mtvehicles.core.listeners;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.commands.vehiclesubs.VehicleFuel;
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.helpers.BossBarUtils;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
@@ -130,7 +131,7 @@ public class VehicleEntityListener implements Listener {
                     p.openInventory(inv);
                 }
             } else {
-                p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehicleNoRiderKofferbak").replace("%p%", VehicleUtils.getByLicensePlate(license).getOwnerName())));
+                p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_NO_RIDER_TRUNK).replace("%p%", VehicleUtils.getByLicensePlate(license).getOwnerName())));
             }
         }
     }

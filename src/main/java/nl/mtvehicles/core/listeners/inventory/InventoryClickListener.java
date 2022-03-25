@@ -5,6 +5,7 @@ import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.commands.vehiclesubs.VehicleEdit;
 import nl.mtvehicles.core.commands.vehiclesubs.VehicleMenu;
 import nl.mtvehicles.core.infrastructure.annotations.ToDo;
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.listeners.VehicleEntityListener;
 import nl.mtvehicles.core.infrastructure.dataconfig.MessagesConfig;
@@ -85,8 +86,8 @@ public class InventoryClickListener implements Listener {
             vehicleMenu.put(p.getUniqueId(), e.getCurrentItem());
             Inventory inv = Bukkit.createInventory(null, 27, "Confirm getting vehicle");
             MessagesConfig msg = ConfigModule.messagesConfig;
-            inv.setItem(11, ItemUtils.woolItem("WOOL", "RED_WOOL", 1, (short) 14, "&c" + msg.getMessage("cancel"), String.format("&7%s", msg.getMessage("cancelAction"))));
-            inv.setItem(15, ItemUtils.woolItem("WOOL", "LIME_WOOL", 1, (short) 5, "&a"  + msg.getMessage("confirm"), String.format("&7%s@&7%s", msg.getMessage("confirmAction"), msg.getMessage("confirmVehicleMenu"))));
+            inv.setItem(11, ItemUtils.woolItem("WOOL", "RED_WOOL", 1, (short) 14, "&c" + msg.getMessage(Message.CANCEL), String.format("&7%s", msg.getMessage(Message.CANCEL_ACTION))));
+            inv.setItem(15, ItemUtils.woolItem("WOOL", "LIME_WOOL", 1, (short) 5, "&a"  + msg.getMessage(Message.CONFIRM), String.format("&7%s@&7%s", msg.getMessage(Message.CONFIRM_ACTION), msg.getMessage(Message.CONFIRM_VEHICLE_MENU))));
             p.openInventory(inv);
         }
         if (e.getView().getTitle().contains("Choose your language")) {
@@ -397,11 +398,11 @@ public class InventoryClickListener implements Listener {
             if (e.getRawSlot() == 15) { //Yes
                 String carUuid = new NBTItem(p.getInventory().getItemInMainHand()).getString("mtvehicles.item");
                 if (VehicleUtils.getItemByUUID(p, carUuid) == null){
-                    p.sendMessage(ConfigModule.messagesConfig.getMessage("giveCarNotFound"));
+                    p.sendMessage(ConfigModule.messagesConfig.getMessage(Message.GIVE_CAR_NOT_FOUND));
                     p.closeInventory();
                     return;
                 }
-                p.sendMessage(ConfigModule.messagesConfig.getMessage(TextUtils.colorize("voucherRedeem")));
+                p.sendMessage(ConfigModule.messagesConfig.getMessage(Message.VOUCHER_REDEEM));
                 p.getInventory().getItemInMainHand().setAmount(p.getInventory().getItemInMainHand().getAmount() - 1);
                 p.getInventory().addItem(VehicleUtils.getItemByUUID(p, carUuid));
                 p.closeInventory();

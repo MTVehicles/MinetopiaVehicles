@@ -2,6 +2,7 @@ package nl.mtvehicles.core.infrastructure.dataconfig;
 
 import nl.mtvehicles.core.infrastructure.enums.ConfigType;
 import nl.mtvehicles.core.infrastructure.enums.DriveUp;
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.enums.RegionAction;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.Config;
@@ -73,7 +74,7 @@ public class DefaultConfig extends Config {
         if (!gasStations.isInsideGasStation(loc)) return false;
 
         if (!gasStations.hasFillJerryCansPermission(p)){
-            p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("noPerms")));
+            p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.NO_PERMISSION)));
             return false;
         } return true;
     }
