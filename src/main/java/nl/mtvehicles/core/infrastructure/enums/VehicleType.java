@@ -50,4 +50,8 @@ public enum VehicleType {
     public boolean isAirplane(){
         return this.equals(AIRPLANE);
     }
+
+    public boolean canFly(){
+        return this.equals(AIRPLANE) || this.equals(HELICOPTER);
+    }
 }
