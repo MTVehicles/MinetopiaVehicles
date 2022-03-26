@@ -7,7 +7,6 @@ import nl.mtvehicles.core.infrastructure.models.Config;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import org.bukkit.entity.Player;
 
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -33,10 +32,9 @@ public class VehicleDataConfig extends Config {
      *
      * @param licensePlate Vehicle's license plate
      * @param dataOption Data option of a vehicle
-     * @param value New value of the option (should be the same type, otherwise warning is logged)
+     * @param value New value of the option (should be the same type!)
      */
     public void set(String licensePlate, Option dataOption, Object value){
-        if (!value.getClass().isInstance(dataOption.getValueType())) Main.logWarning("Setting a vehicle data option of an incorrect type. This may lead to further issues...");
         this.getConfiguration().set(String.format("vehicle.%s.%s", licensePlate, dataOption.getPath()), value);
         save();
     }
@@ -129,57 +127,55 @@ public class VehicleDataConfig extends Config {
      * Options available in vehicle data file
      */
     public enum Option {
-        NAME("name", String.class),
-        VEHICLE_TYPE("vehicleType", String.class),
-        SKIN_ITEM("skinItem", String.class),
-        SKIN_DAMAGE("skinDamage", int.class),
-        OWNER("owner", String.class),
-        RIDERS("riders", List.class),
-        MEMBERS("members", List.class),
+        NAME("name"),
+        VEHICLE_TYPE("vehicleType"),
+        SKIN_ITEM("skinItem"),
+        SKIN_DAMAGE("skinDamage"),
+        OWNER("owner"),
+        RIDERS("riders"),
+        MEMBERS("members"),
         /**
          * Can be found as 'benzineEnabled' in vehicleData.yml
          */
-        FUEL_ENABLED("benzineEnabled", boolean.class),
+        FUEL_ENABLED("benzineEnabled"),
         /**
          * Can be found as 'fuel' in vehicleData.yml
          */
-        FUEL("benzine", double.class),
+        FUEL("benzine"),
         /**
          * Can be found as 'benzineVerbruik' in vehicleData.yml
          */
-        FUEL_USAGE("benzineVerbruik", double.class),
-        BRAKING_SPEED("brakingSpeed", double.class),
+        FUEL_USAGE("benzineVerbruik"),
+        BRAKING_SPEED("brakingSpeed"),
         /**
          * Can be found as 'aftrekkenSpeed' in vehicleData.yml
          */
-        FRICTION_SPEED("aftrekkenSpeed", double.class),
-        ACCELARATION_SPEED("acceleratieSpeed", double.class),
-        MAX_SPEED("maxSpeed", double.class),
-        MAX_SPEED_BACKWARDS("maxSpeedBackwards", double.class),
-        ROTATE_SPEED("rotateSpeed", int.class),
+        FRICTION_SPEED("aftrekkenSpeed"),
+        ACCELARATION_SPEED("acceleratieSpeed"),
+        MAX_SPEED("maxSpeed"),
+        MAX_SPEED_BACKWARDS("maxSpeedBackwards"),
+        ROTATE_SPEED("rotateSpeed"),
         /**
          * Can be found as 'kofferbak' in vehicleData.yml
          */
-        TRUNK_ENABLED("kofferbak", boolean.class),
+        TRUNK_ENABLED("kofferbak"),
         /**
          * Can be found as 'kofferbakRows' in vehicleData.yml
          */
-        TRUNK_ROWS("kofferbakRows", int.class),
+        TRUNK_ROWS("kofferbakRows"),
         /**
          * Can be found as 'kofferbakData' in vehicleData.yml
          */
-        TRUNK_DATA("kofferbakData", List.class),
-        IS_OPEN("isOpen", boolean.class),
-        IS_GLOWING("isGlow", boolean.class),
-        HORN_ENABLED("hornEnabled", boolean.class),
-        HEALTH("health", double.class);
+        TRUNK_DATA("kofferbakData"),
+        IS_OPEN("isOpen"),
+        IS_GLOWING("isGlow"),
+        HORN_ENABLED("hornEnabled"),
+        HEALTH("health");
 
         final private String path;
-        final private Class type;
 
-        private Option(String path, Class type){
+        private Option(String path){
             this.path = path;
-            this.type = type;
         }
 
         /**
@@ -188,14 +184,6 @@ public class VehicleDataConfig extends Config {
          */
         public String getPath() {
             return path;
-        }
-
-        /**
-         * Get (default) type of option
-         * @return Default type of option (as class)
-         */
-        public Class getValueType() {
-            return this.type;
         }
     }
 }
