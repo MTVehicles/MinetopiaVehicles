@@ -2,6 +2,8 @@ package nl.mtvehicles.core.listeners;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.commands.vehiclesubs.VehicleFuel;
+import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
+import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.helpers.BossBarUtils;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
@@ -100,16 +102,16 @@ public class VehicleEntityListener implements Listener {
         final double damage = e.getDamage();
         final String license = VehicleUtils.getLicensePlate(e.getEntity());
 
-        if (!ConfigModule.defaultConfig.getConfig().getBoolean("damageEnabled")) return;
+        if (!(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.DAMAGE_ENABLED)) return;
         if (VehicleUtils.getByLicensePlate(license) == null) return;
 
-        double damageMultiplier = ConfigModule.defaultConfig.getConfig().getDouble("damageMultiplier");
+        double damageMultiplier = (double) ConfigModule.defaultConfig.get(DefaultConfig.Option.DAMAGE_MULTIPLIER);
         if (damageMultiplier < 0.1 || damageMultiplier > 5) damageMultiplier = 0.5; //Must be between 0.1 and 5. Default: 0.5
         ConfigModule.vehicleDataConfig.damageVehicle(license, damage * damageMultiplier);
     }
 
     public static void kofferbak(Player p, String license) {
-        if (ConfigModule.defaultConfig.getConfig().getBoolean("kofferbakEnabled")) {
+        if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.TRUNK_ENABLED)) {
             if (VehicleUtils.getByLicensePlate(license) == null) {
                 ConfigModule.messagesConfig.sendMessage(p, Message.VEHICLE_NOT_FOUND);
                 return;
@@ -117,12 +119,12 @@ public class VehicleEntityListener implements Listener {
 
             if (VehicleUtils.getByLicensePlate(license).isOwner(p) || p.hasPermission("mtvehicles.kofferbak")) {
                 ConfigModule.configList.forEach(Config::reload);
-                if (ConfigModule.vehicleDataConfig.getConfig().getBoolean("vehicle." + license + ".kofferbak")) {
+                if ((boolean) ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.TRUNK_ENABLED)) {
 
-                    if (ConfigModule.vehicleDataConfig.getConfig().getList("vehicle." + license + ".kofferbakData") == null) return;
+                    if (ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.TRUNK_DATA) == null) return;
 
-                    Inventory inv = Bukkit.createInventory(null, ConfigModule.vehicleDataConfig.getConfig().getInt("vehicle." + license + ".kofferbakRows") * 9, "Kofferbak Vehicle: " + license);
-                    List<ItemStack> chestContentsFromConfig = (List<ItemStack>) ConfigModule.vehicleDataConfig.getConfig().getList("vehicle." + license + ".kofferbakData");
+                    Inventory inv = Bukkit.createInventory(null, (int) ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.TRUNK_ROWS) * 9, "Kofferbak Vehicle: " + license);
+                    List<ItemStack> chestContentsFromConfig = (List<ItemStack>) ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.TRUNK_DATA);
 
                     for (ItemStack item : chestContentsFromConfig) {
                         if (item != null) inv.addItem(item);

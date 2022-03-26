@@ -10,19 +10,19 @@ public class SecretSettingsConfig extends Config {
     }
 
     public String getConfigVersion(){
-        return this.getConfig().getString("configVersion");
+        return this.getConfiguration().getString("configVersion");
     }
 
     public String getMessagesVersion(){
-        return this.getConfig().getString("messagesVersion");
+        return this.getConfiguration().getString("messagesVersion");
     }
 
     public String getMessagesLanguage(){
-        return this.getConfig().getString("messagesLanguage");
+        return this.getConfiguration().getString("messagesLanguage");
     }
 
     public void setMessagesLanguage(String languageCode){
-        this.getConfig().set("messagesLanguage", languageCode);
+        this.getConfiguration().set("messagesLanguage", languageCode);
         this.save();
     }
 }

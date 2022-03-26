@@ -12,7 +12,6 @@ import nl.mtvehicles.core.infrastructure.dataconfig.MessagesConfig;
 import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
 import nl.mtvehicles.core.infrastructure.helpers.LanguageUtils;
 import nl.mtvehicles.core.infrastructure.helpers.MenuUtils;
-import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
@@ -120,14 +119,14 @@ public class InventoryClickListener implements Listener {
                 p.getInventory().addItem(vehicleMenu.get(p.getUniqueId()));
 
                 NBTItem nbt = new NBTItem(vehicleMenu.get(p.getUniqueId()));
-                String kenteken = nbt.getString("mtvehicles.kenteken");
+                String licensePlate = nbt.getString("mtvehicles.kenteken");
                 String naam = nbt.getString("mtvehicles.naam");
 
                 Vehicle vehicle = new Vehicle();
-                List<String> members = ConfigModule.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".members");
-                List<String> riders = ConfigModule.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".riders");
-                List<String> kof = ConfigModule.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".kofferbakData");
-                vehicle.setLicensePlate(kenteken);
+                List<String> members = ConfigModule.vehicleDataConfig.getConfig().getStringList("voertuig." + licensePlate + ".members");
+                List<String> riders = ConfigModule.vehicleDataConfig.getConfig().getStringList("voertuig." + licensePlate + ".riders");
+                List<String> kof = ConfigModule.vehicleDataConfig.getConfig().getStringList("voertuig." + licensePlate + ".kofferbakData");
+                vehicle.setLicensePlate(licensePlate);
                 vehicle.setName(naam);
                 vehicle.setVehicleType((String) vehicles.get(intSave.get(p.getUniqueId())).get("vehicleType"));
                 vehicle.setSkinDamage(vehicleMenu.get(p.getUniqueId()).getDurability());
@@ -208,7 +207,7 @@ public class InventoryClickListener implements Listener {
         if (e.getView().getTitle().contains("Vehicle Settings")) {
             e.setCancelled(true);
             NBTItem nbt = new NBTItem(p.getInventory().getItemInMainHand());
-            String ken = nbt.getString("mtvehicles.kenteken");
+            String licensePlate = nbt.getString("mtvehicles.kenteken");
             if (e.getCurrentItem().equals(ItemUtils.mItem("BARRIER", 1, (short) 0, "&4Sluiten", "&cDruk hier om het menu te sluiten!"))) {
                 e.setCancelled(true);
                 p.closeInventory();
@@ -220,8 +219,8 @@ public class InventoryClickListener implements Listener {
                 return;
             }
 
-            if (e.getCurrentItem().equals(ItemUtils.glowItem("BOOK", "&6Glow Aanpassen", "&7Huidige: &e" + ConfigModule.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".isGlow")))) {
-                ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + ken + ".isGlow", false);
+            if (e.getCurrentItem().equals(ItemUtils.glowItem("BOOK", "&6Glow Aanpassen", "&7Huidige: &e" + ConfigModule.vehicleDataConfig.getConfig().getString("vehicle." + licensePlate + ".isGlow")))) {
+                ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + licensePlate + ".isGlow", false);
                 ItemMeta im = p.getInventory().getItemInMainHand().getItemMeta();
                 im.removeEnchant(Enchantment.ARROW_INFINITE);
                 im.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
@@ -230,8 +229,8 @@ public class InventoryClickListener implements Listener {
                 MenuUtils.menuEdit(p);
             }
 
-            if (e.getCurrentItem().equals(ItemUtils.mItem("BOOK", 1, (short) 0, "&6Glow Aanpassen", "&7Huidige: &e" + ConfigModule.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".isGlow")))) {
-                ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + ken + ".isGlow", true);
+            if (e.getCurrentItem().equals(ItemUtils.mItem("BOOK", 1, (short) 0, "&6Glow Aanpassen", "&7Huidige: &e" + ConfigModule.vehicleDataConfig.getConfig().getString("vehicle." + licensePlate + ".isGlow")))) {
+                ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + licensePlate + ".isGlow", true);
                 ItemMeta im = p.getInventory().getItemInMainHand().getItemMeta();
                 im.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
                 im.addItemFlags(ItemFlag.HIDE_ENCHANTS);
@@ -240,13 +239,13 @@ public class InventoryClickListener implements Listener {
                 MenuUtils.menuEdit(p);
             }
 
-            if (e.getCurrentItem().equals(ItemUtils.mItem("PAPER", 1, (short) 0, "&6Kenteken Aanpassen", "&7Huidige: &e" + ken))) {
+            if (e.getCurrentItem().equals(ItemUtils.mItem("PAPER", 1, (short) 0, "&6Kenteken Aanpassen", "&7Huidige: &e" + licensePlate))) {
                 p.closeInventory();
                 ConfigModule.messagesConfig.sendMessage(p, Message.TYPE_LICENSE_IN_CHAT);
                 ItemUtils.edit.put(p.getUniqueId() + ".kenteken", true);
             }
 
-            if (e.getCurrentItem().getDurability() == (short) ConfigModule.vehicleDataConfig.getConfig().getInt("vehicle." + ken + ".skinDamage")) {
+            if (e.getCurrentItem().getDurability() == (short) ConfigModule.vehicleDataConfig.getConfig().getInt("vehicle." + licensePlate + ".skinDamage")) {
                 p.closeInventory();
                 ConfigModule.messagesConfig.sendMessage(p, Message.TYPE_NAME_IN_CHAT);
                 ItemUtils.edit.put(p.getUniqueId() + ".naam", true);
@@ -255,7 +254,7 @@ public class InventoryClickListener implements Listener {
         if (e.getView().getTitle().contains("Vehicle Benzine")) {
             e.setCancelled(true);
             NBTItem nbt = new NBTItem(p.getInventory().getItemInMainHand());
-            String ken = nbt.getString("mtvehicles.kenteken");
+            String licensePlate = nbt.getString("mtvehicles.kenteken");
             if (e.getCurrentItem().equals(ItemUtils.mItem("BARRIER", 1, (short) 0, "&4Sluiten", "&cDruk hier om het menu te sluiten!"))) {
                 e.setCancelled(true);
                 p.closeInventory();
@@ -268,11 +267,11 @@ public class InventoryClickListener implements Listener {
             }
             String menuitem = new NBTItem(e.getCurrentItem()).getString("mtvehicles.item");
             if (menuitem.contains("1")) {
-                if (ConfigModule.vehicleDataConfig.getConfig().getBoolean("vehicle." + ken + ".benzineEnabled")) {
-                    ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + ken + ".benzineEnabled", false);
+                if (ConfigModule.vehicleDataConfig.getConfig().getBoolean("vehicle." + licensePlate + ".benzineEnabled")) {
+                    ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + licensePlate + ".benzineEnabled", false);
                     ConfigModule.vehicleDataConfig.save();
                 } else {
-                    ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + ken + ".benzineEnabled", true);
+                    ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + licensePlate + ".benzineEnabled", true);
                     ConfigModule.vehicleDataConfig.save();
                 }
                 MenuUtils.benzineEdit(p);
@@ -303,14 +302,14 @@ public class InventoryClickListener implements Listener {
                 return;
             }
             NBTItem nbt = new NBTItem(p.getInventory().getItemInMainHand());
-            String ken = nbt.getString("mtvehicles.kenteken");
+            String licensePlate = nbt.getString("mtvehicles.kenteken");
             String menuitem = new NBTItem(e.getCurrentItem()).getString("mtvehicles.item");
             if (menuitem.contains("1")) {
-                if (ConfigModule.vehicleDataConfig.getConfig().getBoolean("vehicle." + ken + ".kofferbak")) {
-                    ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + ken + ".kofferbak", false);
+                if (ConfigModule.vehicleDataConfig.getConfig().getBoolean("vehicle." + licensePlate + ".kofferbak")) {
+                    ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + licensePlate + ".kofferbak", false);
                     ConfigModule.vehicleDataConfig.save();
                 } else {
-                    ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + ken + ".kofferbak", true);
+                    ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + licensePlate + ".kofferbak", true);
                     ConfigModule.vehicleDataConfig.save();
                 }
                 MenuUtils.kofferbakEdit(p);
@@ -324,7 +323,7 @@ public class InventoryClickListener implements Listener {
             }
             if (menuitem.contains("3")) {
                 p.closeInventory();
-                VehicleEntityListener.kofferbak(p, ken);
+                VehicleEntityListener.kofferbak(p, licensePlate);
             }
         }
         if (e.getView().getTitle().contains("Vehicle Members")) {

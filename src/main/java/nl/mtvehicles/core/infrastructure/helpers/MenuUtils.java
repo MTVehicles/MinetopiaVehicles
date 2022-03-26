@@ -2,6 +2,7 @@ package nl.mtvehicles.core.infrastructure.helpers;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.infrastructure.annotations.ToDo;
+import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.listeners.inventory.InventoryClickListener;
 import nl.mtvehicles.core.infrastructure.models.Config;
@@ -24,10 +25,10 @@ public class MenuUtils {
         NBTItem nbt = new NBTItem(p.getInventory().getItemInMainHand());
         String licensePlate = nbt.getString("mtvehicles.kenteken");
 
-        Boolean isGlowing = ConfigModule.vehicleDataConfig.getConfig().getBoolean(String.format("vehicle.%s.isGlow", licensePlate));
-        String name = ConfigModule.vehicleDataConfig.getConfig().getString(String.format("vehicle.%s.name", licensePlate));
-        String skinItem = ConfigModule.vehicleDataConfig.getConfig().getString(String.format("vehicle.%s.skinItem", licensePlate));
-        short skinDamage = (short) ConfigModule.vehicleDataConfig.getConfig().getInt(String.format("vehicle.%s.skinDamage", licensePlate));
+        boolean isGlowing = (boolean) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.IS_GLOWING);
+        String name = ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.NAME).toString();
+        String skinItem = ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.SKIN_ITEM).toString();
+        short skinDamage = (short) ConfigModule.vehicleDataConfig.getDamage(licensePlate);
 
         inv.setItem(10, ItemUtils.mItem2(skinItem, 1, skinDamage, "&6Naam Aanpassen", String.format("&7Huidige: &e%s", name)));
         inv.setItem(13, ItemUtils.mItem("PAPER", 1, (short) 0, "&6Kenteken Aanpassen", String.format("&7Huidige: &e%s", licensePlate)));
@@ -59,7 +60,7 @@ public class MenuUtils {
             return;
         }
 
-        ItemStack test = ItemUtils.mItem2("DIAMOND_HOE", 1, (short) 58, "&6Benzine", "&7Huidige: &e" + ConfigModule.vehicleDataConfig.getConfig().get("vehicle." + licensePlate + ".benzineEnabled"));
+        ItemStack test = ItemUtils.mItem2("DIAMOND_HOE", 1, (short) 58, "&6Benzine", "&7Huidige: &e" + ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.FUEL_ENABLED).toString());
         ItemStack test2 = ItemUtils.mItem2("DIAMOND_HOE", 1, (short) 58, "&6Huidige Benzine", String.format("&7Huidige: &e%s", vehicle.getFuel()));
         ItemStack test3 = ItemUtils.mItem2("DIAMOND_HOE", 1, (short) 58, "&6Benzine Verbruik", String.format("&7Huidige: &e%s", vehicle.getFuelUsage()));
         ItemStack car = (new ItemFactory(test).setNBT("mtvehicles.item", "1").toItemStack());
@@ -75,8 +76,8 @@ public class MenuUtils {
         Inventory inv = Bukkit.createInventory(null, 45, "Vehicle Kofferbak");
         NBTItem nbt = new NBTItem(p.getInventory().getItemInMainHand());
         String licensePlate = nbt.getString("mtvehicles.kenteken");
-        ItemStack test = ItemUtils.mItem("CHEST", 1, (short) 0, "&6Kofferbak", "&7Huidige: &e" + ConfigModule.vehicleDataConfig.getConfig().get("vehicle." + licensePlate + ".kofferbak"));
-        ItemStack test2 = ItemUtils.mItem("CHEST", 1, (short) 0, "&6Huidige Rows", "&7Huidige: &e" + ConfigModule.vehicleDataConfig.getConfig().getInt("vehicle." + licensePlate + ".kofferbakRows"));
+        ItemStack test = ItemUtils.mItem("CHEST", 1, (short) 0, "&6Kofferbak", "&7Huidige: &e" + ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.TRUNK_ENABLED).toString());
+        ItemStack test2 = ItemUtils.mItem("CHEST", 1, (short) 0, "&6Huidige Rows", "&7Huidige: &e" + ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.TRUNK_ROWS).toString());
         ItemStack test3 = ItemUtils.mItem("CHEST", 1, (short) 0, "&6Open Kofferbak", "&7Huidige: &eClick to open");
         ItemStack car = (new ItemFactory(test).setNBT("mtvehicles.item", "1").toItemStack());
         ItemStack car2 = (new ItemFactory(test2).setNBT("mtvehicles.item", "2").toItemStack());
@@ -114,12 +115,12 @@ public class MenuUtils {
         Inventory inv = Bukkit.createInventory(null, 45, "Vehicle Speed");
         NBTItem nbt = new NBTItem(p.getInventory().getItemInMainHand());
         String licensePlate = nbt.getString("mtvehicles.kenteken");
-        ItemStack test = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Acceleration Speed", "&7Current: &e" + ConfigModule.vehicleDataConfig.getConfig().get("vehicle." + licensePlate + ".acceleratieSpeed"));
-        ItemStack test2 = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Max Speed", "&7Current: &e" + ConfigModule.vehicleDataConfig.getConfig().get("vehicle." + licensePlate + ".maxSpeed"));
-        ItemStack test3 = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Braking Speed", "&7Current: &e" + ConfigModule.vehicleDataConfig.getConfig().get("vehicle." + licensePlate + ".brakingSpeed"));
-        ItemStack test4 = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Friction Speed", "&7Current: &e" + ConfigModule.vehicleDataConfig.getConfig().get("vehicle." + licensePlate + ".aftrekkenSpeed"));
-        ItemStack test5 = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Rotation Speed", "&7Current: &e" + ConfigModule.vehicleDataConfig.getConfig().get("vehicle." + licensePlate + ".rotateSpeed"));
-        ItemStack test6 = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Max Speed Backwards", "&7Current: &e" + ConfigModule.vehicleDataConfig.getConfig().get("vehicle." + licensePlate + ".maxSpeedBackwards"));
+        ItemStack test = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Acceleration Speed", "&7Current: &e" + ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.ACCELARATION_SPEED));
+        ItemStack test2 = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Max Speed", "&7Current: &e" + ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.MAX_SPEED));
+        ItemStack test3 = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Braking Speed", "&7Current: &e" + ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.BRAKING_SPEED));
+        ItemStack test4 = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Friction Speed", "&7Current: &e" + ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.FRICTION_SPEED));
+        ItemStack test5 = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Rotation Speed", "&7Current: &e" + ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.ROTATE_SPEED));
+        ItemStack test6 = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Max Speed Backwards", "&7Current: &e" + ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.MAX_SPEED_BACKWARDS));
         ItemStack car = (new ItemFactory(test).setNBT("mtvehicles.item", "1").toItemStack());
         ItemStack car2 = (new ItemFactory(test2).setNBT("mtvehicles.item", "2").toItemStack());
         ItemStack car3 = (new ItemFactory(test3).setNBT("mtvehicles.item", "3").toItemStack());

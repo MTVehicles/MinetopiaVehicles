@@ -1,5 +1,7 @@
 package nl.mtvehicles.core.listeners;
 
+import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
+import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
 import nl.mtvehicles.core.infrastructure.helpers.BossBarUtils;
 import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
@@ -50,9 +52,9 @@ public class VehicleLeaveListener implements Listener {
             }
             VehicleData.type.remove(license+"b");
 
-            if (ConfigModule.defaultConfig.getConfig().getBoolean("benzine") && ConfigModule.vehicleDataConfig.getConfig().getBoolean("vehicle." + license + ".benzineEnabled")) {
-                Double fuel = VehicleData.fuel.get(license);
-                ConfigModule.vehicleDataConfig.getConfig().set(String.format("vehicle.%s.benzine", license), fuel);
+            if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.FUEL_ENABLED) && (boolean) ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.FUEL_ENABLED)) {
+                double fuel = VehicleData.fuel.get(license);
+                ConfigModule.vehicleDataConfig.set(license, VehicleDataConfig.Option.FUEL, fuel);
                 ConfigModule.vehicleDataConfig.save();
             }
         }

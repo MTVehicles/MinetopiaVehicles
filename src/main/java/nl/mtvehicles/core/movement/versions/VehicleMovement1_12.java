@@ -2,6 +2,7 @@ package nl.mtvehicles.core.movement.versions;
 
 import net.minecraft.server.v1_12_R1.PacketPlayInSteerVehicle;
 import nl.mtvehicles.core.Main;
+import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.movement.VehicleMovement;
@@ -30,7 +31,7 @@ public class VehicleMovement1_12 extends VehicleMovement {
         final int data = loc.getBlock().getData();
 
         if (loc.getBlock().getType().toString().contains("CARPET")){
-            if (!ConfigModule.defaultConfig.getConfig().getBoolean("driveOnCarpets")){ //if carpets are turned off in config
+            if (!(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.DRIVE_ON_CARPETS)){ //if carpets are turned off in config
                 VehicleData.speed.put(license, 0.0);
                 return false;
             }

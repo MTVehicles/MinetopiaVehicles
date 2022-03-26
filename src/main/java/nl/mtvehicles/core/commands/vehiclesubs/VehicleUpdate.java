@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
+import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
@@ -21,7 +22,7 @@ public class VehicleUpdate extends MTVehicleSubCommand {
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
         if (!checkPermission("mtvehicles.update")) return true;
 
-        if (!ConfigModule.defaultConfig.getConfig().getBoolean("auto-update")) {
+        if (!(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.AUTO_UPDATE)) {
             sendMessage(ConfigModule.messagesConfig.getMessage(Message.UPDATE_DISABLED));
             return false;
         }

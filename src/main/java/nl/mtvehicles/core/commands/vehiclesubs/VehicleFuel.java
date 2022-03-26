@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
+import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.helpers.ItemFactory;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
@@ -27,7 +28,7 @@ public class VehicleFuel extends MTVehicleSubCommand {
 
         Inventory inv = Bukkit.createInventory(null, 9, "Benzine menu");
 
-        List<Integer> jerrycans = (List<Integer>) ConfigModule.defaultConfig.getConfig().getList("jerrycans");
+        List<Integer> jerrycans = (List<Integer>) ConfigModule.defaultConfig.get(DefaultConfig.Option.JERRYCANS);
         assert jerrycans != null;
 
         for (int jerrycan : jerrycans) {

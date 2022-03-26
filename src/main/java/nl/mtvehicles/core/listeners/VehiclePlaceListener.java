@@ -2,6 +2,7 @@ package nl.mtvehicles.core.listeners;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.events.VehiclePlaceEvent;
+import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.enums.RegionAction;
 import nl.mtvehicles.core.infrastructure.helpers.ItemFactory;
@@ -113,7 +114,7 @@ public class VehiclePlaceListener implements Listener {
             }
         }
         List<Map<String, Double>> wiekens = (List<Map<String, Double>>) vehicle.getVehicleData().get("wiekens");
-        if (ConfigModule.vehicleDataConfig.getConfig().getString("vehicle." + license + ".vehicleType").contains("HELICOPTER")) {
+        if (ConfigModule.vehicleDataConfig.getType(license).isHelicopter()) {
             for (int i = 1; i <= wiekens.size(); i++) {
                 Map<?, ?> seat = wiekens.get(i - 1);
                 if (i == 1) {
@@ -122,7 +123,7 @@ public class VehiclePlaceListener implements Listener {
                     as3.setCustomName("MTVEHICLES_WIEKENS_" + license);
                     as3.setGravity(false);
                     as3.setVisible(false);
-                    if (ConfigModule.defaultConfig.getConfig().getBoolean("wiekens-always-on") == true) {
+                    if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.HELICOPTER_BLADES_ALWAYS_ON)) {
                         ItemStack car = (new ItemFactory(Material.getMaterial("DIAMOND_HOE"))).setDurability((short) 1058).setName(TextUtils.colorize("&6Wieken")).setNBT("mtvehicles.kenteken", license).toItemStack();
                         ItemMeta im = car.getItemMeta();
                         List<String> itemlore = new ArrayList<>();

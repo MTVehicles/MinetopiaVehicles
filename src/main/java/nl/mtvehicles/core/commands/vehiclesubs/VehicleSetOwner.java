@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
+import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
@@ -22,7 +23,7 @@ public class VehicleSetOwner extends MTVehicleSubCommand {
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
         ItemStack item = player.getInventory().getItemInMainHand();
 
-        boolean playerSetOwner = ConfigModule.defaultConfig.getConfig().getBoolean("spelerSetOwner");
+        boolean playerSetOwner = (boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.PUT_ONESELF_AS_OWNER);
 
         if (!playerSetOwner && !checkPermission("mtvehicles.setowner")) {
             return true;

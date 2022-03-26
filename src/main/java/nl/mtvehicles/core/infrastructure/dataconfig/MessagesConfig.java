@@ -30,7 +30,7 @@ public class MessagesConfig extends Config {
     public String getMessage(String key) {
         String msg = "";
         try {
-            msg = TextUtils.colorize((String) this.getConfig().get(key));
+            msg = TextUtils.colorize((String) this.getConfiguration().get(key));
         } catch (Exception e){
             Main.instance.getLogger().severe("An error occurred while retrieving a custom message from the messages.yml!");
         }
@@ -40,7 +40,7 @@ public class MessagesConfig extends Config {
     public String getMessage(Message message){
         String msg = "";
         try {
-            msg = TextUtils.colorize(this.getConfig().getString(message.getKey()));
+            msg = TextUtils.colorize(this.getConfiguration().getString(message.getKey()));
         } catch (Exception e){
             Main.instance.getLogger().severe("An error occurred while retrieving a custom message from the messages.yml!");
         }
