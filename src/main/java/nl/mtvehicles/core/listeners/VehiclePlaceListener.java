@@ -53,7 +53,7 @@ public class VehiclePlaceListener implements Listener {
             return;
         }
         if (!VehicleUtils.existsByLicensePlate(license)) {
-            ConfigModule.messagesConfig.sendMessage(p, "vehicleNotFound");
+            ConfigModule.messagesConfig.sendMessage(p, Message.VEHICLE_NOT_FOUND);
             e.setCancelled(true);
             return;
         }
@@ -77,16 +77,16 @@ public class VehiclePlaceListener implements Listener {
 
         if (ConfigModule.defaultConfig.isBlockWhitelistEnabled()
                 && !ConfigModule.defaultConfig.blockWhiteList().contains(e.getClickedBlock().getType())) {
-            ConfigModule.messagesConfig.sendMessage(p, "blockNotInWhitelist");
+            ConfigModule.messagesConfig.sendMessage(p, Message.BLOCK_NOT_IN_WHITELIST);
             return;
         }
         if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.PLACE, loc)) {
-            ConfigModule.messagesConfig.sendMessage(p, "cannotDoThatHere");
+            ConfigModule.messagesConfig.sendMessage(p, Message.CANNOT_DO_THAT_HERE);
             return;
         }
 
         if (VehicleUtils.getByLicensePlate(license) == null) {
-            ConfigModule.messagesConfig.sendMessage(p, "vehicleNotFound");
+            ConfigModule.messagesConfig.sendMessage(p, Message.VEHICLE_NOT_FOUND);
             return;
         }
 

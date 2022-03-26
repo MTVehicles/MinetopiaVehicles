@@ -1,7 +1,7 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
-import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
@@ -21,17 +21,13 @@ public class VehicleAddMember extends MTVehicleSubCommand {
 
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
-        Player player = (Player) sender;
         ItemStack item = player.getInventory().getItemInMainHand();
         NBTItem nbt = new NBTItem(item);
 
-        if (!item.hasItemMeta() || !nbt.hasKey("mtvehicles.kenteken")) {
-            sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("noVehicleInHand")));
-            return true;
-        }
+        if (!isHoldingVehicle()) return true;
 
         if (args.length != 2) {
-            player.sendMessage(ConfigModule.messagesConfig.getMessage("useAddMember"));
+            player.sendMessage(ConfigModule.messagesConfig.getMessage(Message.USE_ADD_MEMBER));
             return true;
         }
 
@@ -39,7 +35,7 @@ public class VehicleAddMember extends MTVehicleSubCommand {
         String licensePlate = nbt.getString("mtvehicles.kenteken");
 
         if (offlinePlayer == null || !offlinePlayer.hasPlayedBefore()) {
-            sendMessage(ConfigModule.messagesConfig.getMessage("playerNotFound"));
+            sendMessage(ConfigModule.messagesConfig.getMessage(Message.PLAYER_NOT_FOUND));
             return true;
         }
 
@@ -51,7 +47,7 @@ public class VehicleAddMember extends MTVehicleSubCommand {
         vehicle.setMembers(members);
         vehicle.save();
 
-        sendMessage(ConfigModule.messagesConfig.getMessage("memberChange"));
+        sendMessage(ConfigModule.messagesConfig.getMessage(Message.MEMBER_CHANGE));
 
         return true;
     }

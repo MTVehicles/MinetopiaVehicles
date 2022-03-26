@@ -63,7 +63,7 @@ public class TextUtils {
         }
         Vehicle vehicle = VehicleUtils.getByLicensePlate(ken);
         if (vehicle == null) {
-            ConfigModule.messagesConfig.sendMessage(p, "vehicleNotFound");
+            ConfigModule.messagesConfig.sendMessage(p, Message.VEHICLE_NOT_FOUND);
             return;
         }
         if (!vehicle.isOwner(p) && !vehicle.canRide(p) && !p.hasPermission("mtvehicles.ride")) {
@@ -72,7 +72,7 @@ public class TextUtils {
         }
         for (Entity entity : p.getWorld().getEntities()) {
             if (ConfigModule.defaultConfig.getConfig().getBoolean("anwb") && !p.hasPermission("mtvehicles.anwb") && (entity.getLocation().clone().add(0.0, 0.9, 0.0).getBlock().getType().toString().contains("WATER"))) {
-                ConfigModule.messagesConfig.sendMessage(p, "vehicleInWater");
+                ConfigModule.messagesConfig.sendMessage(p, Message.VEHICLE_IN_WATER);
                 return;
             }
             if (entity.getCustomName() != null && entity.getCustomName().contains(ken)) {
@@ -94,7 +94,7 @@ public class TextUtils {
                 Location location = new Location(entity.getWorld(), entity.getLocation().getX(), entity.getLocation().getY(), entity.getLocation().getZ(), entity.getLocation().getYaw(), entity.getLocation().getPitch());
 
                 if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.ENTER, location)){
-                    ConfigModule.messagesConfig.sendMessage(p, "cannotDoThatHere");
+                    ConfigModule.messagesConfig.sendMessage(p, Message.CANNOT_DO_THAT_HERE);
                     return;
                 }
 
@@ -156,10 +156,10 @@ public class TextUtils {
                     if (entity.getCustomName() != null && entity.getCustomName().contains(ken)) {
                         ArmorStand test = (ArmorStand) entity;
                         if (test.getCustomName().contains("MTVEHICLES_SKIN_" + ken)) {
-                            if (checkInvFull(p) == false) {
+                            if (!checkInvFull(p)) {
                                 p.getInventory().addItem(test.getHelmet());
                             } else {
-                                ConfigModule.messagesConfig.sendMessage(p, "inventoryFull");
+                                ConfigModule.messagesConfig.sendMessage(p, Message.INVENTORY_FULL);
                                 return;
                             }
                         }
@@ -167,24 +167,24 @@ public class TextUtils {
                     }
                 }
             }
-            ConfigModule.messagesConfig.sendMessage(p, "vehicleNotFound");
+            ConfigModule.messagesConfig.sendMessage(p, Message.VEHICLE_NOT_FOUND);
             return;
         }
         if (VehicleUtils.getByLicensePlate(ken).isOwner(p) && ConfigModule.defaultConfig.getConfig().getBoolean("carPickup") == false || p.hasPermission("mtvehicles.oppakken")) {
             for (World world : Bukkit.getServer().getWorlds()) {
                 for (Entity entity : world.getEntities()) {
                     if (ConfigModule.defaultConfig.getConfig().getBoolean("anwb") && !p.hasPermission("mtvehicles.anwb") && entity.getLocation().clone().add(0.0, 0.9, 0.0).getBlock().getType().toString().contains("WATER")) {
-                        ConfigModule.messagesConfig.sendMessage(p, "vehicleInWater");
+                        ConfigModule.messagesConfig.sendMessage(p, Message.VEHICLE_IN_WATER);
                         return;
                     }
                     if (entity.getCustomName() != null && entity.getCustomName().contains(ken)) {
                         ArmorStand test = (ArmorStand) entity;
                         if (test.getCustomName().contains("MTVEHICLES_SKIN_" + ken)) {
-                            if (checkInvFull(p) == false) {
+                            if (!checkInvFull(p)) {
                                 p.getInventory().addItem(test.getHelmet());
                                 p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_PICKUP).replace("%p%", VehicleUtils.getByLicensePlate(ken).getOwnerName())));
                             } else {
-                                ConfigModule.messagesConfig.sendMessage(p, "inventoryFull");
+                                ConfigModule.messagesConfig.sendMessage(p, Message.INVENTORY_FULL);
                                 return;
                             }
                         }

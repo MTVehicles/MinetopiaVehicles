@@ -1,6 +1,6 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
-import de.tr7zw.changeme.nbtapi.NBTItem;
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
@@ -19,24 +19,19 @@ public class VehicleDelete extends MTVehicleSubCommand {
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
         if (!checkPermission("mtvehicles.delete")) return true;
 
-        Player p = (Player) sender;
+        ItemStack item = player.getInventory().getItemInMainHand();
 
-        ItemStack item = p.getInventory().getItemInMainHand();
-
-        if (!item.hasItemMeta() || !(new NBTItem(item)).hasKey("mtvehicles.kenteken")) {
-            sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("noVehicleInHand")));
-            return true;
-        }
+        if (!isHoldingVehicle()) return true;
 
         try {
             String licensePlate = VehicleUtils.getLicensePlate(item);
             VehicleUtils.getByLicensePlate(licensePlate).delete();
-            sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehicleDeleted")));
+            sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_DELETED)));
         } catch (Exception e){
-            sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehicleAlreadyDeleted")));
+            sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_ALREADY_DELETED)));
         }
 
-        p.getInventory().getItemInMainHand().setAmount(0);
+        player.getInventory().getItemInMainHand().setAmount(0);
         return true;
     }
 }

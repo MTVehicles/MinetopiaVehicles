@@ -1,10 +1,8 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
-import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.infrastructure.dataconfig.MessagesConfig;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
-import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.Config;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
@@ -25,19 +23,14 @@ public class VehicleEdit extends MTVehicleSubCommand {
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
         if (!checkPermission("mtvehicles.edit")) return true;
 
-        Player p = (Player) sender;
+        final ItemStack item = player.getInventory().getItemInMainHand();
 
-        final ItemStack item = p.getInventory().getItemInMainHand();
-
-        if (!item.hasItemMeta() || !(new NBTItem(item)).hasKey("mtvehicles.kenteken")) {
-            sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("noVehicleInHand")));
-            return true;
-        }
+        if (!isHoldingVehicle()) return true;
 
         ConfigModule.configList.forEach(Config::reload);
 
-        sendMessage(ConfigModule.messagesConfig.getMessage("menuOpen"));
-        editMenu(p, item);
+        sendMessage(ConfigModule.messagesConfig.getMessage(Message.MENU_OPEN));
+        editMenu(player, item);
 
         return true;
     }

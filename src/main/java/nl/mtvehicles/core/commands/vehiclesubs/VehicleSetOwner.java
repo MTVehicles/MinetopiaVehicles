@@ -1,7 +1,6 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
-import de.tr7zw.changeme.nbtapi.NBTItem;
-import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
@@ -21,7 +20,6 @@ public class VehicleSetOwner extends MTVehicleSubCommand {
 
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
-        Player player = (Player) sender;
         ItemStack item = player.getInventory().getItemInMainHand();
 
         boolean playerSetOwner = ConfigModule.defaultConfig.getConfig().getBoolean("spelerSetOwner");
@@ -30,27 +28,24 @@ public class VehicleSetOwner extends MTVehicleSubCommand {
             return true;
         }
 
-        if (!item.hasItemMeta() || !(new NBTItem(item)).hasKey("mtvehicles.kenteken")) {
-            sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("noVehicleInHand")));
-            return true;
-        }
+        if (!isHoldingVehicle()) return true;
 
         if (args.length != 2) {
-            player.sendMessage(ConfigModule.messagesConfig.getMessage("useSetOwner"));
+            player.sendMessage(ConfigModule.messagesConfig.getMessage(Message.USE_SET_OWNER));
             return true;
         }
 
         String licensePlate = VehicleUtils.getLicensePlate(item);
 
         if (!VehicleUtils.existsByLicensePlate(licensePlate)) {
-            player.sendMessage(ConfigModule.messagesConfig.getMessage("vehicleNotFound"));
+            player.sendMessage(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_NOT_FOUND));
             return true;
         }
 
         Player of = Bukkit.getPlayer(args[1]);
 
         if (of == null || !of.hasPlayedBefore()) {
-            player.sendMessage(ConfigModule.messagesConfig.getMessage("playerNotFound"));
+            player.sendMessage(ConfigModule.messagesConfig.getMessage(Message.PLAYER_NOT_FOUND));
             return true;
         }
 
@@ -58,7 +53,7 @@ public class VehicleSetOwner extends MTVehicleSubCommand {
         assert vehicle != null;
 
         if ((playerSetOwner || !player.hasPermission("mtvehicles.setowner")) && !vehicle.isOwner(player)) {
-            player.sendMessage(ConfigModule.messagesConfig.getMessage("notYourCar"));
+            player.sendMessage(ConfigModule.messagesConfig.getMessage(Message.NOT_YOUR_CAR));
             return true;
         }
 
@@ -67,7 +62,7 @@ public class VehicleSetOwner extends MTVehicleSubCommand {
         vehicle.setOwner(of.getUniqueId().toString());
         vehicle.save();
 
-        player.sendMessage(ConfigModule.messagesConfig.getMessage("memberChange"));
+        player.sendMessage(ConfigModule.messagesConfig.getMessage(Message.MEMBER_CHANGE));
 
         return true;
     }

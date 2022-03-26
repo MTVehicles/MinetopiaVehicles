@@ -1,7 +1,6 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
-import de.tr7zw.changeme.nbtapi.NBTItem;
-import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
@@ -20,17 +19,14 @@ public class VehicleRepair extends MTVehicleSubCommand {
 
         final ItemStack item = player.getInventory().getItemInMainHand();
 
-        if (!item.hasItemMeta() || !(new NBTItem(item)).hasKey("mtvehicles.kenteken")) {
-            sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("noVehicleInHand")));
-            return true;
-        }
+        if (!isHoldingVehicle()) return true;
 
         final String license = VehicleUtils.getLicensePlate(item);
         final int damage = ConfigModule.vehicleDataConfig.getDamage(license);
         final double maxHealth = VehicleUtils.getMaxHealthByDamage(damage);
 
         ConfigModule.vehicleDataConfig.setHealth(license, maxHealth);
-        sendMessage(ConfigModule.messagesConfig.getMessage("repairSuccessful"));
+        sendMessage(ConfigModule.messagesConfig.getMessage(Message.REPAIR_SUCCESSFUL));
         return true;
     }
 }

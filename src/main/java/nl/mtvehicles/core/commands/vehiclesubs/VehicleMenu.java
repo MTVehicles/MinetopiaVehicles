@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.helpers.ItemFactory;
 import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
@@ -26,8 +27,7 @@ public class VehicleMenu extends MTVehicleSubCommand {
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
         if (!checkPermission("mtvehicles.menu")) return true;
 
-        Player p = (Player) sender;
-        sendMessage(ConfigModule.messagesConfig.getMessage("menuOpen"));
+        sendMessage(ConfigModule.messagesConfig.getMessage(Message.MENU_OPEN));
 
         int menuRows = ConfigModule.defaultConfig.getConfig().getInt("vehicleMenuSize");
         final int menuSize = (menuRows >= 3 && menuRows <= 6) ? menuRows * 9 : 27;
@@ -47,8 +47,8 @@ public class VehicleMenu extends MTVehicleSubCommand {
             inv.addItem(new ItemFactory(itemStack).setNBT((String) vehicle.get("nbtKey"), (String)vehicle.get("nbtValue")).toItemStack());
         }
 
-        beginMenu.put(p.getUniqueId(), inv);
-        p.openInventory(inv);
+        beginMenu.put(player.getUniqueId(), inv);
+        player.openInventory(inv);
 
         return true;
     }

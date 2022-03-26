@@ -60,7 +60,7 @@ public class JerryCanClickListener implements Listener {
         int benval = (new NBTItem(item)).getInteger("mtvehicles.benzineval");
         int bensize = (new NBTItem(item)).getInteger("mtvehicles.benzinesize");
 
-        if (benval == bensize) ConfigModule.messagesConfig.sendMessage(p, "jerrycanFull");
+        if (benval == bensize) ConfigModule.messagesConfig.sendMessage(p, Message.JERRYCAN_FULL);
 
         if ((benval + 1) <= bensize){
             double price = getFuelPrice();
@@ -75,7 +75,7 @@ public class JerryCanClickListener implements Listener {
     private void fillWholeJerryCan(Player p, ItemStack item){
         int benval = (new NBTItem(item)).getInteger("mtvehicles.benzineval");
         int bensize = (new NBTItem(item)).getInteger("mtvehicles.benzinesize");
-        if (benval == bensize) ConfigModule.messagesConfig.sendMessage(p, "jerrycanFull");
+        if (benval == bensize) ConfigModule.messagesConfig.sendMessage(p, Message.JERRYCAN_FULL);
 
         int difference = bensize - benval;
         double price = getFuelPrice(difference);

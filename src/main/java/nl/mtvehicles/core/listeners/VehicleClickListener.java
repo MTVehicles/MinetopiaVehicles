@@ -44,7 +44,7 @@ public class VehicleClickListener implements Listener {
         if (p.isSneaking()) {
 
             if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.PICKUP, e.getRightClicked().getLocation())){
-                ConfigModule.messagesConfig.sendMessage(p, "cannotDoThatHere");
+                ConfigModule.messagesConfig.sendMessage(p, Message.CANNOT_DO_THAT_HERE);
                 return;
             }
 

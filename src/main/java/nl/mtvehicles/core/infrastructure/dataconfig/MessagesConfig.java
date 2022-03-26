@@ -8,10 +8,8 @@ import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.Config;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import java.io.File;
-import java.util.List;
 import java.util.Locale;
 
 public class MessagesConfig extends Config {

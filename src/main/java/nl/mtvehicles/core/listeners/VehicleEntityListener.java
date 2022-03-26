@@ -60,17 +60,17 @@ public class VehicleEntityListener implements Listener {
             final String bensize = nbt.getString("mtvehicles.benzinesize");
 
             if (!ConfigModule.defaultConfig.canUseJerryCan(p)){
-                ConfigModule.messagesConfig.sendMessage(p, "notInAGasStation");
+                ConfigModule.messagesConfig.sendMessage(p, Message.NOT_IN_A_GAS_STATION);
                 return;
             }
 
             if (Integer.parseInt(benval) < 1) {
-                ConfigModule.messagesConfig.sendMessage(p, "noFuel");
+                ConfigModule.messagesConfig.sendMessage(p, Message.NO_FUEL);
                 return;
             }
 
             if (fuel > 99) {
-                ConfigModule.messagesConfig.sendMessage(p, "vehicleFull");
+                ConfigModule.messagesConfig.sendMessage(p, Message.VEHICLE_FULL);
                 return;
             }
 
@@ -111,7 +111,7 @@ public class VehicleEntityListener implements Listener {
     public static void kofferbak(Player p, String license) {
         if (ConfigModule.defaultConfig.getConfig().getBoolean("kofferbakEnabled")) {
             if (VehicleUtils.getByLicensePlate(license) == null) {
-                ConfigModule.messagesConfig.sendMessage(p, "vehicleNotFound");
+                ConfigModule.messagesConfig.sendMessage(p, Message.VEHICLE_NOT_FOUND);
                 return;
             }
 

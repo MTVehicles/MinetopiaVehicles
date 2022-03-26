@@ -1,7 +1,6 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
-import de.tr7zw.changeme.nbtapi.NBTItem;
-import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
@@ -21,17 +20,14 @@ public class VehicleRefill extends MTVehicleSubCommand {
 
         final ItemStack item = player.getInventory().getItemInMainHand();
 
-        if (!item.hasItemMeta() || !(new NBTItem(item)).hasKey("mtvehicles.kenteken")) {
-            sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("noVehicleInHand")));
-            return true;
-        }
+        if (!isHoldingVehicle()) return true;
 
         final String licensePlate = VehicleUtils.getLicensePlate(item);
         Vehicle vehicle = VehicleUtils.getByLicensePlate(licensePlate);
         vehicle.setFuel(100.0);
         vehicle.save();
 
-        sendMessage(ConfigModule.messagesConfig.getMessage("refillSuccessful"));
+        sendMessage(ConfigModule.messagesConfig.getMessage(Message.REFILL_SUCCESSFUL));
         return true;
     }
 }

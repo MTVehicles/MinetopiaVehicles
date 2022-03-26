@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
@@ -33,7 +34,7 @@ public class VehicleVersion extends MTVehicleSubCommand {
         }
 
         if (VersionModule.isPreRelease)
-            sendMessage(String.format(ConfigModule.messagesConfig.getMessage("usingPreRelease")));
+            sendMessage(String.format(ConfigModule.messagesConfig.getMessage(Message.USING_PRE_RELEASE)));
 
         return true;
     }

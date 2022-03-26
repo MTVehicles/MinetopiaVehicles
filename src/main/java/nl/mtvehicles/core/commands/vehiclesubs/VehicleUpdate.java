@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.Main;
@@ -21,7 +22,7 @@ public class VehicleUpdate extends MTVehicleSubCommand {
         if (!checkPermission("mtvehicles.update")) return true;
 
         if (!ConfigModule.defaultConfig.getConfig().getBoolean("auto-update")) {
-            sendMessage(ConfigModule.messagesConfig.getMessage("updateDisabled"));
+            sendMessage(ConfigModule.messagesConfig.getMessage(Message.UPDATE_DISABLED));
             return false;
         }
 
@@ -79,11 +80,11 @@ public class VehicleUpdate extends MTVehicleSubCommand {
             os.flush();
             is.close();
             os.close();
-            sendMessage(ConfigModule.messagesConfig.getMessage("updatedSucces2"));
+            sendMessage(ConfigModule.messagesConfig.getMessage(Message.UPDATE_SUCCESSFUL));
 
 
         } catch (Exception ec) {
-            sendMessage(ConfigModule.messagesConfig.getMessage("updateFailed"));
+            sendMessage(ConfigModule.messagesConfig.getMessage(Message.UPDATE_FAILED));
             Main.logSevere("An error occurred whilst trying to download the plugin. (Java 11+ required)");
             ec.printStackTrace();
         }

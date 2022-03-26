@@ -1,6 +1,7 @@
 package nl.mtvehicles.core.infrastructure.dependencies;
 
 import net.milkbowl.vault.economy.Economy;
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -40,7 +41,7 @@ public class VaultUtils {
         if (!isPriceOk(amount) || !isEconomySetUp()) return false;
         if (!economy.hasAccount(p)) return false;
         if (!economy.has(p, amount)){
-            if (p.isOnline()) ConfigModule.messagesConfig.sendMessage(p.getPlayer(), "insufficientFunds");
+            if (p.isOnline()) ConfigModule.messagesConfig.sendMessage(p.getPlayer(), Message.INSUFFICIENT_FUNDS);
             return false;
         }
 
