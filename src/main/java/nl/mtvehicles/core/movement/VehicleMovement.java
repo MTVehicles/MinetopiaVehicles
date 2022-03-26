@@ -134,38 +134,34 @@ public class VehicleMovement {
         final float zza = (helicopterFalling) ? 0.0f : steerGetZza(packet);
         final Location locBelow = new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY() - 0.2, standMain.getLocation().getZ(), standMain.getLocation().getYaw(), standMain.getLocation().getPitch());
         if (xxa > 0.0) {
-            if (VehicleData.speed.get(license) != 0 || vehicleType.isHelicopter()) {
-                if (!vehicleType.isHelicopter() || locBelow.getBlock().getType().equals(Material.AIR)) { //Do not rotate if you're in a helicopter on ground
-                    final int rotation = (VehicleData.speed.get(license) < 0.1) ? RotationSpeed / 2 : RotationSpeed;
-                    schedulerRun(() -> {
-                        if (getServerVersion().is1_12()) {
-                            standMain.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - rotation, standMain.getLocation().getPitch()));
-                            standMainSeat.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - rotation, standMain.getLocation().getPitch()));
-                            standSkin.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - rotation, standMain.getLocation().getPitch()));
-                        } else {
-                            standMain.setRotation(standMain.getLocation().getYaw() - rotation, standMain.getLocation().getPitch());
-                            standMainSeat.setRotation(standMain.getLocation().getYaw() - rotation, standMain.getLocation().getPitch());
-                            standSkin.setRotation(standMain.getLocation().getYaw() - rotation, standMain.getLocation().getPitch());
-                        }
-                    });
-                }
+            if (!vehicleType.isHelicopter() || locBelow.getBlock().getType().equals(Material.AIR)) { //Do not rotate if you're in a helicopter on ground
+                final int rotation = (VehicleData.speed.get(license) < 0.1) ? RotationSpeed / 3 : RotationSpeed;
+                schedulerRun(() -> {
+                    if (getServerVersion().is1_12()) {
+                        standMain.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - rotation, standMain.getLocation().getPitch()));
+                        standMainSeat.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - rotation, standMain.getLocation().getPitch()));
+                        standSkin.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - rotation, standMain.getLocation().getPitch()));
+                    } else {
+                        standMain.setRotation(standMain.getLocation().getYaw() - rotation, standMain.getLocation().getPitch());
+                        standMainSeat.setRotation(standMain.getLocation().getYaw() - rotation, standMain.getLocation().getPitch());
+                        standSkin.setRotation(standMain.getLocation().getYaw() - rotation, standMain.getLocation().getPitch());
+                    }
+                });
             }
         } else if (xxa < 0.0) {
-            if (VehicleData.speed.get(license) != 0 || vehicleType.isHelicopter()) {
-                if (!vehicleType.isHelicopter() || locBelow.getBlock().getType().equals(Material.AIR)) { //Do not rotate if you're in a helicopter on ground
-                    final int rotation = (VehicleData.speed.get(license) < 0.1) ? RotationSpeed / 2 : RotationSpeed;
-                    schedulerRun(() -> {
-                        if (getServerVersion().is1_12()) {
-                            standMain.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() + rotation, standMain.getLocation().getPitch()));
-                            standMainSeat.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() + rotation, standMain.getLocation().getPitch()));
-                            standSkin.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() + rotation, standMain.getLocation().getPitch()));
-                        } else {
-                            standMain.setRotation(standMain.getLocation().getYaw() + rotation, standMain.getLocation().getPitch());
-                            standMainSeat.setRotation(standMain.getLocation().getYaw() + rotation, standMain.getLocation().getPitch());
-                            standSkin.setRotation(standMain.getLocation().getYaw() + rotation, standMain.getLocation().getPitch());
-                        }
-                    });
-                }
+            if (!vehicleType.isHelicopter() || locBelow.getBlock().getType().equals(Material.AIR)) { //Do not rotate if you're in a helicopter on ground
+                final int rotation = (VehicleData.speed.get(license) < 0.1) ? RotationSpeed / 3 : RotationSpeed;
+                schedulerRun(() -> {
+                    if (getServerVersion().is1_12()) {
+                        standMain.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() + rotation, standMain.getLocation().getPitch()));
+                        standMainSeat.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() + rotation, standMain.getLocation().getPitch()));
+                        standSkin.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() + rotation, standMain.getLocation().getPitch()));
+                    } else {
+                        standMain.setRotation(standMain.getLocation().getYaw() + rotation, standMain.getLocation().getPitch());
+                        standMainSeat.setRotation(standMain.getLocation().getYaw() + rotation, standMain.getLocation().getPitch());
+                        standSkin.setRotation(standMain.getLocation().getYaw() + rotation, standMain.getLocation().getPitch());
+                    }
+                });
             }
         }
         if (zza > 0.0) {
