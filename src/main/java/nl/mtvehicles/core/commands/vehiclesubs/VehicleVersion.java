@@ -1,6 +1,7 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
 import nl.mtvehicles.core.infrastructure.enums.Message;
+import nl.mtvehicles.core.infrastructure.enums.SoftDependency;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
@@ -24,11 +25,17 @@ public class VehicleVersion extends MTVehicleSubCommand {
         sendMessage(String.format("§2Running §aMTVehicles v%s§2.", pluginVersion));
         sendMessage(String.format("§2Your server is running §a%s§2.", serverVersion));
         if (!DependencyModule.loadedDependencies.isEmpty()) {
-            String dependencies = String.join(", ", DependencyModule.loadedDependencies);
-            if (DependencyModule.isDependencyEnabled("Vault")) {
+            String dependencies = "";
+            int numberOfDependencies = 0;
+            for (SoftDependency dependency: DependencyModule.loadedDependencies) {
+                if (numberOfDependencies == 0) dependencies += dependency.getName();
+                else dependencies += ", " + dependency.getName();
+                numberOfDependencies++;
+            }
+            if (DependencyModule.isDependencyEnabled(SoftDependency.VAULT)) {
                 if (!DependencyModule.vault.isEconomySetUp()) dependencies = dependencies.replace("Vault", "§a§mVault§a");
             }
-            sendMessage(String.format("§2Loaded dependencies: §a%s§2.", dependencies));
+            sendMessage(String.format("§2Loaded dependencies (%s§2): §a%s§2.", numberOfDependencies, dependencies));
         } else {
             sendMessage(String.format("§2There are no loaded dependencies."));
         }

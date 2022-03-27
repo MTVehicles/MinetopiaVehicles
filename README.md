@@ -158,6 +158,17 @@ You can edit the behaviour **in the config** where you may also find information
 | `mtv-pickup`     | ALLOW | Enables players to pick up vehicles, **if region whitelist for picking up is enabled.**        |
 |                  | DENY  | Prevents players from picking up vehicles, **if region blacklist for picking up is enabled.**  |
 
+### PlaceholderAPI
+
+MTVehicles offers special placeholders for you to use.
+
+| Placeholder                | Description                                            |
+|----------------------------|--------------------------------------------------------|
+| `mtv_vehicle_licensePlate` | License plate of a vehicle a player **is sitting in**  |
+| `mtv_vehicle_fuel`         | Remaining fuel of a vehicle a player is sitting in     |
+
+> More placeholders are expected to be added in the future...
+
 ### Vault
 
 You can download <a href="https://www.spigotmc.org/resources/vault.34315/">Vault</a> to enable economy integration. (Of course, you must have an economy plugin that supports Vault.)

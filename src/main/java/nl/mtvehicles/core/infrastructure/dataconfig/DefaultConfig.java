@@ -1,9 +1,6 @@
 package nl.mtvehicles.core.infrastructure.dataconfig;
 
-import nl.mtvehicles.core.infrastructure.enums.ConfigType;
-import nl.mtvehicles.core.infrastructure.enums.DriveUp;
-import nl.mtvehicles.core.infrastructure.enums.Message;
-import nl.mtvehicles.core.infrastructure.enums.RegionAction;
+import nl.mtvehicles.core.infrastructure.enums.*;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.Config;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
@@ -93,7 +90,7 @@ public class DefaultConfig extends Config {
     private class GasStationConfig {
 
         private boolean areGasStationsEnabled(){
-            if (!DependencyModule.isDependencyEnabled("WorldGuard")) return false; //If WorldGuard isn't installed, say it's not enabled.
+            if (!DependencyModule.isDependencyEnabled(SoftDependency.WORLD_GUARD)) return false; //If WorldGuard isn't installed, say it's not enabled.
 
             return (boolean) get(Option.GAS_STATIONS_ENABLED);
         }
@@ -128,7 +125,7 @@ public class DefaultConfig extends Config {
     public boolean isFillJerryCanPriceEnabled(){
         if (!gasStations.areGasStationsEnabled()) return false;
         if (!gasStations.isFillJerryCansEnabled()) return false;
-        if (!DependencyModule.isDependencyEnabled("Vault")) return false; //If Vault isn't installed, say it's not enabled.
+        if (!DependencyModule.isDependencyEnabled(SoftDependency.VAULT)) return false; //If Vault isn't installed, say it's not enabled.
         if (!DependencyModule.vault.isEconomySetUp()) return false; //There is no Vault Economy plugin, disable it.
 
         return (boolean) get(Option.GAS_STATIONS_FILL_JERRYCANS_PRICE_ENABLED);
@@ -181,7 +178,7 @@ public class DefaultConfig extends Config {
     public boolean canProceedWithAction(RegionAction action, Location loc){
         if (isWorldDisabled(loc.getWorld().getName())) return false;
 
-        if (!DependencyModule.isDependencyEnabled("WorldGuard")) return true;
+        if (!DependencyModule.isDependencyEnabled(SoftDependency.WORLD_GUARD)) return true;
 
         boolean returns = true;
         RegionAction.ListType listType = getRegionActionListType(action);
