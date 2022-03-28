@@ -25,6 +25,9 @@ public class JerryCanClickListener implements Listener {
         final ItemStack item = e.getItem();
 
         if (e.isCancelled()) return;
+        if (!VersionModule.getServerVersion().isOld()){
+            if (((org.bukkit.event.Cancellable) e).isCancelled()) return;
+        }
 
         if (e.getItem() == null) return;
 

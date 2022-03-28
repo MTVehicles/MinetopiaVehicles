@@ -32,4 +32,8 @@ public enum Version {
         return this.equals(Version.v1_18);
     }
 
+    public boolean isOld(){
+        return is1_12() || is1_13();
+    }
+
 }

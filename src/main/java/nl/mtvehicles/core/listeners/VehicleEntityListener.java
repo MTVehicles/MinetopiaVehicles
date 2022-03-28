@@ -1,6 +1,7 @@
 package nl.mtvehicles.core.listeners;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
+import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.commands.vehiclesubs.VehicleFuel;
 import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
@@ -41,7 +42,7 @@ public class VehicleEntityListener implements Listener {
             final String license = VehicleUtils.getLicensePlate(eventEntity);
 
             if (p.isSneaking() && !p.isInsideVehicle()) {
-                kofferbak(p, license);
+                VehicleUtils.openTrunk(p, license);
                 e.setCancelled(true);
                 return;
             }
@@ -108,33 +109,5 @@ public class VehicleEntityListener implements Listener {
         double damageMultiplier = (double) ConfigModule.defaultConfig.get(DefaultConfig.Option.DAMAGE_MULTIPLIER);
         if (damageMultiplier < 0.1 || damageMultiplier > 5) damageMultiplier = 0.5; //Must be between 0.1 and 5. Default: 0.5
         ConfigModule.vehicleDataConfig.damageVehicle(license, damage * damageMultiplier);
-    }
-
-    public static void kofferbak(Player p, String license) {
-        if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.TRUNK_ENABLED)) {
-            if (VehicleUtils.getByLicensePlate(license) == null) {
-                ConfigModule.messagesConfig.sendMessage(p, Message.VEHICLE_NOT_FOUND);
-                return;
-            }
-
-            if (VehicleUtils.getByLicensePlate(license).isOwner(p) || p.hasPermission("mtvehicles.kofferbak")) {
-                ConfigModule.configList.forEach(Config::reload);
-                if ((boolean) ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.TRUNK_ENABLED)) {
-
-                    if (ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.TRUNK_DATA) == null) return;
-
-                    Inventory inv = Bukkit.createInventory(null, (int) ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.TRUNK_ROWS) * 9, "Kofferbak Vehicle: " + license);
-                    List<ItemStack> chestContentsFromConfig = (List<ItemStack>) ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.TRUNK_DATA);
-
-                    for (ItemStack item : chestContentsFromConfig) {
-                        if (item != null) inv.addItem(item);
-                    }
-
-                    p.openInventory(inv);
-                }
-            } else {
-                p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_NO_RIDER_TRUNK).replace("%p%", VehicleUtils.getByLicensePlate(license).getOwnerName())));
-            }
-        }
     }
 }

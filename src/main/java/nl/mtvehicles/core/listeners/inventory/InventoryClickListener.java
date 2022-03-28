@@ -323,7 +323,7 @@ public class InventoryClickListener implements Listener {
             }
             if (menuitem.contains("3")) {
                 p.closeInventory();
-                VehicleEntityListener.kofferbak(p, licensePlate);
+                VehicleUtils.openTrunk(p, licensePlate);
             }
         }
         if (e.getView().getTitle().contains("Vehicle Members")) {

@@ -106,6 +106,7 @@ These commands can only be executed by the owner of the vehicle. **Hold a vehicl
 | /vehicle addmember    | Add a member to your vehicle                         | `None`     |
 | /vehicle removerider  | Remove a rider from your vehicle                     | `None`     |
 | /vehicle removemember | Remove a member from your vehicle                    | `None`     |
+| /vehicle trunk        | Open the trunk of your vehicle                       | `None`     |
 | /vehicle repair       | Restore the health of a vehicle (vehicle damage must be enabled in the [config.yml]) | `mtvehicles.repair` |
 | /vehicle refill       | Refill the vehicle's fuel                            | `mtvehicles.refill` |
 

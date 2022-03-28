@@ -10,6 +10,7 @@ import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
+import nl.mtvehicles.core.infrastructure.modules.VersionModule;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -35,6 +36,9 @@ public class VehiclePlaceListener implements Listener {
         final ItemStack item = e.getItem();
 
         if (e.isCancelled()) return;
+        if (!VersionModule.getServerVersion().isOld()){
+            if (((org.bukkit.event.Cancellable) e).isCancelled()) return;
+        }
 
         if (e.getItem() == null) return;
 

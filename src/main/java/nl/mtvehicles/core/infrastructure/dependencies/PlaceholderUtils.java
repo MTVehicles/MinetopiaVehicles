@@ -16,6 +16,8 @@ import org.bukkit.entity.Player;
 
 import java.text.DecimalFormat;
 
+import static nl.mtvehicles.core.infrastructure.models.VehicleUtils.isInsideVehicle;
+
 public class PlaceholderUtils extends PlaceholderExpansion {
     //This is only called if DependencyModule made sure that Vault is installed.
     private final Main plugin = Main.instance;
@@ -44,37 +46,40 @@ public class PlaceholderUtils extends PlaceholderExpansion {
     @ToDo(comment = "Add more placeholders.")
     public String onRequest(OfflinePlayer p, String parameter) { //Placeholder 'mtv_%parameter%'
 
+        //Global placeholders
+        if (parameter.equalsIgnoreCase("fuel_pricePerLitre")){
+            return ConfigModule.defaultConfig.get(DefaultConfig.Option.GAS_STATIONS_FILL_JERRYCANS_PRICE_PER_LITRE).toString();
+        }
+
+
+        //Per-player placeholders
         if (parameter.equalsIgnoreCase("vehicle_licensePlate")){
             if (!p.isOnline()) return "";
-            if (!isInsideVehicle(p)) return "";
+            if (!isInsideVehicle(p.getPlayer())) return "";
             return VehicleUtils.getLicensePlate(p.getPlayer().getVehicle());
         }
 
         if (parameter.equalsIgnoreCase("vehicle_name")){
             if (!p.isOnline()) return "";
-            if (!isInsideVehicle(p)) return "";
+            if (!isInsideVehicle(p.getPlayer())) return "";
             String licensePlate =  VehicleUtils.getLicensePlate(p.getPlayer().getVehicle());
             return ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.NAME).toString();
         }
 
         if (parameter.equalsIgnoreCase("vehicle_type")){
             if (!p.isOnline()) return "";
-            if (!isInsideVehicle(p)) return "";
+            if (!isInsideVehicle(p.getPlayer())) return "";
             String licensePlate =  VehicleUtils.getLicensePlate(p.getPlayer().getVehicle());
             return VehicleType.valueOf(ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.VEHICLE_TYPE).toString()).getName();
         }
 
         if (parameter.equalsIgnoreCase("vehicle_fuel")){
             if (!p.isOnline()) return "";
-            if (!isInsideVehicle(p)) return "";
+            if (!isInsideVehicle(p.getPlayer())) return "";
             String licensePlate = VehicleUtils.getLicensePlate(p.getPlayer().getVehicle());
             if (!(boolean) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.FUEL_ENABLED)) return "";
             DecimalFormat df = new DecimalFormat("#.##");
             return df.format(VehicleData.fuel.get(licensePlate)) + "%";
-        }
-
-        if (parameter.equalsIgnoreCase("fuel_pricePerLitre")){
-            return ConfigModule.defaultConfig.get(DefaultConfig.Option.GAS_STATIONS_FILL_JERRYCANS_PRICE_PER_LITRE).toString();
         }
 
         return null;
@@ -82,10 +87,5 @@ public class PlaceholderUtils extends PlaceholderExpansion {
 
     public static String parsePlaceholders(Player player, String text){
         return PlaceholderAPI.setPlaceholders(player, text);
-    }
-
-    private boolean isInsideVehicle(OfflinePlayer p){
-        if (!p.getPlayer().isInsideVehicle()) return false;
-        return VehicleUtils.isVehicle(p.getPlayer().getVehicle());
     }
 }
