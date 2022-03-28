@@ -9,6 +9,7 @@ import nl.mtvehicles.core.infrastructure.helpers.BossBarUtils;
 import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Fence;
 import org.bukkit.block.data.type.Slab;
@@ -206,6 +207,7 @@ public class VehicleMovement {
         final Location loc = getLocationOfBlockAhead(mainStand);
         final String locY = String.valueOf(mainStand.getLocation().getY());
         final Location locBlockAbove = new Location(loc.getWorld(), loc.getX(), loc.getY() + 1, loc.getZ(), loc.getYaw(), loc.getPitch());
+        final Location locBlockBelow = new Location(loc.getWorld(), loc.getX(), loc.getY() - 1, loc.getZ(), loc.getYaw(), loc.getPitch());
         final String drivingOnY = locY.substring(locY.length() - 2);
 
         final boolean isOnGround = drivingOnY.contains(".0");
@@ -215,6 +217,7 @@ public class VehicleMovement {
 
         final double difference = Double.parseDouble("0." + locY.split("\\.")[1]);
         final BlockData blockData = loc.getBlock().getBlockData();
+        final BlockData blockDataBelow = locBlockBelow.getBlock().getBlockData();
 
         if (loc.getBlock().getType().toString().contains("CARPET")){
             if (!(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.DRIVE_ON_CARPETS)){ //if carpets are turned off in config
@@ -245,11 +248,14 @@ public class VehicleMovement {
 
         if (ConfigModule.defaultConfig.driveUpSlabs().isSlabs()){
             if (isOnSlab) {
-                if (isPassable) return false; //Vehicle will go down
+                if (isPassable) {
+                    pushVehicleDown(mainStand, 0.5);
+                    return false; //Vehicle will go down
+                }
 
                 if (blockData instanceof Slab) {
                     Slab slab = (Slab) blockData;
-                    if (slab.getType().toString().equals("BOTTOM")) {
+                    if (slab.getType().equals(Slab.Type.BOTTOM)) {
                         return false; //Vehicle will continue on the slabs
                     }
                 }
@@ -267,7 +273,7 @@ public class VehicleMovement {
             if (!isPassable) {
                 if (blockData instanceof Slab) {
                     Slab slab = (Slab) blockData;
-                    if (slab.getType().toString().equals("BOTTOM")) {
+                    if (slab.getType().equals(Slab.Type.BOTTOM)) {
 
                         if (!isAbovePassable) {
                             VehicleData.speed.put(license, 0.0);
@@ -292,7 +298,7 @@ public class VehicleMovement {
                 if (!isPassable) {
                     if (blockData instanceof Slab){
                         Slab slab = (Slab) blockData;
-                        if (slab.getType().toString().equals("BOTTOM")){
+                        if (slab.getType().equals(Slab.Type.BOTTOM)){
                             VehicleData.speed.put(license, 0.0);
                             return false; //If it's a bottom slab, stop.
                         }
@@ -312,12 +318,16 @@ public class VehicleMovement {
                     return true;
                 }
             }
+
             //If it's on a slab (might have been placed there)
-            if (isPassable) return false; //Vehicle will go down
+            if (isPassable) {
+                pushVehicleDown(mainStand, 0.5);
+                return false; //Vehicle will go down
+            }
 
             if (blockData instanceof Slab) {
                 Slab slab = (Slab) blockData;
-                if (slab.getType().toString().equals("BOTTOM")) {
+                if (slab.getType().equals(Slab.Type.BOTTOM)) {
                     return false; //Vehicle will continue on the slabs
                 }
             }
@@ -333,11 +343,14 @@ public class VehicleMovement {
         } else if (ConfigModule.defaultConfig.driveUpSlabs().isBoth()) {
 
             if (isOnSlab) {
-                if (isPassable) return false; //Vehicle will go down
+                if (isPassable) {
+                    pushVehicleDown(mainStand, 0.5);
+                    return false; //Vehicle will go down
+                }
 
                 if (blockData instanceof Slab) {
                     Slab slab = (Slab) blockData;
-                    if (slab.getType().toString().equals("BOTTOM")) {
+                    if (slab.getType().equals(Slab.Type.BOTTOM)) {
                         return false; //Vehicle will continue on the slabs
                     }
                 }
@@ -360,7 +373,7 @@ public class VehicleMovement {
 
                 if (blockData instanceof Slab){
                     Slab slab = (Slab) blockData;
-                    if (slab.getType().toString().equals("BOTTOM")){ //If it's a bottom slab
+                    if (slab.getType().equals(Slab.Type.BOTTOM)){ //If it's a bottom slab
                         if (isOnGround) {
                             pushVehicleUp(mainStand, 0.5);
                         } else { //Maybe they're on a carpet
@@ -380,6 +393,15 @@ public class VehicleMovement {
                 return true;
 
             }
+
+            if (blockDataBelow instanceof Slab){ //If on a block, in front of it is air and below is bottom slab
+                Slab slab = (Slab) blockDataBelow;
+                if (slab.getType().equals(Slab.Type.BOTTOM)) { //If it's a bottom slab
+                    pushVehicleDown(mainStand, 0.5);
+                    return false; //Vehicle will go down
+                }
+            }
+
         }
 
         return false;
@@ -477,8 +499,8 @@ public class VehicleMovement {
             return;
         }
 
-        if (locBlockAheadAndBelow.getBlock().isPassable()){
-            if (location.getBlock().isPassable()){
+        if (isPassable(locBlockAhead.getBlock()) && isPassable(locBlockAheadAndBelow.getBlock())){
+            if (isPassable(location.getBlock())){
                 mainStand.setVelocity(new Vector(loc.getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.8, loc.getDirection().multiply(VehicleData.speed.get(license)).getZ()));
                 return;
             }
@@ -492,11 +514,15 @@ public class VehicleMovement {
         mainStand.setVelocity(new Vector(loc.getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.0, loc.getDirection().multiply(VehicleData.speed.get(license)).getZ()));
     }
 
-    private void putFuelUsage(String license) {
+    protected void putFuelUsage(String license) {
         double fuelMultiplier = Double.parseDouble(ConfigModule.defaultConfig.get(DefaultConfig.Option.FUEL_MULTIPLIER).toString());
         if (fuelMultiplier < 0.1 || fuelMultiplier > 10) fuelMultiplier = 1; //Must be between 0.1 and 10. Default: 1
         final double newFuel = VehicleData.fuel.get(license) - (fuelMultiplier * VehicleData.fuelUsage.get(license));
         VehicleData.fuel.put(license, newFuel);
+    }
+
+    protected boolean isPassable(Block block){
+        return block.isPassable();
     }
 
     protected void rotors(ArmorStand main, ArmorStand seatas, String license, boolean slowDown) {
@@ -515,6 +541,10 @@ public class VehicleMovement {
     protected void pushVehicleUp(ArmorStand mainStand, double plus){
         final Location newLoc = new Location(mainStand.getLocation().getWorld(), mainStand.getLocation().getX(), mainStand.getLocation().getY() + plus, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
         schedulerRun(() -> mainStand.teleport(newLoc));
+    }
+
+    protected void pushVehicleDown(ArmorStand mainStand, double minus){
+        pushVehicleUp(mainStand, -minus);
     }
 
     protected Location getLocationOfBlockAhead(ArmorStand mainStand){
