@@ -32,11 +32,17 @@ kofferbakEnabled: true
 # Give players the ability put themselves owner.
 spelerSetOwner: false
 
-# Maximum flying height for helicopters.
-helicopterMaxHeight: 150
-
 # Turn on if you do not want players to be able to pickup vehicles. Use cautiously.
 carPickup: false
+
+
+# --- Helicopters & Planes
+
+# Maximum flying height for helicopters AND PLANES.
+maxFlyingHeight: 150
+
+# Minimum speed to take off (must be higher than 0)
+takeOffSpeed: 0.4
 
 # --- Gas ---
 

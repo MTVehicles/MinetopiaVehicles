@@ -28,7 +28,6 @@ import java.util.Objects;
 import static nl.mtvehicles.core.infrastructure.modules.VersionModule.getServerVersion;
 import static nl.mtvehicles.core.movement.PacketHandler.isObjectPacket;
 
-@ToDo(comment = "Work on airplanes is in progress...")
 public class VehicleMovement {
 
     public void vehicleMovement(Player player, Object packet) {
@@ -57,10 +56,10 @@ public class VehicleMovement {
         final VehicleType vehicleType = VehicleType.valueOf(VehicleData.type.get(license));
         if (vehicleType == null) return;
 
-        boolean helicopterFalling = false;
+        boolean falling = false;
         if (VehicleData.fuel.get(license) < 1) {
             BossBarUtils.setBossBarValue(0 / 100.0D, license);
-            if (vehicleType.isHelicopter()) helicopterFalling = true;
+            if (vehicleType.canFly()) falling = true;
             else return;
         }
 
@@ -85,7 +84,7 @@ public class VehicleMovement {
         final double MaxSpeedBackwards = VehicleData.MaxSpeedBackwards.get(license);
         final double FrictionSpeed = VehicleData.FrictionSpeed.get(license);
 
-        boolean space = !helicopterFalling && steerIsJumping(packet);
+        boolean space = !falling && steerIsJumping(packet);
         updateStand(standMain, license, space);
         slabCheck(standMain, license);
         mainSeat(standMain, standMainSeat, license);
@@ -97,10 +96,10 @@ public class VehicleMovement {
             }
         }
 
-        if (vehicleType.isHelicopter()) rotors(standMain, standRotors, license, helicopterFalling);
+        if (vehicleType.isHelicopter()) rotors(standMain, standRotors, license, falling);
 
         // Horn
-        if (ConfigModule.vehicleDataConfig.isHornEnabled(license) && steerIsJumping(packet) && !helicopterFalling) {
+        if (ConfigModule.vehicleDataConfig.isHornEnabled(license) && steerIsJumping(packet) && !falling) {
             if (VehicleData.lastUsage.containsKey(player.getName())) lastUsed = VehicleData.lastUsage.get(player.getName());
 
             if (System.currentTimeMillis() - lastUsed >= Long.parseLong(ConfigModule.defaultConfig.get(DefaultConfig.Option.HORN_COOLDOWN).toString()) * 1000L) {
@@ -131,8 +130,8 @@ public class VehicleMovement {
             }
         }
 
-        final float xxa = (helicopterFalling) ? 0.0f : steerGetXxa(packet);
-        final float zza = (helicopterFalling) ? 0.0f : steerGetZza(packet);
+        final float xxa = (falling && vehicleType.isHelicopter()) ? 0.0f : steerGetXxa(packet);
+        final float zza = (falling && vehicleType.isHelicopter()) ? 0.0f : steerGetZza(packet);
         final Location locBelow = new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY() - 0.2, standMain.getLocation().getZ(), standMain.getLocation().getYaw(), standMain.getLocation().getPitch());
         if (xxa > 0.0) {
             if (!vehicleType.isHelicopter() || locBelow.getBlock().getType().equals(Material.AIR)) { //Do not rotate if you're in a helicopter on ground
@@ -203,6 +202,7 @@ public class VehicleMovement {
         }
     }
 
+    @ToDo(comment = "Moving on snow.")
     protected boolean slabCheck(ArmorStand mainStand, String license) { //Returns true if is moving upwards (in any way)
         final Location loc = getLocationOfBlockAhead(mainStand);
         final String locY = String.valueOf(mainStand.getLocation().getY());
@@ -458,29 +458,40 @@ public class VehicleMovement {
         });
     }
 
+    @ToDo(comment = "Moving forwards when landing with no fuel - for more realistic movement.")
     protected void updateStand(ArmorStand mainStand, String license, boolean space) {
         final Location loc = mainStand.getLocation();
         final Location locBlockAhead = getLocationOfBlockAhead(mainStand);
         final Location locBlockAheadAndBelow = new Location(locBlockAhead.getWorld(), locBlockAhead.getX(), locBlockAhead.getY() - 1, locBlockAhead.getZ(), locBlockAhead.getPitch(), locBlockAhead.getYaw());
-        final Location location = new Location(loc.getWorld(), loc.getX(), loc.getY() - 0.2, loc.getZ(), loc.getYaw(), loc.getPitch());
+        final Location locBelow = new Location(loc.getWorld(), loc.getX(), loc.getY() - 0.2, loc.getZ(), loc.getYaw(), loc.getPitch());
 
         if (VehicleData.type.get(license) == null) return;
         final VehicleType vehicleType = VehicleType.valueOf(VehicleData.type.get(license));
         if (vehicleType == null) return;
-        final Material block = location.getBlock().getType();
+        final Material block = locBelow.getBlock().getType();
         final String blockName = block.toString();
 
         if (vehicleType.canFly()) {
-            if (vehicleType.isHelicopter() && !block.equals(Material.AIR)) VehicleData.speed.put(license, 0.0);
+
+            if ((vehicleType.isHelicopter() && !isPassable(locBelow.getBlock()))
+                    || (vehicleType.isAirplane() && VehicleData.fuel.get(license) < 1 && !block.equals(Material.AIR))
+            ) VehicleData.speed.put(license, 0.0);
 
             if (space) {
-                if (vehicleType.isAirplane() && VehicleData.speed.get(license) < 0.4) return;
-                if (loc.getY() > Main.instance.getConfig().getInt("helicopterMaxHeight")) return;
+                final double takeOffSpeed = ((double) ConfigModule.defaultConfig.get(DefaultConfig.Option.TAKE_OFF_SPEED) > 0) ? (double) ConfigModule.defaultConfig.get(DefaultConfig.Option.TAKE_OFF_SPEED) : 0.4;
+                if (vehicleType.isAirplane() && VehicleData.speed.get(license) < takeOffSpeed) {
+                    double y = (block.equals(Material.AIR)) ? -0.2 : 0;
+                    mainStand.setVelocity(new Vector(loc.getDirection().multiply(VehicleData.speed.get(license)).getX(), y, loc.getDirection().multiply(VehicleData.speed.get(license)).getZ()));
+                    return;
+                }
+
+                if (loc.getY() > (int) ConfigModule.defaultConfig.get(DefaultConfig.Option.MAX_FLYING_HEIGHT)) return;
 
                 putFuelUsage(license);
                 mainStand.setVelocity(new Vector(loc.getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.2, loc.getDirection().multiply(VehicleData.speed.get(license)).getZ()));
                 return;
             }
+
             mainStand.setVelocity(new Vector(loc.getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.2, loc.getDirection().multiply(VehicleData.speed.get(license)).getZ()));
             return;
         }
@@ -500,7 +511,7 @@ public class VehicleMovement {
         }
 
         if (isPassable(locBlockAhead.getBlock()) && isPassable(locBlockAheadAndBelow.getBlock())){
-            if (isPassable(location.getBlock())){
+            if (isPassable(locBelow.getBlock())){
                 mainStand.setVelocity(new Vector(loc.getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.8, loc.getDirection().multiply(VehicleData.speed.get(license)).getZ()));
                 return;
             }
@@ -518,7 +529,8 @@ public class VehicleMovement {
         double fuelMultiplier = Double.parseDouble(ConfigModule.defaultConfig.get(DefaultConfig.Option.FUEL_MULTIPLIER).toString());
         if (fuelMultiplier < 0.1 || fuelMultiplier > 10) fuelMultiplier = 1; //Must be between 0.1 and 10. Default: 1
         final double newFuel = VehicleData.fuel.get(license) - (fuelMultiplier * VehicleData.fuelUsage.get(license));
-        VehicleData.fuel.put(license, newFuel);
+        if (newFuel < 0) VehicleData.fuel.put(license, 0.0);
+        else VehicleData.fuel.put(license, newFuel);
     }
 
     protected boolean isPassable(Block block){

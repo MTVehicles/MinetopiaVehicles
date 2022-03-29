@@ -128,7 +128,7 @@ public class TextUtils {
                     List<Map<String, Double>> wiekens = (List<Map<String, Double>>) vehicle.getVehicleData().get("wiekens");
                     VehicleType vehicleType = ConfigModule.vehicleDataConfig.getType(licensePlate);
                     if (vehicleType.isHelicopter()) {
-                        VehicleData.maxheight.put(licensePlate, (int) ConfigModule.defaultConfig.get(DefaultConfig.Option.HELICOPTER_MAX_HEIGHT));
+                        VehicleData.maxheight.put(licensePlate, (int) ConfigModule.defaultConfig.get(DefaultConfig.Option.MAX_FLYING_HEIGHT));
                         for (int i = 1; i <= wiekens.size(); i++) {
                             Map<?, ?> seat = wiekens.get(i - 1);
                             if (i == 1) {
