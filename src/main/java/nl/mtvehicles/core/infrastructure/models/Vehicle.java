@@ -300,11 +300,11 @@ public class Vehicle {
     }
 
     public boolean canRide(Player player) {
-        return ConfigModule.vehicleDataConfig.getConfig().getStringList("vehicle." + this.licensePlate + ".riders").contains(player.getUniqueId().toString());
+        return ConfigModule.vehicleDataConfig.getRiders(this.licensePlate).contains(player.getUniqueId().toString());
     }
 
     public boolean canSit(Player player) {
-        return ConfigModule.vehicleDataConfig.getConfig().getStringList("vehicle." + this.licensePlate + ".members").contains(player.getUniqueId().toString());
+        return ConfigModule.vehicleDataConfig.getMembers(this.licensePlate).contains(player.getUniqueId().toString());
     }
 
     public VehicleType getVehicleType() {

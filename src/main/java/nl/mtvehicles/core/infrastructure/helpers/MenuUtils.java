@@ -120,7 +120,6 @@ public class MenuUtils {
         DrawOptions(p, inv);
     }
 
-    @ToDo(comment = "To be translated.")
     public static void getvehicleCMD(Player p, int id, int slot) {
         List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getVehicles();
         List<Map<?, ?>> skins = (List<Map<?, ?>>) vehicles.get(slot).get("cars");

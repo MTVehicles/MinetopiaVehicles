@@ -27,7 +27,7 @@ public final class VehicleUtils {
     }
 
     public static ItemStack getItemByUUID(Player p, String uuid) {
-        List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getConfig().getMapList("voertuigen");
+        List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getVehicles();
         List<Map<?, ?>> matchedVehicles = new ArrayList<>();
         for (Map<?, ?> configVehicle : vehicles) {
             List<Map<?, ?>> skins = (List<Map<?, ?>>) configVehicle.get("cars");
@@ -84,7 +84,7 @@ public final class VehicleUtils {
     }
 
     public static boolean getHornByDamage(int damage){
-        List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getConfig().getMapList("voertuigen");
+        List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getVehicles();
         for (Map<?, ?> configVehicle : vehicles) {
             List<Map<?, ?>> skins = (List<Map<?, ?>>) configVehicle.get("cars");
             for (Map<?, ?> skin : skins) {
@@ -99,7 +99,7 @@ public final class VehicleUtils {
     }
 
     public static double getMaxHealthByDamage(int damage){
-        List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getConfig().getMapList("voertuigen");
+        List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getVehicles();
         for (Map<?, ?> configVehicle : vehicles) {
             List<Map<?, ?>> skins = (List<Map<?, ?>>) configVehicle.get("cars");
             for (Map<?, ?> skin : skins) {
@@ -114,7 +114,7 @@ public final class VehicleUtils {
     }
 
     public static ItemStack getCarItem(String carUuid) {
-        List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getConfig().getMapList("voertuigen");
+        List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getVehicles();
         List<Map<?, ?>> matchedVehicles = new ArrayList<>();
         for (Map<?, ?> configVehicle : vehicles) {
             List<Map<?, ?>> skins = (List<Map<?, ?>>) configVehicle.get("cars");
@@ -146,7 +146,7 @@ public final class VehicleUtils {
 
         Map<?, ?> vehicleData = ConfigModule.vehicleDataConfig.getConfig()
                 .getConfigurationSection(String.format("vehicle.%s", licensePlate)).getValues(true);
-        List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getConfig().getMapList("voertuigen");
+        List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getVehicles();
         List<Map<?, ?>> matchedVehicles = new ArrayList<>();
         for (Map<?, ?> configVehicle : vehicles) {
             List<Map<?, ?>> skins = (List<Map<?, ?>>) configVehicle.get("cars");
@@ -174,7 +174,7 @@ public final class VehicleUtils {
 
         Map<?, ?> vehicleData = ConfigModule.vehicleDataConfig.getConfig()
                 .getConfigurationSection(String.format("vehicle.%s", licensePlate)).getValues(true);
-        List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getConfig().getMapList("voertuigen");
+        List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getVehicles();
         List<Map<?, ?>> matchedVehicles = new ArrayList<>();
         for (Map<?, ?> configVehicle : vehicles) {
             List<Map<?, ?>> skins = (List<Map<?, ?>>) configVehicle.get("cars");
@@ -228,11 +228,11 @@ public final class VehicleUtils {
     }
 
     public static boolean canRide(Player player, String licensePlate) {
-        return ConfigModule.vehicleDataConfig.getConfig().getStringList("vehicle." + licensePlate + ".riders").contains(player.getUniqueId().toString());
+        return ConfigModule.vehicleDataConfig.getRiders(licensePlate).contains(player.getUniqueId().toString());
     }
 
     public static boolean canSit(Player player, String licensePlate) {
-        return ConfigModule.vehicleDataConfig.getConfig().getStringList("vehicle." + licensePlate + ".members").contains(player.getUniqueId().toString());
+        return ConfigModule.vehicleDataConfig.getMembers(licensePlate).contains(player.getUniqueId().toString());
     }
 
     public static UUID getOwnerUUID(String licensePlate) {

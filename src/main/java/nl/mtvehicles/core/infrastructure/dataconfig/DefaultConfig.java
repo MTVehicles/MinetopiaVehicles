@@ -231,7 +231,8 @@ public class DefaultConfig extends Config {
          * Can be found as 'spelerSetOwner' in config.yml
          */
         PUT_ONESELF_AS_OWNER("spelerSetOwner", false),
-        HELICOPTER_MAX_HEIGHT("helicopterMaxHeight", 150),
+        MAX_FLYING_HEIGHT("maxFlyingHeight", 150),
+        TAKE_OFF_SPEED("takeOffSpeed", 0.4),
         CAR_PICKUP("carPickup", false),
         /**
          * Can be found as 'benzine' in config.yml
