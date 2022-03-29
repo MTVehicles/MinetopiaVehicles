@@ -1105,7 +1105,7 @@ voertuigen:
     maxSpeed: 1.1
     brakingSpeed: 0.04
     aftrekkenSpeed: 0.01
-    rotateSpeed: 10
+    rotateSpeed: 4
     maxSpeedBackwards: 0.0
     seats:
       - x: -0.0

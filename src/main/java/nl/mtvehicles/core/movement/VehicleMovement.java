@@ -28,7 +28,6 @@ import java.util.Objects;
 import static nl.mtvehicles.core.infrastructure.modules.VersionModule.getServerVersion;
 import static nl.mtvehicles.core.movement.PacketHandler.isObjectPacket;
 
-@ToDo(comment = "Work on airplanes is in progress...")
 public class VehicleMovement {
 
     public void vehicleMovement(Player player, Object packet) {
@@ -203,6 +202,7 @@ public class VehicleMovement {
         }
     }
 
+    @ToDo(comment = "Moving on snow.")
     protected boolean slabCheck(ArmorStand mainStand, String license) { //Returns true if is moving upwards (in any way)
         final Location loc = getLocationOfBlockAhead(mainStand);
         final String locY = String.valueOf(mainStand.getLocation().getY());
@@ -458,6 +458,7 @@ public class VehicleMovement {
         });
     }
 
+    @ToDo(comment = "Moving forwards when landing with no fuel - for more realistic movement.")
     protected void updateStand(ArmorStand mainStand, String license, boolean space) {
         final Location loc = mainStand.getLocation();
         final Location locBlockAhead = getLocationOfBlockAhead(mainStand);
@@ -471,17 +472,26 @@ public class VehicleMovement {
         final String blockName = block.toString();
 
         if (vehicleType.canFly()) {
-            if (vehicleType.isHelicopter() && !block.equals(Material.AIR)) VehicleData.speed.put(license, 0.0);
+
+            if ((vehicleType.isHelicopter() && !isPassable(locBelow.getBlock()))
+                    || (vehicleType.isAirplane() && VehicleData.fuel.get(license) < 1 && !block.equals(Material.AIR))
+            ) VehicleData.speed.put(license, 0.0);
 
             if (space) {
                 final double takeOffSpeed = ((double) ConfigModule.defaultConfig.get(DefaultConfig.Option.TAKE_OFF_SPEED) > 0) ? (double) ConfigModule.defaultConfig.get(DefaultConfig.Option.TAKE_OFF_SPEED) : 0.4;
-                if (vehicleType.isAirplane() && !block.equals(Material.AIR) && VehicleData.speed.get(license) < takeOffSpeed) return;
+                if (vehicleType.isAirplane() && VehicleData.speed.get(license) < takeOffSpeed) {
+                    double y = (block.equals(Material.AIR)) ? -0.2 : 0;
+                    mainStand.setVelocity(new Vector(loc.getDirection().multiply(VehicleData.speed.get(license)).getX(), y, loc.getDirection().multiply(VehicleData.speed.get(license)).getZ()));
+                    return;
+                }
+
                 if (loc.getY() > (int) ConfigModule.defaultConfig.get(DefaultConfig.Option.MAX_FLYING_HEIGHT)) return;
 
                 putFuelUsage(license);
                 mainStand.setVelocity(new Vector(loc.getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.2, loc.getDirection().multiply(VehicleData.speed.get(license)).getZ()));
                 return;
             }
+
             mainStand.setVelocity(new Vector(loc.getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.2, loc.getDirection().multiply(VehicleData.speed.get(license)).getZ()));
             return;
         }
@@ -519,7 +529,8 @@ public class VehicleMovement {
         double fuelMultiplier = Double.parseDouble(ConfigModule.defaultConfig.get(DefaultConfig.Option.FUEL_MULTIPLIER).toString());
         if (fuelMultiplier < 0.1 || fuelMultiplier > 10) fuelMultiplier = 1; //Must be between 0.1 and 10. Default: 1
         final double newFuel = VehicleData.fuel.get(license) - (fuelMultiplier * VehicleData.fuelUsage.get(license));
-        VehicleData.fuel.put(license, newFuel);
+        if (newFuel < 0) VehicleData.fuel.put(license, 0.0);
+        else VehicleData.fuel.put(license, newFuel);
     }
 
     protected boolean isPassable(Block block){
