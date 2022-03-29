@@ -1093,3 +1093,65 @@ voertuigen:
         SkinItem: DIAMOND_HOE
         itemDamage: 1215
         uuid: 6JXVBY
+  - name: "Plane"
+    vehicleType: AIRPLANE
+    skinItem: DIAMOND_HOE
+    itemDamage: 1264
+    benzineEnabled: true
+    kofferbakEnabled: true
+    hornEnabled: false
+    maxHealth: 400.0
+    acceleratieSpeed: 0.01
+    maxSpeed: 1.1
+    brakingSpeed: 0.04
+    aftrekkenSpeed: 0.01
+    rotateSpeed: 10
+    maxSpeedBackwards: 0.0
+    seats:
+      - x: -0.0
+        y: -0.7
+        z: 0.0
+      - x: -0.8
+        y: -0.7
+        z: 0.0
+    cars:
+      - name: Plane Gray
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1264
+        uuid: JLP5A1
+      - name: Plane Blue
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1265
+        uuid: JLP5A2
+      - name: Plane Dragon
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1266
+        uuid: JLP5A3
+      - name: Plane Fighter
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1267
+        uuid: JLP5A4
+      - name: Plane Fighter Oranje
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1268
+        uuid: JLP5A5
+      - name: Plane Gold
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1269
+        uuid: JLP5A6
+      - name: Plane Green
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1270
+        uuid: JLP5A7
+      - name: Plane Octopus
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1271
+        uuid: JLP5A8
+      - name: Plane Orange
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1272
+        uuid: JLP5A9
+      - name: Plane Purple
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1273
+        uuid: JLP5A0
