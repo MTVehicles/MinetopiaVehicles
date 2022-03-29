@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
@@ -20,7 +21,7 @@ public class VehicleGiveVoucher extends MTVehicleSubCommand {
         if (!checkPermission("mtvehicles.givevoucher")) return true;
 
         if (args.length != 3) {
-            sendMessage(ConfigModule.messagesConfig.getMessage("useGiveVoucher"));
+            sendMessage(ConfigModule.messagesConfig.getMessage(Message.USE_GIVE_VOUCHER));
             return true;
         }
 
@@ -29,14 +30,14 @@ public class VehicleGiveVoucher extends MTVehicleSubCommand {
         String carUuid = args[2];
 
         if (of == null || !of.hasPlayedBefore()) {
-            sendMessage(ConfigModule.messagesConfig.getMessage("playerNotFound"));
+            sendMessage(ConfigModule.messagesConfig.getMessage(Message.PLAYER_NOT_FOUND));
             return true;
         }
 
         ItemStack car = VehicleUtils.getItemByUUID(of, carUuid);
 
         if (car == null){
-            sender.sendMessage(ConfigModule.messagesConfig.getMessage("giveCarNotFound"));
+            sender.sendMessage(ConfigModule.messagesConfig.getMessage(Message.GIVE_CAR_NOT_FOUND));
             return true;
         }
 

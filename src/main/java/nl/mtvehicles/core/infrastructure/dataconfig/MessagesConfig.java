@@ -3,14 +3,13 @@ package nl.mtvehicles.core.infrastructure.dataconfig;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.enums.ConfigType;
 import nl.mtvehicles.core.infrastructure.enums.Language;
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.Config;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import java.io.File;
-import java.util.List;
 import java.util.Locale;
 
 public class MessagesConfig extends Config {
@@ -27,28 +26,34 @@ public class MessagesConfig extends Config {
         }
     }
 
+    @Deprecated
     public String getMessage(String key) {
         String msg = "";
         try {
-            msg = TextUtils.colorize((String) this.getConfig().get(key));
+            msg = TextUtils.colorize((String) this.getConfiguration().get(key));
         } catch (Exception e){
             Main.instance.getLogger().severe("An error occurred while retrieving a custom message from the messages.yml!");
         }
         return msg;
     }
 
-    public void sendMessage(CommandSender sender, String key) {
-        Object object = this.getConfig().get(key);
-        if (object instanceof List) {
-            for (String s : this.getConfig().getStringList(key)) {
-                sender.sendMessage(TextUtils.colorize(s));
-            }
+    public String getMessage(Message message){
+        String msg = "";
+        try {
+            msg = TextUtils.colorize(this.getConfiguration().getString(message.getKey()));
+        } catch (Exception e){
+            Main.instance.getLogger().severe("An error occurred while retrieving a custom message from the messages.yml!");
         }
-        sender.sendMessage(TextUtils.colorize(String.valueOf(object)));
+        return msg;
     }
 
-    public void sendMessage(Player player, String key) {
-        sendMessage((CommandSender) player, key);
+    @Deprecated
+    public void sendMessage(CommandSender sender, String key) {
+        sender.sendMessage(getMessage(key));
+    }
+
+    public void sendMessage(CommandSender sender, Message message) {
+        sender.sendMessage(getMessage(message));
     }
 
     public boolean setLanguageFile(String languageCode){

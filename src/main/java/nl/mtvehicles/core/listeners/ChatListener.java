@@ -1,6 +1,8 @@
 package nl.mtvehicles.core.listeners;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
+import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
 import nl.mtvehicles.core.infrastructure.helpers.MenuUtils;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
@@ -24,33 +26,33 @@ public class ChatListener implements Listener {
             e.setCancelled(true);
 
             if (!e.getMessage().toLowerCase().contains("annule")) {
-                String ken = getLicensePlate(p);
+                String licensePlate = getLicensePlate(p);
 
-                if (!(ConfigModule.vehicleDataConfig.getConfig().get("vehicle." + e.getMessage() + ".skinItem") == null)) {
-                    ConfigModule.messagesConfig.sendMessage(p, "actionFailedDupLicense");
+                if (!(ConfigModule.vehicleDataConfig.get(e.getMessage(), VehicleDataConfig.Option.SKIN_ITEM) == null)) {
+                    ConfigModule.messagesConfig.sendMessage(p, Message.ACTION_FAILED_DUP_LICENSE);
                     MenuUtils.menuEdit(p);
                     ItemUtils.edit.put(p.getUniqueId() + ".kenteken", false);
                     return;
                 }
-                for (String s : ConfigModule.vehicleDataConfig.getConfig().getConfigurationSection("vehicle." + ken).getKeys(false)) {
-                    ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + e.getMessage() + "." + s, ConfigModule.vehicleDataConfig.getConfig().get("vehicle." + ken + "." + s));
+                for (String s : ConfigModule.vehicleDataConfig.getConfig().getConfigurationSection("vehicle." + licensePlate).getKeys(false)) {
+                    ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + e.getMessage() + "." + s, ConfigModule.vehicleDataConfig.getConfig().get("vehicle." + licensePlate + "." + s));
                 }
 
                 ConfigModule.vehicleDataConfig.save();
-                p.getInventory().setItemInMainHand(ItemUtils.carItem2(ConfigModule.vehicleDataConfig.getConfig().getInt("vehicle." + ken + ".skinDamage"), ConfigModule.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".name"), ConfigModule.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".skinItem"), e.getMessage()));
+                p.getInventory().setItemInMainHand(ItemUtils.carItem2(ConfigModule.vehicleDataConfig.getDamage(licensePlate), ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.NAME).toString(), ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.SKIN_ITEM).toString(), e.getMessage()));
 
                 if (e.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.menuEdit(p));
 
-                ConfigModule.messagesConfig.sendMessage(p, "actionSuccessful");
+                ConfigModule.messagesConfig.sendMessage(p, Message.ACTION_SUCCESSFUL);
                 ItemUtils.edit.put(p.getUniqueId() + ".kenteken", false);
-                ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + ken, null);
+                ConfigModule.vehicleDataConfig.delete(licensePlate);
                 ConfigModule.vehicleDataConfig.save();
                 return;
             }
 
             if (e.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.menuEdit(p));
 
-            ConfigModule.messagesConfig.sendMessage(p, "actionCanceled");
+            ConfigModule.messagesConfig.sendMessage(p, Message.ACTION_CANCELLED);
             ItemUtils.edit.put(p.getUniqueId() + ".kenteken", false);
         }
     }
@@ -64,11 +66,11 @@ public class ChatListener implements Listener {
             e.setCancelled(true);
 
             if (!e.getMessage().toLowerCase().contains("annule")) {
-                String ken = getLicensePlate(p);
-                ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + ken + ".name", e.getMessage());
+                String licensePlate = getLicensePlate(p);
+                ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.NAME, e.getMessage());
                 ConfigModule.vehicleDataConfig.save();
-                p.getInventory().setItemInMainHand(ItemUtils.carItem2(ConfigModule.vehicleDataConfig.getConfig().getInt("vehicle." + ken + ".skinDamage"), e.getMessage(), ConfigModule.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".skinItem"), ken));
-                ConfigModule.messagesConfig.sendMessage(p, "actionSuccessful");
+                p.getInventory().setItemInMainHand(ItemUtils.carItem2(ConfigModule.vehicleDataConfig.getDamage(licensePlate), e.getMessage(), ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.SKIN_ITEM).toString(), licensePlate));
+                ConfigModule.messagesConfig.sendMessage(p, Message.ACTION_SUCCESSFUL);
                 ItemUtils.edit.put(p.getUniqueId() + ".naam", false);
 
                 if (e.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.menuEdit(p));
@@ -76,7 +78,7 @@ public class ChatListener implements Listener {
             }
 
             MenuUtils.menuEdit(p);
-            ConfigModule.messagesConfig.sendMessage(p, "actionCanceled");
+            ConfigModule.messagesConfig.sendMessage(p, Message.ACTION_CANCELLED);
             ItemUtils.edit.put(p.getUniqueId() + ".naam", false);
 
             if (e.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.menuEdit(p));
@@ -91,7 +93,7 @@ public class ChatListener implements Listener {
         if (ItemUtils.edit.get(p.getUniqueId() + ".benzine")) {
             e.setCancelled(true);
 
-            if (!isI(e.getMessage(), p)) {
+            if (!isInt(e.getMessage(), p)) {
                 MenuUtils.benzineEdit(p);
                 ItemUtils.edit.put(p.getUniqueId() + ".benzine", false);
                 return;
@@ -105,10 +107,10 @@ public class ChatListener implements Listener {
             }
 
             if (!e.getMessage().toLowerCase().contains("annule")) {
-                String ken = getLicensePlate(p);
-                ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + ken + ".benzine", Double.valueOf(e.getMessage()));
+                String licensePlate = getLicensePlate(p);
+                ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.FUEL, Double.valueOf(e.getMessage()));
                 ConfigModule.vehicleDataConfig.save();
-                ConfigModule.messagesConfig.sendMessage(p, "actionSuccessful");
+                ConfigModule.messagesConfig.sendMessage(p, Message.ACTION_SUCCESSFUL);
                 ItemUtils.edit.put(p.getUniqueId() + ".benzine", false);
 
                 if (e.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.benzineEdit(p));
@@ -116,7 +118,7 @@ public class ChatListener implements Listener {
             }
 
             MenuUtils.benzineEdit(p);
-            ConfigModule.messagesConfig.sendMessage(p, "actionCanceled");
+            ConfigModule.messagesConfig.sendMessage(p, Message.ACTION_CANCELLED);
             ItemUtils.edit.put(p.getUniqueId() + ".benzine", false);
 
             if (e.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.menuEdit(p));
@@ -131,17 +133,17 @@ public class ChatListener implements Listener {
         if (ItemUtils.edit.get(p.getUniqueId() + ".benzineverbruik")) {
             e.setCancelled(true);
 
-            if (!isD(e.getMessage(), p)) {
+            if (!isDouble(e.getMessage(), p)) {
                 MenuUtils.benzineEdit(p);
                 ItemUtils.edit.put(p.getUniqueId() + ".benzineverbruik", false);
                 return;
             }
 
             if (!e.getMessage().toLowerCase().contains("annule")) {
-                String ken = getLicensePlate(p);
-                ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + ken + ".benzineVerbruik", Double.valueOf(e.getMessage()));
+                String licensePlate = getLicensePlate(p);
+                ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.FUEL_USAGE, Double.valueOf(e.getMessage()));
                 ConfigModule.vehicleDataConfig.save();
-                ConfigModule.messagesConfig.sendMessage(p, "actionSuccessful");
+                ConfigModule.messagesConfig.sendMessage(p, Message.ACTION_SUCCESSFUL);
                 ItemUtils.edit.put(p.getUniqueId() + ".benzineverbruik", false);
 
                 if (e.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.benzineEdit(p));
@@ -149,7 +151,7 @@ public class ChatListener implements Listener {
             }
 
             MenuUtils.benzineEdit(p);
-            ConfigModule.messagesConfig.sendMessage(p, "actionCanceled");
+            ConfigModule.messagesConfig.sendMessage(p, Message.ACTION_CANCELLED);
             ItemUtils.edit.put(p.getUniqueId() + ".benzine", false);
 
             if (e.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.menuEdit(p));
@@ -165,34 +167,34 @@ public class ChatListener implements Listener {
             e.setCancelled(true);
 
             if (e.getMessage().toLowerCase().contains("annule")) {
-                MenuUtils.kofferbakEdit(p);
-                ConfigModule.messagesConfig.sendMessage(p, "actionCanceled");
+                MenuUtils.trunkEdit(p);
+                ConfigModule.messagesConfig.sendMessage(p, Message.ACTION_CANCELLED);
                 ItemUtils.edit.put(p.getUniqueId() + ".kofferbakRows", false);
 
-                if (e.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.kofferbakEdit(p));
+                if (e.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.trunkEdit(p));
             }
 
-            if (!isI(e.getMessage(), p)) {
-                MenuUtils.kofferbakEdit(p);
+            if (!isInt(e.getMessage(), p)) {
+                MenuUtils.trunkEdit(p);
                 ItemUtils.edit.put(p.getUniqueId() + ".kofferbakRows", false);
                 return;
             }
 
             int input = Integer.parseInt(e.getMessage());
             if (input < 1 || input > 6) {
-                MenuUtils.kofferbakEdit(p);
-                ConfigModule.messagesConfig.sendMessage(p, "invalidInput");
+                MenuUtils.trunkEdit(p);
+                ConfigModule.messagesConfig.sendMessage(p, Message.INVALID_INPUT);
                 ItemUtils.edit.put(p.getUniqueId() + ".kofferbakRows", false);
                 return;
             }
 
-            String ken = getLicensePlate(p);
-            ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + ken + ".kofferbakRows", input);
+            String licensePlate = getLicensePlate(p);
+            ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.TRUNK_ROWS, input);
             ConfigModule.vehicleDataConfig.save();
-            ConfigModule.messagesConfig.sendMessage(p, "actionSuccessful");
+            ConfigModule.messagesConfig.sendMessage(p, Message.ACTION_SUCCESSFUL);
             ItemUtils.edit.put(p.getUniqueId() + ".kofferbakRows", false);
 
-            if (e.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.kofferbakEdit(p));
+            if (e.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.trunkEdit(p));
 
         }
     }
@@ -205,17 +207,17 @@ public class ChatListener implements Listener {
         if (ItemUtils.edit.get(p.getUniqueId() + ".acceleratieSpeed")) {
             e.setCancelled(true);
 
-            if (!isD(e.getMessage(), p)) {
+            if (!isDouble(e.getMessage(), p)) {
                 MenuUtils.speedEdit(p);
                 ItemUtils.edit.put(p.getUniqueId() + ".acceleratieSpeed", false);
                 return;
             }
 
             if (!e.getMessage().toLowerCase().contains("annule")) {
-                String ken = getLicensePlate(p);
-                ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + ken + ".acceleratieSpeed", Double.valueOf(e.getMessage()));
+                String licensePlate = getLicensePlate(p);
+                ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.ACCELARATION_SPEED, Double.valueOf(e.getMessage()));
                 ConfigModule.vehicleDataConfig.save();
-                ConfigModule.messagesConfig.sendMessage(p, "actionSuccessful");
+                ConfigModule.messagesConfig.sendMessage(p, Message.ACTION_SUCCESSFUL);
                 ItemUtils.edit.put(p.getUniqueId() + ".acceleratieSpeed", false);
 
                 if (e.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.speedEdit(p));
@@ -223,7 +225,7 @@ public class ChatListener implements Listener {
             }
 
             MenuUtils.benzineEdit(p);
-            ConfigModule.messagesConfig.sendMessage(p, "actionCanceled");
+            ConfigModule.messagesConfig.sendMessage(p, Message.ACTION_CANCELLED);
             ItemUtils.edit.put(p.getUniqueId() + ".acceleratieSpeed", false);
             if (e.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.speedEdit(p));
         }
@@ -237,17 +239,17 @@ public class ChatListener implements Listener {
         if (ItemUtils.edit.get(p.getUniqueId() + ".maxSpeed")) {
             e.setCancelled(true);
 
-            if (!isD(e.getMessage(), p)) {
+            if (!isDouble(e.getMessage(), p)) {
                 MenuUtils.speedEdit(p);
                 ItemUtils.edit.put(p.getUniqueId() + ".maxSpeed", false);
                 return;
             }
 
             if (!e.getMessage().toLowerCase().contains("annule")) {
-                String ken = getLicensePlate(p);
-                ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + ken + ".maxSpeed", Double.valueOf(e.getMessage()));
+                String licensePlate = getLicensePlate(p);
+                ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.MAX_SPEED, Double.valueOf(e.getMessage()));
                 ConfigModule.vehicleDataConfig.save();
-                ConfigModule.messagesConfig.sendMessage(p, "actionSuccessful");
+                ConfigModule.messagesConfig.sendMessage(p, Message.ACTION_SUCCESSFUL);
                 ItemUtils.edit.put(p.getUniqueId() + ".maxSpeed", false);
 
                 if (e.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.speedEdit(p));
@@ -255,7 +257,7 @@ public class ChatListener implements Listener {
             }
 
             MenuUtils.benzineEdit(p);
-            ConfigModule.messagesConfig.sendMessage(p, "actionCanceled");
+            ConfigModule.messagesConfig.sendMessage(p, Message.ACTION_CANCELLED);
             ItemUtils.edit.put(p.getUniqueId() + ".maxSpeed", false);
 
             if (e.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.speedEdit(p));
@@ -270,17 +272,17 @@ public class ChatListener implements Listener {
         if (ItemUtils.edit.get(p.getUniqueId() + ".brakingSpeed")) {
             e.setCancelled(true);
 
-            if (!isD(e.getMessage(), p)) {
+            if (!isDouble(e.getMessage(), p)) {
                 MenuUtils.speedEdit(p);
                 ItemUtils.edit.put(p.getUniqueId() + ".brakingSpeed", false);
                 return;
             }
 
             if (!e.getMessage().toLowerCase().contains("annule")) {
-                String ken = getLicensePlate(p);
-                ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + ken + ".brakingSpeed", Double.valueOf(e.getMessage()));
+                String licensePlate = getLicensePlate(p);
+                ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.BRAKING_SPEED, Double.valueOf(e.getMessage()));
                 ConfigModule.vehicleDataConfig.save();
-                ConfigModule.messagesConfig.sendMessage(p, "actionSuccessful");
+                ConfigModule.messagesConfig.sendMessage(p, Message.ACTION_SUCCESSFUL);
                 ItemUtils.edit.put(p.getUniqueId() + ".brakingSpeed", false);
 
                 if (e.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.speedEdit(p));
@@ -288,7 +290,7 @@ public class ChatListener implements Listener {
             }
 
             MenuUtils.benzineEdit(p);
-            ConfigModule.messagesConfig.sendMessage(p, "actionCanceled");
+            ConfigModule.messagesConfig.sendMessage(p, Message.ACTION_CANCELLED);
             ItemUtils.edit.put(p.getUniqueId() + ".brakingSpeed", false);
 
             if (e.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.speedEdit(p));
@@ -303,17 +305,17 @@ public class ChatListener implements Listener {
         if (ItemUtils.edit.get(p.getUniqueId() + ".aftrekkenSpeed")) {
             e.setCancelled(true);
 
-            if (!isD(e.getMessage(), p)) {
+            if (!isDouble(e.getMessage(), p)) {
                 MenuUtils.speedEdit(p);
                 ItemUtils.edit.put(p.getUniqueId() + ".aftrekkenSpeed", false);
                 return;
             }
 
             if (!e.getMessage().toLowerCase().contains("annule")) {
-                String ken = getLicensePlate(p);
-                ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + ken + ".aftrekkenSpeed", Double.valueOf(e.getMessage()));
+                String licensePlate = getLicensePlate(p);
+                ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.FRICTION_SPEED, Double.valueOf(e.getMessage()));
                 ConfigModule.vehicleDataConfig.save();
-                ConfigModule.messagesConfig.sendMessage(p, "actionSuccessful");
+                ConfigModule.messagesConfig.sendMessage(p, Message.ACTION_SUCCESSFUL);
                 ItemUtils.edit.put(p.getUniqueId() + ".aftrekkenSpeed", false);
 
                 if (e.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.speedEdit(p));
@@ -321,7 +323,7 @@ public class ChatListener implements Listener {
             }
 
             MenuUtils.benzineEdit(p);
-            ConfigModule.messagesConfig.sendMessage(p, "actionCanceled");
+            ConfigModule.messagesConfig.sendMessage(p, Message.ACTION_CANCELLED);
             ItemUtils.edit.put(p.getUniqueId() + ".aftrekkenSpeed", false);
 
             if (e.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.speedEdit(p));
@@ -336,17 +338,17 @@ public class ChatListener implements Listener {
         if (ItemUtils.edit.get(p.getUniqueId() + ".maxSpeedBackwards")) {
             e.setCancelled(true);
 
-            if (!isD(e.getMessage(), p)) {
+            if (!isDouble(e.getMessage(), p)) {
                 MenuUtils.speedEdit(p);
                 ItemUtils.edit.put(p.getUniqueId() + ".maxSpeedBackwards", false);
                 return;
             }
 
             if (!e.getMessage().toLowerCase().contains("annule")) {
-                String ken = getLicensePlate(p);
-                ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + ken + ".maxSpeedBackwards", Double.valueOf(e.getMessage()));
+                String licensePlate = getLicensePlate(p);
+                ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.MAX_SPEED_BACKWARDS, Double.valueOf(e.getMessage()));
                 ConfigModule.vehicleDataConfig.save();
-                ConfigModule.messagesConfig.sendMessage(p, "actionSuccessful");
+                ConfigModule.messagesConfig.sendMessage(p, Message.ACTION_SUCCESSFUL);
                 ItemUtils.edit.put(p.getUniqueId() + ".maxSpeedBackwards", false);
 
                 if (e.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.speedEdit(p));
@@ -354,7 +356,7 @@ public class ChatListener implements Listener {
             }
 
             MenuUtils.benzineEdit(p);
-            ConfigModule.messagesConfig.sendMessage(p, "actionCanceled");
+            ConfigModule.messagesConfig.sendMessage(p, Message.ACTION_CANCELLED);
             ItemUtils.edit.put(p.getUniqueId() + ".maxSpeedBackwards", false);
 
             if (e.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.speedEdit(p));
@@ -369,17 +371,17 @@ public class ChatListener implements Listener {
         if (ItemUtils.edit.get(p.getUniqueId() + ".rotateSpeed")) {
             e.setCancelled(true);
 
-            if (!isI(e.getMessage(), p)) {
+            if (!isInt(e.getMessage(), p)) {
                 MenuUtils.speedEdit(p);
                 ItemUtils.edit.put(p.getUniqueId() + ".rotateSpeed", false);
                 return;
             }
 
             if (!e.getMessage().toLowerCase().contains("annule")) {
-                String ken = getLicensePlate(p);
-                ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + ken + ".rotateSpeed", Integer.parseInt(e.getMessage()));
+                String licensePlate = getLicensePlate(p);
+                ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.ROTATE_SPEED, Integer.parseInt(e.getMessage()));
                 ConfigModule.vehicleDataConfig.save();
-                ConfigModule.messagesConfig.sendMessage(p, "actionSuccessful");
+                ConfigModule.messagesConfig.sendMessage(p, Message.ACTION_SUCCESSFUL);
                 ItemUtils.edit.put(p.getUniqueId() + ".rotateSpeed", false);
 
                 if (e.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.speedEdit(p));
@@ -387,14 +389,14 @@ public class ChatListener implements Listener {
             }
 
             MenuUtils.speedEdit(p);
-            ConfigModule.messagesConfig.sendMessage(p, "actionCanceled");
+            ConfigModule.messagesConfig.sendMessage(p, Message.ACTION_CANCELLED);
             ItemUtils.edit.put(p.getUniqueId() + ".rotateSpeed", false);
 
             if (e.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.speedEdit(p));
         }
     }
 
-    public boolean isI(String str, Player p) {
+    public boolean isInt(String str, Player p) {
         try {
             Integer.parseInt(str);
         } catch (Throwable e) {
@@ -404,7 +406,7 @@ public class ChatListener implements Listener {
         return true;
     }
 
-    public boolean isD(String str, Player p) {
+    public boolean isDouble(String str, Player p) {
         try {
             Double.valueOf(str);
         } catch (Throwable e) {

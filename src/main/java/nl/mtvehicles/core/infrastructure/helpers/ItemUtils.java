@@ -1,6 +1,9 @@
 package nl.mtvehicles.core.infrastructure.helpers;
 
+import nl.mtvehicles.core.infrastructure.annotations.ToDo;
 import nl.mtvehicles.core.infrastructure.dataconfig.MessagesConfig;
+import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.apache.commons.lang.RandomStringUtils;
@@ -19,6 +22,7 @@ import java.util.UUID;
 
 import static nl.mtvehicles.core.infrastructure.modules.VersionModule.getServerVersion;
 
+@ToDo(comment = "Honestly, this code is awful. I hardly understand most of it. Also... why parsing to Strings and then parsing back to materials again?")
 public class ItemUtils {
     public static HashMap<String, Boolean> edit = new HashMap<>();
 
@@ -274,15 +278,16 @@ public class ItemUtils {
         }
     }
 
-    public static ItemStack mItemRiders(String material, int amount, short durability, String text, String ken) {
+    public static ItemStack mItemRiders(String material, int amount, short durability, String text, String licensePlate) {
         try {
             ItemStack is = new ItemStack(Material.getMaterial(material.toUpperCase()), amount);
             ItemMeta im = is.getItemMeta();
             List<String> itemlore = new ArrayList<>();
-            if (ConfigModule.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".riders").size() == 0) {
-                itemlore.add(TextUtils.colorize((("&7Riders: &eGeen"))));
+            List<String> riders = (List<String>) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.RIDERS);
+            if (riders.size() == 0) {
+                itemlore.add(TextUtils.colorize((("&7Riders: &e---"))));
             } else {
-                for (String subj : ConfigModule.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".riders")) {
+                for (String subj : riders) {
                     itemlore.add(TextUtils.colorize(("&7- &e" + Bukkit.getOfflinePlayer(UUID.fromString(subj)).getName())));
                 }
             }
@@ -297,10 +302,11 @@ public class ItemUtils {
                 ItemStack is = new ItemStack(Material.matchMaterial(material, true), amount);
                 ItemMeta im = is.getItemMeta();
                 List<String> itemlore = new ArrayList<>();
-                if (ConfigModule.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".riders").size() == 0) {
+                List<String> riders = (List<String>) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.RIDERS);
+                if (riders.size() == 0) {
                     itemlore.add(TextUtils.colorize((("&7Riders: &eGeen"))));
                 } else {
-                    for (String subj : ConfigModule.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".riders")) {
+                    for (String subj : riders) {
                         itemlore.add(TextUtils.colorize(("&7- &e" + Bukkit.getOfflinePlayer(UUID.fromString(subj)).getName())));
                     }
                 }
@@ -317,15 +323,16 @@ public class ItemUtils {
         }
     }
 
-    public static ItemStack mItemMembers(String material, int amount, short durability, String text, String ken) {
+    public static ItemStack mItemMembers(String material, int amount, short durability, String text, String licensePlate) {
         try {
             ItemStack is = new ItemStack(Material.getMaterial(material.toUpperCase()), amount);
             ItemMeta im = is.getItemMeta();
             List<String> itemlore = new ArrayList<>();
-            if (ConfigModule.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".members").size() == 0) {
+            List<String> members = (List<String>) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.MEMBERS);
+            if (members.size() == 0) {
                 itemlore.add(TextUtils.colorize((("&7Members: &eGeen"))));
             } else {
-                for (String subj : ConfigModule.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".members")) {
+                for (String subj : members) {
                     itemlore.add(TextUtils.colorize(("&7- &e" + Bukkit.getOfflinePlayer(UUID.fromString(subj)).getName())));
                 }
             }
@@ -339,11 +346,12 @@ public class ItemUtils {
             try {
                 ItemStack is = new ItemStack(Material.matchMaterial(material, true), amount);
                 ItemMeta im = is.getItemMeta();
+                List<String> members = (List<String>) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.MEMBERS);
                 List<String> itemlore = new ArrayList<>();
-                if (ConfigModule.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".members").size() == 0) {
+                if (members.size() == 0) {
                     itemlore.add(TextUtils.colorize((("&7Members: &eGeen"))));
                 } else {
-                    for (String subj : ConfigModule.vehicleDataConfig.getConfig().getStringList("vehicle." + ken + ".members")) {
+                    for (String subj : members) {
                         itemlore.add(TextUtils.colorize(("&7- &e" + Bukkit.getOfflinePlayer(UUID.fromString(subj)).getName())));
                     }
                 }
@@ -473,9 +481,9 @@ public class ItemUtils {
         MessagesConfig msg = ConfigModule.messagesConfig;
         List<String> goldlore = new ArrayList<>();
         goldlore.add(TextUtils.colorize("&8&m                                    "));
-        goldlore.add(TextUtils.colorize(msg.getMessage("voucherDescription")));
+        goldlore.add(TextUtils.colorize(msg.getMessage(Message.VOUCHER_DESCRIPTION)));
         goldlore.add(TextUtils.colorize("&2&l"));
-        goldlore.add(TextUtils.colorize(msg.getMessage("voucherValidity")));
+        goldlore.add(TextUtils.colorize(msg.getMessage(Message.VOUCHER_VALIDITY)));
         goldlore.add(TextUtils.colorize("&2> Permanent"));
         goldlore.add(TextUtils.colorize("&8&m                                    "));
         im.setLore(goldlore);

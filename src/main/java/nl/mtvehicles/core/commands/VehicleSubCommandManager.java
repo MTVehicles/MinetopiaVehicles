@@ -1,6 +1,7 @@
 package nl.mtvehicles.core.commands;
 
 import nl.mtvehicles.core.commands.vehiclesubs.*;
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleCommand;
 import nl.mtvehicles.core.infrastructure.modules.CommandModule;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
@@ -36,6 +37,9 @@ public class VehicleSubCommandManager extends MTVehicleCommand {
         CommandModule.subcommands.put("version", new VehicleVersion());
         CommandModule.subcommands.put("repair", new VehicleRepair());
         CommandModule.subcommands.put("refill", new VehicleRefill());
+        CommandModule.subcommands.put("refuel", new VehicleRefill());
+        CommandModule.subcommands.put("trunk", new VehicleTrunk());
+        CommandModule.subcommands.put("baggage", new VehicleTrunk());
     }
 
     @Override
@@ -47,7 +51,7 @@ public class VehicleSubCommandManager extends MTVehicleCommand {
 
         final String subcommand = args[0].toLowerCase();
         if (CommandModule.subcommands.get(subcommand) == null) {
-            sendMessage(ConfigModule.messagesConfig.getMessage("cmdNotExists"));
+            sendMessage(ConfigModule.messagesConfig.getMessage(Message.COMMAND_DOES_NOT_EXIST));
             return true;
         }
 

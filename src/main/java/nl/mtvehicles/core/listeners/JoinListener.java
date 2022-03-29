@@ -1,6 +1,7 @@
 package nl.mtvehicles.core.listeners;
 
 import nl.mtvehicles.core.Main;
+import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.infrastructure.modules.VersionModule;
@@ -31,7 +32,7 @@ public class JoinListener implements Listener {
             }
         }
 
-        if (!p.hasPermission("mtvehicles.update") || !ConfigModule.defaultConfig.getConfig().getBoolean("auto-update"))
+        if (!p.hasPermission("mtvehicles.update") || !(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.AUTO_UPDATE))
             return;
 
         if (!VersionModule.isPreRelease) checkNewVersion(p);

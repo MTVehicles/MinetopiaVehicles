@@ -41,7 +41,27 @@ public abstract class Config implements ConfigInterface {
     }
 
 
+    /**
+     * Get the file configuration
+     * @deprecated Use alternative methods instead. New, protected #getConfiguration() should be used instead.
+     *
+     * @return Config as FileConfiguration
+     * @see #getConfiguration()
+     */
+    @Deprecated
     public FileConfiguration getConfig() {
+        if (config == null) {
+            reload();
+        }
+        return config;
+    }
+
+    /**
+     * Get the file configuration (new method, protected)
+     *
+     * @return Config as FileConfiguration
+     */
+    protected FileConfiguration getConfiguration() {
         if (config == null) {
             reload();
         }
@@ -53,7 +73,7 @@ public abstract class Config implements ConfigInterface {
             return false;
         }
         try {
-            getConfig().save(configFile);
+            getConfiguration().save(configFile);
         } catch (IOException ex) {
             Main.instance.getLogger().log(Level.SEVERE, "Could not save config to " + configFile, ex);
         }

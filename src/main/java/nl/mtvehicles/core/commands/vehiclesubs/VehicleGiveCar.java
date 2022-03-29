@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
@@ -19,7 +20,7 @@ public class VehicleGiveCar extends MTVehicleSubCommand {
         if (!checkPermission("mtvehicles.givecar")) return true;
 
         if (args.length != 3) {
-            sendMessage(ConfigModule.messagesConfig.getMessage("useGiveCar"));
+            sendMessage(ConfigModule.messagesConfig.getMessage(Message.USE_GIVE_CAR));
             return true;
         }
 
@@ -28,18 +29,18 @@ public class VehicleGiveCar extends MTVehicleSubCommand {
         String carUuid = args[2];
 
         if (of == null || !of.hasPlayedBefore()) {
-            sendMessage(ConfigModule.messagesConfig.getMessage("playerNotFound"));
+            sendMessage(ConfigModule.messagesConfig.getMessage(Message.PLAYER_NOT_FOUND));
             return true;
         }
 
         ItemStack car = VehicleUtils.getItemByUUID(of, carUuid);
 
         if (car == null){
-            sender.sendMessage(ConfigModule.messagesConfig.getMessage("giveCarNotFound"));
+            sender.sendMessage(ConfigModule.messagesConfig.getMessage(Message.GIVE_CAR_NOT_FOUND));
             return true;
         }
         of.getInventory().addItem(car);
-        sender.sendMessage(ConfigModule.messagesConfig.getMessage("giveCarSucces").replace("%p%", of.getName()));
+        sender.sendMessage(ConfigModule.messagesConfig.getMessage(Message.GIVE_CAR_SUCCESS).replace("%p%", of.getName()));
 
         return true;
     }

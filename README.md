@@ -26,7 +26,7 @@ The plugin works on all spigot versions from 1.12.2 - 1.18.2, **except 1.14.x**!
 If your server minecraft version is not supported by the plugin, it won't load.
 
 Versions 1.12.1 and lower are NOT, and will NOT be supported.<br>
-(Did you know that 1.8 was released in 2014? And some people still use it! Whoa.)
+(Frankly, 1.8 was released [a pretty long time ago](https://howoldisminecraft189.today/). And some people still use it, right? I don't get it.)
 
 
 > ⚠ We support ALL LATEST PATCH VERSIONS of Spigot/Paper 1.12+, except 1.14.4.<br>
@@ -106,6 +106,7 @@ These commands can only be executed by the owner of the vehicle. **Hold a vehicl
 | /vehicle addmember    | Add a member to your vehicle                         | `None`     |
 | /vehicle removerider  | Remove a rider from your vehicle                     | `None`     |
 | /vehicle removemember | Remove a member from your vehicle                    | `None`     |
+| /vehicle trunk        | Open the trunk of your vehicle                       | `None`     |
 | /vehicle repair       | Restore the health of a vehicle (vehicle damage must be enabled in the [config.yml]) | `mtvehicles.repair` |
 | /vehicle refill       | Refill the vehicle's fuel                            | `mtvehicles.refill` |
 
@@ -157,6 +158,27 @@ You can edit the behaviour **in the config** where you may also find information
 |                  | DENY  | Prevents players from entering vehicles, **if region blacklist for entering is enabled.**      |
 | `mtv-pickup`     | ALLOW | Enables players to pick up vehicles, **if region whitelist for picking up is enabled.**        |
 |                  | DENY  | Prevents players from picking up vehicles, **if region blacklist for picking up is enabled.**  |
+
+### PlaceholderAPI
+
+MTVehicles offers special placeholders for you to use.
+
+#### Global placeholders
+
+| Placeholder                | Description                                            |
+|----------------------------|--------------------------------------------------------|
+| `mtv_fuel_pricePerLitre`   | Price of fuel (used while filling jerrycans)           |
+
+#### Per-player placeholders
+
+| Placeholder                | Description                                            |
+|----------------------------|--------------------------------------------------------|
+| `mtv_vehicle_licensePlate` | License plate of a vehicle a player **is sitting in**  |
+| `mtv_vehicle_name`         | Name of a vehicle a player is sitting in               |
+| `mtv_vehicle_type`         | Type of a vehicle a player is sitting in               |
+| `mtv_vehicle_fuel`         | Remaining fuel of a vehicle a player is sitting in     |
+
+> More placeholders are expected to be added in the future...
 
 ### Vault
 

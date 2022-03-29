@@ -1,7 +1,6 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
-import de.tr7zw.changeme.nbtapi.NBTItem;
-import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
@@ -18,10 +17,8 @@ public class VehiclePrivate extends MTVehicleSubCommand {
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
         ItemStack item = player.getInventory().getItemInMainHand();
-        if (!item.hasItemMeta() || !(new NBTItem(item)).hasKey("mtvehicles.kenteken")) {
-            sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("noVehicleInHand")));
-            return true;
-        }
+
+        if (!isHoldingVehicle()) return true;
 
         String licensePlate = VehicleUtils.getLicensePlate(item);
 
@@ -31,7 +28,7 @@ public class VehiclePrivate extends MTVehicleSubCommand {
         vehicle.setOpen(false);
         vehicle.save();
 
-        sendMessage(ConfigModule.messagesConfig.getMessage("actionSuccessful"));
+        sendMessage(ConfigModule.messagesConfig.getMessage(Message.ACTION_SUCCESSFUL));
 
         return true;
     }

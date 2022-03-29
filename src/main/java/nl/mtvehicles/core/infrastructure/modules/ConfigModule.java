@@ -40,6 +40,8 @@ public class ConfigModule {
 
         String messagesVersion = Main.messagesVersion;
         if (!secretSettings.getMessagesVersion().equals(messagesVersion) || defaultConfig.hasOldVersionChecking()) {
+            File sss = new File(Main.instance.getDataFolder(), "supersecretsettings.yml");
+            sss.delete();
             messagesConfig.saveNewLanguageFiles(formatter.format(date));
         }
 

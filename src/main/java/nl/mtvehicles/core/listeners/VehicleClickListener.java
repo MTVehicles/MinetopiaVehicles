@@ -1,5 +1,7 @@
 package nl.mtvehicles.core.listeners;
 
+import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.enums.RegionAction;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
@@ -43,7 +45,7 @@ public class VehicleClickListener implements Listener {
         if (p.isSneaking()) {
 
             if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.PICKUP, e.getRightClicked().getLocation())){
-                ConfigModule.messagesConfig.sendMessage(p, "cannotDoThatHere");
+                ConfigModule.messagesConfig.sendMessage(p, Message.CANNOT_DO_THAT_HERE);
                 return;
             }
 
@@ -55,13 +57,13 @@ public class VehicleClickListener implements Listener {
             Vehicle vehicle = VehicleUtils.getByLicensePlate(license);
             if (vehicle == null) return;
 
-            if (ConfigModule.vehicleDataConfig.getConfig().getBoolean("vehicle."+license+".isOpen") || vehicle.isOwner(p) || vehicle.canSit(p) || p.hasPermission("mtvehicles.ride")) {
+            if ((boolean) ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.IS_OPEN) || vehicle.isOwner(p) || vehicle.canSit(p) || p.hasPermission("mtvehicles.ride")) {
                 if (entity.isEmpty()) {
                     entity.addPassenger(p);
-                    p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehicleEnterMember").replace("%p%", VehicleUtils.getByLicensePlate(license).getOwnerName())));
+                    p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_ENTER_MEMBER).replace("%p%", VehicleUtils.getByLicensePlate(license).getOwnerName())));
                 }
             } else {
-                p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehicleNoRiderEnter").replace("%p%", VehicleUtils.getByLicensePlate(license).getOwnerName())));
+                p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_NO_RIDER_ENTER).replace("%p%", VehicleUtils.getByLicensePlate(license).getOwnerName())));
             }
             return;
         }

@@ -1,6 +1,9 @@
 package nl.mtvehicles.core.infrastructure.models;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
+import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
+import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
@@ -8,6 +11,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
@@ -38,13 +42,15 @@ public final class VehicleUtils {
                         }
                         ItemStack is = ItemUtils.carItem3((Integer) skin.get("itemDamage"), ((String) skin.get("name")), (String) skin.get("SkinItem"), "mtcustom", nbtVal);
                         NBTItem nbt = new NBTItem(is);
-                        String kenteken = nbt.getString("mtvehicles.kenteken");
+                        String licensePlate = nbt.getString("mtvehicles.kenteken");
                         matchedVehicles.add(configVehicle);
+
                         Vehicle vehicle = new Vehicle();
-                        List<String> members = ConfigModule.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".members");
-                        List<String> riders = ConfigModule.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".riders");
-                        List<String> kof = ConfigModule.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".kofferbakData");
-                        vehicle.setLicensePlate(kenteken);
+                        List<String> members = ConfigModule.vehicleDataConfig.getMembers(licensePlate);
+                        List<String> riders = ConfigModule.vehicleDataConfig.getRiders(licensePlate);
+                        List<String> trunkData = ConfigModule.vehicleDataConfig.getTrunkData(licensePlate);
+
+                        vehicle.setLicensePlate(licensePlate);
                         vehicle.setName((String) skin.get("name"));
                         vehicle.setVehicleType((String) configVehicle.get("vehicleType"));
                         vehicle.setSkinDamage((Integer) skin.get("itemDamage"));
@@ -57,7 +63,7 @@ public final class VehicleUtils {
                         vehicle.setTrunk((Boolean) configVehicle.get("kofferbakEnabled"));
                         vehicle.setTrunkRows(1);
                         vehicle.setFuelUsage(0.01);
-                        vehicle.setTrunkData(kof);
+                        vehicle.setTrunkData(trunkData);
                         vehicle.setAccelerationSpeed((Double) configVehicle.get("acceleratieSpeed"));
                         vehicle.setMaxSpeed((Double) configVehicle.get("maxSpeed"));
                         vehicle.setBrakingSpeed((Double) configVehicle.get("brakingSpeed"));
@@ -234,6 +240,40 @@ public final class VehicleUtils {
             return null;
         }
         return UUID.fromString(ConfigModule.vehicleDataConfig.getConfig().getString("vehicle." + licensePlate + ".owner"));
+    }
+
+    public static void openTrunk(Player p, String license) {
+        if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.TRUNK_ENABLED)) {
+            if (VehicleUtils.getByLicensePlate(license) == null) {
+                ConfigModule.messagesConfig.sendMessage(p, Message.VEHICLE_NOT_FOUND);
+                return;
+            }
+
+            if (VehicleUtils.getByLicensePlate(license).isOwner(p) || p.hasPermission("mtvehicles.kofferbak")) {
+                ConfigModule.configList.forEach(Config::reload);
+                if ((boolean) ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.TRUNK_ENABLED)) {
+
+                    if (ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.TRUNK_DATA) == null) return;
+
+                    Inventory inv = Bukkit.createInventory(null, (int) ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.TRUNK_ROWS) * 9, "Kofferbak Vehicle: " + license);
+                    List<ItemStack> chestContentsFromConfig = (List<ItemStack>) ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.TRUNK_DATA);
+
+                    for (ItemStack item : chestContentsFromConfig) {
+                        if (item != null) inv.addItem(item);
+                    }
+
+                    p.openInventory(inv);
+                }
+            } else {
+                p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_NO_RIDER_TRUNK).replace("%p%", VehicleUtils.getByLicensePlate(license).getOwnerName())));
+            }
+        }
+    }
+
+    public static boolean isInsideVehicle(Player p){
+        if (p == null) return false;
+        if (!p.isInsideVehicle()) return false;
+        return VehicleUtils.isVehicle(p.getVehicle());
     }
 
     @Deprecated

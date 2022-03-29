@@ -1,11 +1,15 @@
 package nl.mtvehicles.core.movement;
 
 import nl.mtvehicles.core.Main;
+import nl.mtvehicles.core.infrastructure.annotations.ToDo;
+import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
+import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
 import nl.mtvehicles.core.infrastructure.enums.VehicleType;
 import nl.mtvehicles.core.infrastructure.helpers.BossBarUtils;
 import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Fence;
 import org.bukkit.block.data.type.Slab;
@@ -24,17 +28,18 @@ import java.util.Objects;
 import static nl.mtvehicles.core.infrastructure.modules.VersionModule.getServerVersion;
 import static nl.mtvehicles.core.movement.PacketHandler.isObjectPacket;
 
+@ToDo(comment = "Work on airplanes is in progress...")
 public class VehicleMovement {
 
-    public void vehicleMovement(Player p, Object packet) {
+    public void vehicleMovement(Player player, Object packet) {
 
         //Do not continue if the correct packet has not been given
         if (!isObjectPacket(packet)) return;
 
         long lastUsed = 0L;
 
-        if (p.getVehicle() == null) return;
-        final Entity vehicle = p.getVehicle();
+        if (player.getVehicle() == null) return;
+        final Entity vehicle = player.getVehicle();
 
         if (!(vehicle instanceof ArmorStand)) return;
         if (vehicle.getCustomName() == null) return;
@@ -66,7 +71,7 @@ public class VehicleMovement {
         final ArmorStand standMainSeat = VehicleData.autostand.get("MTVEHICLES_MAINSEAT_" + license);
         final ArmorStand standRotors = VehicleData.autostand.get("MTVEHICLES_WIEKENS_" + license);
 
-        if (ConfigModule.defaultConfig.getConfig().getBoolean("damageEnabled") && ConfigModule.vehicleDataConfig.getHealth(license) == 0) { //Vehicle is broken
+        if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.DAMAGE_ENABLED) && ConfigModule.vehicleDataConfig.getHealth(license) == 0) { //Vehicle is broken
             standMain.getWorld().spawnParticle(Particle.SMOKE_NORMAL, standMain.getLocation(), 2);
             return;
         }
@@ -96,18 +101,19 @@ public class VehicleMovement {
 
         // Horn
         if (ConfigModule.vehicleDataConfig.isHornEnabled(license) && steerIsJumping(packet) && !helicopterFalling) {
-            if (VehicleData.lastUsage.containsKey(p.getName())) lastUsed = VehicleData.lastUsage.get(p.getName());
+            if (VehicleData.lastUsage.containsKey(player.getName())) lastUsed = VehicleData.lastUsage.get(player.getName());
 
-            if (System.currentTimeMillis() - lastUsed >= ConfigModule.defaultConfig.getConfig().getInt("hornCooldown") * 1000L) {
-                standMain.getWorld().playSound(standMain.getLocation(), Objects.requireNonNull(ConfigModule.defaultConfig.getConfig().getString("hornType")), 0.9f, 1f);
-                VehicleData.lastUsage.put(p.getName(), System.currentTimeMillis());
+            if (System.currentTimeMillis() - lastUsed >= Long.parseLong(ConfigModule.defaultConfig.get(DefaultConfig.Option.HORN_COOLDOWN).toString()) * 1000L) {
+                standMain.getWorld().playSound(standMain.getLocation(), Objects.requireNonNull(ConfigModule.defaultConfig.get(DefaultConfig.Option.HORN_TYPE).toString()), 0.9f, 1f);
+                VehicleData.lastUsage.put(player.getName(), System.currentTimeMillis());
             }
         }
 
+        //Tank
         if (vehicleType.isTank() && steerIsJumping(packet)) {
-            if (VehicleData.lastUsage.containsKey(p.getName())) lastUsed = VehicleData.lastUsage.get(p.getName());
+            if (VehicleData.lastUsage.containsKey(player.getName())) lastUsed = VehicleData.lastUsage.get(player.getName());
 
-            if (System.currentTimeMillis() - lastUsed >= ConfigModule.defaultConfig.getConfig().getInt("tankCooldown") * 1000L) {
+            if (System.currentTimeMillis() - lastUsed >= Long.parseLong(ConfigModule.defaultConfig.get(DefaultConfig.Option.HORN_COOLDOWN).toString()) * 1000L) {
                 standMain.getWorld().playEffect(standMain.getLocation(), Effect.BLAZE_SHOOT, 1, 1);
                 standMain.getWorld().playEffect(standMain.getLocation(), Effect.GHAST_SHOOT, 1, 1);
                 standMain.getWorld().playEffect(standMain.getLocation(), Effect.WITHER_BREAK_BLOCK, 1, 1);
@@ -121,15 +127,16 @@ public class VehicleMovement {
                 Location loc = new Location(standMain.getWorld(), xvp, standMain.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
                 spawnParticles(standMain, loc);
                 spawnTNT(standMain, loc);
-                VehicleData.lastUsage.put(p.getName(), System.currentTimeMillis());
+                VehicleData.lastUsage.put(player.getName(), System.currentTimeMillis());
             }
         }
 
         final float xxa = (helicopterFalling) ? 0.0f : steerGetXxa(packet);
         final float zza = (helicopterFalling) ? 0.0f : steerGetZza(packet);
+        final Location locBelow = new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY() - 0.2, standMain.getLocation().getZ(), standMain.getLocation().getYaw(), standMain.getLocation().getPitch());
         if (xxa > 0.0) {
-            if (VehicleData.speed.get(license) != 0) {
-                final int rotation = (VehicleData.speed.get(license) < 0.1) ? RotationSpeed / 2 : RotationSpeed;
+            if (!vehicleType.isHelicopter() || locBelow.getBlock().getType().equals(Material.AIR)) { //Do not rotate if you're in a helicopter on ground
+                final int rotation = (VehicleData.speed.get(license) < 0.1) ? RotationSpeed / 3 : RotationSpeed;
                 schedulerRun(() -> {
                     if (getServerVersion().is1_12()) {
                         standMain.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() - rotation, standMain.getLocation().getPitch()));
@@ -143,8 +150,8 @@ public class VehicleMovement {
                 });
             }
         } else if (xxa < 0.0) {
-            if (VehicleData.speed.get(license) != 0) {
-                final int rotation = (VehicleData.speed.get(license) < 0.1) ? RotationSpeed / 2 : RotationSpeed;
+            if (!vehicleType.isHelicopter() || locBelow.getBlock().getType().equals(Material.AIR)) { //Do not rotate if you're in a helicopter on ground
+                final int rotation = (VehicleData.speed.get(license) < 0.1) ? RotationSpeed / 3 : RotationSpeed;
                 schedulerRun(() -> {
                     if (getServerVersion().is1_12()) {
                         standMain.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw() + rotation, standMain.getLocation().getPitch()));
@@ -163,7 +170,7 @@ public class VehicleMovement {
                 VehicleData.speed.put(license, VehicleData.speed.get(license) + BrakingSpeed);
                 return;
             }
-            if (ConfigModule.defaultConfig.getConfig().getBoolean("benzine") && ConfigModule.vehicleDataConfig.getConfig().getBoolean("vehicle." + license + ".benzineEnabled")) {
+            if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.FUEL_ENABLED) && (boolean) ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.FUEL_ENABLED)) {
                 putFuelUsage(license);
             }
             if (VehicleData.speed.get(license) > MaxSpeed - AccelerationSpeed) return;
@@ -174,7 +181,7 @@ public class VehicleMovement {
                 VehicleData.speed.put(license, VehicleData.speed.get(license) - BrakingSpeed);
                 return;
             }
-            if (ConfigModule.defaultConfig.getConfig().getBoolean("benzine") && ConfigModule.vehicleDataConfig.getConfig().getBoolean("vehicle." + license + ".benzineEnabled")) {
+            if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.FUEL_ENABLED) && (boolean) ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.FUEL_ENABLED)) {
                 putFuelUsage(license);
             }
             if (VehicleData.speed.get(license) < -MaxSpeedBackwards) return;
@@ -200,6 +207,7 @@ public class VehicleMovement {
         final Location loc = getLocationOfBlockAhead(mainStand);
         final String locY = String.valueOf(mainStand.getLocation().getY());
         final Location locBlockAbove = new Location(loc.getWorld(), loc.getX(), loc.getY() + 1, loc.getZ(), loc.getYaw(), loc.getPitch());
+        final Location locBlockBelow = new Location(loc.getWorld(), loc.getX(), loc.getY() - 1, loc.getZ(), loc.getYaw(), loc.getPitch());
         final String drivingOnY = locY.substring(locY.length() - 2);
 
         final boolean isOnGround = drivingOnY.contains(".0");
@@ -209,9 +217,10 @@ public class VehicleMovement {
 
         final double difference = Double.parseDouble("0." + locY.split("\\.")[1]);
         final BlockData blockData = loc.getBlock().getBlockData();
+        final BlockData blockDataBelow = locBlockBelow.getBlock().getBlockData();
 
         if (loc.getBlock().getType().toString().contains("CARPET")){
-            if (!ConfigModule.defaultConfig.getConfig().getBoolean("driveOnCarpets")){ //if carpets are turned off in config
+            if (!(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.DRIVE_ON_CARPETS)){ //if carpets are turned off in config
                 VehicleData.speed.put(license, 0.0);
                 return false;
             }
@@ -239,11 +248,14 @@ public class VehicleMovement {
 
         if (ConfigModule.defaultConfig.driveUpSlabs().isSlabs()){
             if (isOnSlab) {
-                if (isPassable) return false; //Vehicle will go down
+                if (isPassable) {
+                    pushVehicleDown(mainStand, 0.5);
+                    return false; //Vehicle will go down
+                }
 
                 if (blockData instanceof Slab) {
                     Slab slab = (Slab) blockData;
-                    if (slab.getType().toString().equals("BOTTOM")) {
+                    if (slab.getType().equals(Slab.Type.BOTTOM)) {
                         return false; //Vehicle will continue on the slabs
                     }
                 }
@@ -261,7 +273,7 @@ public class VehicleMovement {
             if (!isPassable) {
                 if (blockData instanceof Slab) {
                     Slab slab = (Slab) blockData;
-                    if (slab.getType().toString().equals("BOTTOM")) {
+                    if (slab.getType().equals(Slab.Type.BOTTOM)) {
 
                         if (!isAbovePassable) {
                             VehicleData.speed.put(license, 0.0);
@@ -286,7 +298,7 @@ public class VehicleMovement {
                 if (!isPassable) {
                     if (blockData instanceof Slab){
                         Slab slab = (Slab) blockData;
-                        if (slab.getType().toString().equals("BOTTOM")){
+                        if (slab.getType().equals(Slab.Type.BOTTOM)){
                             VehicleData.speed.put(license, 0.0);
                             return false; //If it's a bottom slab, stop.
                         }
@@ -306,12 +318,16 @@ public class VehicleMovement {
                     return true;
                 }
             }
+
             //If it's on a slab (might have been placed there)
-            if (isPassable) return false; //Vehicle will go down
+            if (isPassable) {
+                pushVehicleDown(mainStand, 0.5);
+                return false; //Vehicle will go down
+            }
 
             if (blockData instanceof Slab) {
                 Slab slab = (Slab) blockData;
-                if (slab.getType().toString().equals("BOTTOM")) {
+                if (slab.getType().equals(Slab.Type.BOTTOM)) {
                     return false; //Vehicle will continue on the slabs
                 }
             }
@@ -327,11 +343,14 @@ public class VehicleMovement {
         } else if (ConfigModule.defaultConfig.driveUpSlabs().isBoth()) {
 
             if (isOnSlab) {
-                if (isPassable) return false; //Vehicle will go down
+                if (isPassable) {
+                    pushVehicleDown(mainStand, 0.5);
+                    return false; //Vehicle will go down
+                }
 
                 if (blockData instanceof Slab) {
                     Slab slab = (Slab) blockData;
-                    if (slab.getType().toString().equals("BOTTOM")) {
+                    if (slab.getType().equals(Slab.Type.BOTTOM)) {
                         return false; //Vehicle will continue on the slabs
                     }
                 }
@@ -354,7 +373,7 @@ public class VehicleMovement {
 
                 if (blockData instanceof Slab){
                     Slab slab = (Slab) blockData;
-                    if (slab.getType().toString().equals("BOTTOM")){ //If it's a bottom slab
+                    if (slab.getType().equals(Slab.Type.BOTTOM)){ //If it's a bottom slab
                         if (isOnGround) {
                             pushVehicleUp(mainStand, 0.5);
                         } else { //Maybe they're on a carpet
@@ -374,6 +393,15 @@ public class VehicleMovement {
                 return true;
 
             }
+
+            if (blockDataBelow instanceof Slab){ //If on a block, in front of it is air and below is bottom slab
+                Slab slab = (Slab) blockDataBelow;
+                if (slab.getType().equals(Slab.Type.BOTTOM)) { //If it's a bottom slab
+                    pushVehicleDown(mainStand, 0.5);
+                    return false; //Vehicle will go down
+                }
+            }
+
         }
 
         return false;
@@ -437,60 +465,64 @@ public class VehicleMovement {
         final Location location = new Location(loc.getWorld(), loc.getX(), loc.getY() - 0.2, loc.getZ(), loc.getYaw(), loc.getPitch());
 
         if (VehicleData.type.get(license) == null) return;
-        final String vehicleType = VehicleData.type.get(license);
+        final VehicleType vehicleType = VehicleType.valueOf(VehicleData.type.get(license));
+        if (vehicleType == null) return;
         final Material block = location.getBlock().getType();
         final String blockName = block.toString();
 
-        if (vehicleType.contains("HELICOPTER")) {
-            if (!block.equals(Material.AIR)) {
-                VehicleData.speed.put(license, 0.0);
-            }
+        if (vehicleType.canFly()) {
+            if (vehicleType.isHelicopter() && !block.equals(Material.AIR)) VehicleData.speed.put(license, 0.0);
+
             if (space) {
-                if (mainStand.getLocation().getY() > Main.instance.getConfig().getInt("helicopterMaxHeight")) {
-                    return;
-                }
+                if (vehicleType.isAirplane() && VehicleData.speed.get(license) < 0.4) return;
+                if (loc.getY() > Main.instance.getConfig().getInt("helicopterMaxHeight")) return;
+
                 putFuelUsage(license);
-                mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.2, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
+                mainStand.setVelocity(new Vector(loc.getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.2, loc.getDirection().multiply(VehicleData.speed.get(license)).getZ()));
                 return;
             }
-            mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.2, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
+            mainStand.setVelocity(new Vector(loc.getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.2, loc.getDirection().multiply(VehicleData.speed.get(license)).getZ()));
             return;
         }
 
-        if (VehicleData.type.get(license).contains("HOVER")) {
+        if (vehicleType.isHover()) {
             if (block.equals(Material.AIR)) {
-                mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.8, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
+                mainStand.setVelocity(new Vector(loc.getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.8, loc.getDirection().multiply(VehicleData.speed.get(license)).getZ()));
                 return;
             }
-            mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.00001, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
+            mainStand.setVelocity(new Vector(loc.getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.00001, loc.getDirection().multiply(VehicleData.speed.get(license)).getZ()));
             return;
         }
 
         if (blockName.contains("WATER")) {
-            mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.8, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
+            mainStand.setVelocity(new Vector(loc.getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.8, loc.getDirection().multiply(VehicleData.speed.get(license)).getZ()));
             return;
         }
 
-        if (locBlockAheadAndBelow.getBlock().isPassable()){
-            if (location.getBlock().isPassable()){
-                mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.8, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
+        if (isPassable(locBlockAhead.getBlock()) && isPassable(locBlockAheadAndBelow.getBlock())){
+            if (isPassable(location.getBlock())){
+                mainStand.setVelocity(new Vector(loc.getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.8, loc.getDirection().multiply(VehicleData.speed.get(license)).getZ()));
                 return;
             }
 
             if (blockName.contains("CARPET")){
-                mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.7375, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
+                mainStand.setVelocity(new Vector(loc.getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.7375, loc.getDirection().multiply(VehicleData.speed.get(license)).getZ()));
                 return;
             }
         }
 
-        mainStand.setVelocity(new Vector(mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.0, mainStand.getLocation().getDirection().multiply(VehicleData.speed.get(license)).getZ()));
+        mainStand.setVelocity(new Vector(loc.getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.0, loc.getDirection().multiply(VehicleData.speed.get(license)).getZ()));
     }
 
-    private void putFuelUsage(String license) {
-        double fuelMultiplier = ConfigModule.defaultConfig.getConfig().getDouble("fuelMultiplier");
+    protected void putFuelUsage(String license) {
+        double fuelMultiplier = Double.parseDouble(ConfigModule.defaultConfig.get(DefaultConfig.Option.FUEL_MULTIPLIER).toString());
         if (fuelMultiplier < 0.1 || fuelMultiplier > 10) fuelMultiplier = 1; //Must be between 0.1 and 10. Default: 1
-        final double dnum = VehicleData.fuel.get(license) - (fuelMultiplier * VehicleData.fuelUsage.get(license));
-        VehicleData.fuel.put(license, dnum);
+        final double newFuel = VehicleData.fuel.get(license) - (fuelMultiplier * VehicleData.fuelUsage.get(license));
+        VehicleData.fuel.put(license, newFuel);
+    }
+
+    protected boolean isPassable(Block block){
+        return block.isPassable();
     }
 
     protected void rotors(ArmorStand main, ArmorStand seatas, String license, boolean slowDown) {
@@ -509,6 +541,10 @@ public class VehicleMovement {
     protected void pushVehicleUp(ArmorStand mainStand, double plus){
         final Location newLoc = new Location(mainStand.getLocation().getWorld(), mainStand.getLocation().getX(), mainStand.getLocation().getY() + plus, mainStand.getLocation().getZ(), mainStand.getLocation().getYaw(), mainStand.getLocation().getPitch());
         schedulerRun(() -> mainStand.teleport(newLoc));
+    }
+
+    protected void pushVehicleDown(ArmorStand mainStand, double minus){
+        pushVehicleUp(mainStand, -minus);
     }
 
     protected Location getLocationOfBlockAhead(ArmorStand mainStand){
@@ -565,12 +601,12 @@ public class VehicleMovement {
         stand.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, loc, 2);
         stand.getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, loc, 2);
         stand.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, loc, 5);
-        if (!getServerVersion().is1_12() && !getServerVersion().is1_13())
+        if (!getServerVersion().isOld())
             stand.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, loc, 5);
     }
 
     protected void spawnTNT(ArmorStand stand, Location loc){
-        if (!ConfigModule.defaultConfig.getConfig().getBoolean("tankTNT")) return;
+        if (!(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.TANK_TNT)) return;
 
         schedulerRun(() -> {
             TNTPrimed tnt = loc.getWorld().spawn(loc, TNTPrimed.class);

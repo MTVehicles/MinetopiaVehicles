@@ -1,7 +1,6 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
-import de.tr7zw.changeme.nbtapi.NBTItem;
-import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
@@ -21,17 +20,12 @@ public class VehicleRemoveMember extends MTVehicleSubCommand {
 
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
-        Player p = (Player) sender;
+        ItemStack item = player.getInventory().getItemInMainHand();
 
-        ItemStack item = p.getInventory().getItemInMainHand();
-
-        if (!item.hasItemMeta() || !(new NBTItem(item)).hasKey("mtvehicles.kenteken")) {
-            sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("noVehicleInHand")));
-            return true;
-        }
+        if (!isHoldingVehicle()) return true;
 
         if (args.length != 2) {
-            p.sendMessage(ConfigModule.messagesConfig.getMessage("useRemoveMember"));
+            player.sendMessage(ConfigModule.messagesConfig.getMessage(Message.USE_REMOVE_MEMBER));
             return true;
         }
 
@@ -41,7 +35,7 @@ public class VehicleRemoveMember extends MTVehicleSubCommand {
         Vehicle vehicle = VehicleUtils.getByLicensePlate(ken);
 
         if (of == null || !of.hasPlayedBefore()) {
-            p.sendMessage(ConfigModule.messagesConfig.getMessage("playerNotFound"));
+            player.sendMessage(ConfigModule.messagesConfig.getMessage(Message.PLAYER_NOT_FOUND));
             return true;
         }
 
@@ -51,7 +45,7 @@ public class VehicleRemoveMember extends MTVehicleSubCommand {
         vehicle.setMembers(members);
         vehicle.save();
 
-        p.sendMessage(ConfigModule.messagesConfig.getMessage("memberChange"));
+        player.sendMessage(ConfigModule.messagesConfig.getMessage(Message.MEMBER_CHANGE));
 
         return true;
     }

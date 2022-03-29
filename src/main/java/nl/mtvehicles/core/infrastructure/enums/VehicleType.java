@@ -23,7 +23,7 @@ public enum VehicleType {
      */
     HELICOPTER,
     /**
-     * Airplanes - with the ability to fly, without blades
+     * Airplanes - with the ability to fly, their movement differs from helicopters
      */
     AIRPLANE;
 
@@ -49,5 +49,9 @@ public enum VehicleType {
 
     public boolean isAirplane(){
         return this.equals(AIRPLANE);
+    }
+
+    public boolean canFly(){
+        return this.equals(AIRPLANE) || this.equals(HELICOPTER);
     }
 }

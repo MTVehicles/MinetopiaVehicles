@@ -1,7 +1,5 @@
 package nl.mtvehicles.core.infrastructure.interfaces;
 
-import org.bukkit.configuration.file.FileConfiguration;
-
 public interface ConfigInterface {
 
     /**
@@ -15,13 +13,6 @@ public interface ConfigInterface {
      * @return Whether saving was successful
      */
     boolean save();
-
-    /**
-     * Get the file configuration
-     *
-     * @return Config as FileConfiguration
-     */
-    FileConfiguration getConfig();
 
     void saveDefaultConfig();
 }

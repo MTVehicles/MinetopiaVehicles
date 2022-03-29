@@ -1,5 +1,8 @@
 package nl.mtvehicles.core.infrastructure.helpers;
 
+import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
+import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
@@ -13,49 +16,49 @@ public class BossBarUtils {
     public static BossBar Benzine;
     public static HashMap<String, BossBar> Fuelbar = new HashMap<>();
 
-    public static void setBossBarValue(double counter, String ken) {
-        if (ConfigModule.defaultConfig.getConfig().getBoolean("benzine") && ConfigModule.vehicleDataConfig.getConfig().getBoolean("vehicle." + ken + ".benzineEnabled")) {
-            Fuelbar.get(ken).setProgress(counter);
-            Fuelbar.get(ken).setTitle(Math.round(counter * 100.0D) + "% " + TextUtils.colorize(ConfigModule.messagesConfig.getMessage("bossbarFuel")));
+    public static void setBossBarValue(double counter, String licensePlate) {
+        if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.FUEL_ENABLED) && (boolean) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.FUEL_ENABLED)) {
+            Fuelbar.get(licensePlate).setProgress(counter);
+            Fuelbar.get(licensePlate).setTitle(Math.round(counter * 100.0D) + "% " + TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.BOSSBAR_FUEL)));
 
-            Double fuel = VehicleData.fuel.get(ken);
+            Double fuel = VehicleData.fuel.get(licensePlate);
 
             if (fuel < 30) {
-                Fuelbar.get(ken).setColor(BarColor.RED);
+                Fuelbar.get(licensePlate).setColor(BarColor.RED);
                 return;
             }
             if (fuel < 60) {
-                Fuelbar.get(ken).setColor(BarColor.YELLOW);
+                Fuelbar.get(licensePlate).setColor(BarColor.YELLOW);
                 return;
             }
             if (fuel < 100) {
-                Fuelbar.get(ken).setColor(BarColor.GREEN);
+                Fuelbar.get(licensePlate).setColor(BarColor.GREEN);
             }
         }
     }
 
-    public static void removeBossBar(Player player, String ken) {
-        if (ConfigModule.defaultConfig.getConfig().getBoolean("benzine") && ConfigModule.vehicleDataConfig.getConfig().getBoolean("vehicle." + ken + ".benzineEnabled")) {
-            Fuelbar.get(ken).removePlayer(player);
+    public static void removeBossBar(Player player, String licensePlate) {
+        if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.FUEL_ENABLED) && (boolean) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.FUEL_ENABLED)) {
+            Fuelbar.get(licensePlate).removePlayer(player);
         }
     }
 
-    public static void addBossBar(Player player, String ken) {
-        if (ConfigModule.defaultConfig.getConfig().getBoolean("benzine") && ConfigModule.vehicleDataConfig.getConfig().getBoolean("vehicle." + ken + ".benzineEnabled")) {
-            double fuel = ConfigModule.vehicleDataConfig.getConfig().getDouble(String.format("vehicle.%s.benzine", player.getVehicle().getCustomName().replace("MTVEHICLES_MAINSEAT_", "")));
+    public static void addBossBar(Player player, String licensePlate) {
+        if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.FUEL_ENABLED) && (boolean) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.FUEL_ENABLED)) {
+            double fuel = (double) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.FUEL);
             String fuelString = String.valueOf(fuel);
-            BossBar bar = Bukkit.createBossBar(Math.round(Double.parseDouble(fuelString)) + "% " + TextUtils.colorize(ConfigModule.messagesConfig.getMessage("bossbarFuel")), BarColor.GREEN, BarStyle.SOLID);
-            Fuelbar.put(ken, bar);
+            BossBar bar = Bukkit.createBossBar(Math.round(Double.parseDouble(fuelString)) + "% " + TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.BOSSBAR_FUEL)), BarColor.GREEN, BarStyle.SOLID);
+            Fuelbar.put(licensePlate, bar);
             if (fuel < 30) {
-                Fuelbar.get(ken).setColor(BarColor.RED);
+                Fuelbar.get(licensePlate).setColor(BarColor.RED);
             }
             if (fuel < 60) {
-                Fuelbar.get(ken).setColor(BarColor.YELLOW);
+                Fuelbar.get(licensePlate).setColor(BarColor.YELLOW);
             }
             if (fuel < 100) {
-                Fuelbar.get(ken).setColor(BarColor.GREEN);
+                Fuelbar.get(licensePlate).setColor(BarColor.GREEN);
             }
-            Fuelbar.get(ken).addPlayer(player);
+            Fuelbar.get(licensePlate).addPlayer(player);
         }
     }
 }

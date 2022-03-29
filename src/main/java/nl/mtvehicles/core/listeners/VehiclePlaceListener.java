@@ -2,12 +2,15 @@ package nl.mtvehicles.core.listeners;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.events.VehiclePlaceEvent;
+import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.enums.RegionAction;
 import nl.mtvehicles.core.infrastructure.helpers.ItemFactory;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
+import nl.mtvehicles.core.infrastructure.modules.VersionModule;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -33,6 +36,9 @@ public class VehiclePlaceListener implements Listener {
         final ItemStack item = e.getItem();
 
         if (e.isCancelled()) return;
+        if (!VersionModule.getServerVersion().isOld()){
+            if (((org.bukkit.event.Cancellable) e).isCancelled()) return;
+        }
 
         if (e.getItem() == null) return;
 
@@ -43,7 +49,7 @@ public class VehiclePlaceListener implements Listener {
 
         if (e.getHand() != EquipmentSlot.HAND) {
             e.setCancelled(true);
-            e.getPlayer().sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("wrongHand")));
+            e.getPlayer().sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.WRONG_HAND)));
             return;
         }
 
@@ -52,7 +58,7 @@ public class VehiclePlaceListener implements Listener {
             return;
         }
         if (!VehicleUtils.existsByLicensePlate(license)) {
-            ConfigModule.messagesConfig.sendMessage(p, "vehicleNotFound");
+            ConfigModule.messagesConfig.sendMessage(p, Message.VEHICLE_NOT_FOUND);
             e.setCancelled(true);
             return;
         }
@@ -76,16 +82,16 @@ public class VehiclePlaceListener implements Listener {
 
         if (ConfigModule.defaultConfig.isBlockWhitelistEnabled()
                 && !ConfigModule.defaultConfig.blockWhiteList().contains(e.getClickedBlock().getType())) {
-            ConfigModule.messagesConfig.sendMessage(p, "blockNotInWhitelist");
+            ConfigModule.messagesConfig.sendMessage(p, Message.BLOCK_NOT_IN_WHITELIST);
             return;
         }
         if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.PLACE, loc)) {
-            ConfigModule.messagesConfig.sendMessage(p, "cannotDoThatHere");
+            ConfigModule.messagesConfig.sendMessage(p, Message.CANNOT_DO_THAT_HERE);
             return;
         }
 
         if (VehicleUtils.getByLicensePlate(license) == null) {
-            ConfigModule.messagesConfig.sendMessage(p, "vehicleNotFound");
+            ConfigModule.messagesConfig.sendMessage(p, Message.VEHICLE_NOT_FOUND);
             return;
         }
 
@@ -100,7 +106,7 @@ public class VehiclePlaceListener implements Listener {
         Vehicle vehicle = VehicleUtils.getByLicensePlate(license);
         List<Map<String, Double>> seats = (List<Map<String, Double>>) vehicle.getVehicleData().get("seats");
         p.getInventory().remove(p.getEquipment().getItemInHand());
-        p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehiclePlace").replace("%p%", VehicleUtils.getByLicensePlate(license).getOwnerName())));
+        p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_PLACE).replace("%p%", VehicleUtils.getByLicensePlate(license).getOwnerName())));
         for (int i = 1; i <= seats.size(); i++) {
             Map<String, Double> seat = seats.get(i - 1);
             if (i == 1) {
@@ -112,7 +118,7 @@ public class VehiclePlaceListener implements Listener {
             }
         }
         List<Map<String, Double>> wiekens = (List<Map<String, Double>>) vehicle.getVehicleData().get("wiekens");
-        if (ConfigModule.vehicleDataConfig.getConfig().getString("vehicle." + license + ".vehicleType").contains("HELICOPTER")) {
+        if (ConfigModule.vehicleDataConfig.getType(license).isHelicopter()) {
             for (int i = 1; i <= wiekens.size(); i++) {
                 Map<?, ?> seat = wiekens.get(i - 1);
                 if (i == 1) {
@@ -121,7 +127,7 @@ public class VehiclePlaceListener implements Listener {
                     as3.setCustomName("MTVEHICLES_WIEKENS_" + license);
                     as3.setGravity(false);
                     as3.setVisible(false);
-                    if (ConfigModule.defaultConfig.getConfig().getBoolean("wiekens-always-on") == true) {
+                    if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.HELICOPTER_BLADES_ALWAYS_ON)) {
                         ItemStack car = (new ItemFactory(Material.getMaterial("DIAMOND_HOE"))).setDurability((short) 1058).setName(TextUtils.colorize("&6Wieken")).setNBT("mtvehicles.kenteken", license).toItemStack();
                         ItemMeta im = car.getItemMeta();
                         List<String> itemlore = new ArrayList<>();
