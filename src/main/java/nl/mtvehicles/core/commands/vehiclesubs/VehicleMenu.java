@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
+import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.helpers.ItemFactory;
 import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
@@ -28,12 +29,12 @@ public class VehicleMenu extends MTVehicleSubCommand {
 
         sendMessage(ConfigModule.messagesConfig.getMessage(Message.MENU_OPEN));
 
-        int menuRows = ConfigModule.defaultConfig.getConfig().getInt("vehicleMenuSize");
+        int menuRows = (int) ConfigModule.defaultConfig.get(DefaultConfig.Option.VEHICLE_MENU_SIZE);
         final int menuSize = (menuRows >= 3 && menuRows <= 6) ? menuRows * 9 : 27;
 
         Inventory inv = Bukkit.createInventory(null, menuSize, "Vehicle Menu");
 
-        for (Map<?, ?> vehicle : ConfigModule.vehiclesConfig.getConfig().getMapList("voertuigen")) {
+        for (Map<?, ?> vehicle : ConfigModule.vehiclesConfig.getVehicles()) {
             int itemDamage = (Integer) vehicle.get("itemDamage");
             String name = (String) vehicle.get("name");
             String skinItem = (String) vehicle.get("skinItem");

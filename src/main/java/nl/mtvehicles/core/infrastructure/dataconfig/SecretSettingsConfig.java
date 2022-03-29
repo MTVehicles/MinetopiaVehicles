@@ -1,6 +1,7 @@
 package nl.mtvehicles.core.infrastructure.dataconfig;
 
 import nl.mtvehicles.core.infrastructure.enums.ConfigType;
+import nl.mtvehicles.core.infrastructure.enums.Language;
 import nl.mtvehicles.core.infrastructure.models.Config;
 
 public class SecretSettingsConfig extends Config {
@@ -21,7 +22,8 @@ public class SecretSettingsConfig extends Config {
         return this.getConfiguration().getString("messagesLanguage");
     }
 
-    public void setMessagesLanguage(String languageCode){
+    public void setMessagesLanguage(Language language){
+        String languageCode = language.getLanguageCode();
         this.getConfiguration().set("messagesLanguage", languageCode);
         this.save();
     }

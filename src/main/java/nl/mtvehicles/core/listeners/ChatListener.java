@@ -167,22 +167,22 @@ public class ChatListener implements Listener {
             e.setCancelled(true);
 
             if (e.getMessage().toLowerCase().contains("annule")) {
-                MenuUtils.kofferbakEdit(p);
+                MenuUtils.trunkEdit(p);
                 ConfigModule.messagesConfig.sendMessage(p, Message.ACTION_CANCELLED);
                 ItemUtils.edit.put(p.getUniqueId() + ".kofferbakRows", false);
 
-                if (e.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.kofferbakEdit(p));
+                if (e.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.trunkEdit(p));
             }
 
             if (!isInt(e.getMessage(), p)) {
-                MenuUtils.kofferbakEdit(p);
+                MenuUtils.trunkEdit(p);
                 ItemUtils.edit.put(p.getUniqueId() + ".kofferbakRows", false);
                 return;
             }
 
             int input = Integer.parseInt(e.getMessage());
             if (input < 1 || input > 6) {
-                MenuUtils.kofferbakEdit(p);
+                MenuUtils.trunkEdit(p);
                 ConfigModule.messagesConfig.sendMessage(p, Message.INVALID_INPUT);
                 ItemUtils.edit.put(p.getUniqueId() + ".kofferbakRows", false);
                 return;
@@ -194,7 +194,7 @@ public class ChatListener implements Listener {
             ConfigModule.messagesConfig.sendMessage(p, Message.ACTION_SUCCESSFUL);
             ItemUtils.edit.put(p.getUniqueId() + ".kofferbakRows", false);
 
-            if (e.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.kofferbakEdit(p));
+            if (e.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.trunkEdit(p));
 
         }
     }

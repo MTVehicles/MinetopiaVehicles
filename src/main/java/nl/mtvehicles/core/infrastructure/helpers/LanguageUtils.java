@@ -1,6 +1,7 @@
 package nl.mtvehicles.core.infrastructure.helpers;
 
 import nl.mtvehicles.core.Main;
+import nl.mtvehicles.core.infrastructure.enums.Language;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
@@ -25,11 +26,12 @@ public class LanguageUtils {
         languageCheck.put(p.getUniqueId(), true);
     }
 
-    public static void changeLanguage(Player p, String languageCode){
+    public static void changeLanguage(Player p, Language language){
+        String languageCode = language.getLanguageCode();
         languageCheck.put(p.getUniqueId(), false);
         if (ConfigModule.messagesConfig.setLanguageFile(languageCode)){
             p.sendMessage(ConfigModule.messagesConfig.getMessage(Message.LANGUAGE_HAS_CHANGED));
-            ConfigModule.secretSettings.setMessagesLanguage(languageCode);
+            ConfigModule.secretSettings.setMessagesLanguage(language);
             ConfigModule.secretSettings.save();
         } else {
             p.sendMessage(ChatColor.RED + "An error occurred whilst trying to set a new language.");

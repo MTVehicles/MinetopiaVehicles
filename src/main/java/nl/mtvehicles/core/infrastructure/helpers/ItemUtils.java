@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.infrastructure.helpers;
 
+import nl.mtvehicles.core.infrastructure.annotations.ToDo;
 import nl.mtvehicles.core.infrastructure.dataconfig.MessagesConfig;
 import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
 import nl.mtvehicles.core.infrastructure.enums.Message;
@@ -21,6 +22,7 @@ import java.util.UUID;
 
 import static nl.mtvehicles.core.infrastructure.modules.VersionModule.getServerVersion;
 
+@ToDo(comment = "Honestly, this code is awful. I hardly understand most of it. Also... why parsing to Strings and then parsing back to materials again?")
 public class ItemUtils {
     public static HashMap<String, Boolean> edit = new HashMap<>();
 

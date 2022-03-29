@@ -7,6 +7,7 @@ import nl.mtvehicles.core.commands.vehiclesubs.VehicleMenu;
 import nl.mtvehicles.core.infrastructure.annotations.ToDo;
 import nl.mtvehicles.core.infrastructure.dataconfig.MessagesConfig;
 import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
+import nl.mtvehicles.core.infrastructure.enums.Language;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
 import nl.mtvehicles.core.infrastructure.helpers.LanguageUtils;
@@ -30,6 +31,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
+import static nl.mtvehicles.core.infrastructure.helpers.MenuUtils.backItem;
+import static nl.mtvehicles.core.infrastructure.helpers.MenuUtils.closeItem;
 
 public class InventoryClickListener implements Listener {
 
@@ -81,11 +85,11 @@ public class InventoryClickListener implements Listener {
 
     @ToDo(comment = "To be translated.")
     private void chooseVehicleMenu(){
-        if (clickedItem.equals(ItemUtils.mItem("BARRIER", 1, (short) 0, "&4Sluiten", "&cDruk hier om het menu te sluiten!"))) {
+        if (clickedItem.equals(closeItem)) {
             p.closeInventory();
             return;
         }
-        if (clickedItem.equals(ItemUtils.mItem("WOOD_DOOR", 1, (short) 0, "&6Terug", "&eDruk hier om terug te gaan!"))) {
+        if (clickedItem.equals(backItem)) {
             p.openInventory(VehicleMenu.beginMenu.get(p.getUniqueId()));
             return;
         }
@@ -116,16 +120,16 @@ public class InventoryClickListener implements Listener {
     private void chooseLanguageMenu(){
         switch (clickedSlot) {
             case 9: //English
-                LanguageUtils.changeLanguage(p, "en");
+                LanguageUtils.changeLanguage(p, Language.EN);
                 break;
             case 11: //Dutch
-                LanguageUtils.changeLanguage(p, "nl");
+                LanguageUtils.changeLanguage(p, Language.NL);
                 break;
             case 13: //Spanish
-                LanguageUtils.changeLanguage(p, "es");
+                LanguageUtils.changeLanguage(p, Language.ES);
                 break;
             case 15: //Czech
-                LanguageUtils.changeLanguage(p, "cs");
+                LanguageUtils.changeLanguage(p, Language.CS);
                 break;
             case 17:
                 return;
@@ -151,9 +155,9 @@ public class InventoryClickListener implements Listener {
             String vehicleName = nbt.getString("mtvehicles.naam");
 
             Vehicle vehicle = new Vehicle();
-            List<String> members = ConfigModule.vehicleDataConfig.getConfig().getStringList("voertuig." + licensePlate + ".members");
-            List<String> riders = ConfigModule.vehicleDataConfig.getConfig().getStringList("voertuig." + licensePlate + ".riders");
-            List<String> trunkData = ConfigModule.vehicleDataConfig.getConfig().getStringList("voertuig." + licensePlate + ".kofferbakData");
+            List<String> members = ConfigModule.vehicleDataConfig.getMembers(licensePlate);
+            List<String> riders = ConfigModule.vehicleDataConfig.getRiders(licensePlate);
+            List<String> trunkData = ConfigModule.vehicleDataConfig.getTrunkData(licensePlate);
 
             vehicle.setLicensePlate(licensePlate);
             vehicle.setName(vehicleName);
@@ -211,7 +215,7 @@ public class InventoryClickListener implements Listener {
                 MenuUtils.benzineEdit(p);
                 break;
             case 12:
-                MenuUtils.kofferbakEdit(p);
+                MenuUtils.trunkEdit(p);
                 break;
             case 13:
                 MenuUtils.membersEdit(p);
@@ -231,11 +235,11 @@ public class InventoryClickListener implements Listener {
 
     @ToDo(comment = "To be translated.")
     private void vehicleSettingsMenu(){
-        if (clickedItem.equals(ItemUtils.mItem("BARRIER", 1, (short) 0, "&4Sluiten", "&cDruk hier om het menu te sluiten!"))) {
+        if (clickedItem.equals(closeItem)) {
             p.closeInventory();
             return;
         }
-        if (clickedItem.equals(ItemUtils.mItem("WOOD_DOOR", 1, (short) 0, "&6Terug", "&eDruk hier om terug te gaan!"))) {
+        if (clickedItem.equals(backItem)) {
             VehicleEdit.editMenu(p, p.getInventory().getItemInMainHand());
             return;
         }
@@ -278,13 +282,12 @@ public class InventoryClickListener implements Listener {
         }
     }
 
-    @ToDo(comment = "To be translated.")
     private void vehicleBenzineMenu(){
-        if (clickedItem.equals(ItemUtils.mItem("BARRIER", 1, (short) 0, "&4Sluiten", "&cDruk hier om het menu te sluiten!"))) {
+        if (clickedItem.equals(closeItem)) {
             p.closeInventory();
             return;
         }
-        if (clickedItem.equals(ItemUtils.mItem("WOOD_DOOR", 1, (short) 0, "&6Terug", "&eDruk hier om terug te gaan!"))) {
+        if (clickedItem.equals(backItem)) {
             VehicleEdit.editMenu(p, p.getInventory().getItemInMainHand());
             return;
         }
@@ -314,13 +317,12 @@ public class InventoryClickListener implements Listener {
         }
     }
 
-    @ToDo(comment = "To be translated.")
     private void vehicleTrunkMenu(){
-        if (clickedItem.equals(ItemUtils.mItem("BARRIER", 1, (short) 0, "&4Sluiten", "&cDruk hier om het menu te sluiten!"))) {
+        if (clickedItem.equals(closeItem)) {
             p.closeInventory();
             return;
         }
-        if (clickedItem.equals(ItemUtils.mItem("WOOD_DOOR", 1, (short) 0, "&6Terug", "&eDruk hier om terug te gaan!"))) {
+        if (clickedItem.equals(backItem)) {
             VehicleEdit.editMenu(p, p.getInventory().getItemInMainHand());
             return;
         }
@@ -336,7 +338,7 @@ public class InventoryClickListener implements Listener {
                 ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.TRUNK_ENABLED, true);
 
             ConfigModule.vehicleDataConfig.save();
-            MenuUtils.kofferbakEdit(p);
+            MenuUtils.trunkEdit(p);
         }
         if (menuItem.contains("2")) {
             p.closeInventory();
@@ -349,21 +351,19 @@ public class InventoryClickListener implements Listener {
         }
     }
 
-    @ToDo(comment = "To be translated.")
     private void vehicleMembersMenu(){
-        if (clickedItem.equals(ItemUtils.mItem("BARRIER", 1, (short) 0, "&4Sluiten", "&cDruk hier om het menu te sluiten!")))
+        if (clickedItem.equals(closeItem))
             p.closeInventory();
-        else if (clickedItem.equals(ItemUtils.mItem("WOOD_DOOR", 1, (short) 0, "&6Terug", "&eDruk hier om terug te gaan!")))
+        else if (clickedItem.equals(backItem))
             VehicleEdit.editMenu(p, p.getInventory().getItemInMainHand());
     }
 
-    @ToDo(comment = "To be translated.")
     private void vehicleSpeedMenu(){
-        if (clickedItem.equals(ItemUtils.mItem("BARRIER", 1, (short) 0, "&4Sluiten", "&cDruk hier om het menu te sluiten!"))) {
+        if (clickedItem.equals(closeItem)) {
             p.closeInventory();
             return;
         }
-        if (clickedItem.equals(ItemUtils.mItem("WOOD_DOOR", 1, (short) 0, "&6Terug", "&eDruk hier om terug te gaan!"))) {
+        if (clickedItem.equals(backItem)) {
             VehicleEdit.editMenu(p, p.getInventory().getItemInMainHand());
             return;
         }

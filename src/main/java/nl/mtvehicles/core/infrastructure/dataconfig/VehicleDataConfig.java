@@ -5,8 +5,10 @@ import nl.mtvehicles.core.infrastructure.enums.ConfigType;
 import nl.mtvehicles.core.infrastructure.enums.VehicleType;
 import nl.mtvehicles.core.infrastructure.models.Config;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -50,8 +52,32 @@ public class VehicleDataConfig extends Config {
     }
 
 
+    /**
+     * Whether the vehicleData.yml file is empty
+     */
+    public boolean isEmpty(){
+        return getConfiguration().getConfigurationSection("vehicle") == null;
+    }
+
+    public ConfigurationSection getVehicles(){
+        return getConfiguration().getConfigurationSection("vehicle");
+    }
+
+
     public int getDamage(String licensePlate){
         return (int) get(licensePlate, Option.SKIN_DAMAGE);
+    }
+
+    public List<String> getMembers(String licensePlate){
+        return (List<String>) get(licensePlate, Option.MEMBERS);
+    }
+
+    public List<String> getRiders(String licensePlate){
+        return (List<String>) get(licensePlate, Option.RIDERS);
+    }
+
+    public List<String> getTrunkData(String licensePlate){
+        return (List<String>) get(licensePlate, Option.TRUNK_DATA);
     }
 
     public VehicleType getType(String licensePlate){
@@ -62,6 +88,7 @@ public class VehicleDataConfig extends Config {
             return VehicleType.CAR;
         }
     }
+
 
     public boolean isHornEnabled(String license){
         final String path = "vehicle." + license + ".hornEnabled";
@@ -170,7 +197,8 @@ public class VehicleDataConfig extends Config {
         IS_OPEN("isOpen"),
         IS_GLOWING("isGlow"),
         HORN_ENABLED("hornEnabled"),
-        HEALTH("health");
+        HEALTH("health"),
+        NBT_VALUE("nbtValue");
 
         final private String path;
 

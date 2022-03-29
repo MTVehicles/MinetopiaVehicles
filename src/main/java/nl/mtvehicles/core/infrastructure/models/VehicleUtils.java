@@ -42,13 +42,15 @@ public final class VehicleUtils {
                         }
                         ItemStack is = ItemUtils.carItem3((Integer) skin.get("itemDamage"), ((String) skin.get("name")), (String) skin.get("SkinItem"), "mtcustom", nbtVal);
                         NBTItem nbt = new NBTItem(is);
-                        String kenteken = nbt.getString("mtvehicles.kenteken");
+                        String licensePlate = nbt.getString("mtvehicles.kenteken");
                         matchedVehicles.add(configVehicle);
+
                         Vehicle vehicle = new Vehicle();
-                        List<String> members = ConfigModule.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".members");
-                        List<String> riders = ConfigModule.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".riders");
-                        List<String> kof = ConfigModule.vehicleDataConfig.getConfig().getStringList("voertuig." + kenteken + ".kofferbakData");
-                        vehicle.setLicensePlate(kenteken);
+                        List<String> members = ConfigModule.vehicleDataConfig.getMembers(licensePlate);
+                        List<String> riders = ConfigModule.vehicleDataConfig.getRiders(licensePlate);
+                        List<String> trunkData = ConfigModule.vehicleDataConfig.getTrunkData(licensePlate);
+
+                        vehicle.setLicensePlate(licensePlate);
                         vehicle.setName((String) skin.get("name"));
                         vehicle.setVehicleType((String) configVehicle.get("vehicleType"));
                         vehicle.setSkinDamage((Integer) skin.get("itemDamage"));
@@ -61,7 +63,7 @@ public final class VehicleUtils {
                         vehicle.setTrunk((Boolean) configVehicle.get("kofferbakEnabled"));
                         vehicle.setTrunkRows(1);
                         vehicle.setFuelUsage(0.01);
-                        vehicle.setTrunkData(kof);
+                        vehicle.setTrunkData(trunkData);
                         vehicle.setAccelerationSpeed((Double) configVehicle.get("acceleratieSpeed"));
                         vehicle.setMaxSpeed((Double) configVehicle.get("maxSpeed"));
                         vehicle.setBrakingSpeed((Double) configVehicle.get("brakingSpeed"));
