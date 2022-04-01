@@ -143,7 +143,7 @@ public class DefaultConfig extends Config {
     }
 
     private List<String> getDisabledWorlds(){
-        return getConfiguration().getStringList("disabledWorlds");
+        return (List<String>) get(Option.DISABLED_WORLDS);
     }
 
     //--- Block Whitelist ---
@@ -152,7 +152,7 @@ public class DefaultConfig extends Config {
     }
 
     public List<Material> blockWhiteList() {
-        return getConfiguration().getStringList("blockWhitelist.list").stream().map(Material::getMaterial).collect(Collectors.toList());
+        return ((List<String>) get(Option.BLOCK_WHITELIST_LIST)).stream().map(Material::getMaterial).collect(Collectors.toList());
     }
 
     //--- Region Actions ---
