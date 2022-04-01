@@ -56,7 +56,7 @@ public class VehicleLeaveListener implements Listener {
                 if (VehicleData.autostand.get("MTVEHICLES_SEAT" + i + "_" + license) != null)
                     VehicleData.autostand.get("MTVEHICLES_SEAT" + i + "_" + license).remove();
             }
-            VehicleData.type.remove(license+"b");
+            VehicleData.type.remove(license); //.remove(license+"b") used to be here... why? maybe i'm missing something?
 
             if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.FUEL_ENABLED) && (boolean) ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.FUEL_ENABLED)) {
                 double fuel = VehicleData.fuel.get(license);

@@ -54,7 +54,7 @@ public class VehicleMovement {
             return;
         }
 
-        final VehicleType vehicleType = VehicleType.valueOf(VehicleData.type.get(license));
+        final VehicleType vehicleType = VehicleData.type.get(license);
         if (vehicleType == null) return;
 
         boolean falling = false;
@@ -471,7 +471,7 @@ public class VehicleMovement {
         final Location locBelow = new Location(loc.getWorld(), loc.getX(), loc.getY() - 0.2, loc.getZ(), loc.getYaw(), loc.getPitch());
 
         if (VehicleData.type.get(license) == null) return;
-        final VehicleType vehicleType = VehicleType.valueOf(VehicleData.type.get(license));
+        final VehicleType vehicleType = VehicleData.type.get(license);
         if (vehicleType == null) return;
         final Material block = locBelow.getBlock().getType();
         final String blockName = block.toString();
