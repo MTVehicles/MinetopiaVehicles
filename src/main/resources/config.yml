@@ -36,13 +36,32 @@ spelerSetOwner: false
 carPickup: false
 
 
+# --- Vehicle Health and Damage ---
+
+# Whether vehicles can be damaged.
+damageEnabled: false
+
+# Multiplier of the damage of ALL vehicles. Works similarly to fuelMultiplier.
+# Must be between 0.1 and 5. Default: 0.5 (If lower/higher, the default will be used.)
+damageMultiplier: 0.5
+
+
 # --- Helicopters & Planes
 
-# Maximum flying height for helicopters AND PLANES.
+# Maximum flying height for HELICOPTERS AND PLANES.
 maxFlyingHeight: 150
 
-# Minimum speed to take off (must be higher than 0)
+# Minimum speed FOR PLANES to take off (must be higher than 0)
 takeOffSpeed: 0.4
+
+# If set to true and HELICOPTER's out of fuel in the air, it will fall directly to the ground. (This does not affect airplanes, they simply glide to the ground)
+# All passengers in survival/adventure will take damage (specified by helicopterFallDamage below).
+# If damageEnabled = true, the fall will also result in the breakage of the vehicle.
+extremeHelicopterFall: false
+
+# Damage taken by all passengers when a helicopter falls 'extremely' fast (must be higher than 0)
+helicopterFallDamage: 40.0
+
 
 # --- Gas ---
 
@@ -58,16 +77,6 @@ jerrycans:
   - 25
   - 50
   - 75
-
-
-# --- Vehicle Health and Damage ---
-
-# Whether vehicles can be damaged.
-damageEnabled: false
-
-# Multiplier of the damage of ALL vehicles. Works similarly to fuelMultiplier.
-# Must be between 0.1 and 5. Default: 0.5 (If lower/higher, the default will be used.)
-damageMultiplier: 0.5
 
 
 # --- Horn ---

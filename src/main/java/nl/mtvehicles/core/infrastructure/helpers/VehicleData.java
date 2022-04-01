@@ -25,6 +25,7 @@ public class VehicleData {
     public static HashMap<String, ArmorStand> autostand = new HashMap<>();
     public static HashMap<String, ArmorStand> autostand2 = new HashMap<>();
     public static Map<String, Long> lastUsage = new HashMap<>();
+    public static HashMap<String, Boolean> fallDamage = new HashMap<>(); //Used for helicopters when 'extremely falling'
 
     public static HashMap<String, Integer> RotationSpeed = new HashMap<>();
     public static HashMap<String, Double> MaxSpeed = new HashMap<>();

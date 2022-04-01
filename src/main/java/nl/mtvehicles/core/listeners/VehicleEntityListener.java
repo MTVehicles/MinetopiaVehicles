@@ -33,8 +33,6 @@ public class VehicleEntityListener implements Listener {
         final Entity eventEntity = e.getEntity();
         final Entity damager = e.getDamager();
 
-        if (e.isCancelled()) return;
-
         if (!VehicleUtils.isVehicle(eventEntity)) return;
 
         if (damager instanceof Player) {
@@ -76,6 +74,8 @@ public class VehicleEntityListener implements Listener {
                 ConfigModule.messagesConfig.sendMessage(p, Message.VEHICLE_FULL);
                 return;
             }
+
+            if (VehicleData.fallDamage.get(license) != null && fuel > 2) VehicleData.fallDamage.remove(license);
 
             if (fuel + 5 > 100) {
                 int rest = (int) (100 - fuel);

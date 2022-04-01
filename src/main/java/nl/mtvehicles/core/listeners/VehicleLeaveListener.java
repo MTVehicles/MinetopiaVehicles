@@ -40,6 +40,12 @@ public class VehicleLeaveListener implements Listener {
                 ArmorStand as4 = VehicleData.autostand.get("MTVEHICLES_WIEKENS_" + license);
                 as4.setGravity(as4.getLocation().getBlock().getType().equals(Material.AIR));
             }
+
+            //If a helicopter is 'extremely falling' and player manages to leave it beforehand
+            if (vehicle.getVehicleType().isHelicopter() && (boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.EXTREME_HELICOPTER_FALL) && !entity.isOnGround()){
+                VehicleData.fallDamage.put(license, true); //Do not damage when entering afterwards
+            }
+
             BossBarUtils.removeBossBar(player, license);
             ArmorStand as = VehicleData.autostand.get("MTVEHICLES_MAIN_" + license);
             ArmorStand as2 = VehicleData.autostand.get("MTVEHICLES_SKIN_" + license);

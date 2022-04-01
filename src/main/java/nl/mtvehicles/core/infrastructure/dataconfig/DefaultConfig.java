@@ -247,6 +247,8 @@ public class DefaultConfig extends Config {
         TANK_TNT("tankTNT", false),
         TANK_COOLDOWN("tankCooldown", 10),
         DRIVE_UP("driveUp", "both"),
+        EXTREME_HELICOPTER_FALL("extremeHelicopterFall", false),
+        HELICOPTER_FALL_DAMAGE("helicopterFallDamage", 40.0),
         DRIVE_ON_CARPETS("driveOnCarpets", true),
         BLOCK_WHITELIST_ENABLED("blockWhitelist.enabled", false),
         BLOCK_WHITELIST_LIST("blockWhitelist.list", new ArrayList<>().add("GRAY_CONCRETE")),

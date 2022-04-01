@@ -1,6 +1,7 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
 import nl.mtvehicles.core.infrastructure.enums.Message;
+import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
@@ -26,6 +27,8 @@ public class VehicleRefill extends MTVehicleSubCommand {
         Vehicle vehicle = VehicleUtils.getByLicensePlate(licensePlate);
         vehicle.setFuel(100.0);
         vehicle.save();
+
+        if (VehicleData.fallDamage.get(licensePlate) != null) VehicleData.fallDamage.remove(licensePlate);
 
         sendMessage(ConfigModule.messagesConfig.getMessage(Message.REFILL_SUCCESSFUL));
         return true;

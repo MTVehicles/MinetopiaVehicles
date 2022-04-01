@@ -15,7 +15,7 @@ import static nl.mtvehicles.core.movement.PacketHandler.isObjectPacket;
 public class VehicleMovement1_12 extends VehicleMovement {
 
     @Override
-    protected boolean slabCheck(ArmorStand mainStand, String license) {
+    protected boolean slabCheck(ArmorStand mainStand) {
         final Location loc = getLocationOfBlockAhead(mainStand);
         final String locY = String.valueOf(mainStand.getLocation().getY());
         final Location locBlockAbove = new Location(loc.getWorld(), loc.getX(), loc.getY() + 1, loc.getZ(), loc.getYaw(), loc.getPitch());
