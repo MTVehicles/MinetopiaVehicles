@@ -40,6 +40,12 @@ public class VehicleLeaveListener implements Listener {
                 ArmorStand as4 = VehicleData.autostand.get("MTVEHICLES_WIEKENS_" + license);
                 as4.setGravity(as4.getLocation().getBlock().getType().equals(Material.AIR));
             }
+
+            //If a helicopter is 'extremely falling' and player manages to leave it beforehand
+            if (vehicle.getVehicleType().isHelicopter() && (boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.EXTREME_HELICOPTER_FALL) && !entity.isOnGround()){
+                VehicleData.fallDamage.put(license, true); //Do not damage when entering afterwards
+            }
+
             BossBarUtils.removeBossBar(player, license);
             ArmorStand as = VehicleData.autostand.get("MTVEHICLES_MAIN_" + license);
             ArmorStand as2 = VehicleData.autostand.get("MTVEHICLES_SKIN_" + license);
@@ -50,7 +56,7 @@ public class VehicleLeaveListener implements Listener {
                 if (VehicleData.autostand.get("MTVEHICLES_SEAT" + i + "_" + license) != null)
                     VehicleData.autostand.get("MTVEHICLES_SEAT" + i + "_" + license).remove();
             }
-            VehicleData.type.remove(license+"b");
+            VehicleData.type.remove(license); //.remove(license+"b") used to be here... why? maybe i'm missing something?
 
             if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.FUEL_ENABLED) && (boolean) ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.FUEL_ENABLED)) {
                 double fuel = VehicleData.fuel.get(license);

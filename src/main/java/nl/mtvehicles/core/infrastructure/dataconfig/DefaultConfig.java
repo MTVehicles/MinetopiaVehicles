@@ -143,7 +143,7 @@ public class DefaultConfig extends Config {
     }
 
     private List<String> getDisabledWorlds(){
-        return getConfiguration().getStringList("disabledWorlds");
+        return (List<String>) get(Option.DISABLED_WORLDS);
     }
 
     //--- Block Whitelist ---
@@ -152,7 +152,7 @@ public class DefaultConfig extends Config {
     }
 
     public List<Material> blockWhiteList() {
-        return getConfiguration().getStringList("blockWhitelist.list").stream().map(Material::getMaterial).collect(Collectors.toList());
+        return ((List<String>) get(Option.BLOCK_WHITELIST_LIST)).stream().map(Material::getMaterial).collect(Collectors.toList());
     }
 
     //--- Region Actions ---
@@ -247,6 +247,8 @@ public class DefaultConfig extends Config {
         TANK_TNT("tankTNT", false),
         TANK_COOLDOWN("tankCooldown", 10),
         DRIVE_UP("driveUp", "both"),
+        EXTREME_HELICOPTER_FALL("extremeHelicopterFall", false),
+        HELICOPTER_FALL_DAMAGE("helicopterFallDamage", 40.0),
         DRIVE_ON_CARPETS("driveOnCarpets", true),
         BLOCK_WHITELIST_ENABLED("blockWhitelist.enabled", false),
         BLOCK_WHITELIST_LIST("blockWhitelist.list", new ArrayList<>().add("GRAY_CONCRETE")),
