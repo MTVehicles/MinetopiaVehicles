@@ -1,5 +1,7 @@
 package nl.mtvehicles.core.infrastructure.enums;
 
+import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,6 +28,18 @@ public enum Language {
      */
     CS("Čeština"),
     /**
+     * Chinese
+     */
+    CN("中國人"),
+    /**
+     * German
+     */
+    DE("Deutsch"),
+    /**
+     * Turkish
+     */
+    TR("Türk"),
+    /**
      * Custom language one can create and use
      */
     CUSTOM("Custom language");
@@ -49,6 +63,9 @@ public enum Language {
      * @return Language code (e.g. "en")
      */
     public String getLanguageCode(){
+        if (this.equals(CUSTOM)) {
+            return ConfigModule.secretSettings.getMessagesLanguage();
+        }
         return this.toString().toLowerCase(Locale.ROOT);
     }
 
@@ -57,7 +74,7 @@ public enum Language {
      * @return Array of all supported languages
      */
     public static String[] getAllLanguages(){
-        String[] languages = {"en", "nl", "es", "cs"};
+        String[] languages = {"en", "nl", "es", "cs", "cn", "de", "tr"};
         return languages;
     }
 

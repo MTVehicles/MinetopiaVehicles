@@ -15,10 +15,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import static nl.mtvehicles.core.infrastructure.modules.VersionModule.getServerVersion;
 
@@ -247,12 +244,14 @@ public class ItemUtils {
         }
     }
 
+    /**
+     * @param lores You can use %nl% for a new line
+     */
     public static ItemStack mItem(String material, int amount, short durability, String text, String lores) {
         try {
             ItemStack is = new ItemStack(Material.getMaterial(material.toUpperCase()), amount);
             ItemMeta im = is.getItemMeta();
-            List<String> itemlore = new ArrayList<>();
-            itemlore.add(TextUtils.colorize(lores));
+            List<String> itemlore = Arrays.asList(TextUtils.colorize(lores).split("%nl%"));
             im.setLore(itemlore);
             if (getServerVersion().is1_12()) is.setDurability(durability);
             else ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
@@ -263,8 +262,7 @@ public class ItemUtils {
             try {
                 ItemStack is = new ItemStack(Material.matchMaterial(material, true), amount);
                 ItemMeta im = is.getItemMeta();
-                List<String> itemlore = new ArrayList<>();
-                itemlore.add(TextUtils.colorize(lores));
+                List<String> itemlore = Arrays.asList(TextUtils.colorize(lores).split("%nl%"));
                 im.setLore(itemlore);
                 if (getServerVersion().is1_12()) is.setDurability(durability);
                 else ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);

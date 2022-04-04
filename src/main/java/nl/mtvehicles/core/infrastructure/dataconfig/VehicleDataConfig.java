@@ -181,7 +181,7 @@ public class VehicleDataConfig extends Config {
         ACCELARATION_SPEED("acceleratieSpeed"),
         MAX_SPEED("maxSpeed"),
         MAX_SPEED_BACKWARDS("maxSpeedBackwards"),
-        ROTATE_SPEED("rotateSpeed"),
+        ROTATION_SPEED("rotateSpeed"),
         /**
          * Can be found as 'kofferbak' in vehicleData.yml
          */

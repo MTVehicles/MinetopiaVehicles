@@ -379,7 +379,7 @@ public class ChatListener implements Listener {
 
             if (!e.getMessage().toLowerCase().contains("annule")) {
                 String licensePlate = getLicensePlate(p);
-                ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.ROTATE_SPEED, Integer.parseInt(e.getMessage()));
+                ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.ROTATION_SPEED, Integer.parseInt(e.getMessage()));
                 ConfigModule.vehicleDataConfig.save();
                 ConfigModule.messagesConfig.sendMessage(p, Message.ACTION_SUCCESSFUL);
                 ItemUtils.edit.put(p.getUniqueId() + ".rotateSpeed", false);
