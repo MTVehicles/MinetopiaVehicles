@@ -1,3 +1,6 @@
+# Dutch translation
+# Recently added messages may be in English. That's because we now have 7+ languages and it is not feasible to update all of them every time.
+# More info can be found here: https://github.com/GamerJoep/MinetopiaVehicles/wiki/Translate-the-plugin
 helpInfo: "Verkijg je voertuig informatie"
 helpHelp: "Laat dit bericht zien"
 helpPublic: "Laat iedereen in je auto zitten"

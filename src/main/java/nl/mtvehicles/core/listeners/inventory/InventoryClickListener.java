@@ -118,21 +118,16 @@ public class InventoryClickListener implements Listener {
     }
 
     private void chooseLanguageMenu(){
-        switch (clickedSlot) {
-            case 9: //English
-                LanguageUtils.changeLanguage(p, Language.EN);
-                break;
-            case 11: //Dutch
-                LanguageUtils.changeLanguage(p, Language.NL);
-                break;
-            case 13: //Spanish
-                LanguageUtils.changeLanguage(p, Language.ES);
-                break;
-            case 15: //Czech
-                LanguageUtils.changeLanguage(p, Language.CS);
-                break;
-            case 17:
-                return;
+        if (clickedSlot == 0) LanguageUtils.changeLanguage(p, Language.EN);
+        else if (clickedSlot == 1) LanguageUtils.changeLanguage(p, Language.NL);
+        else if (clickedSlot == 2) LanguageUtils.changeLanguage(p, Language.ES);
+        else if (clickedSlot == 3) LanguageUtils.changeLanguage(p, Language.CS);
+        else if (clickedSlot == 4) LanguageUtils.changeLanguage(p, Language.DE);
+        else if (clickedSlot == 5) LanguageUtils.changeLanguage(p, Language.CN);
+        else if (clickedSlot == 6) LanguageUtils.changeLanguage(p, Language.TR);
+        else if (clickedSlot == 8) {
+            LanguageUtils.languageCheck.put(p.getUniqueId(), false);
+            p.sendMessage("§6You may find more information here: §e§nhttps://github.com/GamerJoep/MinetopiaVehicles/wiki/Translate-the-plugin");
         }
         p.closeInventory();
     }
