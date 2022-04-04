@@ -2,6 +2,7 @@ package nl.mtvehicles.core.infrastructure.helpers;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.infrastructure.annotations.ToDo;
+import nl.mtvehicles.core.infrastructure.dataconfig.MessagesConfig;
 import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.models.Config;
@@ -16,7 +17,6 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
-@ToDo(comment = "To be translated.")
 public class MenuUtils {
     public static HashMap<String, Integer> restoreId = new HashMap<>();
     public static HashMap<String, UUID> restoreUUID = new HashMap<>();
@@ -34,12 +34,14 @@ public class MenuUtils {
         String skinItem = ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.SKIN_ITEM).toString();
         short skinDamage = (short) ConfigModule.vehicleDataConfig.getDamage(licensePlate);
 
-        inv.setItem(10, ItemUtils.mItem2(skinItem, 1, skinDamage, "&6Naam Aanpassen", String.format("&7Huidige: &e%s", name)));
-        inv.setItem(13, ItemUtils.mItem("PAPER", 1, (short) 0, "&6Kenteken Aanpassen", String.format("&7Huidige: &e%s", licensePlate)));
+        MessagesConfig msg = ConfigModule.messagesConfig;
+
+        inv.setItem(10, ItemUtils.mItem2(skinItem, 1, skinDamage, "&6" + msg.getMessage(Message.EDIT_NAME), String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), name)));
+        inv.setItem(13, ItemUtils.mItem("PAPER", 1, (short) 0, "&6" + msg.getMessage(Message.EDIT_LICENSE_PLATE), String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), licensePlate)));
         if (isGlowing)
-            inv.setItem(16, ItemUtils.glowItem("BOOK", "&6Glow Aanpassen", String.format("&7Huidige: &e%s", isGlowing)));
+            inv.setItem(16, ItemUtils.glowItem("BOOK", "&6" + msg.getMessage(Message.TOGGLE_GLOW), String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), msg.getMessage(Message.TURNED_ON))));
         else
-            inv.setItem(16, ItemUtils.mItem("BOOK", 1, (short) 0, "&6Glow Aanpassen", String.format("&7Huidige: &e%s", isGlowing)));
+            inv.setItem(16, ItemUtils.mItem("BOOK", 1, (short) 0, "&6" + msg.getMessage(Message.TOGGLE_GLOW), String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), msg.getMessage(Message.TURNED_OFF))));
         DrawOptions(p, inv);
     }
 
@@ -67,9 +69,15 @@ public class MenuUtils {
         Vehicle vehicle = VehicleUtils.getByLicensePlate(licensePlate);
         if (vehicle == null) return;
 
-        ItemStack option1 = ItemUtils.mItem2("DIAMOND_HOE", 1, (short) 58, "&6Benzine", "&7Huidige: &e" + ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.FUEL_ENABLED).toString());
-        ItemStack option2 = ItemUtils.mItem2("DIAMOND_HOE", 1, (short) 58, "&6Huidige Benzine", String.format("&7Huidige: &e%s", vehicle.getFuel()));
-        ItemStack option3 = ItemUtils.mItem2("DIAMOND_HOE", 1, (short) 58, "&6Benzine Verbruik", String.format("&7Huidige: &e%s", vehicle.getFuelUsage()));
+        MessagesConfig msg = ConfigModule.messagesConfig;
+
+        ItemStack option1;
+        if ((boolean) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.FUEL_ENABLED))
+            option1 = ItemUtils.mItem2("DIAMOND_HOE", 1, (short) 58, "&6" + msg.getMessage(Message.TOGGLE_FUEL), String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), msg.getMessage(Message.TURNED_ON)));
+        else
+            option1 = ItemUtils.mItem2("DIAMOND_HOE", 1, (short) 58, "&6" + msg.getMessage(Message.TOGGLE_FUEL), String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), msg.getMessage(Message.TURNED_OFF)));
+        ItemStack option2 = ItemUtils.mItem2("DIAMOND_HOE", 1, (short) 58, "&6" + msg.getMessage(Message.CURRENT_FUEL), String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), vehicle.getFuel()));
+        ItemStack option3 = ItemUtils.mItem2("DIAMOND_HOE", 1, (short) 58, "&6" + msg.getMessage(Message.FUEL_USAGE), String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), vehicle.getFuelUsage()));
         DrawOptions(p, inv, option1, option2, option3);
     }
 
@@ -77,10 +85,15 @@ public class MenuUtils {
         Inventory inv = Bukkit.createInventory(null, 45, "Vehicle Kofferbak");
         NBTItem nbt = new NBTItem(p.getInventory().getItemInMainHand());
         String licensePlate = nbt.getString("mtvehicles.kenteken");
+        MessagesConfig msg = ConfigModule.messagesConfig;
 
-        ItemStack option1 = ItemUtils.mItem("CHEST", 1, (short) 0, "&6Kofferbak", "&7Huidige: &e" + ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.TRUNK_ENABLED).toString());
-        ItemStack option2 = ItemUtils.mItem("CHEST", 1, (short) 0, "&6Huidige Rows", "&7Huidige: &e" + ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.TRUNK_ROWS).toString());
-        ItemStack option3 = ItemUtils.mItem("CHEST", 1, (short) 0, "&6Open Kofferbak", "&7Huidige: &eClick to open");
+        ItemStack option1;
+        if ((boolean) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.TRUNK_ENABLED))
+            option1 = ItemUtils.mItem("CHEST", 1, (short) 0, "&6" + msg.getMessage(Message.TOGGLE_TRUNK), String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), msg.getMessage(Message.TURNED_ON)));
+        else
+            option1 = ItemUtils.mItem("CHEST", 1, (short) 0, "&6" + msg.getMessage(Message.TOGGLE_TRUNK), String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), msg.getMessage(Message.TURNED_OFF)));
+        ItemStack option2 = ItemUtils.mItem("CHEST", 1, (short) 0, "&6" + msg.getMessage(Message.EDIT_TRUNK_ROWS), String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.TRUNK_ROWS)));
+        ItemStack option3 = ItemUtils.mItem("CHEST", 1, (short) 0, "&6" + msg.getMessage(Message.OPEN_TRUNK),  "&7" + msg.getMessage(Message.CLICK_TO_OPEN));
         DrawOptions(p, inv, option1, option2, option3);
     }
 
@@ -92,24 +105,26 @@ public class MenuUtils {
         Vehicle vehicle = VehicleUtils.getByLicensePlate(licensePlate);
         if (vehicle == null) return;
 
-        ItemStack option1 = ItemUtils.mItem("PAPER", 1, (short) 0, "&6Owners", "&7Naam: &e" + Bukkit.getOfflinePlayer(vehicle.getOwnerUUID()).getName());
-        ItemStack option2 = ItemUtils.mItemRiders("PAPER", 1, (short) 0, "&6Riders", licensePlate);
-        ItemStack option3 = ItemUtils.mItemMembers("PAPER", 1, (short) 0, "&6Members", licensePlate);
+        ItemStack option1 = ItemUtils.mItem("PAPER", 1, (short) 0, "&6" + ConfigModule.messagesConfig.getMessage(Message.OWNER), String.format("&7%s: &e%s", ConfigModule.messagesConfig.getMessage(Message.NAME), Bukkit.getOfflinePlayer(vehicle.getOwnerUUID()).getName()));
+        ItemStack option2 = ItemUtils.mItemRiders("PAPER", 1, (short) 0, "&6" + ConfigModule.messagesConfig.getMessage(Message.RIDERS), licensePlate);
+        ItemStack option3 = ItemUtils.mItemMembers("PAPER", 1, (short) 0, "&6" + ConfigModule.messagesConfig.getMessage(Message.MEMBERS), licensePlate);
         DrawOptions(p, inv, option1, option2, option3);
     }
 
-    @ToDo(comment = "To be translated to all languages.")
     public static void speedEdit(Player p) {
         Inventory inv = Bukkit.createInventory(null, 45, "Vehicle Speed");
         NBTItem nbt = new NBTItem(p.getInventory().getItemInMainHand());
         String licensePlate = nbt.getString("mtvehicles.kenteken");
 
-        ItemStack option1 = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Acceleration Speed", "&7Current: &e" + ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.ACCELARATION_SPEED));
-        ItemStack option2 = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Max Speed", "&7Current: &e" + ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.MAX_SPEED));
-        ItemStack option3 = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Braking Speed", "&7Current: &e" + ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.BRAKING_SPEED));
-        ItemStack option4 = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Friction Speed", "&7Current: &e" + ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.FRICTION_SPEED));
-        ItemStack option5 = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Rotation Speed", "&7Current: &e" + ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.ROTATE_SPEED));
-        ItemStack option6 = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Max Speed Backwards", "&7Current: &e" + ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.MAX_SPEED_BACKWARDS));
+        VehicleDataConfig data = ConfigModule.vehicleDataConfig;
+        MessagesConfig msg = ConfigModule.messagesConfig;
+
+        ItemStack option1 = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6" + msg.getMessage(Message.ACCELERATION_SPEED), String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), data.get(licensePlate, VehicleDataConfig.Option.ACCELARATION_SPEED)));
+        ItemStack option2 = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6" + msg.getMessage(Message.MAX_SPEED), String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), data.get(licensePlate, VehicleDataConfig.Option.MAX_SPEED)));
+        ItemStack option3 = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6" + msg.getMessage(Message.BRAKING_SPEED), String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), data.get(licensePlate, VehicleDataConfig.Option.BRAKING_SPEED)));
+        ItemStack option4 = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6" + msg.getMessage(Message.FRICTION_SPEED), String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), data.get(licensePlate, VehicleDataConfig.Option.FRICTION_SPEED)));
+        ItemStack option5 = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6" + msg.getMessage(Message.ROTATION_SPEED), String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), data.get(licensePlate, VehicleDataConfig.Option.ROTATION_SPEED)));
+        ItemStack option6 = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6" + msg.getMessage(Message.MAX_SPEED_BACKWARDS), String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), data.get(licensePlate, VehicleDataConfig.Option.MAX_SPEED_BACKWARDS)));
 
         inv.setItem(10, new ItemFactory(option1).setNBT("mtvehicles.item", "1").toItemStack());
         inv.setItem(11, new ItemFactory(option2).setNBT("mtvehicles.item", "2").toItemStack());
@@ -144,8 +159,8 @@ public class MenuUtils {
             }
         }
 
-        inv.setItem(53, ItemUtils.mItem("SPECTRAL_ARROW", 1, (short) 0, "&cVolgende Pagina", "&c"));
-        inv.setItem(45, ItemUtils.mItem("SPECTRAL_ARROW", 1, (short) 0, "&cVorige Pagina", "&c"));
+        inv.setItem(53, ItemUtils.mItem("SPECTRAL_ARROW", 1, (short) 0, "&c" + ConfigModule.messagesConfig.getMessage(Message.NEXT_PAGE), "&c"));
+        inv.setItem(45, ItemUtils.mItem("SPECTRAL_ARROW", 1, (short) 0, "&c"  + ConfigModule.messagesConfig.getMessage(Message.PREVIOUS_PAGE), "&c"));
         for (int i = 36; i <= 44; i++) {
             inv.setItem(i, ItemUtils.mItem("STAINED_GLASS_PANE", 1, (short) 0, "&c", "&c"));
         }
@@ -185,8 +200,8 @@ public class MenuUtils {
             for (int i = 36; i <= 44; i++) {
                 inv.setItem(i, ItemUtils.mItem("STAINED_GLASS_PANE", 1, (short) 0, "&c", "&c"));
             }
-            inv.setItem(52, ItemUtils.mItem("SPECTRAL_ARROW", 1, (short) 0, "&cVolgende Pagina", "&c"));
-            inv.setItem(46, ItemUtils.mItem("SPECTRAL_ARROW", 1, (short) 0, "&cVorige Pagina", "&c"));
+            inv.setItem(53, ItemUtils.mItem("SPECTRAL_ARROW", 1, (short) 0, "&c" + ConfigModule.messagesConfig.getMessage(Message.NEXT_PAGE), "&c"));
+            inv.setItem(45, ItemUtils.mItem("SPECTRAL_ARROW", 1, (short) 0, "&c"  + ConfigModule.messagesConfig.getMessage(Message.PREVIOUS_PAGE), "&c"));
             p.openInventory(inv);
         }
     }

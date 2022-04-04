@@ -42,6 +42,7 @@ public class VehicleGiveVoucher extends MTVehicleSubCommand {
         }
 
         ItemUtils.createVoucher(carUuid, of);
+        sender.sendMessage(ConfigModule.messagesConfig.getMessage(Message.GIVE_VOUCHER_SUCCESS).replace("%p%", of.getName()));
         return true;
     }
 }

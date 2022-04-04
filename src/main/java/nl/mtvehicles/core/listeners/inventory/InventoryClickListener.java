@@ -4,7 +4,6 @@ import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.commands.vehiclesubs.VehicleEdit;
 import nl.mtvehicles.core.commands.vehiclesubs.VehicleMenu;
-import nl.mtvehicles.core.infrastructure.annotations.ToDo;
 import nl.mtvehicles.core.infrastructure.dataconfig.MessagesConfig;
 import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
 import nl.mtvehicles.core.infrastructure.enums.Language;
@@ -12,6 +11,7 @@ import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
 import nl.mtvehicles.core.infrastructure.helpers.LanguageUtils;
 import nl.mtvehicles.core.infrastructure.helpers.MenuUtils;
+import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
@@ -83,7 +83,6 @@ public class InventoryClickListener implements Listener {
         MenuUtils.getvehicleCMD(p, id.get(p.getUniqueId()), raw.get(p.getUniqueId()));
     }
 
-    @ToDo(comment = "To be translated.")
     private void chooseVehicleMenu(){
         if (clickedItem.equals(closeItem)) {
             p.closeInventory();
@@ -96,12 +95,12 @@ public class InventoryClickListener implements Listener {
 
         if (clickedItem.equals(ItemUtils.mItem("STAINED_GLASS_PANE", 1, (short) 0, "&c", "&c"))) return;
 
-        if (clickedItem.equals(ItemUtils.mItem("SPECTRAL_ARROW", 1, (short) 0, "&cVolgende Pagina", "&c"))) {
+        if (clickedSlot == 53) { //Next page
             MenuUtils.getvehicleCMD(p, id.get(p.getUniqueId()) + 1, raw.get(p.getUniqueId()));
             id.put(p.getUniqueId(), id.get(p.getUniqueId()) + 1);
             return;
         }
-        if (clickedItem.equals(ItemUtils.mItem("SPECTRAL_ARROW", 1, (short) 0, "&cVorige Pagina", "&c"))) {
+        if (clickedSlot == 45) { //Previous page
             if (id.get(p.getUniqueId()) > 1) {
                 MenuUtils.getvehicleCMD(p, id.get(p.getUniqueId()) - 1, raw.get(p.getUniqueId()));
                 id.put(p.getUniqueId(), id.get(p.getUniqueId()) - 1);
@@ -184,16 +183,15 @@ public class InventoryClickListener implements Listener {
         }
     }
 
-    @ToDo(comment = "To be translated.")
     private void vehicleRestoreMenu(){
         if (clickedItem.equals(ItemUtils.mItem("STAINED_GLASS_PANE", 1, (short) 0, "&c", "&c"))) return;
 
-        if (clickedItem.equals(ItemUtils.mItem("SPECTRAL_ARROW", 1, (short) 0, "&cVolgende Pagina", "&c"))) {
+        if (clickedSlot == 53) { //Next page
             MenuUtils.restoreCMD(p, Integer.parseInt(title.replace("Vehicle Restore ", "")) + 1, MenuUtils.restoreUUID.get("uuid"));
             return;
         }
 
-        if (clickedItem.equals(ItemUtils.mItem("SPECTRAL_ARROW", 1, (short) 0, "&cVorige Pagina", "&c"))) {
+        if (clickedSlot == 45) { //Previous page
             if (!(Integer.parseInt(title.replace("Vehicle Restore ", "")) - 1 < 1))
                 MenuUtils.restoreCMD(p, Integer.parseInt(title.replace("Vehicle Restore ", "")) - 1, MenuUtils.restoreUUID.get("uuid"));
             return;
@@ -219,16 +217,20 @@ public class InventoryClickListener implements Listener {
                 MenuUtils.speedEdit(p);
                 break;
             case 16: //Delete
-                NBTItem nbt = new NBTItem(p.getInventory().getItemInMainHand());
-                String licensePlate = nbt.getString("mtvehicles.kenteken");
-                VehicleUtils.getByLicensePlate(licensePlate).delete();
+                try {
+                    NBTItem nbt = new NBTItem(p.getInventory().getItemInMainHand());
+                    String licensePlate = nbt.getString("mtvehicles.kenteken");
+                    VehicleUtils.getByLicensePlate(licensePlate).delete();
+                    p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_DELETED)));
+                } catch (Exception e){
+                    p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_ALREADY_DELETED)));
+                }
                 p.getInventory().getItemInMainHand().setAmount(0);
                 p.closeInventory();
                 break;
         }
     }
 
-    @ToDo(comment = "To be translated.")
     private void vehicleSettingsMenu(){
         if (clickedItem.equals(closeItem)) {
             p.closeInventory();
@@ -242,35 +244,31 @@ public class InventoryClickListener implements Listener {
         NBTItem nbt = new NBTItem(p.getInventory().getItemInMainHand());
         String licensePlate = nbt.getString("mtvehicles.kenteken");
 
-        if (clickedItem.equals(ItemUtils.glowItem("BOOK", "&6Glow Aanpassen", "&7Huidige: &e" + ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.IS_GLOWING)))) {
-            ItemMeta itemMeta = p.getInventory().getItemInMainHand().getItemMeta();
-            itemMeta.removeEnchant(Enchantment.ARROW_INFINITE);
-            itemMeta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
-            p.getInventory().getItemInMainHand().setItemMeta(itemMeta);
+        boolean isGlowing = (boolean) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.IS_GLOWING);
 
-            ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.IS_GLOWING, false);
+        if (clickedSlot == 16){
+            ItemMeta itemMeta = p.getInventory().getItemInMainHand().getItemMeta();
+            if (isGlowing) {
+                itemMeta.removeEnchant(Enchantment.ARROW_INFINITE);
+                itemMeta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+                ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.IS_GLOWING, false);
+            } else {
+                itemMeta.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
+                itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+                ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.IS_GLOWING, true);
+            }
+            p.getInventory().getItemInMainHand().setItemMeta(itemMeta);
             ConfigModule.vehicleDataConfig.save();
             MenuUtils.menuEdit(p);
         }
 
-        if (clickedItem.equals(ItemUtils.mItem("BOOK", 1, (short) 0, "&6Glow Aanpassen", "&7Huidige: &e" + ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.IS_GLOWING)))) {
-            ItemMeta itemMeta = p.getInventory().getItemInMainHand().getItemMeta();
-            itemMeta.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
-            itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-            p.getInventory().getItemInMainHand().setItemMeta(itemMeta);
-
-            ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.IS_GLOWING, true);
-            ConfigModule.vehicleDataConfig.save();
-            MenuUtils.menuEdit(p);
-        }
-
-        if (clickedItem.equals(ItemUtils.mItem("PAPER", 1, (short) 0, "&6Kenteken Aanpassen", "&7Huidige: &e" + licensePlate))) {
+        if (clickedSlot == 13) {
             p.closeInventory();
             ConfigModule.messagesConfig.sendMessage(p, Message.TYPE_LICENSE_IN_CHAT);
             ItemUtils.edit.put(p.getUniqueId() + ".kenteken", true);
         }
 
-        if (clickedItem.getDurability() == (short) ConfigModule.vehicleDataConfig.getDamage(licensePlate)) {
+        if (clickedSlot == 10) {
             p.closeInventory();
             ConfigModule.messagesConfig.sendMessage(p, Message.TYPE_NAME_IN_CHAT);
             ItemUtils.edit.put(p.getUniqueId() + ".naam", true);
