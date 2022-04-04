@@ -31,6 +31,8 @@ Versions 1.12.1 and lower are NOT, and will NOT be supported.<br>
 
 > ⚠ We support ALL LATEST PATCH VERSIONS of Spigot/Paper 1.12+, except 1.14.4.<br>
 > For example 1.16.5 IS supported, but 1.16.3 is not (and similarly with all other versions).
+>
+> **Still confused?** [Click here](https://github.com/GamerJoep/MinetopiaVehicles/wiki/FAQ,-Frequent-Errors#4-i-am-getting-an-internal-error-occurred-error) to get a list of compatible versions.
 
 ### 1. Download the latest version
 - Latest stable releases are always published on <a href="https://www.spigotmc.org/resources/80910/">Spigot.org</a>.
