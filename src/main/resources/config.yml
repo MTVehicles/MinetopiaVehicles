@@ -131,6 +131,7 @@ disabledWorlds: []
 # If this option is true, players still CAN'T use jerrycans in regions with flag "mtv-gasstation=deny".
 
 # The 'fillJeryCans' option enables players to fill their JerryCans by right clicking on a lever/tripwire hook. This lever/tripwire hook HAS TO BE INSIDE A GAS STATION REGION.
+# Shift and right click to fill the whole jerrycan.
 # If needPermission inside fillJeryCan is set to true, players need to have the 'mtvehicles.filljerrycans' permission. Otherwise everyone can do it.
 
 # The 'price' option may ONLY be used if you have VAULT installed. (If that is not the case, it is automatically DISABLED).

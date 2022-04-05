@@ -40,16 +40,16 @@ public class VehicleFuel extends MTVehicleSubCommand {
         return true;
     }
 
-    public static ItemStack benzineItem(int liter, int literold) {
-        ItemStack is = new ItemFactory(Material.getMaterial("DIAMOND_HOE")).setAmount(1).setDurability((short) 58).setNBT("mtvehicles.benzineval", "" + literold).setNBT("mtvehicles.benzinesize", "" + liter).toItemStack();
+    public static ItemStack benzineItem(int maxFuel, int currentFuel) {
+        ItemStack is = new ItemFactory(Material.getMaterial("DIAMOND_HOE")).setAmount(1).setDurability((short) 58).setNBT("mtvehicles.benzineval", "" + currentFuel).setNBT("mtvehicles.benzinesize", "" + maxFuel).toItemStack();
         ItemMeta im = is.getItemMeta();
         List<String> itemlore = new ArrayList<>();
         itemlore.add(TextUtils.colorize("&8"));
-        itemlore.add(TextUtils.colorize("&7Jerrycan &e" + literold + "&7/&e" + liter + " &7liter"));
+        itemlore.add(TextUtils.colorize("&7Jerrycan &e" + currentFuel + "&7/&e" + maxFuel + " &7liter"));
         assert im != null;
         im.setLore(itemlore);
         im.setUnbreakable(true);
-        im.setDisplayName(TextUtils.colorize("&6Jerrycan " + liter + "L"));
+        im.setDisplayName(TextUtils.colorize("&6Jerrycan " + maxFuel + "L"));
         is.setItemMeta(im);
         return is;
     }
