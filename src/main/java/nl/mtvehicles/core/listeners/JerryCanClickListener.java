@@ -1,6 +1,7 @@
 package nl.mtvehicles.core.listeners;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
+import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.commands.vehiclesubs.VehicleFuel;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
@@ -60,31 +61,30 @@ public class JerryCanClickListener implements Listener {
     }
 
     private void fillJerryCan(Player p, ItemStack item){
-        int benval = (new NBTItem(item)).getInteger("mtvehicles.benzineval");
-        int bensize = (new NBTItem(item)).getInteger("mtvehicles.benzinesize");
+        int currentFuel = Integer.parseInt((new NBTItem(item)).getString("mtvehicles.benzineval"));
+        int maxFuel = Integer.parseInt((new NBTItem(item)).getString("mtvehicles.benzinesize"));
 
-        if (benval == bensize) ConfigModule.messagesConfig.sendMessage(p, Message.JERRYCAN_FULL);
+        if (currentFuel == maxFuel) ConfigModule.messagesConfig.sendMessage(p, Message.JERRYCAN_FULL);
 
-        if ((benval + 1) <= bensize){
+        if ((currentFuel + 1) <= maxFuel){
             double price = getFuelPrice();
             if (makePlayerPay(p, price)){
-                p.setItemInHand(VehicleFuel.benzineItem(bensize, benval + 1));
-                p.sendMessage(String.format(ConfigModule.messagesConfig.getMessage(Message.TRANSACTION_SUCCESSFUL), DependencyModule.vault.getMoneyFormat(price)));
+                p.setItemInHand(VehicleFuel.benzineItem(maxFuel, currentFuel + 1));
                 playJerryCanSound(p);
             }
         }
     }
 
     private void fillWholeJerryCan(Player p, ItemStack item){
-        int benval = (new NBTItem(item)).getInteger("mtvehicles.benzineval");
-        int bensize = (new NBTItem(item)).getInteger("mtvehicles.benzinesize");
-        if (benval == bensize) ConfigModule.messagesConfig.sendMessage(p, Message.JERRYCAN_FULL);
+        int currentFuel = Integer.parseInt((new NBTItem(item)).getString("mtvehicles.benzineval"));
+        int maxFuel = Integer.parseInt((new NBTItem(item)).getString("mtvehicles.benzinesize"));
 
-        int difference = bensize - benval;
+        if (currentFuel == maxFuel) ConfigModule.messagesConfig.sendMessage(p, Message.JERRYCAN_FULL);
+
+        int difference = maxFuel - currentFuel;
         double price = getFuelPrice(difference);
         if (makePlayerPay(p, price)){
-            p.setItemInHand(VehicleFuel.benzineItem(bensize, bensize));
-            p.sendMessage(String.format(ConfigModule.messagesConfig.getMessage(Message.TRANSACTION_SUCCESSFUL), DependencyModule.vault.getMoneyFormat(price)));
+            p.setItemInHand(VehicleFuel.benzineItem(maxFuel, maxFuel));
             playJerryCanSound(p);
         }
     }
@@ -110,12 +110,14 @@ public class JerryCanClickListener implements Listener {
             try {
                 p.getWorld().playSound(p.getLocation(), Sound.valueOf("BLOCK_NOTE_PLING"), 3.0F, 0.5F);
             } catch (IllegalArgumentException e) {
+                Main.logWarning("Could not play sound 'BLOCK_NOTE_PLING'.");
                 e.printStackTrace(); //The sound could not be played, hmmm.
             }
         } else {
             try {
                 p.getWorld().playSound(p.getLocation(), Sound.valueOf("BLOCK_NOTE_BLOCK_PLING"), 3.0F, 0.5F);
             } catch (IllegalArgumentException e) {
+                Main.logWarning("Could not play sound 'BLOCK_NOTE_BLOCK_PLING'.");
                 e.printStackTrace(); //The sound could not be played, hmmm.
             }
         }
