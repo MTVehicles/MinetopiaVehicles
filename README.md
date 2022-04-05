@@ -32,7 +32,7 @@ Versions 1.12.1 and lower are NOT, and will NOT be supported.<br>
 > ⚠ We support ALL LATEST PATCH VERSIONS of Spigot/Paper 1.12+, except 1.14.4.<br>
 > For example 1.16.5 IS supported, but 1.16.3 is not (and similarly with all other versions).
 >
-> **Still confused?** [Click here](https://github.com/GamerJoep/MinetopiaVehicles/wiki/FAQ,-Frequent-Errors#4-i-am-getting-an-internal-error-occurred-error) to get a list of compatible versions.
+> **Still confused?** [Click here](https://wiki.mtvehicles.eu/faq.html#_5-i-am-getting-an-internal-error-occurred-error) to get a list of compatible versions.
 
 ### 1. Download the latest version
 - Latest stable releases are always published on <a href="https://www.spigotmc.org/resources/80910/">Spigot.org</a>.
@@ -55,6 +55,8 @@ Restart the server. No explanation needed right?
 If this did not work don't hesitate to contact the support on our Discord server.
 
 ## Contact us!
+
+### ❗ We've got a new wiki! https://wiki.mtvehicles.eu/ ❗
 
 **Discord is the best place to report discovered bugs!**<br>
 <a href="https://discord.gg/vehicle" taget="_blank"><img src="https://discord.com/api/guilds/694809233819959308/widget.png?style=banner2"></a>
