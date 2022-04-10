@@ -4,15 +4,19 @@ import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
 import nl.mtvehicles.core.infrastructure.enums.Message;
+import nl.mtvehicles.core.infrastructure.helpers.ItemFactory;
 import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
@@ -20,6 +24,52 @@ import java.util.*;
 public final class VehicleUtils {
 
     private VehicleUtils(){}
+
+    public static void spawnVehicle(String licensePlate, Location location){
+        if (!existsByLicensePlate(licensePlate)) throw new IllegalArgumentException("Vehicle does not exists.");
+
+        ArmorStand standSkin = location.getWorld().spawn(location, ArmorStand.class);
+        standSkin.setVisible(false);
+        standSkin.setCustomName("MTVEHICLES_SKIN_" + licensePlate);
+        standSkin.getEquipment().setHelmet(ItemUtils.carItem5((int) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.SKIN_DAMAGE), ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.NAME).toString(), ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.SKIN_ITEM).toString(), licensePlate));
+
+        ArmorStand standMain = location.getWorld().spawn(location, ArmorStand.class);
+        standMain.setVisible(false);
+        standMain.setCustomName("MTVEHICLES_MAIN_" + licensePlate);
+
+        Vehicle vehicle = getByLicensePlate(licensePlate);
+
+        List<Map<String, Double>> seats = (List<Map<String, Double>>) vehicle.getVehicleData().get("seats");
+        Map<String, Double> mainSeat = seats.get(0);
+        Location locationMainSeat = new Location(location.getWorld(), location.getX() + mainSeat.get("x"), location.getY() + mainSeat.get("y"), location.getZ() + mainSeat.get("z"));
+        ArmorStand standMainSeat = locationMainSeat.getWorld().spawn(locationMainSeat, ArmorStand.class);
+        standMainSeat.setCustomName("MTVEHICLES_MAINSEAT_" + licensePlate);
+        standMainSeat.setGravity(false);
+        standMainSeat.setVisible(false);
+
+        if (ConfigModule.vehicleDataConfig.getType(licensePlate).isHelicopter()) {
+            List<Map<String, Double>> helicopterBlades = (List<Map<String, Double>>) vehicle.getVehicleData().get("wiekens");
+            Map<?, ?> blade = helicopterBlades.get(0);
+            Location locationBlade = new Location(location.getWorld(), location.getX() + (double) blade.get("z"), location.getY() + (double) blade.get("y"), location.getZ() + (double) blade.get("x"));
+            ArmorStand standRotors = locationBlade.getWorld().spawn(locationBlade, ArmorStand.class);
+            standRotors.setCustomName("MTVEHICLES_WIEKENS_" + licensePlate);
+            standRotors.setGravity(false);
+            standRotors.setVisible(false);
+
+            if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.HELICOPTER_BLADES_ALWAYS_ON)) {
+                ItemStack rotor = (new ItemFactory(Material.getMaterial("DIAMOND_HOE"))).setDurability((short) 1058).setName(TextUtils.colorize("&6Wieken")).setNBT("mtvehicles.kenteken", licensePlate).toItemStack();
+                ItemMeta itemMeta = rotor.getItemMeta();
+                List<String> lore = new ArrayList<>();
+                lore.add(TextUtils.colorize("&a"));
+                lore.add(TextUtils.colorize("&a" + licensePlate));
+                lore.add(TextUtils.colorize("&a"));
+                itemMeta.setLore(lore);
+                itemMeta.setUnbreakable(true);
+                rotor.setItemMeta(itemMeta);
+                standRotors.setHelmet((ItemStack) blade.get("item"));
+            }
+        }
+    }
 
     public static String getLicensePlate(ItemStack item){
         NBTItem nbt = new NBTItem(item);
