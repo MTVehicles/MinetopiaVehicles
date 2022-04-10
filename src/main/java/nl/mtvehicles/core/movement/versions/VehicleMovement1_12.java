@@ -15,9 +15,9 @@ import static nl.mtvehicles.core.movement.PacketHandler.isObjectPacket;
 public class VehicleMovement1_12 extends VehicleMovement {
 
     @Override
-    protected boolean slabCheck(ArmorStand mainStand) {
-        final Location loc = getLocationOfBlockAhead(mainStand);
-        final String locY = String.valueOf(mainStand.getLocation().getY());
+    protected boolean slabCheck() {
+        final Location loc = getLocationOfBlockAhead();
+        final String locY = String.valueOf(standMain.getLocation().getY());
         final Location locBlockAbove = new Location(loc.getWorld(), loc.getX(), loc.getY() + 1, loc.getZ(), loc.getYaw(), loc.getPitch());
         final Location locBlockBelow = new Location(loc.getWorld(), loc.getX(), loc.getY() - 1, loc.getZ(), loc.getYaw(), loc.getPitch());
         final String drivingOnY = locY.substring(locY.length() - 2);
@@ -42,7 +42,7 @@ public class VehicleMovement1_12 extends VehicleMovement {
                 return false;
             }
 
-            if (isOnGround) pushVehicleUp(mainStand, 0.0625);
+            if (isOnGround) pushVehicleUp(0.0625);
             return true;
         }
 
@@ -61,7 +61,7 @@ public class VehicleMovement1_12 extends VehicleMovement {
         if (ConfigModule.defaultConfig.driveUpSlabs().isSlabs()){
             if (isOnSlab) {
                 if (isPassable) {
-                    pushVehicleDown(mainStand, 0.5);
+                    pushVehicleDown(0.5);
                     return false; //Vehicle will go down
                 }
 
@@ -77,7 +77,7 @@ public class VehicleMovement1_12 extends VehicleMovement {
                 }
 
 
-                pushVehicleUp(mainStand, 0.5); //Vehicle will go up if there's a full block or a top/double slab
+                pushVehicleUp(0.5); //Vehicle will go up if there's a full block or a top/double slab
                 return true;
             }
 
@@ -91,9 +91,9 @@ public class VehicleMovement1_12 extends VehicleMovement {
                         }
 
                         if (isOnGround) {
-                            pushVehicleUp(mainStand, 0.5);
+                            pushVehicleUp(0.5);
                         } else { //Maybe they're on a carpet
-                            if ((0.5 - difference) > 0) pushVehicleUp(mainStand, 0.5 - difference);
+                            if ((0.5 - difference) > 0) pushVehicleUp(0.5 - difference);
                         }
                     }
                 }
@@ -118,9 +118,9 @@ public class VehicleMovement1_12 extends VehicleMovement {
                     }
 
                     if (isOnGround) {
-                        pushVehicleUp(mainStand, 1);
+                        pushVehicleUp(1);
                     } else { //Maybe they're on a carpet
-                        if ((1 - difference) > 0) pushVehicleUp(mainStand, 1 - difference);
+                        if ((1 - difference) > 0) pushVehicleUp(1 - difference);
                     }
 
                     return true;
@@ -129,7 +129,7 @@ public class VehicleMovement1_12 extends VehicleMovement {
 
             //If it's on a slab (might have been placed there)
             if (isPassable) {
-                pushVehicleDown(mainStand, 0.5);
+                pushVehicleDown(0.5);
                 return false; //Vehicle will go down
             }
 
@@ -144,14 +144,14 @@ public class VehicleMovement1_12 extends VehicleMovement {
                 return false; //Vehicle won't continue if there's a barrier above
             }
 
-            pushVehicleUp(mainStand, 0.5); //Vehicle will go up if there's a full block or a top/double slab
+            pushVehicleUp(0.5); //Vehicle will go up if there's a full block or a top/double slab
             return true;
 
         } else if (ConfigModule.defaultConfig.driveUpSlabs().isBoth()) {
 
             if (isOnSlab) {
                 if (isPassable) {
-                    pushVehicleDown(mainStand, 0.5);
+                    pushVehicleDown(0.5);
                     return false; //Vehicle will go down
                 }
 
@@ -166,7 +166,7 @@ public class VehicleMovement1_12 extends VehicleMovement {
                     return false; //Vehicle won't continue if there's a barrier above
                 }
 
-                pushVehicleUp(mainStand, 0.5); //Vehicle will go up if there's a full block or a top/double slab
+                pushVehicleUp(0.5); //Vehicle will go up if there's a full block or a top/double slab
                 return true;
             }
 
@@ -180,9 +180,9 @@ public class VehicleMovement1_12 extends VehicleMovement {
                 if (loc.getBlock().getType().toString().contains("STEP") || loc.getBlock().getType().toString().contains("SLAB")) {
                     if (!loc.getBlock().getType().toString().contains("DOUBLE") && data < 9) { //If it's a bottom slab, then:
                         if (isOnGround) {
-                            pushVehicleUp(mainStand, 0.5);
+                            pushVehicleUp(0.5);
                         } else { //Maybe they're on a carpet
-                            if ((0.5 - difference) > 0) pushVehicleUp(mainStand, 0.5 - difference);
+                            if ((0.5 - difference) > 0) pushVehicleUp(0.5 - difference);
                         }
                         return true;
                     }
@@ -190,9 +190,9 @@ public class VehicleMovement1_12 extends VehicleMovement {
 
                 //If it's another block or a top/double slab
                 if (isOnGround) {
-                    pushVehicleUp(mainStand, 1);
+                    pushVehicleUp(1);
                 } else { //Maybe they're on a carpet
-                    if ((1 - difference) > 0) pushVehicleUp(mainStand, 1 - difference);
+                    if ((1 - difference) > 0) pushVehicleUp(1 - difference);
                 }
 
                 return true;
@@ -201,7 +201,7 @@ public class VehicleMovement1_12 extends VehicleMovement {
 
             if (locBlockBelow.getBlock().getType().toString().contains("STEP") || locBlockBelow.getBlock().getType().toString().contains("SLAB")) {
                 if (!locBlockBelow.getBlock().getType().toString().contains("DOUBLE") && dataBelow < 9) { //If on a block, in front of it is air and below is bottom slab:
-                    pushVehicleDown(mainStand, 0.5);
+                    pushVehicleDown(0.5);
                     return false; //Vehicle will go down
                 }
             }
@@ -227,25 +227,28 @@ public class VehicleMovement1_12 extends VehicleMovement {
     }
 
     @Override
-    protected boolean steerIsJumping(Object packet){
-        if (!isObjectPacket(packet)) return false;
+    protected void rotateVehicle(float yaw){
+        schedulerRun(() -> {
+            standMain.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), yaw, standMain.getLocation().getPitch()));
+            standMainSeat.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), yaw, standMain.getLocation().getPitch()));
+            standSkin.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), yaw, standMain.getLocation().getPitch()));
+        });
+    }
 
+    @Override
+    protected boolean steerIsJumping(){
         PacketPlayInSteerVehicle ppisv = (PacketPlayInSteerVehicle) packet;
         return ppisv.c();
     }
 
     @Override
-    protected float steerGetXxa(Object packet){
-        if (!isObjectPacket(packet)) return 0;
-
+    protected float steerGetXxa(){
         PacketPlayInSteerVehicle ppisv = (PacketPlayInSteerVehicle) packet;
         return ppisv.a();
     }
 
     @Override
-    protected float steerGetZza(Object packet){
-        if (!isObjectPacket(packet)) return 0;
-
+    protected float steerGetZza(){
         PacketPlayInSteerVehicle ppisv = (PacketPlayInSteerVehicle) packet;
         return ppisv.b();
     }

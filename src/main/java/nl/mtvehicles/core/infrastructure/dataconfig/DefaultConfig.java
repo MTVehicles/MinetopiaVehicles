@@ -209,35 +209,26 @@ public class DefaultConfig extends Config {
         return returns;
     }
 
+    //--- Driving ---
+
+    public boolean usePlayerFacingDriving(){
+        return (boolean) get(Option.USE_PLAYER_FACING);
+    }
+
     /**
      * Options available in MTV's default configuration file (config.yml)
      */
     public enum Option {
-        AUTO_UPDATE("auto-update", true),
+        AUTO_UPDATE("autoUpdate", true),
         VEHICLE_MENU_SIZE("vehicleMenuSize", 3),
-        /**
-         * Can be found as 'wiekens-always-on' in config.yml
-         */
-        HELICOPTER_BLADES_ALWAYS_ON("wiekens-always-on", true),
-        /**
-         * Can be found as 'anwb' in config.yml
-         */
-        PICKUP_FROM_WATER("anwb", false),
-        /**
-         * Can be found as 'kofferbakEnabled' in config.yml
-         */
-        TRUNK_ENABLED("kofferbakEnabled", true),
-        /**
-         * Can be found as 'spelerSetOwner' in config.yml
-         */
-        PUT_ONESELF_AS_OWNER("spelerSetOwner", false),
+        HELICOPTER_BLADES_ALWAYS_ON("helicopterBladesAlwaysOn", true),
+        DISABLE_PICKUP_FROM_WATER("disablePickupFromWater", false),
+        TRUNK_ENABLED("trunkEnabled", true),
+        PUT_ONESELF_AS_OWNER("putOneselfAsOwner", false),
         MAX_FLYING_HEIGHT("maxFlyingHeight", 150),
         TAKE_OFF_SPEED("takeOffSpeed", 0.4),
         CAR_PICKUP("carPickup", false),
-        /**
-         * Can be found as 'benzine' in config.yml
-         */
-        FUEL_ENABLED("benzine", true),
+        FUEL_ENABLED("fuelEnabled", true),
         FUEL_MULTIPLIER("fuelMultiplier", 1),
         JERRYCANS("jerrycans", new ArrayList<>(Arrays.asList(25, 50, 75))),
         DAMAGE_ENABLED("damageEnabled", false),
@@ -264,7 +255,8 @@ public class DefaultConfig extends Config {
         GAS_STATIONS_FILL_JERRYCANS_PRICE_PER_LITRE("gasStations.fillJerryCans.price.pricePerLitre", 30.0),
         REGION_ACTIONS_PLACE("regionActions.place", "disabled"),
         REGION_ACTIONS_ENTER("regionActions.enter", "disabled"),
-        REGION_ACTIONS_PICKUP("regionActions.pickup", "disabled");
+        REGION_ACTIONS_PICKUP("regionActions.pickup", "disabled"),
+        USE_PLAYER_FACING("usePlayerFacing", false);
 
         final private String path;
         final private Object defaultValue;

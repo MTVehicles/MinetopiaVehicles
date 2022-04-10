@@ -75,7 +75,7 @@ public class TextUtils {
             return;
         }
         for (Entity entity : p.getWorld().getEntities()) {
-            if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.PICKUP_FROM_WATER) && !p.hasPermission("mtvehicles.anwb") && (entity.getLocation().clone().add(0.0, 0.9, 0.0).getBlock().getType().toString().contains("WATER"))) {
+            if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.DISABLE_PICKUP_FROM_WATER) && !p.hasPermission("mtvehicles.anwb") && (entity.getLocation().clone().add(0.0, 0.9, 0.0).getBlock().getType().toString().contains("WATER"))) {
                 ConfigModule.messagesConfig.sendMessage(p, Message.VEHICLE_IN_WATER);
                 return;
             }
@@ -176,7 +176,7 @@ public class TextUtils {
         if (VehicleUtils.getByLicensePlate(ken).isOwner(p) && !((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.CAR_PICKUP)) || p.hasPermission("mtvehicles.oppakken")) {
             for (World world : Bukkit.getServer().getWorlds()) {
                 for (Entity entity : world.getEntities()) {
-                    if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.PICKUP_FROM_WATER) && !p.hasPermission("mtvehicles.anwb") && entity.getLocation().clone().add(0.0, 0.9, 0.0).getBlock().getType().toString().contains("WATER")) {
+                    if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.DISABLE_PICKUP_FROM_WATER) && !p.hasPermission("mtvehicles.anwb") && entity.getLocation().clone().add(0.0, 0.9, 0.0).getBlock().getType().toString().contains("WATER")) {
                         ConfigModule.messagesConfig.sendMessage(p, Message.VEHICLE_IN_WATER);
                         return;
                     }
