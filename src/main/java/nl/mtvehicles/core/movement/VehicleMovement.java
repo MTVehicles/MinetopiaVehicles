@@ -92,13 +92,6 @@ public class VehicleMovement {
 
         schedulerRun(() -> standSkin.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw(), standMain.getLocation().getPitch())));
 
-        final int rotationSpeed = VehicleData.RotationSpeed.get(license);
-        final double maxSpeed = VehicleData.MaxSpeed.get(license);
-        final double accelerationSpeed = VehicleData.AccelerationSpeed.get(license);
-        final double brakingSpeed = VehicleData.BrakingSpeed.get(license);
-        final double maxSpeedBackwards = VehicleData.MaxSpeedBackwards.get(license);
-        final double frictionSpeed = VehicleData.FrictionSpeed.get(license);
-
         updateStand();
         if (!vehicleType.canFly()) slabCheck();
         mainSeat();
@@ -144,48 +137,12 @@ public class VehicleMovement {
             }
         }
 
-        rotation(rotationSpeed);
-
-        // Forwards × Backwards
-        if (steerGetZza() > 0.0) {
-            if (VehicleData.speed.get(license) < 0) {
-                VehicleData.speed.put(license, VehicleData.speed.get(license) + brakingSpeed);
-                return;
-            }
-            if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.FUEL_ENABLED) && (boolean) ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.FUEL_ENABLED)) {
-                putFuelUsage();
-            }
-            if (VehicleData.speed.get(license) > maxSpeed - accelerationSpeed) return;
-            VehicleData.speed.put(license, VehicleData.speed.get(license) + accelerationSpeed);
-        }
-        if (steerGetZza() < 0.0) {
-            if (VehicleData.speed.get(license) > 0) {
-                VehicleData.speed.put(license, VehicleData.speed.get(license) - brakingSpeed);
-                return;
-            }
-            if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.FUEL_ENABLED) && (boolean) ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.FUEL_ENABLED)) {
-                putFuelUsage();
-            }
-            if (VehicleData.speed.get(license) < -maxSpeedBackwards) return;
-            VehicleData.speed.put(license, VehicleData.speed.get(license) - accelerationSpeed);
-        }
-        if (steerGetZza() == 0.0) {
-            BigDecimal round = BigDecimal.valueOf(VehicleData.speed.get(license)).setScale(1, BigDecimal.ROUND_DOWN);
-            if (Double.parseDouble(String.valueOf(round)) == 0.0) {
-                VehicleData.speed.put(license, 0.0);
-                return;
-            }
-            if (Double.parseDouble(String.valueOf(round)) > 0.01) {
-                VehicleData.speed.put(license, VehicleData.speed.get(license) - frictionSpeed);
-                return;
-            }
-            if (Double.parseDouble(String.valueOf(round)) < 0.01) {
-                VehicleData.speed.put(license, VehicleData.speed.get(license) + frictionSpeed);
-            }
-        }
+        rotation();
+        move();
     }
 
-    protected void rotation(int rotationSpeed){
+    protected void rotation(){
+        final int rotationSpeed = VehicleData.RotationSpeed.get(license);
         final Location locBelow = new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY() - 0.2, standMain.getLocation().getZ(), standMain.getLocation().getYaw(), standMain.getLocation().getPitch());
 
         if (isFalling && vehicleType.isHelicopter()) return;
@@ -208,7 +165,55 @@ public class VehicleMovement {
         });
     }
 
-    @ToDo(comment = "Moving on snow.")
+    protected void move(){ // Forwards × Backwards
+        final double maxSpeed = VehicleData.MaxSpeed.get(license);
+        final double accelerationSpeed = VehicleData.AccelerationSpeed.get(license);
+        final double brakingSpeed = VehicleData.BrakingSpeed.get(license);
+        final double maxSpeedBackwards = VehicleData.MaxSpeedBackwards.get(license);
+        final Location locBelow = new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY() - 0.2, standMain.getLocation().getZ(), standMain.getLocation().getYaw(), standMain.getLocation().getPitch());
+
+        if (steerGetZza() == 0.0 && !locBelow.getBlock().getType().equals(Material.AIR)) {
+            putFrictionSpeed();
+        }
+
+        if (steerGetZza() > 0.0) {
+            if (VehicleData.speed.get(license) < 0) {
+                VehicleData.speed.put(license, VehicleData.speed.get(license) + brakingSpeed);
+                return;
+            }
+            putFuelUsage();
+
+            if (VehicleData.speed.get(license) > maxSpeed - accelerationSpeed) return;
+            VehicleData.speed.put(license, VehicleData.speed.get(license) + accelerationSpeed);
+        }
+        if (steerGetZza() < 0.0) {
+            if (VehicleData.speed.get(license) > 0) {
+                VehicleData.speed.put(license, VehicleData.speed.get(license) - brakingSpeed);
+                return;
+            }
+            putFuelUsage();
+
+            if (VehicleData.speed.get(license) < -maxSpeedBackwards) return;
+            VehicleData.speed.put(license, VehicleData.speed.get(license) - accelerationSpeed);
+        }
+    }
+
+    protected void putFrictionSpeed(){
+        final double frictionSpeed = VehicleData.FrictionSpeed.get(license);
+        BigDecimal round = BigDecimal.valueOf(VehicleData.speed.get(license)).setScale(1, BigDecimal.ROUND_DOWN);
+        if (Double.parseDouble(String.valueOf(round)) == 0.0) {
+            VehicleData.speed.put(license, 0.0);
+            return;
+        }
+        if (Double.parseDouble(String.valueOf(round)) > 0.01) {
+            VehicleData.speed.put(license, VehicleData.speed.get(license) - frictionSpeed);
+            return;
+        }
+        if (Double.parseDouble(String.valueOf(round)) < 0.01) {
+            VehicleData.speed.put(license, VehicleData.speed.get(license) + frictionSpeed);
+        }
+    }
+
     protected boolean slabCheck() { //Returns true if is moving upwards (in any way)
         final Location loc = getLocationOfBlockAhead();
         final String locY = String.valueOf(standMain.getLocation().getY());
@@ -240,11 +245,17 @@ public class VehicleMovement {
             return true;
         }
 
-        if (blockData instanceof Snow){
-            //Reserved for future update concerning Snow. Just stop for now.
-            //Does not include snow block - that's considered a full block.
-            VehicleData.speed.put(license, 0.0);
-            return false;
+        if (blockData instanceof Snow){ //Does not include snow block - that's considered a full block.
+            final int layers = ((Snow) blockData).getLayers();
+            double layerHeight = getLayerHeight(layers);
+            if (VehicleData.speed.get(license) > 0.1) VehicleData.speed.put(license, 0.1);
+
+            if (layerHeight == difference) return false; //Vehicle will continue
+
+            final double snowDifference = layerHeight - difference;
+            pushVehicleUp(snowDifference); //Will push either up or down, depending on the difference
+
+            return true;
         }
 
         if (blockData instanceof Fence || loc.getBlock().getType().toString().contains("WALL") || blockData instanceof TrapDoor){
@@ -413,6 +424,27 @@ public class VehicleMovement {
         return false;
     }
 
+    protected double getLayerHeight(int layers){
+        switch (layers){
+            case 1:
+                return 0.125;
+            case 2:
+                return 0.25;
+            case 3:
+                return 0.375;
+            case 4:
+                return 0.5;
+            case 5:
+                return 0.625;
+            case 6:
+                return 0.75;
+            case 7:
+                return 0.875;
+            default:
+                return 1;
+        }
+    }
+
     protected void mainSeat() {
         if (VehicleData.seatsize.get(license) != null) {
             for (int i = 2; i <= VehicleData.seatsize.get(license); i++) {
@@ -464,7 +496,6 @@ public class VehicleMovement {
         });
     }
 
-    @ToDo(comment = "Moving forwards when landing with no fuel - for more realistic movement.")
     protected void updateStand() {
         final Location loc = standMain.getLocation();
         final Location locBlockAhead = getLocationOfBlockAhead();
@@ -477,6 +508,13 @@ public class VehicleMovement {
         boolean space = !isFalling && steerIsJumping();
 
         if (vehicleType.canFly()) {
+
+            //Moving forwards when landing with no fuel - for more realistic movement.
+            if (vehicleType.isAirplane() && isFalling && !block.equals(Material.AIR)){
+                putFrictionSpeed();
+                standMain.setVelocity(new Vector(loc.getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.0, loc.getDirection().multiply(VehicleData.speed.get(license)).getZ()));
+                return;
+            }
 
             if ((vehicleType.isHelicopter() && !isPassable(locBelow.getBlock()))
                     || (vehicleType.isAirplane() && VehicleData.fuel.get(license) < 1 && !block.equals(Material.AIR))
@@ -558,6 +596,8 @@ public class VehicleMovement {
     }
 
     protected void putFuelUsage() {
+        if (!(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.FUEL_ENABLED) || !(boolean) ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.FUEL_ENABLED)) return;
+
         double fuelMultiplier = Double.parseDouble(ConfigModule.defaultConfig.get(DefaultConfig.Option.FUEL_MULTIPLIER).toString());
         if (fuelMultiplier < 0.1 || fuelMultiplier > 10) fuelMultiplier = 1; //Must be between 0.1 and 10. Default: 1
         final double newFuel = VehicleData.fuel.get(license) - (fuelMultiplier * VehicleData.fuelUsage.get(license));

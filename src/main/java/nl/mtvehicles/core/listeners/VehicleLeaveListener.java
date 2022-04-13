@@ -30,39 +30,34 @@ public class VehicleLeaveListener implements Listener {
 
         if (!VehicleUtils.isVehicle(entity)) return;
 
-        if (entity.getCustomName().contains("MTVEHICLES_MAINSEAT_")) {
+        if (!entity.getCustomName().contains("MTVEHICLES_MAINSEAT_")) return;
 
-            final String license = VehicleUtils.getLicensePlate(entity);
-            if (VehicleData.autostand.get("MTVEHICLES_MAIN_" + license) == null) return;
+        final String license = VehicleUtils.getLicensePlate(entity);
+        if (VehicleData.autostand.get("MTVEHICLES_MAIN_" + license) == null) return;
 
-            Vehicle vehicle = VehicleUtils.getByLicensePlate(license);
-            if (vehicle.getVehicleType().isHelicopter()) {
-                ArmorStand as4 = VehicleData.autostand.get("MTVEHICLES_WIEKENS_" + license);
-                as4.setGravity(as4.getLocation().getBlock().getType().equals(Material.AIR));
-            }
+        Vehicle vehicle = VehicleUtils.getByLicensePlate(license);
 
-            //If a helicopter is 'extremely falling' and player manages to leave it beforehand
-            if (vehicle.getVehicleType().isHelicopter() && (boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.EXTREME_HELICOPTER_FALL) && !entity.isOnGround()){
-                VehicleData.fallDamage.put(license, true); //Do not damage when entering afterwards
-            }
+        //If a helicopter is 'extremely falling' and player manages to leave it beforehand
+        if (vehicle.getVehicleType().isHelicopter() && (boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.EXTREME_HELICOPTER_FALL) && !entity.isOnGround()){
+            VehicleData.fallDamage.put(license, true); //Do not damage when entering afterwards
+        }
 
-            BossBarUtils.removeBossBar(player, license);
-            ArmorStand as = VehicleData.autostand.get("MTVEHICLES_MAIN_" + license);
-            ArmorStand as2 = VehicleData.autostand.get("MTVEHICLES_SKIN_" + license);
-            as.setGravity(true);
-            as2.setGravity(true);
-            List<Map<String, Integer>> seats = (List<Map<String, Integer>>) vehicle.getVehicleData().get("seats");
-            for (int i = 2; i <= seats.size(); i++) {
-                if (VehicleData.autostand.get("MTVEHICLES_SEAT" + i + "_" + license) != null)
-                    VehicleData.autostand.get("MTVEHICLES_SEAT" + i + "_" + license).remove();
-            }
-            VehicleData.type.remove(license); //.remove(license+"b") used to be here... why? maybe i'm missing something?
+        BossBarUtils.removeBossBar(player, license);
+        ArmorStand standMain = VehicleData.autostand.get("MTVEHICLES_MAIN_" + license);
+        ArmorStand standSkin = VehicleData.autostand.get("MTVEHICLES_SKIN_" + license);
+        standMain.setGravity(true);
+        standSkin.setGravity(true);
+        List<Map<String, Integer>> seats = (List<Map<String, Integer>>) vehicle.getVehicleData().get("seats");
+        for (int i = 2; i <= seats.size(); i++) {
+            if (VehicleData.autostand.get("MTVEHICLES_SEAT" + i + "_" + license) != null)
+                VehicleData.autostand.get("MTVEHICLES_SEAT" + i + "_" + license).remove();
+        }
+        VehicleData.type.remove(license); //.remove(license+"b") used to be here... why? maybe i'm missing something?
 
-            if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.FUEL_ENABLED) && (boolean) ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.FUEL_ENABLED)) {
-                double fuel = VehicleData.fuel.get(license);
-                ConfigModule.vehicleDataConfig.set(license, VehicleDataConfig.Option.FUEL, fuel);
-                ConfigModule.vehicleDataConfig.save();
-            }
+        if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.FUEL_ENABLED) && (boolean) ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.FUEL_ENABLED)) {
+            double fuel = VehicleData.fuel.get(license);
+            ConfigModule.vehicleDataConfig.set(license, VehicleDataConfig.Option.FUEL, fuel);
+            ConfigModule.vehicleDataConfig.save();
         }
     }
 }

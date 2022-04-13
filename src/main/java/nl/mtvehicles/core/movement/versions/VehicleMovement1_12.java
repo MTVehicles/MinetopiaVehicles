@@ -8,9 +8,6 @@ import nl.mtvehicles.core.movement.VehicleMovement;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.ArmorStand;
-
-import static nl.mtvehicles.core.movement.PacketHandler.isObjectPacket;
 
 public class VehicleMovement1_12 extends VehicleMovement {
 
@@ -46,10 +43,16 @@ public class VehicleMovement1_12 extends VehicleMovement {
             return true;
         }
 
-        if (loc.getBlock().getType().toString().contains("SNOW") && !loc.getBlock().getType().toString().contains("SNOW_BLOCK")){
-            //Reserved for future update concerning Snow. Just stop for now.
-            //Does not include snow block - that's considered a full block.
-            VehicleData.speed.put(license, 0.0);
+        if (loc.getBlock().getType().toString().contains("SNOW") && !loc.getBlock().getType().toString().contains("SNOW_BLOCK")){ //SNOW! - Does not include snow block - that's considered a full block.
+            final int layers = data + 1;
+            double layerHeight = getLayerHeight(layers);
+            if (VehicleData.speed.get(license) > 0.1) VehicleData.speed.put(license, 0.1);
+
+            if (layerHeight == difference) return false; //Vehicle will continue
+
+            final double snowDifference = layerHeight - difference;
+            pushVehicleUp(snowDifference); //Will push either up or down, depending on the difference
+
             return false;
         }
 
