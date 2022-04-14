@@ -4,6 +4,7 @@ import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.commands.vehiclesubs.VehicleEdit;
 import nl.mtvehicles.core.commands.vehiclesubs.VehicleMenu;
+import nl.mtvehicles.core.events.inventory.InventoryClickEvent;
 import nl.mtvehicles.core.infrastructure.dataconfig.MessagesConfig;
 import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
 import nl.mtvehicles.core.infrastructure.enums.Language;
@@ -20,8 +21,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -51,11 +50,11 @@ public class InventoryClickListener extends MTVListener {
     private Player p;
 
     public InventoryClickListener(){
-        super(new nl.mtvehicles.core.events.inventory.InventoryClickEvent());
+        super(new InventoryClickEvent());
     }
 
     @EventHandler
-    public void onClick(InventoryClickEvent e) {
+    public void onClick(org.bukkit.event.inventory.InventoryClickEvent e) {
         if (e.getCurrentItem() == null) return;
         if (!e.getCurrentItem().hasItemMeta()) return;
 

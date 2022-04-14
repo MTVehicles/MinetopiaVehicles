@@ -1,18 +1,23 @@
 package nl.mtvehicles.core.listeners.inventory;
 
+import nl.mtvehicles.core.events.inventory.InventoryCloseEvent;
 import nl.mtvehicles.core.infrastructure.helpers.LanguageUtils;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
+import nl.mtvehicles.core.infrastructure.models.MTVListener;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.List;
 
-public class InventoryCloseListener implements Listener {
+public class InventoryCloseListener extends MTVListener {
     public static HashMap<String, Double> speed = new HashMap<>();
+
+    public InventoryCloseListener(){
+        super(new InventoryCloseEvent());
+    }
 
     @EventHandler
     public void onInventoryClose(org.bukkit.event.inventory.InventoryCloseEvent e) {

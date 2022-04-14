@@ -1,9 +1,11 @@
 package nl.mtvehicles.core.listeners;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
+import nl.mtvehicles.core.events.VehicleVoucherEvent;
 import nl.mtvehicles.core.infrastructure.dataconfig.MessagesConfig;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
+import nl.mtvehicles.core.infrastructure.models.MTVListener;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -16,7 +18,12 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-public class VehicleVoucherListener implements Listener {
+public class VehicleVoucherListener extends MTVListener {
+
+    public VehicleVoucherListener(){
+        super(new VehicleVoucherEvent());
+    }
+
     @EventHandler
     public void onVoucherRedeem(PlayerInteractEvent e) {
         final Player p = e.getPlayer();
