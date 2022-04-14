@@ -9,6 +9,8 @@ import nl.mtvehicles.core.infrastructure.models.MTVListener;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -44,6 +46,12 @@ public class VehicleLeaveListener extends MTVListener {
         license = api.getLicensePlate();
 
         Vehicle vehicle = VehicleUtils.getByLicensePlate(license);
+
+        if (vehicle.getVehicleType().isHelicopter()) {
+            ArmorStand blades = VehicleData.autostand.get("MTVEHICLES_WIEKENS_" + license);
+            Location locBelow = new Location(blades.getLocation().getWorld(), blades.getLocation().getX(), blades.getLocation().getY() - 0.2, blades.getLocation().getZ(), blades.getLocation().getYaw(), blades.getLocation().getPitch());
+            blades.setGravity(locBelow.getBlock().getType().equals(Material.AIR));
+        }
 
         //If a helicopter is 'extremely falling' and player manages to leave it beforehand
         if (vehicle.getVehicleType().isHelicopter() && (boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.EXTREME_HELICOPTER_FALL) && !entity.isOnGround()){

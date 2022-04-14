@@ -27,6 +27,8 @@ public class InventoryCloseListener extends MTVListener {
         player = (Player) event.getPlayer();
         String stringTitle = event.getView().getTitle();
 
+        if (InventoryTitle.getByStringTitle(stringTitle) == null) return;
+
         InventoryCloseEvent api = (InventoryCloseEvent) getAPI();
         api.setTitle(InventoryTitle.getByStringTitle(stringTitle));
         callAPI();
