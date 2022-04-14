@@ -12,6 +12,7 @@ import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
 import nl.mtvehicles.core.infrastructure.helpers.LanguageUtils;
 import nl.mtvehicles.core.infrastructure.helpers.MenuUtils;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
+import nl.mtvehicles.core.infrastructure.models.MTVListener;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
@@ -35,7 +36,7 @@ import java.util.UUID;
 import static nl.mtvehicles.core.infrastructure.helpers.MenuUtils.backItem;
 import static nl.mtvehicles.core.infrastructure.helpers.MenuUtils.closeItem;
 
-public class InventoryClickListener implements Listener {
+public class InventoryClickListener extends MTVListener {
 
     public HashMap<UUID, ItemStack> vehicleMenu = new HashMap<>();
     public static HashMap<UUID, Inventory> skinMenu = new HashMap<>();
@@ -48,6 +49,10 @@ public class InventoryClickListener implements Listener {
     private int clickedSlot;
     private String title;
     private Player p;
+
+    public InventoryClickListener(){
+        super(new nl.mtvehicles.core.events.inventory.InventoryClickEvent());
+    }
 
     @EventHandler
     public void onClick(InventoryClickEvent e) {

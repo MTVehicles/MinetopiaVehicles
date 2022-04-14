@@ -1,14 +1,15 @@
 package nl.mtvehicles.core.listeners;
 
 import nl.mtvehicles.core.Main;
+import nl.mtvehicles.core.events.JoinEvent;
 import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
+import nl.mtvehicles.core.infrastructure.models.MTVListener;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.infrastructure.modules.VersionModule;
 import nl.mtvehicles.core.movement.MovementManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.PluginDescriptionFile;
 
@@ -19,7 +20,11 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 
-public class JoinListener implements Listener {
+public class JoinListener extends MTVListener {
+
+    public JoinListener(){
+        super(new JoinEvent());
+    }
 
     @EventHandler
     public void onJoinEventPlayer(PlayerJoinEvent e) {

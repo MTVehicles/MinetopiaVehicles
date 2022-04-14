@@ -2,33 +2,28 @@ package nl.mtvehicles.core.listeners;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.events.VehiclePlaceEvent;
-import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.enums.RegionAction;
-import nl.mtvehicles.core.infrastructure.helpers.ItemFactory;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
-import nl.mtvehicles.core.infrastructure.models.Vehicle;
+import nl.mtvehicles.core.infrastructure.models.MTVListener;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.infrastructure.modules.VersionModule;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+public class VehiclePlaceListener extends MTVListener {
 
-public class VehiclePlaceListener implements Listener {
+    public VehiclePlaceListener(){
+        super(new VehiclePlaceEvent());
+    }
+
     @EventHandler
     public void onVehiclePlace(final PlayerInteractEvent e) {
         final Player p = e.getPlayer();
@@ -65,13 +60,12 @@ public class VehiclePlaceListener implements Listener {
         }
 
 
-        VehiclePlaceEvent vehiclePlaceEvent = new VehiclePlaceEvent();
-        vehiclePlaceEvent.setLocation(e.getClickedBlock().getLocation());
-        vehiclePlaceEvent.setPlayer(e.getPlayer());
-        // You can set more things take a look at VehiclePlaceEvent
-        Bukkit.getPluginManager().callEvent(vehiclePlaceEvent);
+        VehiclePlaceEvent api = (VehiclePlaceEvent) getAPI();
+        api.setLocation(e.getClickedBlock().getLocation());
+        api.setPlayer(e.getPlayer());
+        callAPI();
 
-        if (vehiclePlaceEvent.isCancelled()) return;
+        if (api.isCancelled()) return;
 
 
         Location loc = e.getClickedBlock().getLocation();

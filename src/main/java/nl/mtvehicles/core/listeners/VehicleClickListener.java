@@ -1,9 +1,11 @@
 package nl.mtvehicles.core.listeners;
 
+import nl.mtvehicles.core.events.VehicleClickEvent;
 import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.enums.RegionAction;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
+import nl.mtvehicles.core.infrastructure.models.MTVListener;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
@@ -11,13 +13,17 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class VehicleClickListener implements Listener {
+public class VehicleClickListener extends MTVListener {
+
+    public VehicleClickListener(){
+        super(new VehicleClickEvent());
+    }
+
     private Map<String, Long> lastUsage = new HashMap<>();
 
     @EventHandler(priority = EventPriority.MONITOR)

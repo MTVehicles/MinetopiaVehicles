@@ -1,24 +1,28 @@
 package nl.mtvehicles.core.listeners;
 
+import nl.mtvehicles.core.events.VehicleLeaveEvent;
 import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
 import nl.mtvehicles.core.infrastructure.helpers.BossBarUtils;
 import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
+import nl.mtvehicles.core.infrastructure.models.MTVListener;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
-import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.spigotmc.event.entity.EntityDismountEvent;
 
 import java.util.List;
 import java.util.Map;
 
-public class VehicleLeaveListener implements Listener {
+public class VehicleLeaveListener extends MTVListener {
+
+    public VehicleLeaveListener(){
+        super(new VehicleLeaveEvent());
+    }
 
     @EventHandler
     public void onVehicleLeave(EntityDismountEvent e) {
