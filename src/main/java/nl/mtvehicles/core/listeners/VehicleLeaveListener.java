@@ -25,19 +25,19 @@ public class VehicleLeaveListener extends MTVListener {
     }
 
     @EventHandler
-    public void onVehicleLeave(EntityDismountEvent e) {
-        final Entity entity = e.getDismounted();
-        if (!(e.getEntity() instanceof Player)) return;
-        final Player player = (Player) e.getEntity();
-
-        if (e.isCancelled()) return;
+    public void onVehicleLeave(EntityDismountEvent event) {
+        this.event = event;
+        final Entity entity = event.getDismounted();
+        if (!(event.getEntity() instanceof Player)) return;
+        player = (Player) event.getEntity();
 
         if (!VehicleUtils.isVehicle(entity)) return;
-
         if (!entity.getCustomName().contains("MTVEHICLES_MAINSEAT_")) return;
-
         final String license = VehicleUtils.getLicensePlate(entity);
         if (VehicleData.autostand.get("MTVEHICLES_MAIN_" + license) == null) return;
+
+        callAPI();
+        if (isCancelled()) return;
 
         Vehicle vehicle = VehicleUtils.getByLicensePlate(license);
 

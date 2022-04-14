@@ -19,41 +19,41 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class VehicleClickListener extends MTVListener {
+    private Map<String, Long> lastUsage = new HashMap<>();
 
     public VehicleClickListener(){
         super(new VehicleClickEvent());
     }
 
-    private Map<String, Long> lastUsage = new HashMap<>();
-
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent e) {
-        final Entity entity = e.getRightClicked();
-        final Player p = e.getPlayer();
+    public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event) {
+        this.event = event;
+        player = event.getPlayer();
+        final Entity entity = event.getRightClicked();
         long lastUsed = 0L;
 
         if (!VehicleUtils.isVehicle(entity)) return;
-
-        e.setCancelled(true);
-
         if (entity.getCustomName().startsWith("VEHICLE")) return;
 
-        if (lastUsage.containsKey(p.getName()))
-            lastUsed = ((Long) lastUsage.get(p.getName())).longValue();
-
-        if (System.currentTimeMillis() - lastUsed >= 500) lastUsage.put(p.getName(), Long.valueOf(System.currentTimeMillis()));
+        if (lastUsage.containsKey(player.getName())) lastUsed = (lastUsage.get(player.getName())).longValue();
+        if (System.currentTimeMillis() - lastUsed >= 500) lastUsage.put(player.getName(), Long.valueOf(System.currentTimeMillis()));
         else return;
+
+        callAPI();
+        if (isCancelled()) return;
+
+        event.setCancelled(true);
 
         final String license = VehicleUtils.getLicensePlate(entity);
 
-        if (p.isSneaking()) {
+        if (player.isSneaking()) {
 
-            if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.PICKUP, e.getRightClicked().getLocation())){
-                ConfigModule.messagesConfig.sendMessage(p, Message.CANNOT_DO_THAT_HERE);
+            if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.PICKUP, event.getRightClicked().getLocation())){
+                ConfigModule.messagesConfig.sendMessage(player, Message.CANNOT_DO_THAT_HERE);
                 return;
             }
 
-            TextUtils.pickupVehicle(license, p);
+            TextUtils.pickupVehicle(license, player);
             return;
         }
 
@@ -61,16 +61,16 @@ public class VehicleClickListener extends MTVListener {
             Vehicle vehicle = VehicleUtils.getByLicensePlate(license);
             if (vehicle == null) return;
 
-            if ((boolean) ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.IS_OPEN) || vehicle.isOwner(p) || vehicle.canSit(p) || p.hasPermission("mtvehicles.ride")) {
+            if ((boolean) ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.IS_OPEN) || vehicle.isOwner(player) || vehicle.canSit(player) || player.hasPermission("mtvehicles.ride")) {
                 if (entity.isEmpty()) {
-                    entity.addPassenger(p);
-                    p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_ENTER_MEMBER).replace("%p%", VehicleUtils.getByLicensePlate(license).getOwnerName())));
+                    entity.addPassenger(player);
+                    player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_ENTER_MEMBER).replace("%p%", VehicleUtils.getByLicensePlate(license).getOwnerName())));
                 }
             } else {
-                p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_NO_RIDER_ENTER).replace("%p%", VehicleUtils.getByLicensePlate(license).getOwnerName())));
+                player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_NO_RIDER_ENTER).replace("%p%", VehicleUtils.getByLicensePlate(license).getOwnerName())));
             }
             return;
         }
-        TextUtils.createVehicle(license, p);
+        TextUtils.createVehicle(license, player);
     }
 }

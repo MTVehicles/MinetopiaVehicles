@@ -28,79 +28,84 @@ public class VehicleEntityListener extends MTVListener {
     public static HashMap<String, Double> speed = new HashMap<>();
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerInteractAtEntity(EntityDamageByEntityEvent e) {
-        final Entity eventEntity = e.getEntity();
-        final Entity damager = e.getDamager();
+    public void onPlayerInteractAtEntity(EntityDamageByEntityEvent event) {
+        this.event = event;
+        final Entity victim = event.getEntity();
+        final Entity damager = event.getDamager();
 
-        if (!VehicleUtils.isVehicle(eventEntity)) return;
+        if (!VehicleUtils.isVehicle(victim)) return;
 
-        if (damager instanceof Player) {
-            final Player p = (Player) damager;
-            final String license = VehicleUtils.getLicensePlate(eventEntity);
+        callAPI();
+        if (isCancelled()) return;
 
-            if (p.isSneaking() && !p.isInsideVehicle()) {
-                VehicleUtils.openTrunk(p, license);
-                e.setCancelled(true);
-                return;
-            }
+        if (!(damager instanceof Player)) {
+            checkDamage();
+            return;
+        }
 
-            if (!p.isInsideVehicle()) return;
+        player = (Player) damager;
+        final String license = VehicleUtils.getLicensePlate(victim);
 
-            ItemStack item = p.getInventory().getItemInMainHand();
+        if (player.isSneaking() && !player.isInsideVehicle()) {
+            VehicleUtils.openTrunk(player, license);
+            event.setCancelled(true);
+            return;
+        }
 
-            if (!item.hasItemMeta() || !new NBTItem(item).hasKey("mtvehicles.benzineval")){
-                checkDamage(e);
-                return;
-            }
+        if (!player.isInsideVehicle()) return;
 
-            NBTItem nbt = new NBTItem(item);
+        ItemStack item = player.getInventory().getItemInMainHand();
 
-            final double fuel = VehicleData.fuel.get(license);
-            final String benval = nbt.getString("mtvehicles.benzineval");
-            final String bensize = nbt.getString("mtvehicles.benzinesize");
+        if (!item.hasItemMeta() || !new NBTItem(item).hasKey("mtvehicles.benzineval")){
+            checkDamage();
+            return;
+        }
 
-            if (!ConfigModule.defaultConfig.canUseJerryCan(p)){
-                ConfigModule.messagesConfig.sendMessage(p, Message.NOT_IN_A_GAS_STATION);
-                return;
-            }
+        NBTItem nbt = new NBTItem(item);
 
-            if (Integer.parseInt(benval) < 1) {
-                ConfigModule.messagesConfig.sendMessage(p, Message.NO_FUEL);
-                return;
-            }
+        final double fuel = VehicleData.fuel.get(license);
+        final String benval = nbt.getString("mtvehicles.benzineval");
+        final String bensize = nbt.getString("mtvehicles.benzinesize");
 
-            if (fuel > 99) {
-                ConfigModule.messagesConfig.sendMessage(p, Message.VEHICLE_FULL);
-                return;
-            }
+        if (!ConfigModule.defaultConfig.canUseJerryCan(player)){
+            ConfigModule.messagesConfig.sendMessage(player, Message.NOT_IN_A_GAS_STATION);
+            return;
+        }
 
-            if (VehicleData.fallDamage.get(license) != null && fuel > 2) VehicleData.fallDamage.remove(license);
+        if (Integer.parseInt(benval) < 1) {
+            ConfigModule.messagesConfig.sendMessage(player, Message.NO_FUEL);
+            return;
+        }
 
-            if (fuel + 5 > 100) {
-                int rest = (int) (100 - fuel);
-                p.setItemInHand(VehicleFuel.benzineItem(Integer.parseInt(bensize), Integer.parseInt(benval) - rest));
-                VehicleData.fuel.put(license, VehicleData.fuel.get(license) + rest);
-                BossBarUtils.setBossBarValue(fuel / 100.0D, license);
-                return;
-            }
+        if (fuel > 99) {
+            ConfigModule.messagesConfig.sendMessage(player, Message.VEHICLE_FULL);
+            return;
+        }
 
-            if (!(Integer.parseInt(benval) < 5)) {
-                VehicleData.fuel.put(license, VehicleData.fuel.get(license) + 5);
-                BossBarUtils.setBossBarValue(fuel / 100.0D, license);
-                p.setItemInHand(VehicleFuel.benzineItem(Integer.parseInt(bensize), Integer.parseInt(benval) - 5));
-            } else {
-                VehicleData.fuel.put(license, Double.valueOf(VehicleData.fuel.get(license) + benval));
-                BossBarUtils.setBossBarValue(fuel / 100.0D, license);
-                p.setItemInHand(VehicleFuel.benzineItem(Integer.parseInt(bensize), 0));
-            }
+        if (VehicleData.fallDamage.get(license) != null && fuel > 2) VehicleData.fallDamage.remove(license);
+
+        if (fuel + 5 > 100) {
+            int rest = (int) (100 - fuel);
+            player.setItemInHand(VehicleFuel.benzineItem(Integer.parseInt(bensize), Integer.parseInt(benval) - rest));
+            VehicleData.fuel.put(license, VehicleData.fuel.get(license) + rest);
+            BossBarUtils.setBossBarValue(fuel / 100.0D, license);
+            return;
+        }
+
+        if (!(Integer.parseInt(benval) < 5)) {
+            VehicleData.fuel.put(license, VehicleData.fuel.get(license) + 5);
+            BossBarUtils.setBossBarValue(fuel / 100.0D, license);
+            player.setItemInHand(VehicleFuel.benzineItem(Integer.parseInt(bensize), Integer.parseInt(benval) - 5));
         } else {
-            checkDamage(e);
+            VehicleData.fuel.put(license, Double.valueOf(VehicleData.fuel.get(license) + benval));
+            BossBarUtils.setBossBarValue(fuel / 100.0D, license);
+            player.setItemInHand(VehicleFuel.benzineItem(Integer.parseInt(bensize), 0));
         }
     }
 
-    public static void checkDamage(EntityDamageByEntityEvent e){
-        final double damage = e.getDamage();
-        final String license = VehicleUtils.getLicensePlate(e.getEntity());
+    public void checkDamage(){
+        final double damage = ((EntityDamageByEntityEvent) event).getDamage();
+        final String license = VehicleUtils.getLicensePlate(((EntityDamageByEntityEvent) event).getEntity());
 
         if (!(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.DAMAGE_ENABLED)) return;
         if (VehicleUtils.getByLicensePlate(license) == null) return;

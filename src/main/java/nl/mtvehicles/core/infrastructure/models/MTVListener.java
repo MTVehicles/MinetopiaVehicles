@@ -21,6 +21,10 @@ public abstract class MTVListener implements Listener {
     }
 
     protected boolean isCancelled(){
+        if (event == null) throw new NullPointerException("Cannot check if event is cancelled if event is null.");
+
+        if (getAPI().isCancelled()) return true;
+
         if (VersionModule.getServerVersion().isOld()){
             try {
                 Method method = event.getClass().getDeclaredMethod("isCancelled");
@@ -40,6 +44,7 @@ public abstract class MTVListener implements Listener {
     }
 
     protected void callAPI(){
+        api.setPlayer(player);
         api.call();
     }
 }

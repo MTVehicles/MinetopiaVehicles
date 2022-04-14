@@ -21,84 +21,83 @@ import org.bukkit.inventory.ItemStack;
 
 public class JerryCanClickListener extends MTVListener {
 
+    private Action action;
+    private ItemStack item;
+
     public JerryCanClickListener(){
         super(new JerryCanClickEvent());
     }
 
     @EventHandler
-    public void onJerryCanClick(final PlayerInteractEvent e) {
-        final Player p = e.getPlayer();
-        final Action action = e.getAction();
-        final ItemStack item = e.getItem();
+    public void onJerryCanClick(final PlayerInteractEvent event) {
+        this.event = event;
+        player = event.getPlayer();
+        action = event.getAction();
+        item = event.getItem();
 
-        if (e.isCancelled()) return;
-        if (!VersionModule.getServerVersion().isOld()){
-            if (((org.bukkit.event.Cancellable) e).isCancelled()) return;
-        }
+        Block clickedBlock = event.getClickedBlock();
 
-        if (e.getItem() == null) return;
-
-        if (!e.getItem().hasItemMeta()
-                || !(new NBTItem(e.getItem())).hasKey("mtvehicles.benzinesize")
-                || e.getClickedBlock() == null
+        if (!action.equals(Action.RIGHT_CLICK_BLOCK)) return;
+        if (item == null) return;
+        if (!item.hasItemMeta()
+                || !(new NBTItem(item)).hasKey("mtvehicles.benzinesize")
+                || clickedBlock == null
         ) return;
-
-        e.setCancelled(true);
-
-        if (e.getHand() != EquipmentSlot.HAND) {
-            e.getPlayer().sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.WRONG_HAND)));
+        if (event.getHand() != EquipmentSlot.HAND) {
+            event.getPlayer().sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.WRONG_HAND)));
             return;
         }
 
-        if (!action.equals(Action.RIGHT_CLICK_BLOCK)) return;
+        callAPI();
+        if (isCancelled()) return;
 
-        Block clickedBlock = e.getClickedBlock();
+        event.setCancelled(true);
 
-        if (!ConfigModule.defaultConfig.canFillJerryCans(p, clickedBlock.getLocation())) return;
-        final boolean isSneaking = p.isSneaking();
+        if (!ConfigModule.defaultConfig.canFillJerryCans(player, clickedBlock.getLocation())) return;
+        final boolean isSneaking = player.isSneaking();
 
         if (clickedBlock.getType().toString().contains("LEVER") && ConfigModule.defaultConfig.isFillJerryCansLeverEnabled()) {
-            if (isSneaking) fillWholeJerryCan(p, item);
-            else fillJerryCan(p, item);
+            if (isSneaking) fillWholeJerryCan();
+            else fillJerryCan();
         } else if (clickedBlock.getType().toString().contains("TRIPWIRE_HOOK") && ConfigModule.defaultConfig.isFillJerryCansTripwireHookEnabled()) {
-            if (isSneaking) fillWholeJerryCan(p, item);
-            else fillJerryCan(p, item);
+            if (isSneaking) fillWholeJerryCan();
+            else fillJerryCan();
         }
     }
 
-    private void fillJerryCan(Player p, ItemStack item){
+    private void fillJerryCan(){
         int currentFuel = Integer.parseInt((new NBTItem(item)).getString("mtvehicles.benzineval"));
         int maxFuel = Integer.parseInt((new NBTItem(item)).getString("mtvehicles.benzinesize"));
 
-        if (currentFuel == maxFuel) ConfigModule.messagesConfig.sendMessage(p, Message.JERRYCAN_FULL);
+        if (currentFuel == maxFuel) ConfigModule.messagesConfig.sendMessage(player, Message.JERRYCAN_FULL);
 
         if ((currentFuel + 1) <= maxFuel){
             double price = getFuelPrice();
-            if (makePlayerPay(p, price)){
-                p.setItemInHand(VehicleFuel.benzineItem(maxFuel, currentFuel + 1));
-                playJerryCanSound(p);
+            if (makePlayerPay(price)){
+                player.setItemInHand(VehicleFuel.benzineItem(maxFuel, currentFuel + 1));
+                playJerryCanSound();
             }
         }
     }
 
-    private void fillWholeJerryCan(Player p, ItemStack item){
+    private void fillWholeJerryCan(){
         int currentFuel = Integer.parseInt((new NBTItem(item)).getString("mtvehicles.benzineval"));
         int maxFuel = Integer.parseInt((new NBTItem(item)).getString("mtvehicles.benzinesize"));
 
-        if (currentFuel == maxFuel) ConfigModule.messagesConfig.sendMessage(p, Message.JERRYCAN_FULL);
+        if (currentFuel == maxFuel) ConfigModule.messagesConfig.sendMessage(player, Message.JERRYCAN_FULL);
 
         int difference = maxFuel - currentFuel;
         double price = getFuelPrice(difference);
-        if (makePlayerPay(p, price)){
-            p.setItemInHand(VehicleFuel.benzineItem(maxFuel, maxFuel));
-            playJerryCanSound(p);
+        if (makePlayerPay(price)){
+            player.setItemInHand(VehicleFuel.benzineItem(maxFuel, maxFuel));
+            playJerryCanSound();
         }
     }
 
-    private boolean makePlayerPay(Player p, double price){ //returns true if payed/doesn't have to, false if didn't pay/error
+    private boolean makePlayerPay(double price){ //returns true if payed/doesn't have to, false if didn't pay/error
         if (!ConfigModule.defaultConfig.isFillJerryCanPriceEnabled()) return true; //it isn't enabled, so just fill the jerrycan...
 
-        return DependencyModule.vault.withdrawMoneyPlayer(p, price);
+        return DependencyModule.vault.withdrawMoneyPlayer(player, price);
     }
 
     private double getFuelPrice(){
@@ -109,19 +108,19 @@ public class JerryCanClickListener extends MTVListener {
         return litres * ConfigModule.defaultConfig.getFillJerryCanPrice();
     }
 
-    private void playJerryCanSound(Player p){
+    private void playJerryCanSound(){
         if (!ConfigModule.defaultConfig.jerryCanPlaySound()) return;
 
         if (VersionModule.getServerVersion().is1_12()) { //1.12 has different names
             try {
-                p.getWorld().playSound(p.getLocation(), Sound.valueOf("BLOCK_NOTE_PLING"), 3.0F, 0.5F);
+                player.getWorld().playSound(player.getLocation(), Sound.valueOf("BLOCK_NOTE_PLING"), 3.0F, 0.5F);
             } catch (IllegalArgumentException e) {
                 Main.logWarning("Could not play sound 'BLOCK_NOTE_PLING'.");
                 e.printStackTrace(); //The sound could not be played, hmmm.
             }
         } else {
             try {
-                p.getWorld().playSound(p.getLocation(), Sound.valueOf("BLOCK_NOTE_BLOCK_PLING"), 3.0F, 0.5F);
+                player.getWorld().playSound(player.getLocation(), Sound.valueOf("BLOCK_NOTE_BLOCK_PLING"), 3.0F, 0.5F);
             } catch (IllegalArgumentException e) {
                 Main.logWarning("Could not play sound 'BLOCK_NOTE_BLOCK_PLING'.");
                 e.printStackTrace(); //The sound could not be played, hmmm.

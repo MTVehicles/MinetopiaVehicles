@@ -1,13 +1,15 @@
 package nl.mtvehicles.core.infrastructure.models;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class MTVEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
-    private boolean cancelled = false;
+    protected boolean cancelled = false;
+    private Player player;
 
     @Override
     public @NotNull HandlerList getHandlers() {
@@ -22,17 +24,24 @@ public abstract class MTVEvent extends Event {
     }
 
     /**
-     * Check whether the event is cancelled
+     * Check whether the event is cancelled.
+     * If event isn't cancellable, always returns false
      */
     public boolean isCancelled() {
         return this.cancelled;
     }
 
     /**
-     * Set whether the event is cancelled
-     * @param cancelled
+     * Get player
      */
-    public void setCancelled(boolean cancelled) {
-        this.cancelled = cancelled;
+    public Player getPlayer() {
+        return player;
+    }
+
+    /**
+     * Set player
+     */
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 }

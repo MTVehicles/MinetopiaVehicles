@@ -25,21 +25,22 @@ public class VehicleVoucherListener extends MTVListener {
     }
 
     @EventHandler
-    public void onVoucherRedeem(PlayerInteractEvent e) {
-        final Player p = e.getPlayer();
-        final Action action = e.getAction();
-        final ItemStack item = e.getItem();
-
-        if (e.isCancelled()) return;
+    public void onVoucherRedeem(PlayerInteractEvent event) {
+        this.event = event;
+        player = event.getPlayer();
+        final Action action = event.getAction();
+        final ItemStack item = event.getItem();
 
         if (item == null || item.getType() != Material.PAPER) return;
         NBTItem nbt = new NBTItem(item);
-
         if (!nbt.hasKey("mtvehicles.item")) return;
 
-        if (e.getHand() != EquipmentSlot.HAND) {
-            e.setCancelled(true);
-            p.sendMessage(ConfigModule.messagesConfig.getMessage(Message.WRONG_HAND));
+        callAPI();
+        if (isCancelled()) return;
+
+        if (event.getHand() != EquipmentSlot.HAND) {
+            event.setCancelled(true);
+            player.sendMessage(ConfigModule.messagesConfig.getMessage(Message.WRONG_HAND));
             return;
         }
 
@@ -48,7 +49,7 @@ public class VehicleVoucherListener extends MTVListener {
             MessagesConfig msg = ConfigModule.messagesConfig;
             inv.setItem(11, ItemUtils.woolItem("WOOL", "RED_WOOL", 1, (short) 14, "&c" + msg.getMessage(Message.CANCEL), String.format("&7%s@&7%s", msg.getMessage(Message.CANCEL_ACTION), msg.getMessage(Message.CANCEL_VOUCHER))));
             inv.setItem(15, ItemUtils.woolItem("WOOL", "LIME_WOOL", 1, (short) 5, "&a"  + msg.getMessage(Message.CONFIRM), String.format("&7%s@&7%s", msg.getMessage(Message.CONFIRM_ACTION), msg.getMessage(Message.CONFIRM_VOUCHER))));
-            p.openInventory(inv);
+            player.openInventory(inv);
         }
     }
 }

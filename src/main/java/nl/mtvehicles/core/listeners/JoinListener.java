@@ -27,23 +27,26 @@ public class JoinListener extends MTVListener {
     }
 
     @EventHandler
-    public void onJoinEventPlayer(PlayerJoinEvent e) {
-        final Player p = e.getPlayer();
-        MovementManager.MovementSelector(p);
+    public void onJoinEventPlayer(PlayerJoinEvent event) {
+        this.event = event;
+        player = event.getPlayer();
+
+        MovementManager.MovementSelector(player);
+
+        callAPI();
 
         if (ConfigModule.secretSettings.getMessagesLanguage().contains("ns")) {
-            if (p.hasPermission("mtvehicles.language") || p.hasPermission("mtvehicles.admin")) {
-                p.sendMessage(TextUtils.colorize("&cHey! You have not changed the language of the plugin yet. Do this by executing &4/vehicle language&c!"));
+            if (player.hasPermission("mtvehicles.language") || player.hasPermission("mtvehicles.admin")) {
+                player.sendMessage(TextUtils.colorize("&cHey! You have not changed the language of the plugin yet. Do this by executing &4/vehicle language&c!"));
             }
         }
 
-        if (!p.hasPermission("mtvehicles.update") || !(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.AUTO_UPDATE))
-            return;
+        if (!player.hasPermission("mtvehicles.update") || !(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.AUTO_UPDATE)) return;
 
-        if (!VersionModule.isPreRelease) checkNewVersion(p);
+        if (!VersionModule.isPreRelease) checkNewVersion();
     }
 
-    public void getUpdateMessage(Player p) {
+    public void getUpdateMessage() {
         try {
             URLConnection connection = new URL("https://minetopiavehicles.nl/api/update-api-check.php").openConnection();
             connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
@@ -58,7 +61,7 @@ public class JoinListener extends MTVListener {
             String[] vet = value.split("@");
             PluginDescriptionFile pdf = Main.instance.getDescription();
             for (String s : vet) {
-                p.sendMessage(TextUtils.colorize(s.replace("<oldVer>", pdf.getVersion())));
+                player.sendMessage(TextUtils.colorize(s.replace("<oldVer>", pdf.getVersion())));
             }
         } catch (IOException ex) {
             Main.logSevere("The plugin cannot connect to MTVehicles servers. Try again later...");
@@ -66,7 +69,7 @@ public class JoinListener extends MTVListener {
         }
     }
 
-    public void checkNewVersion(Player p) {
+    public void checkNewVersion() {
         try {
             URLConnection connection = new URL("https://minetopiavehicles.nl/api/update-api-version.php").openConnection();
             connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
@@ -80,7 +83,7 @@ public class JoinListener extends MTVListener {
             String value = sb.toString();
             PluginDescriptionFile pdf = Main.instance.getDescription();
             if (!value.contains(pdf.getVersion())) {
-                getUpdateMessage(p);
+                getUpdateMessage();
             }
         } catch (IOException ex) {
             Main.logSevere("The plugin cannot connect to MTVehicles servers. Try again later...");
