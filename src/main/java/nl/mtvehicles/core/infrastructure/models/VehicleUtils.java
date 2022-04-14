@@ -25,6 +25,8 @@ public final class VehicleUtils {
 
     private VehicleUtils(){}
 
+    public static HashMap<Player, String> openedTrunk = new HashMap<>();
+
     public static void spawnVehicle(String licensePlate, Location location){
         if (!existsByLicensePlate(licensePlate)) throw new IllegalArgumentException("Vehicle does not exists.");
 
@@ -305,13 +307,14 @@ public final class VehicleUtils {
 
                     if (ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.TRUNK_DATA) == null) return;
 
-                    Inventory inv = Bukkit.createInventory(null, (int) ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.TRUNK_ROWS) * 9, "Kofferbak Vehicle: " + license);
+                    Inventory inv = Bukkit.createInventory(null, (int) ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.TRUNK_ROWS) * 9, "Vehicle's Trunk");
                     List<ItemStack> chestContentsFromConfig = (List<ItemStack>) ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.TRUNK_DATA);
 
                     for (ItemStack item : chestContentsFromConfig) {
                         if (item != null) inv.addItem(item);
                     }
 
+                    openedTrunk.put(p, license);
                     p.openInventory(inv);
                 }
             } else {

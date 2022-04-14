@@ -33,11 +33,15 @@ public class VehicleLeaveListener extends MTVListener {
 
         if (!VehicleUtils.isVehicle(entity)) return;
         if (!entity.getCustomName().contains("MTVEHICLES_MAINSEAT_")) return;
-        final String license = VehicleUtils.getLicensePlate(entity);
+        String license = VehicleUtils.getLicensePlate(entity);
         if (VehicleData.autostand.get("MTVEHICLES_MAIN_" + license) == null) return;
 
+        VehicleLeaveEvent api = (VehicleLeaveEvent) getAPI();
+        api.setLicensePlate(license);
         callAPI();
         if (isCancelled()) return;
+
+        license = api.getLicensePlate();
 
         Vehicle vehicle = VehicleUtils.getByLicensePlate(license);
 

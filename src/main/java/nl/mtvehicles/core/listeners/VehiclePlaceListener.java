@@ -8,11 +8,8 @@ import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVListener;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
-import nl.mtvehicles.core.infrastructure.modules.VersionModule;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -44,9 +41,13 @@ public class VehiclePlaceListener extends MTVListener {
         if (license == null) return;
 
         VehiclePlaceEvent api = (VehiclePlaceEvent) getAPI();
+        api.setLicensePlate(license);
         api.setLocation(clickedBlock.getLocation());
         callAPI();
         if (isCancelled()) return;
+
+        Location loc = api.getLocation();
+        license = api.getLicensePlate();
 
         if (event.getHand() != EquipmentSlot.HAND) {
             event.setCancelled(true);
@@ -59,7 +60,6 @@ public class VehiclePlaceListener extends MTVListener {
             return;
         }
 
-        Location loc = clickedBlock.getLocation();
         event.setCancelled(true);
 
         if (ConfigModule.defaultConfig.isBlockWhitelistEnabled()

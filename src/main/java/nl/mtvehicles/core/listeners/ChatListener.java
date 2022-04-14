@@ -26,12 +26,16 @@ public class ChatListener extends MTVListener {
     public void onLicensePlateChange(AsyncPlayerChatEvent event) {
         this.event = event;
         player = event.getPlayer();
-        final String message = event.getMessage();
+        String message = event.getMessage();
 
+        if (ItemUtils.edit.get(player.getUniqueId() + ".kenteken") == null) return;
+
+        ChatEvent api = (ChatEvent) getAPI();
+        api.setMessage(message);
         callAPI();
         if (isCancelled()) return;
 
-        if (ItemUtils.edit.get(player.getUniqueId() + ".kenteken") == null) return;
+        message = api.getMessage();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".kenteken")) {
             event.setCancelled(true);
@@ -72,9 +76,16 @@ public class ChatListener extends MTVListener {
     public void onVehicleNameChange(final AsyncPlayerChatEvent event) {
         this.event = event;
         player = event.getPlayer();
-        final String message = event.getMessage();
+        String message = event.getMessage();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".naam") == null) return;
+
+        ChatEvent api = (ChatEvent) getAPI();
+        api.setMessage(message);
+        callAPI();
+        if (isCancelled()) return;
+
+        message = api.getMessage();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".naam")) {
             event.setCancelled(true);
@@ -103,9 +114,16 @@ public class ChatListener extends MTVListener {
     public void onFuelChange(final AsyncPlayerChatEvent event) {
         this.event = event;
         player = event.getPlayer();
-        final String message = event.getMessage();
+        String message = event.getMessage();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".benzine") == null) return;
+
+        ChatEvent api = (ChatEvent) getAPI();
+        api.setMessage(message);
+        callAPI();
+        if (isCancelled()) return;
+
+        message = api.getMessage();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".benzine")) {
             event.setCancelled(true);
@@ -146,9 +164,16 @@ public class ChatListener extends MTVListener {
     public void onFuelUsageChange(final AsyncPlayerChatEvent event) {
         this.event = event;
         player = event.getPlayer();
-        final String message = event.getMessage();
+        String message = event.getMessage();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".benzineverbruik") == null) return;
+
+        ChatEvent api = (ChatEvent) getAPI();
+        api.setMessage(message);
+        callAPI();
+        if (isCancelled()) return;
+
+        message = api.getMessage();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".benzineverbruik")) {
             event.setCancelled(true);
@@ -182,9 +207,16 @@ public class ChatListener extends MTVListener {
     public void onTrunkRowsChange(final AsyncPlayerChatEvent event) {
         this.event = event;
         player = event.getPlayer();
-        final String message = event.getMessage();
+        String message = event.getMessage();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".kofferbakRows") == null) return;
+
+        ChatEvent api = (ChatEvent) getAPI();
+        api.setMessage(message);
+        callAPI();
+        if (isCancelled()) return;
+
+        message = api.getMessage();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".kofferbakRows")) {
             event.setCancelled(true);
@@ -226,9 +258,16 @@ public class ChatListener extends MTVListener {
     public void onAccelerationSpeedChange(final AsyncPlayerChatEvent event) {
         this.event = event;
         player = event.getPlayer();
-        final String message = event.getMessage();
+        String message = event.getMessage();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".acceleratieSpeed") == null) return;
+
+        ChatEvent api = (ChatEvent) getAPI();
+        api.setMessage(message);
+        callAPI();
+        if (isCancelled()) return;
+
+        message = api.getMessage();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".acceleratieSpeed")) {
             event.setCancelled(true);
@@ -261,9 +300,16 @@ public class ChatListener extends MTVListener {
     public void onMaxSpeedChange(final AsyncPlayerChatEvent event) {
         this.event = event;
         player = event.getPlayer();
-        final String message = event.getMessage();
+        String message = event.getMessage();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".maxSpeed") == null) return;
+
+        ChatEvent api = (ChatEvent) getAPI();
+        api.setMessage(message);
+        callAPI();
+        if (isCancelled()) return;
+
+        message = api.getMessage();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".maxSpeed")) {
             event.setCancelled(true);
@@ -297,9 +343,16 @@ public class ChatListener extends MTVListener {
     public void onBrakingSpeedChange(final AsyncPlayerChatEvent event) {
         this.event = event;
         player = event.getPlayer();
-        final String message = event.getMessage();
+        String message = event.getMessage();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".brakingSpeed") == null) return;
+
+        ChatEvent api = (ChatEvent) getAPI();
+        api.setMessage(message);
+        callAPI();
+        if (isCancelled()) return;
+
+        message = api.getMessage();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".brakingSpeed")) {
             event.setCancelled(true);
@@ -333,9 +386,16 @@ public class ChatListener extends MTVListener {
     public void onFrictionSpeedChange(final AsyncPlayerChatEvent event) {
         this.event = event;
         player = event.getPlayer();
-        final String message = event.getMessage();
+        String message = event.getMessage();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".aftrekkenSpeed") == null) return;
+
+        ChatEvent api = (ChatEvent) getAPI();
+        api.setMessage(message);
+        callAPI();
+        if (isCancelled()) return;
+
+        message = api.getMessage();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".aftrekkenSpeed")) {
             event.setCancelled(true);
@@ -369,9 +429,16 @@ public class ChatListener extends MTVListener {
     public void onMaxSpeedBackwardsChange(final AsyncPlayerChatEvent event) {
         this.event = event;
         player = event.getPlayer();
-        final String message = event.getMessage();
+        String message = event.getMessage();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".maxSpeedBackwards") == null) return;
+
+        ChatEvent api = (ChatEvent) getAPI();
+        api.setMessage(message);
+        callAPI();
+        if (isCancelled()) return;
+
+        message = api.getMessage();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".maxSpeedBackwards")) {
             event.setCancelled(true);
@@ -405,9 +472,16 @@ public class ChatListener extends MTVListener {
     public void onRotateSpeedChange(final AsyncPlayerChatEvent event) {
         this.event = event;
         player = event.getPlayer();
-        final String message = event.getMessage();
+        String message = event.getMessage();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".rotateSpeed") == null) return;
+
+        ChatEvent api = (ChatEvent) getAPI();
+        api.setMessage(message);
+        callAPI();
+        if (isCancelled()) return;
+
+        message = api.getMessage();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".rotateSpeed")) {
             event.setCancelled(true);

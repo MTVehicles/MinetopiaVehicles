@@ -1,7 +1,6 @@
 package nl.mtvehicles.core.infrastructure.models;
 
 import nl.mtvehicles.core.infrastructure.modules.VersionModule;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;

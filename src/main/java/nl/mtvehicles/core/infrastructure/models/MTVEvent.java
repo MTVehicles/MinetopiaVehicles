@@ -17,7 +17,7 @@ public abstract class MTVEvent extends Event {
     }
 
     /**
-     * Call this event
+     * Call this event (to other plugins)
      */
     public void call() {
         Bukkit.getPluginManager().callEvent(this);
@@ -26,6 +26,8 @@ public abstract class MTVEvent extends Event {
     /**
      * Check whether the event is cancelled.
      * If event isn't cancellable, always returns false
+     *
+     * @see org.bukkit.event.Cancellable
      */
     public boolean isCancelled() {
         return this.cancelled;

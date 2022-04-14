@@ -35,16 +35,20 @@ public class VehicleEntityListener extends MTVListener {
 
         if (!VehicleUtils.isVehicle(victim)) return;
 
-        callAPI();
-        if (isCancelled()) return;
-
         if (!(damager instanceof Player)) {
             checkDamage();
             return;
         }
 
         player = (Player) damager;
-        final String license = VehicleUtils.getLicensePlate(victim);
+        String license = VehicleUtils.getLicensePlate(victim);
+
+        VehicleEntityEvent api = (VehicleEntityEvent) getAPI();
+        api.setLicensePlate(license);
+        callAPI();
+        if (isCancelled()) return;
+
+        license = api.getLicensePlate();
 
         if (player.isSneaking() && !player.isInsideVehicle()) {
             VehicleUtils.openTrunk(player, license);

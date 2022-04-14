@@ -39,12 +39,16 @@ public class VehicleClickListener extends MTVListener {
         if (System.currentTimeMillis() - lastUsed >= 500) lastUsage.put(player.getName(), Long.valueOf(System.currentTimeMillis()));
         else return;
 
+        String license = VehicleUtils.getLicensePlate(entity);
+
+        VehicleClickEvent api = (VehicleClickEvent) getAPI();
+        api.setLicensePlate(license);
         callAPI();
         if (isCancelled()) return;
 
-        event.setCancelled(true);
+        license = api.getLicensePlate();
 
-        final String license = VehicleUtils.getLicensePlate(entity);
+        event.setCancelled(true);
 
         if (player.isSneaking()) {
 

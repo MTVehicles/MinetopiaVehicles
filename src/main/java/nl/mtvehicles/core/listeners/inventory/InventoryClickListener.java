@@ -7,6 +7,7 @@ import nl.mtvehicles.core.commands.vehiclesubs.VehicleMenu;
 import nl.mtvehicles.core.events.inventory.InventoryClickEvent;
 import nl.mtvehicles.core.infrastructure.dataconfig.MessagesConfig;
 import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
+import nl.mtvehicles.core.infrastructure.enums.InventoryTitle;
 import nl.mtvehicles.core.infrastructure.enums.Language;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
@@ -63,8 +64,14 @@ public class InventoryClickListener extends MTVListener {
         title = event.getView().getTitle();
         player = (Player) event.getWhoClicked();
 
+        InventoryClickEvent api = (InventoryClickEvent) getAPI();
+        api.setClickedSlot(clickedSlot);
+        api.setTitle(InventoryTitle.getByStringTitle(title));
         callAPI();
         if (isCancelled()) return;
+
+        clickedSlot = api.getClickedSlot();
+        title = api.getTitle().getStringTitle();
 
         event.setCancelled(true);
 
@@ -75,11 +82,11 @@ public class InventoryClickListener extends MTVListener {
         else if (title.contains("Vehicle Restore")) vehicleRestoreMenu();
         else if (title.contains("Vehicle Edit")) vehicleEditMenu();
         else if (title.contains("Vehicle Settings")) vehicleSettingsMenu();
-        else if (title.contains("Vehicle Benzine")) vehicleBenzineMenu();
+        else if (title.contains("Vehicle Benzine")) vehicleFuelMenu();
         else if (title.contains("Vehicle Kofferbak")) vehicleTrunkMenu();
         else if (title.contains("Vehicle Members")) vehicleMembersMenu();
         else if (title.contains("Vehicle Speed")) vehicleSpeedMenu();
-        else if (title.contains("Benzine menu")) benzineMenu();
+        else if (title.contains("Benzine menu")) getJerryCanMenu();
         else if (title.contains("Voucher Redeem Menu")) voucherRedeemMenu();
         else event.setCancelled(false);
     }
@@ -282,7 +289,7 @@ public class InventoryClickListener extends MTVListener {
         }
     }
 
-    private void vehicleBenzineMenu(){
+    private void vehicleFuelMenu(){
         if (clickedItem.equals(closeItem)) {
             player.closeInventory();
             return;
@@ -401,7 +408,7 @@ public class InventoryClickListener extends MTVListener {
         }
     }
 
-    private void benzineMenu(){
+    private void getJerryCanMenu(){
         player.getInventory().addItem(clickedItem);
     }
 

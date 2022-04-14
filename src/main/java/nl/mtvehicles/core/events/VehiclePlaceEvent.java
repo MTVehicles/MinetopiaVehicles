@@ -1,22 +1,19 @@
 package nl.mtvehicles.core.events;
 
-import nl.mtvehicles.core.Main;
-import nl.mtvehicles.core.infrastructure.annotations.ToDo;
+import nl.mtvehicles.core.events.interfaces.HasLocation;
+import nl.mtvehicles.core.events.interfaces.HasVehicle;
 import nl.mtvehicles.core.infrastructure.models.MTVEvent;
-import org.bukkit.Bukkit;
+import nl.mtvehicles.core.infrastructure.models.Vehicle;
+import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
-import org.bukkit.event.Event;
-import org.bukkit.event.HandlerList;
-import org.jetbrains.annotations.NotNull;
 
-@ToDo(comment = "Should be commented and better prepared for API usage.")
-public class VehiclePlaceEvent extends MTVEvent implements Cancellable {
+public class VehiclePlaceEvent extends MTVEvent implements Cancellable, HasLocation, HasVehicle {
     private Location location;
+    private String licensePlate;
 
-    public Main getPlugin() {
-        return Main.instance;
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
     }
 
     public Location getLocation() {
@@ -27,7 +24,15 @@ public class VehiclePlaceEvent extends MTVEvent implements Cancellable {
         this.location = location;
     }
 
-    public void setCancelled(boolean cancelled) {
-        this.cancelled = cancelled;
+    public String getLicensePlate(){
+        return licensePlate;
+    }
+
+    public Vehicle getVehicle(){
+        return VehicleUtils.getByLicensePlate(licensePlate);
+    }
+
+    public void setLicensePlate(String licensePlate) {
+        this.licensePlate = licensePlate;
     }
 }
