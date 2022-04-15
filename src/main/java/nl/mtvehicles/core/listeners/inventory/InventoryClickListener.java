@@ -18,6 +18,7 @@ import nl.mtvehicles.core.infrastructure.models.MTVListener;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
+import nl.mtvehicles.core.listeners.VehicleVoucherListener;
 import org.bukkit.Bukkit;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -414,17 +415,18 @@ public class InventoryClickListener extends MTVListener {
 
     private void voucherRedeemMenu(){
         if (clickedSlot == 15) { //Yes
-            String carUuid = new NBTItem(player.getInventory().getItemInMainHand()).getString("mtvehicles.item");
-            if (VehicleUtils.getItemByUUID(player, carUuid) == null){
+            String carUUID = VehicleVoucherListener.voucher.get(player);
+            if (VehicleUtils.getItemByUUID(player, carUUID) == null){
                 player.sendMessage(ConfigModule.messagesConfig.getMessage(Message.GIVE_CAR_NOT_FOUND));
                 player.closeInventory();
                 return;
             }
             player.sendMessage(ConfigModule.messagesConfig.getMessage(Message.VOUCHER_REDEEM));
             player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
-            player.getInventory().addItem(VehicleUtils.getItemByUUID(player, carUuid));
+            player.getInventory().addItem(VehicleUtils.getItemByUUID(player, carUUID));
         }
 
+        VehicleVoucherListener.voucher.remove(player);
         player.closeInventory();
     }
 

@@ -7,6 +7,7 @@ import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVListener;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
+import nl.mtvehicles.core.listeners.VehicleVoucherListener;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
@@ -47,10 +48,13 @@ public class InventoryCloseListener extends MTVListener {
             }
         }
         if (title.equals(InventoryTitle.CHOOSE_LANGUAGE_MENU)) {
-            Player p = (Player) event.getPlayer();
-            if (LanguageUtils.languageCheck.get(p.getUniqueId())) {
-                p.sendMessage(TextUtils.colorize("&cThe language settings have not changed because the menu is closed. Do you want to change this anyway? Execute /vehicle language"));
+            if (LanguageUtils.languageCheck.get(player.getUniqueId())) {
+                player.sendMessage(TextUtils.colorize("&cThe language settings have not changed because the menu is closed. Do you want to change this anyway? Execute /vehicle language"));
             }
+        }
+
+        if (title.equals(InventoryTitle.VOUCHER_REDEEM_MENU)) {
+            if (VehicleVoucherListener.voucher.get(player) != null) VehicleVoucherListener.voucher.remove(player);
         }
     }
 }

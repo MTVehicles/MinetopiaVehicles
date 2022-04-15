@@ -3,6 +3,7 @@ package nl.mtvehicles.core.listeners;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.events.VehicleVoucherEvent;
 import nl.mtvehicles.core.infrastructure.dataconfig.MessagesConfig;
+import nl.mtvehicles.core.infrastructure.enums.InventoryTitle;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVListener;
@@ -18,7 +19,10 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashMap;
+
 public class VehicleVoucherListener extends MTVListener {
+    public static HashMap<Player, String> voucher = new HashMap<>();
 
     public VehicleVoucherListener(){
         super(new VehicleVoucherEvent());
@@ -35,8 +39,14 @@ public class VehicleVoucherListener extends MTVListener {
         NBTItem nbt = new NBTItem(item);
         if (!nbt.hasKey("mtvehicles.item")) return;
 
+        String carUUID = nbt.getString("mtvehicles.item");
+
+        VehicleVoucherEvent api = (VehicleVoucherEvent) getAPI();
+        api.setVoucherUUID(carUUID);
         callAPI();
         if (isCancelled()) return;
+
+        carUUID = api.getVoucherUUID();
 
         if (event.getHand() != EquipmentSlot.HAND) {
             event.setCancelled(true);
@@ -45,7 +55,8 @@ public class VehicleVoucherListener extends MTVListener {
         }
 
         if (action.equals(Action.RIGHT_CLICK_BLOCK) || action.equals(Action.RIGHT_CLICK_AIR)) {
-            Inventory inv = Bukkit.createInventory(null, 27, "Voucher Redeem Menu");
+            Inventory inv = Bukkit.createInventory(null, 27, InventoryTitle.VOUCHER_REDEEM_MENU.getStringTitle());
+            voucher.put(player, carUUID);
             MessagesConfig msg = ConfigModule.messagesConfig;
             inv.setItem(11, ItemUtils.woolItem("WOOL", "RED_WOOL", 1, (short) 14, "&c" + msg.getMessage(Message.CANCEL), String.format("&7%s@&7%s", msg.getMessage(Message.CANCEL_ACTION), msg.getMessage(Message.CANCEL_VOUCHER))));
             inv.setItem(15, ItemUtils.woolItem("WOOL", "LIME_WOOL", 1, (short) 5, "&a"  + msg.getMessage(Message.CONFIRM), String.format("&7%s@&7%s", msg.getMessage(Message.CONFIRM_ACTION), msg.getMessage(Message.CONFIRM_VOUCHER))));
