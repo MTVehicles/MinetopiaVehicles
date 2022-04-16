@@ -1,14 +1,12 @@
 package nl.mtvehicles.core.listeners;
 
 import nl.mtvehicles.core.Main;
-import nl.mtvehicles.core.events.JoinEvent;
 import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVListener;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.infrastructure.modules.VersionModule;
 import nl.mtvehicles.core.movement.MovementManager;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -22,18 +20,12 @@ import java.nio.charset.StandardCharsets;
 
 public class JoinListener extends MTVListener {
 
-    public JoinListener(){
-        super(new JoinEvent());
-    }
-
     @EventHandler
     public void onJoinEventPlayer(PlayerJoinEvent event) {
         this.event = event;
         player = event.getPlayer();
 
         MovementManager.MovementSelector(player);
-
-        callAPI();
 
         if (ConfigModule.secretSettings.getMessagesLanguage().contains("ns")) {
             if (player.hasPermission("mtvehicles.language") || player.hasPermission("mtvehicles.admin")) {

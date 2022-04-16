@@ -2,7 +2,9 @@ package nl.mtvehicles.core.listeners;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.commands.vehiclesubs.VehicleFuel;
-import nl.mtvehicles.core.events.VehicleEntityEvent;
+import nl.mtvehicles.core.events.VehicleDamageEvent;
+import nl.mtvehicles.core.events.VehicleFuelEvent;
+import nl.mtvehicles.core.events.VehicleOpenTrunkEvent;
 import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.helpers.BossBarUtils;
@@ -17,13 +19,10 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 
 public class VehicleEntityListener extends MTVListener {
-
-    public VehicleEntityListener(){
-        super(new VehicleEntityEvent());
-    }
 
     public static HashMap<String, Double> speed = new HashMap<>();
 
@@ -35,23 +34,26 @@ public class VehicleEntityListener extends MTVListener {
 
         if (!VehicleUtils.isVehicle(victim)) return;
 
+        String license = VehicleUtils.getLicensePlate(victim);
+
         if (!(damager instanceof Player)) {
-            checkDamage();
+            setupDamageAPI(damager, license);
+            callAPI(null);
+            if (isCancelled()) return;
+
+            checkDamage(((VehicleDamageEvent) getAPI()).getLicensePlate());
             return;
         }
 
         player = (Player) damager;
-        String license = VehicleUtils.getLicensePlate(victim);
-
-        VehicleEntityEvent api = (VehicleEntityEvent) getAPI();
-        api.setLicensePlate(license);
-        callAPI();
-        if (isCancelled()) return;
-
-        license = api.getLicensePlate();
 
         if (player.isSneaking() && !player.isInsideVehicle()) {
-            VehicleUtils.openTrunk(player, license);
+            VehicleOpenTrunkEvent api = (VehicleOpenTrunkEvent) getAPI();
+            api.setLicensePlate(license);
+            callAPI();
+            if (isCancelled()) return;
+
+            VehicleUtils.openTrunk(player, api.getLicensePlate());
             event.setCancelled(true);
             return;
         }
@@ -61,7 +63,11 @@ public class VehicleEntityListener extends MTVListener {
         ItemStack item = player.getInventory().getItemInMainHand();
 
         if (!item.hasItemMeta() || !new NBTItem(item).hasKey("mtvehicles.benzineval")){
-            checkDamage();
+            setupDamageAPI(damager, license);
+            callAPI();
+            if (isCancelled()) return;
+
+            checkDamage(((VehicleDamageEvent) getAPI()).getLicensePlate());
             return;
         }
 
@@ -70,6 +76,13 @@ public class VehicleEntityListener extends MTVListener {
         final double fuel = VehicleData.fuel.get(license);
         final String benval = nbt.getString("mtvehicles.benzineval");
         final String bensize = nbt.getString("mtvehicles.benzinesize");
+
+        VehicleFuelEvent api = (VehicleFuelEvent) getAPI();
+        api.setLicensePlate(license);
+        callAPI();
+        if (isCancelled()) return;
+
+        license = api.getLicensePlate();
 
         if (!ConfigModule.defaultConfig.canUseJerryCan(player)){
             ConfigModule.messagesConfig.sendMessage(player, Message.NOT_IN_A_GAS_STATION);
@@ -107,9 +120,8 @@ public class VehicleEntityListener extends MTVListener {
         }
     }
 
-    public void checkDamage(){
+    public void checkDamage(String license){
         final double damage = ((EntityDamageByEntityEvent) event).getDamage();
-        final String license = VehicleUtils.getLicensePlate(((EntityDamageByEntityEvent) event).getEntity());
 
         if (!(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.DAMAGE_ENABLED)) return;
         if (VehicleUtils.getByLicensePlate(license) == null) return;
@@ -117,5 +129,12 @@ public class VehicleEntityListener extends MTVListener {
         double damageMultiplier = (double) ConfigModule.defaultConfig.get(DefaultConfig.Option.DAMAGE_MULTIPLIER);
         if (damageMultiplier < 0.1 || damageMultiplier > 5) damageMultiplier = 0.5; //Must be between 0.1 and 5. Default: 0.5
         ConfigModule.vehicleDataConfig.damageVehicle(license, damage * damageMultiplier);
+    }
+
+    private void setupDamageAPI(@Nullable Entity damager, String license){
+        this.setAPI(new VehicleDamageEvent());
+        VehicleDamageEvent api = (VehicleDamageEvent) getAPI();
+        api.setDamager(damager);
+        api.setLicensePlate(license);
     }
 }

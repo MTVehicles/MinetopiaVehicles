@@ -5,11 +5,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public abstract class MTVEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
     protected boolean cancelled = false;
-    private Player player;
+    private @Nullable Player player;
 
     @Override
     public @NotNull HandlerList getHandlers() {
@@ -35,6 +36,7 @@ public abstract class MTVEvent extends Event {
 
     /**
      * Get player
+     * @return Event-player or "null" if player is not specified
      */
     public Player getPlayer() {
         return player;
@@ -42,6 +44,7 @@ public abstract class MTVEvent extends Event {
 
     /**
      * Set player
+     * @param player Set event-player (use "null" if player is not specified)
      */
     public void setPlayer(Player player) {
         this.player = player;
