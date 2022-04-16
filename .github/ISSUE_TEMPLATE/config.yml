@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: MTVehicles Wiki (and FAQ!)
+    url: https://wiki.mtvehicles.eu/
+    about: Before submitting an issue (suggestion, bug), check the wiki and FAQ!
+  - name: MTVehicles Support Discord
+    url: https://discord.gg/vehicle
+    about: You may ask your questions here to get a fast response.
