@@ -2,13 +2,11 @@ package nl.mtvehicles.core.events;
 
 import nl.mtvehicles.core.events.interfaces.HasJerryCan;
 import nl.mtvehicles.core.events.interfaces.HasVehicle;
-import nl.mtvehicles.core.infrastructure.annotations.ToDo;
 import nl.mtvehicles.core.infrastructure.models.MTVEvent;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import org.bukkit.event.Cancellable;
 
-@ToDo(comment = "More methods.")
 public class VehicleFuelEvent extends MTVEvent implements Cancellable, HasVehicle, HasJerryCan {
     final private double vehicleFuel;
     final private int jerryCanFuel;
