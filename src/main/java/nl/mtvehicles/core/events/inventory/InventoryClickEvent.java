@@ -9,6 +9,7 @@ public class InventoryClickEvent extends MTVEvent implements Cancellable, HasInv
     private int clickedSlot;
     private InventoryTitle title;
 
+    @Override
     public void setCancelled(boolean cancelled) {
         this.cancelled = cancelled;
     }
@@ -29,10 +30,12 @@ public class InventoryClickEvent extends MTVEvent implements Cancellable, HasInv
         this.clickedSlot = clickedSlot;
     }
 
+    @Override
     public InventoryTitle getTitle() {
         return title;
     }
 
+    @Override
     public void setTitle(InventoryTitle title) {
         this.title = title;
     }

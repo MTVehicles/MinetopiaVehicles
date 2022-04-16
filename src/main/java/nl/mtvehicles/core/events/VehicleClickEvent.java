@@ -9,18 +9,22 @@ import org.bukkit.event.Cancellable;
 public class VehicleClickEvent extends MTVEvent implements Cancellable, HasVehicle {
     private String licensePlate;
 
+    @Override
     public void setCancelled(boolean cancelled) {
         this.cancelled = cancelled;
     }
 
+    @Override
     public String getLicensePlate(){
         return licensePlate;
     }
 
+    @Override
     public Vehicle getVehicle(){
         return VehicleUtils.getByLicensePlate(licensePlate);
     }
 
+    @Override
     public void setLicensePlate(String licensePlate) {
         this.licensePlate = licensePlate;
     }

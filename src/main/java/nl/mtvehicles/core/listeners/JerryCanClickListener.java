@@ -24,9 +24,8 @@ public class JerryCanClickListener extends MTVListener {
     private Action action;
     private ItemStack item;
 
-    public JerryCanClickListener(){
-        super(new JerryCanClickEvent());
-    }
+    private int currentFuel;
+    private int maxFuel;
 
     @EventHandler
     public void onJerryCanClick(final PlayerInteractEvent event) {
@@ -48,6 +47,11 @@ public class JerryCanClickListener extends MTVListener {
             return;
         }
 
+        NBTItem nbt = new NBTItem(item);
+        currentFuel = Integer.parseInt(nbt.getString("mtvehicles.benzineval"));
+        maxFuel = Integer.parseInt(nbt.getString("mtvehicles.benzinesize"));
+
+        this.setAPI(new JerryCanClickEvent(currentFuel, maxFuel));
         callAPI();
         if (isCancelled()) return;
 
@@ -66,9 +70,6 @@ public class JerryCanClickListener extends MTVListener {
     }
 
     private void fillJerryCan(){
-        int currentFuel = Integer.parseInt((new NBTItem(item)).getString("mtvehicles.benzineval"));
-        int maxFuel = Integer.parseInt((new NBTItem(item)).getString("mtvehicles.benzinesize"));
-
         if (currentFuel == maxFuel) ConfigModule.messagesConfig.sendMessage(player, Message.JERRYCAN_FULL);
 
         if ((currentFuel + 1) <= maxFuel){
@@ -81,9 +82,6 @@ public class JerryCanClickListener extends MTVListener {
     }
 
     private void fillWholeJerryCan(){
-        int currentFuel = Integer.parseInt((new NBTItem(item)).getString("mtvehicles.benzineval"));
-        int maxFuel = Integer.parseInt((new NBTItem(item)).getString("mtvehicles.benzinesize"));
-
         if (currentFuel == maxFuel) ConfigModule.messagesConfig.sendMessage(player, Message.JERRYCAN_FULL);
 
         int difference = maxFuel - currentFuel;
@@ -115,14 +113,14 @@ public class JerryCanClickListener extends MTVListener {
             try {
                 player.getWorld().playSound(player.getLocation(), Sound.valueOf("BLOCK_NOTE_PLING"), 3.0F, 0.5F);
             } catch (IllegalArgumentException e) {
-                Main.logWarning("Could not play sound 'BLOCK_NOTE_PLING'.");
+                Main.logSevere("Could not play sound 'BLOCK_NOTE_PLING'.");
                 e.printStackTrace(); //The sound could not be played, hmmm.
             }
         } else {
             try {
                 player.getWorld().playSound(player.getLocation(), Sound.valueOf("BLOCK_NOTE_BLOCK_PLING"), 3.0F, 0.5F);
             } catch (IllegalArgumentException e) {
-                Main.logWarning("Could not play sound 'BLOCK_NOTE_BLOCK_PLING'.");
+                Main.logSevere("Could not play sound 'BLOCK_NOTE_BLOCK_PLING'.");
                 e.printStackTrace(); //The sound could not be played, hmmm.
             }
         }

@@ -12,26 +12,32 @@ public class VehiclePlaceEvent extends MTVEvent implements Cancellable, HasLocat
     private Location location;
     private String licensePlate;
 
+    @Override
     public void setCancelled(boolean cancelled) {
         this.cancelled = cancelled;
     }
 
+    @Override
     public Location getLocation() {
         return location;
     }
 
+    @Override
     public void setLocation(Location location) {
         this.location = location;
     }
 
+    @Override
     public String getLicensePlate(){
         return licensePlate;
     }
 
+    @Override
     public Vehicle getVehicle(){
         return VehicleUtils.getByLicensePlate(licensePlate);
     }
 
+    @Override
     public void setLicensePlate(String licensePlate) {
         this.licensePlate = licensePlate;
     }

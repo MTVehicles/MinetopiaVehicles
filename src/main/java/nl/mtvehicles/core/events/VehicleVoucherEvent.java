@@ -6,6 +6,7 @@ import org.bukkit.event.Cancellable;
 public class VehicleVoucherEvent extends MTVEvent implements Cancellable {
     private String voucherUUID;
 
+    @Override
     public void setCancelled(boolean cancelled) {
         this.cancelled = cancelled;
     }

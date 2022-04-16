@@ -6,6 +6,7 @@ import org.bukkit.event.Cancellable;
 public class ChatEvent extends MTVEvent implements Cancellable {
     private String message;
 
+    @Override
     public void setCancelled(boolean cancelled) {
         this.cancelled = cancelled;
     }

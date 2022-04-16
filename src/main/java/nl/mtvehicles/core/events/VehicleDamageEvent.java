@@ -9,20 +9,25 @@ import org.bukkit.event.Cancellable;
 
 public class VehicleDamageEvent extends MTVEvent implements Cancellable, HasVehicle {
     private Entity damager;
+    private double damage;
     private String licensePlate;
 
+    @Override
     public void setCancelled(boolean cancelled) {
         this.cancelled = cancelled;
     }
 
+    @Override
     public String getLicensePlate(){
         return licensePlate;
     }
 
+    @Override
     public Vehicle getVehicle(){
         return VehicleUtils.getByLicensePlate(licensePlate);
     }
 
+    @Override
     public void setLicensePlate(String licensePlate) {
         this.licensePlate = licensePlate;
     }
@@ -41,5 +46,21 @@ public class VehicleDamageEvent extends MTVEvent implements Cancellable, HasVehi
      */
     public void setDamager(Entity damager) {
         this.damager = damager;
+    }
+
+    /**
+     * Get the damage dealt to the vehicle
+     * @return Damage
+     */
+    public double getDamage() {
+        return damage;
+    }
+
+    /**
+     * Set new damage dealt to the vehicle
+     * @param damage New damage
+     */
+    public void setDamage(double damage) {
+        this.damage = damage;
     }
 }

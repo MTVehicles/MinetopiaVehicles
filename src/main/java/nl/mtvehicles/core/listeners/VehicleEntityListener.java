@@ -48,6 +48,7 @@ public class VehicleEntityListener extends MTVListener {
         player = (Player) damager;
 
         if (player.isSneaking() && !player.isInsideVehicle()) {
+            this.setAPI(new VehicleOpenTrunkEvent());
             VehicleOpenTrunkEvent api = (VehicleOpenTrunkEvent) getAPI();
             api.setLicensePlate(license);
             callAPI();
@@ -73,10 +74,11 @@ public class VehicleEntityListener extends MTVListener {
 
         NBTItem nbt = new NBTItem(item);
 
-        final double fuel = VehicleData.fuel.get(license);
-        final String benval = nbt.getString("mtvehicles.benzineval");
-        final String bensize = nbt.getString("mtvehicles.benzinesize");
+        final double vehicleFuel = VehicleData.fuel.get(license);
+        final String jerryCanFuel = nbt.getString("mtvehicles.benzineval");
+        final String jerryCanSize = nbt.getString("mtvehicles.benzinesize");
 
+        this.setAPI(new VehicleFuelEvent(vehicleFuel, Integer.parseInt(jerryCanFuel), Integer.parseInt(jerryCanSize)));
         VehicleFuelEvent api = (VehicleFuelEvent) getAPI();
         api.setLicensePlate(license);
         callAPI();
@@ -89,39 +91,39 @@ public class VehicleEntityListener extends MTVListener {
             return;
         }
 
-        if (Integer.parseInt(benval) < 1) {
+        if (Integer.parseInt(jerryCanFuel) < 1) {
             ConfigModule.messagesConfig.sendMessage(player, Message.NO_FUEL);
             return;
         }
 
-        if (fuel > 99) {
+        if (vehicleFuel > 99) {
             ConfigModule.messagesConfig.sendMessage(player, Message.VEHICLE_FULL);
             return;
         }
 
-        if (VehicleData.fallDamage.get(license) != null && fuel > 2) VehicleData.fallDamage.remove(license);
+        if (VehicleData.fallDamage.get(license) != null && vehicleFuel > 2) VehicleData.fallDamage.remove(license);
 
-        if (fuel + 5 > 100) {
-            int rest = (int) (100 - fuel);
-            player.setItemInHand(VehicleFuel.benzineItem(Integer.parseInt(bensize), Integer.parseInt(benval) - rest));
+        if (vehicleFuel + 5 > 100) {
+            int rest = (int) (100 - vehicleFuel);
+            player.setItemInHand(VehicleFuel.benzineItem(Integer.parseInt(jerryCanSize), Integer.parseInt(jerryCanFuel) - rest));
             VehicleData.fuel.put(license, VehicleData.fuel.get(license) + rest);
-            BossBarUtils.setBossBarValue(fuel / 100.0D, license);
+            BossBarUtils.setBossBarValue(vehicleFuel / 100.0D, license);
             return;
         }
 
-        if (!(Integer.parseInt(benval) < 5)) {
+        if (!(Integer.parseInt(jerryCanFuel) < 5)) {
             VehicleData.fuel.put(license, VehicleData.fuel.get(license) + 5);
-            BossBarUtils.setBossBarValue(fuel / 100.0D, license);
-            player.setItemInHand(VehicleFuel.benzineItem(Integer.parseInt(bensize), Integer.parseInt(benval) - 5));
+            BossBarUtils.setBossBarValue(vehicleFuel / 100.0D, license);
+            player.setItemInHand(VehicleFuel.benzineItem(Integer.parseInt(jerryCanSize), Integer.parseInt(jerryCanFuel) - 5));
         } else {
-            VehicleData.fuel.put(license, Double.valueOf(VehicleData.fuel.get(license) + benval));
-            BossBarUtils.setBossBarValue(fuel / 100.0D, license);
-            player.setItemInHand(VehicleFuel.benzineItem(Integer.parseInt(bensize), 0));
+            VehicleData.fuel.put(license, Double.valueOf(VehicleData.fuel.get(license) + jerryCanFuel));
+            BossBarUtils.setBossBarValue(vehicleFuel / 100.0D, license);
+            player.setItemInHand(VehicleFuel.benzineItem(Integer.parseInt(jerryCanSize), 0));
         }
     }
 
     public void checkDamage(String license){
-        final double damage = ((EntityDamageByEntityEvent) event).getDamage();
+        final double damage = ((VehicleDamageEvent) getAPI()).getDamage();
 
         if (!(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.DAMAGE_ENABLED)) return;
         if (VehicleUtils.getByLicensePlate(license) == null) return;
@@ -136,5 +138,6 @@ public class VehicleEntityListener extends MTVListener {
         VehicleDamageEvent api = (VehicleDamageEvent) getAPI();
         api.setDamager(damager);
         api.setLicensePlate(license);
+        api.setDamage(((EntityDamageByEntityEvent) event).getDamage());
     }
 }
