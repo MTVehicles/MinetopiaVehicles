@@ -15,7 +15,7 @@ public enum InventoryTitle {
     VEHICLE_TRUNK_MENU("Vehicle Kofferbak"),
     VEHICLE_MEMBERS_MENU("Vehicle Members"),
     VEHICLE_SPEED_MENU("Vehicle Speed"),
-    GET_JERRYCAN_MENU("Benzine menu"),
+    JERRYCAN_MENU("Benzine menu"),
     VOUCHER_REDEEM_MENU("Voucher Redeem Menu"),
     VEHICLE_TRUNK("Vehicle's Trunk");
 
@@ -51,7 +51,7 @@ public enum InventoryTitle {
             case "Vehicle Kofferbak": return VEHICLE_TRUNK_MENU;
             case "Vehicle Members": return VEHICLE_MEMBERS_MENU;
             case "Vehicle Speed": return VEHICLE_SPEED_MENU;
-            case "Benzine menu": return GET_JERRYCAN_MENU;
+            case "Benzine menu": return JERRYCAN_MENU;
             case "Voucher Redeem Menu": return VOUCHER_REDEEM_MENU;
             case "Vehicle's Trunk": return VEHICLE_TRUNK;
             default: return null;

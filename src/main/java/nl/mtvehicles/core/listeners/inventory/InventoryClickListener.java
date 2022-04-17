@@ -48,7 +48,7 @@ public class InventoryClickListener extends MTVListener {
 
     private ItemStack clickedItem;
     private int clickedSlot;
-    private String title;
+    private InventoryTitle title;
 
     public InventoryClickListener(){
         super(new InventoryClickEvent());
@@ -60,35 +60,39 @@ public class InventoryClickListener extends MTVListener {
         if (event.getCurrentItem() == null) return;
         if (!event.getCurrentItem().hasItemMeta()) return;
 
+        String stringTitle = event.getView().getTitle();
+
         clickedItem = event.getCurrentItem();
         clickedSlot = event.getRawSlot();
-        title = event.getView().getTitle();
         player = (Player) event.getWhoClicked();
+
+        if (InventoryTitle.getByStringTitle(stringTitle) == null) return;
+        title = InventoryTitle.getByStringTitle(stringTitle);
 
         InventoryClickEvent api = (InventoryClickEvent) getAPI();
         api.setClickedSlot(clickedSlot);
-        api.setTitle(InventoryTitle.getByStringTitle(title));
+        api.setTitle(title);
         callAPI();
         if (isCancelled()) return;
 
         clickedSlot = api.getClickedSlot();
-        title = api.getTitle().getStringTitle();
+        title = api.getTitle();
 
         event.setCancelled(true);
 
-        if (title.contains("Vehicle Menu")) vehicleMenu();
-        else if (title.contains("Choose your vehicle")) chooseVehicleMenu();
-        else if (title.contains("Choose your language")) chooseLanguageMenu();
-        else if (title.contains("Confirm getting vehicle")) confirmVehicleMenu();
-        else if (title.contains("Vehicle Restore")) vehicleRestoreMenu();
-        else if (title.contains("Vehicle Edit")) vehicleEditMenu();
-        else if (title.contains("Vehicle Settings")) vehicleSettingsMenu();
-        else if (title.contains("Vehicle Benzine")) vehicleFuelMenu();
-        else if (title.contains("Vehicle Kofferbak")) vehicleTrunkMenu();
-        else if (title.contains("Vehicle Members")) vehicleMembersMenu();
-        else if (title.contains("Vehicle Speed")) vehicleSpeedMenu();
-        else if (title.contains("Benzine menu")) getJerryCanMenu();
-        else if (title.contains("Voucher Redeem Menu")) voucherRedeemMenu();
+        if (title.equals(InventoryTitle.VEHICLE_MENU)) vehicleMenu();
+        else if (title.equals(InventoryTitle.CHOOSE_VEHICLE_MENU)) chooseVehicleMenu();
+        else if (title.equals(InventoryTitle.CHOOSE_LANGUAGE_MENU)) chooseLanguageMenu();
+        else if (title.equals(InventoryTitle.CONFIRM_VEHICLE_MENU)) confirmVehicleMenu();
+        else if (title.equals(InventoryTitle.VEHICLE_RESTORE_MENU)) vehicleRestoreMenu();
+        else if (title.equals(InventoryTitle.VEHICLE_EDIT_MENU)) vehicleEditMenu();
+        else if (title.equals(InventoryTitle.VEHICLE_SETTINGS_MENU)) vehicleSettingsMenu();
+        else if (title.equals(InventoryTitle.VEHICLE_FUEL_MENU)) vehicleFuelMenu();
+        else if (title.equals(InventoryTitle.VEHICLE_TRUNK_MENU)) vehicleTrunkMenu();
+        else if (title.equals(InventoryTitle.VEHICLE_MEMBERS_MENU)) vehicleMembersMenu();
+        else if (title.equals(InventoryTitle.VEHICLE_SPEED_MENU)) vehicleSpeedMenu();
+        else if (title.equals(InventoryTitle.JERRYCAN_MENU)) jerryCanMenu();
+        else if (title.equals(InventoryTitle.VOUCHER_REDEEM_MENU)) voucherRedeemMenu();
         else event.setCancelled(false);
     }
 
@@ -155,7 +159,7 @@ public class InventoryClickListener extends MTVListener {
                 return;
             }
 
-            List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getConfig().getMapList("voertuigen");
+            List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getVehicles();
             ConfigModule.messagesConfig.sendMessage(player, Message.COMPLETED_VEHICLE_GIVE);
             player.getInventory().addItem(vehicleMenu.get(player.getUniqueId()));
 
@@ -202,13 +206,13 @@ public class InventoryClickListener extends MTVListener {
         if (clickedItem.equals(ItemUtils.mItem("STAINED_GLASS_PANE", 1, (short) 0, "&c", "&c"))) return;
 
         if (clickedSlot == 53) { //Next page
-            MenuUtils.restoreCMD(player, Integer.parseInt(title.replace("Vehicle Restore ", "")) + 1, MenuUtils.restoreUUID.get("uuid"));
+            MenuUtils.restoreCMD(player, MenuUtils.restoreId.get("pagina") + 1, MenuUtils.restoreUUID.get("uuid"));
             return;
         }
 
         if (clickedSlot == 45) { //Previous page
-            if (!(Integer.parseInt(title.replace("Vehicle Restore ", "")) - 1 < 1))
-                MenuUtils.restoreCMD(player, Integer.parseInt(title.replace("Vehicle Restore ", "")) - 1, MenuUtils.restoreUUID.get("uuid"));
+            if (MenuUtils.restoreId.get("pagina") - 1 >= 1)
+                MenuUtils.restoreCMD(player, MenuUtils.restoreId.get("pagina") - 1, MenuUtils.restoreUUID.get("uuid"));
             return;
         }
         player.getInventory().addItem(clickedItem);
@@ -409,7 +413,7 @@ public class InventoryClickListener extends MTVListener {
         }
     }
 
-    private void getJerryCanMenu(){
+    private void jerryCanMenu(){
         player.getInventory().addItem(clickedItem);
     }
 
