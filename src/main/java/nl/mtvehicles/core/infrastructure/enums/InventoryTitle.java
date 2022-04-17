@@ -2,7 +2,7 @@ package nl.mtvehicles.core.infrastructure.enums;
 
 import nl.mtvehicles.core.infrastructure.annotations.ToDo;
 
-@ToDo(comment = "Use this enum in the future to make inventory titles translatable.")
+@ToDo(comment = "Use this enum in the future to make inventory titles translatable. More info below.")
 public enum InventoryTitle {
     VEHICLE_MENU("Vehicle Menu"),
     CHOOSE_VEHICLE_MENU("Choose your vehicle"),
@@ -19,8 +19,10 @@ public enum InventoryTitle {
     VOUCHER_REDEEM_MENU("Voucher Redeem Menu"),
     VEHICLE_TRUNK("Vehicle's Trunk");
 
+    @ToDo(comment = "This variable will be removed.")
     final String stringTitle;
 
+    @ToDo(comment = "When stringTitle variable is removed, this constructor is no longer necessary.")
     private InventoryTitle(String stringTitle){
         this.stringTitle = stringTitle;
     }
@@ -29,6 +31,7 @@ public enum InventoryTitle {
      * Get the title which is displayed on top of an inventory
      * @return Displayed title
      */
+    @ToDo(comment = "This method will get the title from MessagesConfig.")
     public String getStringTitle(){
         return stringTitle;
     }
@@ -38,6 +41,7 @@ public enum InventoryTitle {
      * @param stringTitle Displayed title
      * @return InventoryTitle enum
      */
+    @ToDo(comment = "I suppose that after everything will have been using enums, this method will no longer be necessary. If that is not the case, it'll have to be redone, entirely.")
     public static InventoryTitle getByStringTitle(String stringTitle){
         switch (stringTitle){
             case "Vehicle Menu": return VEHICLE_MENU;
