@@ -28,7 +28,7 @@ public abstract class MTVEvent extends Event {
      * Check whether the event is cancelled.
      * If event isn't cancellable, always returns false
      *
-     * @see org.bukkit.event.Cancellable
+     * @see nl.mtvehicles.core.events.interfaces.IsCancellable
      */
     public boolean isCancelled() {
         return this.cancelled;

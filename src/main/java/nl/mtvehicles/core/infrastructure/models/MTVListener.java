@@ -2,7 +2,6 @@ package nl.mtvehicles.core.infrastructure.models;
 
 import nl.mtvehicles.core.infrastructure.modules.VersionModule;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.Listener;
 
@@ -39,8 +38,8 @@ public abstract class MTVListener implements Listener {
             }
         }
 
-        if (!(event instanceof Cancellable)) return false;
-        return ((Cancellable) event).isCancelled();
+        if (!(event instanceof org.bukkit.event.Cancellable)) return false;
+        return ((org.bukkit.event.Cancellable) event).isCancelled();
     }
 
     protected void setAPI(MTVEvent event){
