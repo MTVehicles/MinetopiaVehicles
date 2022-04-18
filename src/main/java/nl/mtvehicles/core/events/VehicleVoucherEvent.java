@@ -1,9 +1,9 @@
 package nl.mtvehicles.core.events;
 
+import nl.mtvehicles.core.events.interfaces.IsCancellable;
 import nl.mtvehicles.core.infrastructure.models.MTVEvent;
-import org.bukkit.event.Cancellable;
 
-public class VehicleVoucherEvent extends MTVEvent implements Cancellable {
+public class VehicleVoucherEvent extends MTVEvent implements IsCancellable {
     private String voucherUUID;
 
     @Override

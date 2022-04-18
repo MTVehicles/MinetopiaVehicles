@@ -1,10 +1,10 @@
 package nl.mtvehicles.core.events;
 
 import nl.mtvehicles.core.events.interfaces.HasJerryCan;
+import nl.mtvehicles.core.events.interfaces.IsCancellable;
 import nl.mtvehicles.core.infrastructure.models.MTVEvent;
-import org.bukkit.event.Cancellable;
 
-public class JerryCanClickEvent extends MTVEvent implements Cancellable, HasJerryCan {
+public class JerryCanClickEvent extends MTVEvent implements IsCancellable, HasJerryCan {
     final private int jerryCanFuel;
     final private int jerryCanSize;
 

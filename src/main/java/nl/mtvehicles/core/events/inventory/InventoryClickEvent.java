@@ -1,11 +1,11 @@
 package nl.mtvehicles.core.events.inventory;
 
 import nl.mtvehicles.core.events.interfaces.HasInventory;
+import nl.mtvehicles.core.events.interfaces.IsCancellable;
 import nl.mtvehicles.core.infrastructure.enums.InventoryTitle;
 import nl.mtvehicles.core.infrastructure.models.MTVEvent;
-import org.bukkit.event.Cancellable;
 
-public class InventoryClickEvent extends MTVEvent implements Cancellable, HasInventory {
+public class InventoryClickEvent extends MTVEvent implements IsCancellable, HasInventory {
     private int clickedSlot;
     private InventoryTitle title;
 
