@@ -5,10 +5,11 @@ import nl.mtvehicles.core.events.interfaces.IsCancellable;
 import nl.mtvehicles.core.infrastructure.models.MTVEvent;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
-import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 
-public class VehiclePlaceEvent extends MTVEvent implements IsCancellable, HasVehicle {
-    private Location location;
+public class VehicleDamageEvent extends MTVEvent implements IsCancellable, HasVehicle {
+    private Entity damager;
+    private double damage;
     private String licensePlate;
 
     @Override
@@ -32,19 +33,34 @@ public class VehiclePlaceEvent extends MTVEvent implements IsCancellable, HasVeh
     }
 
     /**
-     * Get the location where vehicle is being placed
-     * @return Placement location
+     * Get the entity that has damaged the vehicle
+     * @return Damager
      */
-    public Location getLocation() {
-        return location;
+    public Entity getDamager() {
+        return damager;
     }
 
     /**
-     * Set a new location where the vehicle will be placed
-     * @param location New placement location
+     * Set the entity that has damaged the vehicle
+     * @param damager New damager
      */
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setDamager(Entity damager) {
+        this.damager = damager;
     }
 
+    /**
+     * Get the damage dealt to the vehicle
+     * @return Damage
+     */
+    public double getDamage() {
+        return damage;
+    }
+
+    /**
+     * Set new damage dealt to the vehicle
+     * @param damage New damage
+     */
+    public void setDamage(double damage) {
+        this.damage = damage;
+    }
 }

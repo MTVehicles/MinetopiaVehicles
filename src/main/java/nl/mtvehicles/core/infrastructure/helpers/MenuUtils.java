@@ -4,6 +4,7 @@ import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.infrastructure.annotations.ToDo;
 import nl.mtvehicles.core.infrastructure.dataconfig.MessagesConfig;
 import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
+import nl.mtvehicles.core.infrastructure.enums.InventoryTitle;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.models.Config;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
@@ -170,8 +171,9 @@ public class MenuUtils {
     }
 
     public static void restoreCMD(Player p, int id, UUID ownerUUID) {
-        Inventory inv = Bukkit.createInventory(null, 54, "Vehicle Restore " + id);
+        Inventory inv = Bukkit.createInventory(null, 54, InventoryTitle.VEHICLE_RESTORE_MENU.getStringTitle());
         ConfigModule.configList.forEach(Config::reload);
+        restoreId.put("pagina", id);
         if (!ConfigModule.vehicleDataConfig.isEmpty()) {
             List<String> dataVehicle = new ArrayList<>();
             for (String entry : ConfigModule.vehicleDataConfig.getVehicles().getKeys(false)) {

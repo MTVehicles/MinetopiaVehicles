@@ -1,4 +1,4 @@
-package nl.mtvehicles.core.infrastructure.interfaces;
+package nl.mtvehicles.core.infrastructure.models;
 
 public interface ConfigInterface {
 

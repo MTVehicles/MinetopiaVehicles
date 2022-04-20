@@ -1,15 +1,24 @@
 package nl.mtvehicles.core.events;
 
+import nl.mtvehicles.core.events.interfaces.HasJerryCan;
 import nl.mtvehicles.core.events.interfaces.HasVehicle;
 import nl.mtvehicles.core.events.interfaces.IsCancellable;
 import nl.mtvehicles.core.infrastructure.models.MTVEvent;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
-import org.bukkit.Location;
 
-public class VehiclePlaceEvent extends MTVEvent implements IsCancellable, HasVehicle {
-    private Location location;
+public class VehicleFuelEvent extends MTVEvent implements IsCancellable, HasVehicle, HasJerryCan {
+    final private double vehicleFuel;
+    final private int jerryCanFuel;
+    final private int jerryCanSize;
+
     private String licensePlate;
+
+    public VehicleFuelEvent(double vehicleFuel, int jerryCanFuel, int jerryCanSize){
+        this.vehicleFuel = vehicleFuel;
+        this.jerryCanFuel = jerryCanFuel;
+        this.jerryCanSize = jerryCanSize;
+    }
 
     @Override
     public void setCancelled(boolean cancelled) {
@@ -31,20 +40,21 @@ public class VehiclePlaceEvent extends MTVEvent implements IsCancellable, HasVeh
         this.licensePlate = licensePlate;
     }
 
-    /**
-     * Get the location where vehicle is being placed
-     * @return Placement location
-     */
-    public Location getLocation() {
-        return location;
+    @Override
+    public int getJerryCanFuel() {
+        return jerryCanFuel;
+    }
+
+    @Override
+    public int getJerryCanSize() {
+        return jerryCanSize;
     }
 
     /**
-     * Set a new location where the vehicle will be placed
-     * @param location New placement location
+     * Get the current fuel of the vehicle (before the event is executed)
+     * @return Fuel of the vehicle
      */
-    public void setLocation(Location location) {
-        this.location = location;
+    public double getVehicleFuel() {
+        return vehicleFuel;
     }
-
 }

@@ -5,10 +5,8 @@ import nl.mtvehicles.core.events.interfaces.IsCancellable;
 import nl.mtvehicles.core.infrastructure.models.MTVEvent;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
-import org.bukkit.Location;
 
-public class VehiclePlaceEvent extends MTVEvent implements IsCancellable, HasVehicle {
-    private Location location;
+public class VehicleClickEvent extends MTVEvent implements IsCancellable, HasVehicle {
     private String licensePlate;
 
     @Override
@@ -29,22 +27,6 @@ public class VehiclePlaceEvent extends MTVEvent implements IsCancellable, HasVeh
     @Override
     public void setLicensePlate(String licensePlate) {
         this.licensePlate = licensePlate;
-    }
-
-    /**
-     * Get the location where vehicle is being placed
-     * @return Placement location
-     */
-    public Location getLocation() {
-        return location;
-    }
-
-    /**
-     * Set a new location where the vehicle will be placed
-     * @param location New placement location
-     */
-    public void setLocation(Location location) {
-        this.location = location;
     }
 
 }
