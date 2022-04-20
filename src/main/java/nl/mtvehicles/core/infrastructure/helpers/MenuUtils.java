@@ -1,7 +1,6 @@
 package nl.mtvehicles.core.infrastructure.helpers;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
-import nl.mtvehicles.core.infrastructure.annotations.ToDo;
 import nl.mtvehicles.core.infrastructure.dataconfig.MessagesConfig;
 import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
 import nl.mtvehicles.core.infrastructure.enums.InventoryTitle;
@@ -153,10 +152,10 @@ public class MenuUtils {
             if (i - 1 < dataVehicle.size()) {
                 Map<?, ?> vehicle = dataVehicle.get(i-1);
                 if (vehicle.get("nbtValue") == null) {
-                    inv.addItem(ItemUtils.carItem2((int) vehicle.get("itemDamage"), vehicle.get("name").toString(), vehicle.get("SkinItem").toString()));
+                    inv.addItem(ItemUtils.getVehicleItem(ItemUtils.getMaterial(vehicle.get("SkinItem").toString()), (int) vehicle.get("itemDamage"), vehicle.get("name").toString()));
                     continue;
                 }
-                inv.addItem(ItemUtils.carItem3((int) vehicle.get("itemDamage"), vehicle.get("name").toString(), vehicle.get("SkinItem").toString(), vehicle.get("nbtKey").toString(), vehicle.get("nbtValue").toString()));
+                inv.addItem(ItemUtils.getVehicleItem(ItemUtils.getMaterial(vehicle.get("SkinItem").toString()), (int) vehicle.get("itemDamage"), vehicle.get("name").toString(), vehicle.get("nbtKey").toString(), vehicle.get("nbtValue").toString()));
             }
         }
 
@@ -184,15 +183,11 @@ public class MenuUtils {
                     String license = dataVehicle.get(i - 1);
                     VehicleDataConfig data = ConfigModule.vehicleDataConfig;
                     if (ownerUUID == null || data.get(license, VehicleDataConfig.Option.OWNER).toString().contains(ownerUUID.toString())) {
-                        if ((boolean) data.get(license, VehicleDataConfig.Option.IS_GLOWING)) {
-                            inv.addItem(ItemUtils.carItem2glow(data.getDamage(license), data.get(license, VehicleDataConfig.Option.NAME).toString(), data.get(license, VehicleDataConfig.Option.SKIN_ITEM).toString(), license));
-                        } else {
-                            if (data.get(license, VehicleDataConfig.Option.NBT_VALUE) == null) {
-                                inv.addItem(ItemUtils.carItem5(data.getDamage(license), data.get(license, VehicleDataConfig.Option.NAME).toString(), data.get(license, VehicleDataConfig.Option.SKIN_ITEM).toString(), license));
-                                continue;
-                            }
-                            inv.addItem(ItemUtils.carItem4(data.getDamage(license), data.get(license, VehicleDataConfig.Option.NAME).toString(), data.get(license, VehicleDataConfig.Option.SKIN_ITEM).toString(), "mtcustom", data.get(license, VehicleDataConfig.Option.NBT_VALUE).toString(), license));
+                        if (data.get(license, VehicleDataConfig.Option.NBT_VALUE) == null) {
+                            inv.addItem(ItemUtils.getVehicleItem(ItemUtils.getMaterial(data.get(license, VehicleDataConfig.Option.SKIN_ITEM).toString()), data.getDamage(license), (boolean) data.get(license, VehicleDataConfig.Option.IS_GLOWING), data.get(license, VehicleDataConfig.Option.NAME).toString(), license));
+                            continue;
                         }
+                        inv.addItem(ItemUtils.getVehicleItem(ItemUtils.getMaterial(data.get(license, VehicleDataConfig.Option.SKIN_ITEM).toString()), data.getDamage(license), (boolean) data.get(license, VehicleDataConfig.Option.IS_GLOWING), data.get(license, VehicleDataConfig.Option.NAME).toString(), license, "mtcustom", data.get(license, VehicleDataConfig.Option.NBT_VALUE).toString()));
                     }
                 }
             }

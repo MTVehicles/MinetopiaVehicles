@@ -54,7 +54,13 @@ public class ChatListener extends MTVListener {
                 }
 
                 ConfigModule.vehicleDataConfig.save();
-                player.getInventory().setItemInMainHand(ItemUtils.carItem2(ConfigModule.vehicleDataConfig.getDamage(licensePlate), ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.NAME).toString(), ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.SKIN_ITEM).toString(), message));
+                player.getInventory().setItemInMainHand(ItemUtils.getVehicleItem(
+                        ItemUtils.getMaterial(ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.SKIN_ITEM).toString()),
+                        ConfigModule.vehicleDataConfig.getDamage(licensePlate),
+                        (boolean) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.IS_GLOWING),
+                        ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.NAME).toString(),
+                        message)
+                );
 
                 if (event.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.menuEdit(player));
 
@@ -94,7 +100,13 @@ public class ChatListener extends MTVListener {
                 String licensePlate = getLicensePlate(player);
                 ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.NAME, message);
                 ConfigModule.vehicleDataConfig.save();
-                player.getInventory().setItemInMainHand(ItemUtils.carItem2(ConfigModule.vehicleDataConfig.getDamage(licensePlate), message, ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.SKIN_ITEM).toString(), licensePlate));
+                player.getInventory().setItemInMainHand(ItemUtils.getVehicleItem(
+                        ItemUtils.getMaterial(ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.SKIN_ITEM).toString()),
+                        ConfigModule.vehicleDataConfig.getDamage(licensePlate),
+                        (boolean) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.IS_GLOWING),
+                        message,
+                        licensePlate)
+                );
                 ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_SUCCESSFUL);
                 ItemUtils.edit.put(player.getUniqueId() + ".naam", false);
 
