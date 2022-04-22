@@ -138,7 +138,7 @@ public class ItemUtils {
         return vehicle;
     }
 
-    public static String generateLicencePlate() {
+    private static String generateLicencePlate() {
         String plate = String.format("%s-%s-%s", RandomStringUtils.random(2, true, false), RandomStringUtils.random(2, true, false), RandomStringUtils.random(2, true, false));
         return plate.toUpperCase();
     }
@@ -181,36 +181,85 @@ public class ItemUtils {
         }
     }
 
+
     /**
-     * @param lores You can use %nl% for a new line
+     * Get a menu item by material, amount, name and lore (as List)
      */
+    public static ItemStack getMenuItem(@NotNull Material material, int amount, String name, List<String> lores){
+        ItemStack item = (new ItemFactory(material, amount))
+                .setName(name)
+                .setLore(lores)
+                .toItemStack();
+        return item;
+    }
+
+    /**
+     * Get a menu item by material, amount, name and lore (as multiple Strings)
+     */
+    public static ItemStack getMenuItem(@NotNull Material material, int amount, String name, String... lores){
+        return getMenuItem(material, amount, name, Arrays.asList(lores));
+    }
+
+    /**
+     * Get a glowing menu item by material, amount, name and lore (as List).
+     * (Used to be #glowItem(). Updated.)
+     */
+    public static ItemStack getMenuGlowingItem(@NotNull Material material, int amount, String name, List<String> lores){
+        ItemStack item = (new ItemFactory(material, amount))
+                .setName(name)
+                .setGlowing(true)
+                .setLore(lores)
+                .toItemStack();
+        return item;
+    }
+
+    /**
+     * Get a glowing menu item by material, amount, name and lore (as multiple Strings).
+     * (Used to be #glowItem(). Updated.)
+     */
+    public static ItemStack getMenuGlowingItem(@NotNull Material material, int amount, String name, String... lores){
+        return getMenuGlowingItem(material, amount, name, Arrays.asList(lores));
+    }
+
+    /**
+     * Get a menu item by material, amount, durability, unbreakability (boolean), name and lore (as List)
+     */
+    public static ItemStack getMenuItem(@NotNull Material material, int amount, int durability, boolean unbreakable, String name, List<String> lores){
+        ItemStack item = (new ItemFactory(material, amount))
+                .setName(name)
+                .setDurability(durability)
+                .setUnbreakable(unbreakable)
+                .setLore(lores)
+                .toItemStack();
+        return item;
+    }
+
+    /**
+     * Get a menu item by material, amount, durability, unbreakability (boolean), name and lore (as multiple Strings)
+     */
+    public static ItemStack getMenuItem(@NotNull Material material, int amount, int durability, String name, List<String> lores){
+        return getMenuItem(material, amount, durability, false, name, lores);
+    }
+
+    /**
+     * Get a menu item by material, amount, durability, name and lore (as multiple Strings). (Unbreakable is set to false.)
+     */
+    public static ItemStack getMenuItem(@NotNull Material material, int amount, int durability, String name, String... lores){
+        return getMenuItem(material, amount, durability, false, name, Arrays.asList(lores));
+    }
+
+    /**
+     * <b>Do not use this. Use getMenuItem() instead.</b>
+     * @param lores Lore as String - you can use %nl% for a new line
+     *
+     * @see #getMenuItem(Material material, int amount, int durability, String name, String... lores)
+     */
+    @Deprecated
+    @ToDo(comment = "remove all usages")
     public static ItemStack mItem(String material, int amount, short durability, String text, String lores) {
-        try {
-            ItemStack is = new ItemStack(Material.getMaterial(material.toUpperCase()), amount);
-            ItemMeta im = is.getItemMeta();
-            List<String> itemlore = Arrays.asList(TextUtils.colorize(lores).split("%nl%"));
-            im.setLore(itemlore);
-            if (getServerVersion().is1_12()) is.setDurability(durability);
-            else ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
-            im.setDisplayName(TextUtils.colorize(text));
-            is.setItemMeta(im);
-            return is;
-        } catch (Exception e) {
-            try {
-                ItemStack is = new ItemStack(Material.matchMaterial(material, true), amount);
-                ItemMeta im = is.getItemMeta();
-                List<String> itemlore = Arrays.asList(TextUtils.colorize(lores).split("%nl%"));
-                im.setLore(itemlore);
-                if (getServerVersion().is1_12()) is.setDurability(durability);
-                else ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
-                im.setDisplayName(TextUtils.colorize(text));
-                is.setItemMeta(im);
-                return is;
-            } catch (Exception e2) {
-                e2.printStackTrace();
-                return null;
-            }
-        }
+        List<String> itemLore = Arrays.asList(TextUtils.colorize(lores).split("%nl%"));
+        Material m = getMaterial(material);
+        return getMenuItem(m, amount, durability, false, text, itemLore);
     }
 
     public static ItemStack mItemRiders(String material, int amount, short durability, String text, String licensePlate) {
@@ -370,32 +419,24 @@ public class ItemUtils {
         }
     }
 
-    public static ItemStack glowItem(String material, String name, String ken) {
-        ItemStack car = (new ItemFactory(Material.getMaterial(material))).setName(name).toItemStack();
-        ItemMeta im = car.getItemMeta();
-        List<String> itemlore = new ArrayList<>();
-        itemlore.add(TextUtils.colorize(ken));
-        im.setLore(itemlore);
-        im.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
-        im.addItemFlags(new ItemFlag[]{ItemFlag.HIDE_ENCHANTS});
-        car.setItemMeta(im);
-        return car;
-    }
-
-    public static void createVoucher(String name, Player p) {
-        ItemStack is = (new ItemFactory(Material.PAPER)).setNBT("mtvehicles.item", name).toItemStack();
-        ItemMeta im = is.getItemMeta();
+    /**
+     * Create a new voucher. An updated method.
+     * @param carUUID UUID of the car (to be found in vehicles.yml)
+     */
+    public static ItemStack createVoucher(String carUUID) {
         MessagesConfig msg = ConfigModule.messagesConfig;
-        List<String> goldlore = new ArrayList<>();
-        goldlore.add(TextUtils.colorize("&8&m                                    "));
-        goldlore.add(TextUtils.colorize(msg.getMessage(Message.VOUCHER_DESCRIPTION)));
-        goldlore.add(TextUtils.colorize("&2&l"));
-        goldlore.add(TextUtils.colorize(msg.getMessage(Message.VOUCHER_VALIDITY)));
-        goldlore.add(TextUtils.colorize("&2> Permanent"));
-        goldlore.add(TextUtils.colorize("&8&m                                    "));
-        im.setLore(goldlore);
-        im.setDisplayName(TextUtils.colorize(VehicleUtils.getCarItem(name).getItemMeta().getDisplayName() + " Voucher"));
-        is.setItemMeta(im);
-        p.getInventory().addItem(new ItemStack[]{is});
+        ItemStack voucher = (new ItemFactory(Material.PAPER))
+                .setName(TextUtils.colorize(VehicleUtils.getCarItem(carUUID).getItemMeta().getDisplayName() + " Voucher"))
+                .setLore(
+                        TextUtils.colorize("&8&m                                    "),
+                        TextUtils.colorize(msg.getMessage(Message.VOUCHER_DESCRIPTION)),
+                        TextUtils.colorize("&2&l"),
+                        TextUtils.colorize(msg.getMessage(Message.VOUCHER_VALIDITY)),
+                        TextUtils.colorize("&2> Permanent"),
+                        TextUtils.colorize("&8&m                                    ")
+                )
+                .setNBT("mtvehicles.item", carUUID)
+                .toItemStack();
+        return voucher;
     }
 }

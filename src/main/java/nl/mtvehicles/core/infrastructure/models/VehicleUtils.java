@@ -171,14 +171,14 @@ public final class VehicleUtils {
         return 0;
     }
 
-    public static ItemStack getCarItem(String carUuid) {
+    public static ItemStack getCarItem(String carUUID) {
         List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getVehicles();
         List<Map<?, ?>> matchedVehicles = new ArrayList<>();
         for (Map<?, ?> configVehicle : vehicles) {
             List<Map<?, ?>> skins = (List<Map<?, ?>>) configVehicle.get("cars");
             for (Map<?, ?> skin : skins) {
                 if (skin.get("uuid") != null) {
-                    if (skin.get("uuid").equals(carUuid)) {
+                    if (skin.get("uuid").equals(carUUID)) {
                         if (skin.get("uuid") != null) {
                             ItemStack is = ItemUtils.getVehicleItem(ItemUtils.getMaterial(skin.get("SkinItem").toString()), (int) skin.get("itemDamage"), ((String) skin.get("name")));
                             matchedVehicles.add(configVehicle);
