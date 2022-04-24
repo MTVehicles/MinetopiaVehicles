@@ -49,7 +49,7 @@ public class VehicleEdit extends MTVehicleSubCommand {
                 ItemUtils.getMaterial(ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.SKIN_ITEM).toString()),
                 ConfigModule.vehicleDataConfig.getDamage(licensePlate),
                 "mtcustom",
-                ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.NBT_VALUE).toString(),
+                ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.NBT_VALUE),
                 msg.getMessage(Message.VEHICLE_SETTINGS),
                 lore
         ));

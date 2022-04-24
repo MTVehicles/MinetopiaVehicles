@@ -3,7 +3,6 @@ package nl.mtvehicles.core.infrastructure.helpers;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.annotations.ToDo;
 import nl.mtvehicles.core.infrastructure.dataconfig.MessagesConfig;
-import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
@@ -11,19 +10,12 @@ import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.apache.commons.lang.RandomStringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
-import java.util.stream.Collectors;
-
-import static nl.mtvehicles.core.infrastructure.modules.VersionModule.getServerVersion;
 
 @ToDo(comment = "Honestly, this code is awful. I hardly understand most of it. Also... why parsing to Strings and then parsing back to materials again?")
 public class ItemUtils {
@@ -36,14 +28,23 @@ public class ItemUtils {
      */
     public static Material getMaterial(String string){
         try {
-            return Material.getMaterial(string);
+            Material material = Material.getMaterial(string);
+            assert material != null;
+            return material;
         } catch (Exception e1){
             try {
-                return Material.getMaterial(string, true);
+                Material material = Material.getMaterial("LEGACY_" + string);
+                assert material != null;
+                return material;
             } catch (Exception e2){
-                Main.logSevere("An error occurred while trying to obtain material from string '" + string + "'.");
-                e2.printStackTrace();
-                return null;
+                try {
+                    Material material = Material.getMaterial(string, true);
+                    assert material != null;
+                    return material;
+                } catch (Exception e3){
+                    Main.logSevere("An error occurred while trying to obtain material from string '" + string + "'. This is most likely a plugin issue, contact us at discord.gg/vehicle!");
+                    return null;
+                }
             }
         }
     }
@@ -94,15 +95,18 @@ public class ItemUtils {
     /**
      * Create a new vehicle item <b>with a custom NBT</b> (used in "Choose vehicle menu" and #getCarItem(...)). Updated method (used to be #carItem3(...)).
      */
-    public static ItemStack getVehicleItem(@NotNull Material material, int durability, String name, String nbtKey, String nbtValue){
+    public static ItemStack getVehicleItem(@NotNull Material material, int durability, String name, String nbtKey, @Nullable Object nbtValue){
         if (!material.isItem()) return null;
+        if (nbtValue == null){
+            return getVehicleItem(material, durability, name);
+        }
         String licensePlate = generateLicencePlate();
         ItemStack vehicle = (new ItemFactory(material))
                 .setDurability(durability)
                 .setName(TextUtils.colorize("&6" + name))
                 .setNBT("mtvehicles.kenteken", licensePlate)
                 .setNBT("mtvehicles.naam", name)
-                .setNBT(nbtKey, nbtValue)
+                .setNBT(nbtKey, nbtValue.toString())
                 .setLore("&a", "&a" + licensePlate, "&a")
                 .setUnbreakable(true)
                 .toItemStack();
@@ -129,14 +133,18 @@ public class ItemUtils {
     /**
      * Restore a vehicle item with a known license plate and <b>a custom NBT</b> (used in /vehicle restore). Updated method (used to be #carItem4(...)).
      */
-    public static ItemStack getVehicleItem(@NotNull Material material, int durability, boolean glowing, String name, String licensePlate, String nbtKey, String nbtValue){
+    public static ItemStack getVehicleItem(@NotNull Material material, int durability, boolean glowing, String name, String licensePlate, String nbtKey, @Nullable Object nbtValue){
         if (!material.isItem()) return null;
+        if (nbtValue == null){
+            return getVehicleItem(material, durability, glowing, name, licensePlate);
+        }
         ItemStack vehicle = (new ItemFactory(material))
                 .setDurability(durability)
                 .setName(TextUtils.colorize("&6" + name))
+                .setGlowing(glowing)
                 .setNBT("mtvehicles.kenteken", licensePlate)
                 .setNBT("mtvehicles.naam", name)
-                .setNBT(nbtKey, nbtValue)
+                .setNBT(nbtKey, nbtValue.toString())
                 .setLore("&a", "&a" + licensePlate, "&a")
                 .setUnbreakable(true)
                 .toItemStack();
@@ -157,11 +165,17 @@ public class ItemUtils {
     public static ItemStack getMenuItem(String materialName, String materialLegacyName, short legacyData, int amount, String name, List<String> lores){
         ItemStack item;
         try {
-            item = new ItemStack(Material.getMaterial(materialLegacyName.toUpperCase(Locale.ROOT)), amount);
-            item.setDurability(legacyData);
-        } catch (Exception e){
-            item = new ItemStack(getMaterial(materialName.toUpperCase(Locale.ROOT)), amount);
+            item = new ItemStack(getMaterial(materialName), amount);
+        } catch (Exception e1){
+            try {
+                item = new ItemStack(getMaterial(materialLegacyName), amount);
+                item.setDurability(legacyData);
+            } catch (Exception e2){
+                Main.logSevere("An error occurred - could not get item neither from " + materialName + " nor from " + materialLegacyName + ". This is most likely a plugin issue, contact us at discord.gg/vehicle!");
+                return null;
+            }
         }
+
         return (new ItemFactory(item))
                 .setName(name)
                 .setLore(lores)
@@ -258,6 +272,10 @@ public class ItemUtils {
     public static ItemStack mItem(String material, int amount, short durability, String text, String lores) {
         List<String> itemLore = Arrays.asList(TextUtils.colorize(lores).split("%nl%"));
         Material m = getMaterial(material);
+        if (m == null){
+            Main.logSevere("An error occurred. Cannot obtain material from string '" + material + "'. This is most likely a plugin issue, contact us at discord.gg/vehicle!");
+            return null;
+        }
         return getMenuItem(m, amount, durability, false, text, itemLore);
     }
 
@@ -336,12 +354,15 @@ public class ItemUtils {
      * Get a custom menu item which looks like a vehicle <b>with a custom NBT</b>.
      * An updated method (used to be #mItem3(...)).
      */
-    public static ItemStack getMenuVehicleItem(@NotNull Material material, int durability, String nbtKey, String nbtValue, String name, List<String> lore){
+    public static ItemStack getMenuVehicleItem(@NotNull Material material, int durability, String nbtKey, @Nullable Object nbtValue, String name, List<String> lore){
         if (!material.isItem()) return null;
+        if (nbtValue == null){
+            return getMenuVehicleItem(material, durability, name, lore);
+        }
         ItemStack vehicle = (new ItemFactory(material))
                 .setDurability(durability)
                 .setName(name)
-                .setNBT(nbtKey, nbtValue)
+                .setNBT(nbtKey, nbtValue.toString())
                 .setLore(lore)
                 .setUnbreakable(true)
                 .toItemStack();

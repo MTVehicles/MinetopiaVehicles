@@ -22,8 +22,29 @@ public class MenuUtils {
     public static HashMap<String, Integer> restoreId = new HashMap<>();
     public static HashMap<String, UUID> restoreUUID = new HashMap<>();
 
-    public static ItemStack closeItem = ItemUtils.mItem("BARRIER", 1, (short) 0, ConfigModule.messagesConfig.getMessage(Message.CLOSE), ConfigModule.messagesConfig.getMessage(Message.CLOSE_DESCRIPTION));
-    public static ItemStack backItem = ItemUtils.mItem("WOOD_DOOR", 1, (short) 0, ConfigModule.messagesConfig.getMessage(Message.BACK), ConfigModule.messagesConfig.getMessage(Message.BACK_DESCRIPTION));
+    public static ItemStack closeItem;
+            //ItemUtils.mItem("BARRIER", 1, (short) 0, ConfigModule.messagesConfig.getMessage(Message.CLOSE), ConfigModule.messagesConfig.getMessage(Message.CLOSE_DESCRIPTION));
+    public static ItemStack backItem;
+            //ItemUtils.mItem("WOOD_DOOR", 1, (short) 0, ConfigModule.messagesConfig.getMessage(Message.BACK), ConfigModule.messagesConfig.getMessage(Message.BACK_DESCRIPTION));
+
+    static {
+        List<String> lore = new ArrayList<>();
+        lore.add(ConfigModule.messagesConfig.getMessage(Message.BACK_DESCRIPTION));
+        backItem = ItemUtils.getMenuItem(
+                "OAK_DOOR",
+                "WOOD_DOOR",
+                (short) 0,
+                1,
+                ConfigModule.messagesConfig.getMessage(Message.BACK),
+                lore
+        );
+
+        closeItem = ItemUtils.getMenuItem(
+                Material.BARRIER,
+                1,
+                ConfigModule.messagesConfig.getMessage(Message.CLOSE),
+                ConfigModule.messagesConfig.getMessage(Message.CLOSE_DESCRIPTION));
+    }
 
     public static void menuEdit(Player p) {
         Inventory inv = Bukkit.createInventory(null, 45, "Vehicle Settings");
@@ -157,7 +178,7 @@ public class MenuUtils {
                     inv.addItem(ItemUtils.getVehicleItem(ItemUtils.getMaterial(vehicle.get("SkinItem").toString()), (int) vehicle.get("itemDamage"), vehicle.get("name").toString()));
                     continue;
                 }
-                inv.addItem(ItemUtils.getVehicleItem(ItemUtils.getMaterial(vehicle.get("SkinItem").toString()), (int) vehicle.get("itemDamage"), vehicle.get("name").toString(), vehicle.get("nbtKey").toString(), vehicle.get("nbtValue").toString()));
+                inv.addItem(ItemUtils.getVehicleItem(ItemUtils.getMaterial(vehicle.get("SkinItem").toString()), (int) vehicle.get("itemDamage"), vehicle.get("name").toString(), vehicle.get("nbtKey").toString(), vehicle.get("nbtValue")));
             }
         }
 
@@ -184,12 +205,14 @@ public class MenuUtils {
                 if (i - 1 < dataVehicle.size()) {
                     String license = dataVehicle.get(i - 1);
                     VehicleDataConfig data = ConfigModule.vehicleDataConfig;
+                    Boolean isGlowing = (Boolean) data.get(license, VehicleDataConfig.Option.IS_GLOWING);
+                    if (isGlowing == null) isGlowing = false;
                     if (ownerUUID == null || data.get(license, VehicleDataConfig.Option.OWNER).toString().contains(ownerUUID.toString())) {
                         if (data.get(license, VehicleDataConfig.Option.NBT_VALUE) == null) {
-                            inv.addItem(ItemUtils.getVehicleItem(ItemUtils.getMaterial(data.get(license, VehicleDataConfig.Option.SKIN_ITEM).toString()), data.getDamage(license), (boolean) data.get(license, VehicleDataConfig.Option.IS_GLOWING), data.get(license, VehicleDataConfig.Option.NAME).toString(), license));
+                            inv.addItem(ItemUtils.getVehicleItem(ItemUtils.getMaterial(data.get(license, VehicleDataConfig.Option.SKIN_ITEM).toString()), data.getDamage(license), isGlowing, data.get(license, VehicleDataConfig.Option.NAME).toString(), license));
                             continue;
                         }
-                        inv.addItem(ItemUtils.getVehicleItem(ItemUtils.getMaterial(data.get(license, VehicleDataConfig.Option.SKIN_ITEM).toString()), data.getDamage(license), (boolean) data.get(license, VehicleDataConfig.Option.IS_GLOWING), data.get(license, VehicleDataConfig.Option.NAME).toString(), license, "mtcustom", data.get(license, VehicleDataConfig.Option.NBT_VALUE).toString()));
+                        inv.addItem(ItemUtils.getVehicleItem(ItemUtils.getMaterial(data.get(license, VehicleDataConfig.Option.SKIN_ITEM).toString()), data.getDamage(license), isGlowing, data.get(license, VehicleDataConfig.Option.NAME).toString(), license, "mtcustom", data.get(license, VehicleDataConfig.Option.NBT_VALUE)));
                     }
                 }
             }
