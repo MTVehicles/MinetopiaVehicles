@@ -57,13 +57,13 @@ public class MenuUtils {
 
         MessagesConfig msg = ConfigModule.messagesConfig;
 
-        inv.setItem(10, ItemUtils.mItem2(skinItem, 1, skinDamage, "&6" + msg.getMessage(Message.EDIT_NAME), String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), name)));
-        inv.setItem(13, ItemUtils.mItem("PAPER", 1, (short) 0, "&6" + msg.getMessage(Message.EDIT_LICENSE_PLATE), String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), licensePlate)));
+        inv.setItem(10, ItemUtils.getMenuCustomItem(ItemUtils.getMaterial(skinItem), "&6" + msg.getMessage(Message.EDIT_NAME), skinDamage, String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), name)));
+        inv.setItem(13, ItemUtils.getMenuItem(Material.PAPER, 1, "&6" + msg.getMessage(Message.EDIT_LICENSE_PLATE), String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), licensePlate)));
         if (isGlowing)
             //inv.setItem(16, ItemUtils.glowItem("BOOK", "&6" + msg.getMessage(Message.TOGGLE_GLOW), String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), msg.getMessage(Message.TURNED_ON))));
             inv.setItem(16, ItemUtils.getMenuGlowingItem(Material.BOOK, 1, "&6" + msg.getMessage(Message.TOGGLE_GLOW), String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), msg.getMessage(Message.TURNED_ON))));
         else
-            inv.setItem(16, ItemUtils.mItem("BOOK", 1, (short) 0, "&6" + msg.getMessage(Message.TOGGLE_GLOW), String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), msg.getMessage(Message.TURNED_OFF))));
+            inv.setItem(16, ItemUtils.getMenuItem(Material.BOOK, 1, "&6" + msg.getMessage(Message.TOGGLE_GLOW), String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), msg.getMessage(Message.TURNED_OFF))));
         DrawOptions(p, inv);
     }
 
@@ -95,11 +95,11 @@ public class MenuUtils {
 
         ItemStack option1;
         if ((boolean) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.FUEL_ENABLED))
-            option1 = ItemUtils.mItem2("DIAMOND_HOE", 1, (short) 58, "&6" + msg.getMessage(Message.TOGGLE_FUEL), String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), msg.getMessage(Message.TURNED_ON)));
+            option1 = ItemUtils.getMenuCustomItem(Material.DIAMOND_HOE,  "&6" + msg.getMessage(Message.TOGGLE_FUEL), 58, String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), msg.getMessage(Message.TURNED_ON)));
         else
-            option1 = ItemUtils.mItem2("DIAMOND_HOE", 1, (short) 58, "&6" + msg.getMessage(Message.TOGGLE_FUEL), String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), msg.getMessage(Message.TURNED_OFF)));
-        ItemStack option2 = ItemUtils.mItem2("DIAMOND_HOE", 1, (short) 58, "&6" + msg.getMessage(Message.CURRENT_FUEL), String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), vehicle.getFuel()));
-        ItemStack option3 = ItemUtils.mItem2("DIAMOND_HOE", 1, (short) 58, "&6" + msg.getMessage(Message.FUEL_USAGE), String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), vehicle.getFuelUsage()));
+            option1 = ItemUtils.getMenuCustomItem(Material.DIAMOND_HOE, "&6" + msg.getMessage(Message.TOGGLE_FUEL), 58, String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), msg.getMessage(Message.TURNED_OFF)));
+        ItemStack option2 = ItemUtils.getMenuCustomItem(Material.DIAMOND_HOE, "&6" + msg.getMessage(Message.CURRENT_FUEL), 58, String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), vehicle.getFuel()));
+        ItemStack option3 = ItemUtils.getMenuCustomItem(Material.DIAMOND_HOE, "&6" + msg.getMessage(Message.FUEL_USAGE), 58, String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), vehicle.getFuelUsage()));
         DrawOptions(p, inv, option1, option2, option3);
     }
 
@@ -111,11 +111,11 @@ public class MenuUtils {
 
         ItemStack option1;
         if ((boolean) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.TRUNK_ENABLED))
-            option1 = ItemUtils.mItem("CHEST", 1, (short) 0, "&6" + msg.getMessage(Message.TOGGLE_TRUNK), String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), msg.getMessage(Message.TURNED_ON)));
+            option1 = ItemUtils.getMenuItem(Material.CHEST, 1, "&6" + msg.getMessage(Message.TOGGLE_TRUNK), String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), msg.getMessage(Message.TURNED_ON)));
         else
-            option1 = ItemUtils.mItem("CHEST", 1, (short) 0, "&6" + msg.getMessage(Message.TOGGLE_TRUNK), String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), msg.getMessage(Message.TURNED_OFF)));
-        ItemStack option2 = ItemUtils.mItem("CHEST", 1, (short) 0, "&6" + msg.getMessage(Message.EDIT_TRUNK_ROWS), String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.TRUNK_ROWS)));
-        ItemStack option3 = ItemUtils.mItem("CHEST", 1, (short) 0, "&6" + msg.getMessage(Message.OPEN_TRUNK),  "&7" + msg.getMessage(Message.CLICK_TO_OPEN));
+            option1 = ItemUtils.getMenuItem(Material.CHEST, 1, "&6" + msg.getMessage(Message.TOGGLE_TRUNK), String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), msg.getMessage(Message.TURNED_OFF)));
+        ItemStack option2 = ItemUtils.getMenuItem(Material.CHEST, 1, "&6" + msg.getMessage(Message.EDIT_TRUNK_ROWS), String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.TRUNK_ROWS)));
+        ItemStack option3 = ItemUtils.getMenuItem(Material.CHEST, 1, "&6" + msg.getMessage(Message.OPEN_TRUNK),  "&7" + msg.getMessage(Message.CLICK_TO_OPEN));
         DrawOptions(p, inv, option1, option2, option3);
     }
 
@@ -127,7 +127,7 @@ public class MenuUtils {
         Vehicle vehicle = VehicleUtils.getByLicensePlate(licensePlate);
         if (vehicle == null) return;
 
-        ItemStack option1 = ItemUtils.mItem("PAPER", 1, (short) 0, "&6" + ConfigModule.messagesConfig.getMessage(Message.OWNER), String.format("&7%s: &e%s", ConfigModule.messagesConfig.getMessage(Message.NAME), Bukkit.getOfflinePlayer(vehicle.getOwnerUUID()).getName()));
+        ItemStack option1 = ItemUtils.getMenuItem(Material.PAPER, 1, "&6" + ConfigModule.messagesConfig.getMessage(Message.OWNER), String.format("&7%s: &e%s", ConfigModule.messagesConfig.getMessage(Message.NAME), Bukkit.getOfflinePlayer(vehicle.getOwnerUUID()).getName()));
         ItemStack option2 = ItemUtils.getMenuRidersItem(licensePlate);
         ItemStack option3 = ItemUtils.getMenuMembersItem(licensePlate);
         DrawOptions(p, inv, option1, option2, option3);
@@ -223,8 +223,8 @@ public class MenuUtils {
             }
         }
 
-        inv.setItem(53, ItemUtils.mItem("SPECTRAL_ARROW", 1, (short) 0, "&c" + ConfigModule.messagesConfig.getMessage(Message.NEXT_PAGE), "&c"));
-        inv.setItem(45, ItemUtils.mItem("SPECTRAL_ARROW", 1, (short) 0, "&c"  + ConfigModule.messagesConfig.getMessage(Message.PREVIOUS_PAGE), "&c"));
+        inv.setItem(53, ItemUtils.getMenuItem(Material.SPECTRAL_ARROW, 1, "&c" + ConfigModule.messagesConfig.getMessage(Message.NEXT_PAGE), "&c"));
+        inv.setItem(45, ItemUtils.getMenuItem(Material.SPECTRAL_ARROW, 1, "&c"  + ConfigModule.messagesConfig.getMessage(Message.PREVIOUS_PAGE), "&c"));
         for (int i = 36; i <= 44; i++) {
             inv.setItem(i, ItemUtils.getMenuItem(ItemUtils.getStainedGlassPane(), 1, "&c", "&c"));
         }

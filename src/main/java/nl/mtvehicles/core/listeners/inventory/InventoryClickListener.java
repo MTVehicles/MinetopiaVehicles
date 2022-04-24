@@ -159,7 +159,7 @@ public class InventoryClickListener extends MTVListener {
         else if (clickedSlot == 6) LanguageUtils.changeLanguage(player, Language.TR);
         else if (clickedSlot == 8) {
             LanguageUtils.languageCheck.put(player.getUniqueId(), false);
-            player.sendMessage("§6You may find more information here: §e§nhttps://github.com/GamerJoep/MinetopiaVehicles/wiki/Translate-the-plugin");
+            player.sendMessage("§6You may find more information here: §e§nhttps://wiki.mtvehicles.eu/translating.html");
         }
         player.closeInventory();
     }

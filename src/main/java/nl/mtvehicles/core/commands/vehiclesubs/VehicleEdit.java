@@ -9,14 +9,12 @@ import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class VehicleEdit extends MTVehicleSubCommand {
     public VehicleEdit() {
@@ -43,21 +41,19 @@ public class VehicleEdit extends MTVehicleSubCommand {
         String licensePlate = VehicleUtils.getLicensePlate(item);
         MessagesConfig msg = ConfigModule.messagesConfig;
         Inventory inv = Bukkit.createInventory(null, 27, "Vehicle Edit");
-        List<String> lore = new ArrayList<>();
-        lore.add("");
-        inv.setItem(10, ItemUtils.getMenuVehicleItem(
+        inv.setItem(10, ItemUtils.getMenuCustomItem(
                 ItemUtils.getMaterial(ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.SKIN_ITEM).toString()),
-                ConfigModule.vehicleDataConfig.getDamage(licensePlate),
                 "mtcustom",
                 ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.NBT_VALUE),
                 msg.getMessage(Message.VEHICLE_SETTINGS),
-                lore
+                ConfigModule.vehicleDataConfig.getDamage(licensePlate),
+                ""
         ));
-        inv.setItem(11, ItemUtils.mItem2("DIAMOND_HOE", 1, (short) 58, msg.getMessage(Message.FUEL_SETTINGS), ""));
-        inv.setItem(12, ItemUtils.mItem("CHEST", 1, (short) 0, msg.getMessage(Message.TRUNK_SETTINGS), ""));
-        inv.setItem(13, ItemUtils.mItem("PAPER", 1, (short) 0, msg.getMessage(Message.MEMBER_SETTINGS), ""));
+        inv.setItem(11, ItemUtils.getMenuCustomItem(Material.DIAMOND_HOE, msg.getMessage(Message.FUEL_SETTINGS), 58, ""));
+        inv.setItem(12, ItemUtils.getMenuItem(Material.CHEST, 1, msg.getMessage(Message.TRUNK_SETTINGS), ""));
+        inv.setItem(13, ItemUtils.getMenuItem(Material.PAPER, 1, msg.getMessage(Message.MEMBER_SETTINGS), ""));
         inv.setItem(14, ItemUtils.getMenuItem("LIME_STAINED_GLASS", "STAINED_GLASS", (short) 5, 1, msg.getMessage(Message.SPEED_SETTINGS), ""));
-        inv.setItem(16, ItemUtils.mItem("BARRIER", 1, (short) 0, msg.getMessage(Message.DELETE_VEHICLE), msg.getMessage(Message.DELETE_WARNING_LORE)));
+        inv.setItem(16, ItemUtils.getMenuItem(Material.BARRIER, 1, msg.getMessage(Message.DELETE_VEHICLE), msg.getMessage(Message.DELETE_WARNING_LORE)));
         p.openInventory(inv);
     }
 }

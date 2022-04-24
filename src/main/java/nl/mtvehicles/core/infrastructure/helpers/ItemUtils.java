@@ -1,7 +1,6 @@
 package nl.mtvehicles.core.infrastructure.helpers;
 
 import nl.mtvehicles.core.Main;
-import nl.mtvehicles.core.infrastructure.annotations.ToDo;
 import nl.mtvehicles.core.infrastructure.dataconfig.MessagesConfig;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
@@ -260,7 +259,6 @@ public class ItemUtils {
      * @see #getMenuItem(Material material, int amount, int durability, String name, String... lores)
      */
     @Deprecated
-    @ToDo(comment = "remove all usages")
     public static ItemStack mItem(String material, int amount, short durability, String text, String lores) {
         List<String> itemLore = Arrays.asList(TextUtils.colorize(lores).split("%nl%"));
         Material m = getMaterial(material);
@@ -333,10 +331,10 @@ public class ItemUtils {
     }
 
     /**
-     * Get a custom menu item which looks like a vehicle.
+     * Get a custom menu item which has a custom texture (e.g. vehicle or a jerry can). Get lore from a List of Strings.
      * An updated method (used to be #mItem2(...)).
      */
-    public static ItemStack getMenuVehicleItem(@NotNull Material material, int durability, String name, List<String> lore){
+    public static ItemStack getMenuCustomItem(@NotNull Material material, String name, int durability, List<String> lore){
         if (!material.isItem()) return null;
         ItemStack vehicle = (new ItemFactory(material))
                 .setDurability(durability)
@@ -348,13 +346,21 @@ public class ItemUtils {
     }
 
     /**
-     * Get a custom menu item which looks like a vehicle <b>with a custom NBT</b>.
+     * Get a custom menu item which has a custom texture (e.g. vehicle or a jerry can). Get lore from multiple Strings.
+     * An updated method (used to be #mItem2(...)).
+     */
+    public static ItemStack getMenuCustomItem(@NotNull Material material, String name, int durability, String... lore){
+        return getMenuCustomItem(material, name, durability, Arrays.asList(lore));
+    }
+
+    /**
+     * Get a custom menu item which has a custom texture (e.g. vehicle or a jerry can) <b>with a custom NBT</b>. Get lore from a List of Strings.
      * An updated method (used to be #mItem3(...)).
      */
-    public static ItemStack getMenuVehicleItem(@NotNull Material material, int durability, String nbtKey, @Nullable Object nbtValue, String name, List<String> lore){
+    public static ItemStack getMenuCustomItem(@NotNull Material material, String nbtKey, @Nullable Object nbtValue, String name, int durability, List<String> lore){
         if (!material.isItem()) return null;
         if (nbtValue == null){
-            return getMenuVehicleItem(material, durability, name, lore);
+            return getMenuCustomItem(material, name, durability, lore);
         }
         ItemStack vehicle = (new ItemFactory(material))
                 .setDurability(durability)
@@ -367,15 +373,11 @@ public class ItemUtils {
     }
 
     /**
-     * <b>Do not use this. Use getMenuVehicleItem() instead.</b>
-     * @see #getMenuVehicleItem(Material, int, String, List)
+     * Get a custom menu item which has a custom texture (e.g. vehicle or a jerry can) <b>with a custom NBT</b>. Get lore from multiple Strings.
+     * An updated method (used to be #mItem3(...)).
      */
-    @Deprecated
-    @ToDo(comment = "remove all usages")
-    public static ItemStack mItem2(String material, int amount, short durability, String text, String lores) {
-        List<String> lore = new ArrayList<>();
-        lore.add(lores);
-        return getMenuVehicleItem(getMaterial(material), durability, text, lore);
+    public static ItemStack getMenuCustomItem(@NotNull Material material, String nbtKey, @Nullable Object nbtValue, String name, int durability, String... lore){
+        return getMenuCustomItem(material, nbtKey, nbtValue, name, durability, Arrays.asList(lore));
     }
 
     /**
