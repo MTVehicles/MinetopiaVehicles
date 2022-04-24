@@ -58,8 +58,22 @@ public class VehicleVoucherListener extends MTVListener {
             Inventory inv = Bukkit.createInventory(null, 27, InventoryTitle.VOUCHER_REDEEM_MENU.getStringTitle());
             voucher.put(player, carUUID);
             MessagesConfig msg = ConfigModule.messagesConfig;
-            inv.setItem(11, ItemUtils.woolItem("WOOL", "RED_WOOL", 1, (short) 14, "&c" + msg.getMessage(Message.CANCEL), String.format("&7%s@&7%s", msg.getMessage(Message.CANCEL_ACTION), msg.getMessage(Message.CANCEL_VOUCHER))));
-            inv.setItem(15, ItemUtils.woolItem("WOOL", "LIME_WOOL", 1, (short) 5, "&a"  + msg.getMessage(Message.CONFIRM), String.format("&7%s@&7%s", msg.getMessage(Message.CONFIRM_ACTION), msg.getMessage(Message.CONFIRM_VOUCHER))));
+            inv.setItem(11, ItemUtils.getMenuItem(
+                    "RED_WOOL",
+                    "WOOL",
+                    (short) 14,
+                    1,
+                    "&c" + msg.getMessage(Message.CANCEL),
+                    "&7" + msg.getMessage(Message.CANCEL_ACTION), "&7" + msg.getMessage(Message.CANCEL_VOUCHER)
+            ));
+            inv.setItem(15, ItemUtils.getMenuItem(
+                    "LIME_WOOL",
+                    "WOOL",
+                    (short) 5,
+                    1,
+                    "&a"  + msg.getMessage(Message.CONFIRM),
+                    "&7" + msg.getMessage(Message.CONFIRM_ACTION), "&7" + msg.getMessage(Message.CONFIRM_VOUCHER)
+            ));
             player.openInventory(inv);
         }
     }

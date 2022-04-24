@@ -19,7 +19,6 @@ import java.util.*;
 
 import static nl.mtvehicles.core.infrastructure.modules.VersionModule.getServerVersion;
 
-@ToDo(comment = "Honestly, this code is awful. I hardly understand most of it. Also... why parsing to Strings and then parsing back to materials again?")
 public class ItemUtils {
     public static HashMap<String, Boolean> edit = new HashMap<>();
 
@@ -65,7 +64,7 @@ public class ItemUtils {
         return vehicle;
     }
 
-    @Deprecated
+    @Deprecated //This was not used anywhere. Why is it here, then?
     public static ItemStack carItem9(int durability, String name, String material, String model, String nbt) {
         ItemStack car = (new ItemFactory(Material.getMaterial(material))).setDurability(durability).setName(TextUtils.colorize("&6" + name)).toItemStack();
         ItemMeta im = car.getItemMeta();
@@ -187,19 +186,6 @@ public class ItemUtils {
     public static ItemStack getMenuItem(String materialName, String materialLegacyName, short legacyData, int amount, String name, String... lores){
         return getMenuItem(materialName, materialLegacyName, legacyData, amount, name, Arrays.asList(lores));
     }
-
-    /**
-     * <b>Do not use this. Use getMenuItem() instead.</b>
-     * @see #getMenuItem(String materialName, String materialLegacyName, short legacyData, int amount, String name, List lore)
-     */
-    @Deprecated
-    @ToDo(comment = "remove all usages")
-    public static ItemStack woolItem(String mat1, String mat2, int amount, short durability, String text, String lores) {
-        List<String> lore = new ArrayList<>();
-        lore.add(lores);
-        return getMenuItem(mat2, mat1, durability, amount, text, lore);
-    }
-
 
     /**
      * Get a menu item by material, amount, name and lore (as List)
