@@ -17,6 +17,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
+import static nl.mtvehicles.core.infrastructure.modules.VersionModule.getServerVersion;
+
 @ToDo(comment = "Honestly, this code is awful. I hardly understand most of it. Also... why parsing to Strings and then parsing back to materials again?")
 public class ItemUtils {
     public static HashMap<String, Boolean> edit = new HashMap<>();
@@ -182,6 +184,10 @@ public class ItemUtils {
                 .toItemStack();
     }
 
+    public static ItemStack getMenuItem(String materialName, String materialLegacyName, short legacyData, int amount, String name, String... lores){
+        return getMenuItem(materialName, materialLegacyName, legacyData, amount, name, Arrays.asList(lores));
+    }
+
     /**
      * <b>Do not use this. Use getMenuItem() instead.</b>
      * @see #getMenuItem(String materialName, String materialLegacyName, short legacyData, int amount, String name, List lore)
@@ -277,6 +283,11 @@ public class ItemUtils {
             return null;
         }
         return getMenuItem(m, amount, durability, false, text, itemLore);
+    }
+
+    public static Material getStainedGlassPane(){
+        if (getServerVersion().is1_12()) return Material.getMaterial("STAINED_GLASS_PANE");
+        else return Material.getMaterial("LEGACY_STAINED_GLASS_PANE");
     }
 
     /**

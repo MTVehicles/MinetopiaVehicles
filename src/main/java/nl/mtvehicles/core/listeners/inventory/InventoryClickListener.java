@@ -112,7 +112,7 @@ public class InventoryClickListener extends MTVListener {
             return;
         }
 
-        if (clickedItem.equals(ItemUtils.mItem("STAINED_GLASS_PANE", 1, (short) 0, "&c", "&c"))) return;
+        if (clickedItem.equals(ItemUtils.getMenuItem(ItemUtils.getStainedGlassPane(), 1, "&c", "&c"))) return;
 
         if (clickedSlot == 53) { //Next page
             MenuUtils.getvehicleCMD(player, id.get(player.getUniqueId()) + 1, raw.get(player.getUniqueId()));
@@ -203,7 +203,7 @@ public class InventoryClickListener extends MTVListener {
     }
 
     private void vehicleRestoreMenu(){
-        if (clickedItem.equals(ItemUtils.mItem("STAINED_GLASS_PANE", 1, (short) 0, "&c", "&c"))) return;
+        if (clickedItem.equals(ItemUtils.getMenuItem(ItemUtils.getStainedGlassPane(), 1, "&c", "&c"))) return;
 
         if (clickedSlot == 53) { //Next page
             MenuUtils.restoreCMD(player, MenuUtils.restoreId.get("pagina") + 1, MenuUtils.restoreUUID.get("uuid"));

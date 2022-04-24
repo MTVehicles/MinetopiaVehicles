@@ -28,22 +28,21 @@ public class MenuUtils {
             //ItemUtils.mItem("WOOD_DOOR", 1, (short) 0, ConfigModule.messagesConfig.getMessage(Message.BACK), ConfigModule.messagesConfig.getMessage(Message.BACK_DESCRIPTION));
 
     static {
-        List<String> lore = new ArrayList<>();
-        lore.add(ConfigModule.messagesConfig.getMessage(Message.BACK_DESCRIPTION));
         backItem = ItemUtils.getMenuItem(
                 "OAK_DOOR",
                 "WOOD_DOOR",
                 (short) 0,
                 1,
                 ConfigModule.messagesConfig.getMessage(Message.BACK),
-                lore
+                ConfigModule.messagesConfig.getMessage(Message.BACK_DESCRIPTION)
         );
 
         closeItem = ItemUtils.getMenuItem(
                 Material.BARRIER,
                 1,
                 ConfigModule.messagesConfig.getMessage(Message.CLOSE),
-                ConfigModule.messagesConfig.getMessage(Message.CLOSE_DESCRIPTION));
+                ConfigModule.messagesConfig.getMessage(Message.CLOSE_DESCRIPTION)
+        );
     }
 
     public static void menuEdit(Player p) {
@@ -70,7 +69,7 @@ public class MenuUtils {
 
     private static void DrawOptions(Player p, Inventory inv) {
         for (int i = 27; i <= 35; i++) {
-            inv.setItem(i, ItemUtils.mItem("STAINED_GLASS_PANE", 1, (short) 0, "&c", "&c"));
+            inv.setItem(i, ItemUtils.getMenuItem(ItemUtils.getStainedGlassPane(), 1, "&c", "&c"));
         }
         inv.setItem(38, closeItem);
         inv.setItem(42, backItem);
@@ -142,12 +141,54 @@ public class MenuUtils {
         VehicleDataConfig data = ConfigModule.vehicleDataConfig;
         MessagesConfig msg = ConfigModule.messagesConfig;
 
-        ItemStack option1 = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6" + msg.getMessage(Message.ACCELERATION_SPEED), String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), data.get(licensePlate, VehicleDataConfig.Option.ACCELARATION_SPEED)));
-        ItemStack option2 = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6" + msg.getMessage(Message.MAX_SPEED), String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), data.get(licensePlate, VehicleDataConfig.Option.MAX_SPEED)));
-        ItemStack option3 = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6" + msg.getMessage(Message.BRAKING_SPEED), String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), data.get(licensePlate, VehicleDataConfig.Option.BRAKING_SPEED)));
-        ItemStack option4 = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6" + msg.getMessage(Message.FRICTION_SPEED), String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), data.get(licensePlate, VehicleDataConfig.Option.FRICTION_SPEED)));
-        ItemStack option5 = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6" + msg.getMessage(Message.ROTATION_SPEED), String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), data.get(licensePlate, VehicleDataConfig.Option.ROTATION_SPEED)));
-        ItemStack option6 = ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6" + msg.getMessage(Message.MAX_SPEED_BACKWARDS), String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), data.get(licensePlate, VehicleDataConfig.Option.MAX_SPEED_BACKWARDS)));
+        ItemStack option1 = ItemUtils.getMenuItem(
+                "LIME_STAINED_GLASS",
+                "STAINED_GLASS",
+                (short) 5,
+                1,
+                "&6" + msg.getMessage(Message.ACCELERATION_SPEED),
+                String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), data.get(licensePlate, VehicleDataConfig.Option.ACCELARATION_SPEED))
+        );
+        ItemStack option2 = ItemUtils.getMenuItem(
+                "LIME_STAINED_GLASS",
+                "STAINED_GLASS",
+                (short) 5,
+                1,
+                "&6" + msg.getMessage(Message.MAX_SPEED),
+                String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), data.get(licensePlate, VehicleDataConfig.Option.MAX_SPEED))
+        );
+        ItemStack option3 = ItemUtils.getMenuItem(
+                "LIME_STAINED_GLASS",
+                "STAINED_GLASS",
+                (short) 5,
+                1,
+                "&6" + msg.getMessage(Message.BRAKING_SPEED),
+                String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), data.get(licensePlate, VehicleDataConfig.Option.BRAKING_SPEED))
+        );
+        ItemStack option4 = ItemUtils.getMenuItem(
+                "LIME_STAINED_GLASS",
+                "STAINED_GLASS",
+                (short) 5,
+                1,
+                "&6" + msg.getMessage(Message.FRICTION_SPEED),
+                String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), data.get(licensePlate, VehicleDataConfig.Option.FRICTION_SPEED))
+        );
+        ItemStack option5 = ItemUtils.getMenuItem(
+                "LIME_STAINED_GLASS",
+                "STAINED_GLASS",
+                (short) 5,
+                1,
+                "&6" + msg.getMessage(Message.ROTATION_SPEED),
+                String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), data.get(licensePlate, VehicleDataConfig.Option.ROTATION_SPEED))
+        );
+        ItemStack option6 = ItemUtils.getMenuItem(
+                "LIME_STAINED_GLASS",
+                "STAINED_GLASS",
+                (short) 5,
+                1,
+                "&6" + msg.getMessage(Message.MAX_SPEED_BACKWARDS),
+                String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), data.get(licensePlate, VehicleDataConfig.Option.MAX_SPEED_BACKWARDS))
+        );
 
         inv.setItem(10, new ItemFactory(option1).setNBT("mtvehicles.item", "1").toItemStack());
         inv.setItem(11, new ItemFactory(option2).setNBT("mtvehicles.item", "2").toItemStack());
@@ -185,7 +226,7 @@ public class MenuUtils {
         inv.setItem(53, ItemUtils.mItem("SPECTRAL_ARROW", 1, (short) 0, "&c" + ConfigModule.messagesConfig.getMessage(Message.NEXT_PAGE), "&c"));
         inv.setItem(45, ItemUtils.mItem("SPECTRAL_ARROW", 1, (short) 0, "&c"  + ConfigModule.messagesConfig.getMessage(Message.PREVIOUS_PAGE), "&c"));
         for (int i = 36; i <= 44; i++) {
-            inv.setItem(i, ItemUtils.mItem("STAINED_GLASS_PANE", 1, (short) 0, "&c", "&c"));
+            inv.setItem(i, ItemUtils.getMenuItem(ItemUtils.getStainedGlassPane(), 1, "&c", "&c"));
         }
         inv.setItem(47, closeItem);
         inv.setItem(51, backItem);
@@ -217,13 +258,10 @@ public class MenuUtils {
                 }
             }
             for (int i = 36; i <= 44; i++) {
-                inv.setItem(i, ItemUtils.mItem("STAINED_GLASS_PANE", 1, (short) 0, "&c", "&c"));
+                inv.setItem(i, ItemUtils.getMenuItem(ItemUtils.getStainedGlassPane(), 1, "&c", "&c"));
             }
-            for (int i = 36; i <= 44; i++) {
-                inv.setItem(i, ItemUtils.mItem("STAINED_GLASS_PANE", 1, (short) 0, "&c", "&c"));
-            }
-            inv.setItem(53, ItemUtils.mItem("SPECTRAL_ARROW", 1, (short) 0, "&c" + ConfigModule.messagesConfig.getMessage(Message.NEXT_PAGE), "&c"));
-            inv.setItem(45, ItemUtils.mItem("SPECTRAL_ARROW", 1, (short) 0, "&c"  + ConfigModule.messagesConfig.getMessage(Message.PREVIOUS_PAGE), "&c"));
+            inv.setItem(53, ItemUtils.getMenuItem(Material.SPECTRAL_ARROW, 1, "&c" + ConfigModule.messagesConfig.getMessage(Message.NEXT_PAGE), "&c"));
+            inv.setItem(45, ItemUtils.getMenuItem(Material.SPECTRAL_ARROW, 1, "&c"  + ConfigModule.messagesConfig.getMessage(Message.PREVIOUS_PAGE), "&c"));
             p.openInventory(inv);
         }
     }

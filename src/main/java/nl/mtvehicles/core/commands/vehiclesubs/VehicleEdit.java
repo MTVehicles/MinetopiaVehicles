@@ -56,7 +56,7 @@ public class VehicleEdit extends MTVehicleSubCommand {
         inv.setItem(11, ItemUtils.mItem2("DIAMOND_HOE", 1, (short) 58, msg.getMessage(Message.FUEL_SETTINGS), ""));
         inv.setItem(12, ItemUtils.mItem("CHEST", 1, (short) 0, msg.getMessage(Message.TRUNK_SETTINGS), ""));
         inv.setItem(13, ItemUtils.mItem("PAPER", 1, (short) 0, msg.getMessage(Message.MEMBER_SETTINGS), ""));
-        inv.setItem(14, ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, msg.getMessage(Message.SPEED_SETTINGS), ""));
+        inv.setItem(14, ItemUtils.getMenuItem("LIME_STAINED_GLASS", "STAINED_GLASS", (short) 5, 1, msg.getMessage(Message.SPEED_SETTINGS), ""));
         inv.setItem(16, ItemUtils.mItem("BARRIER", 1, (short) 0, msg.getMessage(Message.DELETE_VEHICLE), msg.getMessage(Message.DELETE_WARNING_LORE)));
         p.openInventory(inv);
     }
