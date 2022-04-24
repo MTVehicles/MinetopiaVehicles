@@ -108,8 +108,8 @@ public class MenuUtils {
         if (vehicle == null) return;
 
         ItemStack option1 = ItemUtils.mItem("PAPER", 1, (short) 0, "&6" + ConfigModule.messagesConfig.getMessage(Message.OWNER), String.format("&7%s: &e%s", ConfigModule.messagesConfig.getMessage(Message.NAME), Bukkit.getOfflinePlayer(vehicle.getOwnerUUID()).getName()));
-        ItemStack option2 = ItemUtils.mItemRiders("PAPER", 1, (short) 0, "&6" + ConfigModule.messagesConfig.getMessage(Message.RIDERS), licensePlate);
-        ItemStack option3 = ItemUtils.mItemMembers("PAPER", 1, (short) 0, "&6" + ConfigModule.messagesConfig.getMessage(Message.MEMBERS), licensePlate);
+        ItemStack option2 = ItemUtils.getMenuRidersItem(licensePlate);
+        ItemStack option3 = ItemUtils.getMenuMembersItem(licensePlate);
         DrawOptions(p, inv, option1, option2, option3);
     }
 

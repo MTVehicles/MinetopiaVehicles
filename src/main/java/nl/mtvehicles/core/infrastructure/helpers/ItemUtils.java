@@ -5,19 +5,23 @@ import nl.mtvehicles.core.infrastructure.annotations.ToDo;
 import nl.mtvehicles.core.infrastructure.dataconfig.MessagesConfig;
 import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
 import nl.mtvehicles.core.infrastructure.enums.Message;
+import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.apache.commons.lang.RandomStringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static nl.mtvehicles.core.infrastructure.modules.VersionModule.getServerVersion;
 
@@ -52,6 +56,7 @@ public class ItemUtils {
         ItemStack vehicle = (new ItemFactory(material))
                 .setName(TextUtils.colorize("&6" + name))
                 .setDurability(durability)
+                .setUnbreakable(true)
                 .setLore("&a")
                 .toItemStack();
         return vehicle;
@@ -143,42 +148,36 @@ public class ItemUtils {
         return plate.toUpperCase();
     }
 
-    public static ItemStack woolItem(String mat1, String mat2, int amount, short durability, String text, String lores) {
+    /**
+     * Get a menu item by material, amount, name and lore (as List).
+     * <b>Used for items whose Material name has been changed between versions.</b>
+     *
+     * An updated method (used to be #woolItem(...)).
+     */
+    public static ItemStack getMenuItem(String materialName, String materialLegacyName, short legacyData, int amount, String name, List<String> lores){
+        ItemStack item;
         try {
-            ItemStack is = new ItemStack(Material.getMaterial(mat1.toUpperCase()), amount);
-            ItemMeta im = is.getItemMeta();
-            List<String> itemlore = new ArrayList<>();
-            String[] lorem = lores.split("@");
-            for (String s : lorem) {
-                itemlore.add((TextUtils.colorize(s)));
-            }
-            im.setLore(itemlore);
-            if (getServerVersion().is1_12()) is.setDurability(durability);
-            else ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
-            im.setDisplayName(TextUtils.colorize(text));
-            is.setItemMeta(im);
-            return is;
-        } catch (Exception e) {
-            try {
-                ItemStack is = new ItemStack(Material.matchMaterial(mat2), amount);
-                ItemMeta im = is.getItemMeta();
-                List<String> itemlore = new ArrayList<>();
-                String[] lorem = lores.split("@");
-                for (String s : lorem) {
-                    itemlore.add((TextUtils.colorize(s)));
-                }
-                im.setLore(itemlore);
-                if (getServerVersion().is1_12()) is.setDurability(durability);
-                else ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
-                im.setDisplayName(TextUtils.colorize(text));
-                is.setItemMeta(im);
-                return is;
-            } catch (Exception e2) {
-                e2.printStackTrace();
-
-                return null;
-            }
+            item = new ItemStack(Material.getMaterial(materialLegacyName.toUpperCase(Locale.ROOT)), amount);
+            item.setDurability(legacyData);
+        } catch (Exception e){
+            item = new ItemStack(getMaterial(materialName.toUpperCase(Locale.ROOT)), amount);
         }
+        return (new ItemFactory(item))
+                .setName(name)
+                .setLore(lores)
+                .toItemStack();
+    }
+
+    /**
+     * <b>Do not use this. Use getMenuItem() instead.</b>
+     * @see #getMenuItem(String materialName, String materialLegacyName, short legacyData, int amount, String name, List lore)
+     */
+    @Deprecated
+    @ToDo(comment = "remove all usages")
+    public static ItemStack woolItem(String mat1, String mat2, int amount, short durability, String text, String lores) {
+        List<String> lore = new ArrayList<>();
+        lore.add(lores);
+        return getMenuItem(mat2, mat1, durability, amount, text, lore);
     }
 
 
@@ -262,161 +261,103 @@ public class ItemUtils {
         return getMenuItem(m, amount, durability, false, text, itemLore);
     }
 
-    public static ItemStack mItemRiders(String material, int amount, short durability, String text, String licensePlate) {
-        try {
-            ItemStack is = new ItemStack(Material.getMaterial(material.toUpperCase()), amount);
-            ItemMeta im = is.getItemMeta();
-            List<String> itemlore = new ArrayList<>();
-            List<String> riders = (List<String>) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.RIDERS);
-            if (riders.size() == 0) {
-                itemlore.add(TextUtils.colorize((("&7Riders: &e---"))));
-            } else {
-                for (String subj : riders) {
-                    itemlore.add(TextUtils.colorize(("&7- &e" + Bukkit.getOfflinePlayer(UUID.fromString(subj)).getName())));
-                }
-            }
-            im.setLore(itemlore);
-            if (getServerVersion().is1_12()) is.setDurability(durability);
-            else ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
-            im.setDisplayName(TextUtils.colorize(text));
-            is.setItemMeta(im);
-            return is;
-        } catch (Exception e) {
-            try {
-                ItemStack is = new ItemStack(Material.matchMaterial(material, true), amount);
-                ItemMeta im = is.getItemMeta();
-                List<String> itemlore = new ArrayList<>();
-                List<String> riders = (List<String>) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.RIDERS);
-                if (riders.size() == 0) {
-                    itemlore.add(TextUtils.colorize((("&7Riders: &eGeen"))));
-                } else {
-                    for (String subj : riders) {
-                        itemlore.add(TextUtils.colorize(("&7- &e" + Bukkit.getOfflinePlayer(UUID.fromString(subj)).getName())));
-                    }
-                }
-                im.setLore(itemlore);
-                if (getServerVersion().is1_12()) is.setDurability(durability);
-                else ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
-                im.setDisplayName(TextUtils.colorize(text));
-                is.setItemMeta(im);
-                return is;
-            } catch (Exception e2) {
-                e2.printStackTrace();
-                return null;
+    /**
+     * Get menu item about riders/drivers.
+     * An updated method (used to be #mItemRiders(...)).
+     */
+    public static ItemStack getMenuRidersItem(String licensePlate){
+        List<String> lore = new ArrayList<>();
+        MessagesConfig msg = ConfigModule.messagesConfig;
+        Vehicle vehicle = VehicleUtils.getByLicensePlate(licensePlate);
+
+        if (vehicle == null) return null;
+
+        if (vehicle.getRiders().size() == 0) {
+            lore.add(msg.getMessage(Message.VEHICLE_INFO_RIDERS_NONE));
+        } else {
+            lore.add(String.format(
+                        ConfigModule.messagesConfig.getMessage(Message.VEHICLE_INFO_RIDERS),
+                        vehicle.getRiders().size(),
+                        ""
+                    )
+            );
+            for (String rider : vehicle.getRiders()) {
+                lore.add(TextUtils.colorize(("&7- &e" + Bukkit.getOfflinePlayer(UUID.fromString(rider)).getName())));
             }
         }
+
+        return getMenuItem(Material.PAPER, 1, "&6" + msg.getMessage(Message.RIDERS), lore);
     }
 
-    public static ItemStack mItemMembers(String material, int amount, short durability, String text, String licensePlate) {
-        try {
-            ItemStack is = new ItemStack(Material.getMaterial(material.toUpperCase()), amount);
-            ItemMeta im = is.getItemMeta();
-            List<String> itemlore = new ArrayList<>();
-            List<String> members = (List<String>) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.MEMBERS);
-            if (members.size() == 0) {
-                itemlore.add(TextUtils.colorize((("&7Members: &eGeen"))));
-            } else {
-                for (String subj : members) {
-                    itemlore.add(TextUtils.colorize(("&7- &e" + Bukkit.getOfflinePlayer(UUID.fromString(subj)).getName())));
-                }
-            }
-            im.setLore(itemlore);
-            if (getServerVersion().is1_12()) is.setDurability(durability);
-            else ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
-            im.setDisplayName(TextUtils.colorize(text));
-            is.setItemMeta(im);
-            return is;
-        } catch (Exception e) {
-            try {
-                ItemStack is = new ItemStack(Material.matchMaterial(material, true), amount);
-                ItemMeta im = is.getItemMeta();
-                List<String> members = (List<String>) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.MEMBERS);
-                List<String> itemlore = new ArrayList<>();
-                if (members.size() == 0) {
-                    itemlore.add(TextUtils.colorize((("&7Members: &eGeen"))));
-                } else {
-                    for (String subj : members) {
-                        itemlore.add(TextUtils.colorize(("&7- &e" + Bukkit.getOfflinePlayer(UUID.fromString(subj)).getName())));
-                    }
-                }
-                im.setLore(itemlore);
-                if (getServerVersion().is1_12()) is.setDurability(durability);
-                else ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
-                im.setDisplayName(TextUtils.colorize(text));
-                is.setItemMeta(im);
-                return is;
-            } catch (Exception e2) {
-                e2.printStackTrace();
-                return null;
+    /**
+     * Get menu item about members/passengers.
+     * An updated method (used to be #mItemMembers(...)).
+     */
+    public static ItemStack getMenuMembersItem(String licensePlate){
+        List<String> lore = new ArrayList<>();
+        MessagesConfig msg = ConfigModule.messagesConfig;
+        Vehicle vehicle = VehicleUtils.getByLicensePlate(licensePlate);
+
+        if (vehicle == null) return null;
+
+        if (vehicle.getMembers().size() == 0) {
+            lore.add(msg.getMessage(Message.VEHICLE_INFO_MEMBERS_NONE));
+        } else {
+            lore.add(String.format(
+                            ConfigModule.messagesConfig.getMessage(Message.VEHICLE_INFO_MEMBERS),
+                            vehicle.getMembers().size(),
+                            ""
+                    )
+            );
+            for (String member : vehicle.getMembers()) {
+                lore.add(TextUtils.colorize(("&7- &e" + Bukkit.getOfflinePlayer(UUID.fromString(member)).getName())));
             }
         }
+
+        return getMenuItem(Material.PAPER, 1, "&6" + msg.getMessage(Message.MEMBERS), lore);
     }
 
-    public static ItemStack mItem3(String material, int amount, short durability, String text, String lores, String model, String nbt) {
-        try {
-            ItemStack car = new ItemStack(Material.getMaterial(material.toUpperCase()), amount);
-            ItemStack is = new ItemFactory(car).setNBT(model, nbt).toItemStack();
-            ItemMeta im = is.getItemMeta();
-            List<String> itemlore = new ArrayList<>();
-            itemlore.add(TextUtils.colorize(lores));
-            im.setLore(itemlore);
-            if (getServerVersion().is1_12()) is.setDurability(durability);
-            else ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
-            im.setUnbreakable(true);
-            im.setDisplayName(TextUtils.colorize(text));
-            is.setItemMeta(im);
-            return is;
-        } catch (Exception e) {
-            try {
-                ItemStack is = new ItemStack(Material.getMaterial(material.toUpperCase(),true), amount);
-                ItemMeta im = is.getItemMeta();
-                List<String> itemlore = new ArrayList<>();
-                itemlore.add(TextUtils.colorize(lores));
-                im.setLore(itemlore);
-                if (getServerVersion().is1_12()) is.setDurability(durability);
-                else ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
-                im.setUnbreakable(true);
-                im.setDisplayName(TextUtils.colorize(text));
-                is.setItemMeta(im);
-                return is;
-            } catch (Exception e2) {
-                e2.printStackTrace();
-                return null;
-            }
-        }
+    /**
+     * Get a custom menu item which looks like a vehicle.
+     * An updated method (used to be #mItem2(...)).
+     */
+    public static ItemStack getMenuVehicleItem(@NotNull Material material, int durability, String name, List<String> lore){
+        if (!material.isItem()) return null;
+        ItemStack vehicle = (new ItemFactory(material))
+                .setDurability(durability)
+                .setName(name)
+                .setLore(lore)
+                .setUnbreakable(true)
+                .toItemStack();
+        return vehicle;
     }
 
+    /**
+     * Get a custom menu item which looks like a vehicle <b>with a custom NBT</b>.
+     * An updated method (used to be #mItem3(...)).
+     */
+    public static ItemStack getMenuVehicleItem(@NotNull Material material, int durability, String nbtKey, String nbtValue, String name, List<String> lore){
+        if (!material.isItem()) return null;
+        ItemStack vehicle = (new ItemFactory(material))
+                .setDurability(durability)
+                .setName(name)
+                .setNBT(nbtKey, nbtValue)
+                .setLore(lore)
+                .setUnbreakable(true)
+                .toItemStack();
+        return vehicle;
+    }
+
+    /**
+     * <b>Do not use this. Use getMenuVehicleItem() instead.</b>
+     * @see #getMenuVehicleItem(Material, int, String, List)
+     */
+    @Deprecated
+    @ToDo(comment = "remove all usages")
     public static ItemStack mItem2(String material, int amount, short durability, String text, String lores) {
-        try {
-            ItemStack is = new ItemStack(Material.getMaterial(material.toUpperCase()), amount);
-            ItemMeta im = is.getItemMeta();
-            List<String> itemlore = new ArrayList<>();
-            itemlore.add(TextUtils.colorize(lores));
-            im.setLore(itemlore);
-            if (getServerVersion().is1_12()) is.setDurability(durability);
-            else ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
-            im.setUnbreakable(true);
-            im.setDisplayName(TextUtils.colorize(text));
-            is.setItemMeta(im);
-            return is;
-        } catch (Exception e) {
-            try {
-                ItemStack is = new ItemStack(Material.getMaterial(material.toUpperCase(),true), amount);
-                ItemMeta im = is.getItemMeta();
-                List<String> itemlore = new ArrayList<>();
-                itemlore.add(TextUtils.colorize(lores));
-                im.setLore(itemlore);
-                if (getServerVersion().is1_12()) is.setDurability(durability);
-                else ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
-                im.setUnbreakable(true);
-                im.setDisplayName(TextUtils.colorize(text));
-                is.setItemMeta(im);
-                return is;
-            } catch (Exception e2) {
-                e2.printStackTrace();
-                return null;
-            }
-        }
+        List<String> lore = new ArrayList<>();
+        lore.add(lores);
+        return getMenuVehicleItem(getMaterial(material), durability, text, lore);
     }
 
     /**

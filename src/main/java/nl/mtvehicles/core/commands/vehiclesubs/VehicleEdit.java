@@ -15,6 +15,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class VehicleEdit extends MTVehicleSubCommand {
     public VehicleEdit() {
         this.setPlayerCommand(true);
@@ -40,7 +43,16 @@ public class VehicleEdit extends MTVehicleSubCommand {
         String licensePlate = VehicleUtils.getLicensePlate(item);
         MessagesConfig msg = ConfigModule.messagesConfig;
         Inventory inv = Bukkit.createInventory(null, 27, "Vehicle Edit");
-        inv.setItem(10, ItemUtils.mItem3(ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.SKIN_ITEM).toString(), 1, (short) ConfigModule.vehicleDataConfig.getDamage(licensePlate), msg.getMessage(Message.VEHICLE_SETTINGS), "", "mtcustom", ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.NBT_VALUE).toString()));
+        List<String> lore = new ArrayList<>();
+        lore.add("");
+        inv.setItem(10, ItemUtils.getMenuVehicleItem(
+                ItemUtils.getMaterial(ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.SKIN_ITEM).toString()),
+                ConfigModule.vehicleDataConfig.getDamage(licensePlate),
+                "mtcustom",
+                ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.NBT_VALUE).toString(),
+                msg.getMessage(Message.VEHICLE_SETTINGS),
+                lore
+        ));
         inv.setItem(11, ItemUtils.mItem2("DIAMOND_HOE", 1, (short) 58, msg.getMessage(Message.FUEL_SETTINGS), ""));
         inv.setItem(12, ItemUtils.mItem("CHEST", 1, (short) 0, msg.getMessage(Message.TRUNK_SETTINGS), ""));
         inv.setItem(13, ItemUtils.mItem("PAPER", 1, (short) 0, msg.getMessage(Message.MEMBER_SETTINGS), ""));
