@@ -28,7 +28,7 @@ public abstract class MTVListener implements Listener {
 
         if (getAPI().isCancelled()) return true;
 
-        if (VersionModule.getServerVersion().isOld()){
+        if (VersionModule.getServerVersion().is1_12()){
             try {
                 Method method = event.getClass().getDeclaredMethod("isCancelled");
                 return (boolean) method.invoke(event);

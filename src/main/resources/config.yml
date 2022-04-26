@@ -41,6 +41,7 @@ carPickup: false
 # By default, vehicles are steered by pressing the WASD keys.
 # If you turn this option on (= set to true), instead of pressing A and D, the vehicle turns wherever the driver is facing.
 # BEWARE: By enabling this feature, rotation speed of vehicles is no longer used.
+# THIS IS A BETA FEATURE.
 usePlayerFacing: false
 
 
