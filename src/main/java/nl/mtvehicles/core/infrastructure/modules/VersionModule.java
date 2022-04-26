@@ -3,8 +3,7 @@ package nl.mtvehicles.core.infrastructure.modules;
 import lombok.Getter;
 import lombok.Setter;
 import nl.mtvehicles.core.Main;
-import nl.mtvehicles.core.infrastructure.enums.Version;
-import nl.mtvehicles.core.movement.PacketHandler;
+import nl.mtvehicles.core.infrastructure.enums.ServerVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginDescriptionFile;
 
@@ -32,26 +31,26 @@ public class VersionModule {
         serverSoftware = Bukkit.getName();
     }
 
-    public static Version getServerVersion(){
-        Version returns = null;
+    public static ServerVersion getServerVersion(){
+        ServerVersion returns = null;
         switch (serverVersion) {
             case "v1_12_R1":
-                returns = Version.v1_12;
+                returns = ServerVersion.v1_12;
                 break;
             case "v1_13_R2":
-                returns = Version.v1_13;
+                returns = ServerVersion.v1_13;
                 break;
             case "v1_15_R1":
-                returns = Version.v1_15;
+                returns = ServerVersion.v1_15;
                 break;
             case "v1_16_R3":
-                returns = Version.v1_16;
+                returns = ServerVersion.v1_16;
                 break;
             case "v1_17_R1":
-                returns = Version.v1_17;
+                returns = ServerVersion.v1_17;
                 break;
             case "v1_18_R2":
-                returns = Version.v1_18;
+                returns = ServerVersion.v1_18;
                 break;
         }
         return returns;
