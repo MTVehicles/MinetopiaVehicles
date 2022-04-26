@@ -34,6 +34,10 @@ public class TextUtils {
         return null;
     }
 
+    public static List<String> list(String... strings){
+        return Arrays.asList(strings);
+    }
+
     public static void basicStandCreator(String license, String type, Location location, ItemStack item, Boolean gravity) {
         ArmorStand as = location.getWorld().spawn(location, ArmorStand.class);
         as.setCustomName("MTVEHICLES_" + type + "_" + license);

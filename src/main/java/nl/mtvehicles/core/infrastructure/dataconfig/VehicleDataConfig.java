@@ -8,6 +8,7 @@ import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -69,14 +70,17 @@ public class VehicleDataConfig extends Config {
     }
 
     public List<String> getMembers(String licensePlate){
+        if (get(licensePlate, Option.MEMBERS) == null) return new ArrayList<>();
         return (List<String>) get(licensePlate, Option.MEMBERS);
     }
 
     public List<String> getRiders(String licensePlate){
+        if (get(licensePlate, Option.RIDERS) == null) return new ArrayList<>();
         return (List<String>) get(licensePlate, Option.RIDERS);
     }
 
     public List<String> getTrunkData(String licensePlate){
+        if (get(licensePlate, Option.TRUNK_DATA) == null) return new ArrayList<>();
         return (List<String>) get(licensePlate, Option.TRUNK_DATA);
     }
 

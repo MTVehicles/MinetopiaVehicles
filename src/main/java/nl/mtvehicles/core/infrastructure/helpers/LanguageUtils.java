@@ -6,6 +6,7 @@ import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
@@ -17,14 +18,14 @@ public class LanguageUtils {
 
     public static void openLanguageGUI(Player p){
         Inventory inv = Bukkit.createInventory(null, 9, "Choose your language");
-        inv.setItem(0, ItemUtils.mItem("GOLD_BLOCK", 1, (short) 0, "&eEnglish", "&7Press to set all messages to English."));
-        inv.setItem(1, ItemUtils.mItem("DIAMOND_BLOCK", 1, (short) 0, "&9Dutch (Nederlands)", "&7Druk om alle berichten op Nederlands te zetten."));
-        inv.setItem(2, ItemUtils.mItem("EMERALD_BLOCK", 1, (short) 0, "&2Spanish (Español)", "&7Presione para configurar todos los mensajes en español."));
-        inv.setItem(3, ItemUtils.mItem("REDSTONE_BLOCK", 1, (short) 0, "&4Czech (Čeština)", "&7Klikni pro nastavení všech zpráv do češtiny."));
-        inv.setItem(4, ItemUtils.mItem("IRON_BLOCK", 1, (short) 0, "&fGerman (Deutsch)", "&7Drücken Sie, um alle Nachrichten auf Deutsch einzustellen."));
-        inv.setItem(5, ItemUtils.mItem("STONE", 1, (short) 0, "&8Chinese (中國人)", "&7按 將所有消息設置為中文。"));
-        inv.setItem(6, ItemUtils.mItem("SLIME_BLOCK", 1, (short) 0, "&aTurkish (Türk)", "&7Tüm mesajları Türkçe olarak ayarlamak için basın."));
-        inv.setItem(8, ItemUtils.mItem("PAPER", 1, (short) 0, "&fThat's all for now!", "&7Do you want to help us by translating the plugin? &f&nClick here"));
+        inv.setItem(0, ItemUtils.getMenuItem(Material.GOLD_BLOCK, 1, "&eEnglish", "&7Press to set all messages to English."));
+        inv.setItem(1, ItemUtils.getMenuItem(Material.DIAMOND_BLOCK, 1, "&9Dutch (Nederlands)", "&7Druk om alle berichten op Nederlands te zetten."));
+        inv.setItem(2, ItemUtils.getMenuItem(Material.EMERALD_BLOCK, 1, "&2Spanish (Español)", "&7Presione para configurar todos los mensajes en español."));
+        inv.setItem(3, ItemUtils.getMenuItem(Material.REDSTONE_BLOCK, 1, "&4Czech (Čeština)", "&7Klikni pro nastavení všech zpráv do češtiny."));
+        inv.setItem(4, ItemUtils.getMenuItem(Material.IRON_BLOCK, 1, "&fGerman (Deutsch)", "&7Drücken Sie, um alle Nachrichten auf Deutsch einzustellen."));
+        inv.setItem(5, ItemUtils.getMenuItem(Material.STONE, 1, "&8Chinese (中國人)", "&7按 將所有消息設置為中文。"));
+        inv.setItem(6, ItemUtils.getMenuItem(Material.SLIME_BLOCK, 1, "&aTurkish (Türk)", "&7Tüm mesajları Türkçe olarak ayarlamak için basın."));
+        inv.setItem(8, ItemUtils.getMenuItem(Material.PAPER, 1, "&fThat's all for now!", "&7Do you want to help us by translating the plugin? &f&nClick here"));
         p.openInventory(inv);
         languageCheck.put(p.getUniqueId(), true);
     }

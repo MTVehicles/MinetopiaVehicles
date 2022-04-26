@@ -112,7 +112,7 @@ public class InventoryClickListener extends MTVListener {
             return;
         }
 
-        if (clickedItem.equals(ItemUtils.mItem("STAINED_GLASS_PANE", 1, (short) 0, "&c", "&c"))) return;
+        if (clickedItem.equals(ItemUtils.getMenuItem(ItemUtils.getStainedGlassPane(), 1, "&c", "&c"))) return;
 
         if (clickedSlot == 53) { //Next page
             MenuUtils.getvehicleCMD(player, id.get(player.getUniqueId()) + 1, raw.get(player.getUniqueId()));
@@ -130,8 +130,22 @@ public class InventoryClickListener extends MTVListener {
         vehicleMenu.put(player.getUniqueId(), clickedItem);
         Inventory inv = Bukkit.createInventory(null, 27, "Confirm getting vehicle");
         MessagesConfig msg = ConfigModule.messagesConfig;
-        inv.setItem(11, ItemUtils.woolItem("WOOL", "RED_WOOL", 1, (short) 14, "&c" + msg.getMessage(Message.CANCEL), String.format("&7%s", msg.getMessage(Message.CANCEL_ACTION))));
-        inv.setItem(15, ItemUtils.woolItem("WOOL", "LIME_WOOL", 1, (short) 5, "&a"  + msg.getMessage(Message.CONFIRM), String.format("&7%s@&7%s", msg.getMessage(Message.CONFIRM_ACTION), msg.getMessage(Message.CONFIRM_VEHICLE_MENU))));
+        inv.setItem(11, ItemUtils.getMenuItem(
+                "RED_WOOL",
+                "WOOL",
+                (short) 14,
+                1,
+                "&c" + msg.getMessage(Message.CANCEL),
+                "&7" + msg.getMessage(Message.CANCEL_ACTION)
+        ));
+        inv.setItem(15, ItemUtils.getMenuItem(
+                "LIME_WOOL",
+                "WOOL",
+                (short) 5,
+                1,
+                "&a"  + msg.getMessage(Message.CONFIRM),
+                "&7" + msg.getMessage(Message.CONFIRM_ACTION), "&7" + msg.getMessage(Message.CONFIRM_VEHICLE_MENU)
+        ));
         player.openInventory(inv);
     }
 
@@ -145,7 +159,7 @@ public class InventoryClickListener extends MTVListener {
         else if (clickedSlot == 6) LanguageUtils.changeLanguage(player, Language.TR);
         else if (clickedSlot == 8) {
             LanguageUtils.languageCheck.put(player.getUniqueId(), false);
-            player.sendMessage("§6You may find more information here: §e§nhttps://github.com/GamerJoep/MinetopiaVehicles/wiki/Translate-the-plugin");
+            player.sendMessage("§6You may find more information here: §e§nhttps://wiki.mtvehicles.eu/translating.html");
         }
         player.closeInventory();
     }
@@ -203,7 +217,7 @@ public class InventoryClickListener extends MTVListener {
     }
 
     private void vehicleRestoreMenu(){
-        if (clickedItem.equals(ItemUtils.mItem("STAINED_GLASS_PANE", 1, (short) 0, "&c", "&c"))) return;
+        if (clickedItem.equals(ItemUtils.getMenuItem(ItemUtils.getStainedGlassPane(), 1, "&c", "&c"))) return;
 
         if (clickedSlot == 53) { //Next page
             MenuUtils.restoreCMD(player, MenuUtils.restoreId.get("pagina") + 1, MenuUtils.restoreUUID.get("uuid"));

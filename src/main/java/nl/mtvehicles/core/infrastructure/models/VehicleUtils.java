@@ -33,7 +33,13 @@ public final class VehicleUtils {
         ArmorStand standSkin = location.getWorld().spawn(location, ArmorStand.class);
         standSkin.setVisible(false);
         standSkin.setCustomName("MTVEHICLES_SKIN_" + licensePlate);
-        standSkin.getEquipment().setHelmet(ItemUtils.carItem5((int) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.SKIN_DAMAGE), ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.NAME).toString(), ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.SKIN_ITEM).toString(), licensePlate));
+        standSkin.getEquipment().setHelmet(
+                ItemUtils.getVehicleItem(
+                        ItemUtils.getMaterial(ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.SKIN_ITEM).toString()),
+                        (int) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.SKIN_DAMAGE),
+                        false,
+                        ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.NAME).toString(),
+                        licensePlate));
 
         ArmorStand standMain = location.getWorld().spawn(location, ArmorStand.class);
         standMain.setVisible(false);
@@ -92,7 +98,7 @@ public final class VehicleUtils {
                         } else {
                             nbtVal = skin.get("nbtValue").toString();
                         }
-                        ItemStack is = ItemUtils.carItem3((Integer) skin.get("itemDamage"), ((String) skin.get("name")), (String) skin.get("SkinItem"), "mtcustom", nbtVal);
+                        ItemStack is = ItemUtils.getVehicleItem(ItemUtils.getMaterial(skin.get("SkinItem").toString()), (int) skin.get("itemDamage"), ((String) skin.get("name")), "mtcustom", nbtVal);
                         NBTItem nbt = new NBTItem(is);
                         String licensePlate = nbt.getString("mtvehicles.kenteken");
                         matchedVehicles.add(configVehicle);
@@ -165,16 +171,16 @@ public final class VehicleUtils {
         return 0;
     }
 
-    public static ItemStack getCarItem(String carUuid) {
+    public static ItemStack getCarItem(String carUUID) {
         List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getVehicles();
         List<Map<?, ?>> matchedVehicles = new ArrayList<>();
         for (Map<?, ?> configVehicle : vehicles) {
             List<Map<?, ?>> skins = (List<Map<?, ?>>) configVehicle.get("cars");
             for (Map<?, ?> skin : skins) {
                 if (skin.get("uuid") != null) {
-                    if (skin.get("uuid").equals(carUuid)) {
+                    if (skin.get("uuid").equals(carUUID)) {
                         if (skin.get("uuid") != null) {
-                            ItemStack is = ItemUtils.carItem2((Integer) skin.get("itemDamage"), ((String) skin.get("name")), (String) skin.get("SkinItem"));
+                            ItemStack is = ItemUtils.getVehicleItem(ItemUtils.getMaterial(skin.get("SkinItem").toString()), (int) skin.get("itemDamage"), ((String) skin.get("name")));
                             matchedVehicles.add(configVehicle);
                             return is;
                         }
