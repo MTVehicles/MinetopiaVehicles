@@ -231,11 +231,11 @@ public class VehicleMovement1_12 extends VehicleMovement {
 
     @Override
     protected void rotateVehicle(float yaw){
-        schedulerRun(() -> {
-            standMain.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), yaw, standMain.getLocation().getPitch()));
-            standMainSeat.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), yaw, standMain.getLocation().getPitch()));
-            standSkin.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), yaw, standMain.getLocation().getPitch()));
-        });
+        final Location loc = standMain.getLocation();
+
+        standMain.teleport(new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ(), yaw, loc.getPitch()));
+        standMainSeat.teleport(new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ(), yaw, loc.getPitch()));
+        standSkin.teleport(new Location(loc.getWorld(), loc.getX(), loc.getY(), loc.getZ(), yaw, loc.getPitch()));
     }
 
     @Override
