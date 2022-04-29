@@ -10,7 +10,8 @@
 # Turn it off and you will not get any messages for updates.
 # Auto-update message will show on server join if you have the permission 'mtvehicles.update'.
 # If set on false the /vehicle update command will not work either.
-auto-update: true
+# IMPORTANT: If this is enabled, the plugin WILL CONTACT OUR SERVERS to get the latest version and to download it. If you do not wish for this to happen, set this option to false.
+autoUpdate: true
 
 
 # --- General ---
@@ -21,37 +22,28 @@ vehicleMenuSize: 3
 
 # If set to true, helicopter blades will always stay on top of the helicopter.
 # If set to false they will only appear when you get in the vehicle and remove when you get out.
-wiekens-always-on: true
+helicopterBladesAlwaysOn: true
 
 # If set to true you can't pick up the vehicle after ridden on water, else you will need the permission 'mtvehicles.anwb'.
-anwb: false
+disablePickupFromWater: false
 
 # If set to false you will not be able to open the trunk.
-kofferbakEnabled: true
+trunkEnabled: true
 
 # Give players the ability put themselves owner.
-spelerSetOwner: false
-
-# Maximum flying height for helicopters.
-helicopterMaxHeight: 150
+putOneselfAsOwner: false
 
 # Turn on if you do not want players to be able to pickup vehicles. Use cautiously.
 carPickup: false
 
-# --- Gas ---
 
-# Whether gasoline is used for ALL cars.
-benzine: true
+# --- Steering ---
 
-# Multiplier of the fuel consumption of ALL vehicles. (2 means 2× faster consumption, 0.5 means 2× slower, etc...)
-# Must be between 0.1 and 10. Default: 1 (If lower/higher, the default will be used.)
-fuelMultiplier: 1
-
-# Jerrycan size for in the /vehicle benzine menu.
-jerrycans:
-  - 25
-  - 50
-  - 75
+# By default, vehicles are steered by pressing the WASD keys.
+# If you turn this option on (= set to true), instead of pressing A and D, the vehicle turns wherever the driver is facing.
+# BEWARE: By enabling this feature, rotation speed of vehicles is no longer used.
+# THIS IS A BETA FEATURE.
+usePlayerFacing: false
 
 
 # --- Vehicle Health and Damage ---
@@ -62,6 +54,39 @@ damageEnabled: false
 # Multiplier of the damage of ALL vehicles. Works similarly to fuelMultiplier.
 # Must be between 0.1 and 5. Default: 0.5 (If lower/higher, the default will be used.)
 damageMultiplier: 0.5
+
+
+# --- Helicopters & Planes
+
+# Maximum flying height for HELICOPTERS AND PLANES.
+maxFlyingHeight: 150
+
+# Minimum speed FOR PLANES to take off (must be higher than 0)
+takeOffSpeed: 0.4
+
+# If set to true and HELICOPTER's out of fuel in the air, it will fall directly to the ground. (This does not affect airplanes, they simply glide to the ground)
+# All passengers in survival/adventure will take damage (specified by helicopterFallDamage below).
+# If damageEnabled = true, the fall will also result in the breakage of the vehicle.
+extremeHelicopterFall: false
+
+# Damage taken by all passengers when a helicopter falls 'extremely' fast (must be higher than 0)
+helicopterFallDamage: 40.0
+
+
+# --- Gas ---
+
+# Whether gasoline is used for ALL cars.
+fuelEnabled: true
+
+# Multiplier of the fuel consumption of ALL vehicles. (2 means 2× faster consumption, 0.5 means 2× slower, etc...)
+# Must be between 0.1 and 10. Default: 1 (If lower/higher, the default will be used.)
+fuelMultiplier: 1
+
+# Jerrycan size for in the /vehicle benzine menu.
+jerrycans:
+  - 25
+  - 50
+  - 75
 
 
 # --- Horn ---
@@ -116,6 +141,7 @@ disabledWorlds: []
 # If this option is true, players still CAN'T use jerrycans in regions with flag "mtv-gasstation=deny".
 
 # The 'fillJeryCans' option enables players to fill their JerryCans by right clicking on a lever/tripwire hook. This lever/tripwire hook HAS TO BE INSIDE A GAS STATION REGION.
+# Shift and right click to fill the whole jerrycan.
 # If needPermission inside fillJeryCan is set to true, players need to have the 'mtvehicles.filljerrycans' permission. Otherwise everyone can do it.
 
 # The 'price' option may ONLY be used if you have VAULT installed. (If that is not the case, it is automatically DISABLED).

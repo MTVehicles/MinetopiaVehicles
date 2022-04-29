@@ -2,8 +2,10 @@ package nl.mtvehicles.core.infrastructure.modules;
 
 import lombok.Getter;
 import lombok.Setter;
+import nl.mtvehicles.core.infrastructure.dependencies.PlaceholderUtils;
 import nl.mtvehicles.core.infrastructure.dependencies.VaultUtils;
 import nl.mtvehicles.core.infrastructure.dependencies.WorldGuardUtils;
+import nl.mtvehicles.core.infrastructure.enums.SoftDependency;
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
@@ -14,9 +16,10 @@ public class DependencyModule {
     @Setter
     DependencyModule instance;
 
-    public static List<String> loadedDependencies = new ArrayList<>();
+    public static List<SoftDependency> loadedDependencies = new ArrayList<>();
     public static WorldGuardUtils worldGuard;
     public static VaultUtils vault;
+    public static PlaceholderUtils placeholderAPI;
 
     public DependencyModule() {
         final String serverVersion = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
@@ -25,7 +28,7 @@ public class DependencyModule {
             else {
                 try {
                     worldGuard = new WorldGuardUtils();
-                    loadedDependencies.add("WorldGuard");
+                    loadedDependencies.add(SoftDependency.WORLD_GUARD);
                 } catch (NoClassDefFoundError e){
                     Bukkit.getLogger().severe("[MTVehicles] An error occurred whilst loading WorldGuard as a soft-dependency. (Make sure you're using a version 7.x.x, or try restarting the server.)");
                 }
@@ -34,18 +37,27 @@ public class DependencyModule {
         if (Bukkit.getServer().getPluginManager().getPlugin("Vault") != null) {
             try {
                 vault = new VaultUtils();
-                loadedDependencies.add("Vault");
+                loadedDependencies.add(SoftDependency.VAULT);
             } catch (NoClassDefFoundError e){
                 Bukkit.getLogger().severe("[MTVehicles] An error occurred whilst loading Vault as a soft-dependency. (Make sure you're using the latest version, or try restarting the server.)");
             }
         }
+        if (Bukkit.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            try {
+                placeholderAPI = new PlaceholderUtils();
+                placeholderAPI.register();
+                loadedDependencies.add(SoftDependency.PLACEHOLDER_API);
+            } catch (NoClassDefFoundError e){
+                Bukkit.getLogger().severe("[MTVehicles] An error occurred whilst loading PlaceholderAPI as a soft-dependency. (Make sure you're using the latest version, or try restarting the server.)");
+            }
+        }
     }
 
-    public static boolean isDependencyEnabled(String name){
-        return loadedDependencies.contains(name);
+    public static boolean isDependencyEnabled(SoftDependency dependency){
+        return loadedDependencies.contains(dependency);
     }
 
-    public static void disableDependency(String name){
-        if (isDependencyEnabled(name)) loadedDependencies.remove(name);
+    public static void disableDependency(SoftDependency dependency){
+        if (isDependencyEnabled(dependency)) loadedDependencies.remove(dependency);
     }
 }

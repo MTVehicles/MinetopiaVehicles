@@ -1,9 +1,9 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
-import de.tr7zw.changeme.nbtapi.NBTItem;
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
-import nl.mtvehicles.core.infrastructure.models.Vehicle;
+import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -19,21 +19,19 @@ public class VehicleDelete extends MTVehicleSubCommand {
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
         if (!checkPermission("mtvehicles.delete")) return true;
 
-        Player p = (Player) sender;
+        ItemStack item = player.getInventory().getItemInMainHand();
 
-        ItemStack item = p.getInventory().getItemInMainHand();
+        if (!isHoldingVehicle()) return true;
 
-        if (!item.hasItemMeta() || !(new NBTItem(item)).hasKey("mtvehicles.kenteken")) {
-            sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("noVehicleInHand")));
-            return true;
+        try {
+            String licensePlate = VehicleUtils.getLicensePlate(item);
+            VehicleUtils.getByLicensePlate(licensePlate).delete();
+            sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_DELETED)));
+        } catch (Exception e){
+            sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_ALREADY_DELETED)));
         }
 
-        String ken = Vehicle.getLicensePlate(item);
-        ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + ken, null);
-        ConfigModule.vehicleDataConfig.save();
-        p.getInventory().getItemInMainHand().setAmount(0);
-        sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehicleDeleted")));
-
+        player.getInventory().getItemInMainHand().setAmount(0);
         return true;
     }
 }

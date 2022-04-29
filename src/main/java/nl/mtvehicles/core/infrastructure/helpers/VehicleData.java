@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.infrastructure.helpers;
 
+import nl.mtvehicles.core.infrastructure.enums.VehicleType;
 import org.bukkit.entity.ArmorStand;
 
 import java.util.HashMap;
@@ -19,12 +20,13 @@ public class VehicleData {
     public static HashMap<String, Double> wiekenx = new HashMap<>();
     public static HashMap<String, Double> wiekeny = new HashMap<>();
     public static HashMap<String, Double> wiekenz = new HashMap<>();
-    public static HashMap<String, String> type = new HashMap<>();
+    public static HashMap<String, VehicleType> type = new HashMap<>();
     public static HashMap<String, Double> fuel = new HashMap<>();
     public static HashMap<String, Double> fuelUsage = new HashMap<>();
     public static HashMap<String, ArmorStand> autostand = new HashMap<>();
     public static HashMap<String, ArmorStand> autostand2 = new HashMap<>();
     public static Map<String, Long> lastUsage = new HashMap<>();
+    public static HashMap<String, Boolean> fallDamage = new HashMap<>(); //Used for helicopters when 'extremely falling'
 
     public static HashMap<String, Integer> RotationSpeed = new HashMap<>();
     public static HashMap<String, Double> MaxSpeed = new HashMap<>();

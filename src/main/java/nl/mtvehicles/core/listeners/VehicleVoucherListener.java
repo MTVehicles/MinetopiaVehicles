@@ -1,8 +1,12 @@
 package nl.mtvehicles.core.listeners;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
+import nl.mtvehicles.core.events.VehicleVoucherEvent;
 import nl.mtvehicles.core.infrastructure.dataconfig.MessagesConfig;
+import nl.mtvehicles.core.infrastructure.enums.InventoryTitle;
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
+import nl.mtvehicles.core.infrastructure.models.MTVListener;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -15,32 +19,62 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-public class VehicleVoucherListener implements Listener {
-    @EventHandler
-    public void onVoucherRedeem(PlayerInteractEvent e) {
-        final Player p = e.getPlayer();
-        final Action action = e.getAction();
-        final ItemStack item = e.getItem();
+import java.util.HashMap;
 
-        if (e.isCancelled()) return;
+public class VehicleVoucherListener extends MTVListener {
+    public static HashMap<Player, String> voucher = new HashMap<>();
+
+    public VehicleVoucherListener(){
+        super(new VehicleVoucherEvent());
+    }
+
+    @EventHandler
+    public void onVoucherRedeem(PlayerInteractEvent event) {
+        this.event = event;
+        player = event.getPlayer();
+        final Action action = event.getAction();
+        final ItemStack item = event.getItem();
 
         if (item == null || item.getType() != Material.PAPER) return;
         NBTItem nbt = new NBTItem(item);
-
         if (!nbt.hasKey("mtvehicles.item")) return;
 
-        if (e.getHand() != EquipmentSlot.HAND) {
-            e.setCancelled(true);
-            p.sendMessage(ConfigModule.messagesConfig.getMessage("wrongHand"));
+        String carUUID = nbt.getString("mtvehicles.item");
+
+        VehicleVoucherEvent api = (VehicleVoucherEvent) getAPI();
+        api.setVoucherUUID(carUUID);
+        callAPI();
+        if (isCancelled()) return;
+
+        carUUID = api.getVoucherUUID();
+
+        if (event.getHand() != EquipmentSlot.HAND) {
+            event.setCancelled(true);
+            player.sendMessage(ConfigModule.messagesConfig.getMessage(Message.WRONG_HAND));
             return;
         }
 
         if (action.equals(Action.RIGHT_CLICK_BLOCK) || action.equals(Action.RIGHT_CLICK_AIR)) {
-            Inventory inv = Bukkit.createInventory(null, 27, "Voucher Redeem Menu");
+            Inventory inv = Bukkit.createInventory(null, 27, InventoryTitle.VOUCHER_REDEEM_MENU.getStringTitle());
+            voucher.put(player, carUUID);
             MessagesConfig msg = ConfigModule.messagesConfig;
-            inv.setItem(11, ItemUtils.woolItem("WOOL", "RED_WOOL", 1, (short) 14, "&c" + msg.getMessage("cancel"), String.format("&7%s@&7%s", msg.getMessage("cancelAction"), msg.getMessage("cancelVoucher"))));
-            inv.setItem(15, ItemUtils.woolItem("WOOL", "LIME_WOOL", 1, (short) 5, "&a"  + msg.getMessage("confirm"), String.format("&7%s@&7%s", msg.getMessage("confirmAction"), msg.getMessage("confirmVoucher"))));
-            p.openInventory(inv);
+            inv.setItem(11, ItemUtils.getMenuItem(
+                    "RED_WOOL",
+                    "WOOL",
+                    (short) 14,
+                    1,
+                    "&c" + msg.getMessage(Message.CANCEL),
+                    "&7" + msg.getMessage(Message.CANCEL_ACTION), "&7" + msg.getMessage(Message.CANCEL_VOUCHER)
+            ));
+            inv.setItem(15, ItemUtils.getMenuItem(
+                    "LIME_WOOL",
+                    "WOOL",
+                    (short) 5,
+                    1,
+                    "&a"  + msg.getMessage(Message.CONFIRM),
+                    "&7" + msg.getMessage(Message.CONFIRM_ACTION), "&7" + msg.getMessage(Message.CONFIRM_VOUCHER)
+            ));
+            player.openInventory(inv);
         }
     }
 }

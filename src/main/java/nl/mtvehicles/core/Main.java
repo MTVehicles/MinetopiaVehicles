@@ -16,8 +16,8 @@ public class Main extends JavaPlugin {
      *
      * @see nl.mtvehicles.core.infrastructure.dataconfig.SecretSettingsConfig
      */
-    public static String configVersion = "2.3.0-dev25";
-    public static String messagesVersion = "2.3.0-dev27";
+    public static String configVersion = "2.4.0";
+    public static String messagesVersion = "2.4.0-dev10";
 
     @Override
     public void onEnable() {

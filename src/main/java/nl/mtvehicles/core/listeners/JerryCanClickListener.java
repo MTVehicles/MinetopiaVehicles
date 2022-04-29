@@ -1,8 +1,12 @@
 package nl.mtvehicles.core.listeners;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
+import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.commands.vehiclesubs.VehicleFuel;
+import nl.mtvehicles.core.events.JerryCanClickEvent;
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
+import nl.mtvehicles.core.infrastructure.models.MTVListener;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
 import nl.mtvehicles.core.infrastructure.modules.VersionModule;
@@ -10,85 +14,88 @@ import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
-public class JerryCanClickListener implements Listener {
+public class JerryCanClickListener extends MTVListener {
+
+    private Action action;
+    private ItemStack item;
+
+    private int currentFuel;
+    private int maxFuel;
+
     @EventHandler
-    public void onJerryCanClick(final PlayerInteractEvent e) {
-        final Player p = e.getPlayer();
-        final Action action = e.getAction();
-        final ItemStack item = e.getItem();
+    public void onJerryCanClick(final PlayerInteractEvent event) {
+        this.event = event;
+        player = event.getPlayer();
+        action = event.getAction();
+        item = event.getItem();
 
-        if (e.isCancelled()) return;
+        Block clickedBlock = event.getClickedBlock();
 
-        if (e.getItem() == null) return;
-
-        if (!e.getItem().hasItemMeta()
-                || !(new NBTItem(e.getItem())).hasKey("mtvehicles.benzinesize")
-                || e.getClickedBlock() == null
+        if (!action.equals(Action.RIGHT_CLICK_BLOCK)) return;
+        if (item == null) return;
+        if (!item.hasItemMeta()
+                || !(new NBTItem(item)).hasKey("mtvehicles.benzinesize")
+                || clickedBlock == null
         ) return;
-
-        e.setCancelled(true);
-
-        if (e.getHand() != EquipmentSlot.HAND) {
-            e.getPlayer().sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("wrongHand")));
+        if (event.getHand() != EquipmentSlot.HAND) {
+            event.getPlayer().sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.WRONG_HAND)));
             return;
         }
 
-        if (!action.equals(Action.RIGHT_CLICK_BLOCK)) return;
+        NBTItem nbt = new NBTItem(item);
+        currentFuel = Integer.parseInt(nbt.getString("mtvehicles.benzineval"));
+        maxFuel = Integer.parseInt(nbt.getString("mtvehicles.benzinesize"));
 
-        Block clickedBlock = e.getClickedBlock();
+        this.setAPI(new JerryCanClickEvent(currentFuel, maxFuel));
+        callAPI();
+        if (isCancelled()) return;
 
-        if (!ConfigModule.defaultConfig.canFillJerryCans(p, clickedBlock.getLocation())) return;
-        final boolean isSneaking = p.isSneaking();
+        event.setCancelled(true);
+
+        if (!ConfigModule.defaultConfig.canFillJerryCans(player, clickedBlock.getLocation())) return;
+        final boolean isSneaking = player.isSneaking();
 
         if (clickedBlock.getType().toString().contains("LEVER") && ConfigModule.defaultConfig.isFillJerryCansLeverEnabled()) {
-            if (isSneaking) fillWholeJerryCan(p, item);
-            else fillJerryCan(p, item);
+            if (isSneaking) fillWholeJerryCan();
+            else fillJerryCan();
         } else if (clickedBlock.getType().toString().contains("TRIPWIRE_HOOK") && ConfigModule.defaultConfig.isFillJerryCansTripwireHookEnabled()) {
-            if (isSneaking) fillWholeJerryCan(p, item);
-            else fillJerryCan(p, item);
+            if (isSneaking) fillWholeJerryCan();
+            else fillJerryCan();
         }
     }
 
-    private void fillJerryCan(Player p, ItemStack item){
-        int benval = (new NBTItem(item)).getInteger("mtvehicles.benzineval");
-        int bensize = (new NBTItem(item)).getInteger("mtvehicles.benzinesize");
+    private void fillJerryCan(){
+        if (currentFuel == maxFuel) ConfigModule.messagesConfig.sendMessage(player, Message.JERRYCAN_FULL);
 
-        if (benval == bensize) ConfigModule.messagesConfig.sendMessage(p, "jerrycanFull");
-
-        if ((benval + 1) <= bensize){
+        if ((currentFuel + 1) <= maxFuel){
             double price = getFuelPrice();
-            if (makePlayerPay(p, price)){
-                p.setItemInHand(VehicleFuel.benzineItem(bensize, benval + 1));
-                p.sendMessage(String.format(ConfigModule.messagesConfig.getMessage("transactionSuccessful"), DependencyModule.vault.getMoneyFormat(price)));
-                playJerryCanSound(p);
+            if (makePlayerPay(price)){
+                player.setItemInHand(VehicleFuel.benzineItem(maxFuel, currentFuel + 1));
+                playJerryCanSound();
             }
         }
     }
 
-    private void fillWholeJerryCan(Player p, ItemStack item){
-        int benval = (new NBTItem(item)).getInteger("mtvehicles.benzineval");
-        int bensize = (new NBTItem(item)).getInteger("mtvehicles.benzinesize");
-        if (benval == bensize) ConfigModule.messagesConfig.sendMessage(p, "jerrycanFull");
+    private void fillWholeJerryCan(){
+        if (currentFuel == maxFuel) ConfigModule.messagesConfig.sendMessage(player, Message.JERRYCAN_FULL);
 
-        int difference = bensize - benval;
+        int difference = maxFuel - currentFuel;
         double price = getFuelPrice(difference);
-        if (makePlayerPay(p, price)){
-            p.setItemInHand(VehicleFuel.benzineItem(bensize, bensize));
-            p.sendMessage(String.format(ConfigModule.messagesConfig.getMessage("transactionSuccessful"), DependencyModule.vault.getMoneyFormat(price)));
-            playJerryCanSound(p);
+        if (makePlayerPay(price)){
+            player.setItemInHand(VehicleFuel.benzineItem(maxFuel, maxFuel));
+            playJerryCanSound();
         }
     }
 
-    private boolean makePlayerPay(Player p, double price){ //returns true if payed/doesn't have to, false if didn't pay/error
+    private boolean makePlayerPay(double price){ //returns true if payed/doesn't have to, false if didn't pay/error
         if (!ConfigModule.defaultConfig.isFillJerryCanPriceEnabled()) return true; //it isn't enabled, so just fill the jerrycan...
 
-        return DependencyModule.vault.withdrawMoneyPlayer(p, price);
+        return DependencyModule.vault.withdrawMoneyPlayer(player, price);
     }
 
     private double getFuelPrice(){
@@ -99,19 +106,21 @@ public class JerryCanClickListener implements Listener {
         return litres * ConfigModule.defaultConfig.getFillJerryCanPrice();
     }
 
-    private void playJerryCanSound(Player p){
+    private void playJerryCanSound(){
         if (!ConfigModule.defaultConfig.jerryCanPlaySound()) return;
 
         if (VersionModule.getServerVersion().is1_12()) { //1.12 has different names
             try {
-                p.getWorld().playSound(p.getLocation(), Sound.valueOf("BLOCK_NOTE_PLING"), 3.0F, 0.5F);
+                player.getWorld().playSound(player.getLocation(), Sound.valueOf("BLOCK_NOTE_PLING"), 3.0F, 0.5F);
             } catch (IllegalArgumentException e) {
+                Main.logSevere("Could not play sound 'BLOCK_NOTE_PLING'.");
                 e.printStackTrace(); //The sound could not be played, hmmm.
             }
         } else {
             try {
-                p.getWorld().playSound(p.getLocation(), Sound.valueOf("BLOCK_NOTE_BLOCK_PLING"), 3.0F, 0.5F);
+                player.getWorld().playSound(player.getLocation(), Sound.valueOf("BLOCK_NOTE_BLOCK_PLING"), 3.0F, 0.5F);
             } catch (IllegalArgumentException e) {
+                Main.logSevere("Could not play sound 'BLOCK_NOTE_BLOCK_PLING'.");
                 e.printStackTrace(); //The sound could not be played, hmmm.
             }
         }

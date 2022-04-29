@@ -1,13 +1,15 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
-import de.tr7zw.changeme.nbtapi.NBTItem;
+import nl.mtvehicles.core.infrastructure.dataconfig.MessagesConfig;
+import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
-import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
-import nl.mtvehicles.core.infrastructure.models.ConfigUtils;
+import nl.mtvehicles.core.infrastructure.models.Config;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
-import nl.mtvehicles.core.infrastructure.models.Vehicle;
+import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -23,32 +25,35 @@ public class VehicleEdit extends MTVehicleSubCommand {
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
         if (!checkPermission("mtvehicles.edit")) return true;
 
-        Player p = (Player) sender;
+        final ItemStack item = player.getInventory().getItemInMainHand();
 
-        final ItemStack item = p.getInventory().getItemInMainHand();
+        if (!isHoldingVehicle()) return true;
 
-        if (!item.hasItemMeta() || !(new NBTItem(item)).hasKey("mtvehicles.kenteken")) {
-            sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("noVehicleInHand")));
-            return true;
-        }
+        ConfigModule.configList.forEach(Config::reload);
 
-        ConfigModule.configList.forEach(ConfigUtils::reload);
-
-        sendMessage(ConfigModule.messagesConfig.getMessage("menuOpen"));
-        editMenu(p, item);
+        sendMessage(ConfigModule.messagesConfig.getMessage(Message.MENU_OPEN));
+        editMenu(player, item);
 
         return true;
     }
 
     public static void editMenu(Player p, ItemStack item) {
-        String ken = Vehicle.getLicensePlate(item);
+        String licensePlate = VehicleUtils.getLicensePlate(item);
+        MessagesConfig msg = ConfigModule.messagesConfig;
         Inventory inv = Bukkit.createInventory(null, 27, "Vehicle Edit");
-        inv.setItem(10, ItemUtils.mItem3(ConfigModule.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".skinItem"), 1, (short) ConfigModule.vehicleDataConfig.getConfig().getInt("vehicle." + ken + ".skinDamage"), "&6Vehicle Settings", "", "mtcustom", ConfigModule.vehicleDataConfig.getConfig().getString("vehicle." + ken + ".nbtValue")));
-        inv.setItem(11, ItemUtils.mItem2("DIAMOND_HOE", 1, (short) 58, "&6Benzine Settings", ""));
-        inv.setItem(12, ItemUtils.mItem("CHEST", 1, (short) 0, "&6Kofferbak Settings", ""));
-        inv.setItem(13, ItemUtils.mItem("PAPER", 1, (short) 0, "&6Member Settings", ""));
-        inv.setItem(14, ItemUtils.woolItem("STAINED_GLASS_PANE", "LIME_STAINED_GLASS", 1, (short) 5, "&6Speed Settings", ""));
-        inv.setItem(16, ItemUtils.mItem("BARRIER", 1, (short) 0, "&4Delete Vehicle", "&7LETOP! Je kunt het item niet meer terug krijgen!"));
+        inv.setItem(10, ItemUtils.getMenuCustomItem(
+                ItemUtils.getMaterial(ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.SKIN_ITEM).toString()),
+                "mtcustom",
+                ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.NBT_VALUE),
+                msg.getMessage(Message.VEHICLE_SETTINGS),
+                ConfigModule.vehicleDataConfig.getDamage(licensePlate),
+                ""
+        ));
+        inv.setItem(11, ItemUtils.getMenuCustomItem(Material.DIAMOND_HOE, msg.getMessage(Message.FUEL_SETTINGS), 58, ""));
+        inv.setItem(12, ItemUtils.getMenuItem(Material.CHEST, 1, msg.getMessage(Message.TRUNK_SETTINGS), ""));
+        inv.setItem(13, ItemUtils.getMenuItem(Material.PAPER, 1, msg.getMessage(Message.MEMBER_SETTINGS), ""));
+        inv.setItem(14, ItemUtils.getMenuItem("LIME_STAINED_GLASS", "STAINED_GLASS", (short) 5, 1, msg.getMessage(Message.SPEED_SETTINGS), ""));
+        inv.setItem(16, ItemUtils.getMenuItem(Material.BARRIER, 1, msg.getMessage(Message.DELETE_VEHICLE), msg.getMessage(Message.DELETE_WARNING_LORE)));
         p.openInventory(inv);
     }
 }

@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
@@ -18,7 +19,7 @@ public class VehicleReload extends MTVehicleSubCommand {
         Bukkit.getLogger().info("Reload config files..");
         ConfigModule.reloadConfigs();
         Bukkit.getLogger().info("Files loaded!");
-        sendMessage(ConfigModule.messagesConfig.getMessage("reloadSuccesvol"));
+        sendMessage(ConfigModule.messagesConfig.getMessage(Message.RELOAD_SUCCESSFUL));
 
         return true;
     }

@@ -9,6 +9,7 @@ import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
 import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import nl.mtvehicles.core.infrastructure.enums.SoftDependency;
 import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -68,7 +69,7 @@ public class WorldGuardUtils {
 
     private void disableDependency(){
         Bukkit.getLogger().severe("[MTVehicles] Custom WorldGuard flags could not be created for MTVehicles. Disabling as a softdepend... (If you've just reloaded the plugin with PlugMan, try restarting the server.)");
-        DependencyModule.disableDependency("WorldGuard");
+        DependencyModule.disableDependency(SoftDependency.WORLD_GUARD);
     }
 
     private boolean areFlagsOkay(){

@@ -2,137 +2,142 @@ package nl.mtvehicles.core.listeners;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.commands.vehiclesubs.VehicleFuel;
+import nl.mtvehicles.core.events.VehicleDamageEvent;
+import nl.mtvehicles.core.events.VehicleFuelEvent;
+import nl.mtvehicles.core.events.VehicleOpenTrunkEvent;
+import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.helpers.BossBarUtils;
-import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
-import nl.mtvehicles.core.infrastructure.models.ConfigUtils;
-import nl.mtvehicles.core.infrastructure.models.Vehicle;
+import nl.mtvehicles.core.infrastructure.models.MTVListener;
+import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
 
-public class VehicleEntityListener implements Listener {
+public class VehicleEntityListener extends MTVListener {
+
     public static HashMap<String, Double> speed = new HashMap<>();
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerInteractAtEntity(EntityDamageByEntityEvent e) {
-        final Entity eventEntity = e.getEntity();
-        final Entity damager = e.getDamager();
+    public void onPlayerInteractAtEntity(EntityDamageByEntityEvent event) {
+        this.event = event;
+        final Entity victim = event.getEntity();
+        final Entity damager = event.getDamager();
 
-        if (e.isCancelled()) return;
+        if (!VehicleUtils.isVehicle(victim)) return;
 
-        if (!Vehicle.isVehicle(eventEntity)) return;
+        String license = VehicleUtils.getLicensePlate(victim);
 
-        if (damager instanceof Player) {
-            final Player p = (Player) damager;
-            final String license = Vehicle.getLicense(eventEntity);
+        if (!(damager instanceof Player)) {
+            setupDamageAPI(damager, license);
+            callAPI(null);
+            if (isCancelled()) return;
 
-            if (p.isSneaking() && !p.isInsideVehicle()) {
-                kofferbak(p, license);
-                e.setCancelled(true);
-                return;
-            }
+            checkDamage(((VehicleDamageEvent) getAPI()).getLicensePlate());
+            return;
+        }
 
-            if (!p.isInsideVehicle()) return;
+        player = (Player) damager;
 
-            ItemStack item = p.getInventory().getItemInMainHand();
+        if (player.isSneaking() && !player.isInsideVehicle()) {
+            this.setAPI(new VehicleOpenTrunkEvent());
+            VehicleOpenTrunkEvent api = (VehicleOpenTrunkEvent) getAPI();
+            api.setLicensePlate(license);
+            callAPI();
+            if (isCancelled()) return;
 
-            if (!item.hasItemMeta() || !new NBTItem(item).hasKey("mtvehicles.benzineval")){
-                checkDamage(e);
-                return;
-            }
+            VehicleUtils.openTrunk(player, api.getLicensePlate());
+            event.setCancelled(true);
+            return;
+        }
 
-            NBTItem nbt = new NBTItem(item);
+        if (!player.isInsideVehicle()) return;
 
-            double curb = VehicleData.fuel.get(license);
-            String benval = nbt.getString("mtvehicles.benzineval");
-            String bensize = nbt.getString("mtvehicles.benzinesize");
+        ItemStack item = player.getInventory().getItemInMainHand();
 
-            if (!ConfigModule.defaultConfig.canUseJerryCan(p)){
-                ConfigModule.messagesConfig.sendMessage(p, "notInAGasStation");
-                return;
-            }
+        if (!item.hasItemMeta() || !new NBTItem(item).hasKey("mtvehicles.benzineval")){
+            setupDamageAPI(damager, license);
+            callAPI();
+            if (isCancelled()) return;
 
-            if (Integer.parseInt(benval) < 1) {
-                ConfigModule.messagesConfig.sendMessage(p, "noFuel");
-                return;
-            }
+            checkDamage(((VehicleDamageEvent) getAPI()).getLicensePlate());
+            return;
+        }
 
-            if (curb > 99) {
-                ConfigModule.messagesConfig.sendMessage(p, "vehicleFull");
-                return;
-            }
+        NBTItem nbt = new NBTItem(item);
 
-            if (curb + 5 > 100) {
-                int test = (int) (100 - curb);
-                p.setItemInHand(VehicleFuel.benzineItem(Integer.parseInt(bensize), Integer.parseInt(benval) - test));
-                VehicleData.fuel.put(license, VehicleData.fuel.get(license) + test);
-                BossBarUtils.setBossBarValue(curb / 100.0D, license);
-                return;
-            }
+        final double vehicleFuel = VehicleData.fuel.get(license);
+        final String jerryCanFuel = nbt.getString("mtvehicles.benzineval");
+        final String jerryCanSize = nbt.getString("mtvehicles.benzinesize");
 
-            if (!(Integer.parseInt(benval) < 5)) {
-                VehicleData.fuel.put(license, VehicleData.fuel.get(license) + 5);
-                BossBarUtils.setBossBarValue(curb / 100.0D, license);
-                p.setItemInHand(VehicleFuel.benzineItem(Integer.parseInt(bensize), Integer.parseInt(benval) - 5));
-            } else {
-                VehicleData.fuel.put(license, Double.valueOf(VehicleData.fuel.get(license) + benval));
-                BossBarUtils.setBossBarValue(curb / 100.0D, license);
-                p.setItemInHand(VehicleFuel.benzineItem(Integer.parseInt(bensize), 0));
-            }
+        this.setAPI(new VehicleFuelEvent(vehicleFuel, Integer.parseInt(jerryCanFuel), Integer.parseInt(jerryCanSize)));
+        VehicleFuelEvent api = (VehicleFuelEvent) getAPI();
+        api.setLicensePlate(license);
+        callAPI();
+        if (isCancelled()) return;
+
+        license = api.getLicensePlate();
+
+        if (!ConfigModule.defaultConfig.canUseJerryCan(player)){
+            ConfigModule.messagesConfig.sendMessage(player, Message.NOT_IN_A_GAS_STATION);
+            return;
+        }
+
+        if (Integer.parseInt(jerryCanFuel) < 1) {
+            ConfigModule.messagesConfig.sendMessage(player, Message.NO_FUEL);
+            return;
+        }
+
+        if (vehicleFuel > 99) {
+            ConfigModule.messagesConfig.sendMessage(player, Message.VEHICLE_FULL);
+            return;
+        }
+
+        if (VehicleData.fallDamage.get(license) != null && vehicleFuel > 2) VehicleData.fallDamage.remove(license);
+
+        if (vehicleFuel + 5 > 100) {
+            int rest = (int) (100 - vehicleFuel);
+            player.setItemInHand(VehicleFuel.benzineItem(Integer.parseInt(jerryCanSize), Integer.parseInt(jerryCanFuel) - rest));
+            VehicleData.fuel.put(license, VehicleData.fuel.get(license) + rest);
+            BossBarUtils.setBossBarValue(vehicleFuel / 100.0D, license);
+            return;
+        }
+
+        if (!(Integer.parseInt(jerryCanFuel) < 5)) {
+            VehicleData.fuel.put(license, VehicleData.fuel.get(license) + 5);
+            BossBarUtils.setBossBarValue(vehicleFuel / 100.0D, license);
+            player.setItemInHand(VehicleFuel.benzineItem(Integer.parseInt(jerryCanSize), Integer.parseInt(jerryCanFuel) - 5));
         } else {
-            checkDamage(e);
+            VehicleData.fuel.put(license, Double.valueOf(VehicleData.fuel.get(license) + jerryCanFuel));
+            BossBarUtils.setBossBarValue(vehicleFuel / 100.0D, license);
+            player.setItemInHand(VehicleFuel.benzineItem(Integer.parseInt(jerryCanSize), 0));
         }
     }
 
-    public static void checkDamage(EntityDamageByEntityEvent e){
-        final double damage = e.getDamage();
-        final String license = Vehicle.getLicense(e.getEntity());
+    public void checkDamage(String license){
+        final double damage = ((VehicleDamageEvent) getAPI()).getDamage();
 
-        if (!ConfigModule.defaultConfig.getConfig().getBoolean("damageEnabled")) return;
-        if (Vehicle.getByPlate(license) == null) return;
+        if (!(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.DAMAGE_ENABLED)) return;
+        if (VehicleUtils.getByLicensePlate(license) == null) return;
 
-        double damageMultiplier = ConfigModule.defaultConfig.getConfig().getDouble("damageMultiplier");
+        double damageMultiplier = (double) ConfigModule.defaultConfig.get(DefaultConfig.Option.DAMAGE_MULTIPLIER);
         if (damageMultiplier < 0.1 || damageMultiplier > 5) damageMultiplier = 0.5; //Must be between 0.1 and 5. Default: 0.5
         ConfigModule.vehicleDataConfig.damageVehicle(license, damage * damageMultiplier);
     }
 
-    public static void kofferbak(Player p, String license) {
-        if (ConfigModule.defaultConfig.getConfig().getBoolean("kofferbakEnabled")) {
-            if (Vehicle.getByPlate(license) == null) {
-                ConfigModule.messagesConfig.sendMessage(p, "vehicleNotFound");
-                return;
-            }
-
-            if (Vehicle.getByPlate(license).getOwner().equals(p.getUniqueId().toString()) || p.hasPermission("mtvehicles.kofferbak")) {
-                ConfigModule.configList.forEach(ConfigUtils::reload);
-                if (ConfigModule.vehicleDataConfig.getConfig().getBoolean("vehicle." + license + ".kofferbak")) {
-
-                    if (ConfigModule.vehicleDataConfig.getConfig().getList("vehicle." + license + ".kofferbakData") == null) return;
-
-                    Inventory inv = Bukkit.createInventory(null, ConfigModule.vehicleDataConfig.getConfig().getInt("vehicle." + license + ".kofferbakRows") * 9, "Kofferbak Vehicle: " + license);
-                    List<ItemStack> chestContentsFromConfig = (List<ItemStack>) ConfigModule.vehicleDataConfig.getConfig().getList("vehicle." + license + ".kofferbakData");
-
-                    for (ItemStack item : chestContentsFromConfig) {
-                        if (item != null) inv.addItem(item);
-                    }
-
-                    p.openInventory(inv);
-                }
-            } else {
-                p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehicleNoRiderKofferbak").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(license).getOwner())).getName())));
-            }
-        }
+    private void setupDamageAPI(@Nullable Entity damager, String license){
+        this.setAPI(new VehicleDamageEvent());
+        VehicleDamageEvent api = (VehicleDamageEvent) getAPI();
+        api.setDamager(damager);
+        api.setLicensePlate(license);
+        api.setDamage(((EntityDamageByEntityEvent) event).getDamage());
     }
 }
