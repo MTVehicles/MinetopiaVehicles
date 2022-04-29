@@ -10,6 +10,7 @@
 # Turn it off and you will not get any messages for updates.
 # Auto-update message will show on server join if you have the permission 'mtvehicles.update'.
 # If set on false the /vehicle update command will not work either.
+# IMPORTANT: If this is enabled, the plugin WILL CONTACT OUR SERVERS to get the latest version and to download it. If you do not wish for this to happen, set this option to false.
 autoUpdate: true
 
 
