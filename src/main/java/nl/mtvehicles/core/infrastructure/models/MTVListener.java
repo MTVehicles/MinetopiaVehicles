@@ -27,18 +27,22 @@ public abstract class MTVListener implements Listener {
         if (event == null) throw new NullPointerException("Cannot check if event is cancelled if event is null.");
 
         if (getAPI().isCancelled()) return true;
+        if (!(event instanceof org.bukkit.event.Cancellable)) return false;
 
         if (VersionModule.getServerVersion().is1_12()){
             try {
                 Method method = event.getClass().getDeclaredMethod("isCancelled");
                 return (boolean) method.invoke(event);
-            } catch (Exception e) {
-                e.printStackTrace();
-                return false;
+            } catch (Exception e1) {
+                try {
+                    Method method = event.getClass().getSuperclass().getDeclaredMethod("isCancelled");
+                    return (boolean) method.invoke(event);
+                } catch (Exception e2) {
+                    return false;
+                }
             }
         }
 
-        if (!(event instanceof org.bukkit.event.Cancellable)) return false;
         return ((org.bukkit.event.Cancellable) event).isCancelled();
     }
 
