@@ -2,6 +2,7 @@ package nl.mtvehicles.core.infrastructure.helpers;
 
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.annotations.ToDo;
+import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.enums.PluginVersion;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
@@ -16,11 +17,16 @@ import java.util.List;
 
 @ToDo(comment = "Translate to multiple languages.")
 public class PluginUpdater {
+    private static boolean isEnabled = (boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.AUTO_UPDATE);
     private static PluginVersion pluginVersion = PluginVersion.getPluginVersion();
     private static PluginVersion latestVersion = receiveLatestVersion();
-    private static String latest;
+    private static String latestVersionString;
 
     private static PluginVersion receiveLatestVersion(){
+        if (!isEnabled) {
+            Main.logWarning(ConfigModule.messagesConfig.getMessage(Message.UPDATE_DISABLED));
+            return null;
+        }
         try {
             URLConnection connection = new URL("https://minetopiavehicles.nl/api/update-api-version.php").openConnection();
             connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
@@ -32,7 +38,7 @@ public class PluginUpdater {
                 sb.append(line);
             }
             String receivedValue = sb.toString();
-            latest = receivedValue;
+            latestVersionString = receivedValue;
             return PluginVersion.getVersion(receivedValue);
         } catch (IOException ex) {
             Main.logSevere("The plugin cannot connect to MTVehicles servers. Try again later...");
@@ -43,6 +49,10 @@ public class PluginUpdater {
 
     @Deprecated
     private static String[] receiveUpdateMessage(){
+        if (!isEnabled) {
+            Main.logWarning(ConfigModule.messagesConfig.getMessage(Message.UPDATE_DISABLED));
+            return null;
+        }
         try {
             URLConnection connection = new URL("https://minetopiavehicles.nl/api/update-api-check.php").openConnection();
             connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
@@ -66,11 +76,12 @@ public class PluginUpdater {
         }
     }
 
+    @ToDo(comment = "Make this translatable, maybe?")
     private static List<String> getUpdateMessage(){
         return TextUtils.list(
                 "&7---------------------------------------",
                 "A new version of &2MTVehicles&f is available!",
-                String.format("We have just released &av%s &fbut you are still using &cv%s&f!", latest, VersionModule.pluginVersion),
+                String.format("We have already released &av%s &fbut you are still using &cv%s&f!", latestVersionString, VersionModule.pluginVersion),
                 "Use &2/mtv update&f to update! (Don't forget to reload the plugin!)",
                 "For more information visit &nhttps://mtvehicles.eu&f!",
                 "&7---------------------------------------"
@@ -111,6 +122,10 @@ public class PluginUpdater {
     }
 
     private static boolean downloadUpdate() {
+        if (!isEnabled) {
+            Main.logWarning(ConfigModule.messagesConfig.getMessage(Message.UPDATE_DISABLED));
+            return false;
+        }
         try {
             URL file = new URL("https://minetopiavehicles.nl/api/MTVehicles.jar");
             File dest = new File("plugins");
