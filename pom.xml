@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>nl.mtvehicles.core</groupId>
     <artifactId>MTVehicles</artifactId>
-    <version>2.3.0</version> <!-- As this is used in plugin.yml, do not include "SNAPSHOT" anymore. -->
+    <version>2.4.1-dev1</version> <!-- As this is used in plugin.yml, do not include "SNAPSHOT" anymore. -->
 
     <repositories>
         <repository>
@@ -58,13 +58,6 @@
         </dependency>
         <dependency>
             <groupId>net.minecraft</groupId>
-            <artifactId>1.14</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/libs/spigot-1.14.4.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>net.minecraft</groupId>
             <artifactId>1.15</artifactId>
             <version>1.0</version>
             <scope>system</scope>
@@ -86,7 +79,14 @@
         </dependency>
         <dependency>
             <groupId>net.minecraft</groupId>
-            <artifactId>1.18</artifactId>
+            <artifactId>1.18.1</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${pom.basedir}/libs/spigot-1.18.1.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>net.minecraft</groupId>
+            <artifactId>1.18.2</artifactId>
             <version>1.0</version>
             <scope>system</scope>
             <systemPath>${pom.basedir}/libs/spigot-1.18.2.jar</systemPath>
