@@ -49,8 +49,11 @@ public class VersionModule {
             case "v1_17_R1":
                 returns = ServerVersion.v1_17;
                 break;
+            case "v1_18_R1":
+                returns = ServerVersion.v1_18_R1;
+                break;
             case "v1_18_R2":
-                returns = ServerVersion.v1_18;
+                returns = ServerVersion.v1_18_R2;
                 break;
         }
         return returns;
@@ -68,7 +71,7 @@ public class VersionModule {
 
         else if (!Bukkit.getVersion().contains("1.12.2") && !Bukkit.getVersion().contains("1.13.2") && !Bukkit.getVersion().contains("1.15.2") && !Bukkit.getVersion().contains("1.16.5") && !Bukkit.getVersion().contains("1.17.1") && !Bukkit.getVersion().contains("1.18.2")) {
             logger.warning("--------------------------");
-            logger.warning("Your Server does not run the latest patch version (e.g. you may be running 1.16.3 instead of 1.16.5 etc...).");
+            logger.warning("Your Server does not run the latest patch version (e.g. you may be running 1.18 instead of 1.18.2 etc...).");
             logger.warning("The plugin WILL load but it MAY NOT work properly. UPDATE.");
             logger.warning("Check the supported versions here: https://wiki.mtvehicles.eu/faq.html");
             logger.warning("--------------------------");

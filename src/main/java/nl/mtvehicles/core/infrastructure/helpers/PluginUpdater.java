@@ -13,6 +13,8 @@ import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 @ToDo(comment = "Translate to multiple languages.")
@@ -28,7 +30,7 @@ public class PluginUpdater {
             return null;
         }
         try {
-            URLConnection connection = new URL("https://minetopiavehicles.nl/api/update-api-version.php").openConnection();
+            URLConnection connection = new URL("https://minetopiavehicles.nl/api/update-api-version.php?now=" + getTimeStamp()).openConnection();
             connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
             connection.connect();
             BufferedReader r = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
@@ -54,7 +56,7 @@ public class PluginUpdater {
             return null;
         }
         try {
-            URLConnection connection = new URL("https://minetopiavehicles.nl/api/update-api-check.php").openConnection();
+            URLConnection connection = new URL("https://minetopiavehicles.nl/api/update-api-check.php?now=" + getTimeStamp()).openConnection();
             connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
             connection.connect();
             BufferedReader r = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
@@ -86,6 +88,12 @@ public class PluginUpdater {
                 "For more information visit &nhttps://mtvehicles.eu&f!",
                 "&7---------------------------------------"
         );
+    }
+
+    private static long getTimeStamp(){
+        Date date = new Date();
+        Timestamp timestamp = new Timestamp(date.getTime());
+        return timestamp.getTime();
     }
 
     public static PluginVersion getLatestVersion(){
@@ -127,7 +135,7 @@ public class PluginUpdater {
             return false;
         }
         try {
-            URL file = new URL("https://minetopiavehicles.nl/api/MTVehicles.jar");
+            URL file = new URL("https://minetopiavehicles.nl/api/MTVehicles.jar?now=" + getTimeStamp());
             File dest = new File("plugins");
             InputStream is = file.openStream();
             File finaldest = new File(dest + "/" + file.getFile().replace("/api/MTVehicles.jar", "/" + Main.getFileAsString().replace("plugins", "")));

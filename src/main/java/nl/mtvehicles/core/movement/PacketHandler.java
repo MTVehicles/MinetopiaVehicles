@@ -15,7 +15,7 @@ import static nl.mtvehicles.core.infrastructure.modules.VersionModule.getServerV
 
 public class PacketHandler {
 
-    public static void movement_1_18(Player player) {
+    public static void movement_1_18_R2(Player player) {
         ChannelDuplexHandler channelDuplexHandler = new ChannelDuplexHandler() {
             public void channelRead(ChannelHandlerContext channelHandlerContext, Object packet) throws Exception {
                 super.channelRead(channelHandlerContext, packet);
@@ -37,6 +37,28 @@ public class PacketHandler {
             Main.disablePlugin();
             return;
         }
+        try {
+            pipeline.remove(player.getName());
+        } catch (NoSuchElementException e) {
+        }
+        try {
+            pipeline.addBefore("packet_handler", player.getName(), channelDuplexHandler);
+        } catch (NoSuchElementException e) {
+        }
+    }
+
+    public static void movement_1_18_R1(Player player) {
+        ChannelDuplexHandler channelDuplexHandler = new ChannelDuplexHandler() {
+            public void channelRead(ChannelHandlerContext channelHandlerContext, Object packet) throws Exception {
+                super.channelRead(channelHandlerContext, packet);
+                if (packet instanceof net.minecraft.network.protocol.game.PacketPlayInSteerVehicle) {
+                    net.minecraft.network.protocol.game.PacketPlayInSteerVehicle ppisv = (net.minecraft.network.protocol.game.PacketPlayInSteerVehicle) packet;
+                    VehicleMovement movement = new VehicleMovement();
+                    movement.vehicleMovement(player, ppisv);
+                }
+            }
+        };
+        ChannelPipeline pipeline = ((org.bukkit.craftbukkit.v1_18_R1.entity.CraftPlayer) player).getHandle().b.a.k.pipeline();
         try {
             pipeline.remove(player.getName());
         } catch (NoSuchElementException e) {
@@ -184,7 +206,7 @@ public class PacketHandler {
                 Main.logSevere(errorMessage);
                 return false;
             }
-        } else if (getServerVersion().is1_17() || getServerVersion().is1_18()) {
+        } else if (getServerVersion().is1_17() || getServerVersion().is1_18_R1() || getServerVersion().is1_18_R2()) {
             if (!(object instanceof net.minecraft.network.protocol.game.PacketPlayInSteerVehicle)){
                 Main.logSevere(errorMessage);
                 return false;
