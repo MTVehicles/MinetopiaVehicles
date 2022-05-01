@@ -26,11 +26,13 @@ The plugin works on all spigot versions from 1.12.2 - 1.18.2, **except 1.14.x**!
 If your server minecraft version is not supported by the plugin, it won't load.
 
 Versions 1.12.1 and lower are NOT, and will NOT be supported.<br>
-(Did you know that 1.8 was released in 2014? And some people still use it! Whoa.)
+(Frankly, 1.8 was released [a pretty long time ago](https://howoldisminecraft189.today/). And some people still use it, right? I don't get it.)
 
 
 > ⚠ We support ALL LATEST PATCH VERSIONS of Spigot/Paper 1.12+, except 1.14.4.<br>
 > For example 1.16.5 IS supported, but 1.16.3 is not (and similarly with all other versions).
+>
+> **Still confused?** [Click here](https://wiki.mtvehicles.eu/faq.html#_5-i-am-getting-an-internal-error-occurred-error) to get a list of compatible versions.
 
 ### 1. Download the latest version
 - Latest stable releases are always published on <a href="https://www.spigotmc.org/resources/80910/">Spigot.org</a>.
@@ -53,6 +55,8 @@ Restart the server. No explanation needed right?
 If this did not work don't hesitate to contact the support on our Discord server.
 
 ## Contact us!
+
+### ❗ We've got a new wiki! https://wiki.mtvehicles.eu/ ❗
 
 **Discord is the best place to report discovered bugs!**<br>
 <a href="https://discord.gg/vehicle" taget="_blank"><img src="https://discord.com/api/guilds/694809233819959308/widget.png?style=banner2"></a>
@@ -96,7 +100,7 @@ If this did not work don't hesitate to contact the support on our Discord server
 | /vehicle language | Change the plugin language                        | `mtvehicles.admin` or `mtvehicles.language`      |
 
 ### Vehicle specific commands
-These commands can only be executed by the owner of the vehicle
+These commands can only be executed by the owner of the vehicle. **Hold a vehicle in your hand while executing these.**
 
 | Command               | Description                                          | Permission |
 |-----------------------|------------------------------------------------------|------------|
@@ -106,7 +110,9 @@ These commands can only be executed by the owner of the vehicle
 | /vehicle addmember    | Add a member to your vehicle                         | `None`     |
 | /vehicle removerider  | Remove a rider from your vehicle                     | `None`     |
 | /vehicle removemember | Remove a member from your vehicle                    | `None`     |
+| /vehicle trunk        | Open the trunk of your vehicle                       | `None`     |
 | /vehicle repair       | Restore the health of a vehicle (vehicle damage must be enabled in the [config.yml]) | `mtvehicles.repair` |
+| /vehicle refill       | Refill the vehicle's fuel                            | `mtvehicles.refill` |
 
 ### Moderation commands
 
@@ -156,6 +162,27 @@ You can edit the behaviour **in the config** where you may also find information
 |                  | DENY  | Prevents players from entering vehicles, **if region blacklist for entering is enabled.**      |
 | `mtv-pickup`     | ALLOW | Enables players to pick up vehicles, **if region whitelist for picking up is enabled.**        |
 |                  | DENY  | Prevents players from picking up vehicles, **if region blacklist for picking up is enabled.**  |
+
+### PlaceholderAPI
+
+MTVehicles offers special placeholders for you to use.
+
+#### Global placeholders
+
+| Placeholder                  | Description                                            |
+|------------------------------|--------------------------------------------------------|
+| `%mtv_fuel_pricePerLitre%`   | Price of fuel (used while filling jerrycans)           |
+
+#### Per-player placeholders
+
+| Placeholder                  | Description                                            |
+|------------------------------|--------------------------------------------------------|
+| `%mtv_vehicle_licensePlate%` | License plate of a vehicle a player **is sitting in**  |
+| `%mtv_vehicle_name%`         | Name of a vehicle a player is sitting in               |
+| `%mtv_vehicle_type%`         | Type of a vehicle a player is sitting in               |
+| `%mtv_vehicle_fuel%`         | Remaining fuel of a vehicle a player is sitting in     |
+
+> More placeholders are expected to be added in the future...
 
 ### Vault
 

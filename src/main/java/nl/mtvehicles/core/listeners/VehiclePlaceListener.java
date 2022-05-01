@@ -2,139 +2,85 @@ package nl.mtvehicles.core.listeners;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.events.VehiclePlaceEvent;
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.enums.RegionAction;
-import nl.mtvehicles.core.infrastructure.helpers.ItemFactory;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
-import nl.mtvehicles.core.infrastructure.models.Vehicle;
+import nl.mtvehicles.core.infrastructure.models.MTVListener;
+import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Player;
+import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+public class VehiclePlaceListener extends MTVListener {
 
-public class VehiclePlaceListener implements Listener {
+    public VehiclePlaceListener(){
+        super(new VehiclePlaceEvent());
+    }
+
     @EventHandler
-    public void onVehiclePlace(final PlayerInteractEvent e) {
-        final Player p = e.getPlayer();
-        final Action action = e.getAction();
-        final ItemStack item = e.getItem();
+    public void onVehiclePlace(final PlayerInteractEvent event) {
+        this.event = event;
+        player = event.getPlayer();
 
-        if (e.isCancelled()) return;
+        final Action action = event.getAction();
+        final ItemStack item = event.getItem();
+        final Block clickedBlock = event.getClickedBlock();
 
-        if (e.getItem() == null) return;
-
-        if (!e.getItem().hasItemMeta()
-                || !(new NBTItem(e.getItem())).hasKey("mtvehicles.kenteken")
-                || e.getClickedBlock() == null
+        if (!action.equals(Action.RIGHT_CLICK_BLOCK)) return;
+        if (item == null) return;
+        if (!item.hasItemMeta()
+                || !(new NBTItem(item)).hasKey("mtvehicles.kenteken")
+                || clickedBlock == null
         ) return;
+        String license = VehicleUtils.getLicensePlate(item);
+        if (license == null) return;
 
-        if (e.getHand() != EquipmentSlot.HAND) {
-            e.setCancelled(true);
-            e.getPlayer().sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("wrongHand")));
+        VehiclePlaceEvent api = (VehiclePlaceEvent) getAPI();
+        api.setLicensePlate(license);
+        api.setLocation(clickedBlock.getLocation());
+        callAPI();
+        if (isCancelled()) return;
+
+        Location loc = api.getLocation();
+        license = api.getLicensePlate();
+
+        if (event.getHand() != EquipmentSlot.HAND) {
+            event.setCancelled(true);
+            event.getPlayer().sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.WRONG_HAND)));
+            return;
+        }
+        if (!VehicleUtils.existsByLicensePlate(license)) {
+            ConfigModule.messagesConfig.sendMessage(player, Message.VEHICLE_NOT_FOUND);
+            event.setCancelled(true);
             return;
         }
 
-        String license = Vehicle.getLicensePlate(item);
-        if (license == null) {
-            return;
-        }
-        if (!Vehicle.existsByPlate(license)) {
-            ConfigModule.messagesConfig.sendMessage(p, "vehicleNotFound");
-            e.setCancelled(true);
-            return;
-        }
-        if (!action.equals(Action.RIGHT_CLICK_BLOCK)) {
-            return;
-        }
-
-
-        VehiclePlaceEvent vehiclePlaceEvent = new VehiclePlaceEvent();
-        vehiclePlaceEvent.setLocation(e.getClickedBlock().getLocation());
-        vehiclePlaceEvent.setPlayer(e.getPlayer());
-        // You can set more things take a look at VehiclePlaceEvent
-        Bukkit.getPluginManager().callEvent(vehiclePlaceEvent);
-
-        if (vehiclePlaceEvent.isCancelled()) {
-            return;
-        }
-
-        Location loc = e.getClickedBlock().getLocation();
-        e.setCancelled(true);
+        event.setCancelled(true);
 
         if (ConfigModule.defaultConfig.isBlockWhitelistEnabled()
-                && !ConfigModule.defaultConfig.blockWhiteList().contains(e.getClickedBlock().getType())) {
-            ConfigModule.messagesConfig.sendMessage(p, "blockNotInWhitelist");
+                && !ConfigModule.defaultConfig.blockWhiteList().contains(event.getClickedBlock().getType())) {
+            ConfigModule.messagesConfig.sendMessage(player, Message.BLOCK_NOT_IN_WHITELIST);
             return;
         }
         if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.PLACE, loc)) {
-            ConfigModule.messagesConfig.sendMessage(p, "cannotDoThatHere");
+            ConfigModule.messagesConfig.sendMessage(player, Message.CANNOT_DO_THAT_HERE);
             return;
         }
 
-        if (Vehicle.getByPlate(license) == null) {
-            ConfigModule.messagesConfig.sendMessage(p, "vehicleNotFound");
+        if (VehicleUtils.getByLicensePlate(license) == null) {
+            ConfigModule.messagesConfig.sendMessage(player, Message.VEHICLE_NOT_FOUND);
             return;
         }
 
         Location location = new Location(loc.getWorld(), loc.getX(), loc.getY() + 1, loc.getZ());
-        ArmorStand as = location.getWorld().spawn(location, ArmorStand.class);
-        as.setVisible(false);
-        as.setCustomName("MTVEHICLES_SKIN_" + license);
-        as.getEquipment().setHelmet(item);
-        ArmorStand as2 = location.getWorld().spawn(location, ArmorStand.class);
-        as2.setVisible(false);
-        as2.setCustomName("MTVEHICLES_MAIN_" + license);
-        Vehicle vehicle = Vehicle.getByPlate(license);
-        List<Map<String, Double>> seats = (List<Map<String, Double>>) vehicle.getVehicleData().get("seats");
-        p.getInventory().remove(p.getEquipment().getItemInHand());
-        p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("vehiclePlace").replace("%p%", Bukkit.getOfflinePlayer(UUID.fromString(Vehicle.getByPlate(license).getOwner().toString())).getName())));
-        for (int i = 1; i <= seats.size(); i++) {
-            Map<String, Double> seat = seats.get(i - 1);
-            if (i == 1) {
-                Location location2 = new Location(location.getWorld(), location.getX() + seat.get("x"), location.getY() + seat.get("y"), location.getZ() + seat.get("z"));
-                ArmorStand as3 = location2.getWorld().spawn(location2, ArmorStand.class);
-                as3.setCustomName("MTVEHICLES_MAINSEAT_" + license);
-                as3.setGravity(false);
-                as3.setVisible(false);
-            }
-        }
-        List<Map<String, Double>> wiekens = (List<Map<String, Double>>) vehicle.getVehicleData().get("wiekens");
-        if (ConfigModule.vehicleDataConfig.getConfig().getString("vehicle." + license + ".vehicleType").contains("HELICOPTER")) {
-            for (int i = 1; i <= wiekens.size(); i++) {
-                Map<?, ?> seat = wiekens.get(i - 1);
-                if (i == 1) {
-                    Location location2 = new Location(location.getWorld(), location.getX() + (Double) seat.get("z"), (Double) location.getY() + (Double) seat.get("y"), location.getZ() + (Double) seat.get("x"));
-                    ArmorStand as3 = location2.getWorld().spawn(location2, ArmorStand.class);
-                    as3.setCustomName("MTVEHICLES_WIEKENS_" + license);
-                    as3.setGravity(false);
-                    as3.setVisible(false);
-                    if (ConfigModule.defaultConfig.getConfig().getBoolean("wiekens-always-on") == true) {
-                        ItemStack car = (new ItemFactory(Material.getMaterial("DIAMOND_HOE"))).setDurability((short) 1058).setName(TextUtils.colorize("&6Wieken")).setNBT("mtvehicles.kenteken", license).toItemStack();
-                        ItemMeta im = car.getItemMeta();
-                        List<String> itemlore = new ArrayList<>();
-                        itemlore.add(TextUtils.colorize("&a"));
-                        itemlore.add(TextUtils.colorize("&a" + license));
-                        itemlore.add(TextUtils.colorize("&a"));
-                        im.setLore(itemlore);
-                        im.setUnbreakable(true);
-                        car.setItemMeta(im);
-                        as3.setHelmet((ItemStack) seat.get("item"));
-                    }
-                }
-            }
-        }
+
+        VehicleUtils.spawnVehicle(license, location);
+        player.getInventory().remove(player.getEquipment().getItemInHand());
+        player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_PLACE).replace("%p%", VehicleUtils.getByLicensePlate(license).getOwnerName())));
     }
 }

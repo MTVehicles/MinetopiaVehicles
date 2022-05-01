@@ -70,6 +70,10 @@
       <id>codemc-repo</id>
       <url>https://repo.codemc.org/repository/maven-public/</url>
     </repository>
+    <repository>
+      <id>placeholderapi</id>
+      <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+    </repository>
   </repositories>
   <dependencies>
     <dependency>
@@ -94,6 +98,12 @@
       <groupId>com.github.MilkBowl</groupId>
       <artifactId>VaultAPI</artifactId>
       <version>1.7</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>me.clip</groupId>
+      <artifactId>placeholderapi</artifactId>
+      <version>2.11.1</version>
       <scope>provided</scope>
     </dependency>
     <dependency>

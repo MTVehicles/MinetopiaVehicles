@@ -1,5 +1,7 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
+import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.helpers.ItemFactory;
 import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
@@ -7,7 +9,6 @@ import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -26,19 +27,18 @@ public class VehicleMenu extends MTVehicleSubCommand {
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
         if (!checkPermission("mtvehicles.menu")) return true;
 
-        Player p = (Player) sender;
-        sendMessage(ConfigModule.messagesConfig.getMessage("menuOpen"));
+        sendMessage(ConfigModule.messagesConfig.getMessage(Message.MENU_OPEN));
 
-        int menuRows = ConfigModule.defaultConfig.getConfig().getInt("vehicleMenuSize");
+        int menuRows = (int) ConfigModule.defaultConfig.get(DefaultConfig.Option.VEHICLE_MENU_SIZE);
         final int menuSize = (menuRows >= 3 && menuRows <= 6) ? menuRows * 9 : 27;
 
         Inventory inv = Bukkit.createInventory(null, menuSize, "Vehicle Menu");
 
-        for (Map<?, ?> vehicle : ConfigModule.vehiclesConfig.getConfig().getMapList("voertuigen")) {
+        for (Map<?, ?> vehicle : ConfigModule.vehiclesConfig.getVehicles()) {
             int itemDamage = (Integer) vehicle.get("itemDamage");
             String name = (String) vehicle.get("name");
             String skinItem = (String) vehicle.get("skinItem");
-            ItemStack itemStack = ItemUtils.carItem(itemDamage, name, skinItem);
+            ItemStack itemStack = ItemUtils.getMenuVehicle(ItemUtils.getMaterial(skinItem), itemDamage, name);
 
             if (vehicle.get("nbtValue") == null) {
                 inv.addItem(itemStack);
@@ -47,8 +47,8 @@ public class VehicleMenu extends MTVehicleSubCommand {
             inv.addItem(new ItemFactory(itemStack).setNBT((String) vehicle.get("nbtKey"), (String)vehicle.get("nbtValue")).toItemStack());
         }
 
-        beginMenu.put(p.getUniqueId(), inv);
-        p.openInventory(inv);
+        beginMenu.put(player.getUniqueId(), inv);
+        player.openInventory(inv);
 
         return true;
     }

@@ -63,7 +63,7 @@ public class VersionModule {
         if (getServerVersion() == null) {
             logger.severe("--------------------------");
             logger.severe("Your Server version is not supported. The plugin will NOT load.");
-            logger.severe("Check the supported versions here: https://mtvehicles.nl");
+            logger.severe("Check the supported versions here: https://wiki.mtvehicles.eu/faq.html");
             logger.severe("--------------------------");
             Main.disablePlugin();
             return false;
@@ -80,7 +80,8 @@ public class VersionModule {
         else if (!serverSoftware.equals("Spigot") && !serverSoftware.equals("Paper") && !serverSoftware.equals("CraftBukkit")){
             logger.warning("--------------------------");
             logger.warning("Your Server is not running Spigot, nor Paper (" + serverSoftware + " detected).");
-            logger.warning("The plugin WILL load but you are NOT eligible for any support unless you switch to Spigot/Paper.");
+            logger.warning("The plugin WILL load but it MAY NOT work properly. Full support is guaranteed only on Spigot/Paper.");
+            logger.warning("We'll be more than happy to help you on our Discord server (https://discord.gg/vehicle).");
             logger.warning("--------------------------");
         }
 

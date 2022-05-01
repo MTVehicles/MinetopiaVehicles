@@ -1,9 +1,10 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
-import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
+import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -20,17 +21,13 @@ public class VehicleAddRider extends MTVehicleSubCommand {
 
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
-        Player player = (Player) sender;
+        if (!isHoldingVehicle()) return true;
+
         ItemStack item = player.getInventory().getItemInMainHand();
         NBTItem nbt = new NBTItem(item);
 
-        if (!item.hasItemMeta() || !nbt.hasKey("mtvehicles.kenteken")) {
-            sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("noVehicleInHand")));
-            return true;
-        }
-
         if (args.length != 2) {
-            sendMessage(ConfigModule.messagesConfig.getMessage("useAddRider"));
+            sendMessage(ConfigModule.messagesConfig.getMessage(Message.USE_ADD_RIDER));
             return true;
         }
 
@@ -38,11 +35,11 @@ public class VehicleAddRider extends MTVehicleSubCommand {
         String licensePlate = nbt.getString("mtvehicles.kenteken");
 
         if (offlinePlayer == null || !offlinePlayer.hasPlayedBefore()) {
-            sendMessage(ConfigModule.messagesConfig.getMessage("playerNotFound"));
+            sendMessage(ConfigModule.messagesConfig.getMessage(Message.PLAYER_NOT_FOUND));
             return true;
         }
 
-        Vehicle vehicle = Vehicle.getByPlate(licensePlate);
+        Vehicle vehicle = VehicleUtils.getByLicensePlate(licensePlate);
 
         assert vehicle != null;
         List<String> riders = vehicle.getRiders();
@@ -50,7 +47,7 @@ public class VehicleAddRider extends MTVehicleSubCommand {
         vehicle.setRiders(riders);
         vehicle.save();
 
-        sendMessage(ConfigModule.messagesConfig.getMessage("memberChange"));
+        sendMessage(ConfigModule.messagesConfig.getMessage(Message.MEMBER_CHANGE));
 
         return true;
     }

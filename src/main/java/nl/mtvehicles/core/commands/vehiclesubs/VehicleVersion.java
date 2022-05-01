@@ -1,5 +1,9 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
+import nl.mtvehicles.core.infrastructure.enums.Message;
+import nl.mtvehicles.core.infrastructure.enums.PluginVersion;
+import nl.mtvehicles.core.infrastructure.enums.SoftDependency;
+import nl.mtvehicles.core.infrastructure.helpers.PluginUpdater;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
@@ -18,22 +22,31 @@ public class VehicleVersion extends MTVehicleSubCommand {
         if (!checkPermission("mtvehicles.admin")) return true;
 
         String pluginVersion = VersionModule.pluginVersion;
+        String isLatest = (PluginUpdater.isLatestVersion() && !PluginVersion.getPluginVersion().isDev()) ? " (latest)" : "";
         String serverVersion = Bukkit.getVersion();
 
-        sendMessage(String.format("§2Running §aMTVehicles v%s§2.", pluginVersion));
+        sendMessage(String.format("§2Running §aMTVehicles v%s§2%s.", pluginVersion, isLatest));
         sendMessage(String.format("§2Your server is running §a%s§2.", serverVersion));
         if (!DependencyModule.loadedDependencies.isEmpty()) {
-            String dependencies = String.join(", ", DependencyModule.loadedDependencies);
-            if (DependencyModule.isDependencyEnabled("Vault")) {
+            String dependencies = "";
+            int numberOfDependencies = 0;
+            for (SoftDependency dependency: DependencyModule.loadedDependencies) {
+                if (numberOfDependencies == 0) dependencies += dependency.getName();
+                else dependencies += ", " + dependency.getName();
+                numberOfDependencies++;
+            }
+            if (DependencyModule.isDependencyEnabled(SoftDependency.VAULT)) {
                 if (!DependencyModule.vault.isEconomySetUp()) dependencies = dependencies.replace("Vault", "§a§mVault§a");
             }
-            sendMessage(String.format("§2Loaded dependencies: §a%s§2.", dependencies));
+            sendMessage(String.format("§2Loaded dependencies (%s§2): §a%s§2.", numberOfDependencies, dependencies));
         } else {
             sendMessage(String.format("§2There are no loaded dependencies."));
         }
 
-        if (VersionModule.isPreRelease)
-            sendMessage(String.format(ConfigModule.messagesConfig.getMessage("usingPreRelease")));
+        if (VersionModule.isPreRelease) {
+            sendMessage("§e-----");
+            sendMessage(String.format(ConfigModule.messagesConfig.getMessage(Message.USING_PRE_RELEASE)));
+        }
 
         return true;
     }

@@ -21,4 +21,3 @@ public abstract class MTVehicleCommand implements CommandExecutor {
         this.commandSender.sendMessage("" + TextUtils.colorize(message));
     }
 }
-

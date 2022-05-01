@@ -1,23 +1,23 @@
 package nl.mtvehicles.core.infrastructure.dataconfig;
 
 import nl.mtvehicles.core.Main;
+import nl.mtvehicles.core.infrastructure.enums.ConfigType;
+import nl.mtvehicles.core.infrastructure.enums.Language;
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
-import nl.mtvehicles.core.infrastructure.models.ConfigUtils;
+import nl.mtvehicles.core.infrastructure.models.Config;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import java.io.File;
-import java.util.List;
+import java.util.Locale;
 
-public class MessagesConfig extends ConfigUtils {
-    /**
-     * Language codes of all the message files.
-     */
-    public String[] languages = {"en", "nl", "es", "cs"};
+public class MessagesConfig extends Config {
+    private Language language;
 
     public MessagesConfig() {
-        for (String lang : languages) {
+        super(ConfigType.MESSAGES);
+        for (String lang : Language.getAllLanguages()) {
             saveLanguageFile(lang);
         }
         if (!setLanguageFile(ConfigModule.secretSettings.getMessagesLanguage())){
@@ -26,38 +26,45 @@ public class MessagesConfig extends ConfigUtils {
         }
     }
 
+    @Deprecated
     public String getMessage(String key) {
         String msg = "";
         try {
-            msg = TextUtils.colorize((String) this.getConfig().get(key));
+            msg = TextUtils.colorize((String) this.getConfiguration().get(key));
         } catch (Exception e){
             Main.instance.getLogger().severe("An error occurred while retrieving a custom message from the messages.yml!");
         }
         return msg;
     }
 
-    public void sendMessage(CommandSender sender, String key) {
-        Object object = this.getConfig().get(key);
-        if (object instanceof List) {
-            for (String s : this.getConfig().getStringList(key)) {
-                sender.sendMessage(TextUtils.colorize(s));
-            }
+    public String getMessage(Message message){
+        String msg = "";
+        try {
+            msg = TextUtils.colorize(this.getConfiguration().getString(message.getKey()));
+        } catch (Exception e){
+            Main.instance.getLogger().severe("An error occurred while retrieving a custom message from the messages.yml!");
         }
-        sender.sendMessage(TextUtils.colorize(String.valueOf(object)));
+        return msg;
     }
 
-    public void sendMessage(Player player, String key) {
-        sendMessage((CommandSender) player, key);
+    @Deprecated
+    public void sendMessage(CommandSender sender, String key) {
+        sender.sendMessage(getMessage(key));
+    }
+
+    public void sendMessage(CommandSender sender, Message message) {
+        sender.sendMessage(getMessage(message));
     }
 
     public boolean setLanguageFile(String languageCode){
         String countryCode = (languageCode.equals("ns")) ? "en" : languageCode;
+        this.language = (Language.isSupported(languageCode)) ? Language.valueOf(languageCode.toUpperCase(Locale.ROOT)) : Language.CUSTOM;
         String fileName = "messages/messages_" + countryCode + ".yml";
         File languageFile = new File(Main.instance.getDataFolder(), fileName);
         if (!languageFile.exists()) return false;
 
         this.setFileName(fileName);
-        this.setCustomConfigFile(new File(Main.instance.getDataFolder(), fileName));
+        this.setConfigFile(new File(Main.instance.getDataFolder(), fileName));
         this.reload();
         return true;
     }
@@ -70,7 +77,7 @@ public class MessagesConfig extends ConfigUtils {
     }
 
     public void saveNewLanguageFiles(String time){
-        for (String lang : languages) {
+        for (String lang : Language.getAllLanguages()) {
             File messagesFile = new File(Main.instance.getDataFolder(), "messages/messages_" + lang + ".yml");
             if (!messagesFile.exists()) continue;
             messagesFile.renameTo(new File(Main.instance.getDataFolder(), "messages/messages_" + lang + "Old_" + time + ".yml"));

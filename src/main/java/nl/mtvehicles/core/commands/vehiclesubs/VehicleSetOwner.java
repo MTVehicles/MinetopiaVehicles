@@ -1,9 +1,10 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
-import de.tr7zw.changeme.nbtapi.NBTItem;
-import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
+import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
+import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -20,44 +21,40 @@ public class VehicleSetOwner extends MTVehicleSubCommand {
 
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
-        Player player = (Player) sender;
         ItemStack item = player.getInventory().getItemInMainHand();
 
-        boolean playerSetOwner = ConfigModule.defaultConfig.getConfig().getBoolean("spelerSetOwner");
+        boolean playerSetOwner = (boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.PUT_ONESELF_AS_OWNER);
 
         if (!playerSetOwner && !checkPermission("mtvehicles.setowner")) {
             return true;
         }
 
-        if (!item.hasItemMeta() || !(new NBTItem(item)).hasKey("mtvehicles.kenteken")) {
-            sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage("noVehicleInHand")));
-            return true;
-        }
+        if (!isHoldingVehicle()) return true;
 
         if (args.length != 2) {
-            player.sendMessage(ConfigModule.messagesConfig.getMessage("useSetOwner"));
+            player.sendMessage(ConfigModule.messagesConfig.getMessage(Message.USE_SET_OWNER));
             return true;
         }
 
-        String licensePlate = Vehicle.getLicensePlate(item);
+        String licensePlate = VehicleUtils.getLicensePlate(item);
 
-        if (!Vehicle.existsByPlate(licensePlate)) {
-            player.sendMessage(ConfigModule.messagesConfig.getMessage("vehicleNotFound"));
+        if (!VehicleUtils.existsByLicensePlate(licensePlate)) {
+            player.sendMessage(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_NOT_FOUND));
             return true;
         }
 
         Player of = Bukkit.getPlayer(args[1]);
 
         if (of == null || !of.hasPlayedBefore()) {
-            player.sendMessage(ConfigModule.messagesConfig.getMessage("playerNotFound"));
+            player.sendMessage(ConfigModule.messagesConfig.getMessage(Message.PLAYER_NOT_FOUND));
             return true;
         }
 
-        Vehicle vehicle = Vehicle.getByPlate(licensePlate);
+        Vehicle vehicle = VehicleUtils.getByLicensePlate(licensePlate);
         assert vehicle != null;
 
-        if ((playerSetOwner || !player.hasPermission("mtvehicles.setowner")) && !vehicle.getOwner().equals(player.getUniqueId().toString())) {
-            player.sendMessage(ConfigModule.messagesConfig.getMessage("notYourCar"));
+        if ((playerSetOwner || !player.hasPermission("mtvehicles.setowner")) && !vehicle.isOwner(player)) {
+            player.sendMessage(ConfigModule.messagesConfig.getMessage(Message.NOT_YOUR_CAR));
             return true;
         }
 
@@ -66,7 +63,7 @@ public class VehicleSetOwner extends MTVehicleSubCommand {
         vehicle.setOwner(of.getUniqueId().toString());
         vehicle.save();
 
-        player.sendMessage(ConfigModule.messagesConfig.getMessage("memberChange"));
+        player.sendMessage(ConfigModule.messagesConfig.getMessage(Message.MEMBER_CHANGE));
 
         return true;
     }

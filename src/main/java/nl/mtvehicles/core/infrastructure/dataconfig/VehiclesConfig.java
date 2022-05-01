@@ -1,9 +1,17 @@
 package nl.mtvehicles.core.infrastructure.dataconfig;
 
-import nl.mtvehicles.core.infrastructure.models.ConfigUtils;
+import nl.mtvehicles.core.infrastructure.enums.ConfigType;
+import nl.mtvehicles.core.infrastructure.models.Config;
 
-public class VehiclesConfig extends ConfigUtils {
+import java.util.List;
+import java.util.Map;
+
+public class VehiclesConfig extends Config {
     public VehiclesConfig() {
-        this.setFileName("vehicles.yml");
+        super(ConfigType.VEHICLES);
+    }
+
+    public List<Map<?,?>> getVehicles(){
+        return getConfiguration().getMapList("voertuigen");
     }
 }

@@ -1,6 +1,7 @@
 package nl.mtvehicles.core.infrastructure.helpers;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
+import nl.mtvehicles.core.Main;
 import org.bukkit.*;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -69,6 +70,13 @@ public class ItemFactory {
         return this;
     }
 
+    public ItemFactory setUnbreakable(boolean unbreakable){
+        ItemMeta im = this.is.getItemMeta();
+        im.setUnbreakable(unbreakable);
+        this.is.setItemMeta(im);
+        return this;
+    }
+
     public List<String> getLore() {
         return this.is.getItemMeta().getLore();
     }
@@ -122,10 +130,25 @@ public class ItemFactory {
         return this;
     }
 
-    public ItemFactory addEnchantGlow(Enchantment enchantment, int level) {
+    public ItemFactory setGlowing(boolean glowing){
+        if (glowing) {
+            try {
+                if (!this.is.getItemMeta().hasEnchant(Enchantment.ARROW_INFINITE))
+                    addEnchantGlow();
+            } catch (Exception e){
+                Main.logSevere("Unable to set glowing state to true.");
+            }
+        } else {
+            if (this.is.getItemMeta().hasEnchant(Enchantment.ARROW_INFINITE))
+                removeEnchantment(Enchantment.ARROW_INFINITE);
+        }
+        return this;
+    }
+
+    public ItemFactory addEnchantGlow() {
         ItemMeta im = this.is.getItemMeta();
         assert im != null;
-        im.addEnchant(enchantment, level, true);
+        im.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
         im.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         this.is.setItemMeta(im);
         return this;

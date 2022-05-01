@@ -1,7 +1,9 @@
 package nl.mtvehicles.core.infrastructure.dependencies;
 
 import net.milkbowl.vault.economy.Economy;
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
+import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -40,11 +42,15 @@ public class VaultUtils {
         if (!isPriceOk(amount) || !isEconomySetUp()) return false;
         if (!economy.hasAccount(p)) return false;
         if (!economy.has(p, amount)){
-            if (p.isOnline()) ConfigModule.messagesConfig.sendMessage(p.getPlayer(), "insufficientFunds");
+            if (p.isOnline()) ConfigModule.messagesConfig.sendMessage(p.getPlayer(), Message.INSUFFICIENT_FUNDS);
             return false;
         }
 
-        return economy.withdrawPlayer(p, amount).transactionSuccess();
+        if (economy.withdrawPlayer(p, amount).transactionSuccess()){
+            if (p.isOnline()) p.getPlayer().sendMessage(String.format(ConfigModule.messagesConfig.getMessage(Message.TRANSACTION_SUCCESSFUL), DependencyModule.vault.getMoneyFormat(amount)));
+            return true;
+        }
+        return false;
     }
 
     public String getMoneyFormat(double amount){
