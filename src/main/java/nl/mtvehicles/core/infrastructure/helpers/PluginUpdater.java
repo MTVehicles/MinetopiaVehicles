@@ -135,7 +135,7 @@ public class PluginUpdater {
             return false;
         }
         try {
-            URL file = new URL("https://minetopiavehicles.nl/api/MTVehicles.jar?now=" + getTimeStamp());
+            URL file = new URL("https://minetopiavehicles.nl/api/MTVehicles.jar");
             File dest = new File("plugins");
             InputStream is = file.openStream();
             File finaldest = new File(dest + "/" + file.getFile().replace("/api/MTVehicles.jar", "/" + Main.getFileAsString().replace("plugins", "")));

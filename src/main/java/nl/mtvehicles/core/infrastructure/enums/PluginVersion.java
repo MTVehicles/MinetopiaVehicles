@@ -17,6 +17,8 @@ public enum PluginVersion {
     v2_4_0_pre1,
     v2_4_0_rc1,
     v2_4_0,
+    v2_4_1,
+    LATEST,
     DEV;
 
     public int getOrder(){
@@ -36,7 +38,7 @@ public enum PluginVersion {
         try {
             return valueOf("v" + version.replace(".", "_").replace("-", "_"));
         } catch (IllegalArgumentException e){
-            return LEGACY;
+            return LATEST;
         }
     }
 
