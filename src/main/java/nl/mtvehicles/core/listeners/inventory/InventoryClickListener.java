@@ -144,7 +144,7 @@ public class InventoryClickListener extends MTVListener {
                 (short) 5,
                 1,
                 "&a"  + msg.getMessage(Message.CONFIRM),
-                "&7" + msg.getMessage(Message.CONFIRM_ACTION), "&7" + msg.getMessage(Message.CONFIRM_VEHICLE_MENU)
+                "&7" + msg.getMessage(Message.CONFIRM_ACTION), "&7" + msg.getMessage(Message.CONFIRM_VEHICLE_GIVE)
         ));
         player.openInventory(inv);
     }

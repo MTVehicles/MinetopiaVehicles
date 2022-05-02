@@ -17,6 +17,7 @@ public enum PluginVersion {
     v2_4_0_pre1,
     v2_4_0_rc1,
     v2_4_0,
+    v2_4_1,
     DEV;
 
     public int getOrder(){
