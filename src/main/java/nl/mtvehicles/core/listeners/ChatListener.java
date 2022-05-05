@@ -16,6 +16,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import static nl.mtvehicles.core.Main.schedulerRun;
+
 public class ChatListener extends MTVListener {
 
     public ChatListener(){
@@ -26,21 +28,21 @@ public class ChatListener extends MTVListener {
     public void onLicensePlateChange(AsyncPlayerChatEvent event) {
         this.event = event;
         player = event.getPlayer();
-        String message = event.getMessage();
+        String realMessage = event.getMessage().trim();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".kenteken") == null) return;
+        if (!ItemUtils.edit.get(player.getUniqueId() + ".kenteken")) return;
+        event.setCancelled(true);
 
-        ChatEvent api = (ChatEvent) getAPI();
-        api.setMessage(message);
-        callAPI();
-        if (isCancelled()) return;
+        schedulerRun(() -> {
+            ChatEvent api = (ChatEvent) getAPI();
+            api.setMessage(realMessage);
+            callAPI();
+            if (isCancelled()) return;
 
-        message = api.getMessage();
+            String message = api.getMessage();
 
-        if (ItemUtils.edit.get(player.getUniqueId() + ".kenteken")) {
-            event.setCancelled(true);
-
-            if (!message.toLowerCase().contains("annule")) {
+            if (!message.toLowerCase().contains("!q")) {
                 String licensePlate = getLicensePlate(player);
 
                 if (!(ConfigModule.vehicleDataConfig.get(message, VehicleDataConfig.Option.SKIN_ITEM) == null)) {
@@ -62,7 +64,8 @@ public class ChatListener extends MTVListener {
                         message)
                 );
 
-                if (event.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.menuEdit(player));
+                if (event.isAsynchronous())
+                    schedulerRun(() -> MenuUtils.menuEdit(player));
 
                 ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_SUCCESSFUL);
                 ItemUtils.edit.put(player.getUniqueId() + ".kenteken", false);
@@ -71,32 +74,33 @@ public class ChatListener extends MTVListener {
                 return;
             }
 
-            if (event.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.menuEdit(player));
+            if (event.isAsynchronous())
+                schedulerRun(() -> MenuUtils.menuEdit(player));
 
             ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_CANCELLED);
             ItemUtils.edit.put(player.getUniqueId() + ".kenteken", false);
-        }
+        });
     }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onVehicleNameChange(final AsyncPlayerChatEvent event) {
         this.event = event;
         player = event.getPlayer();
-        String message = event.getMessage();
+        String realMessage = event.getMessage().trim();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".naam") == null) return;
+        if (!ItemUtils.edit.get(player.getUniqueId() + ".naam")) return;
+        event.setCancelled(true);
 
-        ChatEvent api = (ChatEvent) getAPI();
-        api.setMessage(message);
-        callAPI();
-        if (isCancelled()) return;
+        schedulerRun(() -> {
+            ChatEvent api = (ChatEvent) getAPI();
+            api.setMessage(realMessage);
+            callAPI();
+            if (isCancelled()) return;
 
-        message = api.getMessage();
+            String message = api.getMessage();
 
-        if (ItemUtils.edit.get(player.getUniqueId() + ".naam")) {
-            event.setCancelled(true);
-
-            if (!message.toLowerCase().contains("annule")) {
+            if (!message.toLowerCase().contains("!q")) {
                 String licensePlate = getLicensePlate(player);
                 ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.NAME, message);
                 ConfigModule.vehicleDataConfig.save();
@@ -110,7 +114,7 @@ public class ChatListener extends MTVListener {
                 ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_SUCCESSFUL);
                 ItemUtils.edit.put(player.getUniqueId() + ".naam", false);
 
-                if (event.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.menuEdit(player));
+                if (event.isAsynchronous()) schedulerRun(() -> MenuUtils.menuEdit(player));
                 return;
             }
 
@@ -118,27 +122,27 @@ public class ChatListener extends MTVListener {
             ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_CANCELLED);
             ItemUtils.edit.put(player.getUniqueId() + ".naam", false);
 
-            if (event.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.menuEdit(player));
-        }
+            if (event.isAsynchronous()) schedulerRun(() -> MenuUtils.menuEdit(player));
+        });
     }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onFuelChange(final AsyncPlayerChatEvent event) {
         this.event = event;
         player = event.getPlayer();
-        String message = event.getMessage();
+        String realMessage = event.getMessage().trim();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".benzine") == null) return;
+        if (!ItemUtils.edit.get(player.getUniqueId() + ".benzine")) return;
+        event.setCancelled(true);
 
-        ChatEvent api = (ChatEvent) getAPI();
-        api.setMessage(message);
-        callAPI();
-        if (isCancelled()) return;
+        schedulerRun(() -> {
+            ChatEvent api = (ChatEvent) getAPI();
+            api.setMessage(realMessage);
+            callAPI();
+            if (isCancelled()) return;
 
-        message = api.getMessage();
-
-        if (ItemUtils.edit.get(player.getUniqueId() + ".benzine")) {
-            event.setCancelled(true);
+            String message = api.getMessage();
 
             if (!isInt(message)) {
                 MenuUtils.benzineEdit(player);
@@ -153,14 +157,14 @@ public class ChatListener extends MTVListener {
                 return;
             }
 
-            if (!message.toLowerCase().contains("annule")) {
+            if (!message.toLowerCase().contains("!q")) {
                 String licensePlate = getLicensePlate(player);
                 ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.FUEL, Double.valueOf(message));
                 ConfigModule.vehicleDataConfig.save();
                 ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_SUCCESSFUL);
                 ItemUtils.edit.put(player.getUniqueId() + ".benzine", false);
 
-                if (event.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.benzineEdit(player));
+                if (event.isAsynchronous()) schedulerRun(() -> MenuUtils.benzineEdit(player));
                 return;
             }
 
@@ -168,27 +172,27 @@ public class ChatListener extends MTVListener {
             ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_CANCELLED);
             ItemUtils.edit.put(player.getUniqueId() + ".benzine", false);
 
-            if (event.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.menuEdit(player));
-        }
+            if (event.isAsynchronous()) schedulerRun(() -> MenuUtils.benzineEdit(player));
+        });
     }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onFuelUsageChange(final AsyncPlayerChatEvent event) {
         this.event = event;
         player = event.getPlayer();
-        String message = event.getMessage();
+        String realMessage = event.getMessage().trim();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".benzineverbruik") == null) return;
+        if (!ItemUtils.edit.get(player.getUniqueId() + ".benzineverbruik")) return;
+        event.setCancelled(true);
 
-        ChatEvent api = (ChatEvent) getAPI();
-        api.setMessage(message);
-        callAPI();
-        if (isCancelled()) return;
+        schedulerRun(() -> {
+            ChatEvent api = (ChatEvent) getAPI();
+            api.setMessage(realMessage);
+            callAPI();
+            if (isCancelled()) return;
 
-        message = api.getMessage();
-
-        if (ItemUtils.edit.get(player.getUniqueId() + ".benzineverbruik")) {
-            event.setCancelled(true);
+            String message = api.getMessage();
 
             if (!isDouble(message)) {
                 MenuUtils.benzineEdit(player);
@@ -196,14 +200,14 @@ public class ChatListener extends MTVListener {
                 return;
             }
 
-            if (!message.toLowerCase().contains("annule")) {
+            if (!message.toLowerCase().contains("!q")) {
                 String licensePlate = getLicensePlate(player);
                 ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.FUEL_USAGE, Double.valueOf(message));
                 ConfigModule.vehicleDataConfig.save();
                 ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_SUCCESSFUL);
                 ItemUtils.edit.put(player.getUniqueId() + ".benzineverbruik", false);
 
-                if (event.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.benzineEdit(player));
+                if (event.isAsynchronous()) schedulerRun(() -> MenuUtils.benzineEdit(player));
                 return;
             }
 
@@ -211,34 +215,35 @@ public class ChatListener extends MTVListener {
             ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_CANCELLED);
             ItemUtils.edit.put(player.getUniqueId() + ".benzine", false);
 
-            if (event.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.menuEdit(player));
-        }
+            if (event.isAsynchronous()) schedulerRun(() -> MenuUtils.benzineEdit(player));
+        });
     }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onTrunkRowsChange(final AsyncPlayerChatEvent event) {
         this.event = event;
         player = event.getPlayer();
-        String message = event.getMessage();
+        String realMessage = event.getMessage().trim();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".kofferbakRows") == null) return;
+        if (!ItemUtils.edit.get(player.getUniqueId() + ".kofferbakRows")) return;
+        event.setCancelled(true);
 
-        ChatEvent api = (ChatEvent) getAPI();
-        api.setMessage(message);
-        callAPI();
-        if (isCancelled()) return;
+        schedulerRun(() -> {
+            ChatEvent api = (ChatEvent) getAPI();
+            api.setMessage(realMessage);
+            callAPI();
+            if (isCancelled()) return;
 
-        message = api.getMessage();
+            String message = api.getMessage();
 
-        if (ItemUtils.edit.get(player.getUniqueId() + ".kofferbakRows")) {
-            event.setCancelled(true);
-
-            if (message.toLowerCase().contains("annule")) {
+            if (message.toLowerCase().contains("!q")) {
                 MenuUtils.trunkEdit(player);
                 ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_CANCELLED);
                 ItemUtils.edit.put(player.getUniqueId() + ".kofferbakRows", false);
 
-                if (event.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.trunkEdit(player));
+                if (event.isAsynchronous())
+                    Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.trunkEdit(player));
             }
 
             if (!isInt(message)) {
@@ -261,28 +266,27 @@ public class ChatListener extends MTVListener {
             ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_SUCCESSFUL);
             ItemUtils.edit.put(player.getUniqueId() + ".kofferbakRows", false);
 
-            if (event.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.trunkEdit(player));
-
-        }
+            if (event.isAsynchronous()) schedulerRun(() -> MenuUtils.trunkEdit(player));
+        });
     }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onAccelerationSpeedChange(final AsyncPlayerChatEvent event) {
         this.event = event;
         player = event.getPlayer();
-        String message = event.getMessage();
+        String realMessage = event.getMessage().trim();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".acceleratieSpeed") == null) return;
+        if (!ItemUtils.edit.get(player.getUniqueId() + ".acceleratieSpeed")) return;
+        event.setCancelled(true);
 
-        ChatEvent api = (ChatEvent) getAPI();
-        api.setMessage(message);
-        callAPI();
-        if (isCancelled()) return;
+        schedulerRun(() -> {
+            ChatEvent api = (ChatEvent) getAPI();
+            api.setMessage(realMessage);
+            callAPI();
+            if (isCancelled()) return;
 
-        message = api.getMessage();
-
-        if (ItemUtils.edit.get(player.getUniqueId() + ".acceleratieSpeed")) {
-            event.setCancelled(true);
+            String message = api.getMessage();
 
             if (!isDouble(message)) {
                 MenuUtils.speedEdit(player);
@@ -290,41 +294,41 @@ public class ChatListener extends MTVListener {
                 return;
             }
 
-            if (!message.toLowerCase().contains("annule")) {
+            if (!message.toLowerCase().contains("!q")) {
                 String licensePlate = getLicensePlate(player);
                 ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.ACCELARATION_SPEED, Double.valueOf(message));
                 ConfigModule.vehicleDataConfig.save();
                 ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_SUCCESSFUL);
                 ItemUtils.edit.put(player.getUniqueId() + ".acceleratieSpeed", false);
 
-                if (event.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.speedEdit(player));
+                if (event.isAsynchronous()) schedulerRun(() -> MenuUtils.speedEdit(player));
                 return;
             }
 
             MenuUtils.benzineEdit(player);
             ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_CANCELLED);
             ItemUtils.edit.put(player.getUniqueId() + ".acceleratieSpeed", false);
-            if (event.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.speedEdit(player));
-        }
+            if (event.isAsynchronous()) schedulerRun(() -> MenuUtils.speedEdit(player));
+        });
     }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onMaxSpeedChange(final AsyncPlayerChatEvent event) {
         this.event = event;
         player = event.getPlayer();
-        String message = event.getMessage();
+        String realMessage = event.getMessage().trim();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".maxSpeed") == null) return;
+        if (!ItemUtils.edit.get(player.getUniqueId() + ".maxSpeed")) return;
+        event.setCancelled(true);
 
-        ChatEvent api = (ChatEvent) getAPI();
-        api.setMessage(message);
-        callAPI();
-        if (isCancelled()) return;
+        schedulerRun(() -> {
+            ChatEvent api = (ChatEvent) getAPI();
+            api.setMessage(realMessage);
+            callAPI();
+            if (isCancelled()) return;
 
-        message = api.getMessage();
-
-        if (ItemUtils.edit.get(player.getUniqueId() + ".maxSpeed")) {
-            event.setCancelled(true);
+            String message = api.getMessage();
 
             if (!isDouble(message)) {
                 MenuUtils.speedEdit(player);
@@ -332,14 +336,14 @@ public class ChatListener extends MTVListener {
                 return;
             }
 
-            if (!message.toLowerCase().contains("annule")) {
+            if (!message.toLowerCase().contains("!q")) {
                 String licensePlate = getLicensePlate(player);
                 ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.MAX_SPEED, Double.valueOf(message));
                 ConfigModule.vehicleDataConfig.save();
                 ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_SUCCESSFUL);
                 ItemUtils.edit.put(player.getUniqueId() + ".maxSpeed", false);
 
-                if (event.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.speedEdit(player));
+                if (event.isAsynchronous()) schedulerRun(() -> MenuUtils.speedEdit(player));
                 return;
             }
 
@@ -347,27 +351,27 @@ public class ChatListener extends MTVListener {
             ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_CANCELLED);
             ItemUtils.edit.put(player.getUniqueId() + ".maxSpeed", false);
 
-            if (event.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.speedEdit(player));
-        }
+            if (event.isAsynchronous()) schedulerRun(() -> MenuUtils.speedEdit(player));
+        });
     }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onBrakingSpeedChange(final AsyncPlayerChatEvent event) {
         this.event = event;
         player = event.getPlayer();
-        String message = event.getMessage();
+        String realMessage = event.getMessage().trim();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".brakingSpeed") == null) return;
+        if (!ItemUtils.edit.get(player.getUniqueId() + ".brakingSpeed")) return;
+        event.setCancelled(true);
 
-        ChatEvent api = (ChatEvent) getAPI();
-        api.setMessage(message);
-        callAPI();
-        if (isCancelled()) return;
+        schedulerRun(() -> {
+            ChatEvent api = (ChatEvent) getAPI();
+            api.setMessage(realMessage);
+            callAPI();
+            if (isCancelled()) return;
 
-        message = api.getMessage();
-
-        if (ItemUtils.edit.get(player.getUniqueId() + ".brakingSpeed")) {
-            event.setCancelled(true);
+            String message = api.getMessage();
 
             if (!isDouble(message)) {
                 MenuUtils.speedEdit(player);
@@ -375,14 +379,14 @@ public class ChatListener extends MTVListener {
                 return;
             }
 
-            if (!message.toLowerCase().contains("annule")) {
+            if (!message.toLowerCase().contains("!q")) {
                 String licensePlate = getLicensePlate(player);
                 ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.BRAKING_SPEED, Double.valueOf(message));
                 ConfigModule.vehicleDataConfig.save();
                 ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_SUCCESSFUL);
                 ItemUtils.edit.put(player.getUniqueId() + ".brakingSpeed", false);
 
-                if (event.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.speedEdit(player));
+                if (event.isAsynchronous()) schedulerRun(() -> MenuUtils.speedEdit(player));
                 return;
             }
 
@@ -390,27 +394,27 @@ public class ChatListener extends MTVListener {
             ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_CANCELLED);
             ItemUtils.edit.put(player.getUniqueId() + ".brakingSpeed", false);
 
-            if (event.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.speedEdit(player));
-        }
+            if (event.isAsynchronous()) schedulerRun(() -> MenuUtils.speedEdit(player));
+        });
     }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onFrictionSpeedChange(final AsyncPlayerChatEvent event) {
         this.event = event;
         player = event.getPlayer();
-        String message = event.getMessage();
+        String realMessage = event.getMessage().trim();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".aftrekkenSpeed") == null) return;
+        if (!ItemUtils.edit.get(player.getUniqueId() + ".aftrekkenSpeed")) return;
+        event.setCancelled(true);
 
-        ChatEvent api = (ChatEvent) getAPI();
-        api.setMessage(message);
-        callAPI();
-        if (isCancelled()) return;
+        schedulerRun(() -> {
+            ChatEvent api = (ChatEvent) getAPI();
+            api.setMessage(realMessage);
+            callAPI();
+            if (isCancelled()) return;
 
-        message = api.getMessage();
-
-        if (ItemUtils.edit.get(player.getUniqueId() + ".aftrekkenSpeed")) {
-            event.setCancelled(true);
+            String message = api.getMessage();
 
             if (!isDouble(message)) {
                 MenuUtils.speedEdit(player);
@@ -418,14 +422,14 @@ public class ChatListener extends MTVListener {
                 return;
             }
 
-            if (!message.toLowerCase().contains("annule")) {
+            if (!message.toLowerCase().contains("!q")) {
                 String licensePlate = getLicensePlate(player);
                 ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.FRICTION_SPEED, Double.valueOf(message));
                 ConfigModule.vehicleDataConfig.save();
                 ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_SUCCESSFUL);
                 ItemUtils.edit.put(player.getUniqueId() + ".aftrekkenSpeed", false);
 
-                if (event.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.speedEdit(player));
+                if (event.isAsynchronous()) schedulerRun(() -> MenuUtils.speedEdit(player));
                 return;
             }
 
@@ -433,27 +437,27 @@ public class ChatListener extends MTVListener {
             ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_CANCELLED);
             ItemUtils.edit.put(player.getUniqueId() + ".aftrekkenSpeed", false);
 
-            if (event.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.speedEdit(player));
-        }
+            if (event.isAsynchronous()) schedulerRun(() -> MenuUtils.speedEdit(player));
+        });
     }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onMaxSpeedBackwardsChange(final AsyncPlayerChatEvent event) {
         this.event = event;
         player = event.getPlayer();
-        String message = event.getMessage();
+        String realMessage = event.getMessage().trim();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".maxSpeedBackwards") == null) return;
+        if (!ItemUtils.edit.get(player.getUniqueId() + ".maxSpeedBackwards")) return;
+        event.setCancelled(true);
 
-        ChatEvent api = (ChatEvent) getAPI();
-        api.setMessage(message);
-        callAPI();
-        if (isCancelled()) return;
+        schedulerRun(() -> {
+            ChatEvent api = (ChatEvent) getAPI();
+            api.setMessage(realMessage);
+            callAPI();
+            if (isCancelled()) return;
 
-        message = api.getMessage();
-
-        if (ItemUtils.edit.get(player.getUniqueId() + ".maxSpeedBackwards")) {
-            event.setCancelled(true);
+            String message = api.getMessage();
 
             if (!isDouble(message)) {
                 MenuUtils.speedEdit(player);
@@ -461,14 +465,14 @@ public class ChatListener extends MTVListener {
                 return;
             }
 
-            if (!message.toLowerCase().contains("annule")) {
+            if (!message.toLowerCase().contains("!q")) {
                 String licensePlate = getLicensePlate(player);
                 ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.MAX_SPEED_BACKWARDS, Double.valueOf(message));
                 ConfigModule.vehicleDataConfig.save();
                 ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_SUCCESSFUL);
                 ItemUtils.edit.put(player.getUniqueId() + ".maxSpeedBackwards", false);
 
-                if (event.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.speedEdit(player));
+                if (event.isAsynchronous()) schedulerRun(() -> MenuUtils.speedEdit(player));
                 return;
             }
 
@@ -476,27 +480,27 @@ public class ChatListener extends MTVListener {
             ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_CANCELLED);
             ItemUtils.edit.put(player.getUniqueId() + ".maxSpeedBackwards", false);
 
-            if (event.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.speedEdit(player));
-        }
+            if (event.isAsynchronous()) schedulerRun(() -> MenuUtils.speedEdit(player));
+        });
     }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onRotateSpeedChange(final AsyncPlayerChatEvent event) {
         this.event = event;
         player = event.getPlayer();
-        String message = event.getMessage();
+        String realMessage = event.getMessage().trim();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".rotateSpeed") == null) return;
+        if (!ItemUtils.edit.get(player.getUniqueId() + ".rotateSpeed")) return;
+        event.setCancelled(true);
 
-        ChatEvent api = (ChatEvent) getAPI();
-        api.setMessage(message);
-        callAPI();
-        if (isCancelled()) return;
+        schedulerRun(() -> {
+            ChatEvent api = (ChatEvent) getAPI();
+            api.setMessage(realMessage);
+            callAPI();
+            if (isCancelled()) return;
 
-        message = api.getMessage();
-
-        if (ItemUtils.edit.get(player.getUniqueId() + ".rotateSpeed")) {
-            event.setCancelled(true);
+            String message = api.getMessage();
 
             if (!isInt(message)) {
                 MenuUtils.speedEdit(player);
@@ -504,14 +508,14 @@ public class ChatListener extends MTVListener {
                 return;
             }
 
-            if (!message.toLowerCase().contains("annule")) {
+            if (!message.toLowerCase().contains("!q")) {
                 String licensePlate = getLicensePlate(player);
                 ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.ROTATION_SPEED, Integer.parseInt(message));
                 ConfigModule.vehicleDataConfig.save();
                 ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_SUCCESSFUL);
                 ItemUtils.edit.put(player.getUniqueId() + ".rotateSpeed", false);
 
-                if (event.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.speedEdit(player));
+                if (event.isAsynchronous()) schedulerRun(() -> MenuUtils.speedEdit(player));
                 return;
             }
 
@@ -519,8 +523,8 @@ public class ChatListener extends MTVListener {
             ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_CANCELLED);
             ItemUtils.edit.put(player.getUniqueId() + ".rotateSpeed", false);
 
-            if (event.isAsynchronous()) Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.speedEdit(player));
-        }
+            if (event.isAsynchronous()) schedulerRun(() -> MenuUtils.speedEdit(player));
+        });
     }
 
     private boolean isInt(String str) {
