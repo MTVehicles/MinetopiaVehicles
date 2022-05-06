@@ -21,10 +21,10 @@ public class VehicleAddMember extends MTVehicleSubCommand {
 
     @Override
     public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
+        if (!isHoldingVehicle()) return true;
+
         ItemStack item = player.getInventory().getItemInMainHand();
         NBTItem nbt = new NBTItem(item);
-
-        if (!isHoldingVehicle()) return true;
 
         if (args.length != 2) {
             player.sendMessage(ConfigModule.messagesConfig.getMessage(Message.USE_ADD_MEMBER));
