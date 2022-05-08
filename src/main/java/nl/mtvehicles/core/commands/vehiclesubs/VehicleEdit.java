@@ -2,6 +2,7 @@ package nl.mtvehicles.core.commands.vehiclesubs;
 
 import nl.mtvehicles.core.infrastructure.dataconfig.MessagesConfig;
 import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
+import nl.mtvehicles.core.infrastructure.enums.InventoryTitle;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
 import nl.mtvehicles.core.infrastructure.models.Config;
@@ -40,7 +41,7 @@ public class VehicleEdit extends MTVehicleSubCommand {
     public static void editMenu(Player p, ItemStack item) {
         String licensePlate = VehicleUtils.getLicensePlate(item);
         MessagesConfig msg = ConfigModule.messagesConfig;
-        Inventory inv = Bukkit.createInventory(null, 27, "Vehicle Edit");
+        Inventory inv = Bukkit.createInventory(null, 27, InventoryTitle.VEHICLE_EDIT_MENU.getStringTitle());
         inv.setItem(10, ItemUtils.getMenuCustomItem(
                 ItemUtils.getMaterial(ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.SKIN_ITEM).toString()),
                 "mtcustom",

@@ -22,13 +22,8 @@ public class MenuUtils {
     public static HashMap<String, Integer> restoreId = new HashMap<>();
     public static HashMap<String, UUID> restoreUUID = new HashMap<>();
 
-    public static ItemStack closeItem;
-            //ItemUtils.mItem("BARRIER", 1, (short) 0, ConfigModule.messagesConfig.getMessage(Message.CLOSE), ConfigModule.messagesConfig.getMessage(Message.CLOSE_DESCRIPTION));
-    public static ItemStack backItem;
-            //ItemUtils.mItem("WOOD_DOOR", 1, (short) 0, ConfigModule.messagesConfig.getMessage(Message.BACK), ConfigModule.messagesConfig.getMessage(Message.BACK_DESCRIPTION));
-
-    static {
-        backItem = ItemUtils.getMenuItem(
+    public static ItemStack getBackItem(){
+        return ItemUtils.getMenuItem(
                 "OAK_DOOR",
                 "WOOD_DOOR",
                 (short) 0,
@@ -36,8 +31,10 @@ public class MenuUtils {
                 ConfigModule.messagesConfig.getMessage(Message.BACK),
                 ConfigModule.messagesConfig.getMessage(Message.BACK_DESCRIPTION)
         );
+    }
 
-        closeItem = ItemUtils.getMenuItem(
+    public static ItemStack getCloseItem(){
+        return ItemUtils.getMenuItem(
                 Material.BARRIER,
                 1,
                 ConfigModule.messagesConfig.getMessage(Message.CLOSE),
@@ -46,7 +43,7 @@ public class MenuUtils {
     }
 
     public static void menuEdit(Player p) {
-        Inventory inv = Bukkit.createInventory(null, 45, "Vehicle Settings");
+        Inventory inv = Bukkit.createInventory(null, 45, InventoryTitle.VEHICLE_SETTINGS_MENU.getStringTitle());
         NBTItem nbt = new NBTItem(p.getInventory().getItemInMainHand());
         String licensePlate = nbt.getString("mtvehicles.kenteken");
 
@@ -71,8 +68,8 @@ public class MenuUtils {
         for (int i = 27; i <= 35; i++) {
             inv.setItem(i, ItemUtils.getMenuItem(ItemUtils.getStainedGlassPane(), 1, "&c", "&c"));
         }
-        inv.setItem(38, closeItem);
-        inv.setItem(42, backItem);
+        inv.setItem(38, getCloseItem());
+        inv.setItem(42, getBackItem());
         p.openInventory(inv);
     }
 
@@ -84,7 +81,7 @@ public class MenuUtils {
     }
 
     public static void benzineEdit(Player p) {
-        Inventory inv = Bukkit.createInventory(null, 45, "Vehicle Benzine");
+        Inventory inv = Bukkit.createInventory(null, 45, InventoryTitle.VEHICLE_FUEL_MENU.getStringTitle());
         NBTItem nbt = new NBTItem(p.getInventory().getItemInMainHand());
         String licensePlate = nbt.getString("mtvehicles.kenteken");
 
@@ -104,7 +101,7 @@ public class MenuUtils {
     }
 
     public static void trunkEdit(Player p) {
-        Inventory inv = Bukkit.createInventory(null, 45, "Vehicle Kofferbak");
+        Inventory inv = Bukkit.createInventory(null, 45, InventoryTitle.VEHICLE_TRUNK_MENU.getStringTitle());
         NBTItem nbt = new NBTItem(p.getInventory().getItemInMainHand());
         String licensePlate = nbt.getString("mtvehicles.kenteken");
         MessagesConfig msg = ConfigModule.messagesConfig;
@@ -120,7 +117,7 @@ public class MenuUtils {
     }
 
     public static void membersEdit(Player p) {
-        Inventory inv = Bukkit.createInventory(null, 45, "Vehicle Members");
+        Inventory inv = Bukkit.createInventory(null, 45, InventoryTitle.VEHICLE_MEMBERS_MENU.getStringTitle());
         NBTItem nbt = new NBTItem(p.getInventory().getItemInMainHand());
         String licensePlate = nbt.getString("mtvehicles.kenteken");
 
@@ -134,7 +131,7 @@ public class MenuUtils {
     }
 
     public static void speedEdit(Player p) {
-        Inventory inv = Bukkit.createInventory(null, 45, "Vehicle Speed");
+        Inventory inv = Bukkit.createInventory(null, 45, InventoryTitle.VEHICLE_SPEED_MENU.getStringTitle());
         NBTItem nbt = new NBTItem(p.getInventory().getItemInMainHand());
         String licensePlate = nbt.getString("mtvehicles.kenteken");
 
@@ -203,7 +200,7 @@ public class MenuUtils {
         List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getVehicles();
         List<Map<?, ?>> skins = (List<Map<?, ?>>) vehicles.get(slot).get("cars");
 
-        Inventory inv = Bukkit.createInventory(null, 54, "Choose your vehicle");
+        Inventory inv = Bukkit.createInventory(null, 54, InventoryTitle.CHOOSE_VEHICLE_MENU.getStringTitle());
         InventoryClickListener.intSave.put(p.getUniqueId(), slot);
         InventoryClickListener.skinMenu.put(p.getUniqueId(), inv);
 
@@ -228,8 +225,8 @@ public class MenuUtils {
         for (int i = 36; i <= 44; i++) {
             inv.setItem(i, ItemUtils.getMenuItem(ItemUtils.getStainedGlassPane(), 1, "&c", "&c"));
         }
-        inv.setItem(47, closeItem);
-        inv.setItem(51, backItem);
+        inv.setItem(47, getCloseItem());
+        inv.setItem(51, getBackItem());
         p.openInventory(inv);
     }
 

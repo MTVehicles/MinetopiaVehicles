@@ -34,8 +34,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static nl.mtvehicles.core.infrastructure.helpers.MenuUtils.backItem;
-import static nl.mtvehicles.core.infrastructure.helpers.MenuUtils.closeItem;
+import static nl.mtvehicles.core.infrastructure.helpers.MenuUtils.getBackItem;
+import static nl.mtvehicles.core.infrastructure.helpers.MenuUtils.getCloseItem;
 
 public class InventoryClickListener extends MTVListener {
 
@@ -103,11 +103,11 @@ public class InventoryClickListener extends MTVListener {
     }
 
     private void chooseVehicleMenu(){
-        if (clickedItem.equals(closeItem)) {
+        if (clickedItem.equals(getCloseItem())) {
             player.closeInventory();
             return;
         }
-        if (clickedItem.equals(backItem)) {
+        if (clickedItem.equals(getBackItem())) {
             player.openInventory(VehicleMenu.beginMenu.get(player.getUniqueId()));
             return;
         }
@@ -128,7 +128,7 @@ public class InventoryClickListener extends MTVListener {
         }
 
         vehicleMenu.put(player.getUniqueId(), clickedItem);
-        Inventory inv = Bukkit.createInventory(null, 27, "Confirm getting vehicle");
+        Inventory inv = Bukkit.createInventory(null, 27, InventoryTitle.CONFIRM_VEHICLE_MENU.getStringTitle());
         MessagesConfig msg = ConfigModule.messagesConfig;
         inv.setItem(11, ItemUtils.getMenuItem(
                 "RED_WOOL",
@@ -265,11 +265,11 @@ public class InventoryClickListener extends MTVListener {
     }
 
     private void vehicleSettingsMenu(){
-        if (clickedItem.equals(closeItem)) {
+        if (clickedItem.equals(getCloseItem())) {
             player.closeInventory();
             return;
         }
-        if (clickedItem.equals(backItem)) {
+        if (clickedItem.equals(getBackItem())) {
             VehicleEdit.editMenu(player, player.getInventory().getItemInMainHand());
             return;
         }
@@ -309,11 +309,11 @@ public class InventoryClickListener extends MTVListener {
     }
 
     private void vehicleFuelMenu(){
-        if (clickedItem.equals(closeItem)) {
+        if (clickedItem.equals(getCloseItem())) {
             player.closeInventory();
             return;
         }
-        if (clickedItem.equals(backItem)) {
+        if (clickedItem.equals(getBackItem())) {
             VehicleEdit.editMenu(player, player.getInventory().getItemInMainHand());
             return;
         }
@@ -344,11 +344,11 @@ public class InventoryClickListener extends MTVListener {
     }
 
     private void vehicleTrunkMenu(){
-        if (clickedItem.equals(closeItem)) {
+        if (clickedItem.equals(getCloseItem())) {
             player.closeInventory();
             return;
         }
-        if (clickedItem.equals(backItem)) {
+        if (clickedItem.equals(getBackItem())) {
             VehicleEdit.editMenu(player, player.getInventory().getItemInMainHand());
             return;
         }
@@ -378,18 +378,18 @@ public class InventoryClickListener extends MTVListener {
     }
 
     private void vehicleMembersMenu(){
-        if (clickedItem.equals(closeItem))
+        if (clickedItem.equals(getCloseItem()))
             player.closeInventory();
-        else if (clickedItem.equals(backItem))
+        else if (clickedItem.equals(getBackItem()))
             VehicleEdit.editMenu(player, player.getInventory().getItemInMainHand());
     }
 
     private void vehicleSpeedMenu(){
-        if (clickedItem.equals(closeItem)) {
+        if (clickedItem.equals(getCloseItem())) {
             player.closeInventory();
             return;
         }
-        if (clickedItem.equals(backItem)) {
+        if (clickedItem.equals(getBackItem())) {
             VehicleEdit.editMenu(player, player.getInventory().getItemInMainHand());
             return;
         }

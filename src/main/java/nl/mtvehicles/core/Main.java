@@ -17,7 +17,7 @@ public class Main extends JavaPlugin {
      * @see nl.mtvehicles.core.infrastructure.dataconfig.SecretSettingsConfig
      */
     public static String configVersion = "2.4.0";
-    public static String messagesVersion = "2.4.1";
+    public static String messagesVersion = "2.4.2-dev3";
 
     @Override
     public void onEnable() {
@@ -74,5 +74,9 @@ public class Main extends JavaPlugin {
 
     public static void logSevere(String text){
         instance.getLogger().severe(text);
+    }
+
+    public static void schedulerRun(Runnable task){
+        Bukkit.getScheduler().runTask(instance, task);
     }
 }

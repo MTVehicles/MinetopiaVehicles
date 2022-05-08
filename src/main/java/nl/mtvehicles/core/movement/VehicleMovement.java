@@ -23,6 +23,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 
+import static nl.mtvehicles.core.Main.schedulerRun;
 import static nl.mtvehicles.core.infrastructure.modules.VersionModule.getServerVersion;
 import static nl.mtvehicles.core.movement.PacketHandler.isObjectPacket;
 
@@ -693,10 +694,6 @@ public class VehicleMovement {
             tnt.setFuseTicks(20);
             tnt.setVelocity(stand.getLocation().getDirection().multiply(3.0));
         });
-    }
-
-    protected static void schedulerRun(Runnable task){
-        Bukkit.getScheduler().runTask(Main.instance, task);
     }
 
 }

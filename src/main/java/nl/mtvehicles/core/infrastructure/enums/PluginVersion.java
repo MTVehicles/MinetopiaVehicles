@@ -5,14 +5,6 @@ import org.jetbrains.annotations.NotNull;
 
 public enum PluginVersion {
     LEGACY,
-    v2_2_0,
-    v2_2_1_pre1,
-    v2_2_1_pre2,
-    v2_2_1,
-    v2_3_0_pre1,
-    v2_3_0_pre2,
-    v2_3_0_rc1,
-    v2_3_0_rc2,
     v2_3_0,
     v2_4_0_pre1,
     v2_4_0_rc1,
