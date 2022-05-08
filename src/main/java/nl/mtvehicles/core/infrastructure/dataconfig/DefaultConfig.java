@@ -175,10 +175,12 @@ public class DefaultConfig extends Config {
         else return RegionAction.ListType.DISABLED;
     }
 
-    public boolean canProceedWithAction(RegionAction action, Location loc){
+    public boolean canProceedWithAction(RegionAction action, VehicleType vehicleType, Location loc){
         if (isWorldDisabled(loc.getWorld().getName())) return false;
 
         if (!DependencyModule.isDependencyEnabled(SoftDependency.WORLD_GUARD)) return true;
+
+        if (vehicleType.isUsageDisabled(loc)) return false;
 
         boolean returns = true;
         RegionAction.ListType listType = getRegionActionListType(action);

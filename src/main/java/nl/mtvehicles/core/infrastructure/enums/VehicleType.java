@@ -1,5 +1,8 @@
 package nl.mtvehicles.core.infrastructure.enums;
 
+import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
+import org.bukkit.Location;
+
 import java.util.Locale;
 
 /**
@@ -53,5 +56,10 @@ public enum VehicleType {
 
     public boolean canFly(){
         return this.equals(AIRPLANE) || this.equals(HELICOPTER);
+    }
+
+    public boolean isUsageDisabled(Location loc){
+        if (!DependencyModule.isDependencyEnabled(SoftDependency.WORLD_GUARD)) return false;
+        return DependencyModule.worldGuard.isInRegionWithFlag(loc, "mtv-use-" + this.toString().toLowerCase(Locale.ROOT), false);
     }
 }
