@@ -164,10 +164,10 @@ You can edit the behaviour **in the config** where you may also find information
 |                      | DENY  | Prevents players from picking up vehicles, **if region blacklist for picking up is enabled.** |
 |                      |       |                                                                                               |
 | `mtv-use-car`        | DENY  | Prevents all players from using CARS in this region.                                          |
-| `mtv-use-tank`       | DENY  | Prevents all players from using TANKS in this region.                                         |       |                                                                                               |
-| `mtv-use-hover`      | DENY  | Prevents all players from using HOVERS in this region.                                        |       |                                                                                               |
-| `mtv-use-helicopter` | DENY  | Prevents all players from using HELICOPTERS in this region.                                   |       |                                                                                               |
-| `mtv-use-airplane`   | DENY  | Prevents all players from using AIRPLANES in this region.                                     |       |                                                                       |
+| `mtv-use-tank`       | DENY  | Prevents all players from using TANKS in this region.                                         |
+| `mtv-use-hover`      | DENY  | Prevents all players from using HOVERS in this region.                                        |
+| `mtv-use-helicopter` | DENY  | Prevents all players from using HELICOPTERS in this region.                                   |
+| `mtv-use-airplane`   | DENY  | Prevents all players from using AIRPLANES in this region.                                     |
 
 ### PlaceholderAPI
 
