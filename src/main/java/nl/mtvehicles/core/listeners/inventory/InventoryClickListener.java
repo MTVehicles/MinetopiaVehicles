@@ -34,8 +34,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static nl.mtvehicles.core.infrastructure.helpers.MenuUtils.getCloseItem;
 import static nl.mtvehicles.core.infrastructure.helpers.MenuUtils.getBackItem;
+import static nl.mtvehicles.core.infrastructure.helpers.MenuUtils.getCloseItem;
 
 public class InventoryClickListener extends MTVListener {
 

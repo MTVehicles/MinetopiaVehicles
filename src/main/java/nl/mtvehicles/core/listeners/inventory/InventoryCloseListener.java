@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.listeners.inventory;
 
+import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.events.inventory.InventoryCloseEvent;
 import nl.mtvehicles.core.infrastructure.enums.InventoryTitle;
 import nl.mtvehicles.core.infrastructure.helpers.LanguageUtils;
@@ -12,6 +13,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -39,14 +42,12 @@ public class InventoryCloseListener extends MTVListener {
         if (title.equals(InventoryTitle.VEHICLE_TRUNK)) {
             String license = VehicleUtils.openedTrunk.get(player);
             VehicleUtils.openedTrunk.remove(player);
-            List<ItemStack> chest = (List<ItemStack>) ConfigModule.vehicleDataConfig.getConfig().getList("vehicle." + license + ".kofferbakData");
-            chest.removeAll(chest);
-            for (ItemStack item : event.getInventory().getContents()) {
-                chest.add(item);
-                ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + license + ".kofferbakData", chest);
-                ConfigModule.vehicleDataConfig.save();
-            }
+            List<ItemStack> chest = new ArrayList<>();
+            chest.addAll(Arrays.asList(event.getInventory().getContents()));
+            ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + license + ".kofferbakData", chest);
+            ConfigModule.vehicleDataConfig.save();
         }
+
         if (title.equals(InventoryTitle.CHOOSE_LANGUAGE_MENU)) {
             if (LanguageUtils.languageCheck.get(player.getUniqueId())) {
                 player.sendMessage(TextUtils.colorize("&cThe language settings have not changed because the menu is closed. Do you want to change this anyway? Execute /vehicle language"));

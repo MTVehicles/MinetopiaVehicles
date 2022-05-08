@@ -310,20 +310,19 @@ public final class VehicleUtils {
 
             if (VehicleUtils.getByLicensePlate(license).isOwner(p) || p.hasPermission("mtvehicles.kofferbak")) {
                 ConfigModule.configList.forEach(Config::reload);
-                if ((boolean) ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.TRUNK_ENABLED)) {
+                Inventory inv = Bukkit.createInventory(null, (int) ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.TRUNK_ROWS) * 9, InventoryTitle.VEHICLE_TRUNK.getStringTitle());
 
-                    if (ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.TRUNK_DATA) == null) return;
-
-                    Inventory inv = Bukkit.createInventory(null, (int) ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.TRUNK_ROWS) * 9, InventoryTitle.VEHICLE_TRUNK.getStringTitle());
+                if (ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.TRUNK_DATA) != null) {
                     List<ItemStack> chestContentsFromConfig = (List<ItemStack>) ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.TRUNK_DATA);
 
                     for (ItemStack item : chestContentsFromConfig) {
                         if (item != null) inv.addItem(item);
                     }
-
-                    openedTrunk.put(p, license);
-                    p.openInventory(inv);
                 }
+
+                openedTrunk.put(p, license);
+                p.openInventory(inv);
+
             } else {
                 p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_NO_RIDER_TRUNK).replace("%p%", VehicleUtils.getByLicensePlate(license).getOwnerName())));
             }
