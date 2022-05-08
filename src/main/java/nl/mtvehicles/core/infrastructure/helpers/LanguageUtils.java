@@ -1,6 +1,7 @@
 package nl.mtvehicles.core.infrastructure.helpers;
 
 import nl.mtvehicles.core.Main;
+import nl.mtvehicles.core.infrastructure.enums.InventoryTitle;
 import nl.mtvehicles.core.infrastructure.enums.Language;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
@@ -17,7 +18,7 @@ public class LanguageUtils {
     public static HashMap<UUID, Boolean> languageCheck = new HashMap<>();
 
     public static void openLanguageGUI(Player p){
-        Inventory inv = Bukkit.createInventory(null, 9, "Choose your language");
+        Inventory inv = Bukkit.createInventory(null, 9, InventoryTitle.CHOOSE_LANGUAGE_MENU.getStringTitle());
         inv.setItem(0, ItemUtils.getMenuItem(Material.GOLD_BLOCK, 1, "&eEnglish", "&7Press to set all messages to English."));
         inv.setItem(1, ItemUtils.getMenuItem(Material.DIAMOND_BLOCK, 1, "&9Dutch (Nederlands)", "&7Druk om alle berichten op Nederlands te zetten."));
         inv.setItem(2, ItemUtils.getMenuItem(Material.EMERALD_BLOCK, 1, "&2Spanish (Español)", "&7Presione para configurar todos los mensajes en español."));

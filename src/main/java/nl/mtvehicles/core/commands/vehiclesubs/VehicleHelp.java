@@ -27,6 +27,8 @@ public class VehicleHelp extends MTVehicleSubCommand {
             sendMessage("");
             sendMessage(String.format("&2/vehicle &alanguage &f- &2%s", desc(Message.ADMIN_LANGUAGE)));
             sendMessage(String.format("&2/vehicle &aversion &f- &2%s", desc(Message.ADMIN_VERSION)));
+            sendMessage(String.format("&2/vehicle &arefill &f- &2%s", desc(Message.ADMIN_REFILL)));
+            sendMessage(String.format("&2/vehicle &arepair &f- &2%s", desc(Message.ADMIN_REPAIR)));
             sendMessage(String.format("&2/vehicle &aedit &f- &2%s", desc(Message.ADMIN_EDIT)));
             sendMessage(String.format("&2/vehicle &amenu &f- &2%s", desc(Message.ADMIN_MENU)));
             sendMessage(String.format("&2/vehicle &afuel &f- &2%s", desc(Message.ADMIN_FUEL)));

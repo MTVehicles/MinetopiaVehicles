@@ -27,6 +27,8 @@ public enum Message {
     ADMIN_SETOWNER,
     ADMIN_UPDATE,
     ADMIN_DELETE,
+    ADMIN_REFILL,
+    ADMIN_REPAIR,
     RELOAD_SUCCESSFUL("reloadSuccesvol"),
     NOT_FOR_CONSOLE,
     COMMAND_DOES_NOT_EXIST("cmdNotExists"),
@@ -159,7 +161,8 @@ public enum Message {
     VEHICLE_SPEED_MENU,
     JERRYCAN_MENU,
     VOUCHER_REDEEM_MENU,
-    VEHICLE_TRUNK;
+    VEHICLE_TRUNK,
+    JERRYCAN;
 
     final private String key;
 
