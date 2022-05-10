@@ -12,7 +12,7 @@ import org.bukkit.block.Block;
 public class VehicleMovement1_12 extends VehicleMovement {
 
     @Override
-    protected boolean slabCheck() {
+    protected boolean blockCheck() {
         final Location loc = getLocationOfBlockAhead();
         final String locY = String.valueOf(standMain.getLocation().getY());
         final Location locBlockAbove = new Location(loc.getWorld(), loc.getX(), loc.getY() + 1, loc.getZ(), loc.getYaw(), loc.getPitch());

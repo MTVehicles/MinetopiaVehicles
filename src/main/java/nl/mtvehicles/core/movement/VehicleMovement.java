@@ -1,14 +1,15 @@
 package nl.mtvehicles.core.movement;
 
-import nl.mtvehicles.core.Main;
-import nl.mtvehicles.core.infrastructure.annotations.ToDo;
 import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
 import nl.mtvehicles.core.infrastructure.enums.VehicleType;
 import nl.mtvehicles.core.infrastructure.helpers.BossBarUtils;
 import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
-import org.bukkit.*;
+import org.bukkit.Effect;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Fence;
@@ -17,6 +18,7 @@ import org.bukkit.block.data.type.Snow;
 import org.bukkit.block.data.type.TrapDoor;
 import org.bukkit.entity.*;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
@@ -27,21 +29,64 @@ import static nl.mtvehicles.core.Main.schedulerRun;
 import static nl.mtvehicles.core.infrastructure.modules.VersionModule.getServerVersion;
 import static nl.mtvehicles.core.movement.PacketHandler.isObjectPacket;
 
+/**
+ * Class concerning the movement of vehicles
+ */
 public class VehicleMovement {
+    /**
+     * Given steering packet, checked.
+     * @see PacketHandler#isObjectPacket(Object)
+     */
     protected Object packet;
 
+    /**
+     * Player who is steering the vehicle.
+     */
     protected Player player;
+    /**
+     * The type of vehicle. Uses an enum (not a String as it used to be).
+     * @see VehicleType
+     */
     protected VehicleType vehicleType;
+    /**
+     * The vehicle's license plate.
+     */
     protected String license;
 
+    /**
+     * Vehicle's main armor stand (moved)
+     */
     protected ArmorStand standMain;
+    /**
+     * Vehicle's armor stand with its texture
+     */
     protected ArmorStand standSkin;
+    /**
+     * Vehicle's armor stand for the main seat (where the driver is seated)
+     */
     protected ArmorStand standMainSeat;
-    protected ArmorStand standRotors;
+    /**
+     * Vehicle's armor stand for helicopter blades
+     */
+    protected @Nullable ArmorStand standRotors;
 
+    /**
+     * True if a flying vehicle is falling from the air.
+     */
     protected boolean isFalling = false;
+    /**
+     * True if extreme falling is turned on in config.yml and 'isFalling' is true.
+     * This makes falling faster, vehicles break when they land, etc...
+     */
     protected boolean extremeFalling = false;
 
+    /**
+     * Main method for vehicles' movement
+     * @param player Player who is steering the vehicle
+     * @param packet Packet used for steering (will be checked)
+     *
+     * @see PacketHandler#isObjectPacket(Object)
+     */
     public void vehicleMovement(Player player, Object packet) {
 
         //Do not continue if the correct packet has not been given
@@ -94,7 +139,7 @@ public class VehicleMovement {
         schedulerRun(() -> standSkin.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw(), standMain.getLocation().getPitch())));
 
         updateStand();
-        if (!vehicleType.canFly()) slabCheck();
+        if (!vehicleType.canFly()) blockCheck();
         mainSeat();
 
         if (VehicleData.seatsize.get(license + "addon") != null) {
@@ -142,6 +187,9 @@ public class VehicleMovement {
         move();
     }
 
+    /**
+     * Check the rotation of the vehicle
+     */
     protected void rotation(){
         final int rotationSpeed = VehicleData.RotationSpeed.get(license);
         final Location locBelow = new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY() - 0.2, standMain.getLocation().getZ(), standMain.getLocation().getYaw(), standMain.getLocation().getPitch());
@@ -158,6 +206,9 @@ public class VehicleMovement {
         }
     }
 
+    /**
+     * Rotate the vehicle to a specified yaw
+     */
     protected void rotateVehicle(float yaw){
         schedulerRun(() -> {
             standMain.setRotation(yaw, standMain.getLocation().getPitch());
@@ -166,6 +217,9 @@ public class VehicleMovement {
         });
     }
 
+    /**
+     * Check the movement of the vehicle
+     */
     protected void move(){ // Forwards × Backwards
         final double maxSpeed = VehicleData.MaxSpeed.get(license);
         final double accelerationSpeed = VehicleData.AccelerationSpeed.get(license);
@@ -199,6 +253,9 @@ public class VehicleMovement {
         }
     }
 
+    /**
+     * Slow down the vehicle due to friction
+     */
     protected void putFrictionSpeed(){
         final double frictionSpeed = VehicleData.FrictionSpeed.get(license);
         BigDecimal round = BigDecimal.valueOf(VehicleData.speed.get(license)).setScale(1, BigDecimal.ROUND_DOWN);
@@ -215,7 +272,22 @@ public class VehicleMovement {
         }
     }
 
-    protected boolean slabCheck() { //Returns true if is moving upwards (in any way)
+    /**
+     * Check the next block - carpets, slabs, snow - and do an appropriate action.
+     * @return True if the vehicle is moving upwards (in any way)
+     *
+     * @deprecated Renamed to {@link #blockCheck()}.
+     */
+    @Deprecated
+    protected boolean slabCheck(){
+        return blockCheck();
+    }
+
+    /**
+     * Check the next block - carpets, slabs, snow - and do an appropriate action.
+     * @return True if the vehicle is moving upwards (in any way)
+     */
+    protected boolean blockCheck() {
         final Location loc = getLocationOfBlockAhead();
         final String locY = String.valueOf(standMain.getLocation().getY());
         final Location locBlockAbove = new Location(loc.getWorld(), loc.getX(), loc.getY() + 1, loc.getZ(), loc.getYaw(), loc.getPitch());
@@ -425,6 +497,11 @@ public class VehicleMovement {
         return false;
     }
 
+    /**
+     * Get the Y height of a snow layer
+     * @param layers Number of layers
+     * @return Height
+     */
     protected double getLayerHeight(int layers){
         switch (layers){
             case 1:
@@ -446,6 +523,9 @@ public class VehicleMovement {
         }
     }
 
+    /**
+     * Check the movement and teleport the main seat
+     */
     protected void mainSeat() {
         if (VehicleData.seatsize.get(license) != null) {
             for (int i = 2; i <= VehicleData.seatsize.get(license); i++) {
@@ -472,6 +552,11 @@ public class VehicleMovement {
         teleportSeat(standMainSeat, loc);
     }
 
+    /**
+     * Teleport a seat to a specified location
+     * @param seat ArmorStand of the seat
+     * @param loc Location where the seat will be teleported to
+     */
     protected void teleportSeat(ArmorStand seat, Location loc){
         if (getServerVersion().is1_12()) teleportSeat(((org.bukkit.craftbukkit.v1_12_R1.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
         else if (getServerVersion().is1_13()) teleportSeat(((org.bukkit.craftbukkit.v1_13_R2.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
@@ -482,11 +567,24 @@ public class VehicleMovement {
         else if (getServerVersion().is1_18_R2()) teleportSeat(((org.bukkit.craftbukkit.v1_18_R2.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
     }
 
+    /**
+     * Get the String name of the method for teleporting an ArmorStand. Changes between versions.
+     * @return Teleport method's name as String.
+     */
     protected static String getTeleportMethod(){
         if (getServerVersion().is1_18_R1() || getServerVersion().is1_18_R2()) return "a";
         else return "setLocation";
     }
 
+    /**
+     * Teleport a seat to a desired location. The seat must already be specified as a CraftBukkit Entity.
+     * @param seat Seat's ArmorStand as a CraftBukkit Entity
+     * @param x X-coordinate of the locatoin
+     * @param y Y-coordinate of the locatoin
+     * @param z Z-coordinate of the locatoin
+     * @param yaw Yaw of the locatoin
+     * @param pitch Pitch of the locatoin
+     */
     protected void teleportSeat(Object seat, double x, double y, double z, float yaw, float pitch){
         schedulerRun(() -> {
             try {
@@ -498,6 +596,9 @@ public class VehicleMovement {
         });
     }
 
+    /**
+     * Teleport the armor stand to a correct location (based on speed, surroundings, fuel, etc...)
+     */
     protected void updateStand() {
         final Location loc = standMain.getLocation();
         final Location locBlockAhead = getLocationOfBlockAhead();
@@ -597,6 +698,9 @@ public class VehicleMovement {
         standMain.setVelocity(new Vector(loc.getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.0, loc.getDirection().multiply(VehicleData.speed.get(license)).getZ()));
     }
 
+    /**
+     * Remove fuel from vehicle (will use vehicle's fuel usage determined in VehicleData.yml)
+     */
     protected void putFuelUsage() {
         if (!(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.FUEL_ENABLED) || !(boolean) ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.FUEL_ENABLED)) return;
 
@@ -607,10 +711,18 @@ public class VehicleMovement {
         else VehicleData.fuel.put(license, newFuel);
     }
 
+    /**
+     * Check whether a block is passable. Method used because 1.12 does not have this method natively.
+     * @param block Checked block
+     * @return True if the checked block is passable.
+     */
     protected boolean isPassable(Block block){
         return block.isPassable();
     }
 
+    /**
+     * Rotate and move the rotors accordingly.
+     */
     protected void rotors() {
         double xOffset = VehicleData.wiekenx.get("MTVEHICLES_WIEKENS_" + license);
         double yOffset = VehicleData.wiekeny.get("MTVEHICLES_WIEKENS_" + license);
@@ -625,15 +737,26 @@ public class VehicleMovement {
         schedulerRun(() -> standRotors.teleport(loc));
     }
 
+    /**
+     * Push vehicle up by a specified Y.
+     * @param plus The height of which a vehicle is being pushed up.
+     */
     protected void pushVehicleUp(double plus){
         final Location newLoc = new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY() + plus, standMain.getLocation().getZ(), standMain.getLocation().getYaw(), standMain.getLocation().getPitch());
         schedulerRun(() -> standMain.teleport(newLoc));
     }
 
+    /**
+     * Push vehicle down by a specified Y.
+     * @param minus The height of which a vehicle is being pushed down.
+     */
     protected void pushVehicleDown(double minus){
         pushVehicleUp(-minus);
     }
 
+    /**
+     * Get location of the block in front of the vehicle
+     */
     protected Location getLocationOfBlockAhead(){
         double xOffset = 0.7;
         double yOffset = 0.4;
@@ -645,6 +768,10 @@ public class VehicleMovement {
         return new Location(standMain.getWorld(), xvp, standMain.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
     }
 
+    /**
+     * Checked whether a player is jumping (got from the steering packet)
+     * @return True if player is jumping
+     */
     protected boolean steerIsJumping(){
         boolean isJumping = false;
         try {
@@ -656,6 +783,10 @@ public class VehicleMovement {
         return isJumping;
     }
 
+    /**
+     * Get steering packet's rotation
+     * @return Rotation from the packet
+     */
     protected float steerGetXxa(){
         float Xxa = 0;
         try {
@@ -667,6 +798,10 @@ public class VehicleMovement {
         return Xxa;
     }
 
+    /**
+     * Get steering packet's movement (forwards × backwards)
+     * @return Movement from the packet
+     */
     protected float steerGetZza(){
         float Zza = 0;
         try {
@@ -678,6 +813,11 @@ public class VehicleMovement {
         return Zza;
     }
 
+    /**
+     * Spawn tank's shooting particles
+     * @param stand The tank's main ArmorStand
+     * @param loc Location of where the particles should be spawned
+     */
     protected void spawnParticles(ArmorStand stand, Location loc){
         stand.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, loc, 2);
         stand.getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, loc, 2);
@@ -686,6 +826,11 @@ public class VehicleMovement {
             stand.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, loc, 5);
     }
 
+    /**
+     * Spawn and shoot tank's TNT (must be enabled in config.yml)
+     * @param stand The tank's main ArmorStand
+     * @param loc Location of where the TNT should be spawned
+     */
     protected void spawnTNT(ArmorStand stand, Location loc){
         if (!(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.TANK_TNT)) return;
 
