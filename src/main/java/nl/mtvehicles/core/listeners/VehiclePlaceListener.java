@@ -6,6 +6,7 @@ import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.enums.RegionAction;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVListener;
+import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Location;
@@ -48,6 +49,8 @@ public class VehiclePlaceListener extends MTVListener {
 
         Location loc = api.getLocation();
         license = api.getLicensePlate();
+        Vehicle vehicle = VehicleUtils.getByLicensePlate(license);
+        if (vehicle == null) return;
 
         if (event.getHand() != EquipmentSlot.HAND) {
             event.setCancelled(true);
@@ -67,7 +70,7 @@ public class VehiclePlaceListener extends MTVListener {
             ConfigModule.messagesConfig.sendMessage(player, Message.BLOCK_NOT_IN_WHITELIST);
             return;
         }
-        if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.PLACE, loc)) {
+        if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.PLACE, vehicle.getVehicleType(), loc)) {
             ConfigModule.messagesConfig.sendMessage(player, Message.CANNOT_DO_THAT_HERE);
             return;
         }

@@ -47,12 +47,14 @@ public class VehicleClickListener extends MTVListener {
         if (isCancelled()) return;
 
         license = api.getLicensePlate();
+        Vehicle vehicle = VehicleUtils.getByLicensePlate(license);
+        if (vehicle == null) return;
 
         event.setCancelled(true);
 
         if (player.isSneaking()) {
 
-            if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.PICKUP, event.getRightClicked().getLocation())){
+            if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.PICKUP, vehicle.getVehicleType(), event.getRightClicked().getLocation())){
                 ConfigModule.messagesConfig.sendMessage(player, Message.CANNOT_DO_THAT_HERE);
                 return;
             }
@@ -62,8 +64,6 @@ public class VehicleClickListener extends MTVListener {
         }
 
         if (entity.getCustomName().contains("MTVEHICLES_SEAT")) {
-            Vehicle vehicle = VehicleUtils.getByLicensePlate(license);
-            if (vehicle == null) return;
 
             if ((boolean) ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.IS_OPEN) || vehicle.isOwner(player) || vehicle.canSit(player) || player.hasPermission("mtvehicles.ride")) {
                 if (entity.isEmpty()) {

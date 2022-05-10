@@ -24,7 +24,7 @@ public class WorldGuardUtils {
     WorldGuard instance = WorldGuard.getInstance();
     FlagRegistry registry = instance.getFlagRegistry();
 
-    public final List<String> flagList = Arrays.asList("mtv-gasstation", "mtv-place", "mtv-enter", "mtv-pickup"); //All the used custom flags
+    public final List<String> flagList = Arrays.asList("mtv-gasstation", "mtv-place", "mtv-enter", "mtv-pickup", "mtv-use-car", "mtv-use-hover", "mtv-user-tank", "mtv-use-helicopter", "mtv-use-airplane"); //All the used custom flags
 
     public WorldGuardUtils(){
         registerFlags();
@@ -68,7 +68,7 @@ public class WorldGuardUtils {
     }
 
     private void disableDependency(){
-        Bukkit.getLogger().severe("[MTVehicles] Custom WorldGuard flags could not be created for MTVehicles. Disabling as a softdepend... (If you've just reloaded the plugin with PlugMan, try restarting the server.)");
+        Bukkit.getLogger().severe("[MTVehicles] Custom WorldGuard flags could not be created for MTVehicles. Disabling as a soft-dependcy... (If you've just reloaded the plugin with PlugMan, try restarting the server.)");
         DependencyModule.disableDependency(SoftDependency.WORLD_GUARD);
     }
 
