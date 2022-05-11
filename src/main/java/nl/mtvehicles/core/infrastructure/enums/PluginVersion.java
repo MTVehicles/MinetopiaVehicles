@@ -10,6 +10,7 @@ public enum PluginVersion {
     v2_4_0_rc1,
     v2_4_0,
     v2_4_1,
+    v2_4_2,
     LATEST,
     DEV;
 
@@ -22,7 +23,7 @@ public enum PluginVersion {
     }
 
     public static PluginVersion getPluginVersion(){
-        return getVersion(VersionModule.pluginVersion);
+        return getVersion(VersionModule.pluginVersionString);
     }
 
     public static PluginVersion getVersion(String version){

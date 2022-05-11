@@ -68,7 +68,7 @@ public class PluginUpdater {
             String receivedValue = sb.toString();
             String[] valueMultipleLines = receivedValue.split("@");
             for (int i = 0; i < valueMultipleLines.length; i++) {
-                valueMultipleLines[i] = valueMultipleLines[i].replace("<oldVer>", VersionModule.pluginVersion);
+                valueMultipleLines[i] = valueMultipleLines[i].replace("<oldVer>", VersionModule.pluginVersionString);
             }
             return valueMultipleLines;
         } catch (IOException ex) {
@@ -83,7 +83,7 @@ public class PluginUpdater {
         return TextUtils.list(
                 "&7---------------------------------------",
                 "A new version of &2MTVehicles&f is available!",
-                String.format("We have already released &av%s &fbut you are still using &cv%s&f!", latestVersionString, VersionModule.pluginVersion),
+                String.format("We have already released &av%s &fbut you are still using &cv%s&f!", latestVersionString, VersionModule.pluginVersionString),
                 "Use &2/mtv update&f to update! (Don't forget to reload the plugin!)",
                 "For more information visit &nhttps://mtvehicles.eu&f!",
                 "&7---------------------------------------"

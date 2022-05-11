@@ -3,34 +3,60 @@ package nl.mtvehicles.core.infrastructure.modules;
 import lombok.Getter;
 import lombok.Setter;
 import nl.mtvehicles.core.Main;
+import nl.mtvehicles.core.infrastructure.enums.PluginVersion;
 import nl.mtvehicles.core.infrastructure.enums.ServerVersion;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginDescriptionFile;
 
 import java.util.logging.Logger;
 
+/**
+ * Module containing information about the plugin and server version
+ */
 public class VersionModule {
     private static @Getter
     @Setter
     VersionModule instance;
 
-    public static String pluginVersion;
+    /**
+     * The plugin's version as String (e.g. '2.4.2')
+     */
+    public static String pluginVersionString;
+    /**
+     * The plugin's version as enum
+     * @see PluginVersion
+     */
+    public static PluginVersion pluginVersion;
+    /**
+     * True if the plugin is a pre-release, release candidate or a dev-version
+     */
     public static boolean isPreRelease;
+    /**
+     * The server's minecraft version (e.g. '1_16_R3')
+     */
     private static String serverVersion;
+    /**
+     * The server's software (e.g. 'Paper')
+     */
     public static String serverSoftware;
-    Logger logger = Main.instance.getLogger();
+    private Logger logger = Main.instance.getLogger();
 
     public VersionModule() {
         PluginDescriptionFile pdf = Main.instance.getDescription();
-        pluginVersion = pdf.getVersion();
+        pluginVersionString = pdf.getVersion();
+        pluginVersion = PluginVersion.getPluginVersion();
 
         //Pre-releases should thus be named "vX.Y.Z-preU" etc... (Instead of pre, dev for developing and rc for release candidates are acceptable too.)
-        isPreRelease = pluginVersion.toLowerCase().contains("pre") || pluginVersion.toLowerCase().contains("rc") || pluginVersion.toLowerCase().contains("dev");
+        isPreRelease = pluginVersionString.toLowerCase().contains("pre") || pluginVersionString.toLowerCase().contains("rc") || pluginVersionString.toLowerCase().contains("dev");
 
         serverVersion = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
         serverSoftware = Bukkit.getName();
     }
 
+    /**
+     * Get the server version as enum
+     * @return Server version
+     */
     public static ServerVersion getServerVersion(){
         ServerVersion returns = null;
         switch (serverVersion) {
@@ -59,6 +85,11 @@ public class VersionModule {
         return returns;
     }
 
+    /**
+     * Check whether the server version is supported by the plugin.
+     * Otherwise, send a warning and disable the plugin.
+     * @return True if the server version is supported
+     */
     public boolean isSupportedVersion(){
         if (getServerVersion() == null) {
             logger.severe("--------------------------");

@@ -4,8 +4,6 @@ import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
 
 public class VehicleRepair extends MTVehicleSubCommand {
@@ -14,7 +12,7 @@ public class VehicleRepair extends MTVehicleSubCommand {
     }
 
     @Override
-    public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
+    public boolean execute() {
         if (!checkPermission("mtvehicles.repair")) return true;
 
         final ItemStack item = player.getInventory().getItemInMainHand();

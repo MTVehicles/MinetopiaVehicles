@@ -9,9 +9,6 @@ import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -25,7 +22,7 @@ public class VehicleFuel extends MTVehicleSubCommand {
     }
 
     @Override
-    public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
+    public boolean execute() {
         if (!checkPermission("mtvehicles.benzine")) return true;
 
         Inventory inv = Bukkit.createInventory(null, 9, InventoryTitle.JERRYCAN_MENU.getStringTitle());

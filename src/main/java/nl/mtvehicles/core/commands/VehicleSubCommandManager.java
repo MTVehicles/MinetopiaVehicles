@@ -43,9 +43,9 @@ public class VehicleSubCommandManager extends MTVehicleCommand {
     }
 
     @Override
-    public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
+    public boolean execute(CommandSender sender, Command cmd, String label, String[] args) {
         if (args.length == 0) {
-            CommandModule.subcommands.get("help").onExecute(sender, cmd, s, args);
+            CommandModule.subcommands.get("help").onExecute(sender, cmd, label, args);
             return true;
         }
 
@@ -55,7 +55,7 @@ public class VehicleSubCommandManager extends MTVehicleCommand {
             return true;
         }
 
-        CommandModule.subcommands.get(subcommand).onExecute(sender, cmd, s, args);
+        CommandModule.subcommands.get(subcommand).onExecute(sender, cmd, label, args);
         return true;
     }
 }

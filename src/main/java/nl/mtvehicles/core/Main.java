@@ -40,7 +40,7 @@ public class Main extends JavaPlugin {
         getLogger().info("Plugin has been loaded!");
         if (VersionModule.isPreRelease) getLogger().warning("Be aware: You are using a pre-release. It might not be stable and it's generally not advised to use it on a production server.");
         getLogger().info("--------------------------");
-        getLogger().info("Welcome by MTVehicles v" + VersionModule.pluginVersion + "!");
+        getLogger().info("Welcome by MTVehicles v" + VersionModule.pluginVersionString + "!");
         getLogger().info("Thanks for using our plugin.");
         getLogger().info("--------------------------");
 
@@ -62,6 +62,10 @@ public class Main extends JavaPlugin {
         return String.valueOf(Main.instance.getFile());
     }
 
+    /**
+     * Register a listener
+     * @see ListenersModule
+     */
     public void registerListener(Listener listener) {
         Bukkit.getPluginManager().registerEvents(listener, this);
     }

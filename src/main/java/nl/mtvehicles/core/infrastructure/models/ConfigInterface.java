@@ -1,5 +1,8 @@
 package nl.mtvehicles.core.infrastructure.models;
 
+/**
+ * Basic interface for configuration files
+ */
 public interface ConfigInterface {
 
     /**
@@ -14,5 +17,4 @@ public interface ConfigInterface {
      */
     boolean save();
 
-    void saveDefaultConfig();
 }

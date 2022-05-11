@@ -5,8 +5,6 @@ import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
 
 public class VehiclePublic extends MTVehicleSubCommand {
@@ -15,7 +13,7 @@ public class VehiclePublic extends MTVehicleSubCommand {
     }
 
     @Override
-    public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
+    public boolean execute() {
         ItemStack item = player.getInventory().getItemInMainHand();
 
         if (!isHoldingVehicle()) return true;

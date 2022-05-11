@@ -10,6 +10,9 @@ import org.bukkit.entity.Player;
 
 import java.util.*;
 
+/**
+ * Vehicle with its specifications
+ */
 public class Vehicle {
     private String licensePlate;
     private String name;
@@ -40,6 +43,9 @@ public class Vehicle {
 
     public static HashMap<String, MTVehicleSubCommand> subcommands = new HashMap<>();
 
+    /**
+     * Save the vehicle specifications (and possible adjustments) to vehicleData.yml
+     */
     public void save() {
         Map<String, Object> map = new HashMap<>();
         map.put("name", this.getName());
@@ -70,6 +76,10 @@ public class Vehicle {
         ConfigModule.vehicleDataConfig.save();
     }
 
+    /**
+     * Delete a vehicle from the database (vehicleData.yml)
+     * @throws IllegalStateException If vehicle is already deleted.
+     */
     public void delete() throws IllegalStateException {
         FileConfiguration dataConfig = ConfigModule.vehicleDataConfig.getConfig();
         final String path = "vehicle." + this.getLicensePlate();
@@ -262,6 +272,9 @@ public class Vehicle {
         this.maxSpeedBackwards = maxSpeedBackwards;
     }
 
+    /**
+     * @deprecated Use {@link #setOwner(UUID)} instead.
+     */
     @Deprecated
     public void setOwner(String ownerUUID) {
         try {
@@ -311,6 +324,9 @@ public class Vehicle {
         return vehicleType;
     }
 
+    /**
+     * @deprecated Use {@link #setVehicleType(VehicleType)} instead.
+     */
     @Deprecated
     public void setVehicleType(String vehicleType) {
         try {

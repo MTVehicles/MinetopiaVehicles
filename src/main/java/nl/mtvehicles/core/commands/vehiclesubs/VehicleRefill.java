@@ -6,8 +6,6 @@ import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
 
 public class VehicleRefill extends MTVehicleSubCommand {
@@ -16,7 +14,7 @@ public class VehicleRefill extends MTVehicleSubCommand {
     }
 
     @Override
-    public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
+    public boolean execute() {
         if (!checkPermission("mtvehicles.refill")) return true;
 
         final ItemStack item = player.getInventory().getItemInMainHand();

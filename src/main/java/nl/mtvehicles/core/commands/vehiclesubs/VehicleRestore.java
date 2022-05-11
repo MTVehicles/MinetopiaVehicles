@@ -6,9 +6,6 @@ import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public class VehicleRestore extends MTVehicleSubCommand {
     public VehicleRestore() {
@@ -16,17 +13,17 @@ public class VehicleRestore extends MTVehicleSubCommand {
     }
 
     @Override
-    public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
+    public boolean execute() {
         if (!checkPermission("mtvehicles.restore")) return true;
 
         sendMessage(ConfigModule.messagesConfig.getMessage(Message.MENU_OPEN));
 
-        if (args.length != 2) {
+        if (arguments.length != 2) {
             MenuUtils.restoreCMD(player, 1, null);
             MenuUtils.restoreUUID.put("uuid", null);
             return true;
         }
-        OfflinePlayer of = Bukkit.getPlayer(args[1]);
+        OfflinePlayer of = Bukkit.getPlayer(arguments[1]);
 
         if (of == null || !of.hasPlayedBefore()) {
             sendMessage(ConfigModule.messagesConfig.getMessage(Message.PLAYER_NOT_FOUND));

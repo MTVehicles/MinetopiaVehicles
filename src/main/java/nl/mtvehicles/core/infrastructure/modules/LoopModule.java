@@ -8,6 +8,10 @@ import nl.mtvehicles.core.movement.MovementManager;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+/**
+ * Module looping all players after a plugin reload.
+ * An appropriate packet handler is assigned and players sitting in vehicles are kicked.
+ */
 public class LoopModule {
     private static @Getter
     @Setter

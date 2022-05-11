@@ -12,16 +12,38 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Module for managing configuration files
+ */
 public class ConfigModule {
     private static @Getter
     @Setter
     ConfigModule instance;
 
+    /**
+     * List of all configuration files.
+     */
     public static List<Config> configList = new ArrayList<>();
+
+    /**
+     * SuperSecretSettings configuration file
+     */
     public static SecretSettingsConfig secretSettings = new SecretSettingsConfig();
+    /**
+     * messages_xx.yml configuration files
+     */
     public static MessagesConfig messagesConfig = new MessagesConfig();
+    /**
+     * VehicleData.yml configuration file
+     */
     public static VehicleDataConfig vehicleDataConfig = new VehicleDataConfig();
+    /**
+     * Vehicles.yml configuration file
+     */
     public static VehiclesConfig vehiclesConfig = new VehiclesConfig();
+    /**
+     * Default configuration file (config.yml)
+     */
     public static DefaultConfig defaultConfig = new DefaultConfig();
 
     public ConfigModule() {
@@ -53,6 +75,9 @@ public class ConfigModule {
         reloadConfigs();
     }
 
+    /**
+     * Reload all configuration files.
+     */
     public static void reloadConfigs(){
         configList.forEach(Config::reload);
         if (!messagesConfig.setLanguageFile(secretSettings.getMessagesLanguage())){

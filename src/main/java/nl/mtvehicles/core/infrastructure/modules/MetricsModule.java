@@ -5,6 +5,9 @@ import lombok.Setter;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.dataconfig.Metrics;
 
+/**
+ * Module configuring bStats metrics system
+ */
 public class MetricsModule {
     private static @Getter
     @Setter

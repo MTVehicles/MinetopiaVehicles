@@ -5,8 +5,6 @@ import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -16,17 +14,17 @@ public class VehicleGiveCar extends MTVehicleSubCommand {
     }
 
     @Override
-    public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
+    public boolean execute() {
         if (!checkPermission("mtvehicles.givecar")) return true;
 
-        if (args.length != 3) {
+        if (arguments.length != 3) {
             sendMessage(ConfigModule.messagesConfig.getMessage(Message.USE_GIVE_CAR));
             return true;
         }
 
-        Player of = Bukkit.getPlayer(args[1]);
+        Player of = Bukkit.getPlayer(arguments[1]);
 
-        String carUuid = args[2];
+        String carUuid = arguments[2];
 
         if (of == null || !of.hasPlayedBefore()) {
             sendMessage(ConfigModule.messagesConfig.getMessage(Message.PLAYER_NOT_FOUND));

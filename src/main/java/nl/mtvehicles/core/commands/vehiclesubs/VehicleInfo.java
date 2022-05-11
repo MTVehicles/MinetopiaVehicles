@@ -8,8 +8,6 @@ import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
 
 import java.text.DecimalFormat;
@@ -23,7 +21,7 @@ public class VehicleInfo extends MTVehicleSubCommand {
     }
 
     @Override
-    public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
+    public boolean execute() {
         ItemStack item = player.getInventory().getItemInMainHand();
 
         if (!isHoldingVehicle()) return true;

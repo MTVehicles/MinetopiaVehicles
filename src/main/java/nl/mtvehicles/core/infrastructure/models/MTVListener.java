@@ -1,17 +1,24 @@
 package nl.mtvehicles.core.infrastructure.models;
 
-import nl.mtvehicles.core.infrastructure.modules.VersionModule;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.Listener;
 
 import javax.annotation.Nullable;
-import java.lang.reflect.Method;
 
+/**
+ * Abstract class for the plugin's listeners
+ */
 public abstract class MTVListener implements Listener {
 
+    /**
+     * The event the listener is listening to
+     */
     protected Event event;
-    protected Player player;
+    /**
+     * Player of this event
+     */
+    protected @Nullable Player player;
 
     private MTVEvent api;
 
@@ -53,8 +60,10 @@ public abstract class MTVListener implements Listener {
     /**
      * Call the event with a custom player
      * @param player Custom player (may be null if no player is specified)
+     *
+     * @throws NullPointerException If API is not specified for the listener (see {@link #setAPI(MTVEvent)})
      */
-    protected void callAPI(@Nullable Player player){
+    protected void callAPI(@Nullable Player player) throws NullPointerException {
         if (api == null) throw new NullPointerException("Event API not specified for this listener.");
 
         api.setPlayer(player);

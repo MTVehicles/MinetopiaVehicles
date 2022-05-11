@@ -4,8 +4,6 @@ import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 
 public class VehicleHelp extends MTVehicleSubCommand {
     public VehicleHelp() {
@@ -13,7 +11,7 @@ public class VehicleHelp extends MTVehicleSubCommand {
     }
 
     @Override
-    public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
+    public boolean execute() {
         sendMessage(String.format("&2&lMinetopiaVehicles Commands: (%s)", Main.instance.getDescription().getVersion()));
         sendMessage("");
         sendMessage(String.format("&2/vehicle &ainfo &f- &2%s", desc(Message.HELP_INFO)));
