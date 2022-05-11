@@ -18,6 +18,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
+/**
+ * On right click with a jerry can - its refuelling (the gas stations feature)
+ */
 public class JerryCanClickListener extends MTVListener {
 
     private Action action;

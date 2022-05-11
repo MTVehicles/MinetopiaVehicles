@@ -18,6 +18,9 @@ import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * On vehicle right click - entering and picking up
+ */
 public class VehicleClickListener extends MTVListener {
     private Map<String, Long> lastUsage = new HashMap<>();
 

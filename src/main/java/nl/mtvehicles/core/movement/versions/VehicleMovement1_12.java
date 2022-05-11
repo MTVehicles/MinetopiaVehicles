@@ -9,6 +9,9 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
+/**
+ * Class concerning the movement of vehicles in 1_12_R2 (because the NMS differ a lot)
+ */
 public class VehicleMovement1_12 extends VehicleMovement {
 
     @Override

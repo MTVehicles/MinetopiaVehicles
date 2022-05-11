@@ -18,12 +18,18 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import static nl.mtvehicles.core.Main.schedulerRun;
 
+/**
+ * On player chat
+ */
 public class ChatListener extends MTVListener {
 
     public ChatListener(){
         super(new ChatEvent());
     }
 
+    /**
+     * Changing a license plate with /vehicle edit
+     */
     @EventHandler(priority = EventPriority.HIGH)
     public void onLicensePlateChange(AsyncPlayerChatEvent event) {
         this.event = event;
@@ -82,6 +88,9 @@ public class ChatListener extends MTVListener {
         });
     }
 
+    /**
+     * Changing vehicle's name with /vehicle edit
+     */
     @EventHandler(priority = EventPriority.HIGH)
     public void onVehicleNameChange(final AsyncPlayerChatEvent event) {
         this.event = event;
@@ -126,6 +135,9 @@ public class ChatListener extends MTVListener {
         });
     }
 
+    /**
+     * Changing vehicle's fuel amount with /vehicle edit
+     */
     @EventHandler(priority = EventPriority.HIGH)
     public void onFuelChange(final AsyncPlayerChatEvent event) {
         this.event = event;
@@ -176,6 +188,9 @@ public class ChatListener extends MTVListener {
         });
     }
 
+    /**
+     * Changing vehicle's fuel consumption with /vehicle edit
+     */
     @EventHandler(priority = EventPriority.HIGH)
     public void onFuelUsageChange(final AsyncPlayerChatEvent event) {
         this.event = event;
@@ -219,6 +234,9 @@ public class ChatListener extends MTVListener {
         });
     }
 
+    /**
+     * Changing vehicle trunk's number of rows with /vehicle edit
+     */
     @EventHandler(priority = EventPriority.HIGH)
     public void onTrunkRowsChange(final AsyncPlayerChatEvent event) {
         this.event = event;
@@ -270,6 +288,9 @@ public class ChatListener extends MTVListener {
         });
     }
 
+    /**
+     * Changing vehicle's acceleration speed with /vehicle edit
+     */
     @EventHandler(priority = EventPriority.HIGH)
     public void onAccelerationSpeedChange(final AsyncPlayerChatEvent event) {
         this.event = event;
@@ -312,6 +333,9 @@ public class ChatListener extends MTVListener {
         });
     }
 
+    /**
+     * Changing vehicle's maximum speed with /vehicle edit
+     */
     @EventHandler(priority = EventPriority.HIGH)
     public void onMaxSpeedChange(final AsyncPlayerChatEvent event) {
         this.event = event;
@@ -355,6 +379,9 @@ public class ChatListener extends MTVListener {
         });
     }
 
+    /**
+     * Changing vehicle's braking speed with /vehicle edit
+     */
     @EventHandler(priority = EventPriority.HIGH)
     public void onBrakingSpeedChange(final AsyncPlayerChatEvent event) {
         this.event = event;
@@ -398,6 +425,9 @@ public class ChatListener extends MTVListener {
         });
     }
 
+    /**
+     * Changing vehicle's friction with /vehicle edit
+     */
     @EventHandler(priority = EventPriority.HIGH)
     public void onFrictionSpeedChange(final AsyncPlayerChatEvent event) {
         this.event = event;
@@ -441,6 +471,9 @@ public class ChatListener extends MTVListener {
         });
     }
 
+    /**
+     * Changing vehicle's maximum backwards speed with /vehicle edit
+     */
     @EventHandler(priority = EventPriority.HIGH)
     public void onMaxSpeedBackwardsChange(final AsyncPlayerChatEvent event) {
         this.event = event;
@@ -484,6 +517,9 @@ public class ChatListener extends MTVListener {
         });
     }
 
+    /**
+     * Changing vehicle's rotation speed with /vehicle edit
+     */
     @EventHandler(priority = EventPriority.HIGH)
     public void onRotateSpeedChange(final AsyncPlayerChatEvent event) {
         this.event = event;

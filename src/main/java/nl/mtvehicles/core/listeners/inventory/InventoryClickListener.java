@@ -37,6 +37,9 @@ import java.util.UUID;
 import static nl.mtvehicles.core.infrastructure.helpers.MenuUtils.getBackItem;
 import static nl.mtvehicles.core.infrastructure.helpers.MenuUtils.getCloseItem;
 
+/**
+ * On inventory click
+ */
 public class InventoryClickListener extends MTVListener {
 
     public HashMap<UUID, ItemStack> vehicleMenu = new HashMap<>();

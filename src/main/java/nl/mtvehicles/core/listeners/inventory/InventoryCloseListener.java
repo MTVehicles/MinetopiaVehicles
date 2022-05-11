@@ -1,6 +1,5 @@
 package nl.mtvehicles.core.listeners.inventory;
 
-import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.events.inventory.InventoryCloseEvent;
 import nl.mtvehicles.core.infrastructure.enums.InventoryTitle;
 import nl.mtvehicles.core.infrastructure.helpers.LanguageUtils;
@@ -18,6 +17,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * On inventory close
+ */
 public class InventoryCloseListener extends MTVListener {
     public static HashMap<String, Double> speed = new HashMap<>();
 

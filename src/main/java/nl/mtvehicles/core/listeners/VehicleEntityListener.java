@@ -22,6 +22,9 @@ import org.bukkit.inventory.ItemStack;
 import javax.annotation.Nullable;
 import java.util.HashMap;
 
+/**
+ * On vehicle left click - damaging, opening a trunk, fueling
+ */
 public class VehicleEntityListener extends MTVListener {
 
     public static HashMap<String, Double> speed = new HashMap<>();
@@ -122,7 +125,22 @@ public class VehicleEntityListener extends MTVListener {
         }
     }
 
+    /**
+     * Damage a vehicle.
+     * @param license The vehicle's license plate
+     *
+     * @deprecated Renamed to {@link #damage(String)}.
+     */
+    @Deprecated
     public void checkDamage(String license){
+        damage(license);
+    }
+
+    /**
+     * Damage a vehicle.
+     * @param license The vehicle's license plate
+     */
+    public void damage(String license){
         final double damage = ((VehicleDamageEvent) getAPI()).getDamage();
 
         if (!(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.DAMAGE_ENABLED)) return;

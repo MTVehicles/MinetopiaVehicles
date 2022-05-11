@@ -20,6 +20,9 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 
+/**
+ * On right click with a voucher
+ */
 public class VehicleVoucherListener extends MTVListener {
     public static HashMap<Player, String> voucher = new HashMap<>();
 
