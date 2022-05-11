@@ -25,16 +25,16 @@ public class VehicleGiveVoucher extends MTVehicleSubCommand {
             return true;
         }
 
-        Player of = Bukkit.getPlayer(args[1]);
+        Player playerVoucherGetter = Bukkit.getPlayer(args[1]);
 
         String carUuid = args[2];
 
-        if (of == null || !of.hasPlayedBefore()) {
+        if (playerVoucherGetter == null || !playerVoucherGetter.hasPlayedBefore()) {
             sendMessage(ConfigModule.messagesConfig.getMessage(Message.PLAYER_NOT_FOUND));
             return true;
         }
 
-        ItemStack car = VehicleUtils.getItemByUUID(of, carUuid);
+        ItemStack car = VehicleUtils.getItemByUUID(playerVoucherGetter, carUuid);
 
         if (car == null){
             sender.sendMessage(ConfigModule.messagesConfig.getMessage(Message.GIVE_CAR_NOT_FOUND));
@@ -42,8 +42,8 @@ public class VehicleGiveVoucher extends MTVehicleSubCommand {
         }
 
         ItemStack voucher = ItemUtils.createVoucher(carUuid);
-        player.getInventory().addItem(voucher);
-        sender.sendMessage(ConfigModule.messagesConfig.getMessage(Message.GIVE_VOUCHER_SUCCESS).replace("%p%", of.getName()));
+        playerVoucherGetter.getInventory().addItem(voucher);
+        sender.sendMessage(ConfigModule.messagesConfig.getMessage(Message.GIVE_VOUCHER_SUCCESS).replace("%p%", playerVoucherGetter.getName()));
         return true;
     }
 }
