@@ -12,10 +12,20 @@ import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 
+/**
+ * Methods for BossBars
+ */
 public class BossBarUtils {
-    public static BossBar Benzine;
+    /**
+     * Fuel bossbar
+     */
     public static HashMap<String, BossBar> Fuelbar = new HashMap<>();
 
+    /**
+     * Set bossbar's fuel amount
+     * @param counter Fuel amount
+     * @param licensePlate Vehicle's license plate (this vehicle's fuel is displayed)
+     */
     public static void setBossBarValue(double counter, String licensePlate) {
         if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.FUEL_ENABLED) && (boolean) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.FUEL_ENABLED)) {
             Fuelbar.get(licensePlate).setProgress(counter);
@@ -37,12 +47,22 @@ public class BossBarUtils {
         }
     }
 
+    /**
+     * Remove fuel bossbar from player
+     * @param player Player
+     * @param licensePlate Vehicle's license plate (this vehicle's fuel is displayed)
+     */
     public static void removeBossBar(Player player, String licensePlate) {
         if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.FUEL_ENABLED) && (boolean) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.FUEL_ENABLED)) {
             Fuelbar.get(licensePlate).removePlayer(player);
         }
     }
 
+    /**
+     * Show fuel bossbar for a player
+     * @param player Player
+     * @param licensePlate Vehicle's license plate (this vehicle's fuel is displayed)
+     */
     public static void addBossBar(Player player, String licensePlate) {
         if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.FUEL_ENABLED) && (boolean) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.FUEL_ENABLED)) {
             double fuel = (double) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.FUEL);

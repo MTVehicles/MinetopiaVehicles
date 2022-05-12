@@ -20,7 +20,7 @@ public class VehicleRestore extends MTVehicleSubCommand {
 
         if (arguments.length != 2) {
             MenuUtils.restoreCMD(player, 1, null);
-            MenuUtils.restoreUUID.put("uuid", null);
+            MenuUtils.restoreUUID.put(player, null);
             return true;
         }
         OfflinePlayer of = Bukkit.getPlayer(arguments[1]);
@@ -31,8 +31,8 @@ public class VehicleRestore extends MTVehicleSubCommand {
         }
 
         MenuUtils.restoreCMD(player, 1, of.getUniqueId());
-        MenuUtils.restoreUUID.put("uuid", of.getUniqueId());
-        MenuUtils.restoreId.put("pagina", 1);
+        MenuUtils.restoreUUID.put(player, of.getUniqueId());
+        MenuUtils.restorePage.put(player, 1);
 
         return true;
     }

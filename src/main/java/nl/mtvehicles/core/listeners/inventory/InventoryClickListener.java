@@ -223,13 +223,13 @@ public class InventoryClickListener extends MTVListener {
         if (clickedItem.equals(ItemUtils.getMenuItem(ItemUtils.getStainedGlassPane(), 1, "&c", "&c"))) return;
 
         if (clickedSlot == 53) { //Next page
-            MenuUtils.restoreCMD(player, MenuUtils.restoreId.get("pagina") + 1, MenuUtils.restoreUUID.get("uuid"));
+            MenuUtils.restoreCMD(player, MenuUtils.restorePage.get(player) + 1, MenuUtils.restoreUUID.get(player));
             return;
         }
 
         if (clickedSlot == 45) { //Previous page
-            if (MenuUtils.restoreId.get("pagina") - 1 >= 1)
-                MenuUtils.restoreCMD(player, MenuUtils.restoreId.get("pagina") - 1, MenuUtils.restoreUUID.get("uuid"));
+            if (MenuUtils.restorePage.get(player) - 1 >= 1)
+                MenuUtils.restoreCMD(player, MenuUtils.restorePage.get(player) - 1, MenuUtils.restoreUUID.get(player));
             return;
         }
         player.getInventory().addItem(clickedItem);

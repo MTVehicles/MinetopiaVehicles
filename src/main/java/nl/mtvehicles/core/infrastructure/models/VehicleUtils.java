@@ -12,6 +12,7 @@ import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -246,11 +247,15 @@ public final class VehicleUtils {
 
     /**
      * Get license plate of an entity (which should be a vehicle - see {@link #isVehicle(Entity)}.
-     * @param entity
-     * @return
+     * @param entity Vehicle's main armor stand
+     * @return Vehicle's license plate
      */
     public static String getLicensePlate(Entity entity){
-        return TextUtils.licenseReplacer(Objects.requireNonNull(entity.getCustomName()));
+        final String name = entity.getCustomName();
+        if (name.split("_").length > 1) {
+            return name.split("_")[2];
+        }
+        return null;
     }
 
     /**
@@ -451,5 +456,59 @@ public final class VehicleUtils {
             sb.append("Niemand");
         }
         return sb.toString();
+    }
+
+    /**
+     * Pick up a vehicle and put it to player's inventory
+     * @param license Vehicle's license plate
+     * @param player Player
+     */
+    public static void pickupVehicle(String license, Player player) {
+        if (getByLicensePlate(license) == null) {
+            for (World world : Bukkit.getServer().getWorlds()) {
+                for (Entity entity : world.getEntities()) {
+                    if (entity.getCustomName() != null && entity.getCustomName().contains(license)) {
+                        ArmorStand test = (ArmorStand) entity;
+                        if (test.getCustomName().contains("MTVEHICLES_SKIN_" + license)) {
+                            if (!TextUtils.checkInvFull(player)) {
+                                player.getInventory().addItem(test.getHelmet());
+                            } else {
+                                ConfigModule.messagesConfig.sendMessage(player, Message.INVENTORY_FULL);
+                                return;
+                            }
+                        }
+                        test.remove();
+                    }
+                }
+            }
+            ConfigModule.messagesConfig.sendMessage(player, Message.VEHICLE_NOT_FOUND);
+            return;
+        }
+        if (getByLicensePlate(license).isOwner(player) && !((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.CAR_PICKUP)) || player.hasPermission("mtvehicles.oppakken")) {
+            for (World world : Bukkit.getServer().getWorlds()) {
+                for (Entity entity : world.getEntities()) {
+                    if (entity.getCustomName() != null && entity.getCustomName().contains(license)) {
+                        ArmorStand test = (ArmorStand) entity;
+                        if (test.getCustomName().contains("MTVEHICLES_SKIN_" + license)) {
+                            if (!TextUtils.checkInvFull(player)) {
+                                player.getInventory().addItem(test.getHelmet());
+                                player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_PICKUP).replace("%p%", getByLicensePlate(license).getOwnerName())));
+                            } else {
+                                ConfigModule.messagesConfig.sendMessage(player, Message.INVENTORY_FULL);
+                                return;
+                            }
+                        }
+                        test.remove();
+                    }
+                }
+            }
+        } else {
+            if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.CAR_PICKUP)) {
+                player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.CANNOT_DO_THAT_HERE)));
+                return;
+            }
+            player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_NO_OWNER_PICKUP).replace("%p%", getByLicensePlate(license).getOwnerName())));
+            return;
+        }
     }
 }

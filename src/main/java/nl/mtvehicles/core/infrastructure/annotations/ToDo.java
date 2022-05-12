@@ -7,5 +7,5 @@ public @interface ToDo {
     /**
      * Further information about the object/method and why it is marked as 'ToDo'.
      */
-    String comment();
+    String value();
 }

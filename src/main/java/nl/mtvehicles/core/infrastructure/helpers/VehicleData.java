@@ -6,6 +6,9 @@ import org.bukkit.entity.ArmorStand;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Maps containing vehicles' data
+ */
 public class VehicleData {
     public static HashMap<String, Double> speed = new HashMap<>();
     public static HashMap<String, Double> speedhigh = new HashMap<>();

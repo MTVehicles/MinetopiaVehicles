@@ -1,6 +1,7 @@
 package nl.mtvehicles.core.infrastructure.models;
 
 import nl.mtvehicles.core.Main;
+import nl.mtvehicles.core.infrastructure.annotations.ToDo;
 import nl.mtvehicles.core.infrastructure.enums.VehicleType;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
@@ -41,6 +42,10 @@ public class Vehicle {
     private List<String> members;
     private Map<?, ?> vehicleData;
 
+    /**
+     * @deprecated There is no use for this HashMap. Please, avoid using it in any way as it may get removed soon.
+     */
+    @Deprecated
     public static HashMap<String, MTVehicleSubCommand> subcommands = new HashMap<>();
 
     /**
@@ -163,6 +168,9 @@ public class Vehicle {
         return maxSpeedBackwards;
     }
 
+    /**
+     * @deprecated Use {@link #getOwnerUUID()} instead.
+     */
     @Deprecated
     public String getOwnerUUIDString() {
         return owner.toString();
@@ -328,6 +336,7 @@ public class Vehicle {
      * @deprecated Use {@link #setVehicleType(VehicleType)} instead.
      */
     @Deprecated
+    @ToDo("Remove usages")
     public void setVehicleType(String vehicleType) {
         try {
             this.vehicleType = VehicleType.valueOf(vehicleType.toUpperCase(Locale.ROOT));

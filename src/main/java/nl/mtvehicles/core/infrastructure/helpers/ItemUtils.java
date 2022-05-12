@@ -18,7 +18,13 @@ import java.util.*;
 
 import static nl.mtvehicles.core.infrastructure.modules.VersionModule.getServerVersion;
 
+/**
+ * Methods for creating items in plugin's menus
+ */
 public class ItemUtils {
+    /**
+     * HashMap containing information of what is being edited by players
+     */
     public static HashMap<String, Boolean> edit = new HashMap<>();
 
     /**
@@ -61,18 +67,6 @@ public class ItemUtils {
                 .setLore("&a")
                 .toItemStack();
         return vehicle;
-    }
-
-    @Deprecated //This was not used anywhere. Why is it here, then?
-    public static ItemStack carItem9(int durability, String name, String material, String model, String nbt) {
-        ItemStack car = (new ItemFactory(Material.getMaterial(material))).setDurability(durability).setName(TextUtils.colorize("&6" + name)).toItemStack();
-        ItemMeta im = car.getItemMeta();
-        List<String> itemlore = new ArrayList<>();
-        itemlore.add(TextUtils.colorize("&a"));
-        im.setLore(itemlore);
-        im.setUnbreakable(true);
-        car.setItemMeta(im);
-        return car;
     }
 
     /**
@@ -256,7 +250,7 @@ public class ItemUtils {
      * <b>Do not use this. Use getMenuItem() instead.</b>
      * @param lores Lore as String - you can use %nl% for a new line
      *
-     * @see #getMenuItem(Material material, int amount, int durability, String name, String... lores)
+     * @deprecated Use {@link #getMenuItem(Material, int, int, String, String...)} instead.
      */
     @Deprecated
     public static ItemStack mItem(String material, int amount, short durability, String text, String lores) {
@@ -269,6 +263,9 @@ public class ItemUtils {
         return getMenuItem(m, amount, durability, false, text, itemLore);
     }
 
+    /**
+     * Get the stained glass pane material
+     */
     public static Material getStainedGlassPane(){
         if (getServerVersion().is1_12()) return Material.getMaterial("STAINED_GLASS_PANE");
         else return Material.getMaterial("LEGACY_STAINED_GLASS_PANE");

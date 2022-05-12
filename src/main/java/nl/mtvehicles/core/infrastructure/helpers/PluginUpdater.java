@@ -17,7 +17,10 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
-@ToDo(comment = "Translate to multiple languages.")
+/**
+ * The class responsible for plugin's auto-updater
+ */
+@ToDo("Translate to multiple languages.")
 public class PluginUpdater {
     private static boolean isEnabled = (boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.AUTO_UPDATE);
     private static PluginVersion pluginVersion = PluginVersion.getPluginVersion();
@@ -78,7 +81,7 @@ public class PluginUpdater {
         }
     }
 
-    @ToDo(comment = "Make this translatable, maybe?")
+    @ToDo("Make this translatable, maybe?")
     private static List<String> getUpdateMessage(){
         return TextUtils.list(
                 "&7---------------------------------------",
@@ -96,10 +99,10 @@ public class PluginUpdater {
         return timestamp.getTime();
     }
 
-    public static PluginVersion getLatestVersion(){
-        return latestVersion;
-    }
-
+    /**
+     * Check whether the plugin is the latest version
+     * @return True if the plugin is the latest version
+     */
     public static boolean isLatestVersion(){
         if (latestVersion == null){ //If previous connection was not successful, try connecting one more time
             latestVersion = receiveLatestVersion();
@@ -108,16 +111,28 @@ public class PluginUpdater {
         return !pluginVersion.isOlderThan(latestVersion);
     }
 
+    /**
+     * Check whether there is a newer version of the plugin available and send a message if there is
+     * @param sender Target to whom the message will be sent
+     */
     public static void checkNewVersion(CommandSender sender){
         if (!isLatestVersion()) sendUpdateMessage(sender);
     }
 
+    /**
+     * Send a message about a new update
+     * @param sender Target to whom the message will be sent
+     */
     private static void sendUpdateMessage(CommandSender sender){
         for (String line: getUpdateMessage()) {
             sender.sendMessage(TextUtils.colorize(line));
         }
     }
 
+    /**
+     * Update the plugin
+     * @param sender Target to whom information about the process will be sent
+     */
     public static void updatePlugin(CommandSender sender){
         if (isLatestVersion()) {
             sender.sendMessage(TextUtils.colorize("&cYou're already using the latest version."));

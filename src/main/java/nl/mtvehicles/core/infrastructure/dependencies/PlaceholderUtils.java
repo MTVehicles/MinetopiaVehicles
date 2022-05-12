@@ -43,7 +43,7 @@ public class PlaceholderUtils extends PlaceholderExpansion {
     }
 
     @Override
-    @ToDo(comment = "Add more placeholders.")
+    @ToDo("Add more placeholders.")
     public String onRequest(OfflinePlayer p, String parameter) { //Placeholder 'mtv_%parameter%'
 
         //Global placeholders
