@@ -3,6 +3,9 @@ package nl.mtvehicles.core.infrastructure.enums;
 import nl.mtvehicles.core.infrastructure.modules.VersionModule;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * The plugin's version
+ */
 public enum PluginVersion {
     LEGACY,
     v2_3_0,
@@ -18,14 +21,24 @@ public enum PluginVersion {
         return ordinal();
     }
 
+    /**
+     * Check whether the plugin version is a dev-version (auto-updater is disabled)
+     * @return True if plugin is a dev-version
+     */
     public boolean isDev(){
         return this.equals(DEV);
     }
 
+    /**
+     * Get the plugin's version as enum
+     */
     public static PluginVersion getPluginVersion(){
         return getVersion(VersionModule.pluginVersionString);
     }
 
+    /**
+     * Get plugin version from a String
+     */
     public static PluginVersion getVersion(String version){
         if (version.toLowerCase().contains("dev")) return DEV;
         try {
@@ -35,6 +48,9 @@ public enum PluginVersion {
         }
     }
 
+    /**
+     * Check whether the version is older than a given version
+     */
     public boolean isOlderThan(@NotNull PluginVersion compareVersion){
         return getOrder() < compareVersion.getOrder();
     }

@@ -5,6 +5,9 @@ import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import java.util.Locale;
 import java.util.Objects;
 
+/**
+ * Title of a GUI menu
+ */
 public enum InventoryTitle {
     VEHICLE_MENU,
     CHOOSE_VEHICLE_MENU,
