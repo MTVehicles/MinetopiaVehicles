@@ -25,7 +25,7 @@ import java.util.Map;
  */
 public class TextUtils {
     /**
-     * Colorize a String with '&' characters.
+     * Colorize a String with the ampersand characters.
      * @param text Text
      * @return Colorized text
      */

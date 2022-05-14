@@ -7,14 +7,41 @@ import org.jetbrains.annotations.NotNull;
  * The plugin's version
  */
 public enum PluginVersion {
+    /**
+     * Legacy versions (older than 2.3.0)
+     */
     LEGACY,
+    /**
+     * 2.3.0 (The fuel and dependency update)
+     */
     v2_3_0,
+    /**
+     * 2.4.0-pre1
+     */
     v2_4_0_pre1,
+    /**
+     * 2.4.0-rc1
+     */
     v2_4_0_rc1,
+    /**
+     * 2.4.0 (The Planes and the API update)
+     */
     v2_4_0,
+    /**
+     * 2.4.1 (Hotfixes)
+     */
     v2_4_1,
+    /**
+     * 2.4.2
+     */
     v2_4_2,
+    /**
+     * Latest version (from auto-updater)
+     */
     LATEST,
+    /**
+     * Dev-versions (auto-updater is disabled)
+     */
     DEV;
 
     public int getOrder(){
