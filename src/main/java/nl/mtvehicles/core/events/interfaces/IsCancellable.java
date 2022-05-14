@@ -1,6 +1,13 @@
 package nl.mtvehicles.core.events.interfaces;
 
 //Created own interface because older versions do not have the "Cancellable" interface yet
+
+import nl.mtvehicles.core.infrastructure.models.MTVEvent;
+
+/**
+ * Interface for all cancellable events.
+ * Does not include a 'isCancelled()' method - see {@link MTVEvent#isCancelled()}.
+ */
 public interface IsCancellable {
 
     /**

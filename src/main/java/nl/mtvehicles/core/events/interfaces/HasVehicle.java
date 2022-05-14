@@ -2,6 +2,9 @@ package nl.mtvehicles.core.events.interfaces;
 
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 
+/**
+ * Interface for all events with vehicles
+ */
 public interface HasVehicle {
 
     /**

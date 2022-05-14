@@ -1,6 +1,7 @@
 package nl.mtvehicles.core.listeners;
 
-import nl.mtvehicles.core.events.VehicleClickEvent;
+import nl.mtvehicles.core.events.VehicleEnterEvent;
+import nl.mtvehicles.core.events.VehiclePickUpEvent;
 import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
 import nl.mtvehicles.core.infrastructure.enums.Message;
@@ -33,10 +34,6 @@ import java.util.Map;
 public class VehicleClickListener extends MTVListener {
     private Map<String, Long> lastUsage = new HashMap<>();
 
-    public VehicleClickListener(){
-        super(new VehicleClickEvent());
-    }
-
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerInteractAtEntity(PlayerInteractAtEntityEvent event) {
         this.event = event;
@@ -53,18 +50,19 @@ public class VehicleClickListener extends MTVListener {
 
         String license = VehicleUtils.getLicensePlate(entity);
 
-        VehicleClickEvent api = (VehicleClickEvent) getAPI();
-        api.setLicensePlate(license);
-        callAPI();
-        if (isCancelled()) return;
-
-        license = api.getLicensePlate();
-        Vehicle vehicle = VehicleUtils.getByLicensePlate(license);
-        if (vehicle == null) return;
-
-        event.setCancelled(true);
-
         if (player.isSneaking()) {
+
+            this.setAPI(new VehiclePickUpEvent());
+            VehiclePickUpEvent api = (VehiclePickUpEvent) getAPI();
+            api.setLicensePlate(license);
+            callAPI();
+            if (isCancelled()) return;
+
+            license = api.getLicensePlate();
+            Vehicle vehicle = VehicleUtils.getByLicensePlate(license);
+            if (vehicle == null) return;
+
+            event.setCancelled(true);
 
             if (!player.hasPermission("mtvehicles.anwb") && (boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.DISABLE_PICKUP_FROM_WATER)){
                 if (entity.getLocation().clone().add(0, 1, 0).getBlock().isLiquid()) {
@@ -81,6 +79,18 @@ public class VehicleClickListener extends MTVListener {
             VehicleUtils.pickupVehicle(license, player);
             return;
         }
+
+        this.setAPI(new VehicleEnterEvent());
+        VehicleEnterEvent api = (VehicleEnterEvent) getAPI();
+        api.setLicensePlate(license);
+        callAPI();
+        if (isCancelled()) return;
+
+        license = api.getLicensePlate();
+        Vehicle vehicle = VehicleUtils.getByLicensePlate(license);
+        if (vehicle == null) return;
+
+        event.setCancelled(true);
 
         if (entity.getCustomName().contains("MTVEHICLES_SEAT")) {
 

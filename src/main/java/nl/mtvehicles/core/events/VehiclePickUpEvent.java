@@ -7,9 +7,9 @@ import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 
 /**
- * On vehicle leave
+ * On vehicle pick up
  */
-public class VehicleLeaveEvent extends MTVEvent implements IsCancellable, HasVehicle {
+public class VehiclePickUpEvent extends MTVEvent implements IsCancellable, HasVehicle {
     private String licensePlate;
 
     @Override

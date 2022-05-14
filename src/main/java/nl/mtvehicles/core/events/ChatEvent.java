@@ -3,6 +3,9 @@ package nl.mtvehicles.core.events;
 import nl.mtvehicles.core.events.interfaces.IsCancellable;
 import nl.mtvehicles.core.infrastructure.models.MTVEvent;
 
+/**
+ * On player chat
+ */
 public class ChatEvent extends MTVEvent implements IsCancellable {
     private String message;
 

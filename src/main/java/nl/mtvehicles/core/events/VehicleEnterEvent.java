@@ -6,7 +6,10 @@ import nl.mtvehicles.core.infrastructure.models.MTVEvent;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 
-public class VehicleClickEvent extends MTVEvent implements IsCancellable, HasVehicle {
+/**
+ * On vehicle enter
+ */
+public class VehicleEnterEvent extends MTVEvent implements IsCancellable, HasVehicle {
     private String licensePlate;
 
     @Override
