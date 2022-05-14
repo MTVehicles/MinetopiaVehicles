@@ -10,6 +10,7 @@ import nl.mtvehicles.core.infrastructure.enums.VehicleType;
 import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
+import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
 import nl.mtvehicles.core.infrastructure.modules.VersionModule;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -18,9 +19,19 @@ import java.text.DecimalFormat;
 
 import static nl.mtvehicles.core.infrastructure.models.VehicleUtils.isInsideVehicle;
 
+/**
+ * Methods for PlaceholderAPI soft-dependency.<br>
+ * <b>Do not initialise this class directly. Use {@link DependencyModule#placeholderAPI} instead.</b>
+ */
 public class PlaceholderUtils extends PlaceholderExpansion {
-    //This is only called if DependencyModule made sure that Vault is installed.
+    //This must only be called if DependencyModule made sure that Vault is installed.
     private final Main plugin = Main.instance;
+
+    /**
+     * Default constructor - <b>do not use this.</b><br>
+     * Use {@link DependencyModule#placeholderAPI} instead.
+     */
+    public PlaceholderUtils(){}
 
     @Override
     public String getAuthor() {
@@ -85,6 +96,12 @@ public class PlaceholderUtils extends PlaceholderExpansion {
         return null;
     }
 
+    /**
+     * Parse a text with placeholders.
+     * @param player Player
+     * @param text Text with placeholders
+     * @return Text with placeholders replaced with their value
+     */
     public static String parsePlaceholders(Player player, String text){
         return PlaceholderAPI.setPlaceholders(player, text);
     }
