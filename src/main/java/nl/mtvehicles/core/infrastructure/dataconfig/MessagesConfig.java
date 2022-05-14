@@ -12,9 +12,17 @@ import org.bukkit.command.CommandSender;
 import java.io.File;
 import java.util.Locale;
 
+/**
+ * Methods for message files.<br>
+ * <b>Do not initialise this class directly. Use {@link ConfigModule#messagesConfig} instead.</b>
+ */
 public class MessagesConfig extends Config {
     private Language language;
 
+    /**
+     * Default constructor which gets an appropriate file based on the plugin's language (set in SuperSecretSettings) - <b>do not use this.</b><br>
+     * Use {@link ConfigModule#messagesConfig} instead.
+     */
     public MessagesConfig() {
         super(ConfigType.MESSAGES);
         for (String lang : Language.getAllLanguages()) {
@@ -26,6 +34,11 @@ public class MessagesConfig extends Config {
         }
     }
 
+    /**
+     * Get a message by its key (in plugin's set language).
+     * @param key Key of the message - as String
+     * @deprecated This may lead to issues - use {@link #getMessage(Message)} instead.
+     */
     @Deprecated
     public String getMessage(String key) {
         String msg = "";
@@ -37,6 +50,10 @@ public class MessagesConfig extends Config {
         return msg;
     }
 
+    /**
+     * Get a message by its key (in plugin's set language).
+     * @param message Message (enum)
+     */
     public String getMessage(Message message){
         String msg = "";
         try {
@@ -47,15 +64,31 @@ public class MessagesConfig extends Config {
         return msg;
     }
 
+    /**
+     * Send a message to a player/console by its key (in plugin's set language).
+     * @param receiver Player/Console
+     * @param key Key of the message - as String
+     * @deprecated This may lead to issues - use {@link #sendMessage(CommandSender, Message)} instead.
+     */
     @Deprecated
-    public void sendMessage(CommandSender sender, String key) {
-        sender.sendMessage(getMessage(key));
+    public void sendMessage(CommandSender receiver, String key) {
+        receiver.sendMessage(getMessage(key));
     }
 
-    public void sendMessage(CommandSender sender, Message message) {
-        sender.sendMessage(getMessage(message));
+    /**
+     * Send a message to a player/console by its key (in plugin's set language).
+     * @param receiver Player/Console
+     * @param message Message (enum)
+     */
+    public void sendMessage(CommandSender receiver, Message message) {
+        receiver.sendMessage(getMessage(message));
     }
 
+    /**
+     * Set this class to work with the appropriate language file
+     * @param languageCode 'xx' in 'messages_xx.yml'
+     * @return True if successful
+     */
     public boolean setLanguageFile(String languageCode){
         String countryCode = (languageCode.equals("ns")) ? "en" : languageCode;
         this.language = (Language.isSupported(languageCode)) ? Language.valueOf(languageCode.toUpperCase(Locale.ROOT)) : Language.CUSTOM;
@@ -69,6 +102,10 @@ public class MessagesConfig extends Config {
         return true;
     }
 
+    /**
+     * Save a messages file
+     * @param countryCode 'xx' in 'messages_xx.yml'
+     */
     private void saveLanguageFile(String countryCode){
         String fileName = "messages/messages_" + countryCode + ".yml";
 
@@ -76,6 +113,10 @@ public class MessagesConfig extends Config {
         if (!languageFile.exists()) Main.instance.saveResource(fileName, false);
     }
 
+    /**
+     * Save new language files (when updating from a lower version)
+     * @param time Old messages files will be renamed and will contain this time
+     */
     public void saveNewLanguageFiles(String time){
         for (String lang : Language.getAllLanguages()) {
             File messagesFile = new File(Main.instance.getDataFolder(), "messages/messages_" + lang + ".yml");
