@@ -6,6 +6,9 @@ import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.inventory.ItemStack;
 
+/**
+ * <b>/vehicle repair</b> - repair the held vehicle.
+ */
 public class VehicleRepair extends MTVehicleSubCommand {
     public VehicleRepair() {
         this.setPlayerCommand(true);

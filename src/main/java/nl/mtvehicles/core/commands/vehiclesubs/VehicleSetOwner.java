@@ -12,6 +12,9 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 
+/**
+ * <b>/vehicle setowner %player%</b> - set held vehicle's owner.
+ */
 public class VehicleSetOwner extends MTVehicleSubCommand {
     public VehicleSetOwner() {
         this.setPlayerCommand(true);

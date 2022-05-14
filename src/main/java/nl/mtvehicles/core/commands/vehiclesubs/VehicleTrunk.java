@@ -4,6 +4,9 @@ import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import org.bukkit.inventory.ItemStack;
 
+/**
+ * <b>/vehicle trunk</b> - open the trunk of the held vehicle.
+ */
 public class VehicleTrunk extends MTVehicleSubCommand {
     public VehicleTrunk() {
         this.setPlayerCommand(true);

@@ -7,6 +7,9 @@ import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.inventory.ItemStack;
 
+/**
+ * <b>/vehicle private</b> - set the vehicle as private (only the owner can enter it).
+ */
 public class VehiclePrivate extends MTVehicleSubCommand {
     public VehiclePrivate() {
         this.setPlayerCommand(true);

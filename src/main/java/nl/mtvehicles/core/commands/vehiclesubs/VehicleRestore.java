@@ -7,6 +7,9 @@ import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
+/**
+ * <b>/vehicle restore (%player%)</b> - open a GUI menu of all vehicles in database (vehicleData.yml), their owner may be specified.
+ */
 public class VehicleRestore extends MTVehicleSubCommand {
     public VehicleRestore() {
         this.setPlayerCommand(true);

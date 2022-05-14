@@ -12,6 +12,9 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
+/**
+ * <b>/vehicle addrider %player%</b> - add a player who may steer the held vehicle.
+ */
 public class VehicleAddRider extends MTVehicleSubCommand {
     public VehicleAddRider() {
         this.setPlayerCommand(true);

@@ -8,9 +8,18 @@ import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
+/**
+ * Command executor for /mtv command (managing subcommands)
+ */
 public class VehicleSubCommandManager extends MTVehicleCommand {
-    public static String name = "minetopiavehicles";
+    /**
+     * Name of the command
+     */
+    public static String CMD_NAME = "minetopiavehicles";
 
+    /**
+     * Constructor which registers all subcommands
+     */
     public VehicleSubCommandManager() {
         CommandModule.subcommands.put("info", new VehicleInfo());
         CommandModule.subcommands.put("help", new VehicleHelp());

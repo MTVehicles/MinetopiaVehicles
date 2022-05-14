@@ -12,6 +12,9 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
+/**
+ * <b>/vehicle addmember %player%</b> - add a player who may sit in the held vehicle.
+ */
 public class VehicleAddMember extends MTVehicleSubCommand {
     public VehicleAddMember() {
         this.setPlayerCommand(true);

@@ -15,6 +15,9 @@ import java.text.NumberFormat;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * <b>/vehicle info</b> - get information about the held vehicle
+ */
 public class VehicleInfo extends MTVehicleSubCommand {
     public VehicleInfo() {
         this.setPlayerCommand(true);

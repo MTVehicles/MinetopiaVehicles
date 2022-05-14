@@ -6,6 +6,9 @@ import nl.mtvehicles.core.infrastructure.helpers.PluginUpdater;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 
+/**
+ * <b>/vehicle update</b> - update the plugin if a newer version is available.
+ */
 public class VehicleUpdate extends MTVehicleSubCommand {
     @Override
     public boolean execute() {

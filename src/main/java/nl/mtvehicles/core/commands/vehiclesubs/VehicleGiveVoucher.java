@@ -9,6 +9,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+/**
+ * <b>/vehicle givevoucher %player% %uuid%</b> - add a vehicle voucher to a player.
+ */
 public class VehicleGiveVoucher extends MTVehicleSubCommand {
     public VehicleGiveVoucher() {
         this.setPlayerCommand(false);

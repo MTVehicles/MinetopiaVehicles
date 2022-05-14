@@ -15,6 +15,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+/**
+ * <b>/vehicle edit</b> - edit held vehicle's specifications (in a GUI).
+ */
 public class VehicleEdit extends MTVehicleSubCommand {
     public VehicleEdit() {
         this.setPlayerCommand(true);
@@ -36,6 +39,11 @@ public class VehicleEdit extends MTVehicleSubCommand {
         return true;
     }
 
+    /**
+     * Open /vehicle edit GUI menu to a player
+     * @param p Player
+     * @param item Vehicle item
+     */
     public static void editMenu(Player p, ItemStack item) {
         String licensePlate = VehicleUtils.getLicensePlate(item);
         MessagesConfig msg = ConfigModule.messagesConfig;

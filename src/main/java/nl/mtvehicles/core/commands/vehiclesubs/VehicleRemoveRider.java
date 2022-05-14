@@ -11,6 +11,9 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
+/**
+ * <b>/vehicle removerider %player%</b> - remove a player who may steer the held vehicle.
+ */
 public class VehicleRemoveRider extends MTVehicleSubCommand {
     public VehicleRemoveRider() {
         this.setPlayerCommand(true);

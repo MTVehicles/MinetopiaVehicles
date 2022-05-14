@@ -5,6 +5,9 @@ import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 
+/**
+ * <b>/vehicle reload</b> - reload the plugin's configuration files.
+ */
 public class VehicleReload extends MTVehicleSubCommand {
     public VehicleReload() {
         this.setPlayerCommand(false);

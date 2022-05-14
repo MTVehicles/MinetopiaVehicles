@@ -15,6 +15,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * <b>/vehicle menu</b> - open a GUI menu of all the vehicles.
+ */
 public class VehicleMenu extends MTVehicleSubCommand {
     public static HashMap<UUID, Inventory> beginMenu = new HashMap<>();
 

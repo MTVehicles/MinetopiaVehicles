@@ -5,6 +5,9 @@ import nl.mtvehicles.core.infrastructure.helpers.LanguageUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 
+/**
+ * <b>/vehicle language</b> - set the plugin's language (in a GUI).
+ */
 public class VehicleLanguage extends MTVehicleSubCommand {
     public VehicleLanguage() {
         this.setPlayerCommand(true);

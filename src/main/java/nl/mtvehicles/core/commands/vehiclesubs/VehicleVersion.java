@@ -10,6 +10,9 @@ import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
 import nl.mtvehicles.core.infrastructure.modules.VersionModule;
 import org.bukkit.Bukkit;
 
+/**
+ * <b>/vehicle version</b> - get information about the plugin and server version.
+ */
 public class VehicleVersion extends MTVehicleSubCommand {
     public VehicleVersion() {
         this.setPlayerCommand(false);

@@ -5,6 +5,9 @@ import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 
+/**
+ * <b>/vehicle help</b> - list of all MTV commands.
+ */
 public class VehicleHelp extends MTVehicleSubCommand {
     public VehicleHelp() {
         this.setPlayerCommand(true);

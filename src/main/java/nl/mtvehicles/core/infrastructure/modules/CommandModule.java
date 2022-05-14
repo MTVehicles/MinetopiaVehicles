@@ -23,6 +23,9 @@ public class CommandModule {
      */
     public static HashMap<String, MTVehicleSubCommand> subcommands = new HashMap<>();
 
+    /**
+     * Constructor which registers executor and tab completer
+     */
     public CommandModule() {
         PluginCommand pluginCommand = Main.instance.getCommand("minetopiavehicles");
 

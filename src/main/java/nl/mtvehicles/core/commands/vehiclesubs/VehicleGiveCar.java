@@ -8,6 +8,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+/**
+ * <b>/vehicle givecar %player% %uuid%</b> - add a vehicle to a player.
+ */
 public class VehicleGiveCar extends MTVehicleSubCommand {
     public VehicleGiveCar() {
         this.setPlayerCommand(false);

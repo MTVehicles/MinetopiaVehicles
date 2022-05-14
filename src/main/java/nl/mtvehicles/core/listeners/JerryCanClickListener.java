@@ -77,7 +77,7 @@ public class JerryCanClickListener extends MTVListener {
         if ((currentFuel + 1) <= maxFuel){
             double price = getFuelPrice();
             if (makePlayerPay(price)){
-                player.setItemInHand(VehicleFuel.benzineItem(maxFuel, currentFuel + 1));
+                player.setItemInHand(VehicleFuel.jerrycanItem(maxFuel, currentFuel + 1));
                 playJerryCanSound();
             }
         }
@@ -89,7 +89,7 @@ public class JerryCanClickListener extends MTVListener {
         int difference = maxFuel - currentFuel;
         double price = getFuelPrice(difference);
         if (makePlayerPay(price)){
-            player.setItemInHand(VehicleFuel.benzineItem(maxFuel, maxFuel));
+            player.setItemInHand(VehicleFuel.jerrycanItem(maxFuel, maxFuel));
             playJerryCanSound();
         }
     }

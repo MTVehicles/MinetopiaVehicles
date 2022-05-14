@@ -108,7 +108,7 @@ public class VehicleEntityListener extends MTVListener {
 
         if (vehicleFuel + 5 > 100) {
             int rest = (int) (100 - vehicleFuel);
-            player.setItemInHand(VehicleFuel.benzineItem(Integer.parseInt(jerryCanSize), Integer.parseInt(jerryCanFuel) - rest));
+            player.setItemInHand(VehicleFuel.jerrycanItem(Integer.parseInt(jerryCanSize), Integer.parseInt(jerryCanFuel) - rest));
             VehicleData.fuel.put(license, VehicleData.fuel.get(license) + rest);
             BossBarUtils.setBossBarValue(vehicleFuel / 100.0D, license);
             return;
@@ -117,11 +117,11 @@ public class VehicleEntityListener extends MTVListener {
         if (!(Integer.parseInt(jerryCanFuel) < 5)) {
             VehicleData.fuel.put(license, VehicleData.fuel.get(license) + 5);
             BossBarUtils.setBossBarValue(vehicleFuel / 100.0D, license);
-            player.setItemInHand(VehicleFuel.benzineItem(Integer.parseInt(jerryCanSize), Integer.parseInt(jerryCanFuel) - 5));
+            player.setItemInHand(VehicleFuel.jerrycanItem(Integer.parseInt(jerryCanSize), Integer.parseInt(jerryCanFuel) - 5));
         } else {
             VehicleData.fuel.put(license, Double.valueOf(VehicleData.fuel.get(license) + jerryCanFuel));
             BossBarUtils.setBossBarValue(vehicleFuel / 100.0D, license);
-            player.setItemInHand(VehicleFuel.benzineItem(Integer.parseInt(jerryCanSize), 0));
+            player.setItemInHand(VehicleFuel.jerrycanItem(Integer.parseInt(jerryCanSize), 0));
         }
     }
 

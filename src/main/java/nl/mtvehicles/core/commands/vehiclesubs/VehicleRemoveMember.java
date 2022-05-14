@@ -11,6 +11,9 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
+/**
+ * <b>/vehicle removemember %player%</b> - remove a player who may sit in the held vehicle.
+ */
 public class VehicleRemoveMember extends MTVehicleSubCommand {
     public VehicleRemoveMember() {
         this.setPlayerCommand(true);
