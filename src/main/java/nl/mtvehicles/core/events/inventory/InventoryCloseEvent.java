@@ -4,6 +4,9 @@ import nl.mtvehicles.core.events.interfaces.HasInventory;
 import nl.mtvehicles.core.infrastructure.enums.InventoryTitle;
 import nl.mtvehicles.core.infrastructure.models.MTVEvent;
 
+/**
+ * On inventory close
+ */
 public class InventoryCloseEvent extends MTVEvent implements HasInventory {
     private InventoryTitle title;
 

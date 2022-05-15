@@ -10,6 +10,9 @@ import nl.mtvehicles.core.movement.MovementManager;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+/**
+ * On player join (a packet handler is assigned + update and language message if OP / with permission)
+ */
 public class JoinListener extends MTVListener {
 
     @EventHandler

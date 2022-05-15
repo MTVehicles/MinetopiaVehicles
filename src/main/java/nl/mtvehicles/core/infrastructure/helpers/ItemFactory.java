@@ -10,6 +10,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
+import javax.annotation.Nullable;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,145 +18,147 @@ import java.util.Map;
 
 import static nl.mtvehicles.core.infrastructure.modules.VersionModule.getServerVersion;
 
+/**
+ * Class for an easy creation of items
+ */
 public class ItemFactory {
-    private ItemStack is;
-    private String skullOwner;
-    private static Enchantment glow;
+    private ItemStack item;
+    private @Nullable String skullOwner;
 
     public ItemFactory(Material material) {
         this(material, 1);
     }
 
     public ItemFactory(ItemStack itemStack) {
-        this.is = itemStack;
+        this.item = itemStack;
     }
 
     public ItemFactory(Material material, int amount) {
-        this.is = new ItemStack(material, amount);
+        this.item = new ItemStack(material, amount);
     }
 
-    public ItemFactory(Material material, int amount, byte durability) {
-        this.is = new ItemStack(material, amount);
+    public ItemFactory(Material material, int amount, int durability) {
+        this.item = new ItemStack(material, amount);
         this.setDurability(durability);
     }
 
     public ItemFactory clone() {
-        return new ItemFactory(this.is);
+        return new ItemFactory(this.item);
     }
 
     public ItemFactory setDurability(int durability) {
-        if (getServerVersion().is1_12()) this.is.setDurability((short) durability);
+        if (getServerVersion().is1_12()) this.item.setDurability((short) durability);
         else {
-            ItemMeta im = this.is.getItemMeta();
+            ItemMeta im = this.item.getItemMeta();
             ((org.bukkit.inventory.meta.Damageable) im).setDamage(durability);
-            this.is.setItemMeta(im);
+            this.item.setItemMeta(im);
         }
         return this;
     }
 
     public ItemFactory setType(Material material) {
-        this.is.setType(material);
+        this.item.setType(material);
         return this;
     }
 
     public ItemFactory setName(String name) {
-        ItemMeta im = this.is.getItemMeta();
+        ItemMeta im = this.item.getItemMeta();
         im.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
-        this.is.setItemMeta(im);
+        this.item.setItemMeta(im);
         return this;
     }
 
     public ItemFactory setAmount(int amount) {
-        this.is.setAmount(amount);
+        this.item.setAmount(amount);
         return this;
     }
 
     public ItemFactory setUnbreakable(boolean unbreakable){
-        ItemMeta im = this.is.getItemMeta();
+        ItemMeta im = this.item.getItemMeta();
         im.setUnbreakable(unbreakable);
-        this.is.setItemMeta(im);
+        this.item.setItemMeta(im);
         return this;
     }
 
     public List<String> getLore() {
-        return this.is.getItemMeta().getLore();
+        return this.item.getItemMeta().getLore();
     }
 
     public ItemFactory setLore(List<String> lore) {
-        ItemMeta im = this.is.getItemMeta();
+        ItemMeta im = this.item.getItemMeta();
         List<String> formatted = new ArrayList<>();
         for (String str : lore)
             formatted.add(ChatColor.translateAlternateColorCodes('&', str));
         im.setLore(formatted);
-        this.is.setItemMeta(im);
+        this.item.setItemMeta(im);
         return this;
     }
 
     public ItemFactory removeLore() {
-        ItemMeta im = this.is.getItemMeta();
+        ItemMeta im = this.item.getItemMeta();
         List<String> lore = new ArrayList<>(im.getLore());
         lore.clear();
         im.setLore(lore);
-        this.is.setItemMeta(im);
+        this.item.setItemMeta(im);
         return this;
     }
 
     public ItemFactory hideAttributes() {
-        ItemMeta im = this.is.getItemMeta();
+        ItemMeta im = this.item.getItemMeta();
         assert im != null;
         im.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         im.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         im.addItemFlags(ItemFlag.HIDE_PLACED_ON);
         im.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
         im.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
-        this.is.setItemMeta(im);
+        this.item.setItemMeta(im);
         return this;
     }
 
     public ItemFactory addUnsafeEnchantment(Enchantment enchantment, int level) {
-        this.is.addUnsafeEnchantment(enchantment, level);
+        this.item.addUnsafeEnchantment(enchantment, level);
         return this;
     }
 
     public ItemFactory removeEnchantment(Enchantment enchantment) {
-        this.is.removeEnchantment(enchantment);
+        this.item.removeEnchantment(enchantment);
         return this;
     }
 
     public ItemFactory addEnchant(Enchantment enchantment, int level) {
-        ItemMeta im = this.is.getItemMeta();
+        ItemMeta im = this.item.getItemMeta();
         assert im != null;
         im.addEnchant(enchantment, level, true);
-        this.is.setItemMeta(im);
+        this.item.setItemMeta(im);
         return this;
     }
 
     public ItemFactory setGlowing(boolean glowing){
         if (glowing) {
             try {
-                if (!this.is.getItemMeta().hasEnchant(Enchantment.ARROW_INFINITE))
+                if (!this.item.getItemMeta().hasEnchant(Enchantment.ARROW_INFINITE))
                     addEnchantGlow();
             } catch (Exception e){
                 Main.logSevere("Unable to set glowing state to true.");
             }
         } else {
-            if (this.is.getItemMeta().hasEnchant(Enchantment.ARROW_INFINITE))
+            if (this.item.getItemMeta().hasEnchant(Enchantment.ARROW_INFINITE))
                 removeEnchantment(Enchantment.ARROW_INFINITE);
         }
         return this;
     }
 
     public ItemFactory addEnchantGlow() {
-        ItemMeta im = this.is.getItemMeta();
+        ItemMeta im = this.item.getItemMeta();
         assert im != null;
         im.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
         im.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        this.is.setItemMeta(im);
+        this.item.setItemMeta(im);
         return this;
     }
 
     public ItemFactory addEnchantments(Map<Enchantment, Integer> enchantments) {
-        this.is.addEnchantments(enchantments);
+        this.item.addEnchantments(enchantments);
         return this;
     }
 
@@ -170,15 +173,15 @@ public class ItemFactory {
             loreList.add(ChatColor.translateAlternateColorCodes('&', loreLine));
             b++;
         }
-        ItemMeta im = this.is.getItemMeta();
+        ItemMeta im = this.item.getItemMeta();
         assert im != null;
         im.setLore(loreList);
-        this.is.setItemMeta(im);
+        this.item.setItemMeta(im);
         return this;
     }
 
     public ItemFactory addLoreLines(List<String> line) {
-        ItemMeta im = this.is.getItemMeta();
+        ItemMeta im = this.item.getItemMeta();
         List<String> lore = new ArrayList<>();
         assert im != null;
         if (im.hasLore())
@@ -186,76 +189,76 @@ public class ItemFactory {
         for (String s : line)
             lore.add(ChatColor.translateAlternateColorCodes('&', s));
         im.setLore(lore);
-        this.is.setItemMeta(im);
+        this.item.setItemMeta(im);
         return this;
     }
 
     public ItemFactory setNBT(String key, String value) {
-        NBTItem nbt = new NBTItem(this.is);
+        NBTItem nbt = new NBTItem(this.item);
         nbt.setString(key, value);
-        nbt.mergeNBT(this.is);
+        nbt.mergeNBT(this.item);
         return this;
     }
 
     public ItemFactory removeLoreLine(String line) {
-        ItemMeta im = this.is.getItemMeta();
+        ItemMeta im = this.item.getItemMeta();
         List<String> lore = new ArrayList<>(im.getLore());
         if (!lore.contains(line))
             return this;
         lore.remove(line);
         im.setLore(lore);
-        this.is.setItemMeta(im);
+        this.item.setItemMeta(im);
         return this;
     }
 
     public ItemFactory removeLoreLine(int index) {
-        ItemMeta im = this.is.getItemMeta();
+        ItemMeta im = this.item.getItemMeta();
         List<String> lore = new ArrayList<>(im.getLore());
         if (index < 0 || index > lore.size())
             return this;
         lore.remove(index);
         im.setLore(lore);
-        this.is.setItemMeta(im);
+        this.item.setItemMeta(im);
         return this;
     }
 
     public ItemFactory addLoreLine(String line) {
-        ItemMeta im = this.is.getItemMeta();
+        ItemMeta im = this.item.getItemMeta();
         List<String> lore = new ArrayList<>();
         if (im.hasLore())
             lore = new ArrayList<>(im.getLore());
         lore.add(ChatColor.translateAlternateColorCodes('&', line));
         im.setLore(lore);
-        this.is.setItemMeta(im);
+        this.item.setItemMeta(im);
         return this;
     }
 
     public ItemFactory addLoreLine(String line, int pos) {
-        ItemMeta im = this.is.getItemMeta();
+        ItemMeta im = this.item.getItemMeta();
         List<String> lore = new ArrayList<>(im.getLore());
         lore.set(pos, ChatColor.translateAlternateColorCodes('&', line));
         im.setLore(lore);
-        this.is.setItemMeta(im);
+        this.item.setItemMeta(im);
         return this;
     }
 
     public ItemFactory setDyeColor(DyeColor color) {
-        this.is.setDurability(color.getDyeData());
+        this.item.setDurability(color.getDyeData());
         return this;
     }
 
     public ItemFactory setLeatherArmorColor(Color color) {
         try {
-            LeatherArmorMeta im = (LeatherArmorMeta) this.is.getItemMeta();
+            LeatherArmorMeta im = (LeatherArmorMeta) this.item.getItemMeta();
             im.setColor(color);
-            this.is.setItemMeta(im);
+            this.item.setItemMeta(im);
         } catch (ClassCastException classCastException) {
         }
         return this;
     }
 
     public ItemStack toItemStack() {
-        return this.is;
+        return this.item;
     }
 
     public String getSkullOwner() {
@@ -264,9 +267,9 @@ public class ItemFactory {
 
     public ItemFactory setSkullOwner(String owner) {
         try {
-            SkullMeta im = (SkullMeta) this.is.getItemMeta();
+            SkullMeta im = (SkullMeta) this.item.getItemMeta();
             im.setOwner(owner);
-            this.is.setItemMeta(im);
+            this.item.setItemMeta(im);
         } catch (ClassCastException classCastException) {
         }
         return this;
@@ -277,7 +280,7 @@ public class ItemFactory {
             Object compound;
             Class<?> craftItemStack = getBukkitClass("inventory", "CraftItemStack");
             Method nmsCopy = craftItemStack.getMethod("asNMSCopy", new Class[]{ItemStack.class});
-            Object nmsStack = nmsCopy.invoke(null, new Object[]{this.is});
+            Object nmsStack = nmsCopy.invoke(null, new Object[]{this.item});
             Class<?> nmsStackClass = nmsStack.getClass();
             Method hasTag = nmsStackClass.getMethod("hasTag", new Class[0]);
             Method getTag = nmsStackClass.getMethod("getTag", new Class[0]);
@@ -296,7 +299,7 @@ public class ItemFactory {
             set.invoke(compound, new Object[]{"Unbreakable", nbtTagInt.getConstructor(new Class[]{int.class}).newInstance(new Object[]{Integer.valueOf(1)})});
             setTag.invoke(nmsStack, new Object[]{compound});
             Method asBukkitCopy = craftItemStack.getMethod("asBukkitCopy", new Class[]{nmsStackClass});
-            this.is = (ItemStack) asBukkitCopy.invoke(null, new Object[]{nmsStack});
+            this.item = (ItemStack) asBukkitCopy.invoke(null, new Object[]{nmsStack});
         } catch (Exception e) {
             e.printStackTrace();
         }

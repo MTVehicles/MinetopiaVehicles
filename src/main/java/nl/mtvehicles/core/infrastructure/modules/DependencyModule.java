@@ -11,14 +11,30 @@ import org.bukkit.Bukkit;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Module for managing soft-dependencies.
+ */
 public class DependencyModule {
     private static @Getter
     @Setter
     DependencyModule instance;
 
+    /**
+     * List of all enabled soft-dependencies.
+     */
     public static List<SoftDependency> loadedDependencies = new ArrayList<>();
+
+    /**
+     * WorldGuard's Utils class
+     */
     public static WorldGuardUtils worldGuard;
+    /**
+     * Vault's Utils class
+     */
     public static VaultUtils vault;
+    /**
+     * PlaceholderAPI's Utils class
+     */
     public static PlaceholderUtils placeholderAPI;
 
     public DependencyModule() {
@@ -53,10 +69,23 @@ public class DependencyModule {
         }
     }
 
+    /**
+     * Check whether a soft-dependency is installed and enabled.
+     * @param dependency Soft-dependency supported by the plugin
+     * @return True if the soft-dependency is enabled.
+     *
+     * @see SoftDependency
+     */
     public static boolean isDependencyEnabled(SoftDependency dependency){
         return loadedDependencies.contains(dependency);
     }
 
+    /**
+     * Disable a soft-dependency (usually due to a fatal bug or incompatible server version)
+     * @param dependency Soft-dependency supported by the plugin
+     *
+     * @see SoftDependency
+     */
     public static void disableDependency(SoftDependency dependency){
         if (isDependencyEnabled(dependency)) loadedDependencies.remove(dependency);
     }

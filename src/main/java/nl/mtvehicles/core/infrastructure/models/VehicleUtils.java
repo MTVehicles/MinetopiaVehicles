@@ -12,6 +12,7 @@ import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -21,14 +22,30 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
-// "Static" class
+/**
+ * Useful methods for vehicles
+ * @see Vehicle
+ */
 public final class VehicleUtils {
 
+    /**
+     * A private constructor - makes this a "static class"
+     */
     private VehicleUtils(){}
 
+    /**
+     * HashMap containing information about which trunk a player has opened (determined by vehicle's license plate)
+     */
     public static HashMap<Player, String> openedTrunk = new HashMap<>();
 
-    public static void spawnVehicle(String licensePlate, Location location){
+    /**
+     * Spawn a vehicle
+     * @param licensePlate Vehicle's license plate
+     * @param location Location where the vehicle should be spawned
+     *
+     * @throws IllegalArgumentException If vehicle with given license plate does not exist
+     */
+    public static void spawnVehicle(String licensePlate, Location location) throws IllegalArgumentException {
         if (!existsByLicensePlate(licensePlate)) throw new IllegalArgumentException("Vehicle does not exists.");
 
         ArmorStand standSkin = location.getWorld().spawn(location, ArmorStand.class);
@@ -80,11 +97,22 @@ public final class VehicleUtils {
         }
     }
 
+    /**
+     * Get license plate from a vehicle item
+     * @param item Vehicle as Item
+     * @return Vehicle's license plate
+     */
     public static String getLicensePlate(ItemStack item){
         NBTItem nbt = new NBTItem(item);
         return nbt.getString("mtvehicles.kenteken");
     }
 
+    /**
+     * Create a vehicle and get its item by UUID (UUID may be found in vehicles.yml)
+     * @param p Vehicle's owner
+     * @param uuid Vehicle's UUID (UUID may be found in vehicles.yml)
+     * @return Vehicle item
+     */
     public static ItemStack getItemByUUID(Player p, String uuid) {
         List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getVehicles();
         List<Map<?, ?>> matchedVehicles = new ArrayList<>();
@@ -142,6 +170,11 @@ public final class VehicleUtils {
         return null;
     }
 
+    /**
+     * Check whether horn is enabled on this vehicle.
+     * @param damage The vehicle item's durability
+     * @return True if horn is enabled
+     */
     public static boolean getHornByDamage(int damage){
         List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getVehicles();
         for (Map<?, ?> configVehicle : vehicles) {
@@ -157,6 +190,11 @@ public final class VehicleUtils {
         return false;
     }
 
+    /**
+     * Check what is the max health of this vehicle.
+     * @param damage The vehicle item's durability
+     * @return Max health of the vehicle
+     */
     public static double getMaxHealthByDamage(int damage){
         List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getVehicles();
         for (Map<?, ?> configVehicle : vehicles) {
@@ -172,6 +210,12 @@ public final class VehicleUtils {
         return 0;
     }
 
+    /**
+     * Get a vehicle item by UUID. <b>Does not create a new vehicle - just for aesthetic purposes.</b> (Otherwise, use {@link #getItemByUUID(Player, String)})
+     * @param carUUID Vehicle's UUID (UUID may be found in vehicles.yml)
+     * @return The vehicle item - just aesthetic
+     *
+     */
     public static ItemStack getCarItem(String carUUID) {
         List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getVehicles();
         List<Map<?, ?>> matchedVehicles = new ArrayList<>();
@@ -192,14 +236,33 @@ public final class VehicleUtils {
         return null;
     }
 
+    /**
+     * Check whether an entity is a vehicle
+     * @param entity Checked entity
+     * @return True if the entity is a vehicle
+     */
     public static boolean isVehicle(Entity entity){
         return entity.getCustomName() != null && entity instanceof ArmorStand && entity.getCustomName().contains("MTVEHICLES");
     }
 
+    /**
+     * Get license plate of an entity (which should be a vehicle - see {@link #isVehicle(Entity)}.
+     * @param entity Vehicle's main armor stand
+     * @return Vehicle's license plate
+     */
     public static String getLicensePlate(Entity entity){
-        return TextUtils.licenseReplacer(Objects.requireNonNull(entity.getCustomName()));
+        final String name = entity.getCustomName();
+        if (name.split("_").length > 1) {
+            return name.split("_")[2];
+        }
+        return null;
     }
 
+    /**
+     * Get the UUID of a car by its license plate
+     * @param licensePlate Vehicle's license plate
+     * @return Vehicle's UUID
+     */
     public static String getCarUUID(String licensePlate) {
         if (!existsByLicensePlate(licensePlate)) return null;
 
@@ -228,6 +291,13 @@ public final class VehicleUtils {
         return null;
     }
 
+    /**
+     * Get the Vehicle instance by a vehicle's license place
+     * @param licensePlate Vehicle's license plate
+     * @return Vehicle instance
+     *
+     * @see Vehicle
+     */
     public static Vehicle getByLicensePlate(String licensePlate) {
         if (!existsByLicensePlate(licensePlate)) return null;
 
@@ -282,18 +352,40 @@ public final class VehicleUtils {
         return vehicle;
     }
 
+    /**
+     * Check whether this vehicle exists in the database (vehicleData.yml)
+     * @param licensePlate Vehicle's license plate
+     * @return True if vehicle is in the database (vehicleData.yml)
+     */
     public static boolean existsByLicensePlate(String licensePlate) {
         return ConfigModule.vehicleDataConfig.getConfig().get(String.format("vehicle.%s", licensePlate)) != null;
     }
 
+    /**
+     * Check whether a player can ride/drive the vehicle.
+     * @param player Player
+     * @param licensePlate Vehicle's license plate
+     * @return True if player is the vehicle's set rider.
+     */
     public static boolean canRide(Player player, String licensePlate) {
         return ConfigModule.vehicleDataConfig.getRiders(licensePlate).contains(player.getUniqueId().toString());
     }
 
+    /**
+     * Check whether a player can sit in the vehicle.
+     * @param player Player
+     * @param licensePlate Vehicle's license plate
+     * @return True if player is the vehicle's set passenger/member.
+     */
     public static boolean canSit(Player player, String licensePlate) {
         return ConfigModule.vehicleDataConfig.getMembers(licensePlate).contains(player.getUniqueId().toString());
     }
 
+    /**
+     * Get the UUID of the vehicle's owner
+     * @param licensePlate Vehicle's license plate
+     * @return UUID of vehicle's owner
+     */
     public static UUID getOwnerUUID(String licensePlate) {
         if (ConfigModule.vehicleDataConfig.getConfig().getString("vehicle." + licensePlate + ".owner") == null) {
             return null;
@@ -301,6 +393,11 @@ public final class VehicleUtils {
         return UUID.fromString(ConfigModule.vehicleDataConfig.getConfig().getString("vehicle." + licensePlate + ".owner"));
     }
 
+    /**
+     * Open a vehicle's trunk to a player
+     * @param p Player who is opening the trunk
+     * @param license Vehicle's license plate
+     */
     public static void openTrunk(Player p, String license) {
         if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.TRUNK_ENABLED)) {
             if (VehicleUtils.getByLicensePlate(license) == null) {
@@ -329,12 +426,24 @@ public final class VehicleUtils {
         }
     }
 
+    /**
+     * Check whether a player is inside a vehicle
+     * @param p Player
+     * @return True if player is inside any MTV vehicle
+     */
     public static boolean isInsideVehicle(Player p){
         if (p == null) return false;
         if (!p.isInsideVehicle()) return false;
         return VehicleUtils.isVehicle(p.getVehicle());
     }
 
+    /**
+     * Get all the vehicle's set drivers/riders.
+     * @param licensePlate Vehicle's license plate
+     * @return String of all the drivers/riders separated by commas
+     *
+     * @deprecated Use {@link #canRide(Player, String)} instead.
+     */
     @Deprecated
     public static String getRidersAsString(String licensePlate) {
         StringBuilder sb = new StringBuilder();
@@ -347,5 +456,59 @@ public final class VehicleUtils {
             sb.append("Niemand");
         }
         return sb.toString();
+    }
+
+    /**
+     * Pick up a vehicle and put it to player's inventory
+     * @param license Vehicle's license plate
+     * @param player Player
+     */
+    public static void pickupVehicle(String license, Player player) {
+        if (getByLicensePlate(license) == null) {
+            for (World world : Bukkit.getServer().getWorlds()) {
+                for (Entity entity : world.getEntities()) {
+                    if (entity.getCustomName() != null && entity.getCustomName().contains(license)) {
+                        ArmorStand test = (ArmorStand) entity;
+                        if (test.getCustomName().contains("MTVEHICLES_SKIN_" + license)) {
+                            if (!TextUtils.checkInvFull(player)) {
+                                player.getInventory().addItem(test.getHelmet());
+                            } else {
+                                ConfigModule.messagesConfig.sendMessage(player, Message.INVENTORY_FULL);
+                                return;
+                            }
+                        }
+                        test.remove();
+                    }
+                }
+            }
+            ConfigModule.messagesConfig.sendMessage(player, Message.VEHICLE_NOT_FOUND);
+            return;
+        }
+        if (getByLicensePlate(license).isOwner(player) && !((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.CAR_PICKUP)) || player.hasPermission("mtvehicles.oppakken")) {
+            for (World world : Bukkit.getServer().getWorlds()) {
+                for (Entity entity : world.getEntities()) {
+                    if (entity.getCustomName() != null && entity.getCustomName().contains(license)) {
+                        ArmorStand test = (ArmorStand) entity;
+                        if (test.getCustomName().contains("MTVEHICLES_SKIN_" + license)) {
+                            if (!TextUtils.checkInvFull(player)) {
+                                player.getInventory().addItem(test.getHelmet());
+                                player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_PICKUP).replace("%p%", getByLicensePlate(license).getOwnerName())));
+                            } else {
+                                ConfigModule.messagesConfig.sendMessage(player, Message.INVENTORY_FULL);
+                                return;
+                            }
+                        }
+                        test.remove();
+                    }
+                }
+            }
+        } else {
+            if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.CAR_PICKUP)) {
+                player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.CANNOT_DO_THAT_HERE)));
+                return;
+            }
+            player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_NO_OWNER_PICKUP).replace("%p%", getByLicensePlate(license).getOwnerName())));
+            return;
+        }
     }
 }

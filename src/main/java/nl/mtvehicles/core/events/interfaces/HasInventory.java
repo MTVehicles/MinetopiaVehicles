@@ -2,6 +2,9 @@ package nl.mtvehicles.core.events.interfaces;
 
 import nl.mtvehicles.core.infrastructure.enums.InventoryTitle;
 
+/**
+ * Interface for all inventory events
+ */
 public interface HasInventory {
 
     /**

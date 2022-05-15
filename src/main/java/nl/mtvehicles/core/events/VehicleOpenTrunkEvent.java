@@ -6,6 +6,9 @@ import nl.mtvehicles.core.infrastructure.models.MTVEvent;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 
+/**
+ * On vehicle trunk open
+ */
 public class VehicleOpenTrunkEvent extends MTVEvent implements IsCancellable, HasVehicle {
     private String licensePlate;
 

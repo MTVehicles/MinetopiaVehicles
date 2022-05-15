@@ -9,19 +9,20 @@ import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
 import nl.mtvehicles.core.infrastructure.modules.VersionModule;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 
+/**
+ * <b>/vehicle version</b> - get information about the plugin and server version.
+ */
 public class VehicleVersion extends MTVehicleSubCommand {
     public VehicleVersion() {
         this.setPlayerCommand(false);
     }
 
     @Override
-    public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
+    public boolean execute() {
         if (!checkPermission("mtvehicles.admin")) return true;
 
-        String pluginVersion = VersionModule.pluginVersion;
+        String pluginVersion = VersionModule.pluginVersionString;
         String isLatest = (PluginUpdater.isLatestVersion() && !PluginVersion.getPluginVersion().isDev()) ? " (latest)" : "";
         String serverVersion = Bukkit.getVersion();
 

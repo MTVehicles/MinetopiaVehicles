@@ -14,9 +14,18 @@ import org.bukkit.inventory.Inventory;
 import java.util.HashMap;
 import java.util.UUID;
 
+/**
+ * Methods for changing plugin's language
+ */
 public class LanguageUtils {
+    /**
+     * Contains information about whether player has language GUI opened
+     */
     public static HashMap<UUID, Boolean> languageCheck = new HashMap<>();
 
+    /**
+     * Open the language GUI selection to a player
+     */
     public static void openLanguageGUI(Player p){
         Inventory inv = Bukkit.createInventory(null, 9, InventoryTitle.CHOOSE_LANGUAGE_MENU.getStringTitle());
         inv.setItem(0, ItemUtils.getMenuItem(Material.GOLD_BLOCK, 1, "&eEnglish", "&7Press to set all messages to English."));
@@ -31,6 +40,11 @@ public class LanguageUtils {
         languageCheck.put(p.getUniqueId(), true);
     }
 
+    /**
+     * Change language of the plugin
+     * @param p Player who is changing the language
+     * @param language New language ({@link Language} enum)
+     */
     public static void changeLanguage(Player p, Language language){
         String languageCode = language.getLanguageCode();
         languageCheck.put(p.getUniqueId(), false);

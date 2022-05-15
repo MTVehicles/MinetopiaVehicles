@@ -1,4 +1,4 @@
-package nl.mtvehicles.core.infrastructure.dataconfig;
+package nl.mtvehicles.core.infrastructure.helpers;
 
 
 import com.google.gson.JsonArray;

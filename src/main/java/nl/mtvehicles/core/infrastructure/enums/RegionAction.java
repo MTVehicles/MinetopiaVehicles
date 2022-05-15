@@ -1,10 +1,16 @@
 package nl.mtvehicles.core.infrastructure.enums;
 
+/**
+ * Action performed with a vehicle
+ */
 public enum RegionAction {
     PLACE,
     PICKUP,
     ENTER;
 
+    /**
+     * Type of WorldGuard list - a region action may either be whitelisted or blacklisted.
+     */
     public enum ListType {
         DISABLED,
         WHITELIST,

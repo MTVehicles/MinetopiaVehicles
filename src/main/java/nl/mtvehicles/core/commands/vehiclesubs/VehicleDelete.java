@@ -5,17 +5,18 @@ import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
 
+/**
+ * <b>/vehicle delete</b> - Delete held vehicle from the database (vehicleData.yml).
+ */
 public class VehicleDelete extends MTVehicleSubCommand {
     public VehicleDelete() {
         this.setPlayerCommand(true);
     }
 
     @Override
-    public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
+    public boolean execute() {
         if (!checkPermission("mtvehicles.delete")) return true;
 
         ItemStack item = player.getInventory().getItemInMainHand();

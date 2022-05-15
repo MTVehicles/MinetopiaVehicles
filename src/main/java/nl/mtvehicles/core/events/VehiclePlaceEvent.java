@@ -7,6 +7,9 @@ import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import org.bukkit.Location;
 
+/**
+ * On vehicle place
+ */
 public class VehiclePlaceEvent extends MTVEvent implements IsCancellable, HasVehicle {
     private Location location;
     private String licensePlate;

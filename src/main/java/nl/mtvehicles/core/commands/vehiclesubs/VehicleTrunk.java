@@ -2,17 +2,18 @@ package nl.mtvehicles.core.commands.vehiclesubs;
 
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
 
+/**
+ * <b>/vehicle trunk</b> - open the trunk of the held vehicle.
+ */
 public class VehicleTrunk extends MTVehicleSubCommand {
     public VehicleTrunk() {
         this.setPlayerCommand(true);
     }
 
     @Override
-    public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
+    public boolean execute() {
 
         final ItemStack item = player.getInventory().getItemInMainHand();
 

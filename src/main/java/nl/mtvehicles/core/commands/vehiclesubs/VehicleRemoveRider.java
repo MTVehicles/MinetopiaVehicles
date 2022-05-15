@@ -6,31 +6,32 @@ import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
+/**
+ * <b>/vehicle removerider %player%</b> - remove a player who may steer the held vehicle.
+ */
 public class VehicleRemoveRider extends MTVehicleSubCommand {
     public VehicleRemoveRider() {
         this.setPlayerCommand(true);
     }
 
     @Override
-    public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
+    public boolean execute() {
         ItemStack item = player.getInventory().getItemInMainHand();
 
         if (!isHoldingVehicle()) return true;
 
-        if (args.length != 2) {
+        if (arguments.length != 2) {
             player.sendMessage(ConfigModule.messagesConfig.getMessage(Message.USE_REMOVE_RIDER));
             return true;
         }
 
         String ken = VehicleUtils.getLicensePlate(item);
-        Player of = Bukkit.getPlayer(args[1]);
+        Player of = Bukkit.getPlayer(arguments[1]);
         Vehicle vehicle = VehicleUtils.getByLicensePlate(ken);
 
         if (of == null || !of.hasPlayedBefore()) {

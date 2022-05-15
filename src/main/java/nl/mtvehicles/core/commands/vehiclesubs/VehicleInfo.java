@@ -8,8 +8,6 @@ import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
 
 import java.text.DecimalFormat;
@@ -17,13 +15,16 @@ import java.text.NumberFormat;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+/**
+ * <b>/vehicle info</b> - get information about the held vehicle
+ */
 public class VehicleInfo extends MTVehicleSubCommand {
     public VehicleInfo() {
         this.setPlayerCommand(true);
     }
 
     @Override
-    public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
+    public boolean execute() {
         ItemStack item = player.getInventory().getItemInMainHand();
 
         if (!isHoldingVehicle()) return true;

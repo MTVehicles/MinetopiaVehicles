@@ -8,10 +8,8 @@ import nl.mtvehicles.core.infrastructure.enums.VehicleType;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -22,11 +20,26 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+/**
+ * Methods for editing text (and for some reason also deprecated methods for creating vehicles - moved to {@link VehicleUtils} and {@link nl.mtvehicles.core.listeners.VehicleClickListener})
+ */
 public class TextUtils {
+    /**
+     * Colorize a String with the ampersand characters.
+     * @param text Text
+     * @return Colorized text
+     */
     public static String colorize(String text) {
         return ChatColor.translateAlternateColorCodes('&', text);
     }
 
+    /**
+     * Get license plate from vehicle armor stand's name
+     * @param license Name of the vehicle
+     * @return Vehicle's license plate
+     * @deprecated Use {@link VehicleUtils#getLicensePlate(Entity)} instead.
+     */
+    @Deprecated
     public static String licenseReplacer(String license) {
         if (license.split("_").length > 1) {
             return license.split("_")[2];
@@ -34,11 +47,15 @@ public class TextUtils {
         return null;
     }
 
+    /**
+     * Get a List from multiple Strings
+     */
     public static List<String> list(String... strings){
         return Arrays.asList(strings);
     }
 
-    public static void basicStandCreator(String license, String type, Location location, ItemStack item, Boolean gravity) {
+    @Deprecated
+    private static void basicStandCreator(String license, String type, Location location, ItemStack item, Boolean gravity) {
         ArmorStand as = location.getWorld().spawn(location, ArmorStand.class);
         as.setCustomName("MTVEHICLES_" + type + "_" + license);
         as.setHelmet(item);
@@ -47,7 +64,8 @@ public class TextUtils {
         VehicleData.autostand.put("MTVEHICLES_" + type + "_" + license, as);
     }
 
-    public static void mainSeatStandCreator(String license, Location location, Player p, double x, double y, double z) {
+    @Deprecated
+    private static void mainSeatStandCreator(String license, Location location, Player p, double x, double y, double z) {
         Location location2 = new Location(location.getWorld(), location.getX() + Double.valueOf(z), location.getY() + Double.valueOf(y), location.getZ() + Double.valueOf(z));
         ArmorStand as = location2.getWorld().spawn(location2, ArmorStand.class);
         as.setCustomName("MTVEHICLES_MAINSEAT_" + license);
@@ -63,6 +81,10 @@ public class TextUtils {
         VehicleData.autostand2.put(license, as);
     }
 
+    /**
+     * @deprecated This method somehow worked, no idea how though. Use {@link nl.mtvehicles.core.listeners.VehicleClickListener#placeVehicle(String, Player)} instead.
+     */
+    @Deprecated
     public static void createVehicle(String licensePlate, Player p) {
         if (!(VehicleData.autostand2.get(licensePlate) == null)) {
             if (!VehicleData.autostand2.get(licensePlate).isEmpty()) {
@@ -156,60 +178,24 @@ public class TextUtils {
         }
     }
 
+    /**
+     * Pick up a vehicle and put it to player's inventory
+     * @param ken Vehicle's license plate
+     * @param p Player
+     *
+     * @deprecated Moved. Use {@link VehicleUtils#pickupVehicle(String, Player)}.
+     */
+    @Deprecated
     public static void pickupVehicle(String ken, Player p) {
-        if (VehicleUtils.getByLicensePlate(ken) == null) {
-            for (World world : Bukkit.getServer().getWorlds()) {
-                for (Entity entity : world.getEntities()) {
-                    if (entity.getCustomName() != null && entity.getCustomName().contains(ken)) {
-                        ArmorStand test = (ArmorStand) entity;
-                        if (test.getCustomName().contains("MTVEHICLES_SKIN_" + ken)) {
-                            if (!checkInvFull(p)) {
-                                p.getInventory().addItem(test.getHelmet());
-                            } else {
-                                ConfigModule.messagesConfig.sendMessage(p, Message.INVENTORY_FULL);
-                                return;
-                            }
-                        }
-                        test.remove();
-                    }
-                }
-            }
-            ConfigModule.messagesConfig.sendMessage(p, Message.VEHICLE_NOT_FOUND);
-            return;
-        }
-        if (VehicleUtils.getByLicensePlate(ken).isOwner(p) && !((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.CAR_PICKUP)) || p.hasPermission("mtvehicles.oppakken")) {
-            for (World world : Bukkit.getServer().getWorlds()) {
-                for (Entity entity : world.getEntities()) {
-                    if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.DISABLE_PICKUP_FROM_WATER) && !p.hasPermission("mtvehicles.anwb") && entity.getLocation().clone().add(0.0, 0.9, 0.0).getBlock().getType().toString().contains("WATER")) {
-                        ConfigModule.messagesConfig.sendMessage(p, Message.VEHICLE_IN_WATER);
-                        return;
-                    }
-                    if (entity.getCustomName() != null && entity.getCustomName().contains(ken)) {
-                        ArmorStand test = (ArmorStand) entity;
-                        if (test.getCustomName().contains("MTVEHICLES_SKIN_" + ken)) {
-                            if (!checkInvFull(p)) {
-                                p.getInventory().addItem(test.getHelmet());
-                                p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_PICKUP).replace("%p%", VehicleUtils.getByLicensePlate(ken).getOwnerName())));
-                            } else {
-                                ConfigModule.messagesConfig.sendMessage(p, Message.INVENTORY_FULL);
-                                return;
-                            }
-                        }
-                        test.remove();
-                    }
-                }
-            }
-        } else {
-            if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.CAR_PICKUP)) {
-                p.sendMessage(TextUtils.colorize("&cVoertuigen oppakken staat uitgeschakeld"));
-                return;
-            }
-            p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_NO_OWNER_PICKUP).replace("%p%", VehicleUtils.getByLicensePlate(ken).getOwnerName())));
-            return;
-        }
+        VehicleUtils.pickupVehicle(ken, p);
     }
 
-    public static boolean checkInvFull(Player p) {
-        return !Arrays.asList(p.getInventory().getStorageContents()).contains(null);
+    /**
+     * Check whether player's inventory is full
+     * @param player Player
+     * @return True if player's inventory is full
+     */
+    public static boolean checkInvFull(Player player) {
+        return !Arrays.asList(player.getInventory().getStorageContents()).contains(null);
     }
 }

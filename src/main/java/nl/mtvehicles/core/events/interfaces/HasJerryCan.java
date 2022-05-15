@@ -1,5 +1,8 @@
 package nl.mtvehicles.core.events.interfaces;
 
+/**
+ * Interface for all events with jerrycans
+ */
 public interface HasJerryCan {
 
     /**

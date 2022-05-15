@@ -20,6 +20,9 @@ import org.spigotmc.event.entity.EntityDismountEvent;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * On leave of a vehicle
+ */
 public class VehicleLeaveListener extends MTVListener {
 
     public VehicleLeaveListener(){

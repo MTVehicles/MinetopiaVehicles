@@ -9,9 +9,6 @@ import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -19,13 +16,16 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * <b>/vehicle fuel</b> - open a GUI with different jerrycans.
+ */
 public class VehicleFuel extends MTVehicleSubCommand {
     public VehicleFuel() {
         this.setPlayerCommand(true);
     }
 
     @Override
-    public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
+    public boolean execute() {
         if (!checkPermission("mtvehicles.benzine")) return true;
 
         Inventory inv = Bukkit.createInventory(null, 9, InventoryTitle.JERRYCAN_MENU.getStringTitle());
@@ -34,7 +34,7 @@ public class VehicleFuel extends MTVehicleSubCommand {
         assert jerrycans != null;
 
         for (int jerrycan : jerrycans) {
-            inv.addItem(benzineItem(jerrycan, jerrycan));
+            inv.addItem(jerrycanItem(jerrycan, jerrycan));
         }
 
         player.openInventory(inv);
@@ -42,7 +42,13 @@ public class VehicleFuel extends MTVehicleSubCommand {
         return true;
     }
 
-    public static ItemStack benzineItem(int maxFuel, int currentFuel) {
+    /**
+     * Get a jerrycan item
+     * @param maxFuel Size of the jerrycan
+     * @param currentFuel Current amount of fuel (should not be higher than maxFuel)
+     * @return Jerrycan
+     */
+    public static ItemStack jerrycanItem(int maxFuel, int currentFuel) {
         ItemStack is = new ItemFactory(Material.getMaterial("DIAMOND_HOE")).setAmount(1).setDurability((short) 58).setNBT("mtvehicles.benzineval", "" + currentFuel).setNBT("mtvehicles.benzinesize", "" + maxFuel).toItemStack();
         ItemMeta im = is.getItemMeta();
         List<String> itemlore = new ArrayList<>();

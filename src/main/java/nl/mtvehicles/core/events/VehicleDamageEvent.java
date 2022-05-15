@@ -7,6 +7,9 @@ import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import org.bukkit.entity.Entity;
 
+/**
+ * On vehicle damage
+ */
 public class VehicleDamageEvent extends MTVEvent implements IsCancellable, HasVehicle {
     private Entity damager;
     private double damage;

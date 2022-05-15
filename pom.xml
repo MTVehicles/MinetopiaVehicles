@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>nl.mtvehicles.core</groupId>
     <artifactId>MTVehicles</artifactId>
-    <version>2.4.2-dev4</version>
+    <version>2.4.2</version>
 
     <repositories>
         <repository>
@@ -172,6 +172,15 @@
                             <shadedPattern>nl.mtvehicles.core.infrastructure.helpers.nbtapi.</shadedPattern>
                         </relocation>
                     </relocations>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.3.2</version>
+                <configuration>
+                    <reportOutputDirectory>${pom.basedir}</reportOutputDirectory>
+                    <destDir>docs</destDir>
                 </configuration>
             </plugin>
         </plugins>

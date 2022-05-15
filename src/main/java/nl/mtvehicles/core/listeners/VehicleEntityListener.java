@@ -22,6 +22,9 @@ import org.bukkit.inventory.ItemStack;
 import javax.annotation.Nullable;
 import java.util.HashMap;
 
+/**
+ * On vehicle left click - damaging, opening a trunk, fueling
+ */
 public class VehicleEntityListener extends MTVListener {
 
     public static HashMap<String, Double> speed = new HashMap<>();
@@ -105,7 +108,7 @@ public class VehicleEntityListener extends MTVListener {
 
         if (vehicleFuel + 5 > 100) {
             int rest = (int) (100 - vehicleFuel);
-            player.setItemInHand(VehicleFuel.benzineItem(Integer.parseInt(jerryCanSize), Integer.parseInt(jerryCanFuel) - rest));
+            player.setItemInHand(VehicleFuel.jerrycanItem(Integer.parseInt(jerryCanSize), Integer.parseInt(jerryCanFuel) - rest));
             VehicleData.fuel.put(license, VehicleData.fuel.get(license) + rest);
             BossBarUtils.setBossBarValue(vehicleFuel / 100.0D, license);
             return;
@@ -114,15 +117,30 @@ public class VehicleEntityListener extends MTVListener {
         if (!(Integer.parseInt(jerryCanFuel) < 5)) {
             VehicleData.fuel.put(license, VehicleData.fuel.get(license) + 5);
             BossBarUtils.setBossBarValue(vehicleFuel / 100.0D, license);
-            player.setItemInHand(VehicleFuel.benzineItem(Integer.parseInt(jerryCanSize), Integer.parseInt(jerryCanFuel) - 5));
+            player.setItemInHand(VehicleFuel.jerrycanItem(Integer.parseInt(jerryCanSize), Integer.parseInt(jerryCanFuel) - 5));
         } else {
             VehicleData.fuel.put(license, Double.valueOf(VehicleData.fuel.get(license) + jerryCanFuel));
             BossBarUtils.setBossBarValue(vehicleFuel / 100.0D, license);
-            player.setItemInHand(VehicleFuel.benzineItem(Integer.parseInt(jerryCanSize), 0));
+            player.setItemInHand(VehicleFuel.jerrycanItem(Integer.parseInt(jerryCanSize), 0));
         }
     }
 
+    /**
+     * Damage a vehicle.
+     * @param license The vehicle's license plate
+     *
+     * @deprecated Renamed to {@link #damage(String)}.
+     */
+    @Deprecated
     public void checkDamage(String license){
+        damage(license);
+    }
+
+    /**
+     * Damage a vehicle.
+     * @param license The vehicle's license plate
+     */
+    public void damage(String license){
         final double damage = ((VehicleDamageEvent) getAPI()).getDamage();
 
         if (!(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.DAMAGE_ENABLED)) return;

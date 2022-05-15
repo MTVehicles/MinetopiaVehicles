@@ -5,12 +5,13 @@ import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.helpers.PluginUpdater;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 
+/**
+ * <b>/vehicle update</b> - update the plugin if a newer version is available.
+ */
 public class VehicleUpdate extends MTVehicleSubCommand {
     @Override
-    public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
+    public boolean execute() {
         if (!checkPermission("mtvehicles.update")) return true;
 
         if (!(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.AUTO_UPDATE)) {
@@ -18,7 +19,7 @@ public class VehicleUpdate extends MTVehicleSubCommand {
             return false;
         }
 
-        PluginUpdater.updatePlugin(commandSender);
+        PluginUpdater.updatePlugin(sender);
         return true;
     }
 }

@@ -9,10 +9,13 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
+/**
+ * Class concerning the movement of vehicles in 1_12_R2 (because the NMS differ a lot)
+ */
 public class VehicleMovement1_12 extends VehicleMovement {
 
     @Override
-    protected boolean slabCheck() {
+    protected boolean blockCheck() {
         final Location loc = getLocationOfBlockAhead();
         final String locY = String.valueOf(standMain.getLocation().getY());
         final Location locBlockAbove = new Location(loc.getWorld(), loc.getX(), loc.getY() + 1, loc.getZ(), loc.getYaw(), loc.getPitch());

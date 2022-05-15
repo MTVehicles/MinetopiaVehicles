@@ -3,8 +3,11 @@ package nl.mtvehicles.core.infrastructure.modules;
 import lombok.Getter;
 import lombok.Setter;
 import nl.mtvehicles.core.Main;
-import nl.mtvehicles.core.infrastructure.dataconfig.Metrics;
+import nl.mtvehicles.core.infrastructure.helpers.Metrics;
 
+/**
+ * Module configuring bStats metrics system
+ */
 public class MetricsModule {
     private static @Getter
     @Setter

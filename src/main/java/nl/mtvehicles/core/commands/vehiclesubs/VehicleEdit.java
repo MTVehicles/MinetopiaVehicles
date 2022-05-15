@@ -11,19 +11,20 @@ import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+/**
+ * <b>/vehicle edit</b> - edit held vehicle's specifications (in a GUI).
+ */
 public class VehicleEdit extends MTVehicleSubCommand {
     public VehicleEdit() {
         this.setPlayerCommand(true);
     }
 
     @Override
-    public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
+    public boolean execute() {
         if (!checkPermission("mtvehicles.edit")) return true;
 
         final ItemStack item = player.getInventory().getItemInMainHand();
@@ -38,6 +39,11 @@ public class VehicleEdit extends MTVehicleSubCommand {
         return true;
     }
 
+    /**
+     * Open /vehicle edit GUI menu to a player
+     * @param p Player
+     * @param item Vehicle item
+     */
     public static void editMenu(Player p, ItemStack item) {
         String licensePlate = VehicleUtils.getLicensePlate(item);
         MessagesConfig msg = ConfigModule.messagesConfig;

@@ -4,16 +4,17 @@ import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
 
+/**
+ * <b>/vehicle reload</b> - reload the plugin's configuration files.
+ */
 public class VehicleReload extends MTVehicleSubCommand {
     public VehicleReload() {
         this.setPlayerCommand(false);
     }
 
     @Override
-    public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
+    public boolean execute() {
         if (!checkPermission("mtvehicles.reload")) return true;
 
         Bukkit.getLogger().info("Reload config files..");

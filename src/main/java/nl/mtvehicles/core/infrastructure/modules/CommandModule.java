@@ -10,13 +10,22 @@ import org.bukkit.command.PluginCommand;
 
 import java.util.HashMap;
 
+/**
+ * Module for managing /mtv commands
+ */
 public class CommandModule {
     private static @Getter
     @Setter
     CommandModule instance;
 
+    /**
+     * HashMap mapping all /mtv subcommands and their respective classes
+     */
     public static HashMap<String, MTVehicleSubCommand> subcommands = new HashMap<>();
 
+    /**
+     * Constructor which registers executor and tab completer
+     */
     public CommandModule() {
         PluginCommand pluginCommand = Main.instance.getCommand("minetopiavehicles");
 

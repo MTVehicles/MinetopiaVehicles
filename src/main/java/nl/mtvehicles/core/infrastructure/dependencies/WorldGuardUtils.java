@@ -17,19 +17,53 @@ import org.bukkit.Location;
 import java.util.Arrays;
 import java.util.List;
 
-
+/**
+ * Methods for WorldGuard soft-dependency.<br>
+ * <b>Do not initialise this class directly. Use {@link DependencyModule#worldGuard} instead.</b>
+ */
 public class WorldGuardUtils {
-    //This is only called if DependencyModule made sure that WorldGuard is installed.
+    //This must only be called if DependencyModule made sure that WorldGuard is installed.
 
-    WorldGuard instance = WorldGuard.getInstance();
-    FlagRegistry registry = instance.getFlagRegistry();
+    /**
+     * WorldGuard instance
+     */
+    public WorldGuard instance = WorldGuard.getInstance();
+    /**
+     * WorldGuard flag registry
+     */
+    public FlagRegistry registry = instance.getFlagRegistry();
 
-    public final List<String> flagList = Arrays.asList("mtv-gasstation", "mtv-place", "mtv-enter", "mtv-pickup", "mtv-use-car", "mtv-use-hover", "mtv-user-tank", "mtv-use-helicopter", "mtv-use-airplane"); //All the used custom flags
+    /**
+     * List of all custom WorldGuard flags used by the plugin
+     */
+    public final List<String> flagList = Arrays.asList(
+            "mtv-gasstation",
+            "mtv-place",
+            "mtv-enter",
+            "mtv-pickup",
+            "mtv-use-car",
+            "mtv-use-hover",
+            "mtv-user-tank",
+            "mtv-use-helicopter",
+            "mtv-use-airplane"
+    );
 
+    /**
+     * Default constructor which registers flags - <b>do not use this.</b><br>
+     * Use {@link DependencyModule#worldGuard} instead.
+     */
     public WorldGuardUtils(){
         registerFlags();
     }
 
+    /**
+     * Check whether a location is in a region with a (custom) flag of a specified state.
+     * @param loc - Location which may be inside a region
+     * @param flagName - Name of the flag
+     * @param flagState - State of the flag - specified by WorldGuard State enum (ALLOW/DENY)
+     *
+     * @return True if location is in at least 1 region with the flag with the specified state.
+     */
     public boolean isInRegionWithFlag(Location loc, String flagName, StateFlag.State flagState){
         ApplicableRegionSet regions = WorldGuard.getInstance().getPlatform().getRegionContainer().get(new BukkitWorld(loc.getWorld())).getApplicableRegions(BlockVector3.at(loc.getX(),loc.getY(),loc.getZ()));
         StateFlag flag = (StateFlag) registry.get(flagName);
@@ -40,10 +74,18 @@ public class WorldGuardUtils {
             StateFlag.State regionFlagState = region.getFlag(flag);
             if (regionFlagState != null)
                 if (regionFlagState.equals(flagState)) returns = true;
-        } //If location is in at least 1 region with the flag
+        }
         return returns;
     }
 
+    /**
+     * Check whether a location is in a region with a (custom) flag of a specified state.
+     * @param loc - Location which may be inside a region
+     * @param flagName - Name of the flag
+     * @param flagState - State of the flag - specified by a boolean (true = ALLOW / false = DENY)
+     *
+     * @return True if location is in at least 1 region with the flag with the specified state.
+     */
     public boolean isInRegionWithFlag(Location loc, String flagName, boolean flagState){
         StateFlag.State state = (flagState) ? StateFlag.State.ALLOW : StateFlag.State.DENY;
         return isInRegionWithFlag(loc, flagName, state);
@@ -72,6 +114,9 @@ public class WorldGuardUtils {
         DependencyModule.disableDependency(SoftDependency.WORLD_GUARD);
     }
 
+    /**
+     * Check whether all custom flags are set up correctly.
+     */
     private boolean areFlagsOkay(){
         boolean allAreOkay = true;
         for (String flagName: flagList) {

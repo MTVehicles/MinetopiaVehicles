@@ -1,5 +1,8 @@
 package nl.mtvehicles.core.infrastructure.enums;
 
+/**
+ * Supported soft-dependencies
+ */
 public enum SoftDependency {
     WORLD_GUARD("WorldGuard"),
     VAULT("Vault"),

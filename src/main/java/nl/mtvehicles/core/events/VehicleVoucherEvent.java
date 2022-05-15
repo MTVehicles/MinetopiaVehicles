@@ -3,6 +3,9 @@ package nl.mtvehicles.core.events;
 import nl.mtvehicles.core.events.interfaces.IsCancellable;
 import nl.mtvehicles.core.infrastructure.models.MTVEvent;
 
+/**
+ * On right click with a voucher
+ */
 public class VehicleVoucherEvent extends MTVEvent implements IsCancellable {
     private String voucherUUID;
 

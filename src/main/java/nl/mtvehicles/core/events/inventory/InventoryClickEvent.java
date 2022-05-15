@@ -5,6 +5,9 @@ import nl.mtvehicles.core.events.interfaces.IsCancellable;
 import nl.mtvehicles.core.infrastructure.enums.InventoryTitle;
 import nl.mtvehicles.core.infrastructure.models.MTVEvent;
 
+/**
+ * On inventory click
+ */
 public class InventoryClickEvent extends MTVEvent implements IsCancellable, HasInventory {
     private int clickedSlot;
     private InventoryTitle title;

@@ -7,6 +7,9 @@ import nl.mtvehicles.core.listeners.*;
 import nl.mtvehicles.core.listeners.inventory.InventoryClickListener;
 import nl.mtvehicles.core.listeners.inventory.InventoryCloseListener;
 
+/**
+ * Module which registers all listeners used by the plugin
+ */
 public class ListenersModule {
     private static @Getter
     @Setter

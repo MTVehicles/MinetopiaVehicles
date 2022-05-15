@@ -4,7 +4,9 @@ import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.enums.ConfigType;
 import nl.mtvehicles.core.infrastructure.enums.VehicleType;
 import nl.mtvehicles.core.infrastructure.models.Config;
+import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
+import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
@@ -13,7 +15,15 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+/**
+ * Methods for supersecretsettings.yml.<br>
+ * <b>Do not initialise this class directly. Use {@link ConfigModule#vehicleDataConfig} instead.</b>
+ */
 public class VehicleDataConfig extends Config {
+    /**
+     * Default constructor - <b>do not use this.</b><br>
+     * Use {@link ConfigModule#vehicleDataConfig} instead.
+     */
     public VehicleDataConfig() {
         super(ConfigType.VEHICLE_DATA);
     }
@@ -60,30 +70,61 @@ public class VehicleDataConfig extends Config {
         return getConfiguration().getConfigurationSection("vehicle") == null;
     }
 
+    /**
+     * Get (basically) the whole file.
+     */
     public ConfigurationSection getVehicles(){
         return getConfiguration().getConfigurationSection("vehicle");
     }
 
-
+    /**
+     * Get the durability of a vehicle item.
+     * @param licensePlate Vehicle's license plate
+     */
     public int getDamage(String licensePlate){
         return (int) get(licensePlate, Option.SKIN_DAMAGE);
     }
 
+    /**
+     * Get the durability of a vehicle item.
+     * @param vehicle Vehicle
+     */
+    public int getDamage(Vehicle vehicle){
+        return getDamage(vehicle.getLicensePlate());
+    }
+
+    /**
+     * Get UUIDs of players which may sit in the vehicle
+     * @param licensePlate Vehicle's license plate
+     */
     public List<String> getMembers(String licensePlate){
         if (get(licensePlate, Option.MEMBERS) == null) return new ArrayList<>();
         return (List<String>) get(licensePlate, Option.MEMBERS);
     }
 
+    /**
+     * Get UUIDs of players which may steer the vehicle
+     * @param licensePlate Vehicle's license plate
+     */
     public List<String> getRiders(String licensePlate){
         if (get(licensePlate, Option.RIDERS) == null) return new ArrayList<>();
         return (List<String>) get(licensePlate, Option.RIDERS);
     }
 
+    /**
+     * Get data of the vehicle's trunk
+     * @param licensePlate Vehicle's license plate
+     * @return List of items in the trunk (as Strings)
+     */
     public List<String> getTrunkData(String licensePlate){
         if (get(licensePlate, Option.TRUNK_DATA) == null) return new ArrayList<>();
         return (List<String>) get(licensePlate, Option.TRUNK_DATA);
     }
 
+    /**
+     * Get the type (enum) of the vehicle.
+     * @param licensePlate Vehicle's license plate
+     */
     public VehicleType getType(String licensePlate){
         try {
             return VehicleType.valueOf(get(licensePlate, Option.VEHICLE_TYPE).toString().toUpperCase(Locale.ROOT));
@@ -93,18 +134,29 @@ public class VehicleDataConfig extends Config {
         }
     }
 
-
+    /**
+     * Check whether horn may be used in a vehicle
+     * @param license Vehicle's license plate
+     */
     public boolean isHornEnabled(String license){
         final String path = "vehicle." + license + ".hornEnabled";
         if (!isHornSet(license)) setInitialHorn(license);
         return getConfiguration().getBoolean(path);
     }
 
+    /**
+     * Check whether 'hornEnabled' data option is set (it might not be if player was using an older version of MTV before)
+     * @param license Vehicle's license plate
+     */
     public boolean isHornSet(String license){
         final String path = "vehicle." + license + ".hornEnabled";
         return getConfiguration().isSet(path);
     }
 
+    /**
+     * Set the 'hornEnabled' data option default value.
+     * @param license Vehicle's license plate
+     */
     public void setInitialHorn(String license){
         final String path = "vehicle." + license + ".hornEnabled";
         boolean state = VehicleUtils.getHornByDamage(getDamage(license));
@@ -113,17 +165,29 @@ public class VehicleDataConfig extends Config {
     }
 
 
+    /**
+     * Get health of a vehicle
+     * @param license Vehicle's license plate
+     */
     public double getHealth(String license){
         final String path = "vehicle." + license + ".health";
         if (!isHealthSet(license)) setInitialHealth(license);
         return getConfiguration().getDouble(path);
     }
 
+    /**
+     * Check whether 'health' data option is set (it might not be if player was using an older version of MTV before)
+     * @param license Vehicle's license plate
+     */
     public boolean isHealthSet(String license){
         final String path = "vehicle." + license + ".health";
         return getConfiguration().isSet(path);
     }
 
+    /**
+     * Set the 'health' data option default value.
+     * @param license Vehicle's license plate
+     */
     public void setInitialHealth(String license){
         final String path = "vehicle." + license + ".health";
         final int damage = getConfiguration().getInt("vehicle." + license + ".skinDamage");
@@ -132,6 +196,11 @@ public class VehicleDataConfig extends Config {
         save();
     }
 
+    /**
+     * Damage a vehicle.
+     * @param license Vehicle's license plate
+     * @param damage Amount of damage
+     */
     public void damageVehicle(String license, double damage){
         final String path = "vehicle." + license + ".health";
         double h = getHealth(license) - damage;
@@ -140,12 +209,21 @@ public class VehicleDataConfig extends Config {
         save();
     }
 
+    /**
+     * Set health of a vehicle
+     * @param license Vehicle's license plate
+     * @param health New health
+     */
     public void setHealth(String license, double health){
         final String path = "vehicle." + license + ".health";
         getConfiguration().set(path, health);
         save();
     }
 
+    /**
+     * Get number of vehicles owned by a player
+     * @param p Player
+     */
     public int getNumberOfOwnedVehicles(Player p){
         final String playerUUID = p.getUniqueId().toString();
         int owned;

@@ -7,6 +7,9 @@ import nl.mtvehicles.core.infrastructure.models.MTVEvent;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 
+/**
+ * On vehicle refuel
+ */
 public class VehicleFuelEvent extends MTVEvent implements IsCancellable, HasVehicle, HasJerryCan {
     final private double vehicleFuel;
     final private int jerryCanFuel;

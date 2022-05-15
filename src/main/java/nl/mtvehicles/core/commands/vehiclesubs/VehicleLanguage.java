@@ -4,18 +4,18 @@ import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.helpers.LanguageUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
+/**
+ * <b>/vehicle language</b> - set the plugin's language (in a GUI).
+ */
 public class VehicleLanguage extends MTVehicleSubCommand {
     public VehicleLanguage() {
         this.setPlayerCommand(true);
     }
 
     @Override
-    public boolean execute(CommandSender sender, Command cmd, String s, String[] args) {
-        if (sender.hasPermission("mtvehicles.language") || sender.hasPermission("mtvehicles.admin")) LanguageUtils.openLanguageGUI((Player) sender);
+    public boolean execute() {
+        if (sender.hasPermission("mtvehicles.language") || sender.hasPermission("mtvehicles.admin")) LanguageUtils.openLanguageGUI(player);
         else ConfigModule.messagesConfig.sendMessage(sender, Message.NO_PERMISSION);
 
         return true;

@@ -17,6 +17,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
+/**
+ * On place of a vehicle
+ */
 public class VehiclePlaceListener extends MTVListener {
 
     public VehiclePlaceListener(){

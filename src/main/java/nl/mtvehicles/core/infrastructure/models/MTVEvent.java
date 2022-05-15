@@ -7,8 +7,14 @@ import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Abstract class for the plugin's API events
+ */
 public abstract class MTVEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
+    /**
+     * Whether the event is cancelled
+     */
     protected boolean cancelled = false;
     private @Nullable Player player;
 

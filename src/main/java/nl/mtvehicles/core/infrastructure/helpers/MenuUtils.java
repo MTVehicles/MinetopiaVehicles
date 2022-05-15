@@ -18,10 +18,22 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
+/**
+ * Methods used in plugin's GUIs
+ */
 public class MenuUtils {
-    public static HashMap<String, Integer> restoreId = new HashMap<>();
-    public static HashMap<String, UUID> restoreUUID = new HashMap<>();
+    /**
+     * Page opened in the restore menu
+     */
+    public static HashMap<Player, Integer> restorePage = new HashMap<>();
+    /**
+     * UUID of the player whose vehicles are in the restore menu
+     */
+    public static HashMap<Player, UUID> restoreUUID = new HashMap<>();
 
+    /**
+     * Get the item which is clicked for getting to a previous menu
+     */
     public static ItemStack getBackItem(){
         return ItemUtils.getMenuItem(
                 "OAK_DOOR",
@@ -33,6 +45,9 @@ public class MenuUtils {
         );
     }
 
+    /**
+     * Get the item which is clicked for closing a menu
+     */
     public static ItemStack getCloseItem(){
         return ItemUtils.getMenuItem(
                 Material.BARRIER,
@@ -42,6 +57,9 @@ public class MenuUtils {
         );
     }
 
+    /**
+     * Open /vehicle edit menu to a player
+     */
     public static void menuEdit(Player p) {
         Inventory inv = Bukkit.createInventory(null, 45, InventoryTitle.VEHICLE_SETTINGS_MENU.getStringTitle());
         NBTItem nbt = new NBTItem(p.getInventory().getItemInMainHand());
@@ -80,6 +98,9 @@ public class MenuUtils {
         DrawOptions(p, inv);
     }
 
+    /**
+     * Open fuel edit menu to a player
+     */
     public static void benzineEdit(Player p) {
         Inventory inv = Bukkit.createInventory(null, 45, InventoryTitle.VEHICLE_FUEL_MENU.getStringTitle());
         NBTItem nbt = new NBTItem(p.getInventory().getItemInMainHand());
@@ -100,6 +121,9 @@ public class MenuUtils {
         DrawOptions(p, inv, option1, option2, option3);
     }
 
+    /**
+     * Open trunk edit menu to a player
+     */
     public static void trunkEdit(Player p) {
         Inventory inv = Bukkit.createInventory(null, 45, InventoryTitle.VEHICLE_TRUNK_MENU.getStringTitle());
         NBTItem nbt = new NBTItem(p.getInventory().getItemInMainHand());
@@ -116,6 +140,9 @@ public class MenuUtils {
         DrawOptions(p, inv, option1, option2, option3);
     }
 
+    /**
+     * Open members edit menu to a player
+     */
     public static void membersEdit(Player p) {
         Inventory inv = Bukkit.createInventory(null, 45, InventoryTitle.VEHICLE_MEMBERS_MENU.getStringTitle());
         NBTItem nbt = new NBTItem(p.getInventory().getItemInMainHand());
@@ -130,6 +157,9 @@ public class MenuUtils {
         DrawOptions(p, inv, option1, option2, option3);
     }
 
+    /**
+     * Open speed edit menu to a player
+     */
     public static void speedEdit(Player p) {
         Inventory inv = Bukkit.createInventory(null, 45, InventoryTitle.VEHICLE_SPEED_MENU.getStringTitle());
         NBTItem nbt = new NBTItem(p.getInventory().getItemInMainHand());
@@ -196,7 +226,10 @@ public class MenuUtils {
         DrawOptions(p, inv);
     }
 
-    public static void getvehicleCMD(Player p, int id, int slot) {
+    /**
+     * Open vehicle choice menu to a player
+     */
+    public static void getvehicleCMD(Player p, int page, int slot) {
         List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getVehicles();
         List<Map<?, ?>> skins = (List<Map<?, ?>>) vehicles.get(slot).get("cars");
 
@@ -209,7 +242,7 @@ public class MenuUtils {
             dataVehicle.add(skin);
         }
 
-        for (int i = 1 + id * 36 - 36; i <= id * 36; i++) {
+        for (int i = 1 + page * 36 - 36; i <= page * 36; i++) {
             if (i - 1 < dataVehicle.size()) {
                 Map<?, ?> vehicle = dataVehicle.get(i-1);
                 if (vehicle.get("nbtValue") == null) {
@@ -230,16 +263,22 @@ public class MenuUtils {
         p.openInventory(inv);
     }
 
-    public static void restoreCMD(Player p, int id, UUID ownerUUID) {
+    /**
+     * Open /vehicle restore menu to a player
+     * @param p Player
+     * @param page Page
+     * @param ownerUUID UUID of the owner whose vehicles are displayed
+     */
+    public static void restoreCMD(Player p, int page, UUID ownerUUID) {
         Inventory inv = Bukkit.createInventory(null, 54, InventoryTitle.VEHICLE_RESTORE_MENU.getStringTitle());
         ConfigModule.configList.forEach(Config::reload);
-        restoreId.put("pagina", id);
+        restorePage.put(p, page);
         if (!ConfigModule.vehicleDataConfig.isEmpty()) {
             List<String> dataVehicle = new ArrayList<>();
             for (String entry : ConfigModule.vehicleDataConfig.getVehicles().getKeys(false)) {
                 dataVehicle.add(entry);
             }
-            for (int i = 1 + id * 36 - 36; i <= id * 36; i++) {
+            for (int i = 1 + page * 36 - 36; i <= page * 36; i++) {
                 if (i - 1 < dataVehicle.size()) {
                     String license = dataVehicle.get(i - 1);
                     VehicleDataConfig data = ConfigModule.vehicleDataConfig;
@@ -247,10 +286,22 @@ public class MenuUtils {
                     if (isGlowing == null) isGlowing = false;
                     if (ownerUUID == null || data.get(license, VehicleDataConfig.Option.OWNER).toString().contains(ownerUUID.toString())) {
                         if (data.get(license, VehicleDataConfig.Option.NBT_VALUE) == null) {
-                            inv.addItem(ItemUtils.getVehicleItem(ItemUtils.getMaterial(data.get(license, VehicleDataConfig.Option.SKIN_ITEM).toString()), data.getDamage(license), isGlowing, data.get(license, VehicleDataConfig.Option.NAME).toString(), license));
+                            inv.addItem(ItemUtils.getVehicleItem(ItemUtils.getMaterial(
+                                    data.get(license, VehicleDataConfig.Option.SKIN_ITEM).toString()),
+                                    data.getDamage(license),
+                                    isGlowing,
+                                    data.get(license, VehicleDataConfig.Option.NAME).toString(),
+                                    license));
                             continue;
                         }
-                        inv.addItem(ItemUtils.getVehicleItem(ItemUtils.getMaterial(data.get(license, VehicleDataConfig.Option.SKIN_ITEM).toString()), data.getDamage(license), isGlowing, data.get(license, VehicleDataConfig.Option.NAME).toString(), license, "mtcustom", data.get(license, VehicleDataConfig.Option.NBT_VALUE)));
+                        inv.addItem(ItemUtils.getVehicleItem(ItemUtils.getMaterial(
+                                data.get(license, VehicleDataConfig.Option.SKIN_ITEM).toString()),
+                                data.getDamage(license),
+                                isGlowing,
+                                data.get(license, VehicleDataConfig.Option.NAME).toString(),
+                                license,
+                                "mtcustom",
+                                data.get(license, VehicleDataConfig.Option.NBT_VALUE)));
                     }
                 }
             }
