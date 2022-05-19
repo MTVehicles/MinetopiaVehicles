@@ -7,6 +7,8 @@ assignees: ''
 
 ---
 
+⚠️ EDIT THIS TEMPLATE AND REMOVE THIS MESSAGE WHEN YOU'RE DONE ⚠️ 
+
 ## About
 Write a few sentences describing the bug you've found. Be as concise as possible.
 
