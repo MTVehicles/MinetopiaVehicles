@@ -140,7 +140,7 @@ public class PluginUpdater {
         }
 
         sender.sendMessage(TextUtils.colorize("&aPlugin update in process..."));
-        if (downloadUpdate()) sender.sendMessage(ConfigModule.messagesConfig.getMessage(Message.UPDATE_SUCCESSFUL));
+        if (downloadUpdate()) sender.sendMessage(TextUtils.colorize("&aYour plugin has been successfully updated. ATTENTION: You must reload the plugin OR restart the server."));
         else sender.sendMessage(ConfigModule.messagesConfig.getMessage(Message.UPDATE_FAILED));
     }
 

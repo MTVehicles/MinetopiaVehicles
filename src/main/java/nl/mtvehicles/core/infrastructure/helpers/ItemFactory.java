@@ -275,6 +275,7 @@ public class ItemFactory {
         return this;
     }
 
+    @Deprecated
     public ItemFactory unbreakable() {
         try {
             Object compound;
