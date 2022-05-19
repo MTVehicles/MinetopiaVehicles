@@ -7,6 +7,8 @@ assignees: ''
 
 ---
 
+⚠️ EDIT THIS TEMPLATE AND REMOVE THIS MESSAGE WHEN YOU'RE DONE ⚠️ 
+
 ## Outline
 Write a few sentences describing the suggestion you want to add. Be as concise as possible.
 
