@@ -15,12 +15,4 @@ public interface HasInventory {
      */
     public InventoryTitle getTitle();
 
-    /**
-     * Set the new title of the inventory player has clicked in. This will be used by the plugin.
-     * @param title New inventory title (enum!)
-     *
-     * @see InventoryTitle#getByStringTitle(String)
-     */
-    public void setTitle(InventoryTitle title);
-
 }

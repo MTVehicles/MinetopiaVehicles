@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
+import nl.mtvehicles.core.events.inventory.JerryCanMenuOpen;
 import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.enums.InventoryTitle;
 import nl.mtvehicles.core.infrastructure.enums.Message;
@@ -36,6 +37,10 @@ public class VehicleFuel extends MTVehicleSubCommand {
         for (int jerrycan : jerrycans) {
             inv.addItem(jerrycanItem(jerrycan, jerrycan));
         }
+
+        JerryCanMenuOpen api = new JerryCanMenuOpen(player);
+        api.call();
+        if (api.isCancelled()) return true;
 
         player.openInventory(inv);
 

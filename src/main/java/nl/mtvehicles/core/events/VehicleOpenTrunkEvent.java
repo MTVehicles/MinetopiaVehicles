@@ -7,7 +7,7 @@ import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 
 /**
- * On vehicle trunk open
+ * On vehicle trunk open (either via left click or using /vehicle trunk) command
  */
 public class VehicleOpenTrunkEvent extends MTVEvent implements IsCancellable, HasVehicle {
     private String licensePlate;

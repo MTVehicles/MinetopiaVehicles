@@ -53,10 +53,6 @@ public class InventoryClickListener extends MTVListener {
     private int clickedSlot;
     private InventoryTitle title;
 
-    public InventoryClickListener(){
-        super(new InventoryClickEvent());
-    }
-
     @EventHandler
     public void onClick(org.bukkit.event.inventory.InventoryClickEvent event) {
         this.event = event;
@@ -72,9 +68,9 @@ public class InventoryClickListener extends MTVListener {
         if (InventoryTitle.getByStringTitle(stringTitle) == null) return;
         title = InventoryTitle.getByStringTitle(stringTitle);
 
+        this.setAPI(new InventoryClickEvent(title));
         InventoryClickEvent api = (InventoryClickEvent) getAPI();
         api.setClickedSlot(clickedSlot);
-        api.setTitle(title);
         callAPI();
         if (isCancelled()) return;
 

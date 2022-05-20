@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
+import nl.mtvehicles.core.events.VehicleOpenTrunkEvent;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import org.bukkit.inventory.ItemStack;
@@ -19,8 +20,15 @@ public class VehicleTrunk extends MTVehicleSubCommand {
 
         if (!isHoldingVehicle()) return true;
 
-        final String licensePlate = VehicleUtils.getLicensePlate(item);
-        VehicleUtils.openTrunk(player, licensePlate);
+        String licensePlate = VehicleUtils.getLicensePlate(item);
+
+        VehicleOpenTrunkEvent api = new VehicleOpenTrunkEvent();
+        api.setPlayer(player);
+        api.setLicensePlate(licensePlate);
+        api.call();
+        if (api.isCancelled()) return true;
+
+        VehicleUtils.openTrunk(player, api.getLicensePlate());
         return true;
     }
 }
