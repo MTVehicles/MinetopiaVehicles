@@ -8,16 +8,19 @@ import nl.mtvehicles.core.infrastructure.models.MTVEvent;
  * On inventory close
  */
 public class InventoryCloseEvent extends MTVEvent implements HasInventory {
-    private InventoryTitle title;
+    final private InventoryTitle title;
+
+    /**
+     * Default constructor with the event-inventory's title
+     * @param title Event-inventory's title
+     */
+    public InventoryCloseEvent(InventoryTitle title){
+        this.title = title;
+    }
 
     @Override
     public InventoryTitle getTitle() {
         return title;
-    }
-
-    @Override
-    public void setTitle(InventoryTitle title) {
-        this.title = title;
     }
 
 }

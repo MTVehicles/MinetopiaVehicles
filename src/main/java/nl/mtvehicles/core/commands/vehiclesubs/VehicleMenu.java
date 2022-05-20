@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
+import nl.mtvehicles.core.events.inventory.VehicleMenuOpenEvent;
 import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.enums.InventoryTitle;
 import nl.mtvehicles.core.infrastructure.enums.Message;
@@ -48,6 +49,10 @@ public class VehicleMenu extends MTVehicleSubCommand {
             }
             inv.addItem(new ItemFactory(itemStack).setNBT((String) vehicle.get("nbtKey"), (String)vehicle.get("nbtValue")).toItemStack());
         }
+
+        VehicleMenuOpenEvent api = new VehicleMenuOpenEvent(player);
+        api.call();
+        if (api.isCancelled()) return true;
 
         beginMenu.put(player.getUniqueId(), inv);
         player.openInventory(inv);

@@ -10,7 +10,15 @@ import nl.mtvehicles.core.infrastructure.models.MTVEvent;
  */
 public class InventoryClickEvent extends MTVEvent implements IsCancellable, HasInventory {
     private int clickedSlot;
-    private InventoryTitle title;
+    final private InventoryTitle title;
+
+    /**
+     * Default constructor with the event-inventory's title
+     * @param title Event-inventory's title
+     */
+    public InventoryClickEvent(InventoryTitle title){
+        this.title = title;
+    }
 
     @Override
     public void setCancelled(boolean cancelled) {
@@ -38,8 +46,4 @@ public class InventoryClickEvent extends MTVEvent implements IsCancellable, HasI
         return title;
     }
 
-    @Override
-    public void setTitle(InventoryTitle title) {
-        this.title = title;
-    }
 }

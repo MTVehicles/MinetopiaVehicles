@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
+import nl.mtvehicles.core.events.inventory.RestoreMenuOpenEvent;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.helpers.MenuUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
@@ -32,6 +33,10 @@ public class VehicleRestore extends MTVehicleSubCommand {
             sendMessage(ConfigModule.messagesConfig.getMessage(Message.PLAYER_NOT_FOUND));
             return true;
         }
+
+        RestoreMenuOpenEvent api = new RestoreMenuOpenEvent(player);
+        api.call();
+        if (api.isCancelled()) return true;
 
         MenuUtils.restoreCMD(player, 1, of.getUniqueId());
         MenuUtils.restoreUUID.put(player, of.getUniqueId());

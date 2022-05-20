@@ -56,9 +56,12 @@ public class VehicleDataConfig extends Config {
      * Delete a vehicle from vehicleData
      *
      * @param licensePlate Vehicle's license plate
+     * @throws IllegalStateException If vehicle is already deleted.
      */
-    public void delete(String licensePlate){
-        getConfiguration().set("vehicle." + licensePlate, null);
+    public void delete(String licensePlate) throws IllegalStateException {
+        final String path = "vehicle." + licensePlate;
+        if (!getConfiguration().isSet(path)) throw new IllegalStateException("An error occurred while trying to delete a vehicle. Vehicle is already deleted.");
+        getConfiguration().set(path, null);
         save();
     }
 

@@ -4,11 +4,14 @@ import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.enums.PluginVersion;
 import nl.mtvehicles.core.infrastructure.enums.SoftDependency;
 import nl.mtvehicles.core.infrastructure.helpers.PluginUpdater;
+import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
 import nl.mtvehicles.core.infrastructure.modules.VersionModule;
 import org.bukkit.Bukkit;
+
+import static nl.mtvehicles.core.infrastructure.enums.PluginVersion.getPluginVersion;
 
 /**
  * <b>/vehicle version</b> - get information about the plugin and server version.
@@ -23,7 +26,7 @@ public class VehicleVersion extends MTVehicleSubCommand {
         if (!checkPermission("mtvehicles.admin")) return true;
 
         String pluginVersion = VersionModule.pluginVersionString;
-        String isLatest = (PluginUpdater.isLatestVersion() && !PluginVersion.getPluginVersion().isDev()) ? " (latest)" : "";
+        String isLatest = (PluginUpdater.isLatestVersion() && !getPluginVersion().isDev()) ? " (latest)" : "";
         String serverVersion = Bukkit.getVersion();
 
         sendMessage(String.format("§2Running §aMTVehicles v%s§2%s.", pluginVersion, isLatest));
@@ -46,7 +49,8 @@ public class VehicleVersion extends MTVehicleSubCommand {
 
         if (VersionModule.isPreRelease) {
             sendMessage("§e-----");
-            sendMessage(String.format(ConfigModule.messagesConfig.getMessage(Message.USING_PRE_RELEASE)));
+            if (getPluginVersion().isDev()) sendMessage(TextUtils.colorize("&cWarning: You're using a dev-version. Auto-updater is disabled."));
+            sendMessage(ConfigModule.messagesConfig.getMessage(Message.USING_PRE_RELEASE));
         }
 
         return true;

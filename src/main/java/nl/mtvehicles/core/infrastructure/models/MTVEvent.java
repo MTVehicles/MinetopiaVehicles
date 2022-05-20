@@ -24,6 +24,13 @@ public abstract class MTVEvent extends Event {
     }
 
     /**
+     * Method required in every event
+     */
+    public static @NotNull HandlerList getHandlerList(){
+        return handlers;
+    }
+
+    /**
      * Call this event (to other plugins)
      */
     public void call() {
@@ -32,7 +39,7 @@ public abstract class MTVEvent extends Event {
 
     /**
      * Check whether the event is cancelled.
-     * If event isn't cancellable, always returns false
+     * If the event isn't cancellable, always returns false
      *
      * @see nl.mtvehicles.core.events.interfaces.IsCancellable
      */
@@ -41,15 +48,15 @@ public abstract class MTVEvent extends Event {
     }
 
     /**
-     * Get player
+     * Get event-player
      * @return Event-player or "null" if player is not specified
      */
-    public Player getPlayer() {
+    public @Nullable Player getPlayer() {
         return player;
     }
 
     /**
-     * Set player
+     * Set event-player
      * @param player Set event-player (use "null" if player is not specified)
      */
     public void setPlayer(Player player) {
