@@ -2,6 +2,7 @@ package nl.mtvehicles.core.infrastructure.models;
 
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.annotations.ToDo;
+import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
 import nl.mtvehicles.core.infrastructure.enums.VehicleType;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
@@ -53,30 +54,30 @@ public class Vehicle {
      */
     public void save() {
         Map<String, Object> map = new HashMap<>();
-        map.put("name", this.getName());
-        map.put("vehicleType", this.getVehicleType().toString());
-        map.put("skinDamage", this.getSkinDamage());
-        map.put("skinItem", this.getSkinItem());
-        map.put("isOpen", this.isOpen());
-        map.put("isGlow", this.isGlow());
-        map.put("benzineEnabled", this.isFuelEnabled());
-        map.put("benzine", this.getFuel());
-        map.put("benzineVerbruik", this.getFuelUsage());
-        map.put("hornEnabled", this.isHornEnabled());
-        map.put("health", this.getHealth());
-        map.put("kofferbak", this.isTrunkEnabled());
-        map.put("kofferbakRows", this.getTrunkRows());
-        map.put("kofferbakData", this.getTrunkData());
-        map.put("acceleratieSpeed", this.getAccelerationSpeed());
-        map.put("maxSpeed", this.getMaxSpeed());
-        map.put("brakingSpeed", this.getBrakingSpeed());
-        map.put("aftrekkenSpeed", this.getFrictionSpeed());
-        map.put("rotateSpeed", this.getRotateSpeed());
-        map.put("maxSpeedBackwards", this.getMaxSpeedBackwards());
-        map.put("owner", this.getOwnerUUIDString());
-        map.put("nbtValue", this.getNbtValue());
-        map.put("riders", this.getRiders());
-        map.put("members", this.getMembers());
+        map.put(VehicleDataConfig.Option.NAME.getPath(), this.getName());
+        map.put(VehicleDataConfig.Option.VEHICLE_TYPE.getPath(), this.getVehicleType().toString());
+        map.put(VehicleDataConfig.Option.SKIN_DAMAGE.getPath(), this.getSkinDamage());
+        map.put(VehicleDataConfig.Option.SKIN_ITEM.getPath(), this.getSkinItem());
+        map.put(VehicleDataConfig.Option.IS_OPEN.getPath(), this.isOpen());
+        map.put(VehicleDataConfig.Option.IS_GLOWING.getPath(), this.isGlow());
+        map.put(VehicleDataConfig.Option.FUEL_ENABLED.getPath(), this.isFuelEnabled());
+        map.put(VehicleDataConfig.Option.FUEL.getPath(), this.getFuel());
+        map.put(VehicleDataConfig.Option.FUEL_USAGE.getPath(), this.getFuelUsage());
+        map.put(VehicleDataConfig.Option.HORN_ENABLED.getPath(), this.isHornEnabled());
+        map.put(VehicleDataConfig.Option.HEALTH.getPath(), this.getHealth());
+        map.put(VehicleDataConfig.Option.TRUNK_ENABLED.getPath(), this.isTrunkEnabled());
+        map.put(VehicleDataConfig.Option.TRUNK_ROWS.getPath(), this.getTrunkRows());
+        map.put(VehicleDataConfig.Option.TRUNK_DATA.getPath(), this.getTrunkData());
+        map.put(VehicleDataConfig.Option.ACCELARATION_SPEED.getPath(), this.getAccelerationSpeed());
+        map.put(VehicleDataConfig.Option.MAX_SPEED.getPath(), this.getMaxSpeed());
+        map.put(VehicleDataConfig.Option.BRAKING_SPEED.getPath(), this.getBrakingSpeed());
+        map.put(VehicleDataConfig.Option.FRICTION_SPEED.getPath(), this.getFrictionSpeed());
+        map.put(VehicleDataConfig.Option.ROTATION_SPEED.getPath(), this.getRotateSpeed());
+        map.put(VehicleDataConfig.Option.MAX_SPEED_BACKWARDS.getPath(), this.getMaxSpeedBackwards());
+        map.put(VehicleDataConfig.Option.OWNER.getPath(), this.getOwnerUUIDString());
+        map.put(VehicleDataConfig.Option.NBT_VALUE.getPath(), this.getNbtValue());
+        map.put(VehicleDataConfig.Option.RIDERS.getPath(), this.getRiders());
+        map.put(VehicleDataConfig.Option.MEMBERS.getPath(), this.getMembers());
         ConfigModule.vehicleDataConfig.getConfig().set(String.format("vehicle.%s", this.getLicensePlate()), map);
         ConfigModule.vehicleDataConfig.save();
     }
@@ -86,10 +87,7 @@ public class Vehicle {
      * @throws IllegalStateException If vehicle is already deleted.
      */
     public void delete() throws IllegalStateException {
-        FileConfiguration dataConfig = ConfigModule.vehicleDataConfig.getConfig();
-        final String path = "vehicle." + this.getLicensePlate();
-        if (!dataConfig.isSet(path)) throw new IllegalStateException("An error occurred while trying to delete a vehicle. Vehicle is already deleted.");
-        else dataConfig.set(path, null);
+        ConfigModule.vehicleDataConfig.delete(this.getLicensePlate());
     }
 
     public String getLicensePlate() {
