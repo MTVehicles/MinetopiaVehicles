@@ -1,0 +1,18 @@
+List of people who contributed to MTVehicles:
+---------------------------------------------
+
+CODE CONTRIBUTORS:
+- Nikd0 (https://github.com/Zettovec)
+- Joep (https://github.com/GamerJoep)
+- Jeffrey (https://github.com/Jeffrey-H)
+- Jazzkuh (https://github.com/Jazzkuh)
+- Aaron (https://github.com/duranaaron)
+
+TRANSLATORS:
+- Nikd0 (Czech)
+- Mo1810 (German)
+- Randall_Rut (Spanish)
+- xiaoyueyoQvQ (Chinese)
+- ꋖꌅꋰꌅomerturkyᴱˑᴶ (Turkish)
+- kazumasa200 (Japanese)
+- roi (Hebrew)

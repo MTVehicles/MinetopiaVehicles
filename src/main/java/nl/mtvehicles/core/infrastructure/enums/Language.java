@@ -40,6 +40,14 @@ public enum Language {
      */
     TR("Türk"),
     /**
+     * Japanese
+     */
+    JA("日本語"),
+    /**
+     * Hebrew
+     */
+    HE("עִברִית"),
+    /**
      * Custom language one can create and use
      */
     CUSTOM("Custom language");
@@ -74,7 +82,7 @@ public enum Language {
      * @return Array of all supported languages
      */
     public static String[] getAllLanguages(){
-        String[] languages = {"en", "nl", "es", "cs", "cn", "de", "tr"};
+        String[] languages = {"en", "nl", "es", "cs", "cn", "de", "tr", "ja", "he"};
         return languages;
     }
 

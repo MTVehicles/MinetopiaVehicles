@@ -49,8 +49,16 @@ public class ConfigModule {
     public ConfigModule() {
         SimpleDateFormat formatter = new SimpleDateFormat("dd_MM_yyyy-HH_mm_ss");
         Date date = new Date();
+
         String configVersion = Main.configVersion;
-        if (!secretSettings.getConfigVersion().equals(configVersion) || defaultConfig.hasOldVersionChecking()) {
+        String messagesVersion = Main.messagesVersion;
+
+        Main.instance.saveResource("credits.txt", true);
+
+        final boolean oldConfigVersion = !secretSettings.getConfigVersion().equals(configVersion) || defaultConfig.hasOldVersionChecking();
+        final boolean oldMessagesVersion = !secretSettings.getMessagesVersion().equals(messagesVersion) || defaultConfig.hasOldVersionChecking();
+
+        if (oldConfigVersion) {
             File dc = new File(Main.instance.getDataFolder(), "config.yml");
             File vc = new File(Main.instance.getDataFolder(), "vehicles.yml");
             File sss = new File(Main.instance.getDataFolder(), "supersecretsettings.yml");
@@ -60,8 +68,7 @@ public class ConfigModule {
             Main.instance.saveDefaultConfig();
         }
 
-        String messagesVersion = Main.messagesVersion;
-        if (!secretSettings.getMessagesVersion().equals(messagesVersion) || defaultConfig.hasOldVersionChecking()) {
+        if (oldMessagesVersion) {
             File sss = new File(Main.instance.getDataFolder(), "supersecretsettings.yml");
             sss.delete();
             messagesConfig.saveNewLanguageFiles(formatter.format(date));
