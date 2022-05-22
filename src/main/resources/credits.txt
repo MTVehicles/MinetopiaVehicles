@@ -14,3 +14,5 @@ TRANSLATORS:
 - Randall_Rut (Spanish)
 - xiaoyueyoQvQ (Chinese)
 - ꋖꌅꋰꌅomerturkyᴱˑᴶ (Turkish)
+- kazumasa200 (Japanese)
+- roi (Hebrew)

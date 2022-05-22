@@ -1,6 +1,7 @@
 package nl.mtvehicles.core.infrastructure.models;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
+import nl.mtvehicles.core.infrastructure.annotations.ToDo;
 import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
 import nl.mtvehicles.core.infrastructure.enums.InventoryTitle;
@@ -298,8 +299,11 @@ public final class VehicleUtils {
      *
      * @see Vehicle
      */
+    @ToDo("Beautify the code inside this method.")
     public static Vehicle getByLicensePlate(String licensePlate) {
         if (!existsByLicensePlate(licensePlate)) return null;
+
+        ConfigModule.vehicleDataConfig.reload();
 
         Map<?, ?> vehicleData = ConfigModule.vehicleDataConfig.getConfig()
                 .getConfigurationSection(String.format("vehicle.%s", licensePlate)).getValues(true);

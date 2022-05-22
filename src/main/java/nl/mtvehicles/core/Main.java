@@ -22,13 +22,13 @@ public class Main extends JavaPlugin {
      *
      * @see nl.mtvehicles.core.infrastructure.dataconfig.SecretSettingsConfig
      */
-    public static String configVersion = "2.4.0";
+    final public static String configVersion = "2.4.0";
     /**
      * <b>Version of messages_xx.yml files - must be equal to the version in SuperSecretSettings.</b><br>
      *
      * This variable works exactly as 'configVersion'.
      */
-    public static String messagesVersion = "2.4.2-dev3";
+    final public static String messagesVersion = "2.4.3-dev3";
 
     @Override
     public void onEnable() {

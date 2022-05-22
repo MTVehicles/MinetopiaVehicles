@@ -156,7 +156,9 @@ public class InventoryClickListener extends MTVListener {
         else if (clickedSlot == 4) LanguageUtils.changeLanguage(player, Language.DE);
         else if (clickedSlot == 5) LanguageUtils.changeLanguage(player, Language.CN);
         else if (clickedSlot == 6) LanguageUtils.changeLanguage(player, Language.TR);
-        else if (clickedSlot == 8) {
+        else if (clickedSlot == 7) LanguageUtils.changeLanguage(player, Language.JA);
+        else if (clickedSlot == 8) LanguageUtils.changeLanguage(player, Language.HE);
+        else if (clickedSlot == 17) {
             LanguageUtils.languageCheck.put(player.getUniqueId(), false);
             player.sendMessage("§6You may find more information here: §e§nhttps://wiki.mtvehicles.eu/translating.html");
         }
