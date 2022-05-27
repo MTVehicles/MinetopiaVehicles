@@ -192,6 +192,7 @@ MTVehicles offers special placeholders for you to use.
 | `%mtv_vehicle_place%`        | Get information whether the player is a DRIVER or a PASSENGER |
 | `%mtv_vehicle_seats%`        | Get the number of seats of a vehicle a player is sitting in   |
 | `%mtv_vehicle_uuid%`         | Get the UUID of a vehicle a player is sitting in              |
+| `%mtv_vehicle_owner%`        | Get the owner (username) of a vehicle a player is sitting in  |
 
 
 ### Vault
