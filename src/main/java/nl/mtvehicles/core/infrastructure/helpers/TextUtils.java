@@ -82,7 +82,7 @@ public class TextUtils {
     }
 
     /**
-     * @deprecated This method somehow worked, no idea how though. Use {@link nl.mtvehicles.core.listeners.VehicleClickListener#placeVehicle(String, Player)} instead.
+     * @deprecated This method somehow worked, no idea how though. Use {@link nl.mtvehicles.core.listeners.VehicleClickListener#enterVehicle(String, Player)} instead.
      */
     @Deprecated
     public static void createVehicle(String licensePlate, Player p) {
@@ -91,13 +91,13 @@ public class TextUtils {
                 return;
             }
         }
-        Vehicle vehicle = VehicleUtils.getByLicensePlate(licensePlate);
+        Vehicle vehicle = VehicleUtils.getVehicle(licensePlate);
         if (vehicle == null) {
             ConfigModule.messagesConfig.sendMessage(p, Message.VEHICLE_NOT_FOUND);
             return;
         }
         if (!vehicle.isOwner(p) && !vehicle.canRide(p) && !p.hasPermission("mtvehicles.ride")) {
-            p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_NO_RIDER_ENTER).replace("%p%", VehicleUtils.getByLicensePlate(licensePlate).getOwnerName())));
+            p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_NO_RIDER_ENTER).replace("%p%", VehicleUtils.getVehicle(licensePlate).getOwnerName())));
             return;
         }
         for (Entity entity : p.getWorld().getEntities()) {
@@ -137,7 +137,7 @@ public class TextUtils {
                         if (i == 1) {
                             TextUtils.mainSeatStandCreator(licensePlate, location, p, seat.get("x"), seat.get("y"), seat.get("z"));
                             BossBarUtils.addBossBar(p, licensePlate);
-                            p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_ENTER_RIDER).replace("%p%", VehicleUtils.getByLicensePlate(licensePlate).getOwnerName())));
+                            p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_ENTER_RIDER).replace("%p%", VehicleUtils.getVehicle(licensePlate).getOwnerName())));
                         }
                         if (i > 1) {
                             VehicleData.seatsize.put(licensePlate, seats.size());

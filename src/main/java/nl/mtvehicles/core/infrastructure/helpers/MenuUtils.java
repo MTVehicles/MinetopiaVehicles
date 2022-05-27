@@ -106,7 +106,7 @@ public class MenuUtils {
         NBTItem nbt = new NBTItem(p.getInventory().getItemInMainHand());
         String licensePlate = nbt.getString("mtvehicles.kenteken");
 
-        Vehicle vehicle = VehicleUtils.getByLicensePlate(licensePlate);
+        Vehicle vehicle = VehicleUtils.getVehicle(licensePlate);
         if (vehicle == null) return;
 
         MessagesConfig msg = ConfigModule.messagesConfig;
@@ -148,7 +148,7 @@ public class MenuUtils {
         NBTItem nbt = new NBTItem(p.getInventory().getItemInMainHand());
         String licensePlate = nbt.getString("mtvehicles.kenteken");
 
-        Vehicle vehicle = VehicleUtils.getByLicensePlate(licensePlate);
+        Vehicle vehicle = VehicleUtils.getVehicle(licensePlate);
         if (vehicle == null) return;
 
         ItemStack option1 = ItemUtils.getMenuItem(Material.PAPER, 1, "&6" + ConfigModule.messagesConfig.getMessage(Message.OWNER), String.format("&7%s: &e%s", ConfigModule.messagesConfig.getMessage(Message.NAME), Bukkit.getOfflinePlayer(vehicle.getOwnerUUID()).getName()));

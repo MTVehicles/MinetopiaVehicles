@@ -40,7 +40,7 @@ public class VehicleAddRider extends MTVehicleSubCommand {
             return true;
         }
 
-        Vehicle vehicle = VehicleUtils.getByLicensePlate(licensePlate);
+        Vehicle vehicle = VehicleUtils.getVehicle(licensePlate);
 
         assert vehicle != null;
         List<String> riders = vehicle.getRiders();

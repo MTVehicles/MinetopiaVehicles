@@ -10,7 +10,6 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -278,7 +277,7 @@ public class ItemUtils {
     public static ItemStack getMenuRidersItem(String licensePlate){
         List<String> lore = new ArrayList<>();
         MessagesConfig msg = ConfigModule.messagesConfig;
-        Vehicle vehicle = VehicleUtils.getByLicensePlate(licensePlate);
+        Vehicle vehicle = VehicleUtils.getVehicle(licensePlate);
 
         if (vehicle == null) return null;
 
@@ -306,7 +305,7 @@ public class ItemUtils {
     public static ItemStack getMenuMembersItem(String licensePlate){
         List<String> lore = new ArrayList<>();
         MessagesConfig msg = ConfigModule.messagesConfig;
-        Vehicle vehicle = VehicleUtils.getByLicensePlate(licensePlate);
+        Vehicle vehicle = VehicleUtils.getVehicle(licensePlate);
 
         if (vehicle == null) return null;
 

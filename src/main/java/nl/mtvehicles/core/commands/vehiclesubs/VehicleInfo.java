@@ -32,7 +32,7 @@ public class VehicleInfo extends MTVehicleSubCommand {
         ConfigModule.configList.forEach(Config::reload);
 
         String ken = VehicleUtils.getLicensePlate(item);
-        Vehicle vehicle = VehicleUtils.getByLicensePlate(ken);
+        Vehicle vehicle = VehicleUtils.getVehicle(ken);
 
         if (vehicle == null) return true;
 

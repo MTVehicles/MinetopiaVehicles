@@ -32,7 +32,7 @@ public class VehicleRemoveRider extends MTVehicleSubCommand {
 
         String ken = VehicleUtils.getLicensePlate(item);
         Player of = Bukkit.getPlayer(arguments[1]);
-        Vehicle vehicle = VehicleUtils.getByLicensePlate(ken);
+        Vehicle vehicle = VehicleUtils.getVehicle(ken);
 
         if (of == null || !of.hasPlayedBefore()) {
             player.sendMessage(ConfigModule.messagesConfig.getMessage(Message.PLAYER_NOT_FOUND));

@@ -51,7 +51,7 @@ public class VehicleSetOwner extends MTVehicleSubCommand {
             return true;
         }
 
-        Vehicle vehicle = VehicleUtils.getByLicensePlate(licensePlate);
+        Vehicle vehicle = VehicleUtils.getVehicle(licensePlate);
         assert vehicle != null;
 
         if ((playerSetOwner || !player.hasPermission("mtvehicles.setowner")) && !vehicle.isOwner(player)) {

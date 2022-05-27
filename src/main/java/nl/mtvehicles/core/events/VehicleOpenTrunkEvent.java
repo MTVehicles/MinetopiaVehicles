@@ -24,7 +24,7 @@ public class VehicleOpenTrunkEvent extends MTVEvent implements IsCancellable, Ha
 
     @Override
     public Vehicle getVehicle(){
-        return VehicleUtils.getByLicensePlate(licensePlate);
+        return VehicleUtils.getVehicle(licensePlate);
     }
 
     @Override

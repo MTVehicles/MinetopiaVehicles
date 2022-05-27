@@ -23,7 +23,7 @@ public class VehiclePrivate extends MTVehicleSubCommand {
 
         String licensePlate = VehicleUtils.getLicensePlate(item);
 
-        Vehicle vehicle = VehicleUtils.getByLicensePlate(licensePlate);
+        Vehicle vehicle = VehicleUtils.getVehicle(licensePlate);
 
         assert vehicle != null;
         vehicle.setOpen(false);

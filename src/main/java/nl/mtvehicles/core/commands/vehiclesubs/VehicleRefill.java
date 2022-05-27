@@ -25,7 +25,7 @@ public class VehicleRefill extends MTVehicleSubCommand {
         if (!isHoldingVehicle()) return true;
 
         final String licensePlate = VehicleUtils.getLicensePlate(item);
-        Vehicle vehicle = VehicleUtils.getByLicensePlate(licensePlate);
+        Vehicle vehicle = VehicleUtils.getVehicle(licensePlate);
         vehicle.setFuel(100.0);
         vehicle.save();
 

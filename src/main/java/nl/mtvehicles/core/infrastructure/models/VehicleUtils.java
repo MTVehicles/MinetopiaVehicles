@@ -26,6 +26,7 @@ import java.util.*;
 /**
  * Useful methods for vehicles
  * @see Vehicle
+ * @warning <b>This class may be moved in v2.5.0. Bear it in mind if you're using it in your addon.</b>
  */
 public final class VehicleUtils {
 
@@ -64,7 +65,7 @@ public final class VehicleUtils {
         standMain.setVisible(false);
         standMain.setCustomName("MTVEHICLES_MAIN_" + licensePlate);
 
-        Vehicle vehicle = getByLicensePlate(licensePlate);
+        Vehicle vehicle = getVehicle(licensePlate);
 
         List<Map<String, Double>> seats = (List<Map<String, Double>>) vehicle.getVehicleData().get("seats");
         Map<String, Double> mainSeat = seats.get(0);
@@ -297,10 +298,22 @@ public final class VehicleUtils {
      * @param licensePlate Vehicle's license plate
      * @return Vehicle instance
      *
+     * @deprecated Renamed to {@link #getVehicle(String)}.
+     */
+    @Deprecated
+    public static Vehicle getByLicensePlate(String licensePlate) {
+        return getVehicle(licensePlate);
+    }
+
+    /**
+     * Get the Vehicle instance by a vehicle's license place
+     * @param licensePlate Vehicle's license plate
+     * @return Vehicle instance
+     *
      * @see Vehicle
      */
     @ToDo("Beautify the code inside this method.")
-    public static Vehicle getByLicensePlate(String licensePlate) {
+    public static Vehicle getVehicle(String licensePlate) {
         if (!existsByLicensePlate(licensePlate)) return null;
 
         ConfigModule.vehicleDataConfig.reload();
@@ -404,12 +417,12 @@ public final class VehicleUtils {
      */
     public static void openTrunk(Player p, String license) {
         if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.TRUNK_ENABLED)) {
-            if (VehicleUtils.getByLicensePlate(license) == null) {
+            if (VehicleUtils.getVehicle(license) == null) {
                 ConfigModule.messagesConfig.sendMessage(p, Message.VEHICLE_NOT_FOUND);
                 return;
             }
 
-            if (VehicleUtils.getByLicensePlate(license).isOwner(p) || p.hasPermission("mtvehicles.kofferbak")) {
+            if (VehicleUtils.getVehicle(license).isOwner(p) || p.hasPermission("mtvehicles.kofferbak")) {
                 ConfigModule.configList.forEach(Config::reload);
                 Inventory inv = Bukkit.createInventory(null, (int) ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.TRUNK_ROWS) * 9, InventoryTitle.VEHICLE_TRUNK.getStringTitle());
 
@@ -425,7 +438,7 @@ public final class VehicleUtils {
                 p.openInventory(inv);
 
             } else {
-                p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_NO_RIDER_TRUNK).replace("%p%", VehicleUtils.getByLicensePlate(license).getOwnerName())));
+                p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_NO_RIDER_TRUNK).replace("%p%", VehicleUtils.getVehicle(license).getOwnerName())));
             }
         }
     }
@@ -468,7 +481,7 @@ public final class VehicleUtils {
      * @param player Player
      */
     public static void pickupVehicle(String license, Player player) {
-        if (getByLicensePlate(license) == null) {
+        if (getVehicle(license) == null) {
             for (World world : Bukkit.getServer().getWorlds()) {
                 for (Entity entity : world.getEntities()) {
                     if (entity.getCustomName() != null && entity.getCustomName().contains(license)) {
@@ -488,7 +501,7 @@ public final class VehicleUtils {
             ConfigModule.messagesConfig.sendMessage(player, Message.VEHICLE_NOT_FOUND);
             return;
         }
-        if (getByLicensePlate(license).isOwner(player) && !((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.CAR_PICKUP)) || player.hasPermission("mtvehicles.oppakken")) {
+        if (getVehicle(license).isOwner(player) && !((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.CAR_PICKUP)) || player.hasPermission("mtvehicles.oppakken")) {
             for (World world : Bukkit.getServer().getWorlds()) {
                 for (Entity entity : world.getEntities()) {
                     if (entity.getCustomName() != null && entity.getCustomName().contains(license)) {
@@ -496,7 +509,7 @@ public final class VehicleUtils {
                         if (test.getCustomName().contains("MTVEHICLES_SKIN_" + license)) {
                             if (!TextUtils.checkInvFull(player)) {
                                 player.getInventory().addItem(test.getHelmet());
-                                player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_PICKUP).replace("%p%", getByLicensePlate(license).getOwnerName())));
+                                player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_PICKUP).replace("%p%", getVehicle(license).getOwnerName())));
                             } else {
                                 ConfigModule.messagesConfig.sendMessage(player, Message.INVENTORY_FULL);
                                 return;
@@ -511,7 +524,7 @@ public final class VehicleUtils {
                 player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.CANNOT_DO_THAT_HERE)));
                 return;
             }
-            player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_NO_OWNER_PICKUP).replace("%p%", getByLicensePlate(license).getOwnerName())));
+            player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_NO_OWNER_PICKUP).replace("%p%", getVehicle(license).getOwnerName())));
             return;
         }
     }

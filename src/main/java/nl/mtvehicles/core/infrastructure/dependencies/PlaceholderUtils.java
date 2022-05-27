@@ -8,6 +8,7 @@ import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
 import nl.mtvehicles.core.infrastructure.enums.VehicleType;
 import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
+import nl.mtvehicles.core.infrastructure.models.Vehicle;
 import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
@@ -16,6 +17,8 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.text.DecimalFormat;
+import java.util.List;
+import java.util.Map;
 
 import static nl.mtvehicles.core.infrastructure.models.VehicleUtils.isInsideVehicle;
 
@@ -54,7 +57,7 @@ public class PlaceholderUtils extends PlaceholderExpansion {
     }
 
     @Override
-    @ToDo("Add more placeholders.")
+    @ToDo("Create methods in VehicleUtils or somewhere for each of these getters.")
     public String onRequest(OfflinePlayer p, String parameter) { //Placeholder 'mtv_%parameter%'
 
         //Global placeholders
@@ -90,7 +93,48 @@ public class PlaceholderUtils extends PlaceholderExpansion {
             String licensePlate = VehicleUtils.getLicensePlate(p.getPlayer().getVehicle());
             if (!(boolean) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.FUEL_ENABLED)) return "";
             DecimalFormat df = new DecimalFormat("#.##");
-            return df.format(VehicleData.fuel.get(licensePlate)) + "%";
+            return df.format(VehicleData.fuel.get(licensePlate)) + " %";
+        }
+
+        if (parameter.equalsIgnoreCase("vehicle_speed")){
+            if (!p.isOnline()) return "";
+            if (!isInsideVehicle(p.getPlayer())) return "";
+            String licensePlate = VehicleUtils.getLicensePlate(p.getPlayer().getVehicle());
+            DecimalFormat df = new DecimalFormat("#.###");
+            return df.format((VehicleData.speed.get(licensePlate) * 20)) + " blocks/sec";
+        }
+
+        if (parameter.equalsIgnoreCase("vehicle_maxspeed")){
+            if (!p.isOnline()) return "";
+            if (!isInsideVehicle(p.getPlayer())) return "";
+            String licensePlate = VehicleUtils.getLicensePlate(p.getPlayer().getVehicle());
+            DecimalFormat df = new DecimalFormat("#.###");
+            return df.format(((Double) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.MAX_SPEED) * 20)) + " blocks/sec";
+        }
+
+        if (parameter.equalsIgnoreCase("vehicle_place")){
+            if (!p.isOnline()) return "";
+            if (!isInsideVehicle(p.getPlayer())) return "";
+            String vehicleName = p.getPlayer().getVehicle().getCustomName();
+            if (vehicleName.contains("MAINSEAT")) return "DRIVER";
+            else if (vehicleName.contains("SEAT")) return "PASSENGER";
+            else return "";
+        }
+
+        if (parameter.equalsIgnoreCase("vehicle_seats")){
+            if (!p.isOnline()) return "";
+            if (!isInsideVehicle(p.getPlayer())) return "";
+            String licensePlate = VehicleUtils.getLicensePlate(p.getPlayer().getVehicle());
+            Vehicle vehicle = VehicleUtils.getVehicle(licensePlate);
+            List<Map<String, Double>> seats = (List<Map<String, Double>>) vehicle.getVehicleData().get("seats");
+            return String.valueOf(seats.size());
+        }
+
+        if (parameter.equalsIgnoreCase("vehicle_uuid")){
+            if (!p.isOnline()) return "";
+            if (!isInsideVehicle(p.getPlayer())) return "";
+            String licensePlate = VehicleUtils.getLicensePlate(p.getPlayer().getVehicle());
+            return VehicleUtils.getCarUUID(licensePlate);
         }
 
         return null;

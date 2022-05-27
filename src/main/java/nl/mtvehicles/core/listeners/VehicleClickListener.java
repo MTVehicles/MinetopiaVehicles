@@ -59,7 +59,7 @@ public class VehicleClickListener extends MTVListener {
             if (isCancelled()) return;
 
             license = api.getLicensePlate();
-            Vehicle vehicle = VehicleUtils.getByLicensePlate(license);
+            Vehicle vehicle = VehicleUtils.getVehicle(license);
             if (vehicle == null) return;
 
             event.setCancelled(true);
@@ -87,7 +87,7 @@ public class VehicleClickListener extends MTVListener {
         if (isCancelled()) return;
 
         license = api.getLicensePlate();
-        Vehicle vehicle = VehicleUtils.getByLicensePlate(license);
+        Vehicle vehicle = VehicleUtils.getVehicle(license);
         if (vehicle == null) return;
 
         event.setCancelled(true);
@@ -97,29 +97,40 @@ public class VehicleClickListener extends MTVListener {
             if ((boolean) ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.IS_OPEN) || vehicle.isOwner(player) || vehicle.canSit(player) || player.hasPermission("mtvehicles.ride")) {
                 if (entity.isEmpty()) {
                     entity.addPassenger(player);
-                    player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_ENTER_MEMBER).replace("%p%", VehicleUtils.getByLicensePlate(license).getOwnerName())));
+                    player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_ENTER_MEMBER).replace("%p%", VehicleUtils.getVehicle(license).getOwnerName())));
                 }
             } else {
-                player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_NO_RIDER_ENTER).replace("%p%", VehicleUtils.getByLicensePlate(license).getOwnerName())));
+                player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_NO_RIDER_ENTER).replace("%p%", VehicleUtils.getVehicle(license).getOwnerName())));
             }
             return;
         }
-        placeVehicle(license, player);
+        enterVehicle(license, player);
     }
 
     /**
-     * Place a vehicle
+     * Create {@link VehicleData} (necessary for driving to work) and make player enter a vehicle.
      * @param licensePlate Vehicle's license plate
-     * @param p Player who is placing the vehicle
+     * @param p Player who is entering the vehicle
+     *
+     * @deprecated This method has been renamed to {@link #enterVehicle(String, Player)} because it simply has nothing to do with placing the vehicle (see {@link VehicleUtils#spawnVehicle(String, Location)} for that).
      */
     public static void placeVehicle(String licensePlate, Player p) {
+        enterVehicle(licensePlate, p);
+    }
+
+    /**
+     * Create {@link VehicleData} (necessary for driving to work) and make player enter a vehicle.
+     * @param licensePlate Vehicle's license plate
+     * @param p Player who is entering the vehicle
+     */
+    public static void enterVehicle(String licensePlate, Player p) {
         if (!(VehicleData.autostand2.get(licensePlate) == null)) {
             if (!VehicleData.autostand2.get(licensePlate).isEmpty()) {
                 return;
             }
         }
 
-        Vehicle vehicle = VehicleUtils.getByLicensePlate(licensePlate);
+        Vehicle vehicle = VehicleUtils.getVehicle(licensePlate);
         if (vehicle == null) {
             ConfigModule.messagesConfig.sendMessage(p, Message.VEHICLE_NOT_FOUND);
             return;
@@ -159,7 +170,7 @@ public class VehicleClickListener extends MTVListener {
                         if (i == 1) {
                             mainSeatStandCreator(licensePlate, location, p, seat.get("x"), seat.get("y"), seat.get("z"));
                             BossBarUtils.addBossBar(p, licensePlate);
-                            p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_ENTER_RIDER).replace("%p%", VehicleUtils.getByLicensePlate(licensePlate).getOwnerName())));
+                            p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_ENTER_RIDER).replace("%p%", VehicleUtils.getVehicle(licensePlate).getOwnerName())));
                         }
                         if (i > 1) {
                             VehicleData.seatsize.put(licensePlate, seats.size());

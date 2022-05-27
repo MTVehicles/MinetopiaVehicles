@@ -25,7 +25,7 @@ public class VehicleDelete extends MTVehicleSubCommand {
 
         try {
             String licensePlate = VehicleUtils.getLicensePlate(item);
-            VehicleUtils.getByLicensePlate(licensePlate).delete();
+            VehicleUtils.getVehicle(licensePlate).delete();
             sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_DELETED)));
         } catch (Exception e){
             sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_ALREADY_DELETED)));
