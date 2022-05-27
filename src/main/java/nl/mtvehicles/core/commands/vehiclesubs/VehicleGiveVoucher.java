@@ -22,20 +22,20 @@ public class VehicleGiveVoucher extends MTVehicleSubCommand {
         if (!checkPermission("mtvehicles.givevoucher")) return true;
 
         if (arguments.length != 3) {
-            sendMessage(ConfigModule.messagesConfig.getMessage(Message.USE_GIVE_VOUCHER));
+            sendMessage(Message.USE_GIVE_VOUCHER);
             return true;
         }
 
-        Player playerVoucherGetter = Bukkit.getPlayer(arguments[1]);
+        Player argPlayer = Bukkit.getPlayer(arguments[1]);
 
         String carUuid = arguments[2];
 
-        if (playerVoucherGetter == null || !playerVoucherGetter.hasPlayedBefore()) {
-            sendMessage(ConfigModule.messagesConfig.getMessage(Message.PLAYER_NOT_FOUND));
+        if (argPlayer == null) {
+            sendMessage(Message.PLAYER_NOT_FOUND);
             return true;
         }
 
-        ItemStack car = VehicleUtils.getItemByUUID(playerVoucherGetter, carUuid);
+        ItemStack car = VehicleUtils.getItemByUUID(argPlayer, carUuid);
 
         if (car == null){
             sender.sendMessage(ConfigModule.messagesConfig.getMessage(Message.GIVE_CAR_NOT_FOUND));
@@ -43,8 +43,8 @@ public class VehicleGiveVoucher extends MTVehicleSubCommand {
         }
 
         ItemStack voucher = ItemUtils.createVoucher(carUuid);
-        playerVoucherGetter.getInventory().addItem(voucher);
-        sender.sendMessage(ConfigModule.messagesConfig.getMessage(Message.GIVE_VOUCHER_SUCCESS).replace("%p%", playerVoucherGetter.getName()));
+        argPlayer.getInventory().addItem(voucher);
+        sender.sendMessage(ConfigModule.messagesConfig.getMessage(Message.GIVE_VOUCHER_SUCCESS).replace("%p%", argPlayer.getName()));
         return true;
     }
 }

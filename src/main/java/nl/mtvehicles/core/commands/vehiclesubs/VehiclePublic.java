@@ -17,20 +17,14 @@ public class VehiclePublic extends MTVehicleSubCommand {
 
     @Override
     public boolean execute() {
-        ItemStack item = player.getInventory().getItemInMainHand();
 
-        if (!isHoldingVehicle()) return true;
+        Vehicle vehicle = getVehicle();
+        if (vehicle == null) return true;
 
-        String licensePlate = VehicleUtils.getLicensePlate(item);
-
-        Vehicle vehicle = VehicleUtils.getVehicle(licensePlate);
-
-        assert vehicle != null;
         vehicle.setOpen(true);
         vehicle.save();
 
-        sendMessage(ConfigModule.messagesConfig.getMessage(Message.ACTION_SUCCESSFUL));
-
+        sendMessage(Message.ACTION_SUCCESSFUL);
         return true;
     }
 }

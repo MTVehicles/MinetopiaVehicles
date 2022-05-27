@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
+import nl.mtvehicles.core.infrastructure.annotations.ToDo;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.enums.PluginVersion;
 import nl.mtvehicles.core.infrastructure.enums.SoftDependency;
@@ -29,8 +30,8 @@ public class VehicleVersion extends MTVehicleSubCommand {
         String isLatest = (PluginUpdater.isLatestVersion() && !getPluginVersion().isDev()) ? " (latest)" : "";
         String serverVersion = Bukkit.getVersion();
 
-        sendMessage(String.format("§2Running §aMTVehicles v%s§2%s.", pluginVersion, isLatest));
-        sendMessage(String.format("§2Your server is running §a%s§2.", serverVersion));
+        sender.sendMessage(String.format("§2Running §aMTVehicles v%s§2%s.", pluginVersion, isLatest));
+        sender.sendMessage(String.format("§2Your server is running §a%s§2.", serverVersion));
         if (!DependencyModule.loadedDependencies.isEmpty()) {
             String dependencies = "";
             int numberOfDependencies = 0;
@@ -42,15 +43,15 @@ public class VehicleVersion extends MTVehicleSubCommand {
             if (DependencyModule.isDependencyEnabled(SoftDependency.VAULT)) {
                 if (!DependencyModule.vault.isEconomySetUp()) dependencies = dependencies.replace("Vault", "§a§mVault§a");
             }
-            sendMessage(String.format("§2Loaded dependencies (%s§2): §a%s§2.", numberOfDependencies, dependencies));
+            sender.sendMessage(String.format("§2Loaded dependencies (%s§2): §a%s§2.", numberOfDependencies, dependencies));
         } else {
-            sendMessage(String.format("§2There are no loaded dependencies."));
+            sender.sendMessage(String.format("§2There are no loaded dependencies."));
         }
 
         if (VersionModule.isPreRelease) {
-            sendMessage("§e-----");
-            if (getPluginVersion().isDev()) sendMessage(TextUtils.colorize("&cWarning: You're using a dev-version. Auto-updater is disabled."));
-            sendMessage(ConfigModule.messagesConfig.getMessage(Message.USING_PRE_RELEASE));
+            sender.sendMessage("§e-----");
+            if (getPluginVersion().isDev()) sender.sendMessage(TextUtils.colorize("&cWarning: You're using a dev-version. Auto-updater is disabled."));
+            sendMessage(Message.USING_PRE_RELEASE);
         }
 
         return true;

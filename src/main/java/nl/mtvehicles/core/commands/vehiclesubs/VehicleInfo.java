@@ -25,31 +25,26 @@ public class VehicleInfo extends MTVehicleSubCommand {
 
     @Override
     public boolean execute() {
-        ItemStack item = player.getInventory().getItemInMainHand();
 
-        if (!isHoldingVehicle()) return true;
-
-        ConfigModule.configList.forEach(Config::reload);
-
-        String ken = VehicleUtils.getLicensePlate(item);
-        Vehicle vehicle = VehicleUtils.getVehicle(ken);
-
+        Vehicle vehicle = getVehicle();
         if (vehicle == null) return true;
 
+        String licensePlate = vehicle.getLicensePlate();
+
         NumberFormat formatter = new DecimalFormat("#0.000");
-        sendMessage(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_INFO_INFORMATION));
+        sendMessage(Message.VEHICLE_INFO_INFORMATION);
         sendMessage(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_INFO_TYPE) + vehicle.getVehicleType().getName());
         sendMessage(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_INFO_NAME) + vehicle.getName());
-        sendMessage(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_INFO_LICENSE) + ken);
+        sendMessage(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_INFO_LICENSE) + licensePlate);
         if (player.hasPermission("mtvehicles.admin")) {
-            sendMessage(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_INFO_UUID) + VehicleUtils.getCarUUID(ken));
+            sendMessage(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_INFO_UUID) + VehicleUtils.getCarUUID(licensePlate));
         }
         sendMessage(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_INFO_SPEED) + formatter.format(vehicle.getMaxSpeed()*20).toString().replace(",", ".") + " blocks/sec");
         sendMessage(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_INFO_ACCELERATION) + formatter.format(vehicle.getAccelerationSpeed()/0.2*100).toString().replace(",", ".") + " blocks/sec^2");
         sendMessage(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_INFO_OWNER) + vehicle.getOwnerName());
 
         if (vehicle.getRiders().size() == 0) {
-            sendMessage(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_INFO_RIDERS_NONE));
+            sendMessage(Message.VEHICLE_INFO_RIDERS_NONE);
         } else {
             sendMessage(String.format(
                     ConfigModule.messagesConfig.getMessage(Message.VEHICLE_INFO_RIDERS),
@@ -63,7 +58,7 @@ public class VehicleInfo extends MTVehicleSubCommand {
         }
 
         if (vehicle.getMembers().size() == 0) {
-            sendMessage(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_INFO_MEMBERS_NONE));
+            sendMessage(Message.VEHICLE_INFO_MEMBERS_NONE);
         } else {
             sendMessage(String.format(
                     ConfigModule.messagesConfig.getMessage(Message.VEHICLE_INFO_MEMBERS),

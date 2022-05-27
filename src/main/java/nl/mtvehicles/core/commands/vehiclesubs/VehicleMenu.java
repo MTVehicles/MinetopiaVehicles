@@ -30,7 +30,7 @@ public class VehicleMenu extends MTVehicleSubCommand {
     public boolean execute() {
         if (!checkPermission("mtvehicles.menu")) return true;
 
-        sendMessage(ConfigModule.messagesConfig.getMessage(Message.MENU_OPEN));
+        sendMessage(Message.MENU_OPEN);
 
         int menuRows = (int) ConfigModule.defaultConfig.get(DefaultConfig.Option.VEHICLE_MENU_SIZE);
         final int menuSize = (menuRows >= 3 && menuRows <= 6) ? menuRows * 9 : 27;

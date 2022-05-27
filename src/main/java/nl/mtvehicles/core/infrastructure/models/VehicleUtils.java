@@ -20,6 +20,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
@@ -252,7 +253,8 @@ public final class VehicleUtils {
      * @param entity Vehicle's main armor stand
      * @return Vehicle's license plate
      */
-    public static String getLicensePlate(Entity entity){
+    public static String getLicensePlate(@Nullable Entity entity){
+        if (entity == null) return null;
         final String name = entity.getCustomName();
         if (name.split("_").length > 1) {
             return name.split("_")[2];
@@ -317,6 +319,7 @@ public final class VehicleUtils {
         if (!existsByLicensePlate(licensePlate)) return null;
 
         ConfigModule.vehicleDataConfig.reload();
+        ConfigModule.vehiclesConfig.reload();
 
         Map<?, ?> vehicleData = ConfigModule.vehicleDataConfig.getConfig()
                 .getConfigurationSection(String.format("vehicle.%s", licensePlate)).getValues(true);

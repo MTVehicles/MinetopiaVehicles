@@ -11,6 +11,8 @@ import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nullable;
 
+import static nl.mtvehicles.core.infrastructure.models.VehicleUtils.isInsideVehicle;
+
 /**
  * Abstract class for the plugin's /mtv subcommands
  */
@@ -57,11 +59,19 @@ public abstract class MTVehicleSubCommand {
     public abstract boolean execute();
 
     /**
-     * Send a message to the command sender
+     * Send a message to the command sender. <strong>Consider using {@link #sendMessage(Message)} instead.</strong>
      * @param message Message
      */
     public void sendMessage(String message) {
         this.sender.sendMessage(TextUtils.colorize(message));
+    }
+
+    /**
+     * Send a message to the command sender
+     * @param message Message
+     */
+    public void sendMessage(Message message){
+        this.sender.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(message)));
     }
 
     /**
@@ -96,7 +106,29 @@ public abstract class MTVehicleSubCommand {
     }
 
     /**
-     * Check whether the player is holding a vehicle
+     * Get vehicle used in the command.
+     *
+     * @return Firstly, it is checked whether the player is SITTING in a vehicle and is ITS OWNER. If not,the method checks whether the player is HOLDING a vehicle.
+     * Otherwise, this returns null and sends the player a message.
+     * (If a player is not set, this also returns null but doesn't send any message.)
+     */
+    protected Vehicle getVehicle(){
+        if (player == null) return null;
+
+        if (isInsideVehicle(player) && VehicleUtils.getVehicle(VehicleUtils.getLicensePlate(player.getVehicle())).isOwner(player))
+            return VehicleUtils.getVehicle(VehicleUtils.getLicensePlate(player.getVehicle()));
+
+
+        ItemStack item = player.getInventory().getItemInMainHand();
+        if (item.hasItemMeta() && (new NBTItem(item)).hasKey("mtvehicles.kenteken"))
+            return VehicleUtils.getVehicle(VehicleUtils.getLicensePlate(item));
+
+        sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.COMMAND_NO_VEHICLE)));
+        return null;
+    }
+
+    /**
+     * Check whether the player is holding a vehicle - Used in commands which mustn't be used while player is sitting inside a vehicle.
      * @return True if the player is holding a vehicle
      */
     protected boolean isHoldingVehicle(){

@@ -26,9 +26,9 @@ public class Main extends JavaPlugin {
     /**
      * <b>Version of messages_xx.yml files - must be equal to the version in SuperSecretSettings.</b><br>
      *
-     * This variable works exactly as 'configVersion'.
+     * This variable works exactly as {@link #configVersion}.
      */
-    final public static String messagesVersion = "2.4.3-dev3";
+    final public static String messagesVersion = "2.4.3-dev6";
 
     @Override
     public void onEnable() {

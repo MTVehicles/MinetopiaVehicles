@@ -20,17 +20,17 @@ public class VehicleRestore extends MTVehicleSubCommand {
     public boolean execute() {
         if (!checkPermission("mtvehicles.restore")) return true;
 
-        sendMessage(ConfigModule.messagesConfig.getMessage(Message.MENU_OPEN));
+        sendMessage(Message.MENU_OPEN);
 
         if (arguments.length != 2) {
             MenuUtils.restoreCMD(player, 1, null);
             MenuUtils.restoreUUID.put(player, null);
             return true;
         }
-        OfflinePlayer of = Bukkit.getPlayer(arguments[1]);
 
-        if (of == null || !of.hasPlayedBefore()) {
-            sendMessage(ConfigModule.messagesConfig.getMessage(Message.PLAYER_NOT_FOUND));
+        OfflinePlayer argPlayer = Bukkit.getPlayer(arguments[1]);
+        if (argPlayer == null || !argPlayer.hasPlayedBefore()) {
+            sendMessage(Message.OFFLINE_PLAYER_NOT_FOUND);
             return true;
         }
 
@@ -38,8 +38,8 @@ public class VehicleRestore extends MTVehicleSubCommand {
         api.call();
         if (api.isCancelled()) return true;
 
-        MenuUtils.restoreCMD(player, 1, of.getUniqueId());
-        MenuUtils.restoreUUID.put(player, of.getUniqueId());
+        MenuUtils.restoreCMD(player, 1, argPlayer.getUniqueId());
+        MenuUtils.restoreUUID.put(player, argPlayer.getUniqueId());
         MenuUtils.restorePage.put(player, 1);
 
         return true;

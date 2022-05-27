@@ -15,7 +15,7 @@ public class VehicleUpdate extends MTVehicleSubCommand {
         if (!checkPermission("mtvehicles.update")) return true;
 
         if (!(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.AUTO_UPDATE)) {
-            sendMessage(ConfigModule.messagesConfig.getMessage(Message.UPDATE_DISABLED));
+            sendMessage(Message.UPDATE_DISABLED);
             return false;
         }
 

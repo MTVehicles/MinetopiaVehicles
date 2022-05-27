@@ -16,7 +16,7 @@ public class VehicleLanguage extends MTVehicleSubCommand {
     @Override
     public boolean execute() {
         if (sender.hasPermission("mtvehicles.language") || sender.hasPermission("mtvehicles.admin")) LanguageUtils.openLanguageGUI(player);
-        else ConfigModule.messagesConfig.sendMessage(sender, Message.NO_PERMISSION);
+        else sendMessage(Message.NO_PERMISSION);
 
         return true;
     }

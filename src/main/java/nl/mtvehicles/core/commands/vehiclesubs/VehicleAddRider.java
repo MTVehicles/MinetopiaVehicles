@@ -13,7 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 
 /**
- * <b>/vehicle addrider %player%</b> - add a player who may steer the held vehicle.
+ * <b>/vehicle addrider %player%</b> - add a player who may steer the vehicle the player is sitting in (if they are its owner) OR player's held vehicle.
  */
 public class VehicleAddRider extends MTVehicleSubCommand {
     public VehicleAddRider() {
@@ -22,33 +22,35 @@ public class VehicleAddRider extends MTVehicleSubCommand {
 
     @Override
     public boolean execute() {
-        if (!isHoldingVehicle()) return true;
 
-        ItemStack item = player.getInventory().getItemInMainHand();
-        NBTItem nbt = new NBTItem(item);
+        Vehicle vehicle = getVehicle();
+        if (vehicle == null) return true;
 
         if (arguments.length != 2) {
-            sendMessage(ConfigModule.messagesConfig.getMessage(Message.USE_ADD_RIDER));
+            sendMessage(Message.USE_ADD_RIDER);
             return true;
         }
 
-        Player offlinePlayer = Bukkit.getPlayer(arguments[1]);
-        String licensePlate = nbt.getString("mtvehicles.kenteken");
+        Player argPlayer = Bukkit.getPlayer(arguments[1]);
 
-        if (offlinePlayer == null || !offlinePlayer.hasPlayedBefore()) {
-            sendMessage(ConfigModule.messagesConfig.getMessage(Message.PLAYER_NOT_FOUND));
+        if (argPlayer == null) {
+            sendMessage(Message.PLAYER_NOT_FOUND);
             return true;
         }
 
-        Vehicle vehicle = VehicleUtils.getVehicle(licensePlate);
-
-        assert vehicle != null;
         List<String> riders = vehicle.getRiders();
-        riders.add(offlinePlayer.getUniqueId().toString());
+        String playerUUID = argPlayer.getUniqueId().toString();
+
+        if (riders.contains(playerUUID)){
+            sendMessage(Message.ALREADY_RIDER);
+            return true;
+        }
+
+        riders.add(argPlayer.getUniqueId().toString());
         vehicle.setRiders(riders);
         vehicle.save();
 
-        sendMessage(ConfigModule.messagesConfig.getMessage(Message.MEMBER_CHANGE));
+        sendMessage(Message.MEMBER_CHANGE);
 
         return true;
     }

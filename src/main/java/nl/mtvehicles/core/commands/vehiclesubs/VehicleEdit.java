@@ -33,7 +33,7 @@ public class VehicleEdit extends MTVehicleSubCommand {
 
         ConfigModule.configList.forEach(Config::reload);
 
-        sendMessage(ConfigModule.messagesConfig.getMessage(Message.MENU_OPEN));
+        sendMessage(Message.MENU_OPEN);
         editMenu(player, item);
 
         return true;

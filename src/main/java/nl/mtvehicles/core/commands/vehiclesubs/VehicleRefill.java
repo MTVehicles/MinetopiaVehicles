@@ -31,7 +31,7 @@ public class VehicleRefill extends MTVehicleSubCommand {
 
         if (VehicleData.fallDamage.get(licensePlate) != null) VehicleData.fallDamage.remove(licensePlate);
 
-        sendMessage(ConfigModule.messagesConfig.getMessage(Message.REFILL_SUCCESSFUL));
+        sendMessage(Message.REFILL_SUCCESSFUL);
         return true;
     }
 }
