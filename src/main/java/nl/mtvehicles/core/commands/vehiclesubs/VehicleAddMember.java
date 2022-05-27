@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
+import nl.mtvehicles.core.events.VehicleAddMemberEvent;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
@@ -28,6 +29,21 @@ public class VehicleAddMember extends MTVehicleSubCommand {
         }
 
         Player argPlayer = Bukkit.getPlayer(arguments[1]);
+
+        VehicleAddMemberEvent api = new VehicleAddMemberEvent();
+        api.setPlayer(player);
+        api.setAdded(argPlayer);
+        api.setLicensePlate(vehicle.getLicensePlate());
+        api.call();
+
+        if (api.isCancelled()) return true;
+        vehicle = api.getVehicle();
+        argPlayer = api.getAdded();
+
+        if (vehicle == null){
+            sendMessage(Message.VEHICLE_NOT_FOUND);
+            return true;
+        }
 
         if (argPlayer == null) {
             sendMessage(Message.PLAYER_NOT_FOUND);

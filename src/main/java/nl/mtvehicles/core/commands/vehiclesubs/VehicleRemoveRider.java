@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
+import nl.mtvehicles.core.events.VehicleRemoveRiderEvent;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
@@ -28,6 +29,22 @@ public class VehicleRemoveRider extends MTVehicleSubCommand {
         }
 
         Player argPlayer = Bukkit.getPlayer(arguments[1]);
+
+        VehicleRemoveRiderEvent api = new VehicleRemoveRiderEvent();
+        api.setPlayer(player);
+        api.setRemoved(argPlayer);
+        api.setLicensePlate(vehicle.getLicensePlate());
+        api.call();
+
+        if (api.isCancelled()) return true;
+        vehicle = api.getVehicle();
+        argPlayer = api.getRemoved();
+
+        if (vehicle == null){
+            sendMessage(Message.VEHICLE_NOT_FOUND);
+            return true;
+        }
+
         if (argPlayer == null) {
             sendMessage(Message.PLAYER_NOT_FOUND);
             return true;

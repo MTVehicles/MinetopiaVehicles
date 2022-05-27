@@ -1,13 +1,11 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
+import nl.mtvehicles.core.events.VehicleRemoveMemberEvent;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
-import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
-import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
@@ -31,6 +29,21 @@ public class VehicleRemoveMember extends MTVehicleSubCommand {
         }
 
         Player argPlayer = Bukkit.getPlayer(arguments[1]);
+
+        VehicleRemoveMemberEvent api = new VehicleRemoveMemberEvent();
+        api.setPlayer(player);
+        api.setRemoved(argPlayer);
+        api.setLicensePlate(vehicle.getLicensePlate());
+        api.call();
+
+        if (api.isCancelled()) return true;
+        vehicle = api.getVehicle();
+        argPlayer = api.getRemoved();
+
+        if (vehicle == null){
+            sendMessage(Message.VEHICLE_NOT_FOUND);
+            return true;
+        }
 
         if (argPlayer == null) {
             sendMessage(Message.PLAYER_NOT_FOUND);

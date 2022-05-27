@@ -1,14 +1,11 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
-import de.tr7zw.changeme.nbtapi.NBTItem;
+import nl.mtvehicles.core.events.VehicleAddRiderEvent;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
-import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
-import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
@@ -32,6 +29,21 @@ public class VehicleAddRider extends MTVehicleSubCommand {
         }
 
         Player argPlayer = Bukkit.getPlayer(arguments[1]);
+
+        VehicleAddRiderEvent api = new VehicleAddRiderEvent();
+        api.setPlayer(player);
+        api.setAdded(argPlayer);
+        api.setLicensePlate(vehicle.getLicensePlate());
+        api.call();
+
+        if (api.isCancelled()) return true;
+        vehicle = api.getVehicle();
+        argPlayer = api.getAdded();
+
+        if (vehicle == null){
+            sendMessage(Message.VEHICLE_NOT_FOUND);
+            return true;
+        }
 
         if (argPlayer == null) {
             sendMessage(Message.PLAYER_NOT_FOUND);
