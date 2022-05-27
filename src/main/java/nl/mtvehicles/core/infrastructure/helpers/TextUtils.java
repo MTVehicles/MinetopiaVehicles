@@ -82,7 +82,7 @@ public class TextUtils {
     }
 
     /**
-     * @deprecated This method somehow worked, no idea how though. Use {@link nl.mtvehicles.core.listeners.VehicleClickListener#enterVehicle(String, Player)} instead.
+     * @deprecated This method somehow worked, no idea how though. Use {@link VehicleUtils#enterVehicle(String, Player)} instead.
      */
     @Deprecated
     public static void createVehicle(String licensePlate, Player p) {
