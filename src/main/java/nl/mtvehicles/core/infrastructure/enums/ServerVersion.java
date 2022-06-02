@@ -31,7 +31,11 @@ public enum ServerVersion {
     /**
      * 1.18.2
      */
-    v1_18_R2;
+    v1_18_R2,
+    /**
+     * 1.19 (expected)
+     */
+    v1_19;
 
     public boolean is1_12(){
         return this.equals(v1_12);
@@ -59,6 +63,10 @@ public enum ServerVersion {
 
     public boolean is1_18_R2(){
         return this.equals(v1_18_R2);
+    }
+
+    public boolean is1_19(){
+        return this.equals(v1_19);
     }
 
 }

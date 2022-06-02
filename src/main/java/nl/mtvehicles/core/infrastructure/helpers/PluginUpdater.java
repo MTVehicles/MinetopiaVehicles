@@ -124,6 +124,13 @@ public class PluginUpdater {
      * @param sender Target to whom the message will be sent
      */
     private static void sendUpdateMessage(CommandSender sender){
+        if (sender == Main.instance.getServer().getConsoleSender()){
+            for (String line: getUpdateMessage()) {
+                Main.logInfo(TextUtils.colorize(line));
+            }
+            return;
+        }
+
         for (String line: getUpdateMessage()) {
             sender.sendMessage(TextUtils.colorize(line));
         }

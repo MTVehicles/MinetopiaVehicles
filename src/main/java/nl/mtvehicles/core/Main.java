@@ -1,5 +1,7 @@
 package nl.mtvehicles.core;
 
+import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
+import nl.mtvehicles.core.infrastructure.helpers.PluginUpdater;
 import nl.mtvehicles.core.infrastructure.modules.*;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
@@ -37,12 +39,12 @@ public class Main extends JavaPlugin {
 
         if (!new VersionModule().isSupportedVersion()) return;
 
-        getLogger().info("Plugin has been loaded!");
-        if (VersionModule.isPreRelease) getLogger().warning("Be aware: You are using a pre-release. It might not be stable and it's generally not advised to use it on a production server.");
-        getLogger().info("--------------------------");
-        getLogger().info("Welcome by MTVehicles v" + VersionModule.pluginVersionString + "!");
-        getLogger().info("Thanks for using our plugin.");
-        getLogger().info("--------------------------");
+        logInfo("Plugin has been loaded!");
+        if (VersionModule.isPreRelease) logWarning("Be aware: You are using a pre-release. It might not be stable and it's generally not advised to use it on a production server.");
+        logInfo("--------------------------");
+        logInfo("Welcome by MTVehicles v" + VersionModule.pluginVersionString + "!");
+        logInfo("Thanks for using our plugin.");
+        logInfo("--------------------------");
 
         disableNBTAPIVersionMessages();
 
@@ -51,6 +53,8 @@ public class Main extends JavaPlugin {
         new MetricsModule();
         new LoopModule();
         new ConfigModule();
+
+        if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.AUTO_UPDATE)) PluginUpdater.checkNewVersion(getServer().getConsoleSender());
     }
 
     @Override

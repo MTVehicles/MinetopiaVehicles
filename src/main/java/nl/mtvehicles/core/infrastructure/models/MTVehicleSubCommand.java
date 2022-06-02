@@ -15,6 +15,7 @@ import static nl.mtvehicles.core.infrastructure.models.VehicleUtils.isInsideVehi
 
 /**
  * Abstract class for the plugin's /mtv subcommands
+ * @warning <b>This class may be renamed (most probably to 'MTVSubCommand') in v2.5.0. Bear it in mind if you're using it in your addon.</b>
  */
 public abstract class MTVehicleSubCommand {
     /**

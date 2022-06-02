@@ -15,8 +15,9 @@ import java.util.logging.Level;
 
 /**
  * Abstract class for plugin's configuration files
+ * @warning <b>This class may be renamed (most probably to 'MTVConfig') in v2.5.0. Bear it in mind if you're using it in your addon.</b>
  */
-public abstract class Config implements ConfigInterface {
+public abstract class Config {
     /**
      * Type of the configuration file
      */
@@ -38,7 +39,7 @@ public abstract class Config implements ConfigInterface {
     }
 
     /**
-     * Reload the configuration file
+     * Reload configuration file (e.g. if you've just edited it in a text editor)
      */
     public void reload() {
         if (configFile == null) {
@@ -84,8 +85,8 @@ public abstract class Config implements ConfigInterface {
     }
 
     /**
-     * Save the configuration file
-     * @return True if successful
+     * Save the newly assigned values to the configuration file
+     * @return True if saving was successful
      */
     public boolean save() {
         if (config == null || configFile == null) {
