@@ -5,7 +5,9 @@ import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;
 import nl.mtvehicles.core.Main;
-import nl.mtvehicles.core.movement.versions.*;
+import nl.mtvehicles.core.infrastructure.annotations.VersionSpecific;
+import nl.mtvehicles.core.infrastructure.enums.ServerVersion;
+import nl.mtvehicles.core.movement.versions.VehicleMovement1_12;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Field;
@@ -16,7 +18,52 @@ import static nl.mtvehicles.core.infrastructure.modules.VersionModule.getServerV
 /**
  * Packet handling system in different minecraft versions.
  */
+@VersionSpecific
 public class PacketHandler {
+
+    /**
+     * Packet handler for vehicle steering in 1.19
+     * @param player Player whose steering is being regarded
+     */
+    public static void movement_1_19(Player player) {
+        ChannelDuplexHandler channelDuplexHandler = new ChannelDuplexHandler() {
+            public void channelRead(ChannelHandlerContext channelHandlerContext, Object packet) throws Exception {
+                super.channelRead(channelHandlerContext, packet);
+                if (packet instanceof net.minecraft.network.protocol.game.PacketPlayInSteerVehicle) {
+                    net.minecraft.network.protocol.game.PacketPlayInSteerVehicle ppisv = (net.minecraft.network.protocol.game.PacketPlayInSteerVehicle) packet;
+                    VehicleMovement movement = new VehicleMovement();
+                    movement.vehicleMovement(player, ppisv);
+                }
+            }
+        };
+        ChannelPipeline pipeline;
+        try {
+            Object entityPlayer = ((org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer) player).getHandle();
+
+            Field pc = entityPlayer.getClass().getField("b");
+            net.minecraft.server.network.PlayerConnection playerConnection = (net.minecraft.server.network.PlayerConnection) pc.get(entityPlayer);
+
+            Field nm = playerConnection.getClass().getField("b");
+            net.minecraft.network.NetworkManager networkManager = (net.minecraft.network.NetworkManager) nm.get(playerConnection);
+
+            Field c = networkManager.getClass().getField("m");
+            Channel channel = (Channel) c.get(networkManager);
+
+            pipeline = channel.pipeline();
+        } catch (Exception e){
+            e.printStackTrace();
+            Main.disablePlugin();
+            return;
+        }
+        try {
+            pipeline.remove(player.getName());
+        } catch (NoSuchElementException e) {
+        }
+        try {
+            pipeline.addBefore("packet_handler", player.getName(), channelDuplexHandler);
+        } catch (NoSuchElementException e) {
+        }
+    }
 
     /**
      * Packet handler for vehicle steering in 1.18.2
@@ -220,6 +267,7 @@ public class PacketHandler {
      * @param object Checked object (likely a packet)
      * @return True if the given object is an instance of the steering packet (PacketPlayInSteerVehicle).
      */
+    @VersionSpecific
     public static boolean isObjectPacket(Object object) {
         final String errorMessage = "An unexpected error occurred. Try reinstalling the plugin or contact the developer: https://discord.gg/vehicle";
 
@@ -243,7 +291,7 @@ public class PacketHandler {
                 Main.logSevere(errorMessage);
                 return false;
             }
-        } else if (getServerVersion().is1_17() || getServerVersion().is1_18_R1() || getServerVersion().is1_18_R2()) {
+        } else if (getServerVersion().isNewerOrEqualTo(ServerVersion.v1_17)) {
             if (!(object instanceof net.minecraft.network.protocol.game.PacketPlayInSteerVehicle)){
                 Main.logSevere(errorMessage);
                 return false;

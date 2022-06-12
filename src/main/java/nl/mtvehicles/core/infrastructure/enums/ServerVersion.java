@@ -1,8 +1,12 @@
 package nl.mtvehicles.core.infrastructure.enums;
 
+import nl.mtvehicles.core.infrastructure.annotations.VersionSpecific;
+import org.jetbrains.annotations.NotNull;
+
 /**
  * Enum of supported server versions (used for different NMS and Spigot API changes)
  */
+@VersionSpecific
 public enum ServerVersion {
     /**
      * 1.12-1.12.2
@@ -33,7 +37,8 @@ public enum ServerVersion {
      */
     v1_18_R2,
     /**
-     * 1.19 (expected)
+     * 1.19
+     * @since 2.4.3
      */
     v1_19;
 
@@ -67,6 +72,34 @@ public enum ServerVersion {
 
     public boolean is1_19(){
         return this.equals(v1_19);
+    }
+
+    /**
+     * Check whether the server version is older than the given one
+     */
+    public boolean isOlderThan(@NotNull ServerVersion version){
+        return this.ordinal() < version.ordinal();
+    }
+
+    /**
+     * Check whether the server version is older than the given one or whether it is the same
+     */
+    public boolean isOlderOrEqualTo(@NotNull ServerVersion version){
+        return this.ordinal() <= version.ordinal();
+    }
+
+    /**
+     * Check whether the server version is newer than the given one
+     */
+    public boolean isNewerThan(@NotNull ServerVersion version){
+        return this.ordinal() > version.ordinal();
+    }
+
+    /**
+     * Check whether the server version is newer than the given one or whether it is the same
+     */
+    public boolean isNewerOrEqualTo(@NotNull ServerVersion version){
+        return this.ordinal() >= version.ordinal();
     }
 
 }

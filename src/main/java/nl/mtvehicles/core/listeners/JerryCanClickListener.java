@@ -4,6 +4,7 @@ import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.commands.vehiclesubs.VehicleFuel;
 import nl.mtvehicles.core.events.JerryCanClickEvent;
+import nl.mtvehicles.core.infrastructure.annotations.VersionSpecific;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVListener;
@@ -113,6 +114,7 @@ public class JerryCanClickListener extends MTVListener {
         return litres * ConfigModule.defaultConfig.getFillJerryCanPrice();
     }
 
+    @VersionSpecific
     private void playJerryCanSound(){
         if (!ConfigModule.defaultConfig.jerryCanPlaySound()) return;
 

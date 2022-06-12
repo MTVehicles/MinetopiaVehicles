@@ -1,7 +1,9 @@
 package nl.mtvehicles.core.movement;
 
+import nl.mtvehicles.core.infrastructure.annotations.VersionSpecific;
 import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
+import nl.mtvehicles.core.infrastructure.enums.ServerVersion;
 import nl.mtvehicles.core.infrastructure.enums.VehicleType;
 import nl.mtvehicles.core.infrastructure.helpers.BossBarUtils;
 import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
@@ -557,6 +559,7 @@ public class VehicleMovement {
      * @param seat ArmorStand of the seat
      * @param loc Location where the seat will be teleported to
      */
+    @VersionSpecific
     protected void teleportSeat(ArmorStand seat, Location loc){
         if (getServerVersion().is1_12()) teleportSeat(((org.bukkit.craftbukkit.v1_12_R1.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
         else if (getServerVersion().is1_13()) teleportSeat(((org.bukkit.craftbukkit.v1_13_R2.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
@@ -565,14 +568,16 @@ public class VehicleMovement {
         else if (getServerVersion().is1_17()) teleportSeat(((org.bukkit.craftbukkit.v1_17_R1.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
         else if (getServerVersion().is1_18_R1()) teleportSeat(((org.bukkit.craftbukkit.v1_18_R1.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
         else if (getServerVersion().is1_18_R2()) teleportSeat(((org.bukkit.craftbukkit.v1_18_R2.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+        else if (getServerVersion().is1_19()) teleportSeat(((org.bukkit.craftbukkit.v1_19_R1.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
     }
 
     /**
      * Get the String name of the method for teleporting an ArmorStand. Changes between versions.
      * @return Teleport method's name as String.
      */
+    @VersionSpecific
     protected static String getTeleportMethod(){
-        if (getServerVersion().is1_18_R1() || getServerVersion().is1_18_R2()) return "a";
+        if (getServerVersion().isNewerOrEqualTo(ServerVersion.v1_18_R1)) return "a";
         else return "setLocation";
     }
 
@@ -818,11 +823,12 @@ public class VehicleMovement {
      * @param stand The tank's main ArmorStand
      * @param loc Location of where the particles should be spawned
      */
+    @VersionSpecific
     protected void spawnParticles(ArmorStand stand, Location loc){
         stand.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, loc, 2);
         stand.getWorld().spawnParticle(Particle.EXPLOSION_NORMAL, loc, 2);
         stand.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, loc, 5);
-        if (!getServerVersion().is1_12() && !getServerVersion().is1_13())
+        if (!getServerVersion().isOlderOrEqualTo(ServerVersion.v1_13))
             stand.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, loc, 5);
     }
 

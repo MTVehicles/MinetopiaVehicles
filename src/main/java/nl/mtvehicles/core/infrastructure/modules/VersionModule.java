@@ -3,6 +3,7 @@ package nl.mtvehicles.core.infrastructure.modules;
 import lombok.Getter;
 import lombok.Setter;
 import nl.mtvehicles.core.Main;
+import nl.mtvehicles.core.infrastructure.annotations.VersionSpecific;
 import nl.mtvehicles.core.infrastructure.enums.PluginVersion;
 import nl.mtvehicles.core.infrastructure.enums.ServerVersion;
 import org.bukkit.Bukkit;
@@ -57,6 +58,7 @@ public class VersionModule {
      * Get the server version as enum
      * @return Server version
      */
+    @VersionSpecific
     public static ServerVersion getServerVersion(){
         ServerVersion returns = null;
         switch (serverVersion) {
@@ -93,6 +95,7 @@ public class VersionModule {
      * Otherwise, send a warning and disable the plugin.
      * @return True if the server version is supported
      */
+    @VersionSpecific
     public boolean isSupportedVersion(){
         if (getServerVersion() == null) {
             logger.severe("--------------------------");
@@ -103,7 +106,7 @@ public class VersionModule {
             return false;
         }
 
-        else if (!Bukkit.getVersion().contains("1.12.2") && !Bukkit.getVersion().contains("1.13.2") && !Bukkit.getVersion().contains("1.15.2") && !Bukkit.getVersion().contains("1.16.5") && !Bukkit.getVersion().contains("1.17.1") && !Bukkit.getVersion().contains("1.18.2")) {
+        else if (!Bukkit.getVersion().contains("1.12.2") && !Bukkit.getVersion().contains("1.13.2") && !Bukkit.getVersion().contains("1.15.2") && !Bukkit.getVersion().contains("1.16.5") && !Bukkit.getVersion().contains("1.17.1") && !Bukkit.getVersion().contains("1.18.2") && !Bukkit.getVersion().contains("1.19")) {
             logger.warning("--------------------------");
             logger.warning("Your Server does not run the latest patch version (e.g. you may be running 1.18 instead of 1.18.2 etc...).");
             logger.warning("The plugin WILL load but it MAY NOT work properly. UPDATE.");
