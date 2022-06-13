@@ -66,6 +66,10 @@
       <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
     </repository>
     <repository>
+      <id>nms-repo</id>
+      <url>https://repo.codemc.io/repository/nms/</url>
+    </repository>
+    <repository>
       <id>dmulloy2-repo</id>
       <url>https://repo.dmulloy2.net/nexus/repository/public/</url>
     </repository>
@@ -98,6 +102,48 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>org.spigotmc</groupId>
+      <artifactId>spigot</artifactId>
+      <version>1.12.2-R0.1-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.spigotmc.</groupId>
+      <artifactId>spigot</artifactId>
+      <version>1.13.2-R0.1-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.spigotmc..</groupId>
+      <artifactId>spigot</artifactId>
+      <version>1.15.2-R0.1-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.spigotmc...</groupId>
+      <artifactId>spigot</artifactId>
+      <version>1.16.5-R0.1-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.spigotmc....</groupId>
+      <artifactId>spigot</artifactId>
+      <version>1.17.1-R0.1-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.spigotmc.....</groupId>
+      <artifactId>spigot</artifactId>
+      <version>1.18.1-R0.1-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.spigotmc......</groupId>
+      <artifactId>spigot</artifactId>
+      <version>1.18.2-R0.1-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <version>1.18.22</version>
@@ -112,7 +158,7 @@
     <dependency>
       <groupId>com.github.MilkBowl</groupId>
       <artifactId>VaultAPI</artifactId>
-      <version>1.7</version>
+      <version>1.7.1</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -120,55 +166,6 @@
       <artifactId>placeholderapi</artifactId>
       <version>2.11.1</version>
       <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>net.minecraft</groupId>
-      <artifactId>1.12</artifactId>
-      <version>1.0</version>
-      <scope>system</scope>
-      <systemPath>${pom.basedir}/libs/spigot-1.12.2.jar</systemPath>
-    </dependency>
-    <dependency>
-      <groupId>net.minecraft</groupId>
-      <artifactId>1.13</artifactId>
-      <version>1.0</version>
-      <scope>system</scope>
-      <systemPath>${pom.basedir}/libs/spigot-1.13.2.jar</systemPath>
-    </dependency>
-    <dependency>
-      <groupId>net.minecraft</groupId>
-      <artifactId>1.15</artifactId>
-      <version>1.0</version>
-      <scope>system</scope>
-      <systemPath>${pom.basedir}/libs/spigot-1.15.2.jar</systemPath>
-    </dependency>
-    <dependency>
-      <groupId>net.minecraft</groupId>
-      <artifactId>1.16</artifactId>
-      <version>1.0</version>
-      <scope>system</scope>
-      <systemPath>${pom.basedir}/libs/spigot-1.16.5.jar</systemPath>
-    </dependency>
-    <dependency>
-      <groupId>net.minecraft</groupId>
-      <artifactId>1.17</artifactId>
-      <version>1.0</version>
-      <scope>system</scope>
-      <systemPath>${pom.basedir}/libs/spigot-1.17.1.jar</systemPath>
-    </dependency>
-    <dependency>
-      <groupId>net.minecraft</groupId>
-      <artifactId>1.18.1</artifactId>
-      <version>1.0</version>
-      <scope>system</scope>
-      <systemPath>${pom.basedir}/libs/spigot-1.18.1.jar</systemPath>
-    </dependency>
-    <dependency>
-      <groupId>net.minecraft</groupId>
-      <artifactId>1.18.2</artifactId>
-      <version>1.0</version>
-      <scope>system</scope>
-      <systemPath>${pom.basedir}/libs/spigot-1.18.2.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>net.minecraft</groupId>
