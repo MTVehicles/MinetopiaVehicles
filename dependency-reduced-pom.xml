@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>nl.mtvehicles.core</groupId>
   <artifactId>MTVehicles</artifactId>
-  <version>2.4.3-dev9</version>
+  <version>2.4.3</version>
   <build>
     <sourceDirectory>src/main/java</sourceDirectory>
     <resources>
