@@ -39,6 +39,8 @@ public class VehicleClickListener extends MTVListener {
         long lastUsed = 0L;
 
         if (!VehicleUtils.isVehicle(entity)) return;
+        event.setCancelled(true); //Prevents skin item from getting grabbed by a player
+
         if (entity.getCustomName().startsWith("VEHICLE")) return;
 
         if (lastUsage.containsKey(player.getName())) lastUsed = (lastUsage.get(player.getName())).longValue();
@@ -64,8 +66,6 @@ public class VehicleClickListener extends MTVListener {
         license = api.getLicensePlate();
         Vehicle vehicle = VehicleUtils.getVehicle(license);
         if (vehicle == null) return;
-
-        cancelEvent();
 
         if (!player.hasPermission("mtvehicles.anwb") && (boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.DISABLE_PICKUP_FROM_WATER)){
             if (entity.getLocation().clone().add(0, 1, 0).getBlock().isLiquid()) {
@@ -93,8 +93,6 @@ public class VehicleClickListener extends MTVListener {
         Vehicle vehicle = VehicleUtils.getVehicle(license);
         if (vehicle == null) return;
 
-        cancelEvent();
-
         if (entity.getCustomName().contains("MTVEHICLES_SEAT")) {
 
             if (!vehicle.isOpen() && !vehicle.isOwner(player) && !vehicle.canSit(player) && !player.hasPermission("mtvehicles.ride")) {
@@ -111,10 +109,6 @@ public class VehicleClickListener extends MTVListener {
         }
 
         VehicleUtils.enterVehicle(license, player);
-    }
-
-    private void cancelEvent(){
-        ((PlayerInteractAtEntityEvent) event).setCancelled(true);
     }
 
     /**
