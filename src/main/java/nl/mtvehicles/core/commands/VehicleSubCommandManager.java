@@ -2,7 +2,7 @@ package nl.mtvehicles.core.commands;
 
 import nl.mtvehicles.core.commands.vehiclesubs.*;
 import nl.mtvehicles.core.infrastructure.enums.Message;
-import nl.mtvehicles.core.infrastructure.models.MTVehicleCommand;
+import nl.mtvehicles.core.infrastructure.models.MTVCommand;
 import nl.mtvehicles.core.infrastructure.modules.CommandModule;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.command.Command;
@@ -11,7 +11,7 @@ import org.bukkit.command.CommandSender;
 /**
  * Command executor for /mtv command (managing subcommands)
  */
-public class VehicleSubCommandManager extends MTVehicleCommand {
+public class VehicleSubCommandManager extends MTVCommand {
     /**
      * Name of the command
      */

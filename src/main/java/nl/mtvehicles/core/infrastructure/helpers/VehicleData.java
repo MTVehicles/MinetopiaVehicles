@@ -2,6 +2,7 @@ package nl.mtvehicles.core.infrastructure.helpers;
 
 import nl.mtvehicles.core.infrastructure.annotations.ToDo;
 import nl.mtvehicles.core.infrastructure.enums.VehicleType;
+import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
 import org.bukkit.entity.ArmorStand;
 
 import java.util.HashMap;
@@ -13,6 +14,9 @@ import java.util.Map;
  */
 @ToDo("make nicer, move, refactor - for better API usage")
 public class VehicleData {
+    /**
+     * @see Vehicle#getCurrentSpeed()
+     */
     public static HashMap<String, Double> speed = new HashMap<>();
     public static HashMap<String, Double> speedhigh = new HashMap<>();
     public static HashMap<String, Integer> maxheight = new HashMap<>();
@@ -27,6 +31,9 @@ public class VehicleData {
     public static HashMap<String, Double> wiekeny = new HashMap<>();
     public static HashMap<String, Double> wiekenz = new HashMap<>();
     public static HashMap<String, VehicleType> type = new HashMap<>();
+    /**
+     * @see Vehicle#getCurrentFuel()
+     */
     public static HashMap<String, Double> fuel = new HashMap<>();
     public static HashMap<String, Double> fuelUsage = new HashMap<>();
     public static HashMap<String, ArmorStand> autostand = new HashMap<>();

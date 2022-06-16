@@ -1,20 +1,22 @@
-package nl.mtvehicles.core.infrastructure.models;
+package nl.mtvehicles.core.infrastructure.vehicle;
 
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.annotations.ToDo;
+import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
 import nl.mtvehicles.core.infrastructure.enums.VehicleType;
+import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
+import nl.mtvehicles.core.infrastructure.models.MTVSubCommand;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
 /**
  * Vehicle with its specifications
- * @warning <b>This class may be moved in v2.5.0. Bear it in mind if you're using it in your addon.</b>
  */
 public class Vehicle {
     private String licensePlate;
@@ -48,7 +50,7 @@ public class Vehicle {
      * @deprecated There is no use for this HashMap. Please, avoid using it in any way as it may get removed soon.
      */
     @Deprecated
-    public static HashMap<String, MTVehicleSubCommand> subcommands = new HashMap<>();
+    public static HashMap<String, MTVSubCommand> subcommands = new HashMap<>();
 
     /**
      * Save the vehicle specifications (and possible adjustments) to vehicleData.yml
@@ -89,6 +91,43 @@ public class Vehicle {
      */
     public void delete() throws IllegalStateException {
         ConfigModule.vehicleDataConfig.delete(this.getLicensePlate());
+    }
+
+    /**
+     * Get vehicle's UUID (can be found in vehicles.yml, used in /vehicle givecar)
+     * @see VehicleUtils#getCarUUID(String)
+     */
+    public String getUUID(){
+        return VehicleUtils.getCarUUID(this.getLicensePlate());
+    }
+
+    /**
+     * Get the amount of seats this vehicle has
+     */
+    public int getSeatsAmount(){
+        List<Map<String, Double>> seats = (List<Map<String, Double>>) getVehicleData().get("seats");
+        return seats.size();
+    }
+
+    /**
+     * Get the current speed of a vehicle - returns <b>null</b> if the vehicle is not placed.
+     * @return Current vehicle's speed <b>in blocks per second</b>. (As opposed to {@link VehicleData#speed}.)
+     */
+    public @Nullable Double getCurrentSpeed(){
+        if (VehicleData.speed.get(this.getLicensePlate()) == null) return null;
+        return VehicleData.speed.get(licensePlate) * 20;
+    }
+
+    /**
+     * Get the current fuel amount of a vehicle - returns <b>null</b> if fuel is disabled.
+     * @return Current vehicle's fuel
+     *
+     * @see VehicleData#fuel
+     */
+    public @Nullable Double getCurrentFuel(){
+        if (!(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.FUEL_ENABLED)) return null;
+        if (!(boolean) ConfigModule.vehicleDataConfig.get(this.getLicensePlate(), VehicleDataConfig.Option.FUEL_ENABLED)) return null;
+        return VehicleData.fuel.get(licensePlate);
     }
 
     public String getLicensePlate() {

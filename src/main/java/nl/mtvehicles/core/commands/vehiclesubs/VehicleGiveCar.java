@@ -1,8 +1,8 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
 import nl.mtvehicles.core.infrastructure.enums.Message;
-import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
-import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
+import nl.mtvehicles.core.infrastructure.models.MTVSubCommand;
+import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 /**
  * <b>/vehicle givecar %player% %uuid%</b> - add a vehicle to a player.
  */
-public class VehicleGiveCar extends MTVehicleSubCommand {
+public class VehicleGiveCar extends MTVSubCommand {
     public VehicleGiveCar() {
         this.setPlayerCommand(false);
     }

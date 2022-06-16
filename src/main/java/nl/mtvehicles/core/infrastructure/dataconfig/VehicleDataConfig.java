@@ -3,9 +3,9 @@ package nl.mtvehicles.core.infrastructure.dataconfig;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.enums.ConfigType;
 import nl.mtvehicles.core.infrastructure.enums.VehicleType;
-import nl.mtvehicles.core.infrastructure.models.Config;
-import nl.mtvehicles.core.infrastructure.models.Vehicle;
-import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
+import nl.mtvehicles.core.infrastructure.models.MTVConfig;
+import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
+import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -19,7 +19,7 @@ import java.util.Map;
  * Methods for supersecretsettings.yml.<br>
  * <b>Do not initialise this class directly. Use {@link ConfigModule#vehicleDataConfig} instead.</b>
  */
-public class VehicleDataConfig extends Config {
+public class VehicleDataConfig extends MTVConfig {
     /**
      * Default constructor - <b>do not use this.</b><br>
      * Use {@link ConfigModule#vehicleDataConfig} instead.

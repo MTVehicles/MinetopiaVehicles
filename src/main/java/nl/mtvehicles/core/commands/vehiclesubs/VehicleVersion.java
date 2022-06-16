@@ -4,7 +4,7 @@ import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.enums.SoftDependency;
 import nl.mtvehicles.core.infrastructure.helpers.PluginUpdater;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
-import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
+import nl.mtvehicles.core.infrastructure.models.MTVSubCommand;
 import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
 import nl.mtvehicles.core.infrastructure.modules.VersionModule;
 import org.bukkit.Bukkit;
@@ -14,7 +14,7 @@ import static nl.mtvehicles.core.infrastructure.enums.PluginVersion.getPluginVer
 /**
  * <b>/vehicle version</b> - get information about the plugin and server version.
  */
-public class VehicleVersion extends MTVehicleSubCommand {
+public class VehicleVersion extends MTVSubCommand {
     public VehicleVersion() {
         this.setPlayerCommand(false);
     }

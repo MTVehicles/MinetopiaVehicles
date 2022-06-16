@@ -4,6 +4,8 @@ import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
+import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
+import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -11,13 +13,12 @@ import org.bukkit.inventory.ItemStack;
 
 import javax.annotation.Nullable;
 
-import static nl.mtvehicles.core.infrastructure.models.VehicleUtils.isInsideVehicle;
+import static nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils.isInsideVehicle;
 
 /**
  * Abstract class for the plugin's /mtv subcommands
- * @warning <b>This class may be renamed (most probably to 'MTVSubCommand') in v2.5.0. Bear it in mind if you're using it in your addon.</b>
  */
-public abstract class MTVehicleSubCommand {
+public abstract class MTVSubCommand {
     /**
      * The command sender
      */

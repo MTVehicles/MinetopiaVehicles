@@ -15,9 +15,8 @@ import java.util.logging.Level;
 
 /**
  * Abstract class for plugin's configuration files
- * @warning <b>This class may be renamed (most probably to 'MTVConfig') in v2.5.0. Bear it in mind if you're using it in your addon.</b>
  */
-public abstract class Config {
+public abstract class MTVConfig {
     /**
      * Type of the configuration file
      */
@@ -33,7 +32,7 @@ public abstract class Config {
      * Basic setter
      * @param configType Type of the config
      */
-    public Config(ConfigType configType){
+    public MTVConfig(ConfigType configType){
         this.configType = configType;
         if (!configType.isMessages()) this.fileName = configType.getFileName();
     }

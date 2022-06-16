@@ -1,6 +1,7 @@
-package nl.mtvehicles.core.infrastructure.models;
+package nl.mtvehicles.core.infrastructure.vehicle;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
+import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.annotations.ToDo;
 import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
@@ -9,6 +10,7 @@ import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.enums.RegionAction;
 import nl.mtvehicles.core.infrastructure.enums.VehicleType;
 import nl.mtvehicles.core.infrastructure.helpers.*;
+import nl.mtvehicles.core.infrastructure.models.MTVConfig;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -27,7 +29,6 @@ import java.util.*;
 /**
  * Useful methods for vehicles
  * @see Vehicle
- * @warning <b>This class may be moved in v2.5.0. Bear it in mind if you're using it in your addon.</b>
  */
 public final class VehicleUtils {
 
@@ -426,7 +427,7 @@ public final class VehicleUtils {
             }
 
             if (VehicleUtils.getVehicle(license).isOwner(p) || p.hasPermission("mtvehicles.kofferbak")) {
-                ConfigModule.configList.forEach(Config::reload);
+                ConfigModule.configList.forEach(MTVConfig::reload);
                 Inventory inv = Bukkit.createInventory(null, (int) ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.TRUNK_ROWS) * 9, InventoryTitle.VEHICLE_TRUNK.getStringTitle());
 
                 if (ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.TRUNK_DATA) != null) {
@@ -504,6 +505,13 @@ public final class VehicleUtils {
             ConfigModule.messagesConfig.sendMessage(player, Message.VEHICLE_NOT_FOUND);
             return;
         }
+
+        if (getVehicle(license).getOwnerName() == null) {
+            ConfigModule.messagesConfig.sendMessage(player, Message.VEHICLE_NOT_FOUND);
+            Main.logSevere("Could not find the owner of vehicle " + license + "! The vehicleData.yml must be malformed!");
+            return;
+        }
+
         if (getVehicle(license).isOwner(player) && !((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.CAR_PICKUP)) || player.hasPermission("mtvehicles.oppakken")) {
             for (World world : Bukkit.getServer().getWorlds()) {
                 for (Entity entity : world.getEntities()) {
@@ -549,6 +557,12 @@ public final class VehicleUtils {
 
         if (vehicle == null) {
             ConfigModule.messagesConfig.sendMessage(p, Message.VEHICLE_NOT_FOUND);
+            return;
+        }
+
+        if (vehicle.getOwnerName() == null) {
+            ConfigModule.messagesConfig.sendMessage(p, Message.VEHICLE_NOT_FOUND);
+            Main.logSevere("Could not find the owner of vehicle " + licensePlate + "! The vehicleData.yml must be malformed!");
             return;
         }
 

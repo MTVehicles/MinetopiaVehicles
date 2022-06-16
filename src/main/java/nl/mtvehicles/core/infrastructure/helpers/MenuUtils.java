@@ -5,9 +5,9 @@ import nl.mtvehicles.core.infrastructure.dataconfig.MessagesConfig;
 import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
 import nl.mtvehicles.core.infrastructure.enums.InventoryTitle;
 import nl.mtvehicles.core.infrastructure.enums.Message;
-import nl.mtvehicles.core.infrastructure.models.Config;
-import nl.mtvehicles.core.infrastructure.models.Vehicle;
-import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
+import nl.mtvehicles.core.infrastructure.models.MTVConfig;
+import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
+import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.listeners.inventory.InventoryClickListener;
 import org.bukkit.Bukkit;
@@ -271,7 +271,7 @@ public class MenuUtils {
      */
     public static void restoreCMD(Player p, int page, UUID ownerUUID) {
         Inventory inv = Bukkit.createInventory(null, 54, InventoryTitle.VEHICLE_RESTORE_MENU.getStringTitle());
-        ConfigModule.configList.forEach(Config::reload);
+        ConfigModule.configList.forEach(MTVConfig::reload);
         restorePage.put(p, page);
         if (!ConfigModule.vehicleDataConfig.isEmpty()) {
             List<String> dataVehicle = new ArrayList<>();

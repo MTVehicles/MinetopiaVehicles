@@ -2,13 +2,13 @@ package nl.mtvehicles.core.commands.vehiclesubs;
 
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.enums.Message;
-import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
+import nl.mtvehicles.core.infrastructure.models.MTVSubCommand;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 
 /**
  * <b>/vehicle help</b> - list of all MTV commands.
  */
-public class VehicleHelp extends MTVehicleSubCommand {
+public class VehicleHelp extends MTVSubCommand {
     public VehicleHelp() {
         this.setPlayerCommand(true);
     }

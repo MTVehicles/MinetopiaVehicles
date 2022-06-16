@@ -2,7 +2,7 @@ package nl.mtvehicles.core.infrastructure.dataconfig;
 
 import nl.mtvehicles.core.infrastructure.enums.*;
 import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
-import nl.mtvehicles.core.infrastructure.models.Config;
+import nl.mtvehicles.core.infrastructure.models.MTVConfig;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
 import org.bukkit.Location;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * Methods for config.yml.<br>
  * <b>Do not initialise this class directly. Use {@link ConfigModule#defaultConfig} instead.</b>
  */
-public class DefaultConfig extends Config {
+public class DefaultConfig extends MTVConfig {
     /**
      * Default constructor - <b>do not use this.</b><br>
      * Use {@link ConfigModule#defaultConfig} instead.

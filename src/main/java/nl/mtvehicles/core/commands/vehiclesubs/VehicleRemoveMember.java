@@ -2,8 +2,8 @@ package nl.mtvehicles.core.commands.vehiclesubs;
 
 import nl.mtvehicles.core.events.VehicleRemoveMemberEvent;
 import nl.mtvehicles.core.infrastructure.enums.Message;
-import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
-import nl.mtvehicles.core.infrastructure.models.Vehicle;
+import nl.mtvehicles.core.infrastructure.models.MTVSubCommand;
+import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * <b>/vehicle removemember %player%</b> - remove a player who may sit in the vehicle the player is sitting in (if they are its owner) OR player's held vehicle.
  */
-public class VehicleRemoveMember extends MTVehicleSubCommand {
+public class VehicleRemoveMember extends MTVSubCommand {
     public VehicleRemoveMember() {
         this.setPlayerCommand(true);
     }
