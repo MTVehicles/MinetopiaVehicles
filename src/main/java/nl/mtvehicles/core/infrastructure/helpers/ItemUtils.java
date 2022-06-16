@@ -247,23 +247,6 @@ public class ItemUtils {
     }
 
     /**
-     * <b>Do not use this. Use getMenuItem() instead.</b>
-     * @param lores Lore as String - you can use %nl% for a new line
-     *
-     * @deprecated Use {@link #getMenuItem(Material, int, int, String, String...)} instead.
-     */
-    @Deprecated
-    public static ItemStack mItem(String material, int amount, short durability, String text, String lores) {
-        List<String> itemLore = Arrays.asList(TextUtils.colorize(lores).split("%nl%"));
-        Material m = getMaterial(material);
-        if (m == null){
-            Main.logSevere("An error occurred. Cannot obtain material from string '" + material + "'. This is most likely a plugin issue, contact us at discord.gg/vehicle!");
-            return null;
-        }
-        return getMenuItem(m, amount, durability, false, text, itemLore);
-    }
-
-    /**
      * Get the stained glass pane material
      */
     @VersionSpecific

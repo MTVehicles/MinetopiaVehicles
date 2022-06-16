@@ -267,67 +267,31 @@ public class ItemFactory {
         return this.skullOwner;
     }
 
+    /**
+     * @deprecated Use {@link #setSkullOwner(OfflinePlayer)} instead.
+     */
+    @Deprecated
     public ItemFactory setSkullOwner(String owner) {
         try {
             SkullMeta im = (SkullMeta) this.item.getItemMeta();
             im.setOwner(owner);
             this.item.setItemMeta(im);
-        } catch (ClassCastException classCastException) {
-        }
-        return this;
-    }
-
-    @Deprecated
-    public ItemFactory unbreakable() {
-        try {
-            Object compound;
-            Class<?> craftItemStack = getBukkitClass("inventory", "CraftItemStack");
-            Method nmsCopy = craftItemStack.getMethod("asNMSCopy", new Class[]{ItemStack.class});
-            Object nmsStack = nmsCopy.invoke(null, new Object[]{this.item});
-            Class<?> nmsStackClass = nmsStack.getClass();
-            Method hasTag = nmsStackClass.getMethod("hasTag", new Class[0]);
-            Method getTag = nmsStackClass.getMethod("getTag", new Class[0]);
-            Boolean tag = (Boolean) hasTag.invoke(nmsStack, new Object[0]);
-            Class<?> nbtTagCompound = getNMSClass("NBTTagCompound");
-            if (tag.booleanValue()) {
-                compound = getTag.invoke(nmsStack, new Object[0]);
-            } else {
-                compound = nbtTagCompound.newInstance();
-            }
-            Method setTag = nmsStackClass.getMethod("setTag", new Class[]{nbtTagCompound});
-            Class<?> compoundClass = compound.getClass();
-            Class<?> nbtTagBase = getNMSClass("NBTBase");
-            Class<?> nbtTagInt = getNMSClass("NBTTagInt");
-            Method set = compoundClass.getMethod("set", new Class[]{String.class, nbtTagBase});
-            set.invoke(compound, new Object[]{"Unbreakable", nbtTagInt.getConstructor(new Class[]{int.class}).newInstance(new Object[]{Integer.valueOf(1)})});
-            setTag.invoke(nmsStack, new Object[]{compound});
-            Method asBukkitCopy = craftItemStack.getMethod("asBukkitCopy", new Class[]{nmsStackClass});
-            this.item = (ItemStack) asBukkitCopy.invoke(null, new Object[]{nmsStack});
-        } catch (Exception e) {
+        } catch (ClassCastException e) {
+            Main.logSevere("Cannot use ItemFactory#setSkullOwner(String) on given item!");
             e.printStackTrace();
         }
         return this;
     }
 
-    private Class<?> getNMSClass(String nmsClassString) {
+    public ItemFactory setSkullOwner(OfflinePlayer owner) {
         try {
-            String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3] + ".";
-            String name = "net.minecraft.server." + version + nmsClassString;
-            return Class.forName(name);
-        } catch (Exception e) {
+            SkullMeta im = (SkullMeta) this.item.getItemMeta();
+            im.setOwningPlayer(owner);
+            this.item.setItemMeta(im);
+        } catch (ClassCastException e) {
+            Main.logSevere("Cannot use ItemFactory#setSkullOwner(OfflinePlayer) on given item!");
             e.printStackTrace();
-            return null;
         }
-    }
-
-    private Class<?> getBukkitClass(String packageName, String className) {
-        try {
-            String version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3] + ".";
-            String name = "org.bukkit.craftbukkit." + version + packageName + "." + className;
-            return Class.forName(name);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        return this;
     }
 }

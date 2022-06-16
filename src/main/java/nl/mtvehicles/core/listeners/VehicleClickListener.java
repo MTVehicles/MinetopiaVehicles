@@ -110,15 +110,4 @@ public class VehicleClickListener extends MTVListener {
         VehicleUtils.enterVehicle(license, player);
     }
 
-    /**
-     * Create {@link VehicleData} (necessary for driving to work) and make player enter a vehicle.
-     * @param licensePlate Vehicle's license plate
-     * @param p Player who is entering the vehicle
-     *
-     * @deprecated This method has been refactored to {@link VehicleUtils#enterVehicle(String, Player)} because it simply has nothing to do with placing the vehicle (see {@link VehicleUtils#spawnVehicle(String, Location)} for that).
-     */
-    public static void placeVehicle(String licensePlate, Player p) {
-        VehicleUtils.enterVehicle(licensePlate, p);
-    }
-
 }

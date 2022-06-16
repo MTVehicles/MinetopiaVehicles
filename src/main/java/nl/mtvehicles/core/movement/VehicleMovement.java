@@ -277,17 +277,6 @@ public class VehicleMovement {
     /**
      * Check the next block - carpets, slabs, snow - and do an appropriate action.
      * @return True if the vehicle is moving upwards (in any way)
-     *
-     * @deprecated Renamed to {@link #blockCheck()}.
-     */
-    @Deprecated
-    protected boolean slabCheck(){
-        return blockCheck();
-    }
-
-    /**
-     * Check the next block - carpets, slabs, snow - and do an appropriate action.
-     * @return True if the vehicle is moving upwards (in any way)
      */
     protected boolean blockCheck() {
         final Location loc = getLocationOfBlockAhead();

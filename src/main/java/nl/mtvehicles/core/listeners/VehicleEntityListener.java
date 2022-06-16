@@ -44,7 +44,7 @@ public class VehicleEntityListener extends MTVListener {
             callAPI(null);
             if (isCancelled()) return;
 
-            checkDamage(((VehicleDamageEvent) getAPI()).getLicensePlate());
+            damage(((VehicleDamageEvent) getAPI()).getLicensePlate());
             return;
         }
 
@@ -71,7 +71,7 @@ public class VehicleEntityListener extends MTVListener {
             callAPI();
             if (isCancelled()) return;
 
-            checkDamage(((VehicleDamageEvent) getAPI()).getLicensePlate());
+            damage(((VehicleDamageEvent) getAPI()).getLicensePlate());
             return;
         }
 
@@ -123,17 +123,6 @@ public class VehicleEntityListener extends MTVListener {
             BossBarUtils.setBossBarValue(vehicleFuel / 100.0D, license);
             player.setItemInHand(VehicleFuel.jerrycanItem(Integer.parseInt(jerryCanSize), 0));
         }
-    }
-
-    /**
-     * Damage a vehicle.
-     * @param license The vehicle's license plate
-     *
-     * @deprecated Renamed to {@link #damage(String)}.
-     */
-    @Deprecated
-    public void checkDamage(String license){
-        damage(license);
     }
 
     /**

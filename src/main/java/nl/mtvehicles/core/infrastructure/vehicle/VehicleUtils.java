@@ -301,18 +301,6 @@ public final class VehicleUtils {
      * @param licensePlate Vehicle's license plate
      * @return Vehicle instance
      *
-     * @deprecated Renamed to {@link #getVehicle(String)}.
-     */
-    @Deprecated
-    public static Vehicle getByLicensePlate(String licensePlate) {
-        return getVehicle(licensePlate);
-    }
-
-    /**
-     * Get the Vehicle instance by a vehicle's license place
-     * @param licensePlate Vehicle's license plate
-     * @return Vehicle instance
-     *
      * @see Vehicle
      */
     @ToDo("Beautify the code inside this method.")
