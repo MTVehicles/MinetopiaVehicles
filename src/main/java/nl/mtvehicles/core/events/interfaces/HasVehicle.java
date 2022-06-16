@@ -1,6 +1,6 @@
 package nl.mtvehicles.core.events.interfaces;
 
-import nl.mtvehicles.core.infrastructure.models.Vehicle;
+import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
 
 /**
  * Interface for all events with vehicles

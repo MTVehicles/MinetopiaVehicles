@@ -4,9 +4,9 @@ import nl.mtvehicles.core.events.inventory.VehicleMenuOpenEvent;
 import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.enums.InventoryTitle;
 import nl.mtvehicles.core.infrastructure.enums.Message;
-import nl.mtvehicles.core.infrastructure.helpers.ItemFactory;
-import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
-import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
+import nl.mtvehicles.core.infrastructure.utils.ItemFactory;
+import nl.mtvehicles.core.infrastructure.utils.ItemUtils;
+import nl.mtvehicles.core.infrastructure.models.MTVSubCommand;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
@@ -19,7 +19,7 @@ import java.util.UUID;
 /**
  * <b>/vehicle menu</b> - open a GUI menu of all the vehicles.
  */
-public class VehicleMenu extends MTVehicleSubCommand {
+public class VehicleMenu extends MTVSubCommand {
     public static HashMap<UUID, Inventory> beginMenu = new HashMap<>();
 
     public VehicleMenu() {

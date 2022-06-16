@@ -2,7 +2,7 @@ package nl.mtvehicles.core.movement.versions;
 
 import net.minecraft.server.v1_12_R1.PacketPlayInSteerVehicle;
 import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
-import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
+import nl.mtvehicles.core.infrastructure.vehicle.VehicleData;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.movement.VehicleMovement;
 import org.bukkit.Location;

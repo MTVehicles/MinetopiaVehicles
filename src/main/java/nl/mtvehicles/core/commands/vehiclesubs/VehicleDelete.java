@@ -1,16 +1,14 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
 import nl.mtvehicles.core.infrastructure.enums.Message;
-import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
-import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
-import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
-import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
+import nl.mtvehicles.core.infrastructure.models.MTVSubCommand;
+import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
 import org.bukkit.inventory.ItemStack;
 
 /**
  * <b>/vehicle delete</b> - Delete held vehicle from the database (vehicleData.yml).
  */
-public class VehicleDelete extends MTVehicleSubCommand {
+public class VehicleDelete extends MTVSubCommand {
     public VehicleDelete() {
         this.setPlayerCommand(true);
     }

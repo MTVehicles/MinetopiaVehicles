@@ -1,15 +1,14 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
 import nl.mtvehicles.core.events.VehicleOpenTrunkEvent;
-import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
-import nl.mtvehicles.core.infrastructure.models.Vehicle;
-import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
-import org.bukkit.inventory.ItemStack;
+import nl.mtvehicles.core.infrastructure.models.MTVSubCommand;
+import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
+import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
 
 /**
  * <b>/vehicle trunk</b> - open the trunk of the vehicle the player is sitting in (if they are its owner) OR player's held vehicle.
  */
-public class VehicleTrunk extends MTVehicleSubCommand {
+public class VehicleTrunk extends MTVSubCommand {
     public VehicleTrunk() {
         this.setPlayerCommand(true);
     }

@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>nl.mtvehicles.core</groupId>
     <artifactId>MTVehicles</artifactId>
-    <version>2.4.3</version>
+    <version>2.5.0-dev3</version>
 
     <repositories>
         <repository>
@@ -174,7 +174,7 @@
                     <relocations>
                         <relocation>
                             <pattern>de.tr7zw.changeme.nbtapi.</pattern>
-                            <shadedPattern>nl.mtvehicles.core.infrastructure.helpers.nbtapi.</shadedPattern>
+                            <shadedPattern>nl.mtvehicles.core.infrastructure.utils.nbtapi.</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>

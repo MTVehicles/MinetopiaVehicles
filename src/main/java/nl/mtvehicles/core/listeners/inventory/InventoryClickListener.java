@@ -10,13 +10,13 @@ import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
 import nl.mtvehicles.core.infrastructure.enums.InventoryTitle;
 import nl.mtvehicles.core.infrastructure.enums.Language;
 import nl.mtvehicles.core.infrastructure.enums.Message;
-import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
-import nl.mtvehicles.core.infrastructure.helpers.LanguageUtils;
-import nl.mtvehicles.core.infrastructure.helpers.MenuUtils;
-import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
+import nl.mtvehicles.core.infrastructure.utils.ItemUtils;
+import nl.mtvehicles.core.infrastructure.utils.LanguageUtils;
+import nl.mtvehicles.core.infrastructure.utils.MenuUtils;
+import nl.mtvehicles.core.infrastructure.utils.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVListener;
-import nl.mtvehicles.core.infrastructure.models.Vehicle;
-import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
+import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
+import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.listeners.VehicleVoucherListener;
 import org.bukkit.Bukkit;
@@ -34,8 +34,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static nl.mtvehicles.core.infrastructure.helpers.MenuUtils.getBackItem;
-import static nl.mtvehicles.core.infrastructure.helpers.MenuUtils.getCloseItem;
+import static nl.mtvehicles.core.infrastructure.utils.MenuUtils.getBackItem;
+import static nl.mtvehicles.core.infrastructure.utils.MenuUtils.getCloseItem;
 
 /**
  * On inventory click

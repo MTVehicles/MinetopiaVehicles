@@ -5,8 +5,8 @@ import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
 import nl.mtvehicles.core.infrastructure.enums.ServerVersion;
 import nl.mtvehicles.core.infrastructure.enums.VehicleType;
-import nl.mtvehicles.core.infrastructure.helpers.BossBarUtils;
-import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
+import nl.mtvehicles.core.infrastructure.utils.BossBarUtils;
+import nl.mtvehicles.core.infrastructure.vehicle.VehicleData;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -272,17 +272,6 @@ public class VehicleMovement {
         if (Double.parseDouble(String.valueOf(round)) < 0.01) {
             VehicleData.speed.put(license, VehicleData.speed.get(license) + frictionSpeed);
         }
-    }
-
-    /**
-     * Check the next block - carpets, slabs, snow - and do an appropriate action.
-     * @return True if the vehicle is moving upwards (in any way)
-     *
-     * @deprecated Renamed to {@link #blockCheck()}.
-     */
-    @Deprecated
-    protected boolean slabCheck(){
-        return blockCheck();
     }
 
     /**

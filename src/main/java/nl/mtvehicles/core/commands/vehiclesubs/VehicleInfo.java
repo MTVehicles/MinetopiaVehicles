@@ -1,14 +1,12 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
 import nl.mtvehicles.core.infrastructure.enums.Message;
-import nl.mtvehicles.core.infrastructure.models.Config;
-import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
-import nl.mtvehicles.core.infrastructure.models.Vehicle;
-import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
+import nl.mtvehicles.core.infrastructure.models.MTVSubCommand;
+import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
+import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.inventory.ItemStack;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -18,7 +16,7 @@ import java.util.stream.Collectors;
 /**
  * <b>/vehicle info</b> - get information about the held vehicle
  */
-public class VehicleInfo extends MTVehicleSubCommand {
+public class VehicleInfo extends MTVSubCommand {
     public VehicleInfo() {
         this.setPlayerCommand(true);
     }
