@@ -27,7 +27,7 @@ public class VehicleDamageEvent extends MTVEvent implements IsCancellable, HasVe
 
     @Override
     public Vehicle getVehicle(){
-        return VehicleUtils.getByLicensePlate(licensePlate);
+        return VehicleUtils.getVehicle(licensePlate);
     }
 
     @Override

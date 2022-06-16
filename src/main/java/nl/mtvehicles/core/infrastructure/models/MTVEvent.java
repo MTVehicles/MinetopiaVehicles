@@ -14,6 +14,7 @@ public abstract class MTVEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
     /**
      * Whether the event is cancelled
+     * @see #isCancelled()
      */
     protected boolean cancelled = false;
     private @Nullable Player player;

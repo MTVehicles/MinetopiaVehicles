@@ -33,38 +33,37 @@ public class VehicleSetOwner extends MTVehicleSubCommand {
         if (!isHoldingVehicle()) return true;
 
         if (arguments.length != 2) {
-            player.sendMessage(ConfigModule.messagesConfig.getMessage(Message.USE_SET_OWNER));
+            sendMessage(Message.USE_SET_OWNER);
             return true;
         }
 
         String licensePlate = VehicleUtils.getLicensePlate(item);
 
         if (!VehicleUtils.existsByLicensePlate(licensePlate)) {
-            player.sendMessage(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_NOT_FOUND));
+            sendMessage(Message.VEHICLE_NOT_FOUND);
             return true;
         }
 
-        Player of = Bukkit.getPlayer(arguments[1]);
-
-        if (of == null || !of.hasPlayedBefore()) {
-            player.sendMessage(ConfigModule.messagesConfig.getMessage(Message.PLAYER_NOT_FOUND));
+        Player argPlayer = Bukkit.getPlayer(arguments[1]);
+        if (argPlayer == null) {
+            sendMessage(Message.PLAYER_NOT_FOUND);
             return true;
         }
 
-        Vehicle vehicle = VehicleUtils.getByLicensePlate(licensePlate);
+        Vehicle vehicle = VehicleUtils.getVehicle(licensePlate);
         assert vehicle != null;
 
         if ((playerSetOwner || !player.hasPermission("mtvehicles.setowner")) && !vehicle.isOwner(player)) {
-            player.sendMessage(ConfigModule.messagesConfig.getMessage(Message.NOT_YOUR_CAR));
+            sendMessage(Message.NOT_YOUR_CAR);
             return true;
         }
 
         vehicle.setRiders(new ArrayList<>());
         vehicle.setMembers(new ArrayList<>());
-        vehicle.setOwner(of.getUniqueId().toString());
+        vehicle.setOwner(argPlayer.getUniqueId());
         vehicle.save();
 
-        player.sendMessage(ConfigModule.messagesConfig.getMessage(Message.MEMBER_CHANGE));
+        sendMessage(Message.MEMBER_CHANGE);
 
         return true;
     }

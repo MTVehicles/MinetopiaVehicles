@@ -1,19 +1,16 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
-import de.tr7zw.changeme.nbtapi.NBTItem;
+import nl.mtvehicles.core.events.VehicleAddRiderEvent;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
-import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
-import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
 /**
- * <b>/vehicle addrider %player%</b> - add a player who may steer the held vehicle.
+ * <b>/vehicle addrider %player%</b> - add a player who may steer the vehicle the player is sitting in (if they are its owner) OR player's held vehicle.
  */
 public class VehicleAddRider extends MTVehicleSubCommand {
     public VehicleAddRider() {
@@ -22,33 +19,50 @@ public class VehicleAddRider extends MTVehicleSubCommand {
 
     @Override
     public boolean execute() {
-        if (!isHoldingVehicle()) return true;
 
-        ItemStack item = player.getInventory().getItemInMainHand();
-        NBTItem nbt = new NBTItem(item);
+        Vehicle vehicle = getVehicle();
+        if (vehicle == null) return true;
 
         if (arguments.length != 2) {
-            sendMessage(ConfigModule.messagesConfig.getMessage(Message.USE_ADD_RIDER));
+            sendMessage(Message.USE_ADD_RIDER);
             return true;
         }
 
-        Player offlinePlayer = Bukkit.getPlayer(arguments[1]);
-        String licensePlate = nbt.getString("mtvehicles.kenteken");
+        Player argPlayer = Bukkit.getPlayer(arguments[1]);
 
-        if (offlinePlayer == null || !offlinePlayer.hasPlayedBefore()) {
-            sendMessage(ConfigModule.messagesConfig.getMessage(Message.PLAYER_NOT_FOUND));
+        VehicleAddRiderEvent api = new VehicleAddRiderEvent();
+        api.setPlayer(player);
+        api.setAdded(argPlayer);
+        api.setLicensePlate(vehicle.getLicensePlate());
+        api.call();
+
+        if (api.isCancelled()) return true;
+        vehicle = api.getVehicle();
+        argPlayer = api.getAdded();
+
+        if (vehicle == null){
+            sendMessage(Message.VEHICLE_NOT_FOUND);
             return true;
         }
 
-        Vehicle vehicle = VehicleUtils.getByLicensePlate(licensePlate);
+        if (argPlayer == null) {
+            sendMessage(Message.PLAYER_NOT_FOUND);
+            return true;
+        }
 
-        assert vehicle != null;
         List<String> riders = vehicle.getRiders();
-        riders.add(offlinePlayer.getUniqueId().toString());
+        String playerUUID = argPlayer.getUniqueId().toString();
+
+        if (riders.contains(playerUUID)){
+            sendMessage(Message.ALREADY_RIDER);
+            return true;
+        }
+
+        riders.add(argPlayer.getUniqueId().toString());
         vehicle.setRiders(riders);
         vehicle.save();
 
-        sendMessage(ConfigModule.messagesConfig.getMessage(Message.MEMBER_CHANGE));
+        sendMessage(Message.MEMBER_CHANGE);
 
         return true;
     }

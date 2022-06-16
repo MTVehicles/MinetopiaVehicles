@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.infrastructure.helpers;
 
+import nl.mtvehicles.core.infrastructure.annotations.ToDo;
 import nl.mtvehicles.core.infrastructure.enums.VehicleType;
 import org.bukkit.entity.ArmorStand;
 
@@ -8,7 +9,9 @@ import java.util.Map;
 
 /**
  * Maps containing vehicles' data
+ * @warning <b>This class may be moved in v2.5.0. Bear it in mind if you're using it in your addon.</b>
  */
+@ToDo("make nicer, move, refactor - for better API usage")
 public class VehicleData {
     public static HashMap<String, Double> speed = new HashMap<>();
     public static HashMap<String, Double> speedhigh = new HashMap<>();
@@ -37,4 +40,6 @@ public class VehicleData {
     public static HashMap<String, Double> BrakingSpeed = new HashMap<>();
     public static HashMap<String, Double> MaxSpeedBackwards = new HashMap<>();
     public static HashMap<String, Double> FrictionSpeed = new HashMap<>();
+
+    private VehicleData(){}
 }

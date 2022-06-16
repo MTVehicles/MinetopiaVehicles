@@ -162,7 +162,13 @@ public enum Message {
     JERRYCAN_MENU,
     VOUCHER_REDEEM_MENU,
     VEHICLE_TRUNK,
-    JERRYCAN;
+    JERRYCAN,
+    COMMAND_NO_VEHICLE,
+    ALREADY_MEMBER,
+    ALREADY_RIDER,
+    NOT_A_MEMBER,
+    NOT_A_RIDER,
+    OFFLINE_PLAYER_NOT_FOUND;
 
     final private String key;
 

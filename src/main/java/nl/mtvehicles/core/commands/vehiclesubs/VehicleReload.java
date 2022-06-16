@@ -20,7 +20,7 @@ public class VehicleReload extends MTVehicleSubCommand {
         Bukkit.getLogger().info("Reload config files..");
         ConfigModule.reloadConfigs();
         Bukkit.getLogger().info("Files loaded!");
-        sendMessage(ConfigModule.messagesConfig.getMessage(Message.RELOAD_SUCCESSFUL));
+        sendMessage(Message.RELOAD_SUCCESSFUL);
 
         return true;
     }

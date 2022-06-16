@@ -254,7 +254,7 @@ public class InventoryClickListener extends MTVListener {
                 try {
                     NBTItem nbt = new NBTItem(player.getInventory().getItemInMainHand());
                     String licensePlate = nbt.getString("mtvehicles.kenteken");
-                    VehicleUtils.getByLicensePlate(licensePlate).delete();
+                    VehicleUtils.getVehicle(licensePlate).delete();
                     player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_DELETED)));
                 } catch (Exception e){
                     player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_ALREADY_DELETED)));

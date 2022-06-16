@@ -52,7 +52,7 @@ public class VehiclePlaceListener extends MTVListener {
 
         Location loc = api.getLocation();
         license = api.getLicensePlate();
-        Vehicle vehicle = VehicleUtils.getByLicensePlate(license);
+        Vehicle vehicle = VehicleUtils.getVehicle(license);
         if (vehicle == null) return;
 
         if (event.getHand() != EquipmentSlot.HAND) {
@@ -78,7 +78,7 @@ public class VehiclePlaceListener extends MTVListener {
             return;
         }
 
-        if (VehicleUtils.getByLicensePlate(license) == null) {
+        if (VehicleUtils.getVehicle(license) == null) {
             ConfigModule.messagesConfig.sendMessage(player, Message.VEHICLE_NOT_FOUND);
             return;
         }
@@ -87,6 +87,6 @@ public class VehiclePlaceListener extends MTVListener {
 
         VehicleUtils.spawnVehicle(license, location);
         player.getInventory().remove(player.getEquipment().getItemInHand());
-        player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_PLACE).replace("%p%", VehicleUtils.getByLicensePlate(license).getOwnerName())));
+        player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_PLACE).replace("%p%", VehicleUtils.getVehicle(license).getOwnerName())));
     }
 }

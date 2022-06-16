@@ -1,6 +1,7 @@
 package nl.mtvehicles.core.infrastructure.helpers;
 
 import nl.mtvehicles.core.Main;
+import nl.mtvehicles.core.infrastructure.annotations.VersionSpecific;
 import nl.mtvehicles.core.infrastructure.dataconfig.MessagesConfig;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
@@ -10,7 +11,6 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -266,6 +266,7 @@ public class ItemUtils {
     /**
      * Get the stained glass pane material
      */
+    @VersionSpecific
     public static Material getStainedGlassPane(){
         if (getServerVersion().is1_12()) return Material.getMaterial("STAINED_GLASS_PANE");
         else return Material.getMaterial("LEGACY_STAINED_GLASS_PANE");
@@ -278,7 +279,7 @@ public class ItemUtils {
     public static ItemStack getMenuRidersItem(String licensePlate){
         List<String> lore = new ArrayList<>();
         MessagesConfig msg = ConfigModule.messagesConfig;
-        Vehicle vehicle = VehicleUtils.getByLicensePlate(licensePlate);
+        Vehicle vehicle = VehicleUtils.getVehicle(licensePlate);
 
         if (vehicle == null) return null;
 
@@ -306,7 +307,7 @@ public class ItemUtils {
     public static ItemStack getMenuMembersItem(String licensePlate){
         List<String> lore = new ArrayList<>();
         MessagesConfig msg = ConfigModule.messagesConfig;
-        Vehicle vehicle = VehicleUtils.getByLicensePlate(licensePlate);
+        Vehicle vehicle = VehicleUtils.getVehicle(licensePlate);
 
         if (vehicle == null) return null;
 

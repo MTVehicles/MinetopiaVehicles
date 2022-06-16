@@ -25,10 +25,10 @@ public class VehicleDelete extends MTVehicleSubCommand {
 
         try {
             String licensePlate = VehicleUtils.getLicensePlate(item);
-            VehicleUtils.getByLicensePlate(licensePlate).delete();
-            sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_DELETED)));
+            VehicleUtils.getVehicle(licensePlate).delete();
+            sendMessage(Message.VEHICLE_DELETED);
         } catch (Exception e){
-            sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_ALREADY_DELETED)));
+            sendMessage(Message.VEHICLE_ALREADY_DELETED);
         }
 
         player.getInventory().getItemInMainHand().setAmount(0);

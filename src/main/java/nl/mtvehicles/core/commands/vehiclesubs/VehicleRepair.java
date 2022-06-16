@@ -27,7 +27,7 @@ public class VehicleRepair extends MTVehicleSubCommand {
         final double maxHealth = VehicleUtils.getMaxHealthByDamage(damage);
 
         ConfigModule.vehicleDataConfig.setHealth(license, maxHealth);
-        sendMessage(ConfigModule.messagesConfig.getMessage(Message.REPAIR_SUCCESSFUL));
+        sendMessage(Message.REPAIR_SUCCESSFUL);
         return true;
     }
 }

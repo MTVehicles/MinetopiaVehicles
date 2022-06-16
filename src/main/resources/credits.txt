@@ -9,10 +9,10 @@ CODE CONTRIBUTORS:
 - Aaron (https://github.com/duranaaron)
 
 TRANSLATORS:
-- Nikd0 (Czech)
-- Mo1810 (German)
-- Randall_Rut (Spanish)
-- xiaoyueyoQvQ (Chinese)
-- ꋖꌅꋰꌅomerturkyᴱˑᴶ (Turkish)
-- kazumasa200 (Japanese)
-- roi (Hebrew)
+- Czech: Nikd0
+- German: Mo1810
+- Spanish: Randall_Rut
+- Chinese: xiaoyueyoQvQ
+- Turkish: ꋖꌅꋰꌅomerturkyᴱˑᴶ
+- Japanese: kazumasa200
+- Hebrew: roi

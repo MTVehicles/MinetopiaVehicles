@@ -1,18 +1,16 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
+import nl.mtvehicles.core.events.VehicleRemoveMemberEvent;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
 import nl.mtvehicles.core.infrastructure.models.Vehicle;
-import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
-import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
 /**
- * <b>/vehicle removemember %player%</b> - remove a player who may sit in the held vehicle.
+ * <b>/vehicle removemember %player%</b> - remove a player who may sit in the vehicle the player is sitting in (if they are its owner) OR player's held vehicle.
  */
 public class VehicleRemoveMember extends MTVehicleSubCommand {
     public VehicleRemoveMember() {
@@ -21,32 +19,50 @@ public class VehicleRemoveMember extends MTVehicleSubCommand {
 
     @Override
     public boolean execute() {
-        ItemStack item = player.getInventory().getItemInMainHand();
 
-        if (!isHoldingVehicle()) return true;
+        Vehicle vehicle = getVehicle();
+        if (vehicle == null) return true;
 
         if (arguments.length != 2) {
-            player.sendMessage(ConfigModule.messagesConfig.getMessage(Message.USE_REMOVE_MEMBER));
+            sendMessage(Message.USE_REMOVE_MEMBER);
             return true;
         }
 
-        String ken = VehicleUtils.getLicensePlate(item);
-        Player of = Bukkit.getPlayer(arguments[1]);
+        Player argPlayer = Bukkit.getPlayer(arguments[1]);
 
-        Vehicle vehicle = VehicleUtils.getByLicensePlate(ken);
+        VehicleRemoveMemberEvent api = new VehicleRemoveMemberEvent();
+        api.setPlayer(player);
+        api.setRemoved(argPlayer);
+        api.setLicensePlate(vehicle.getLicensePlate());
+        api.call();
 
-        if (of == null || !of.hasPlayedBefore()) {
-            player.sendMessage(ConfigModule.messagesConfig.getMessage(Message.PLAYER_NOT_FOUND));
+        if (api.isCancelled()) return true;
+        vehicle = api.getVehicle();
+        argPlayer = api.getRemoved();
+
+        if (vehicle == null){
+            sendMessage(Message.VEHICLE_NOT_FOUND);
             return true;
         }
 
-        assert vehicle != null;
+        if (argPlayer == null) {
+            sendMessage(Message.PLAYER_NOT_FOUND);
+            return true;
+        }
+
         List<String> members = vehicle.getMembers();
-        members.remove(of.getUniqueId().toString());
+        String playerUUID = argPlayer.getUniqueId().toString();
+
+        if (!members.contains(playerUUID)){
+            sendMessage(Message.NOT_A_MEMBER);
+            return true;
+        }
+
+        members.remove(playerUUID);
         vehicle.setMembers(members);
         vehicle.save();
 
-        player.sendMessage(ConfigModule.messagesConfig.getMessage(Message.MEMBER_CHANGE));
+        sendMessage(Message.MEMBER_CHANGE);
 
         return true;
     }

@@ -48,7 +48,7 @@ public class VehicleLeaveListener extends MTVListener {
 
         license = api.getLicensePlate();
 
-        Vehicle vehicle = VehicleUtils.getByLicensePlate(license);
+        Vehicle vehicle = VehicleUtils.getVehicle(license);
 
         if (vehicle.getVehicleType().isHelicopter()) {
             ArmorStand blades = VehicleData.autostand.get("MTVEHICLES_WIEKENS_" + license);

@@ -2,7 +2,9 @@ package nl.mtvehicles.core.infrastructure.models;
 
 /**
  * Basic interface for configuration files
+ * @deprecated This interface may be removed as there is no real need for it.
  */
+@Deprecated
 public interface ConfigInterface {
 
     /**

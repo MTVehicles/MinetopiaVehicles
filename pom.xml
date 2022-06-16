@@ -5,12 +5,16 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>nl.mtvehicles.core</groupId>
     <artifactId>MTVehicles</artifactId>
-    <version>2.4.3-dev3</version>
+    <version>2.4.3</version>
 
     <repositories>
         <repository>
             <id>spigotmc-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
+        <repository>
+            <id>nms-repo</id>
+            <url>https://repo.codemc.io/repository/nms/</url>
         </repository>
         <repository>
             <id>dmulloy2-repo</id>
@@ -46,55 +50,56 @@
             <version>1.15.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-             
+
+        <!-- The dots are just a sneaky way for maven to think these are different artifacts - which they almost are. -->
         <dependency>
-            <groupId>net.minecraft</groupId>
-            <artifactId>1.12</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/libs/spigot-1.12.2.jar</systemPath>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot</artifactId>
+            <version>1.12.2-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.spigotmc.</groupId>
+            <artifactId>spigot</artifactId>
+            <version>1.13.2-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.spigotmc..</groupId>
+            <artifactId>spigot</artifactId>
+            <version>1.15.2-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.spigotmc...</groupId>
+            <artifactId>spigot</artifactId>
+            <version>1.16.5-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.spigotmc....</groupId>
+            <artifactId>spigot</artifactId>
+            <version>1.17.1-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.spigotmc.....</groupId>
+            <artifactId>spigot</artifactId>
+            <version>1.18.1-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.spigotmc......</groupId>
+            <artifactId>spigot</artifactId>
+            <version>1.18.2-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>net.minecraft</groupId>
-            <artifactId>1.13</artifactId>
+            <artifactId>1.19</artifactId>
             <version>1.0</version>
             <scope>system</scope>
-            <systemPath>${pom.basedir}/libs/spigot-1.13.2.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>net.minecraft</groupId>
-            <artifactId>1.15</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/libs/spigot-1.15.2.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>net.minecraft</groupId>
-            <artifactId>1.16</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/libs/spigot-1.16.5.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>net.minecraft</groupId>
-            <artifactId>1.17</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/libs/spigot-1.17.1.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>net.minecraft</groupId>
-            <artifactId>1.18.1</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/libs/spigot-1.18.1.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>net.minecraft</groupId>
-            <artifactId>1.18.2</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/libs/spigot-1.18.2.jar</systemPath>
+            <systemPath>${pom.basedir}/libs/spigot-1.19.jar</systemPath>
         </dependency>
 
         <dependency>
@@ -112,7 +117,7 @@
         <dependency>
             <groupId>de.tr7zw</groupId>
             <artifactId>item-nbt-api</artifactId>
-            <version>2.9.2</version>
+            <version>2.10.0</version>
         </dependency>
 
         <dependency>
@@ -124,7 +129,7 @@
         <dependency>
             <groupId>com.github.MilkBowl</groupId>
             <artifactId>VaultAPI</artifactId>
-            <version>1.7</version>
+            <version>1.7.1</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -181,6 +186,13 @@
                 <configuration>
                     <reportOutputDirectory>${pom.basedir}</reportOutputDirectory>
                     <destDir>docs</destDir>
+                    <tags>
+                        <tag>
+                            <name>warning</name>
+                            <placement>a</placement>
+                            <head>BEWARE! THIS IS IMPORTANT:</head>
+                        </tag>
+                    </tags>
                 </configuration>
             </plugin>
         </plugins>

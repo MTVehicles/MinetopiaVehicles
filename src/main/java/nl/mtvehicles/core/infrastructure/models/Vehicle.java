@@ -14,6 +14,7 @@ import java.util.*;
 
 /**
  * Vehicle with its specifications
+ * @warning <b>This class may be moved in v2.5.0. Bear it in mind if you're using it in your addon.</b>
  */
 public class Vehicle {
     private String licensePlate;

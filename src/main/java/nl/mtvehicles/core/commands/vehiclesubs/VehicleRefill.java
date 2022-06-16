@@ -25,13 +25,13 @@ public class VehicleRefill extends MTVehicleSubCommand {
         if (!isHoldingVehicle()) return true;
 
         final String licensePlate = VehicleUtils.getLicensePlate(item);
-        Vehicle vehicle = VehicleUtils.getByLicensePlate(licensePlate);
+        Vehicle vehicle = VehicleUtils.getVehicle(licensePlate);
         vehicle.setFuel(100.0);
         vehicle.save();
 
         if (VehicleData.fallDamage.get(licensePlate) != null) VehicleData.fallDamage.remove(licensePlate);
 
-        sendMessage(ConfigModule.messagesConfig.getMessage(Message.REFILL_SUCCESSFUL));
+        sendMessage(Message.REFILL_SUCCESSFUL);
         return true;
     }
 }

@@ -144,7 +144,7 @@ public class VehicleEntityListener extends MTVListener {
         final double damage = ((VehicleDamageEvent) getAPI()).getDamage();
 
         if (!(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.DAMAGE_ENABLED)) return;
-        if (VehicleUtils.getByLicensePlate(license) == null) return;
+        if (VehicleUtils.getVehicle(license) == null) return;
 
         double damageMultiplier = (double) ConfigModule.defaultConfig.get(DefaultConfig.Option.DAMAGE_MULTIPLIER);
         if (damageMultiplier < 0.1 || damageMultiplier > 5) damageMultiplier = 0.5; //Must be between 0.1 and 5. Default: 0.5

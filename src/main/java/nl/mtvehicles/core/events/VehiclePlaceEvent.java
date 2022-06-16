@@ -26,7 +26,7 @@ public class VehiclePlaceEvent extends MTVEvent implements IsCancellable, HasVeh
 
     @Override
     public Vehicle getVehicle(){
-        return VehicleUtils.getByLicensePlate(licensePlate);
+        return VehicleUtils.getVehicle(licensePlate);
     }
 
     @Override
