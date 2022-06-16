@@ -1,7 +1,7 @@
 package nl.mtvehicles.core.infrastructure.dataconfig;
 
 import nl.mtvehicles.core.infrastructure.enums.*;
-import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
+import nl.mtvehicles.core.infrastructure.utils.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVConfig;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.infrastructure.modules.DependencyModule;

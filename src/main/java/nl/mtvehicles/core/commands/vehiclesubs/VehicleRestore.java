@@ -2,7 +2,7 @@ package nl.mtvehicles.core.commands.vehiclesubs;
 
 import nl.mtvehicles.core.events.inventory.RestoreMenuOpenEvent;
 import nl.mtvehicles.core.infrastructure.enums.Message;
-import nl.mtvehicles.core.infrastructure.helpers.MenuUtils;
+import nl.mtvehicles.core.infrastructure.utils.MenuUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVSubCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;

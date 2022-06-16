@@ -2,7 +2,7 @@ package nl.mtvehicles.core.commands.vehiclesubs;
 
 import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.enums.Message;
-import nl.mtvehicles.core.infrastructure.helpers.PluginUpdater;
+import nl.mtvehicles.core.infrastructure.utils.PluginUpdater;
 import nl.mtvehicles.core.infrastructure.models.MTVSubCommand;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 

@@ -1,4 +1,4 @@
-package nl.mtvehicles.core.infrastructure.helpers;
+package nl.mtvehicles.core.infrastructure.utils;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.infrastructure.dataconfig.MessagesConfig;

@@ -2,8 +2,8 @@ package nl.mtvehicles.core.commands.vehiclesubs;
 
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.enums.SoftDependency;
-import nl.mtvehicles.core.infrastructure.helpers.PluginUpdater;
-import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
+import nl.mtvehicles.core.infrastructure.utils.PluginUpdater;
+import nl.mtvehicles.core.infrastructure.utils.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVSubCommand;
 import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
 import nl.mtvehicles.core.infrastructure.modules.VersionModule;

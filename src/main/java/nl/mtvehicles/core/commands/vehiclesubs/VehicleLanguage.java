@@ -1,7 +1,7 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
 import nl.mtvehicles.core.infrastructure.enums.Message;
-import nl.mtvehicles.core.infrastructure.helpers.LanguageUtils;
+import nl.mtvehicles.core.infrastructure.utils.LanguageUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVSubCommand;
 
 /**

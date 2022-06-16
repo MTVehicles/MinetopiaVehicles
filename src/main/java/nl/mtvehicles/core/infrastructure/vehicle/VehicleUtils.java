@@ -9,7 +9,7 @@ import nl.mtvehicles.core.infrastructure.enums.InventoryTitle;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.enums.RegionAction;
 import nl.mtvehicles.core.infrastructure.enums.VehicleType;
-import nl.mtvehicles.core.infrastructure.helpers.*;
+import nl.mtvehicles.core.infrastructure.utils.*;
 import nl.mtvehicles.core.infrastructure.models.MTVConfig;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;

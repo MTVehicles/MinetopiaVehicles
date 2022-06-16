@@ -1,24 +1,12 @@
-package nl.mtvehicles.core.infrastructure.helpers;
+package nl.mtvehicles.core.infrastructure.utils;
 
-import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
-import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
-import nl.mtvehicles.core.infrastructure.enums.Message;
-import nl.mtvehicles.core.infrastructure.enums.RegionAction;
-import nl.mtvehicles.core.infrastructure.enums.VehicleType;
-import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
 import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
-import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 /**
  * Methods for editing text (and for some reason also deprecated methods for creating vehicles - moved to {@link VehicleUtils} and {@link nl.mtvehicles.core.listeners.VehicleClickListener})

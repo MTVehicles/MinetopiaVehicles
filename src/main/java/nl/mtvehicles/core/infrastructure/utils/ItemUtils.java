@@ -1,4 +1,4 @@
-package nl.mtvehicles.core.infrastructure.helpers;
+package nl.mtvehicles.core.infrastructure.utils;
 
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.annotations.VersionSpecific;

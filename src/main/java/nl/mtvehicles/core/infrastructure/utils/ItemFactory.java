@@ -1,4 +1,4 @@
-package nl.mtvehicles.core.infrastructure.helpers;
+package nl.mtvehicles.core.infrastructure.utils;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.Main;
@@ -12,7 +12,6 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import javax.annotation.Nullable;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

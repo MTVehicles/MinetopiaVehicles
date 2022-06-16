@@ -1,8 +1,7 @@
-package nl.mtvehicles.core.infrastructure.helpers;
+package nl.mtvehicles.core.infrastructure.vehicle;
 
 import nl.mtvehicles.core.infrastructure.annotations.ToDo;
 import nl.mtvehicles.core.infrastructure.enums.VehicleType;
-import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
 import org.bukkit.entity.ArmorStand;
 
 import java.util.HashMap;
@@ -10,7 +9,6 @@ import java.util.Map;
 
 /**
  * Maps containing vehicles' data
- * @warning <b>This class may be moved in v2.5.0. Bear it in mind if you're using it in your addon.</b>
  */
 @ToDo("make nicer, move, refactor - for better API usage")
 public class VehicleData {

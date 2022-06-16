@@ -4,7 +4,7 @@ import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.enums.ConfigType;
 import nl.mtvehicles.core.infrastructure.enums.Language;
 import nl.mtvehicles.core.infrastructure.enums.Message;
-import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
+import nl.mtvehicles.core.infrastructure.utils.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVConfig;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.command.CommandSender;
