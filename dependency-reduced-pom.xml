@@ -144,6 +144,12 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>org.spigotmc.......</groupId>
+      <artifactId>spigot</artifactId>
+      <version>1.19-R0.1-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <version>1.18.22</version>
@@ -166,13 +172,6 @@
       <artifactId>placeholderapi</artifactId>
       <version>2.11.1</version>
       <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>net.minecraft</groupId>
-      <artifactId>1.19</artifactId>
-      <version>1.0</version>
-      <scope>system</scope>
-      <systemPath>${pom.basedir}/libs/spigot-1.19.jar</systemPath>
     </dependency>
   </dependencies>
   <properties>
