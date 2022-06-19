@@ -33,10 +33,10 @@ public class LanguageUtils {
         inv.setItem(2, ItemUtils.getMenuItem(Material.EMERALD_BLOCK, 1, "&2Spanish (Español)", "&7Presione para configurar todos los mensajes en español."));
         inv.setItem(3, ItemUtils.getMenuItem(Material.REDSTONE_BLOCK, 1, "&4Czech (Čeština)", "&7Klikni pro nastavení všech zpráv do češtiny."));
         inv.setItem(4, ItemUtils.getMenuItem(Material.IRON_BLOCK, 1, "&fGerman (Deutsch)", "&7Drücken Sie, um alle Nachrichten auf Deutsch einzustellen."));
-        inv.setItem(5, ItemUtils.getMenuItem(Material.STONE, 1, "&8Chinese (中國人)", "&7按 將所有消息設置為中文。"));
+        inv.setItem(5, ItemUtils.getMenuItem(Material.LAPIS_BLOCK, 1, "&9Chinese (中國人)", "&7按 將所有消息設置為中文。"));
         inv.setItem(6, ItemUtils.getMenuItem(Material.SLIME_BLOCK, 1, "&aTurkish (Türk)", "&7Tüm mesajları Türkçe olarak ayarlamak için basın."));
-        inv.setItem(7, ItemUtils.getMenuItem(Material.OAK_LOG, 1, "&6Japanese (日本語)", "&7を押して、すべてのメッセージを日本語に設定します。"));
-        inv.setItem(8, ItemUtils.getMenuItem(Material.BIRCH_LOG, 1, "&dHebrew (עִברִית)", "&7.לחץ כדי להגדיר את כל ההודעות לעברית"));
+        inv.setItem(7, ItemUtils.getMenuItem(Material.GLASS, 1, "&fJapanese (日本語)", "&7を押して、すべてのメッセージを日本語に設定します。"));
+        inv.setItem(8, ItemUtils.getMenuItem(Material.STONE, 1, "&8Hebrew (עִברִית)", "&7.לחץ כדי להגדיר את כל ההודעות לעברית"));
         inv.setItem(17, ItemUtils.getMenuItem(Material.PAPER, 1, "&fThat's all for now!", "&7Do you want to help us by translating the plugin? &f&nClick here"));
         p.openInventory(inv);
         languageCheck.put(p.getUniqueId(), true);
