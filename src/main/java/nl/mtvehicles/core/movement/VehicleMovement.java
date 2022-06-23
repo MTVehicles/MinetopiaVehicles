@@ -180,7 +180,7 @@ public class VehicleMovement {
                 float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(fbvp.getYaw())));
                 Location loc = new Location(standMain.getWorld(), xvp, standMain.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
                 spawnParticles(standMain, loc);
-                spawnTNT(standMain, loc);
+                shootTNT(standMain, loc);
                 VehicleData.lastUsage.put(player.getName(), System.currentTimeMillis());
             }
         }
@@ -826,7 +826,7 @@ public class VehicleMovement {
      * @param stand The tank's main ArmorStand
      * @param loc Location of where the TNT should be spawned
      */
-    protected void spawnTNT(ArmorStand stand, Location loc){
+    protected void shootTNT(ArmorStand stand, Location loc){
         if (!(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.TANK_TNT)) return;
 
         schedulerRun(() -> {
