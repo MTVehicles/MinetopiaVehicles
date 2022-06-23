@@ -529,7 +529,7 @@ public final class VehicleUtils {
     }
 
     /**
-     * Create {@link VehicleData} (necessary for driving to work) and make player enter a vehicle.
+     * Create {@link VehicleData} (necessary for driving to work), helicopter blades, and make player enter a vehicle.
      * @param licensePlate Vehicle's license plate
      * @param p Player who is entering the vehicle
      */
@@ -663,5 +663,87 @@ public final class VehicleUtils {
         as.setPassenger(p);
         as.setVisible(false);
         VehicleData.autostand2.put(license, as);
+    }
+
+    /**
+     * Shortcut for {@link Vehicle.Seat#getSeat(Player)}
+     */
+    public static Vehicle.Seat getSeat(Player player){
+        return Vehicle.Seat.getSeat(player);
+    }
+
+    /**
+     * Kick a player out of a vehicle; if the player is a driver, {@link #turnOff(Vehicle)} is called as well.
+     * @return True if successful
+     * @throws IllegalStateException If player is not seated in a (valid) vehicle
+     */
+    public static boolean kickOut(Player player) throws IllegalStateException {
+        if (getSeat(player) == null) throw new IllegalStateException("Player is not seated in a vehicle!");
+
+        Entity seat = player.getVehicle();
+        if (!getSeat(player).isDriver()) {
+            return seat.removePassenger(player);
+        }
+
+        final String license = getLicensePlate(seat);
+        if (seat.removePassenger(player)){
+            BossBarUtils.removeBossBar(player, license);
+            return turnOff(license);
+        }
+        return false;
+    }
+
+    /**
+     * Delete {@link VehicleData}, helicopter blades; save fuel, etc... <b>after a driver has left the vehicle</b>.
+     * @param vehicle Vehicle
+     * @return False if the driver is seated in the vehicle, or if the vehicle doesn't have {@link VehicleData} and thus is not created (see {@link #enterVehicle(String, Player)} -> the vehicle can't be turned off. Otherwise, true.
+     *
+     * @warning Do not call this method if a vehicle is being used! Use {@link #kickOut(Player)} instead.
+     */
+    public static boolean turnOff(Vehicle vehicle){
+        final String license = vehicle.getLicensePlate();
+
+        if (VehicleData.autostand.get("MTVEHICLES_MAIN_" + license) == null) return false;
+
+        final ArmorStand standMain = VehicleData.autostand.get("MTVEHICLES_MAIN_" + license);
+        final ArmorStand standSkin = VehicleData.autostand.get("MTVEHICLES_SKIN_" + license);
+        final ArmorStand standMainSeat = VehicleData.autostand.get("MTVEHICLES_MAINSEAT_" + license);
+        if (!standMainSeat.getPassengers().isEmpty()) return false;
+
+        if (vehicle.getVehicleType().isHelicopter()) {
+            ArmorStand blades = VehicleData.autostand.get("MTVEHICLES_WIEKENS_" + license);
+            Location locBelow = new Location(blades.getLocation().getWorld(), blades.getLocation().getX(), blades.getLocation().getY() - 0.2, blades.getLocation().getZ(), blades.getLocation().getYaw(), blades.getLocation().getPitch());
+            blades.setGravity(locBelow.getBlock().getType().equals(Material.AIR)); // Blades should not fall if the helicopter is on the ground
+        }
+
+        // If a helicopter is 'extremely falling' and player manages to leave it beforehand
+        if (vehicle.getVehicleType().isHelicopter() && (boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.EXTREME_HELICOPTER_FALL) && !standMainSeat.isOnGround()){
+            VehicleData.fallDamage.put(license, true); // Do not damage when entering afterwards
+        }
+
+        standMain.setGravity(true);
+        standSkin.setGravity(true);
+        List<Map<String, Integer>> seats = (List<Map<String, Integer>>) vehicle.getVehicleData().get("seats");
+        for (int i = 2; i <= seats.size(); i++) {
+            if (VehicleData.autostand.get("MTVEHICLES_SEAT" + i + "_" + license) != null)
+                VehicleData.autostand.get("MTVEHICLES_SEAT" + i + "_" + license).remove();
+        }
+        VehicleData.type.remove(license); //.remove(license+"b") used to be here... why? maybe i'm missing something?
+
+        if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.FUEL_ENABLED) && (boolean) ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.FUEL_ENABLED)) {
+            double fuel = VehicleData.fuel.get(license);
+            ConfigModule.vehicleDataConfig.set(license, VehicleDataConfig.Option.FUEL, fuel);
+            ConfigModule.vehicleDataConfig.save();
+        }
+
+        return true;
+    }
+
+    /**
+     * @param licensePlate Vehicle's license plate
+     * @see #turnOff(Vehicle)
+     */
+    public static boolean turnOff(String licensePlate) throws IllegalStateException {
+        return turnOff(getVehicle(licensePlate));
     }
 }

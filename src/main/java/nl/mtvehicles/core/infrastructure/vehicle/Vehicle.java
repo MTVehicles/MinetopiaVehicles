@@ -14,6 +14,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
+import static nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils.isInsideVehicle;
+
 /**
  * Vehicle with its specifications
  */
@@ -385,5 +387,35 @@ public class Vehicle {
 
     public void setVehicleType(VehicleType vehicleType){
         this.vehicleType = vehicleType;
+    }
+
+    /**
+     * Seat in a vehicle
+     */
+    public enum Seat {
+        DRIVER,
+        PASSENGER;
+
+        /**
+         * Get the place where a player is seated
+         * @return Null if player's seat is not recognised
+         * @throws IllegalStateException If player is not in a (valid) vehicle
+         */
+        public static Seat getSeat(Player player) throws IllegalStateException {
+            if (!isInsideVehicle(player)) throw new IllegalStateException("Player is not seated in a vehicle!");
+
+            final String vehicleName = player.getVehicle().getCustomName();
+            if (vehicleName.contains("MAINSEAT")) return DRIVER;
+            else if (vehicleName.contains("SEAT")) return PASSENGER;
+            else return null;
+        }
+
+        public boolean isDriver(){
+            return this.equals(DRIVER);
+        }
+
+        public boolean isPassenger(){
+            return this.equals(PASSENGER);
+        }
     }
 }

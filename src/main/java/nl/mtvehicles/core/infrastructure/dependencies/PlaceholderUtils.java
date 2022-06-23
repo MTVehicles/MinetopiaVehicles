@@ -115,10 +115,8 @@ public class PlaceholderUtils extends PlaceholderExpansion {
         if (parameter.equalsIgnoreCase("vehicle_place")){
             if (!p.isOnline()) return "";
             if (!isInsideVehicle(p.getPlayer())) return "";
-            final String vehicleName = p.getPlayer().getVehicle().getCustomName();
-            if (vehicleName.contains("MAINSEAT")) return "DRIVER";
-            else if (vehicleName.contains("SEAT")) return "PASSENGER";
-            else return "";
+            final Vehicle.Seat seat = Vehicle.Seat.getSeat(p.getPlayer());
+            return (seat == null) ? "" : seat.toString();
         }
 
         if (parameter.equalsIgnoreCase("vehicle_seats")){
