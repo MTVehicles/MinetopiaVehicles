@@ -85,6 +85,7 @@ public enum Message {
     VEHICLE_INFO_NAME,
     VEHICLE_INFO_LICENSE,
     VEHICLE_INFO_UUID("vehicleInfoUUID"),
+    VEHICLE_INFO_PRICE,
     VEHICLE_INFO_SPEED,
     VEHICLE_INFO_ACCELERATION,
     VEHICLE_INFO_OWNER,
@@ -92,6 +93,7 @@ public enum Message {
     VEHICLE_INFO_RIDERS("vehicleInfoRiders2"),
     VEHICLE_INFO_MEMBERS_NONE("vehicleInfoMembers"),
     VEHICLE_INFO_MEMBERS("vehicleInfoMembers2"),
+    @Deprecated
     VEHICLE_INFO_NO_MEMBERS,
     LANGUAGE_HAS_CHANGED,
     USING_PRE_RELEASE,

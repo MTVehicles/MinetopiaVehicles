@@ -41,6 +41,7 @@ public class Vehicle {
     private int rotateSpeed;
     private double maxSpeedBackwards;
     private boolean isOpen;
+    private double price;
     private UUID owner;
     private String nbtValue;
     private List<String> riders;
@@ -96,10 +97,10 @@ public class Vehicle {
 
     /**
      * Get vehicle's UUID (can be found in vehicles.yml, used in /vehicle givecar)
-     * @see VehicleUtils#getCarUUID(String)
+     * @see VehicleUtils#getUUID(String)
      */
     public String getUUID(){
-        return VehicleUtils.getCarUUID(this.getLicensePlate());
+        return VehicleUtils.getUUID(this.getLicensePlate());
     }
 
     /**
@@ -241,6 +242,14 @@ public class Vehicle {
 
     public double getFuelUsage() {
         return fuelUsage;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     public void setName(String name) {

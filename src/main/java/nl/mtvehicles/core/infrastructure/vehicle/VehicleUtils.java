@@ -215,12 +215,20 @@ public final class VehicleUtils {
     }
 
     /**
+     * @deprecated Renamed to {@link #getItem(String)}.
+     */
+    @Deprecated
+    public static ItemStack getCarItem(String carUUID) {
+        return getItem(carUUID);
+    }
+
+    /**
      * Get a vehicle item by UUID. <b>Does not create a new vehicle - just for aesthetic purposes.</b> (Otherwise, use {@link #getItemByUUID(Player, String)})
      * @param carUUID Vehicle's UUID (UUID may be found in vehicles.yml)
      * @return The vehicle item - just aesthetic
      *
      */
-    public static ItemStack getCarItem(String carUUID) {
+    public static ItemStack getItem(String carUUID) {
         List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getVehicles();
         List<Map<?, ?>> matchedVehicles = new ArrayList<>();
         for (Map<?, ?> configVehicle : vehicles) {
@@ -264,17 +272,24 @@ public final class VehicleUtils {
     }
 
     /**
+     * @deprecated Renamed to {@link #getUUID(String)}.
+     */
+    @Deprecated
+    public static String getCarUUID(String licensePlate) {
+        return getUUID(licensePlate);
+    }
+
+    /**
      * Get the UUID of a car by its license plate
      * @param licensePlate Vehicle's license plate
      * @return Vehicle's UUID
      */
-    public static String getCarUUID(String licensePlate) {
+    public static String getUUID(String licensePlate) {
         if (!existsByLicensePlate(licensePlate)) return null;
 
         Map<?, ?> vehicleData = ConfigModule.vehicleDataConfig.getConfig()
                 .getConfigurationSection(String.format("vehicle.%s", licensePlate)).getValues(true);
         List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getVehicles();
-        List<Map<?, ?>> matchedVehicles = new ArrayList<>();
         for (Map<?, ?> configVehicle : vehicles) {
             List<Map<?, ?>> skins = (List<Map<?, ?>>) configVehicle.get("cars");
             for (Map<?, ?> skin : skins) {
@@ -282,11 +297,9 @@ public final class VehicleUtils {
                     if (skin.get("SkinItem").equals(vehicleData.get("skinItem"))) {
                         if (skin.get("nbtValue") != null) {
                             if (skin.get("nbtValue").equals(vehicleData.get("nbtValue"))) {
-                                matchedVehicles.add(configVehicle);
                                 return skin.get("uuid").toString();
                             }
                         } else {
-                            matchedVehicles.add(configVehicle);
                             return skin.get("uuid").toString();
                         }
                     }
@@ -314,6 +327,7 @@ public final class VehicleUtils {
                 .getConfigurationSection(String.format("vehicle.%s", licensePlate)).getValues(true);
         List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getVehicles();
         List<Map<?, ?>> matchedVehicles = new ArrayList<>();
+        double price = 0.0;
         for (Map<?, ?> configVehicle : vehicles) {
             List<Map<?, ?>> skins = (List<Map<?, ?>>) configVehicle.get("cars");
             for (Map<?, ?> skin : skins) {
@@ -322,9 +336,11 @@ public final class VehicleUtils {
                         if (skin.get("nbtValue") != null) {
                             if (skin.get("nbtValue").equals(vehicleData.get("nbtValue"))) {
                                 matchedVehicles.add(configVehicle);
+                                price = (double) skin.get("price");
                             }
                         } else {
                             matchedVehicles.add(configVehicle);
+                            price = (double) skin.get("price");
                         }
                     }
                 }
@@ -358,6 +374,7 @@ public final class VehicleUtils {
         vehicle.setOwner((String) vehicleData.get("owner"));
         vehicle.setRiders((List<String>) vehicleData.get("riders"));
         vehicle.setMembers((List<String>) vehicleData.get("members"));
+        vehicle.setPrice(price);
         return vehicle;
     }
 

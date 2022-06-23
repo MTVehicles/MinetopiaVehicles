@@ -211,6 +211,7 @@ public class InventoryClickListener extends MTVListener {
             vehicle.setNbtValue(nbt.getString("mtcustom"));
             vehicle.setRiders(riders);
             vehicle.setMembers(members);
+            vehicle.setPrice((double) vehicles.get(intSave.get(player.getUniqueId())).get("price"));
             vehicle.save();
 
             player.closeInventory();

@@ -1,7 +1,9 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
 import nl.mtvehicles.core.infrastructure.enums.Message;
+import nl.mtvehicles.core.infrastructure.enums.SoftDependency;
 import nl.mtvehicles.core.infrastructure.models.MTVSubCommand;
+import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
 import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
 import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
@@ -35,7 +37,11 @@ public class VehicleInfo extends MTVSubCommand {
         sendMessage(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_INFO_NAME) + vehicle.getName());
         sendMessage(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_INFO_LICENSE) + licensePlate);
         if (player.hasPermission("mtvehicles.admin")) {
-            sendMessage(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_INFO_UUID) + VehicleUtils.getCarUUID(licensePlate));
+            sendMessage(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_INFO_UUID) + VehicleUtils.getUUID(licensePlate));
+            if (DependencyModule.isDependencyEnabled(SoftDependency.VAULT)){
+                if (DependencyModule.vault.isEconomySetUp())
+                    sendMessage(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_INFO_PRICE) + DependencyModule.vault.getMoneyFormat(vehicle.getPrice()));
+            }
         }
         sendMessage(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_INFO_SPEED) + formatter.format(vehicle.getMaxSpeed()*20).toString().replace(",", ".") + " blocks/sec");
         sendMessage(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_INFO_ACCELERATION) + formatter.format(vehicle.getAccelerationSpeed()/0.2*100).toString().replace(",", ".") + " blocks/sec^2");

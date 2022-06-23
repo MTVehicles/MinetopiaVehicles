@@ -47,7 +47,7 @@ public class VehicleVersion extends MTVSubCommand {
 
         if (VersionModule.isPreRelease) {
             sender.sendMessage("§e-----");
-            if (getPluginVersion().isDev()) sender.sendMessage(TextUtils.colorize("&cWarning: You're using a dev-version. Auto-updater is disabled."));
+            if (getPluginVersion().isDev()) sender.sendMessage(TextUtils.colorize("&cWarning: You're using a dev-build. Auto-updater is disabled."));
             sendMessage(Message.USING_PRE_RELEASE);
         }
 

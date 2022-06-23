@@ -368,7 +368,7 @@ public class ItemUtils {
     public static ItemStack createVoucher(String carUUID) {
         MessagesConfig msg = ConfigModule.messagesConfig;
         ItemStack voucher = (new ItemFactory(Material.PAPER))
-                .setName(TextUtils.colorize(VehicleUtils.getCarItem(carUUID).getItemMeta().getDisplayName() + " Voucher"))
+                .setName(TextUtils.colorize(VehicleUtils.getItem(carUUID).getItemMeta().getDisplayName() + " Voucher"))
                 .setLore(
                         TextUtils.colorize("&8&m                                    "),
                         TextUtils.colorize(msg.getMessage(Message.VOUCHER_DESCRIPTION)),

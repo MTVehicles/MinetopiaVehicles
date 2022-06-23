@@ -131,7 +131,7 @@ public class PlaceholderUtils extends PlaceholderExpansion {
             if (!p.isOnline()) return "";
             if (!isInsideVehicle(p.getPlayer())) return "";
             final String licensePlate = VehicleUtils.getLicensePlate(p.getPlayer().getVehicle());
-            return VehicleUtils.getCarUUID(licensePlate);
+            return VehicleUtils.getUUID(licensePlate);
         }
 
         if (parameter.equalsIgnoreCase("vehicle_owner")){
