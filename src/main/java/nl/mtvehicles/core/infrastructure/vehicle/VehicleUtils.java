@@ -115,7 +115,7 @@ public final class VehicleUtils {
      * Create a vehicle and get its item by UUID (UUID may be found in vehicles.yml)
      * @param p Vehicle's owner
      * @param uuid Vehicle's UUID (UUID may be found in vehicles.yml)
-     * @return Vehicle item
+     * @return Null if vehicle was not found by given UUID; otherwise, vehicle item
      */
     public static ItemStack getItemByUUID(Player p, String uuid) {
         List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getVehicles();
@@ -225,7 +225,7 @@ public final class VehicleUtils {
     /**
      * Get a vehicle item by UUID. <b>Does not create a new vehicle - just for aesthetic purposes.</b> (Otherwise, use {@link #getItemByUUID(Player, String)})
      * @param carUUID Vehicle's UUID (UUID may be found in vehicles.yml)
-     * @return The vehicle item - just aesthetic
+     * @return The vehicle item - just aesthetic (null if UUID is not found)
      *
      */
     public static ItemStack getItem(String carUUID) {
@@ -762,5 +762,27 @@ public final class VehicleUtils {
      */
     public static boolean turnOff(String licensePlate) throws IllegalStateException {
         return turnOff(getVehicle(licensePlate));
+    }
+
+    /**
+     * Get vehicle's price
+     * @param carUUID Vehicle's UUID
+     * @return Price of the vehicle, null if UUID is not found
+     */
+    public static Double getPrice(String carUUID){
+        List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getVehicles();
+        for (Map<?, ?> configVehicle : vehicles) {
+            List<Map<?, ?>> skins = (List<Map<?, ?>>) configVehicle.get("cars");
+            for (Map<?, ?> skin : skins) {
+                if (skin.get("uuid") != null) {
+                    if (skin.get("uuid").equals(carUUID)) {
+                        if (skin.get("uuid") != null) {
+                            return (double) skin.get("price");
+                        }
+                    }
+                }
+            }
+        }
+        return null;
     }
 }

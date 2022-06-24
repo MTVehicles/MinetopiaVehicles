@@ -170,7 +170,10 @@ public enum Message {
     ALREADY_RIDER,
     NOT_A_MEMBER,
     NOT_A_RIDER,
-    OFFLINE_PLAYER_NOT_FOUND;
+    OFFLINE_PLAYER_NOT_FOUND,
+    ECONOMY_NOT_SET_UP,
+    USE_BUY_CAR,
+    USE_BUY_VOUCHER;
 
     final private String key;
 
@@ -179,7 +182,7 @@ public enum Message {
         while (key.contains("_")) {
             key = key.replaceFirst("_[a-z]", String.valueOf(Character.toUpperCase(key.charAt(key.indexOf("_") + 1))));
         }
-        this.key = key;
+        this.key = key; // Output - camelCase (used in messages_xx.yml files)
     }
 
     private Message(String key){
