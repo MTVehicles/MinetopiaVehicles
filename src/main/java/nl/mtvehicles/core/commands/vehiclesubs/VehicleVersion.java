@@ -39,6 +39,7 @@ public class VehicleVersion extends MTVSubCommand {
             }
             if (DependencyModule.isDependencyEnabled(SoftDependency.VAULT)) {
                 if (!DependencyModule.vault.isEconomySetUp()) dependencies = dependencies.replace("Vault", "§a§mVault§a");
+                else dependencies = dependencies.replace("Vault", "Vault (" + DependencyModule.vault.getEconomyName() + ")");
             }
             sender.sendMessage(String.format("§2Loaded dependencies (%s§2): §a%s§2.", numberOfDependencies, dependencies));
         } else {
