@@ -23,11 +23,6 @@ public class VehiclePickUpEvent extends MTVEvent implements IsCancellable, HasVe
     }
 
     @Override
-    public Vehicle getVehicle(){
-        return VehicleUtils.getVehicle(licensePlate);
-    }
-
-    @Override
     public void setLicensePlate(String licensePlate) {
         this.licensePlate = licensePlate;
     }

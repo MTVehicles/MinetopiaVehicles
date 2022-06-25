@@ -25,11 +25,6 @@ public class VehicleRemoveMemberEvent extends MTVEvent implements IsCancellable,
     }
 
     @Override
-    public Vehicle getVehicle(){
-        return VehicleUtils.getVehicle(licensePlate);
-    }
-
-    @Override
     public void setLicensePlate(String licensePlate) {
         this.licensePlate = licensePlate;
     }
