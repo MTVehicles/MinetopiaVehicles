@@ -73,7 +73,7 @@ public class VehiclePlaceListener extends MTVListener {
             ConfigModule.messagesConfig.sendMessage(player, Message.BLOCK_NOT_IN_WHITELIST);
             return;
         }
-        if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.PLACE, vehicle.getVehicleType(), loc)) {
+        if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.PLACE, vehicle.getVehicleType(), loc, player)) {
             ConfigModule.messagesConfig.sendMessage(player, Message.CANNOT_DO_THAT_HERE);
             return;
         }

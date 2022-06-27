@@ -123,7 +123,7 @@ public class TextUtils {
 
                 Location location = new Location(entity.getWorld(), entity.getLocation().getX(), entity.getLocation().getY(), entity.getLocation().getZ(), entity.getLocation().getYaw(), entity.getLocation().getPitch());
 
-                if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.ENTER, vehicle.getVehicleType(), location)){
+                if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.ENTER, vehicle.getVehicleType(), location, p)){
                     ConfigModule.messagesConfig.sendMessage(p, Message.CANNOT_DO_THAT_HERE);
                     return;
                 }

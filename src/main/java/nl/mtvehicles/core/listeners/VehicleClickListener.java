@@ -74,7 +74,7 @@ public class VehicleClickListener extends MTVListener {
             }
         }
 
-        if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.PICKUP, vehicle.getVehicleType(), ((PlayerInteractAtEntityEvent) event).getRightClicked().getLocation())){
+        if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.PICKUP, vehicle.getVehicleType(), ((PlayerInteractAtEntityEvent) event).getRightClicked().getLocation(), player)){
             ConfigModule.messagesConfig.sendMessage(player, Message.CANNOT_DO_THAT_HERE);
             return;
         }

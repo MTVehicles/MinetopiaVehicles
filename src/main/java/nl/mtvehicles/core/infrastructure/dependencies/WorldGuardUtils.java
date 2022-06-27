@@ -1,21 +1,19 @@
 package nl.mtvehicles.core.infrastructure.dependencies;
 
-import com.sk89q.worldedit.bukkit.BukkitWorld;
-import com.sk89q.worldedit.math.BlockVector3;
-import com.sk89q.worldguard.WorldGuard;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.flags.Flag;
-import com.sk89q.worldguard.protection.flags.StateFlag;
-import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
-import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import nl.mtvehicles.core.infrastructure.enums.SoftDependency;
 import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.codemc.worldguardwrapper.WorldGuardWrapper;
+import org.codemc.worldguardwrapper.flag.IWrappedFlag;
+import org.codemc.worldguardwrapper.flag.WrappedState;
+import org.codemc.worldguardwrapper.region.IWrappedRegion;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * Methods for WorldGuard soft-dependency.<br>
@@ -27,11 +25,7 @@ public class WorldGuardUtils {
     /**
      * WorldGuard instance
      */
-    public WorldGuard instance = WorldGuard.getInstance();
-    /**
-     * WorldGuard flag registry
-     */
-    public FlagRegistry registry = instance.getFlagRegistry();
+    public WorldGuardWrapper instance = WorldGuardWrapper.getInstance();
 
     /**
      * List of all custom WorldGuard flags used by the plugin
@@ -64,18 +58,20 @@ public class WorldGuardUtils {
      *
      * @return True if location is in at least 1 region with the flag with the specified state.
      */
-    public boolean isInRegionWithFlag(Location loc, String flagName, StateFlag.State flagState){
-        ApplicableRegionSet regions = WorldGuard.getInstance().getPlatform().getRegionContainer().get(new BukkitWorld(loc.getWorld())).getApplicableRegions(BlockVector3.at(loc.getX(),loc.getY(),loc.getZ()));
-        StateFlag flag = (StateFlag) registry.get(flagName);
-        if (flag == null || regions.size() == 0) return false;
+    public boolean isInRegionWithFlag(Player player, Location loc, String flagName, WrappedState flagState) {
+        Set<IWrappedRegion> regions = instance.getRegions(loc);
+        Optional<IWrappedFlag<WrappedState>> flag = instance.getFlag(flagName, WrappedState.class);
+        if (!flag.isPresent() || regions.size() == 0) return false;
 
-        boolean returns = false;
-        for (ProtectedRegion region: regions) {
-            StateFlag.State regionFlagState = region.getFlag(flag);
-            if (regionFlagState != null)
-                if (regionFlagState.equals(flagState)) returns = true;
+        for (IWrappedRegion region : regions) {
+            Optional<WrappedState> regionFlagState = region.getFlag(flag.get());
+            // Flag is present in region, check if it has the correct state then return true.
+            WrappedState state = flag.map(f -> instance.queryFlag(player, loc, f).orElse(WrappedState.DENY)).orElse(WrappedState.DENY);
+            return state == flagState;
         }
-        return returns;
+
+        // No region with flag found.
+        return false;
     }
 
     /**
@@ -86,43 +82,25 @@ public class WorldGuardUtils {
      *
      * @return True if location is in at least 1 region with the flag with the specified state.
      */
-    public boolean isInRegionWithFlag(Location loc, String flagName, boolean flagState){
-        StateFlag.State state = (flagState) ? StateFlag.State.ALLOW : StateFlag.State.DENY;
-        return isInRegionWithFlag(loc, flagName, state);
+    public boolean isInRegionWithFlag(Player player, Location loc, String flagName, boolean flagState) {
+        WrappedState state = (flagState) ? WrappedState.ALLOW : WrappedState.DENY;
+        return isInRegionWithFlag(player, loc, flagName, state);
     }
 
     private void registerFlags(){
-        try {
-            for (String flagName: flagList) {
-                StateFlag flag = new StateFlag(flagName, true);
-                registry.register(flag);
+        for (String flagName : flagList) {
+            if (instance.registerFlag(flagName, WrappedState.class).isPresent()) {
+                Bukkit.getLogger().info("Registered flag " + flagName);
+            } else {
+                Bukkit.getLogger().info("Failed to register flag " + flagName);
+                Bukkit.getLogger().info("This flag may already be registered.");
+                Bukkit.getLogger().info("If this is the case, please disable the other plugin that uses this flag.");
             }
-        } catch (Exception e) {
-            if (e instanceof FlagConflictException){ //The flags are already registered
-                if (areFlagsOkay()) Bukkit.getLogger().warning("[MTVehicles] Another plugin has already registered MTVehicles' custom WorldGuard flags. They might interfere with each other!");
-                else disableDependency();
-            } else if (e instanceof IllegalStateException){ //New flags cannot be registered at this time
-                if (areFlagsOkay()) Bukkit.getLogger().warning("[MTVehicles] MTVehicles' custom WorldGuard flags have already been registered and/or are also used by another plugin. This might happen because you've just reloaded the plugin with PlugMan.");
-                else disableDependency();
-            }
-            else disableDependency();
         }
     }
 
     private void disableDependency(){
         Bukkit.getLogger().severe("[MTVehicles] Custom WorldGuard flags could not be created for MTVehicles. Disabling as a soft-dependcy... (If you've just reloaded the plugin with PlugMan, try restarting the server.)");
         DependencyModule.disableDependency(SoftDependency.WORLD_GUARD);
-    }
-
-    /**
-     * Check whether all custom flags are set up correctly.
-     */
-    private boolean areFlagsOkay(){
-        boolean allAreOkay = true;
-        for (String flagName: flagList) {
-            Flag<?> existing = registry.get(flagName);
-            if (!(existing instanceof StateFlag)) allAreOkay = false;
-        }
-        return allAreOkay;
     }
 }

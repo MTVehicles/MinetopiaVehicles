@@ -2,6 +2,7 @@ package nl.mtvehicles.core.infrastructure.enums;
 
 import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import java.util.Locale;
 
@@ -67,8 +68,8 @@ public enum VehicleType {
      * @param loc Location where the vehicle is being used (placed, clicked, ...)
      * @return True if the vehicle can't be used. (Returns false if WorldGuard is not enabled)
      */
-    public boolean isUsageDisabled(Location loc){
+    public boolean isUsageDisabled(Player player, Location loc){
         if (!DependencyModule.isDependencyEnabled(SoftDependency.WORLD_GUARD)) return false;
-        return DependencyModule.worldGuard.isInRegionWithFlag(loc, "mtv-use-" + this.toString().toLowerCase(Locale.ROOT), false);
+        return DependencyModule.worldGuard.isInRegionWithFlag(player, loc, "mtv-use-" + this.toString().toLowerCase(Locale.ROOT), false);
     }
 }
