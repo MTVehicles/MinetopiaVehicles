@@ -78,10 +78,6 @@
       <url>https://repo.maven.apache.org/maven2/</url>
     </repository>
     <repository>
-      <id>sk89q-repo</id>
-      <url>https://maven.enginehub.org/repo/</url>
-    </repository>
-    <repository>
       <id>jitpack.io</id>
       <url>https://jitpack.io</url>
     </repository>
@@ -102,57 +98,57 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.spigotmc</groupId>
+      <groupId>org.spigotmc.</groupId>
       <artifactId>spigot</artifactId>
       <version>1.12.2-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.spigotmc.</groupId>
+      <groupId>org.spigotmc..</groupId>
       <artifactId>spigot</artifactId>
       <version>1.13.2-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.spigotmc..</groupId>
+      <groupId>org.spigotmc...</groupId>
       <artifactId>spigot</artifactId>
       <version>1.15.2-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.spigotmc...</groupId>
+      <groupId>org.spigotmc....</groupId>
       <artifactId>spigot</artifactId>
       <version>1.16.5-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.spigotmc....</groupId>
+      <groupId>org.spigotmc.....</groupId>
       <artifactId>spigot</artifactId>
       <version>1.17.1-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.spigotmc.....</groupId>
+      <groupId>org.spigotmc......</groupId>
       <artifactId>spigot</artifactId>
       <version>1.18.1-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.spigotmc......</groupId>
+      <groupId>org.spigotmc.......</groupId>
       <artifactId>spigot</artifactId>
       <version>1.18.2-R0.1-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.spigotmc</groupId>
+      <artifactId>spigot</artifactId>
+      <version>1.19-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <version>1.18.22</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.sk89q.worldguard</groupId>
-      <artifactId>worldguard-bukkit</artifactId>
-      <version>7.0.7</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -166,13 +162,6 @@
       <artifactId>placeholderapi</artifactId>
       <version>2.11.1</version>
       <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>net.minecraft</groupId>
-      <artifactId>1.19</artifactId>
-      <version>1.0</version>
-      <scope>system</scope>
-      <systemPath>${pom.basedir}/libs/spigot-1.19.jar</systemPath>
     </dependency>
   </dependencies>
   <properties>
