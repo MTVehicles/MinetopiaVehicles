@@ -726,7 +726,6 @@ public final class VehicleUtils {
         final ArmorStand standMain = VehicleData.autostand.get("MTVEHICLES_MAIN_" + license);
         final ArmorStand standSkin = VehicleData.autostand.get("MTVEHICLES_SKIN_" + license);
         final ArmorStand standMainSeat = VehicleData.autostand.get("MTVEHICLES_MAINSEAT_" + license);
-        if (!standMainSeat.getPassengers().isEmpty()) return false;
 
         if (vehicle.getVehicleType().isHelicopter()) {
             ArmorStand blades = VehicleData.autostand.get("MTVEHICLES_WIEKENS_" + license);
