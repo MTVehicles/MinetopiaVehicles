@@ -48,7 +48,7 @@ public enum PluginVersion {
      */
     LATEST,
     /**
-     * Dev-versions (auto-updater is disabled)
+     * Dev-builds (auto-updater is disabled)
      */
     DEV;
 
@@ -58,7 +58,7 @@ public enum PluginVersion {
 
     /**
      * Check whether the plugin version is a dev-version (auto-updater is disabled)
-     * @return True if plugin is a dev-version
+     * @return True if plugin is a dev-build
      */
     public boolean isDev(){
         return this.equals(DEV);

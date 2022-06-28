@@ -2,8 +2,8 @@ package nl.mtvehicles.core.commands.vehiclesubs;
 
 import nl.mtvehicles.core.events.VehicleAddRiderEvent;
 import nl.mtvehicles.core.infrastructure.enums.Message;
-import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
-import nl.mtvehicles.core.infrastructure.models.Vehicle;
+import nl.mtvehicles.core.infrastructure.models.MTVSubCommand;
+import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * <b>/vehicle addrider %player%</b> - add a player who may steer the vehicle the player is sitting in (if they are its owner) OR player's held vehicle.
  */
-public class VehicleAddRider extends MTVehicleSubCommand {
+public class VehicleAddRider extends MTVSubCommand {
     public VehicleAddRider() {
         this.setPlayerCommand(true);
     }

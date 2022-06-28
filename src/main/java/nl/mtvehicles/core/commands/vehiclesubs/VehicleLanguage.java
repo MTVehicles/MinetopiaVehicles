@@ -1,14 +1,13 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
 import nl.mtvehicles.core.infrastructure.enums.Message;
-import nl.mtvehicles.core.infrastructure.helpers.LanguageUtils;
-import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
-import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
+import nl.mtvehicles.core.infrastructure.utils.LanguageUtils;
+import nl.mtvehicles.core.infrastructure.models.MTVSubCommand;
 
 /**
  * <b>/vehicle language</b> - set the plugin's language (in a GUI).
  */
-public class VehicleLanguage extends MTVehicleSubCommand {
+public class VehicleLanguage extends MTVSubCommand {
     public VehicleLanguage() {
         this.setPlayerCommand(true);
     }

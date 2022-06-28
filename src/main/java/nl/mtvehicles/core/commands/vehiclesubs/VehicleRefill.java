@@ -1,17 +1,16 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
 import nl.mtvehicles.core.infrastructure.enums.Message;
-import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
-import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
-import nl.mtvehicles.core.infrastructure.models.Vehicle;
-import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
-import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
+import nl.mtvehicles.core.infrastructure.vehicle.VehicleData;
+import nl.mtvehicles.core.infrastructure.models.MTVSubCommand;
+import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
+import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
 import org.bukkit.inventory.ItemStack;
 
 /**
  * <b>/vehicle refill</b> - refill the held vehicle.
  */
-public class VehicleRefill extends MTVehicleSubCommand {
+public class VehicleRefill extends MTVSubCommand {
     public VehicleRefill() {
         this.setPlayerCommand(true);
     }

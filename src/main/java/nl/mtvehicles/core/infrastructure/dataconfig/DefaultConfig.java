@@ -1,8 +1,8 @@
 package nl.mtvehicles.core.infrastructure.dataconfig;
 
 import nl.mtvehicles.core.infrastructure.enums.*;
-import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
-import nl.mtvehicles.core.infrastructure.models.Config;
+import nl.mtvehicles.core.infrastructure.utils.TextUtils;
+import nl.mtvehicles.core.infrastructure.models.MTVConfig;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
 import org.bukkit.Location;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * Methods for config.yml.<br>
  * <b>Do not initialise this class directly. Use {@link ConfigModule#defaultConfig} instead.</b>
  */
-public class DefaultConfig extends Config {
+public class DefaultConfig extends MTVConfig {
     /**
      * Default constructor - <b>do not use this.</b><br>
      * Use {@link ConfigModule#defaultConfig} instead.
@@ -77,31 +77,31 @@ public class DefaultConfig extends Config {
 
     //--- Gas stations ---
 
-    private GasStationConfig gasStations = new GasStationConfig();
+    private final GasStationConfig gasStations = new GasStationConfig();
 
     /**
      * Check whether a jerrycan may be used on a specified location.
      * @param loc Location
      * @return True if gas stations are enabled, player is outside a region with flag 'mtvgasstation=deny' and inside a gas station if necessary.
      */
-    public boolean canUseJerryCan(Location loc){
+    public boolean canUseJerryCan(Player player, Location loc){
         if (!gasStations.areGasStationsEnabled()) return true;
 
         //If a player is in region with 'mtvgasstation=deny', they can't use jerrycans.
-        if (DependencyModule.worldGuard.isInRegionWithFlag(loc, "mtv-gasstation", false)) return false;
+        if (DependencyModule.worldGuard.isInRegionWithFlag(player, loc, WGFlag.GAS_STATION, false)) return false;
 
         if (gasStations.canUseJerryCanOutsideOfGasStation()) return true;
 
-        return gasStations.isInsideGasStation(loc);
+        return DependencyModule.worldGuard.isInsideGasStation(player, loc);
     }
 
     /**
      * Whether a player can use a jerrycan on their location.
-     * @param p Player
-     * @see #canUseJerryCan(Location)
+     * @param player Player
+     * @see #canUseJerryCan(Player, Location)
      */
-    public boolean canUseJerryCan(Player p){
-        return canUseJerryCan(p.getLocation());
+    public boolean canUseJerryCan(Player player){
+        return canUseJerryCan(player, player.getLocation());
     }
 
     /**
@@ -111,7 +111,7 @@ public class DefaultConfig extends Config {
     public boolean canFillJerryCans(Player p, Location loc){
         if (!gasStations.areGasStationsEnabled()) return false;
         if (!gasStations.isFillJerryCansEnabled()) return false;
-        if (!gasStations.isInsideGasStation(loc)) return false;
+        if (!DependencyModule.worldGuard.isInsideGasStation(p, loc)) return false;
 
         if (!gasStations.hasFillJerryCansPermission(p)){
             p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.NO_PERMISSION)));
@@ -136,10 +136,6 @@ public class DefaultConfig extends Config {
 
         private boolean canUseJerryCanOutsideOfGasStation(){
             return (boolean) get(Option.GAS_STATIONS_CAN_USE_JERRYCAN_OUTSIDE_OF_GAS_STATION);
-        }
-
-        private boolean isInsideGasStation(Location loc){
-            return DependencyModule.worldGuard.isInRegionWithFlag(loc, "mtv-gasstation", true);
         }
 
         private boolean isFillJerryCansEnabled(){
@@ -250,14 +246,15 @@ public class DefaultConfig extends Config {
      * @param action Action (PLACE/PICKUP/ENTER)
      * @param vehicleType Type of the vehicle (enum)
      * @param loc Location
+     * @param p Player
      * @return True if nothing prevents the player from proceeding.
      */
-    public boolean canProceedWithAction(RegionAction action, VehicleType vehicleType, Location loc){
+    public boolean canProceedWithAction(RegionAction action, VehicleType vehicleType, Location loc, Player p){
         if (isWorldDisabled(loc.getWorld().getName())) return false;
 
         if (!DependencyModule.isDependencyEnabled(SoftDependency.WORLD_GUARD)) return true;
 
-        if (vehicleType.isUsageDisabled(loc)) return false;
+        if (vehicleType.isUsageDisabled(p, loc)) return false;
 
         boolean returns = true;
         RegionAction.ListType listType = getRegionActionListType(action);
@@ -268,21 +265,21 @@ public class DefaultConfig extends Config {
         switch (action){
             case PLACE:
                 if (isWhitelist)
-                    returns = DependencyModule.worldGuard.isInRegionWithFlag(loc, "mtv-place", true);
+                    returns = DependencyModule.worldGuard.isInRegionWithFlag(p, loc, WGFlag.PLACE, true);
                 else if (isBlacklist)
-                    returns = !DependencyModule.worldGuard.isInRegionWithFlag(loc, "mtv-place", false);
+                    returns = !DependencyModule.worldGuard.isInRegionWithFlag(p, loc, WGFlag.PLACE, false);
                 break;
             case PICKUP:
                 if (isWhitelist)
-                    returns = DependencyModule.worldGuard.isInRegionWithFlag(loc, "mtv-pickup", true);
+                    returns = DependencyModule.worldGuard.isInRegionWithFlag(p, loc, WGFlag.PICKUP, true);
                 else if (isBlacklist)
-                    returns = !DependencyModule.worldGuard.isInRegionWithFlag(loc, "mtv-pickup", false);
+                    returns = !DependencyModule.worldGuard.isInRegionWithFlag(p, loc, WGFlag.PICKUP, false);
                 break;
             case ENTER:
                 if (isWhitelist)
-                    returns = DependencyModule.worldGuard.isInRegionWithFlag(loc, "mtv-enter", true);
+                    returns = DependencyModule.worldGuard.isInRegionWithFlag(p, loc, WGFlag.ENTER, true);
                 else if (isBlacklist)
-                    returns = !DependencyModule.worldGuard.isInRegionWithFlag(loc, "mtv-enter", false);
+                    returns = !DependencyModule.worldGuard.isInRegionWithFlag(p, loc, WGFlag.ENTER, false);
                 break;
         }
         return returns;

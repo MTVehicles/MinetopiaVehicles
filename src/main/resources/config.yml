@@ -17,7 +17,7 @@ autoUpdate: true
 # --- General ---
 
 # How many rows the /vehicle menu has. Must be between 3 and 6.
-# Default: 3 (If your input is not accepted, the default shall be used.)
+# Default: 3 (If your input is not valid, the default shall be used.)
 vehicleMenuSize: 3
 
 # If set to true, helicopter blades will always stay on top of the helicopter.
@@ -151,7 +151,7 @@ disabledWorlds: []
 
 # All the regions MUST have WorldGuard flag "mtv-gasstation=allow".
 gasStations:
-  enabled: false
+  enabled: true
   canUseJerryCanOutsideOfGasStation: true
   fillJerryCans:
     enabled: true

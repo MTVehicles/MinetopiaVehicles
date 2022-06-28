@@ -1,5 +1,5 @@
-# Czech messages - Thank you, Nikd0! (Beware: Messages are not reviewed by our team.)
-# Recently added messages may be in English. That's because we now have 7+ languages and it is not feasible to update all of them every time.
+# Czech translation - Thank you, Nikd0! (Beware: Messages are not reviewed by our team.)
+# Recently added messages may be in English. That's because we now have 10+ languages and it is not feasible to update all of them every time.
 # More info can be found here: https://github.com/GamerJoep/MinetopiaVehicles/wiki/Translate-the-plugin
 helpInfo: "Získej informace o svém vozidle"
 helpHelp: "Ukaž tuhle zprávu"
@@ -62,6 +62,8 @@ useAddRider: "&cPoužij /vehicle addrider <Hráč>"
 useRemoveRider: "&cPoužij /vehicle removerider <Hráč>"
 useGiveCar: "&cPoužij /vehicle givecar <Hráč> <UUIDvozidla>"
 useGiveVoucher: "&cPoužij /vehicle givevoucher <Hráč> <UUIDvozidla>"
+useBuyCar: "&cPoužij /vehicle buycar <UUIDvozidla>"
+useBuyVoucher: "&cPoužij /vehicle buyvoucher <UUIDvozidla>"
 voucherRedeem: "&aÚspěšně jsi využil voucher!"
 updatedSucces2: "&aPlugin byl aktualizován, MUSÍŠ ho restartovat/znovu načíst."
 updateFailed: "&cNepodařilo se aktualizovat plugin"
@@ -80,6 +82,7 @@ vehicleInfoType: "&8&l-&r &eTyp: &6"
 vehicleInfoName: "&8&l-&r &eJméno: &6"
 vehicleInfoLicense: "&8&l-&r &ePoznávací značka: &6"
 vehicleInfoUUID: "&8&l-&r &eUUID: &6"
+vehicleInfoPrice: "&8&l-&r &eCena: &6"
 vehicleInfoSpeed: "&8&l-&r &eRychlost: &6"
 vehicleInfoAcceleration: "&8&l-&r &eZrychlení: &6"
 vehicleInfoOwner: "&8&l-&r &eMajitel: &6"
@@ -164,3 +167,4 @@ alreadyRider: "Tento hráč již může řídit toto vozidlo."
 notAMember: "Tento hráč nemůže sedět v tomto vozidle."
 notARider: "Tento hráč nemůže řídit toto vozidlo."
 offlinePlayerNotFound: "Tento hráč ještě nebyl na serveru."
+economyNotSetUp: "&cNenalezen žádný připojený plugin na ekonomiku."
