@@ -22,6 +22,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -596,7 +597,7 @@ public final class VehicleUtils {
 
                 Location location = new Location(entity.getWorld(), entity.getLocation().getX(), entity.getLocation().getY(), entity.getLocation().getZ(), entity.getLocation().getYaw(), entity.getLocation().getPitch());
 
-                if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.ENTER, vehicle.getVehicleType(), location)){
+                if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.ENTER, vehicle.getVehicleType(), location, p)){
                     ConfigModule.messagesConfig.sendMessage(p, Message.CANNOT_DO_THAT_HERE);
                     return;
                 }
@@ -717,7 +718,7 @@ public final class VehicleUtils {
      *
      * @warning Do not call this method if a vehicle is being used! Use {@link #kickOut(Player)} instead.
      */
-    public static boolean turnOff(Vehicle vehicle){
+    public static boolean turnOff(@NotNull Vehicle vehicle){
         final String license = vehicle.getLicensePlate();
 
         if (VehicleData.autostand.get("MTVEHICLES_MAIN_" + license) == null) return false;
@@ -760,7 +761,8 @@ public final class VehicleUtils {
      * @param licensePlate Vehicle's license plate
      * @see #turnOff(Vehicle)
      */
-    public static boolean turnOff(String licensePlate) throws IllegalStateException {
+    public static boolean turnOff(@NotNull String licensePlate){
+        if (getVehicle(licensePlate) == null) return false;
         return turnOff(getVehicle(licensePlate));
     }
 
