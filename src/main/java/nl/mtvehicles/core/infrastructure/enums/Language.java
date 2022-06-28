@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.infrastructure.enums;
 
+import nl.mtvehicles.core.infrastructure.annotations.ToDo;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 
 import java.util.ArrayList;
@@ -28,13 +29,13 @@ public enum Language {
      */
     CS("Čeština"),
     /**
-     * Chinese
-     */
-    CN("中國人"),
-    /**
      * German
      */
     DE("Deutsch"),
+    /**
+     * Chinese
+     */
+    CN("中國人"),
     /**
      * Turkish
      */
@@ -47,6 +48,10 @@ public enum Language {
      * Hebrew
      */
     HE("עִברִית"),
+    /**
+     * Russian
+     */
+    RU("Русский"),
     /**
      * Custom language one can create and use
      */
@@ -81,8 +86,9 @@ public enum Language {
      * Get an array of all languages (in their country codes)
      * @return Array of all supported languages
      */
+    @ToDo("make this automatic from the enum's values")
     public static String[] getAllLanguages(){
-        String[] languages = {"en", "nl", "es", "cs", "cn", "de", "tr", "ja", "he"};
+        String[] languages = {"en", "nl", "es", "cs", "cn", "de", "tr", "ja", "he", "ru"};
         return languages;
     }
 

@@ -37,9 +37,25 @@ public class LanguageUtils {
         inv.setItem(6, ItemUtils.getMenuItem(Material.SLIME_BLOCK, 1, "&aTurkish (Türk)", "&7Tüm mesajları Türkçe olarak ayarlamak için basın."));
         inv.setItem(7, ItemUtils.getMenuItem(Material.GLASS, 1, "&fJapanese (日本語)", "&7を押して、すべてのメッセージを日本語に設定します。"));
         inv.setItem(8, ItemUtils.getMenuItem(Material.STONE, 1, "&8Hebrew (עִברִית)", "&7.לחץ כדי להגדיר את כל ההודעות לעברית"));
+        inv.setItem(9, ItemUtils.getMenuItem(Material.GOLD_ORE, 1, "&6Russian (Русский)", "&7Нажмите, чтобы перевести все сообщения на русский язык."));
         inv.setItem(17, ItemUtils.getMenuItem(Material.PAPER, 1, "&fThat's all for now!", "&7Do you want to help us by translating the plugin? &f&nClick here"));
         p.openInventory(inv);
         languageCheck.put(p.getUniqueId(), true);
+    }
+
+    /**
+     * Called when a player clicks an item in /vehicle language menu, calls {@link #changeLanguage(Player, Language)}.
+     * @param p Player who clicked
+     * @param clickedSlot Clicked slot (= ordinal of {@link Language})
+     */
+    public static void changeLanguageMenu(Player p, int clickedSlot){
+        if (clickedSlot == 17) {
+            LanguageUtils.languageCheck.put(p.getUniqueId(), false);
+            p.sendMessage("§6You may find more information here: §e§nhttps://wiki.mtvehicles.eu/translating.html");
+            return;
+        }
+        Language language = Language.values()[clickedSlot];
+        changeLanguage(p, language);
     }
 
     /**
