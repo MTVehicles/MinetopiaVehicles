@@ -1,14 +1,14 @@
 package nl.mtvehicles.core.movement;
 
-import nl.mtvehicles.core.infrastructure.annotations.ToDo;
+import nl.mtvehicles.core.events.TankShootEvent;
 import nl.mtvehicles.core.infrastructure.annotations.VersionSpecific;
 import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
 import nl.mtvehicles.core.infrastructure.enums.ServerVersion;
 import nl.mtvehicles.core.infrastructure.enums.VehicleType;
+import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.infrastructure.utils.BossBarUtils;
 import nl.mtvehicles.core.infrastructure.vehicle.VehicleData;
-import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -823,13 +823,18 @@ public class VehicleMovement {
     }
 
     /**
-     * Spawn and shoot tank's TNT (must be enabled in config.yml)
+     * Spawn and shoot tank's TNT (must be enabled in config.yml), calls the {@link TankShootEvent}.
      * @param stand The tank's main ArmorStand
      * @param loc Location of where the TNT should be spawned
      */
-    @ToDo("custom api event for shooting from tanks")
     public void tankShoot(ArmorStand stand, Location loc){
         if (!(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.TANK_TNT)) return;
+
+        TankShootEvent api = new TankShootEvent();
+        api.setPlayer(player);
+        api.setLicensePlate(license);
+        api.call();
+        if (api.isCancelled()) return;
 
         schedulerRun(() -> {
             TNTPrimed tnt = loc.getWorld().spawn(loc, TNTPrimed.class);
