@@ -1,7 +1,7 @@
 package nl.mtvehicles.core;
 
 import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
-import nl.mtvehicles.core.infrastructure.helpers.PluginUpdater;
+import nl.mtvehicles.core.infrastructure.utils.PluginUpdater;
 import nl.mtvehicles.core.infrastructure.modules.*;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
@@ -17,20 +17,20 @@ public class Main extends JavaPlugin {
     public static Main instance;
 
     /**
-     * <b>Version of config.yml - must be equal to the version in SuperSecretSettings.</b><br>
+     * <b>Version of config.yml AND vehicles.yml - must be equal to the version in SuperSecretSettings.</b><br>
      *
      * We might not change config in every version, why bother creating a new config file on every update then?
      * Change this EVERY TIME you edit config. OTHERWISE, DON'T TOUCH IT.
      *
      * @see nl.mtvehicles.core.infrastructure.dataconfig.SecretSettingsConfig
      */
-    final public static String configVersion = "2.4.0";
+    final public static String configVersion = "2.5.0-dev5";
     /**
      * <b>Version of messages_xx.yml files - must be equal to the version in SuperSecretSettings.</b><br>
      *
      * This variable works exactly as {@link #configVersion}.
      */
-    final public static String messagesVersion = "2.4.3-dev6";
+    final public static String messagesVersion = "2.5.0-dev9";
 
     @Override
     public void onEnable() {

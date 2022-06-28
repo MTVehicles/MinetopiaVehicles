@@ -3,8 +3,8 @@ package nl.mtvehicles.core.events;
 import nl.mtvehicles.core.events.interfaces.HasVehicle;
 import nl.mtvehicles.core.events.interfaces.IsCancellable;
 import nl.mtvehicles.core.infrastructure.models.MTVEvent;
-import nl.mtvehicles.core.infrastructure.models.Vehicle;
-import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
+import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
+import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
 
 /**
  * On vehicle pick up
@@ -20,11 +20,6 @@ public class VehiclePickUpEvent extends MTVEvent implements IsCancellable, HasVe
     @Override
     public String getLicensePlate(){
         return licensePlate;
-    }
-
-    @Override
-    public Vehicle getVehicle(){
-        return VehicleUtils.getVehicle(licensePlate);
     }
 
     @Override

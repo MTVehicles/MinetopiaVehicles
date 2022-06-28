@@ -16,3 +16,4 @@ TRANSLATORS:
 - Turkish: ꋖꌅꋰꌅomerturkyᴱˑᴶ
 - Japanese: kazumasa200
 - Hebrew: roi
+- Russian: peck1

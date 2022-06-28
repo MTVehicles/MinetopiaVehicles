@@ -1,5 +1,5 @@
 # Spanish translation - Thank you, Randall_Rut! (Beware: Messages are not reviewed by our team.)
-# Recently added messages may be in English. That's because we now have 7+ languages and it is not feasible to update all of them every time.
+# Recently added messages may be in English. That's because we now have 10+ languages and it is not feasible to update all of them every time.
 # More info can be found here: https://github.com/GamerJoep/MinetopiaVehicles/wiki/Translate-the-plugin
 helpInfo: "Obtenga la información de su vehículo"
 helpHelp: "Mostrar este mensaje"
@@ -62,6 +62,8 @@ useAddRider: "&cUse /vehicle addrider <Player>"
 useRemoveRider: "&cUse /vehicle removerider <Player>"
 useGiveCar: "&cUse /vehicle givecar <Player> <carUuid>"
 useGiveVoucher: "&cUse /vehicle givevoucher <Player> <carUuid>"
+useBuyCar: "&cUse /vehicle buycar <carUuid>"
+useBuyVoucher: "&cUse /vehicle buyvoucher <carUuid>"
 voucherRedeem: "&aHa canjeado correctamente su cupón!"
 updatedSucces2: "&aSu complemento ha sido actualizado. ATENCIÓN solo tienes que recargarlo/reiniciarlo."
 updateFailed: "&cNo pudimos actualizar el complemento"
@@ -80,6 +82,7 @@ vehicleInfoType: "&8&l-&r &eTipo: &6"
 vehicleInfoName: "&8&l-&r &eNombre: &6"
 vehicleInfoLicense: "&8&l-&r &eMatricula: &6"
 vehicleInfoUUID: "&8&l-&r &eUUID: &6"
+vehicleInfoPrice: "&8&l-&r &ePrice: &6"
 vehicleInfoSpeed: "&8&l-&r &eVelocidad: &6"
 vehicleInfoAcceleration: "&8&l-&r &eAceleracion: &6"
 vehicleInfoOwner: "&8&l-&r &eDueño: &6"
@@ -164,3 +167,4 @@ alreadyRider: "This player may already steer the vehicle."
 notAMember: "This player cannot sit in the vehicle."
 notARider: "This player cannot steer the vehicle."
 offlinePlayerNotFound: "This player has not been on the server yet."
+economyNotSetUp: "&cThere is no economy plugin hooked."

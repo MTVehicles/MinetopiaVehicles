@@ -4,10 +4,10 @@ import nl.mtvehicles.core.infrastructure.dataconfig.MessagesConfig;
 import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
 import nl.mtvehicles.core.infrastructure.enums.InventoryTitle;
 import nl.mtvehicles.core.infrastructure.enums.Message;
-import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
-import nl.mtvehicles.core.infrastructure.models.Config;
-import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
-import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
+import nl.mtvehicles.core.infrastructure.utils.ItemUtils;
+import nl.mtvehicles.core.infrastructure.models.MTVConfig;
+import nl.mtvehicles.core.infrastructure.models.MTVSubCommand;
+import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -18,7 +18,7 @@ import org.bukkit.inventory.ItemStack;
 /**
  * <b>/vehicle edit</b> - edit held vehicle's specifications (in a GUI).
  */
-public class VehicleEdit extends MTVehicleSubCommand {
+public class VehicleEdit extends MTVSubCommand {
     public VehicleEdit() {
         this.setPlayerCommand(true);
     }
@@ -31,7 +31,7 @@ public class VehicleEdit extends MTVehicleSubCommand {
 
         if (!isHoldingVehicle()) return true;
 
-        ConfigModule.configList.forEach(Config::reload);
+        ConfigModule.configList.forEach(MTVConfig::reload);
 
         sendMessage(Message.MENU_OPEN);
         editMenu(player, item);

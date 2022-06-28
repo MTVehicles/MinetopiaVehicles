@@ -10,7 +10,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 
 /**
  * Methods for Vault soft-dependency.<br>
- * <b>Do not initialise this class directly. Use {@link DependencyModule#vault} instead.</b>
+ * @warning <b>Do not initialise this class directly. Use {@link DependencyModule#vault} instead.</b>
  */
 public class VaultUtils {
     //This must only be called if DependencyModule made sure that Vault is installed.

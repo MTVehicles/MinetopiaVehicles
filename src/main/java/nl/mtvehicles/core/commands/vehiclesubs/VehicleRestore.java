@@ -2,16 +2,15 @@ package nl.mtvehicles.core.commands.vehiclesubs;
 
 import nl.mtvehicles.core.events.inventory.RestoreMenuOpenEvent;
 import nl.mtvehicles.core.infrastructure.enums.Message;
-import nl.mtvehicles.core.infrastructure.helpers.MenuUtils;
-import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
-import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
+import nl.mtvehicles.core.infrastructure.utils.MenuUtils;
+import nl.mtvehicles.core.infrastructure.models.MTVSubCommand;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
 /**
  * <b>/vehicle restore (%player%)</b> - open a GUI menu of all vehicles in database (vehicleData.yml), their owner may be specified.
  */
-public class VehicleRestore extends MTVehicleSubCommand {
+public class VehicleRestore extends MTVSubCommand {
     public VehicleRestore() {
         this.setPlayerCommand(true);
     }

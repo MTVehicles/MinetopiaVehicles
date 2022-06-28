@@ -3,18 +3,14 @@ package nl.mtvehicles.core.listeners;
 import nl.mtvehicles.core.events.VehicleEnterEvent;
 import nl.mtvehicles.core.events.VehiclePickUpEvent;
 import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
-import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.enums.RegionAction;
-import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
-import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
+import nl.mtvehicles.core.infrastructure.utils.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVListener;
-import nl.mtvehicles.core.infrastructure.models.Vehicle;
-import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
+import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
+import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
-import org.bukkit.Location;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
@@ -74,7 +70,7 @@ public class VehicleClickListener extends MTVListener {
             }
         }
 
-        if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.PICKUP, vehicle.getVehicleType(), ((PlayerInteractAtEntityEvent) event).getRightClicked().getLocation())){
+        if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.PICKUP, vehicle.getVehicleType(), ((PlayerInteractAtEntityEvent) event).getRightClicked().getLocation(), player)){
             ConfigModule.messagesConfig.sendMessage(player, Message.CANNOT_DO_THAT_HERE);
             return;
         }
@@ -109,17 +105,6 @@ public class VehicleClickListener extends MTVListener {
         }
 
         VehicleUtils.enterVehicle(license, player);
-    }
-
-    /**
-     * Create {@link VehicleData} (necessary for driving to work) and make player enter a vehicle.
-     * @param licensePlate Vehicle's license plate
-     * @param p Player who is entering the vehicle
-     *
-     * @deprecated This method has been refactored to {@link VehicleUtils#enterVehicle(String, Player)} because it simply has nothing to do with placing the vehicle (see {@link VehicleUtils#spawnVehicle(String, Location)} for that).
-     */
-    public static void placeVehicle(String licensePlate, Player p) {
-        VehicleUtils.enterVehicle(licensePlate, p);
     }
 
 }

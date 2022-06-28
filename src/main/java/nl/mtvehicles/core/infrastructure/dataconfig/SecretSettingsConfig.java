@@ -2,14 +2,14 @@ package nl.mtvehicles.core.infrastructure.dataconfig;
 
 import nl.mtvehicles.core.infrastructure.enums.ConfigType;
 import nl.mtvehicles.core.infrastructure.enums.Language;
-import nl.mtvehicles.core.infrastructure.models.Config;
+import nl.mtvehicles.core.infrastructure.models.MTVConfig;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 
 /**
  * Methods for supersecretsettings.yml.<br>
  * <b>Do not initialise this class directly. Use {@link ConfigModule#secretSettings} instead.</b>
  */
-public class SecretSettingsConfig extends Config {
+public class SecretSettingsConfig extends MTVConfig {
 
     /**
      * Default constructor - <b>do not use this.</b><br>

@@ -1,5 +1,5 @@
 # Chinese translation - thank you, xiaoyueyoQvQ! (Beware: Messages are not reviewed by our team.)
-# Recently added messages may be in English. That's because we now have 7+ languages and it is not feasible to update all of them every time.
+# Recently added messages may be in English. That's because we now have 10+ languages and it is not feasible to update all of them every time.
 # More info can be found here: https://github.com/GamerJoep/MinetopiaVehicles/wiki/Translate-the-plugin
 helpInfo: "获取您的车辆信息"
 helpHelp: "显示这条信息"
@@ -62,6 +62,8 @@ useAddRider: "&c使用 /vehicle addrider <玩家>"
 useRemoveRider: "&c使用 /vehicle removerider <玩家>"
 useGiveCar: "&c使用 /vehicle givecar <玩家> <车辆UUID>"
 useGiveVoucher: "&c使用 /vehicle givevoucher <玩家> <车辆UUID>"
+useBuyCar: "&cUse /vehicle buycar <carUuid>"
+useBuyVoucher: "&cUse /vehicle buyvoucher <carUuid>"
 invoiceRedeem: "&a您已成功兑换您的优惠券！"
 updatedSucces2: "&a您的插件已更新，请重载插件！"
 updateFailed: "&c我们无法更新插件"
@@ -80,6 +82,7 @@ vehicleInfoType: "&8&l-&r &e类型: &6"
 vehicleInfoName: "&8&l-&r &e名称: &6"
 vehicleInfoLicense: "&8&l-&r &e监听: &6"
 vehicleInfoUUID: "&8&l-&r &eUUID: &6"
+vehicleInfoPrice: "&8&l-&r &ePrice: &6"
 vehicleInfoSpeed: "&8&l-&r &e最高速度: &6"
 vehicleInfoAcceleration: "&8&l-&r &e加速能力: &6"
 vehicleInfoOwner: "&8&l-&r &e所有者: &6"
@@ -164,3 +167,4 @@ alreadyRider: "This player may already steer the vehicle."
 notAMember: "This player cannot sit in the vehicle."
 notARider: "This player cannot steer the vehicle."
 offlinePlayerNotFound: "This player has not been on the server yet."
+economyNotSetUp: "&cThere is no economy plugin hooked."

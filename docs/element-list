@@ -9,9 +9,10 @@ nl.mtvehicles.core.infrastructure.annotations
 nl.mtvehicles.core.infrastructure.dataconfig
 nl.mtvehicles.core.infrastructure.dependencies
 nl.mtvehicles.core.infrastructure.enums
-nl.mtvehicles.core.infrastructure.helpers
 nl.mtvehicles.core.infrastructure.models
 nl.mtvehicles.core.infrastructure.modules
+nl.mtvehicles.core.infrastructure.utils
+nl.mtvehicles.core.infrastructure.vehicle
 nl.mtvehicles.core.listeners
 nl.mtvehicles.core.listeners.inventory
 nl.mtvehicles.core.movement

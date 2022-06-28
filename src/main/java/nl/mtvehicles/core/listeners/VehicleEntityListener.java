@@ -7,10 +7,10 @@ import nl.mtvehicles.core.events.VehicleFuelEvent;
 import nl.mtvehicles.core.events.VehicleOpenTrunkEvent;
 import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.enums.Message;
-import nl.mtvehicles.core.infrastructure.helpers.BossBarUtils;
-import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
+import nl.mtvehicles.core.infrastructure.utils.BossBarUtils;
+import nl.mtvehicles.core.infrastructure.vehicle.VehicleData;
 import nl.mtvehicles.core.infrastructure.models.MTVListener;
-import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
+import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -44,7 +44,7 @@ public class VehicleEntityListener extends MTVListener {
             callAPI(null);
             if (isCancelled()) return;
 
-            checkDamage(((VehicleDamageEvent) getAPI()).getLicensePlate());
+            damage(((VehicleDamageEvent) getAPI()).getLicensePlate());
             return;
         }
 
@@ -71,7 +71,7 @@ public class VehicleEntityListener extends MTVListener {
             callAPI();
             if (isCancelled()) return;
 
-            checkDamage(((VehicleDamageEvent) getAPI()).getLicensePlate());
+            damage(((VehicleDamageEvent) getAPI()).getLicensePlate());
             return;
         }
 
@@ -123,17 +123,6 @@ public class VehicleEntityListener extends MTVListener {
             BossBarUtils.setBossBarValue(vehicleFuel / 100.0D, license);
             player.setItemInHand(VehicleFuel.jerrycanItem(Integer.parseInt(jerryCanSize), 0));
         }
-    }
-
-    /**
-     * Damage a vehicle.
-     * @param license The vehicle's license plate
-     *
-     * @deprecated Renamed to {@link #damage(String)}.
-     */
-    @Deprecated
-    public void checkDamage(String license){
-        damage(license);
     }
 
     /**
