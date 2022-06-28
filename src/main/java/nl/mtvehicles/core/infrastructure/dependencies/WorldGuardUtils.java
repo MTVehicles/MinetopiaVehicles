@@ -86,11 +86,13 @@ public class WorldGuardUtils {
     }
 
     private void registerFlags(){
-        for (WGFlag flag: WGFlag.getFlagList()) { //Registering flags
-            String key = flag.getKey();
-            flags.put(flag, instance.registerFlag(key, WrappedState.class).orElse(null));
-            if (flags.get(flag) == null) {
-                flags.put(flag, instance.getFlag(key, WrappedState.class).orElse(null));
+        try {
+            for (WGFlag flag: WGFlag.getFlagList()) { //Registering flags
+                flags.put(flag, instance.registerFlag(flag.getKey(), WrappedState.class).orElse(null));
+            }
+        } catch (IllegalStateException e){ //"New flags cannot be registered at this time"
+            for (WGFlag flag: WGFlag.getFlagList()) { //Getting already registered flags, if possible
+                flags.put(flag, instance.getFlag(flag.getKey(), WrappedState.class).orElse(null));
                 if (flags.get(flag) == null) {
                     Bukkit.getLogger().severe("[MTVehicles] Custom WorldGuard flags could not be registered for MTVehicles. Disabling soft-dependency... (If you've just reloaded the plugin with PlugMan, try restarting the server.)");
                     DependencyModule.disableDependency(SoftDependency.WORLD_GUARD);
