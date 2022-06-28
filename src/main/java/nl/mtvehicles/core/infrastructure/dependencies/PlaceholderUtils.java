@@ -21,7 +21,7 @@ import static nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils.isInsideVeh
 
 /**
  * Methods for PlaceholderAPI soft-dependency.<br>
- * <b>Do not initialise this class directly. Use {@link DependencyModule#placeholderAPI} instead.</b>
+ * @warning <b>Do not initialise this class directly. Use {@link DependencyModule#placeholderAPI} instead.</b>
  */
 public class PlaceholderUtils extends PlaceholderExpansion {
     //This must only be called if DependencyModule made sure that Vault is installed.
