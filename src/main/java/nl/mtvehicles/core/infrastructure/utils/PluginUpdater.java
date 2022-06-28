@@ -81,7 +81,6 @@ public class PluginUpdater {
         }
     }
 
-    @ToDo("Make this translatable, maybe?")
     private static List<String> getUpdateMessage(){
         return TextUtils.list(
                 "&7---------------------------------------",

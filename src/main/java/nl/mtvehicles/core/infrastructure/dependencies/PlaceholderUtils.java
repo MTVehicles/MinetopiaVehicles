@@ -54,7 +54,6 @@ public class PlaceholderUtils extends PlaceholderExpansion {
     }
 
     @Override
-    @ToDo("Create methods in VehicleUtils or somewhere for each of these getters.")
     public String onRequest(OfflinePlayer p, String parameter) { //Placeholder 'mtv_%parameter%'
 
         //Global placeholders

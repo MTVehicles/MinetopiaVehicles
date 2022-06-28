@@ -384,7 +384,6 @@ public class Vehicle {
      * @deprecated Use {@link #setVehicleType(VehicleType)} instead.
      */
     @Deprecated
-    @ToDo("Remove usages")
     public void setVehicleType(String vehicleType) {
         try {
             this.vehicleType = VehicleType.valueOf(vehicleType.toUpperCase(Locale.ROOT));
