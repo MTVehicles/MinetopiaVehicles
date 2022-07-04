@@ -1,5 +1,5 @@
 # Dutch translation
-# Recently added messages may be in English. That's because we now have 7+ languages and it is not feasible to update all of them every time.
+# Recently added messages may be in English. That's because we now have 10+ languages and it is not feasible to update all of them every time.
 # More info can be found here: https://github.com/GamerJoep/MinetopiaVehicles/wiki/Translate-the-plugin
 helpInfo: "Verkijg je voertuig informatie"
 helpHelp: "Laat dit bericht zien"
@@ -62,6 +62,8 @@ useAddRider: "&cGebruik /vehicle addrider <Speler>"
 useRemoveRider: "&cGebruik /vehicle removerider <Speler>"
 useGiveCar: "&cGebruik /vehicle givecar <Speler> <carUuid>"
 useGiveVoucher: "&cGebruik /vehicle givevoucher <Speler> <carUuid>"
+useBuyCar: "&cGebruik /vehicle buycar <carUuid>"
+useBuyVoucher: "&cGebruik /vehicle buyvoucher <carUuid>"
 voucherRedeem: "&aJe hebt succesvol je voucher ingewisseld!"
 updatedSucces2: "&aJe plugin is bijgewerkt. LETOP je hoeft hem alleen nog te reloaden/herstarten."
 updateFailed: "&cWe hebben de plugin niet kunnen updaten."
@@ -80,6 +82,7 @@ vehicleInfoType: "&8&l-&r &eType: &6"
 vehicleInfoName: "&8&l-&r &eNaam: &6"
 vehicleInfoLicense: "&8&l-&r &eKenteken: &6"
 vehicleInfoUUID: "&8&l-&r &eUUID: &6"
+vehicleInfoPrice: "&8&l-&r &ePrice: &6"
 vehicleInfoSpeed: "&8&l-&r &eSnelheid: &6"
 vehicleInfoAcceleration: "&8&l-&r &eAcceleratie: &6"
 vehicleInfoOwner: "&8&l-&r &eEigenaar: &6"
@@ -164,3 +167,4 @@ alreadyRider: "Deze speler mag het voertuig al besturen."
 notAMember: "Deze speler kan niet in het voertuig zitten."
 notARider: "Deze speler kan het voertuig niet besturen."
 offlinePlayerNotFound: "Deze speler is nog nooit op de server geweest."
+economyNotSetUp: "&cThere is no economy plugin hooked."

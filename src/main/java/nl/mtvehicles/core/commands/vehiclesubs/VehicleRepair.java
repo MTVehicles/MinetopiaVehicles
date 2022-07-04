@@ -1,15 +1,15 @@
 package nl.mtvehicles.core.commands.vehiclesubs;
 
 import nl.mtvehicles.core.infrastructure.enums.Message;
-import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
-import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
+import nl.mtvehicles.core.infrastructure.models.MTVSubCommand;
+import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.inventory.ItemStack;
 
 /**
  * <b>/vehicle repair</b> - repair the held vehicle.
  */
-public class VehicleRepair extends MTVehicleSubCommand {
+public class VehicleRepair extends MTVSubCommand {
     public VehicleRepair() {
         this.setPlayerCommand(true);
     }

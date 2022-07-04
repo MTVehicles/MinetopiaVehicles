@@ -10,13 +10,13 @@ import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
 import nl.mtvehicles.core.infrastructure.enums.InventoryTitle;
 import nl.mtvehicles.core.infrastructure.enums.Language;
 import nl.mtvehicles.core.infrastructure.enums.Message;
-import nl.mtvehicles.core.infrastructure.helpers.ItemUtils;
-import nl.mtvehicles.core.infrastructure.helpers.LanguageUtils;
-import nl.mtvehicles.core.infrastructure.helpers.MenuUtils;
-import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
+import nl.mtvehicles.core.infrastructure.utils.ItemUtils;
+import nl.mtvehicles.core.infrastructure.utils.LanguageUtils;
+import nl.mtvehicles.core.infrastructure.utils.MenuUtils;
+import nl.mtvehicles.core.infrastructure.utils.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVListener;
-import nl.mtvehicles.core.infrastructure.models.Vehicle;
-import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
+import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
+import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.listeners.VehicleVoucherListener;
 import org.bukkit.Bukkit;
@@ -34,8 +34,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static nl.mtvehicles.core.infrastructure.helpers.MenuUtils.getBackItem;
-import static nl.mtvehicles.core.infrastructure.helpers.MenuUtils.getCloseItem;
+import static nl.mtvehicles.core.infrastructure.utils.MenuUtils.getBackItem;
+import static nl.mtvehicles.core.infrastructure.utils.MenuUtils.getCloseItem;
 
 /**
  * On inventory click
@@ -149,19 +149,7 @@ public class InventoryClickListener extends MTVListener {
     }
 
     private void chooseLanguageMenu(){
-        if (clickedSlot == 0) LanguageUtils.changeLanguage(player, Language.EN);
-        else if (clickedSlot == 1) LanguageUtils.changeLanguage(player, Language.NL);
-        else if (clickedSlot == 2) LanguageUtils.changeLanguage(player, Language.ES);
-        else if (clickedSlot == 3) LanguageUtils.changeLanguage(player, Language.CS);
-        else if (clickedSlot == 4) LanguageUtils.changeLanguage(player, Language.DE);
-        else if (clickedSlot == 5) LanguageUtils.changeLanguage(player, Language.CN);
-        else if (clickedSlot == 6) LanguageUtils.changeLanguage(player, Language.TR);
-        else if (clickedSlot == 7) LanguageUtils.changeLanguage(player, Language.JA);
-        else if (clickedSlot == 8) LanguageUtils.changeLanguage(player, Language.HE);
-        else if (clickedSlot == 17) {
-            LanguageUtils.languageCheck.put(player.getUniqueId(), false);
-            player.sendMessage("§6You may find more information here: §e§nhttps://wiki.mtvehicles.eu/translating.html");
-        }
+        LanguageUtils.changeLanguageMenu(player, clickedSlot);
         player.closeInventory();
     }
 
@@ -211,6 +199,7 @@ public class InventoryClickListener extends MTVListener {
             vehicle.setNbtValue(nbt.getString("mtcustom"));
             vehicle.setRiders(riders);
             vehicle.setMembers(members);
+            vehicle.setPrice((double) vehicles.get(intSave.get(player.getUniqueId())).get("price"));
             vehicle.save();
 
             player.closeInventory();

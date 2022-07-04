@@ -4,9 +4,9 @@ import nl.mtvehicles.core.events.inventory.JerryCanMenuOpen;
 import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.enums.InventoryTitle;
 import nl.mtvehicles.core.infrastructure.enums.Message;
-import nl.mtvehicles.core.infrastructure.helpers.ItemFactory;
-import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
-import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
+import nl.mtvehicles.core.infrastructure.utils.ItemFactory;
+import nl.mtvehicles.core.infrastructure.utils.TextUtils;
+import nl.mtvehicles.core.infrastructure.models.MTVSubCommand;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -20,7 +20,7 @@ import java.util.List;
 /**
  * <b>/vehicle fuel</b> - open a GUI with different jerrycans.
  */
-public class VehicleFuel extends MTVehicleSubCommand {
+public class VehicleFuel extends MTVSubCommand {
     public VehicleFuel() {
         this.setPlayerCommand(true);
     }

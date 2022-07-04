@@ -1,13 +1,14 @@
 package nl.mtvehicles.core.movement;
 
+import nl.mtvehicles.core.events.TankShootEvent;
 import nl.mtvehicles.core.infrastructure.annotations.VersionSpecific;
 import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
 import nl.mtvehicles.core.infrastructure.enums.ServerVersion;
 import nl.mtvehicles.core.infrastructure.enums.VehicleType;
-import nl.mtvehicles.core.infrastructure.helpers.BossBarUtils;
-import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
+import nl.mtvehicles.core.infrastructure.utils.BossBarUtils;
+import nl.mtvehicles.core.infrastructure.vehicle.VehicleData;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -180,7 +181,7 @@ public class VehicleMovement {
                 float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(fbvp.getYaw())));
                 Location loc = new Location(standMain.getWorld(), xvp, standMain.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
                 spawnParticles(standMain, loc);
-                spawnTNT(standMain, loc);
+                tankShoot(standMain, loc);
                 VehicleData.lastUsage.put(player.getName(), System.currentTimeMillis());
             }
         }
@@ -272,17 +273,6 @@ public class VehicleMovement {
         if (Double.parseDouble(String.valueOf(round)) < 0.01) {
             VehicleData.speed.put(license, VehicleData.speed.get(license) + frictionSpeed);
         }
-    }
-
-    /**
-     * Check the next block - carpets, slabs, snow - and do an appropriate action.
-     * @return True if the vehicle is moving upwards (in any way)
-     *
-     * @deprecated Renamed to {@link #blockCheck()}.
-     */
-    @Deprecated
-    protected boolean slabCheck(){
-        return blockCheck();
     }
 
     /**
@@ -833,12 +823,18 @@ public class VehicleMovement {
     }
 
     /**
-     * Spawn and shoot tank's TNT (must be enabled in config.yml)
+     * Spawn and shoot tank's TNT (must be enabled in config.yml), calls the {@link TankShootEvent}.
      * @param stand The tank's main ArmorStand
      * @param loc Location of where the TNT should be spawned
      */
-    protected void spawnTNT(ArmorStand stand, Location loc){
+    public void tankShoot(ArmorStand stand, Location loc){
         if (!(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.TANK_TNT)) return;
+
+        TankShootEvent api = new TankShootEvent();
+        api.setPlayer(player);
+        api.setLicensePlate(license);
+        api.call();
+        if (api.isCancelled()) return;
 
         schedulerRun(() -> {
             TNTPrimed tnt = loc.getWorld().spawn(loc, TNTPrimed.class);
