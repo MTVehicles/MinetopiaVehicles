@@ -22,7 +22,7 @@ Messages in the plugin can be displayed in multiple languages. (Default: English
 
 ## How to download?
 
-The plugin works on all spigot versions from 1.12.2 - 1.18.2, **except 1.14.x**!
+The plugin works on all Spigot/Paper versions 1.12.2+, **except 1.14.x**!
 
 ### Be aware!
 
