@@ -59,16 +59,9 @@ public class WorldGuardUtils {
         if (regions.size() == 0) return false;
 
         IWrappedFlag<WrappedState> flag = flags.get(customFlag);
-
-        boolean returns = false;
-        for (IWrappedRegion region : regions) {
-            Optional<WrappedState> regionFlagState = region.getFlag(flag);
-            if (regionFlagState.isPresent()){
-                WrappedState state = instance.queryFlag(player, loc, flag).orElse(null);
-                if (flagState.equals(state)) returns = true;
-            }
-        }
-        return returns;
+        WrappedState state = flag.map(mappedFlag -> instance.queryFlag(player, loc, mappedFlag)
+                        .orElse(WrappedState.ALLOW)).orElse(WrappedState.ALLOW);
+        return state == flagState;
     }
 
     /**
