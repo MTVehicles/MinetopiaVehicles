@@ -3,15 +3,14 @@ package nl.mtvehicles.core.movement;
 import nl.mtvehicles.core.infrastructure.annotations.VersionSpecific;
 import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
+import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.enums.ServerVersion;
 import nl.mtvehicles.core.infrastructure.enums.VehicleType;
 import nl.mtvehicles.core.infrastructure.helpers.BossBarUtils;
+import nl.mtvehicles.core.infrastructure.helpers.TextUtils;
 import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
-import org.bukkit.Effect;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Fence;
@@ -28,6 +27,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static nl.mtvehicles.core.Main.schedulerRun;
+import static nl.mtvehicles.core.infrastructure.models.VehicleUtils.getVehicle;
 import static nl.mtvehicles.core.infrastructure.modules.VersionModule.getServerVersion;
 import static nl.mtvehicles.core.movement.PacketHandler.isObjectPacket;
 
@@ -135,6 +135,19 @@ public class VehicleMovement {
 
         if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.DAMAGE_ENABLED) && ConfigModule.vehicleDataConfig.getHealth(license) == 0) { //Vehicle is broken
             standMain.getWorld().spawnParticle(Particle.SMOKE_NORMAL, standMain.getLocation(), 2);
+            if((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option. EXPLODE_WHEN_DESTROYED)){
+                player.getWorld().spawnEntity(standMain.getLocation(),EntityType.PRIMED_TNT);
+                if (getVehicle(license) == null) {
+                    for (World world : Bukkit.getServer().getWorlds()) {
+                        for (Entity entity : world.getEntities()) {
+                            if (entity.getCustomName() != null && entity.getCustomName().contains(license)) {
+                                ArmorStand test = (ArmorStand) entity;
+                                test.remove();
+                            }
+                        }
+                    }
+                }
+            }
             return;
         }
 

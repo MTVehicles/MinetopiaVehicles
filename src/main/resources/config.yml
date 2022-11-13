@@ -55,6 +55,9 @@ damageEnabled: false
 # Must be between 0.1 and 5. Default: 0.5 (If lower/higher, the default will be used.)
 damageMultiplier: 0.5
 
+# Whether vehicles should explode at maximum damage.
+explodeWhenDestroyed: false
+
 
 # --- Helicopters & Planes
 
