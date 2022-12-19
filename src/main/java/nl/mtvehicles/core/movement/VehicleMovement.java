@@ -354,7 +354,7 @@ public class VehicleMovement {
         if (ConfigModule.defaultConfig.driveUpSlabs().isSlabs()){
             if (isOnSlab) {
                 if (isPassable) {
-                    pushVehicleUp(0.5);
+                    pushVehicleUp(1);
                     return false; //Vehicle will go up
                 }
 
