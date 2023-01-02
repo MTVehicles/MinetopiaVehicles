@@ -86,6 +86,9 @@ public class VersionModule {
             case "v1_19_R1":
                 returns = ServerVersion.v1_19;
                 break;
+            case "v1_19_R2":
+                returns = ServerVersion.v1_19_R2;
+                break;
         }
         return returns;
     }
@@ -97,14 +100,17 @@ public class VersionModule {
      */
     @VersionSpecific
     public boolean isSupportedVersion(){
-        if (getServerVersion() == null) {
-            logger.severe("--------------------------");
-            logger.severe("Your Server version is not supported. The plugin will NOT load.");
-            logger.severe("Check the supported versions here: https://wiki.mtvehicles.eu/faq.html");
-            logger.severe("--------------------------");
-            Main.disablePlugin();
-            return false;
-        }
+
+            if (getServerVersion() == null) {
+                logger.severe("--------------------------");
+                logger.severe("Your Server version is not supported. The plugin will NOT load.");
+                logger.severe("Check the supported versions here: https://wiki.mtvehicles.eu/faq.html");
+                logger.severe("You use Version: " + Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3]);
+                logger.severe("--------------------------");
+                Main.disablePlugin();
+                return false;
+            }
+
 
         else if (!Bukkit.getVersion().contains("1.12.2") && !Bukkit.getVersion().contains("1.13.2") && !Bukkit.getVersion().contains("1.15.2") && !Bukkit.getVersion().contains("1.16.5") && !Bukkit.getVersion().contains("1.17.1") && !Bukkit.getVersion().contains("1.18.2") && !Bukkit.getVersion().contains("1.19")) {
             logger.warning("--------------------------");
