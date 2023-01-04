@@ -22,6 +22,50 @@ import static nl.mtvehicles.core.infrastructure.modules.VersionModule.getServerV
 public class PacketHandler {
 
     /**
+     * Packet handler for vehicle steering in 1.19.3
+     * @param player Player whose steering is being regarded
+     */
+    public static void movement_1_19_R2(Player player) {
+        ChannelDuplexHandler channelDuplexHandler = new ChannelDuplexHandler() {
+            public void channelRead(ChannelHandlerContext channelHandlerContext, Object packet) throws Exception {
+                super.channelRead(channelHandlerContext, packet);
+                if (packet instanceof net.minecraft.network.protocol.game.PacketPlayInSteerVehicle) {
+                    net.minecraft.network.protocol.game.PacketPlayInSteerVehicle ppisv = (net.minecraft.network.protocol.game.PacketPlayInSteerVehicle) packet;
+                    VehicleMovement movement = new VehicleMovement();
+                    movement.vehicleMovement(player, ppisv);
+                }
+            }
+        };
+        ChannelPipeline pipeline;
+        try {
+            Object entityPlayer = ((org.bukkit.craftbukkit.v1_19_R2.entity.CraftPlayer) player).getHandle();
+
+            Field pc = entityPlayer.getClass().getField("b");
+            net.minecraft.server.network.PlayerConnection playerConnection = (net.minecraft.server.network.PlayerConnection) pc.get(entityPlayer);
+
+            Field nm = playerConnection.getClass().getField("b");
+            net.minecraft.network.NetworkManager networkManager = (net.minecraft.network.NetworkManager) nm.get(playerConnection);
+
+            Field c = networkManager.getClass().getField("m");
+            Channel channel = (Channel) c.get(networkManager);
+
+            pipeline = channel.pipeline();
+        } catch (Exception e){
+            e.printStackTrace();
+            Main.disablePlugin();
+            return;
+        }
+        try {
+            pipeline.remove(player.getName());
+        } catch (NoSuchElementException e) {
+        }
+        try {
+            pipeline.addBefore("packet_handler", player.getName(), channelDuplexHandler);
+        } catch (NoSuchElementException e) {
+        }
+    }
+
+    /**
      * Packet handler for vehicle steering in 1.19
      * @param player Player whose steering is being regarded
      */
@@ -82,7 +126,7 @@ public class PacketHandler {
         };
         ChannelPipeline pipeline;
         try {
-            Object networkManager = ((org.bukkit.craftbukkit.v1_18_R2.entity.CraftPlayer) player).getHandle().b.a;
+            Object networkManager = ((org.bukkit.craftbukkit.v1_18_R1.entity.CraftPlayer) player).getHandle().b.a;
             Field m = networkManager.getClass().getField("m");
             Channel channel = (Channel) m.get(networkManager);
             pipeline = channel.pipeline();

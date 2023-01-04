@@ -101,6 +101,19 @@
             <scope>system</scope>
             <systemPath>${pom.basedir}/libs/spigot-1.19.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>org.spigotmc......</groupId>
+            <artifactId>spigot</artifactId>
+            <version>1.19.2-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.spigotmc......</groupId>
+            <artifactId>spigot</artifactId>
+            <version>1.19.3-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+
 
         <dependency>
             <groupId>org.jetbrains</groupId>
@@ -117,7 +130,7 @@
         <dependency>
             <groupId>de.tr7zw</groupId>
             <artifactId>item-nbt-api</artifactId>
-            <version>2.10.0</version>
+            <version>2.11.1</version>
         </dependency>
 
         <dependency>
