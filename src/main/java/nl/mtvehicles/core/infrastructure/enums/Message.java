@@ -168,7 +168,8 @@ public enum Message {
     ALREADY_RIDER,
     NOT_A_MEMBER,
     NOT_A_RIDER,
-    OFFLINE_PLAYER_NOT_FOUND;
+    OFFLINE_PLAYER_NOT_FOUND,
+    NOT_ENOUGH_MONEY;
 
     final private String key;
 

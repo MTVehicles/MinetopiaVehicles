@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.spigotmc.event.entity.EntityDismountEvent;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +25,7 @@ import java.util.Map;
  * On leave of a vehicle
  */
 public class VehicleLeaveListener extends MTVListener {
+    public static HashMap<String, String> VehicleList = new HashMap<String, String>();
 
     public VehicleLeaveListener(){
         super(new VehicleLeaveEvent());
@@ -49,6 +51,7 @@ public class VehicleLeaveListener extends MTVListener {
         license = api.getLicensePlate();
 
         Vehicle vehicle = VehicleUtils.getVehicle(license);
+        VehicleList.put(player.getName(), license);
 
         if (vehicle.getVehicleType().isHelicopter()) {
             ArmorStand blades = VehicleData.autostand.get("MTVEHICLES_WIEKENS_" + license);

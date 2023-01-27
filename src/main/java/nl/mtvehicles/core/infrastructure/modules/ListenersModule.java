@@ -26,5 +26,7 @@ public class ListenersModule {
         Main.instance.registerListener(new VehicleVoucherListener());
         Main.instance.registerListener(new InventoryCloseListener());
         Main.instance.registerListener(new JerryCanClickListener());
+        Main.instance.registerListener(new SignClickListener());
+        Main.instance.registerListener(new SignChangeListener());
     }
 }
