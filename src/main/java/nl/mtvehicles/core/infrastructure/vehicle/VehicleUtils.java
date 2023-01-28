@@ -9,6 +9,7 @@ import nl.mtvehicles.core.infrastructure.enums.InventoryTitle;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.enums.RegionAction;
 import nl.mtvehicles.core.infrastructure.enums.VehicleType;
+import nl.mtvehicles.core.infrastructure.models.PaperUtils;
 import nl.mtvehicles.core.infrastructure.utils.*;
 import nl.mtvehicles.core.infrastructure.models.MTVConfig;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
@@ -54,6 +55,7 @@ public final class VehicleUtils {
         if (!existsByLicensePlate(licensePlate)) throw new IllegalArgumentException("Vehicle does not exists.");
 
         ArmorStand standSkin = location.getWorld().spawn(location, ArmorStand.class);
+        allowTicking(standSkin);
         standSkin.setVisible(false);
         standSkin.setCustomName("MTVEHICLES_SKIN_" + licensePlate);
         standSkin.getEquipment().setHelmet(
@@ -97,6 +99,8 @@ public final class VehicleUtils {
                 itemMeta.setLore(lore);
                 itemMeta.setUnbreakable(true);
                 rotor.setItemMeta(itemMeta);
+
+                allowTicking(standRotors);
                 standRotors.setHelmet((ItemStack) blade.get("item"));
             }
         }
@@ -621,7 +625,8 @@ public final class VehicleUtils {
                             Location location2 = new Location(location.getWorld(), location.getX() + Double.valueOf(seat.get("z")), location.getY() + Double.valueOf(seat.get("y")), location.getZ() + Double.valueOf(seat.get("x")));
 
                             ArmorStand as = location2.getWorld().spawn(location2, ArmorStand.class);
-                            applyDefaultTraits(as);
+                            allowTicking(as);
+                            as.setVisible(false);
                             as.setCustomName("MTVEHICLES_SEAT" + i + "_" + licensePlate);
                             as.setGravity(false);
 
@@ -641,7 +646,8 @@ public final class VehicleUtils {
                                 VehicleData.wiekenz.put("MTVEHICLES_WIEKENS_" + licensePlate, (Double) seat.get("z"));
 
                                 ArmorStand as = location2.getWorld().spawn(location2, ArmorStand.class);
-                                applyDefaultTraits(as);
+                                allowTicking(as);
+                                as.setVisible(false);
                                 as.setCustomName("MTVEHICLES_WIEKENS_" + licensePlate);
                                 as.setGravity(false);
                                 as.setHelmet((ItemStack) seat.get("item"));
@@ -661,7 +667,8 @@ public final class VehicleUtils {
      */
     private static void basicStandCreator(String license, String type, Location location, ItemStack item, Boolean gravity) {
         ArmorStand as = location.getWorld().spawn(location, ArmorStand.class);
-        applyDefaultTraits(as);
+        allowTicking(as);
+        as.setVisible(false);
         as.setCustomName("MTVEHICLES_" + type + "_" + license);
         as.setHelmet(item);
         as.setGravity(gravity);
@@ -669,12 +676,10 @@ public final class VehicleUtils {
         VehicleData.autostand.put("MTVEHICLES_" + type + "_" + license, as);
     }
 
-    private static void applyDefaultTraits(ArmorStand armorStand) {
+    private static void allowTicking(ArmorStand armorStand) {
         if(PaperUtils.isRunningPaper) {
             armorStand.setCanTick(true);
         }
-
-        armorStand.setVisible(false);
     }
 
     /**
@@ -683,7 +688,8 @@ public final class VehicleUtils {
     private static void mainSeatStandCreator(String license, Location location, Player p, double x, double y, double z) {
         Location location2 = new Location(location.getWorld(), location.getX() + Double.valueOf(z), location.getY() + Double.valueOf(y), location.getZ() + Double.valueOf(z));
         ArmorStand as = location2.getWorld().spawn(location2, ArmorStand.class);
-        applyDefaultTraits(as);
+        allowTicking(as);
+        as.setVisible(false);
         as.setCustomName("MTVEHICLES_MAINSEAT_" + license);
         as.setGravity(false);
 
