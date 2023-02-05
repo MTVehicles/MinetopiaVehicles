@@ -40,7 +40,11 @@ public enum PluginVersion {
      */
     v2_4_3,
     /**
-     * 2.5.0
+     * 2.5.0-pre1
+     */
+    v2_5_0_pre1,
+    /**
+     * 2.5.0 (next expected version)
      */
     v2_5_0,
     /**
