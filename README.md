@@ -14,6 +14,10 @@ Messages in the plugin can be displayed in multiple languages. (Default: English
 
 ---
 
+### ⚠️ Contributors, see the [branch `2.5.0`](https://github.com/GamerJoep/MinetopiaVehicles/tree/2.5.0) ⚠️
+
+---
+
 </div>
 
 ## How to download?
