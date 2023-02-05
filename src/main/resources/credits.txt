@@ -7,6 +7,8 @@ CODE CONTRIBUTORS:
 - Jeffrey (https://github.com/Jeffrey-H)
 - Jazzkuh (https://github.com/Jazzkuh)
 - Aaron (https://github.com/duranaaron)
+- FØX (https://github.com/FoxxUI)
+- Manuel P. (https://github.com/Mr-EmPee)
 
 TRANSLATORS:
 - Czech: Nikd0
