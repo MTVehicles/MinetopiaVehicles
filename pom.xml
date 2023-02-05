@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>nl.mtvehicles.core</groupId>
     <artifactId>MTVehicles</artifactId>
-    <version>2.5.0-dev9</version>
+    <version>2.5.0-dev10</version>
 
     <repositories>
         <repository>
@@ -98,6 +98,12 @@
             <groupId>org.spigotmc.......</groupId>
             <artifactId>spigot</artifactId>
             <version>1.19-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.spigotmc........</groupId>
+            <artifactId>spigot</artifactId>
+            <version>1.19.3-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 
