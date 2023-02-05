@@ -9,6 +9,7 @@ import nl.mtvehicles.core.infrastructure.enums.InventoryTitle;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.enums.RegionAction;
 import nl.mtvehicles.core.infrastructure.enums.VehicleType;
+import nl.mtvehicles.core.infrastructure.models.PaperUtils;
 import nl.mtvehicles.core.infrastructure.utils.*;
 import nl.mtvehicles.core.infrastructure.models.MTVConfig;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
@@ -54,6 +55,7 @@ public final class VehicleUtils {
         if (!existsByLicensePlate(licensePlate)) throw new IllegalArgumentException("Vehicle does not exists.");
 
         ArmorStand standSkin = location.getWorld().spawn(location, ArmorStand.class);
+        allowTicking(standSkin);
         standSkin.setVisible(false);
         standSkin.setCustomName("MTVEHICLES_SKIN_" + licensePlate);
         standSkin.getEquipment().setHelmet(
@@ -97,6 +99,8 @@ public final class VehicleUtils {
                 itemMeta.setLore(lore);
                 itemMeta.setUnbreakable(true);
                 rotor.setItemMeta(itemMeta);
+
+                allowTicking(standRotors);
                 standRotors.setHelmet((ItemStack) blade.get("item"));
             }
         }
@@ -615,15 +619,18 @@ public final class VehicleUtils {
                         }
                         if (i > 1) {
                             VehicleData.seatsize.put(licensePlate, seats.size());
-                            VehicleData.seatx.put("MTVEHICLES_SEAT" + (Integer) i + "_" + licensePlate, seat.get("x"));
-                            VehicleData.seaty.put("MTVEHICLES_SEAT" + (Integer) i + "_" + licensePlate, seat.get("y"));
-                            VehicleData.seatz.put("MTVEHICLES_SEAT" + (Integer) i + "_" + licensePlate, seat.get("z"));
+                            VehicleData.seatx.put("MTVEHICLES_SEAT" + i + "_" + licensePlate, seat.get("x"));
+                            VehicleData.seaty.put("MTVEHICLES_SEAT" + i + "_" + licensePlate, seat.get("y"));
+                            VehicleData.seatz.put("MTVEHICLES_SEAT" + i + "_" + licensePlate, seat.get("z"));
                             Location location2 = new Location(location.getWorld(), location.getX() + Double.valueOf(seat.get("z")), location.getY() + Double.valueOf(seat.get("y")), location.getZ() + Double.valueOf(seat.get("x")));
+
                             ArmorStand as = location2.getWorld().spawn(location2, ArmorStand.class);
-                            as.setCustomName("MTVEHICLES_SEAT" + (Integer) i + "_" + licensePlate);
-                            as.setGravity(false);
+                            allowTicking(as);
                             as.setVisible(false);
-                            VehicleData.autostand.put("MTVEHICLES_SEAT" + (Integer) i + "_" + licensePlate, as);
+                            as.setCustomName("MTVEHICLES_SEAT" + i + "_" + licensePlate);
+                            as.setGravity(false);
+
+                            VehicleData.autostand.put("MTVEHICLES_SEAT" + i + "_" + licensePlate, as);
                         }
                     }
                     List<Map<String, Double>> wiekens = (List<Map<String, Double>>) vehicle.getVehicleData().get("wiekens");
@@ -637,12 +644,15 @@ public final class VehicleUtils {
                                 VehicleData.wiekenx.put("MTVEHICLES_WIEKENS_" + licensePlate, (Double) seat.get("x"));
                                 VehicleData.wiekeny.put("MTVEHICLES_WIEKENS_" + licensePlate, (Double) seat.get("y"));
                                 VehicleData.wiekenz.put("MTVEHICLES_WIEKENS_" + licensePlate, (Double) seat.get("z"));
+
                                 ArmorStand as = location2.getWorld().spawn(location2, ArmorStand.class);
+                                allowTicking(as);
+                                as.setVisible(false);
                                 as.setCustomName("MTVEHICLES_WIEKENS_" + licensePlate);
                                 as.setGravity(false);
-                                as.setVisible(false);
-                                VehicleData.autostand.put("MTVEHICLES_WIEKENS_" + licensePlate, as);
                                 as.setHelmet((ItemStack) seat.get("item"));
+
+                                VehicleData.autostand.put("MTVEHICLES_WIEKENS_" + licensePlate, as);
                             }
                         }
                     }
@@ -657,11 +667,19 @@ public final class VehicleUtils {
      */
     private static void basicStandCreator(String license, String type, Location location, ItemStack item, Boolean gravity) {
         ArmorStand as = location.getWorld().spawn(location, ArmorStand.class);
+        allowTicking(as);
+        as.setVisible(false);
         as.setCustomName("MTVEHICLES_" + type + "_" + license);
         as.setHelmet(item);
         as.setGravity(gravity);
-        as.setVisible(false);
+
         VehicleData.autostand.put("MTVEHICLES_" + type + "_" + license, as);
+    }
+
+    private static void allowTicking(ArmorStand armorStand) {
+        if(PaperUtils.isRunningPaper) {
+            armorStand.setCanTick(true);
+        }
     }
 
     /**
@@ -670,16 +688,19 @@ public final class VehicleUtils {
     private static void mainSeatStandCreator(String license, Location location, Player p, double x, double y, double z) {
         Location location2 = new Location(location.getWorld(), location.getX() + Double.valueOf(z), location.getY() + Double.valueOf(y), location.getZ() + Double.valueOf(z));
         ArmorStand as = location2.getWorld().spawn(location2, ArmorStand.class);
+        allowTicking(as);
+        as.setVisible(false);
         as.setCustomName("MTVEHICLES_MAINSEAT_" + license);
-        VehicleData.autostand.put("MTVEHICLES_MAINSEAT_" + license, as);
         as.setGravity(false);
+
+        VehicleData.autostand.put("MTVEHICLES_MAINSEAT_" + license, as);
         VehicleData.speed.put(license, 0.0);
         VehicleData.speedhigh.put(license, 0.0);
         VehicleData.mainx.put("MTVEHICLES_MAINSEAT_" + license, x);
         VehicleData.mainy.put("MTVEHICLES_MAINSEAT_" + license, y);
         VehicleData.mainz.put("MTVEHICLES_MAINSEAT_" + license, z);
+
         as.setPassenger(p);
-        as.setVisible(false);
         VehicleData.autostand2.put(license, as);
     }
 
