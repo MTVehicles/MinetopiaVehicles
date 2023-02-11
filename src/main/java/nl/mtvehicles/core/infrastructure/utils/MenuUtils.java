@@ -174,7 +174,7 @@ public class MenuUtils {
                 (short) 5,
                 1,
                 "&6" + msg.getMessage(Message.ACCELERATION_SPEED),
-                String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), data.get(licensePlate, VehicleDataConfig.Option.ACCELARATION_SPEED))
+                String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), data.get(licensePlate, VehicleDataConfig.Option.ACCELERATION_SPEED))
         );
         ItemStack option2 = ItemUtils.getMenuItem(
                 "LIME_STAINED_GLASS",

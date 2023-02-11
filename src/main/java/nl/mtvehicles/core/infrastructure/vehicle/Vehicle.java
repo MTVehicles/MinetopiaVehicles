@@ -1,7 +1,6 @@
 package nl.mtvehicles.core.infrastructure.vehicle;
 
 import nl.mtvehicles.core.Main;
-import nl.mtvehicles.core.infrastructure.annotations.ToDo;
 import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
 import nl.mtvehicles.core.infrastructure.enums.VehicleType;
@@ -73,7 +72,7 @@ public class Vehicle {
         map.put(VehicleDataConfig.Option.TRUNK_ENABLED.getPath(), this.isTrunkEnabled());
         map.put(VehicleDataConfig.Option.TRUNK_ROWS.getPath(), this.getTrunkRows());
         map.put(VehicleDataConfig.Option.TRUNK_DATA.getPath(), this.getTrunkData());
-        map.put(VehicleDataConfig.Option.ACCELARATION_SPEED.getPath(), this.getAccelerationSpeed());
+        map.put(VehicleDataConfig.Option.ACCELERATION_SPEED.getPath(), this.getAccelerationSpeed());
         map.put(VehicleDataConfig.Option.MAX_SPEED.getPath(), this.getMaxSpeed());
         map.put(VehicleDataConfig.Option.BRAKING_SPEED.getPath(), this.getBrakingSpeed());
         map.put(VehicleDataConfig.Option.FRICTION_SPEED.getPath(), this.getFrictionSpeed());
