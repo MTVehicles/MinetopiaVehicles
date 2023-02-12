@@ -1,6 +1,7 @@
 package nl.mtvehicles.core.movement;
 
 import nl.mtvehicles.core.events.TankShootEvent;
+import nl.mtvehicles.core.infrastructure.annotations.ToDo;
 import nl.mtvehicles.core.infrastructure.annotations.VersionSpecific;
 import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
@@ -279,6 +280,7 @@ public class VehicleMovement {
      * Check the next block - carpets, slabs, snow - and do an appropriate action.
      * @return True if the vehicle is moving upwards (in any way)
      */
+    @ToDo("Trapdoors")
     protected boolean blockCheck() {
         final Location loc = getLocationOfBlockAhead();
         final String locY = String.valueOf(standMain.getLocation().getY());
@@ -295,105 +297,109 @@ public class VehicleMovement {
         final BlockData blockData = loc.getBlock().getBlockData();
         final BlockData blockDataBelow = locBlockBelow.getBlock().getBlockData();
 
-        if (loc.getBlock().getType().toString().contains("CARPET")){
-            if (!(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.DRIVE_ON_CARPETS)){ //if carpets are turned off in config
+        if (loc.getBlock().getType().toString().contains("CARPET")){ // If block ahead is a carpet
+            if (!(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.DRIVE_ON_CARPETS)){ // If carpets are turned off in config, stop
                 VehicleData.speed.put(license, 0.0);
                 return false;
             }
 
-            if (!isAbovePassable) {
+            if (!isAbovePassable) { // If there is a block above the carpet, stop
                 VehicleData.speed.put(license, 0.0);
                 return false;
             }
 
-            if (isOnGround) pushVehicleUp(0.0625);
+            if (isOnGround) pushVehicleUp(0.0625); // If the carpet is not placed on a slab, push the vehicle up
             return true;
         }
 
-        if (blockData instanceof Snow){ //Does not include snow block - that's considered a full block.
+        if (blockData instanceof Snow){ // If block ahead is a snow layer (Does not include snow block - that's considered a full block.)
             final int layers = ((Snow) blockData).getLayers();
             double layerHeight = getLayerHeight(layers);
-            if (VehicleData.speed.get(license) > 0.1) VehicleData.speed.put(license, 0.1);
+            if (VehicleData.speed.get(license) > 0.1) VehicleData.speed.put(license, 0.1); // Slow down on snow
 
-            if (layerHeight == difference) return false; //Vehicle will continue
+            if (layerHeight == difference) return false; // If the player is already driving on a snow of the same height, vehicle will continue
 
             final double snowDifference = layerHeight - difference;
-            pushVehicleUp(snowDifference); //Will push either up or down, depending on the difference
+            pushVehicleUp(snowDifference); // Will push either up or down, depending on the difference
 
             return true;
         }
 
-        if (blockData instanceof Fence || loc.getBlock().getType().toString().contains("WALL") || blockData instanceof TrapDoor){
+        if (blockData instanceof Fence || loc.getBlock().getType().toString().contains("WALL") || blockData instanceof TrapDoor){ // If the block ahead is a fence, wall or trapdoor, stop
             VehicleData.speed.put(license, 0.0);
             return false;
         }
 
-        if (ConfigModule.defaultConfig.driveUpSlabs().isSlabs()){
-            if (isOnSlab) {
-                if (isPassable) {
+        if (ConfigModule.defaultConfig.driveUpSlabs().isSlabs()){ // If vehicles may only drive up slabs (and not blocks)
+            if (isOnSlab) { // If the player is driving on a (bottom) slab
+
+                if (isPassable) { // If the block ahead is air or another passable block (grass, flower, ...), vehicle will go down
                     pushVehicleDown(0.5);
-                    return false; //Vehicle will go down
+                    return false;
                 }
 
-                if (blockData instanceof Slab) {
+                if (blockData instanceof Slab) { // If the block ahead is a slab
                     Slab slab = (Slab) blockData;
-                    if (slab.getType().equals(Slab.Type.BOTTOM)) {
-                        return false; //Vehicle will continue on the slabs
+                    if (slab.getType().equals(Slab.Type.BOTTOM)) { // If it is a bottom slab, continue
+                        return false;
                     }
+                    // Else (top/double slab) - treat it like a full block
                 }
 
                 if (!isAbovePassable) {
                     VehicleData.speed.put(license, 0.0);
-                    return false; //Vehicle won't continue if there's a barrier above
+                    return false; // Vehicle won't continue if there's a barrier above
                 }
 
 
-                pushVehicleUp(0.5); //Vehicle will go up if there's a full block or a top/double slab
+                pushVehicleUp(0.5); // Vehicle will go up if there's a full block or a top/double slab
                 return true;
             }
 
-            if (!isPassable) {
-                if (blockData instanceof Slab) {
+            if (!isPassable) { // If block ahead is not air or another passable block (grass, flower, ...)
+
+                if (blockData instanceof Slab) { // If it is a slab
                     Slab slab = (Slab) blockData;
                     if (slab.getType().equals(Slab.Type.BOTTOM)) {
 
                         if (!isAbovePassable) {
                             VehicleData.speed.put(license, 0.0);
-                            return false; //Vehicle won't go up the slab if there's a barrier above
+                            return false; // Vehicle won't go up the slab if there's a barrier above
                         }
 
                         if (isOnGround) {
                             pushVehicleUp(0.5);
-                        } else { //Maybe they're on a carpet
+                        } else { // Maybe they're on a carpet
                             if ((0.5 - difference) > 0) pushVehicleUp(0.5 - difference);
                         }
                     }
                 }
 
                 VehicleData.speed.put(license, 0.0);
-                return false; //If you're on the ground and there isn't bottom slab or a passable block, stop
+                return false; // If you're on the ground and there isn't bottom slab or a passable block, stop
             }
 
-        } else if (ConfigModule.defaultConfig.driveUpSlabs().isBlocks()) {
+        } else if (ConfigModule.defaultConfig.driveUpSlabs().isBlocks()) { // If vehicles may only drive up blocks (and not slabs)
 
-            if (!isOnSlab) {
-                if (!isPassable) {
+            if (!isOnSlab) { // If isn't placed on a slab
+                if (!isPassable) { // If block ahead is not air or another passable block (grass, flower, ...)
+
                     if (blockData instanceof Slab){
                         Slab slab = (Slab) blockData;
                         if (slab.getType().equals(Slab.Type.BOTTOM)){
                             VehicleData.speed.put(license, 0.0);
-                            return false; //If it's a bottom slab, stop.
+                            return false; // If it's a bottom slab, stop.
                         }
                     }
 
-                    if (!isAbovePassable) { //if more than 1 block high
+                    if (!isAbovePassable) { // If more than 1 block high
                         VehicleData.speed.put(license, 0.0);
                         return false;
                     }
 
                     if (isOnGround) {
                         pushVehicleUp(1);
-                    } else { //Maybe they're on a carpet
+                    } else { // Maybe they're on a carpet
                         if ((1 - difference) > 0) pushVehicleUp(1 - difference);
                     }
 
@@ -401,16 +407,16 @@ public class VehicleMovement {
                 }
             }
 
-            //If it's on a slab (might have been placed there)
-            if (isPassable) {
+            // If it's on a slab (might have been placed there)
+            if (isPassable) { // If block ahead is air or another passable block (grass, flower, ...), vehicle will go down
                 pushVehicleDown(0.5);
-                return false; //Vehicle will go down
+                return false;
             }
 
             if (blockData instanceof Slab) {
                 Slab slab = (Slab) blockData;
                 if (slab.getType().equals(Slab.Type.BOTTOM)) {
-                    return false; //Vehicle will continue on the slabs
+                    return false; // Vehicle will continue on the slabs
                 }
             }
 
@@ -422,12 +428,13 @@ public class VehicleMovement {
             pushVehicleUp(0.5); //Vehicle will go up if there's a full block or a top/double slab
             return true;
 
-        } else if (ConfigModule.defaultConfig.driveUpSlabs().isBoth()) {
+        } else if (ConfigModule.defaultConfig.driveUpSlabs().isBoth()) { // If vehicles may drive up both blocks and slabs
 
-            if (isOnSlab) {
-                if (isPassable) {
+            if (isOnSlab) { // If vehicle is on a (bottom) slab
+
+                if (isPassable) { // If block ahead is air or another passable block (grass, flower, ...), vehicle will go down
                     pushVehicleDown(0.5);
-                    return false; //Vehicle will go down
+                    return false;
                 }
 
                 if (blockData instanceof Slab) {
@@ -559,6 +566,7 @@ public class VehicleMovement {
         else if (getServerVersion().is1_18_R1()) teleportSeat(((org.bukkit.craftbukkit.v1_18_R1.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
         else if (getServerVersion().is1_18_R2()) teleportSeat(((org.bukkit.craftbukkit.v1_18_R2.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
         else if (getServerVersion().is1_19()) teleportSeat(((org.bukkit.craftbukkit.v1_19_R1.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+        else if (getServerVersion().is1_19_R2()) teleportSeat(((org.bukkit.craftbukkit.v1_19_R2.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
     }
 
     /**
