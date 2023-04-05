@@ -174,7 +174,19 @@ public class InventoryClickListener extends MTVListener {
             List<String> members = ConfigModule.vehicleDataConfig.getMembers(licensePlate);
             List<String> riders = ConfigModule.vehicleDataConfig.getRiders(licensePlate);
             List<String> trunkData = ConfigModule.vehicleDataConfig.getTrunkData(licensePlate);
-            List<Map<?, ?>> skins = (List<Map<?, ?>>) vehicles.get(intSave.get(player.getUniqueId())).get("cars"); // Get list of skins for price
+
+            // Get vehicle skins
+            List<Map<?, ?>> skins = (List<Map<?, ?>>) vehicles.get(intSave.get(player.getUniqueId())).get("cars");
+
+            // Get price of vehicle
+            double price = 0.0;
+            for (Map<?, ?> skin : skins) {
+                if (skin.get("itemDamage").equals(vehicles.get(intSave.get(player.getUniqueId())).get("skinDamage"))) {
+                    if (skin.get("SkinItem").equals(vehicles.get(intSave.get(player.getUniqueId())).get("skinItem"))) {
+                        price = (double) skin.get("price");
+                    }
+                }
+            }
 
             vehicle.setLicensePlate(licensePlate);
             vehicle.setName(vehicleName);
@@ -200,7 +212,7 @@ public class InventoryClickListener extends MTVListener {
             vehicle.setNbtValue(nbt.getString("mtcustom"));
             vehicle.setRiders(riders);
             vehicle.setMembers(members);
-            vehicle.setPrice((double) skins.get(intSave.get(player.getUniqueId())).get("price"));
+            vehicle.setPrice(price);
 
             vehicle.save();
 
