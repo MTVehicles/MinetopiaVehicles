@@ -164,6 +164,12 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>org.spigotmc.........</groupId>
+      <artifactId>spigot</artifactId>
+      <version>1.19.4-R0.1-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <version>1.18.22</version>
