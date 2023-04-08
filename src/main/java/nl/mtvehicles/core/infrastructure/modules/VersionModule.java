@@ -89,6 +89,9 @@ public class VersionModule {
             case "v1_19_R2":
                 returns = ServerVersion.v1_19_R2;
                 break;
+            case "v1_19_R3":
+                returns = ServerVersion.v1_19_R3;
+                break;
         }
         return returns;
     }
