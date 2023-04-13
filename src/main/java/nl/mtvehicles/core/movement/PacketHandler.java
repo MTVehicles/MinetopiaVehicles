@@ -56,10 +56,6 @@ public class PacketHandler {
             return;
         }
         try {
-            pipeline.remove(player.getName());
-        } catch (NoSuchElementException e) {
-        }
-        try {
             pipeline.addBefore("packet_handler", player.getName(), channelDuplexHandler);
         } catch (NoSuchElementException e) {
         }
@@ -98,10 +94,6 @@ public class PacketHandler {
             e.printStackTrace();
             Main.disablePlugin();
             return;
-        }
-        try {
-            pipeline.remove(player.getName());
-        } catch (NoSuchElementException e) {
         }
         try {
             pipeline.addBefore("packet_handler", player.getName(), channelDuplexHandler);
@@ -144,10 +136,6 @@ public class PacketHandler {
             return;
         }
         try {
-            pipeline.remove(player.getName());
-        } catch (NoSuchElementException e) {
-        }
-        try {
             pipeline.addBefore("packet_handler", player.getName(), channelDuplexHandler);
         } catch (NoSuchElementException e) {
         }
@@ -180,10 +168,6 @@ public class PacketHandler {
             return;
         }
         try {
-            pipeline.remove(player.getName());
-        } catch (NoSuchElementException e) {
-        }
-        try {
             pipeline.addBefore("packet_handler", player.getName(), channelDuplexHandler);
         } catch (NoSuchElementException e) {
         }
@@ -206,10 +190,6 @@ public class PacketHandler {
         };
         ChannelPipeline pipeline = ((org.bukkit.craftbukkit.v1_18_R1.entity.CraftPlayer) player).getHandle().b.a.k.pipeline();
         try {
-            pipeline.remove(player.getName());
-        } catch (NoSuchElementException e) {
-        }
-        try {
             pipeline.addBefore("packet_handler", player.getName(), channelDuplexHandler);
         } catch (NoSuchElementException e) {
         }
@@ -231,10 +211,6 @@ public class PacketHandler {
             }
         };
         ChannelPipeline pipeline = ((org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer) player).getHandle().b.a.k.pipeline();
-        try {
-            pipeline.remove(player.getName());
-        } catch (NoSuchElementException e) {
-        }
         try {
             pipeline.addBefore("packet_handler", player.getName(), channelDuplexHandler);
         } catch (NoSuchElementException e) {
@@ -259,10 +235,6 @@ public class PacketHandler {
         };
         ChannelPipeline pipeline = ((org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer) player).getHandle().playerConnection.networkManager.channel.pipeline();
         try {
-            pipeline.remove(player.getName());
-        } catch (NoSuchElementException e) { //It isn't good practice to ignore exceptions, but I'll keep it like this for now :)
-        }
-        try {
             pipeline.addBefore("packet_handler", player.getName(), channelDuplexHandler);
         } catch (NoSuchElementException e) { //It isn't good practice to ignore exceptions, but I'll keep it like this for now :)
         }
@@ -285,10 +257,6 @@ public class PacketHandler {
             }
         };
         ChannelPipeline pipeline = ((org.bukkit.craftbukkit.v1_15_R1.entity.CraftPlayer) player).getHandle().playerConnection.networkManager.channel.pipeline();
-        try {
-            pipeline.remove(player.getName());
-        } catch (NoSuchElementException e) { //It isn't good practice to ignore exceptions, but I'll keep it like this for now :)
-        }
         try {
             pipeline.addBefore("packet_handler", player.getName(), channelDuplexHandler);
         } catch (NoSuchElementException e) { //It isn't good practice to ignore exceptions, but I'll keep it like this for now :)
@@ -313,10 +281,6 @@ public class PacketHandler {
         };
         ChannelPipeline pipeline = ((org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer) player).getHandle().playerConnection.networkManager.channel.pipeline();
         try {
-            pipeline.remove(player.getName());
-        } catch (NoSuchElementException e) { //It isn't good practice to ignore exceptions, but I'll keep it like this for now :)
-        }
-        try {
             pipeline.addBefore("packet_handler", player.getName(), channelDuplexHandler);
         } catch (NoSuchElementException e) { //It isn't good practice to ignore exceptions, but I'll keep it like this for now :)
         }
@@ -339,10 +303,6 @@ public class PacketHandler {
             }
         };
         ChannelPipeline pipeline = ((org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer) player).getHandle().playerConnection.networkManager.channel.pipeline();
-        try {
-            pipeline.remove(player.getName());
-        } catch (NoSuchElementException e) { //It isn't good practice to ignore exceptions, but I'll keep it like this for now :)
-        }
         try {
             pipeline.addBefore("packet_handler", player.getName(), channelDuplexHandler);
         } catch (NoSuchElementException e) { //It isn't good practice to ignore exceptions, but I'll keep it like this for now :)
