@@ -20,3 +20,5 @@ TRANSLATORS:
 - Japanese: kazumasa200
 - Hebrew: roi
 - Russian: peck1
+- French: Alane38
+- Thai: AungS8430

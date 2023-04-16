@@ -42,7 +42,7 @@ public class VehicleHelp extends MTVSubCommand {
             sendMessage(String.format("&2/vehicle &adelete &f- &2%s", desc(Message.ADMIN_DELETE)));
         }
         sendMessage("");
-        sendMessage("&7&oDownload it for free at mtvehicles.nl, by GamerJoep_.");
+        sendMessage("&7&oDownload it for free at mtvehicles.nl (Originally by GamerJoep_, maintained by Nikd0)");
         return true;
     }
 

@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.infrastructure.enums;
 
+import nl.mtvehicles.core.infrastructure.annotations.LanguageSpecific;
 import nl.mtvehicles.core.infrastructure.annotations.ToDo;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 
@@ -11,6 +12,7 @@ import java.util.Locale;
 /**
  * Languages which are offered by the plugin
  */
+@LanguageSpecific
 public enum Language {
     /**
      * English
@@ -53,6 +55,14 @@ public enum Language {
      */
     RU("Русский"),
     /**
+     * French
+     */
+    FR("Français"),
+    /**
+     * Thai
+     */
+    TH("ภาษาไทย"),
+    /**
      * Custom language one can create and use
      */
     CUSTOM("Custom language");
@@ -87,8 +97,9 @@ public enum Language {
      * @return Array of all supported languages
      */
     @ToDo("make this automatic from the enum's values")
+    @LanguageSpecific
     public static String[] getAllLanguages(){
-        String[] languages = {"en", "nl", "es", "cs", "cn", "de", "tr", "ja", "he", "ru"};
+        String[] languages = {"en", "nl", "es", "cs", "cn", "de", "tr", "ja", "he", "ru", "fr", "th"};
         return languages;
     }
 

@@ -4,6 +4,7 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import nl.mtvehicles.core.Main;
+import nl.mtvehicles.core.infrastructure.annotations.ToDo;
 import nl.mtvehicles.core.infrastructure.annotations.VersionSpecific;
 import nl.mtvehicles.core.infrastructure.enums.ServerVersion;
 import nl.mtvehicles.core.movement.versions.VehicleMovement1_12;
@@ -380,11 +381,13 @@ public class PacketHandler {
         }
     }
 
+    @ToDo("make language specific")
     private static void unexpectedException(){
         Main.logSevere("An unexpected error occurred. Disabling the plugin...");
         Main.disablePlugin();
     }
 
+    @ToDo("make language specific")
     private static void unexpectedException(Exception e){
         Main.logSevere("An unexpected error occurred, disabling the plugin... Check the exception log:");
         e.printStackTrace();
@@ -398,6 +401,7 @@ public class PacketHandler {
      * @return True if the given object is an instance of the steering packet (PacketPlayInSteerVehicle).
      */
     @VersionSpecific
+    @ToDo("make language specific")
     public static boolean isObjectPacket(Object object) {
         final String errorMessage = "An unexpected error occurred (given object is not a valid steering packet). Try reinstalling the plugin or contact the developer: https://discord.gg/vehicle";
 
