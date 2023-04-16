@@ -9,6 +9,7 @@ CODE CONTRIBUTORS:
 - Aaron (https://github.com/duranaaron)
 - FØX (https://github.com/FoxxUI)
 - Manuel P. (https://github.com/Mr-EmPee)
+- Bluebotlabz (https://github.com/Bluebotlabz)
 
 TRANSLATORS:
 - Czech: Nikd0
