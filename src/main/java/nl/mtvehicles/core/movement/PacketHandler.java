@@ -35,6 +35,7 @@ public class PacketHandler {
                 }
             }
         };
+        Channel channel = null;
         try {
             Object entityPlayer = ((org.bukkit.craftbukkit.v1_19_R3.entity.CraftPlayer) player).getHandle();
             Field playerConnectionField = entityPlayer.getClass().getField("b");
@@ -42,13 +43,20 @@ public class PacketHandler {
             Field networkManagerField = playerConnection.getClass().getField("h");
             net.minecraft.network.NetworkManager networkManager = (net.minecraft.network.NetworkManager) networkManagerField.get(playerConnection);
             Field channelField = networkManager.getClass().getField("m");
-            Channel channel = (Channel) channelField.get(networkManager);
+            channel = (Channel) channelField.get(networkManager);
 
             channel.pipeline()
                 .addBefore("packet_handler", player.getName(), channelDuplexHandler);
-        } catch (Exception e) {
-            e.printStackTrace();
-            //It isn't good practice to ignore exceptions, but I'll keep it like this for now :)
+        } catch (IllegalArgumentException e) { //in case of plugin reload, prevent duplicate handler name exception
+            if (channel == null) {
+                unexpectedException(e);
+                return;
+            }
+            if (!channel.pipeline().names().contains(player.getName())) return;
+            channel.pipeline().remove(player.getName());
+            movement_1_19_R3(player);
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            unexpectedException(e);
         }
     }
 
@@ -67,6 +75,7 @@ public class PacketHandler {
                 }
             }
         };
+        Channel channel = null;
         try {
             Object entityPlayer = ((org.bukkit.craftbukkit.v1_19_R2.entity.CraftPlayer) player).getHandle();
             Field playerConnectionField = entityPlayer.getClass().getField("b");
@@ -74,13 +83,20 @@ public class PacketHandler {
             Field networkManagerField = playerConnection.getClass().getField("b");
             net.minecraft.network.NetworkManager networkManager = (net.minecraft.network.NetworkManager) networkManagerField.get(playerConnection);
             Field channelField = networkManager.getClass().getField("m");
-            Channel channel = (Channel) channelField.get(networkManager);
+            channel = (Channel) channelField.get(networkManager);
 
             channel.pipeline()
                 .addBefore("packet_handler", player.getName(), channelDuplexHandler);
-        } catch (Exception e) {
-            e.printStackTrace();
-            //It isn't good practice to ignore exceptions, but I'll keep it like this for now :)
+        } catch (IllegalArgumentException e) { //in case of plugin reload, prevent duplicate handler name exception
+            if (channel == null) {
+                unexpectedException(e);
+                return;
+            }
+            if (!channel.pipeline().names().contains(player.getName())) return;
+            channel.pipeline().remove(player.getName());
+            movement_1_19_R2(player);
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            unexpectedException(e);
         }
     }
 
@@ -99,6 +115,7 @@ public class PacketHandler {
                 }
             }
         };
+        Channel channel = null;
         try {
             Object entityPlayer = ((org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer) player).getHandle();
             Field playerConnectionField = entityPlayer.getClass().getField("b");
@@ -106,13 +123,20 @@ public class PacketHandler {
             Field networkManagerField = playerConnection.getClass().getField("b");
             net.minecraft.network.NetworkManager networkManager = (net.minecraft.network.NetworkManager) networkManagerField.get(playerConnection);
             Field channelField = networkManager.getClass().getField("m");
-            Channel channel = (Channel) channelField.get(networkManager);
+            channel = (Channel) channelField.get(networkManager);
 
             channel.pipeline()
                    .addBefore("packet_handler", player.getName(), channelDuplexHandler);
-        } catch (Exception e) {
-            e.printStackTrace();
-            //It isn't good practice to ignore exceptions, but I'll keep it like this for now :)
+        } catch (IllegalArgumentException e) { //in case of plugin reload, prevent duplicate handler name exception
+            if (channel == null) {
+                unexpectedException(e);
+                return;
+            }
+            if (!channel.pipeline().names().contains(player.getName())) return;
+            channel.pipeline().remove(player.getName());
+            movement_1_19(player);
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            unexpectedException(e);
         }
     }
 
@@ -131,16 +155,26 @@ public class PacketHandler {
                 }
             }
         };
+        Channel channel = null;
         try {
             Object networkManager = ((org.bukkit.craftbukkit.v1_18_R2.entity.CraftPlayer) player).getHandle().b.a;
             Field channelField = networkManager.getClass().getField("m");
-            Channel channel = (Channel) channelField.get(networkManager);
+            channel = (Channel) channelField.get(networkManager);
 
             channel.pipeline()
                 .addBefore("packet_handler", player.getName(), channelDuplexHandler);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IllegalArgumentException e) { //in case of plugin reload, prevent duplicate handler name exception
+            if (channel == null) {
+                unexpectedException(e);
+                return;
+            }
+            if (!channel.pipeline().names().contains(player.getName())) return;
+            channel.pipeline().remove(player.getName());
+            movement_1_18_R2(player);
+        } catch (NoSuchElementException e) {
             //It isn't good practice to ignore exceptions, but I'll keep it like this for now :)
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            unexpectedException(e);
         }
     }
 
@@ -159,11 +193,19 @@ public class PacketHandler {
                 }
             }
         };
+        Channel channel = null;
         try {
-            ((org.bukkit.craftbukkit.v1_18_R1.entity.CraftPlayer) player)
-                    .getHandle()
-                    .b.a.k.pipeline() // #wtf
+            channel = ((org.bukkit.craftbukkit.v1_18_R1.entity.CraftPlayer) player).getHandle().b.a.k; // #wtf
+            channel.pipeline()
                     .addBefore("packet_handler", player.getName(), channelDuplexHandler);
+        } catch (IllegalArgumentException e) { //in case of plugin reload, prevent duplicate handler name exception
+            if (channel == null) {
+                unexpectedException(e);
+                return;
+            }
+            if (!channel.pipeline().names().contains(player.getName())) return;
+            channel.pipeline().remove(player.getName());
+            movement_1_18_R1(player);
         } catch (NoSuchElementException e) {
             //It isn't good practice to ignore exceptions, but I'll keep it like this for now :)
         }
@@ -184,11 +226,19 @@ public class PacketHandler {
                 }
             }
         };
+        Channel channel = null;
         try {
-            ((org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer) player)
-                    .getHandle()
-                    .b.a.k.pipeline() // #wtf
+            channel = ((org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer) player).getHandle().b.a.k; // #wtf
+            channel.pipeline()
                     .addBefore("packet_handler", player.getName(), channelDuplexHandler);
+        } catch (IllegalArgumentException e) { //in case of plugin reload, prevent duplicate handler name exception
+            if (channel == null) {
+                unexpectedException(e);
+                return;
+            }
+            if (!channel.pipeline().names().contains(player.getName())) return;
+            channel.pipeline().remove(player.getName());
+            movement_1_17(player);
         } catch (NoSuchElementException e) {
             //It isn't good practice to ignore exceptions, but I'll keep it like this for now :)
         }
@@ -210,11 +260,19 @@ public class PacketHandler {
                 }
             }
         };
+        Channel channel = null;
         try {
-            ((org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer) player)
-                    .getHandle()
-                    .playerConnection.networkManager.channel.pipeline()
+            channel = ((org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer) player).getHandle().playerConnection.networkManager.channel;
+            channel.pipeline()
                     .addBefore("packet_handler", player.getName(), channelDuplexHandler);
+        } catch (IllegalArgumentException e) { //in case of plugin reload, prevent duplicate handler name exception
+            if (channel == null) {
+                unexpectedException(e);
+                return;
+            }
+            if (!channel.pipeline().names().contains(player.getName())) return;
+            channel.pipeline().remove(player.getName());
+            movement_1_16(player);
         } catch (NoSuchElementException e) {
             //It isn't good practice to ignore exceptions, but I'll keep it like this for now :)
         }
@@ -236,11 +294,19 @@ public class PacketHandler {
                 }
             }
         };
+        Channel channel = null;
         try {
-            ((org.bukkit.craftbukkit.v1_15_R1.entity.CraftPlayer) player)
-                    .getHandle()
-                    .playerConnection.networkManager.channel.pipeline()
+            channel = ((org.bukkit.craftbukkit.v1_15_R1.entity.CraftPlayer) player).getHandle().playerConnection.networkManager.channel;
+            channel.pipeline()
                     .addBefore("packet_handler", player.getName(), channelDuplexHandler);
+        } catch (IllegalArgumentException e) { //in case of plugin reload, prevent duplicate handler name exception
+            if (channel == null) {
+                unexpectedException(e);
+                return;
+            }
+            if (!channel.pipeline().names().contains(player.getName())) return;
+            channel.pipeline().remove(player.getName());
+            movement_1_15(player);
         } catch (NoSuchElementException e) {
             //It isn't good practice to ignore exceptions, but I'll keep it like this for now :)
         }
@@ -262,11 +328,19 @@ public class PacketHandler {
                 }
             }
         };
+        Channel channel = null;
         try {
-            ((org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer) player)
-                    .getHandle()
-                    .playerConnection.networkManager.channel.pipeline()
+            channel = ((org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer) player).getHandle().playerConnection.networkManager.channel;
+            channel.pipeline()
                     .addBefore("packet_handler", player.getName(), channelDuplexHandler);
+        } catch (IllegalArgumentException e) { //in case of plugin reload, prevent duplicate handler name exception
+            if (channel == null) {
+                unexpectedException(e);
+                return;
+            }
+            if (!channel.pipeline().names().contains(player.getName())) return;
+            channel.pipeline().remove(player.getName());
+            movement_1_13(player);
         } catch (NoSuchElementException e) {
             //It isn't good practice to ignore exceptions, but I'll keep it like this for now :)
         }
@@ -288,14 +362,33 @@ public class PacketHandler {
                 }
             }
         };
+        Channel channel = null;
         try {
-            ((org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer) player)
-                    .getHandle()
-                    .playerConnection.networkManager.channel.pipeline()
+            channel = ((org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer) player).getHandle().playerConnection.networkManager.channel;
+            channel.pipeline()
                     .addBefore("packet_handler", player.getName(), channelDuplexHandler);
+        } catch (IllegalArgumentException e) { //in case of plugin reload, prevent duplicate handler name exception
+            if (channel == null) {
+                unexpectedException(e);
+                return;
+            }
+            if (!channel.pipeline().names().contains(player.getName())) return;
+            channel.pipeline().remove(player.getName());
+            movement_1_16(player);
         } catch (NoSuchElementException e) {
             //It isn't good practice to ignore exceptions, but I'll keep it like this for now :)
         }
+    }
+
+    private static void unexpectedException(){
+        Main.logSevere("An unexpected error occurred. Disabling the plugin...");
+        Main.disablePlugin();
+    }
+
+    private static void unexpectedException(Exception e){
+        Main.logSevere("An unexpected error occurred, disabling the plugin... Check the exception log:");
+        e.printStackTrace();
+        Main.disablePlugin();
     }
 
     /**
