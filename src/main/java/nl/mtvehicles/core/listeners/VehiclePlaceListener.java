@@ -4,11 +4,11 @@ import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.events.VehiclePlaceEvent;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.enums.RegionAction;
-import nl.mtvehicles.core.infrastructure.utils.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVListener;
+import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
+import nl.mtvehicles.core.infrastructure.utils.TextUtils;
 import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
 import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
-import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
@@ -45,8 +45,18 @@ public class VehiclePlaceListener extends MTVListener {
         if (license == null) return;
 
         VehiclePlaceEvent api = (VehiclePlaceEvent) getAPI();
+        if (ConfigModule.vehicleDataConfig.getType(license).isBoat()){ //placing boats (on top of a water body)
+            Location spawnLoc = clickedBlock.getLocation();
+            for (int i = 0; i < 512; i++) {
+                Location locAbove = new Location(spawnLoc.getWorld(), spawnLoc.getX(), spawnLoc.getY() + 1, spawnLoc.getZ());
+                if (!locAbove.getBlock().toString().contains("WATER")) break;
+                spawnLoc = locAbove;
+            }
+            api.setLocation(spawnLoc);
+        } else {
+            api.setLocation(clickedBlock.getLocation());
+        }
         api.setLicensePlate(license);
-        api.setLocation(clickedBlock.getLocation());
         callAPI();
         if (isCancelled()) return;
 

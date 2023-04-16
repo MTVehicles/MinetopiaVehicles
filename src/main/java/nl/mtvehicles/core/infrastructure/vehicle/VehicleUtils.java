@@ -80,6 +80,11 @@ public final class VehicleUtils {
         standMainSeat.setGravity(false);
         standMainSeat.setVisible(false);
 
+        if (ConfigModule.vehicleDataConfig.getType(licensePlate).isBoat()){
+            standMain.setGravity(false);
+            standSkin.setGravity(false);
+        }
+
         if (ConfigModule.vehicleDataConfig.getType(licensePlate).isHelicopter()) {
             List<Map<String, Double>> helicopterBlades = (List<Map<String, Double>>) vehicle.getVehicleData().get("wiekens");
             Map<?, ?> blade = helicopterBlades.get(0);
@@ -759,8 +764,10 @@ public final class VehicleUtils {
             VehicleData.fallDamage.put(license, true); // Do not damage when entering afterwards
         }
 
-        standMain.setGravity(true);
-        standSkin.setGravity(true);
+        if (!vehicle.getVehicleType().isBoat()) {
+            standMain.setGravity(true);
+            standSkin.setGravity(true);
+        }
         List<Map<String, Integer>> seats = (List<Map<String, Integer>>) vehicle.getVehicleData().get("seats");
         for (int i = 2; i <= seats.size(); i++) {
             if (VehicleData.autostand.get("MTVEHICLES_SEAT" + i + "_" + license) != null)

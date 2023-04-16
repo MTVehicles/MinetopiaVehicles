@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.movement;
 
+import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.events.TankShootEvent;
 import nl.mtvehicles.core.infrastructure.annotations.ToDo;
 import nl.mtvehicles.core.infrastructure.annotations.VersionSpecific;
@@ -296,6 +297,15 @@ public class VehicleMovement {
         final double difference = Double.parseDouble("0." + locY.split("\\.")[1]);
         final BlockData blockData = loc.getBlock().getBlockData();
         final BlockData blockDataBelow = locBlockBelow.getBlock().getBlockData();
+
+        if (vehicleType.isBoat()){
+            if (!locBlockBelow.getBlock().getType().toString().contains("WATER")){
+                VehicleData.speed.put(license, 0.0);
+                return false;
+            }
+
+            return false;
+        }
 
         if (loc.getBlock().getType().toString().contains("CARPET")){ // If block ahead is a carpet
             if (!(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.DRIVE_ON_CARPETS)){ // If carpets are turned off in config, stop
@@ -679,6 +689,20 @@ public class VehicleMovement {
                 return;
             }
             standMain.setVelocity(new Vector(loc.getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.00001, loc.getDirection().multiply(VehicleData.speed.get(license)).getZ()));
+            return;
+        }
+
+        if (vehicleType.isBoat()){
+            if (!blockName.contains("WATER") && !isPassable(locBelow.getBlock())){
+                VehicleData.speed.put(license, 0.0);
+            }
+
+            if (isPassable(locBelow.getBlock()) && !blockName.contains("WATER")){
+                standMain.setVelocity(new Vector(loc.getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.8, loc.getDirection().multiply(VehicleData.speed.get(license)).getZ()));
+                return;
+            }
+
+            standMain.setVelocity(new Vector(loc.getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.0, loc.getDirection().multiply(VehicleData.speed.get(license)).getZ()));
             return;
         }
 
