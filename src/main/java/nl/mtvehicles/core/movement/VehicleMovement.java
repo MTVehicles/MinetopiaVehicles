@@ -164,7 +164,7 @@ public class VehicleMovement {
             if (System.currentTimeMillis() - lastUsed >= Long.parseLong(ConfigModule.defaultConfig.get(DefaultConfig.Option.HORN_COOLDOWN).toString()) * 1000L) {
                 HornUseEvent api = new HornUseEvent(license);
                 api.setPlayer(player);
-                api.call();
+                schedulerRun(api::call);
 
                 if (!api.isCancelled()){
                     standMain.getWorld().playSound(standMain.getLocation(), Objects.requireNonNull(ConfigModule.defaultConfig.get(DefaultConfig.Option.HORN_TYPE).toString()), 0.9f, 1f);
@@ -877,7 +877,7 @@ public class VehicleMovement {
 
         TankShootEvent api = new TankShootEvent(license);
         api.setPlayer(player);
-        api.call();
+        schedulerRun(api::call);
         if (api.isCancelled()) return;
 
         schedulerRun(() -> {
