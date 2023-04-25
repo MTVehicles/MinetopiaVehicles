@@ -8,7 +8,11 @@ import nl.mtvehicles.core.infrastructure.models.MTVEvent;
  * On tank shoot
  */
 public class TankShootEvent extends MTVEvent implements IsCancellable, HasVehicle {
-    private String licensePlate;
+    final private String licensePlate;
+
+    public TankShootEvent(String licensePlate){
+        this.licensePlate = licensePlate;
+    }
 
     @Override
     public void setCancelled(boolean cancelled) {
@@ -18,11 +22,6 @@ public class TankShootEvent extends MTVEvent implements IsCancellable, HasVehicl
     @Override
     public String getLicensePlate(){
         return licensePlate;
-    }
-
-    @Override
-    public void setLicensePlate(String licensePlate) {
-        this.licensePlate = licensePlate;
     }
 
 }

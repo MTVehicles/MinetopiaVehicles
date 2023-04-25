@@ -1,6 +1,7 @@
 package nl.mtvehicles.core.movement;
 
 import nl.mtvehicles.core.Main;
+import nl.mtvehicles.core.events.HornUseEvent;
 import nl.mtvehicles.core.events.TankShootEvent;
 import nl.mtvehicles.core.infrastructure.annotations.ToDo;
 import nl.mtvehicles.core.infrastructure.annotations.VersionSpecific;
@@ -161,8 +162,14 @@ public class VehicleMovement {
             if (VehicleData.lastUsage.containsKey(player.getName())) lastUsed = VehicleData.lastUsage.get(player.getName());
 
             if (System.currentTimeMillis() - lastUsed >= Long.parseLong(ConfigModule.defaultConfig.get(DefaultConfig.Option.HORN_COOLDOWN).toString()) * 1000L) {
-                standMain.getWorld().playSound(standMain.getLocation(), Objects.requireNonNull(ConfigModule.defaultConfig.get(DefaultConfig.Option.HORN_TYPE).toString()), 0.9f, 1f);
-                VehicleData.lastUsage.put(player.getName(), System.currentTimeMillis());
+                HornUseEvent api = new HornUseEvent(license);
+                api.setPlayer(player);
+                api.call();
+
+                if (!api.isCancelled()){
+                    standMain.getWorld().playSound(standMain.getLocation(), Objects.requireNonNull(ConfigModule.defaultConfig.get(DefaultConfig.Option.HORN_TYPE).toString()), 0.9f, 1f);
+                    VehicleData.lastUsage.put(player.getName(), System.currentTimeMillis());
+                }
             }
         }
 
@@ -868,9 +875,8 @@ public class VehicleMovement {
     public void tankShoot(ArmorStand stand, Location loc){
         if (!(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.TANK_TNT)) return;
 
-        TankShootEvent api = new TankShootEvent();
+        TankShootEvent api = new TankShootEvent(license);
         api.setPlayer(player);
-        api.setLicensePlate(license);
         api.call();
         if (api.isCancelled()) return;
 
