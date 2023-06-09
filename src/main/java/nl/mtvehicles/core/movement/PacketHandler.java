@@ -22,7 +22,7 @@ import static nl.mtvehicles.core.infrastructure.modules.VersionModule.getServerV
 public class PacketHandler {
 
     /**
-     * Packet handler for vehicle steering in 1.19.4
+     * Packet handler for vehicle steering in 1.20
      * @param player Player whose steering is being regarded
      */
     public static void movement_1_20_R1(Player player) {
@@ -41,7 +41,8 @@ public class PacketHandler {
             Object entityPlayer = ((org.bukkit.craftbukkit.v1_20_R1.entity.CraftPlayer) player).getHandle();
             Field playerConnectionField = entityPlayer.getClass().getField("c");
             net.minecraft.server.network.PlayerConnection playerConnection = (net.minecraft.server.network.PlayerConnection) playerConnectionField.get(entityPlayer);
-            Field networkManagerField = playerConnection.getClass().getField("h");
+            Field networkManagerField = playerConnection.getClass().getDeclaredField("h");
+            networkManagerField.setAccessible(true);
             net.minecraft.network.NetworkManager networkManager = (net.minecraft.network.NetworkManager) networkManagerField.get(playerConnection);
             Field channelField = networkManager.getClass().getField("m");
             channel = (Channel) channelField.get(networkManager);
