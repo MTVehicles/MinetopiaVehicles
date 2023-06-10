@@ -827,7 +827,7 @@ public class VehicleMovement {
         float Xxa = 0;
         try {
             String declaredMethod = "b";
-            if (getServerVersion().is1_19_R3()) {
+            if (getServerVersion().isNewerOrEqualTo(ServerVersion.v1_19_R3)) {
                 declaredMethod = "a";
             }
 
