@@ -22,3 +22,6 @@ TRANSLATORS:
 - Russian: peck1
 - French: Alane38
 - Thai: AungS8430
+
+RESOURCE PACK:
+- Boats: sebxter
