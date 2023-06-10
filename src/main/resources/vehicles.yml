@@ -1363,3 +1363,68 @@ voertuigen:
         itemDamage: 1273
         uuid: JLP5A0
         price: 25000.0
+  - name: "Boat"
+    vehicleType: BOAT
+    skinItem: DIAMOND_HOE
+    itemDamage: 1274
+    benzineEnabled: true
+    kofferbakEnabled: true
+    hornEnabled: true
+    maxHealth: 200.0
+    acceleratieSpeed: 0.015
+    maxSpeed: 0.5
+    brakingSpeed: 0.02
+    aftrekkenSpeed: 0.005
+    rotateSpeed: 6
+    maxSpeedBackwards: 0.1
+    seats:
+      - x: -0.0
+        y: -0.7
+        z: 0.0
+      - x: -0.8
+        y: -0.7
+        z: 0.0
+    cars:
+      - name: "Boat"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1274
+        uuid: PLV334
+        price: 35000.0
+      - name: "Speedboat"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1275
+        uuid: PLV871
+        price: 40000.0
+  - name: "Raft"
+    vehicleType: BOAT
+    skinItem: DIAMOND_HOE
+    itemDamage: 1276
+    benzineEnabled: false
+    kofferbakEnabled: false
+    hornEnabled: false
+    maxHealth: 50.0
+    acceleratieSpeed: 0.01
+    maxSpeed: 0.35
+    brakingSpeed: 0.02
+    aftrekkenSpeed: 0.005
+    rotateSpeed: 6
+    maxSpeedBackwards: 0.06
+    seats:
+      - x: 0.6
+        y: -0.65
+        z: 0.4
+      - x: 0.6
+        y: -0.65
+        z: -0.4
+      - x: -0.8
+        y: -0.65
+        z: 0.4
+      - x: -0.8
+        y: -0.65
+        z: -0.4
+    cars:
+      - name: "Raft"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 1276
+        uuid: PLV334
+        price: 10000.0
