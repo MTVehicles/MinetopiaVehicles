@@ -14,7 +14,11 @@ Messages in the plugin can be displayed in multiple languages. (Default: English
 
 ---
 
-### ⚠️ Contributors, see the [branch `2.5.0`](https://github.com/GamerJoep/MinetopiaVehicles/tree/2.5.0) ⚠️
+### ⚠️ Important information for API Developers ⚠️
+**As of `2.5.0`, some classes and packages have been refactored, some deprecated methods have been removed.**<br>
+Please, see [**this**](https://github.com/Zettovec/MinetopiaVehicles/pull/5) and [**Javadoc**](https://docs.mtvehicles.eu) for additional information.
+
+I recommend checking the [`#getPluginVersion()`](https://docs.mtvehicles.eu/nl/mtvehicles/core/infrastructure/enums/PluginVersion.html#getPluginVersion()) to overcome possible issues.
 
 ---
 
