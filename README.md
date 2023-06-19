@@ -14,7 +14,11 @@ Messages in the plugin can be displayed in multiple languages. (Default: English
 
 ---
 
-### ⚠️ Contributors, see the [branch `2.5.0`](https://github.com/GamerJoep/MinetopiaVehicles/tree/2.5.0) ⚠️
+### ⚠️ Important information for API Developers ⚠️
+**As of `2.5.0`, some classes and packages have been refactored, some deprecated methods have been removed.**<br>
+Please, see [**this**](https://github.com/Zettovec/MinetopiaVehicles/pull/5) and [**Javadoc**](https://docs.mtvehicles.eu) for additional information.
+
+I recommend checking the [`#getPluginVersion()`](https://docs.mtvehicles.eu/nl/mtvehicles/core/infrastructure/enums/PluginVersion.html#getPluginVersion()) to overcome possible issues.
 
 ---
 
@@ -22,7 +26,7 @@ Messages in the plugin can be displayed in multiple languages. (Default: English
 
 ## How to download?
 
-The plugin works on all spigot versions from 1.12.2 - 1.18.2, **except 1.14.x**!
+The plugin works on all Spigot/Paper versions 1.12.2+, **except 1.14.x**!
 
 ### Be aware!
 

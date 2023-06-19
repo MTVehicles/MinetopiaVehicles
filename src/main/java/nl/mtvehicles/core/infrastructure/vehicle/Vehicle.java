@@ -111,6 +111,13 @@ public class Vehicle {
     }
 
     /**
+     * Get the list of seats
+     */
+    public List<Map<String, Double>> getSeats(){
+        return (List<Map<String, Double>>) getVehicleData().get("seats");
+    }
+
+    /**
      * Get the current speed of a vehicle - returns <b>null</b> if the vehicle is not placed.
      * @return Current vehicle's speed <b>in blocks per second</b>. (As opposed to {@link VehicleData#speed}.)
      */
@@ -394,6 +401,26 @@ public class Vehicle {
 
     public void setVehicleType(VehicleType vehicleType){
         this.vehicleType = vehicleType;
+    }
+
+    /**
+     * Save vehicle's seats from vehicles.yml to VehicleData
+     */
+    public void saveSeats(){
+        List<Map<String, Double>> seats = getSeats();
+        VehicleData.seatsize.put(licensePlate, seats.size());
+        for (int i = 1; i <= seats.size(); i++) {
+            Map<String, Double> seat = seats.get(i - 1);
+            if (i == 1) {
+                VehicleData.mainx.put("MTVEHICLES_MAINSEAT_" + licensePlate, seat.get("x"));
+                VehicleData.mainy.put("MTVEHICLES_MAINSEAT_" + licensePlate, seat.get("y"));
+                VehicleData.mainz.put("MTVEHICLES_MAINSEAT_" + licensePlate, seat.get("z"));
+            } else if (i > 1) {
+                VehicleData.seatx.put("MTVEHICLES_SEAT" + i + "_" + licensePlate, seat.get("x"));
+                VehicleData.seaty.put("MTVEHICLES_SEAT" + i + "_" + licensePlate, seat.get("y"));
+                VehicleData.seatz.put("MTVEHICLES_SEAT" + i + "_" + licensePlate, seat.get("z"));
+            }
+        }
     }
 
     /**

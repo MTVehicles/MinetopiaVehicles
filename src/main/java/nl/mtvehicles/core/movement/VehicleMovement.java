@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.movement;
 
+import nl.mtvehicles.core.events.HornUseEvent;
 import nl.mtvehicles.core.events.TankShootEvent;
 import nl.mtvehicles.core.infrastructure.annotations.ToDo;
 import nl.mtvehicles.core.infrastructure.annotations.VersionSpecific;
@@ -160,8 +161,14 @@ public class VehicleMovement {
             if (VehicleData.lastUsage.containsKey(player.getName())) lastUsed = VehicleData.lastUsage.get(player.getName());
 
             if (System.currentTimeMillis() - lastUsed >= Long.parseLong(ConfigModule.defaultConfig.get(DefaultConfig.Option.HORN_COOLDOWN).toString()) * 1000L) {
-                standMain.getWorld().playSound(standMain.getLocation(), Objects.requireNonNull(ConfigModule.defaultConfig.get(DefaultConfig.Option.HORN_TYPE).toString()), 0.9f, 1f);
-                VehicleData.lastUsage.put(player.getName(), System.currentTimeMillis());
+                HornUseEvent api = new HornUseEvent(license);
+                api.setPlayer(player);
+                schedulerRun(api::call);
+
+                if (!api.isCancelled()){
+                    standMain.getWorld().playSound(standMain.getLocation(), Objects.requireNonNull(ConfigModule.defaultConfig.get(DefaultConfig.Option.HORN_TYPE).toString()), 0.9f, 1f);
+                    VehicleData.lastUsage.put(player.getName(), System.currentTimeMillis());
+                }
             }
         }
 
@@ -296,6 +303,31 @@ public class VehicleMovement {
         final double difference = Double.parseDouble("0." + locY.split("\\.")[1]);
         final BlockData blockData = loc.getBlock().getBlockData();
         final BlockData blockDataBelow = locBlockBelow.getBlock().getBlockData();
+
+        if (vehicleType.isBoat()){
+            if (!locBlockBelow.getBlock().getType().toString().contains("WATER")){
+                VehicleData.speed.put(license, 0.0);
+                return false;
+            }
+
+            return false;
+        }
+
+        if (standMain.getLocation().getBlock().getType().toString().contains("PATH") || standMain.getLocation().getBlock().getType().toString().contains("FARMLAND")){
+
+            if (!isAbovePassable){
+                VehicleData.speed.put(license, 0.0);
+                return false;
+            }
+
+            if (!loc.getBlock().getType().toString().contains("PATH") && !loc.getBlock().getType().toString().contains("FARMLAND")) { //if block ahead isn't a path
+                pushVehicleUp(0.0625);
+                return true; //Vehicle will be pushed up
+            }
+
+            return false;
+
+        }
 
         if (loc.getBlock().getType().toString().contains("CARPET")){ // If block ahead is a carpet
             if (!(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.DRIVE_ON_CARPETS)){ // If carpets are turned off in config, stop
@@ -567,6 +599,8 @@ public class VehicleMovement {
         else if (getServerVersion().is1_18_R2()) teleportSeat(((org.bukkit.craftbukkit.v1_18_R2.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
         else if (getServerVersion().is1_19()) teleportSeat(((org.bukkit.craftbukkit.v1_19_R1.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
         else if (getServerVersion().is1_19_R2()) teleportSeat(((org.bukkit.craftbukkit.v1_19_R2.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+        else if (getServerVersion().is1_19_R3()) teleportSeat(((org.bukkit.craftbukkit.v1_19_R3.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+        else if (getServerVersion().is1_20_R1()) teleportSeat(((org.bukkit.craftbukkit.v1_20_R1.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
     }
 
     /**
@@ -678,6 +712,20 @@ public class VehicleMovement {
                 return;
             }
             standMain.setVelocity(new Vector(loc.getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.00001, loc.getDirection().multiply(VehicleData.speed.get(license)).getZ()));
+            return;
+        }
+
+        if (vehicleType.isBoat()){
+            if (!blockName.contains("WATER") && !isPassable(locBelow.getBlock())){
+                VehicleData.speed.put(license, 0.0);
+            }
+
+            if (isPassable(locBelow.getBlock()) && !blockName.contains("WATER")){
+                standMain.setVelocity(new Vector(loc.getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.8, loc.getDirection().multiply(VehicleData.speed.get(license)).getZ()));
+                return;
+            }
+
+            standMain.setVelocity(new Vector(loc.getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.0, loc.getDirection().multiply(VehicleData.speed.get(license)).getZ()));
             return;
         }
 
@@ -793,7 +841,12 @@ public class VehicleMovement {
     protected float steerGetXxa(){
         float Xxa = 0;
         try {
-            Method method = packet.getClass().getDeclaredMethod("b");
+            String declaredMethod = "b";
+            if (getServerVersion().isNewerOrEqualTo(ServerVersion.v1_19_R3)) {
+                declaredMethod = "a";
+            }
+
+            Method method = packet.getClass().getDeclaredMethod(declaredMethod);
             Xxa = (float) method.invoke(packet);
         } catch (Exception e) {
             e.printStackTrace();
@@ -838,10 +891,9 @@ public class VehicleMovement {
     public void tankShoot(ArmorStand stand, Location loc){
         if (!(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.TANK_TNT)) return;
 
-        TankShootEvent api = new TankShootEvent();
+        TankShootEvent api = new TankShootEvent(license);
         api.setPlayer(player);
-        api.setLicensePlate(license);
-        api.call();
+        schedulerRun(api::call);
         if (api.isCancelled()) return;
 
         schedulerRun(() -> {

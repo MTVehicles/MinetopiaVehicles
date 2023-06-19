@@ -29,7 +29,11 @@ public enum VehicleType {
     /**
      * Airplanes - with the ability to fly, their movement differs from helicopters
      */
-    AIRPLANE;
+    AIRPLANE,
+    /**
+     * Boats - with the ability to move only on water
+     */
+    BOAT;
 
     public String getName(){
         return this.toString().substring(0, 1).toUpperCase() + this.toString().substring(1).toLowerCase(Locale.ROOT);
@@ -53,6 +57,10 @@ public enum VehicleType {
 
     public boolean isAirplane(){
         return this.equals(AIRPLANE);
+    }
+
+    public boolean isBoat(){
+        return this.equals(BOAT);
     }
 
     /**

@@ -79,13 +79,10 @@ public class VehicleClickListener extends MTVListener {
     }
 
     private void enter(){
-        this.setAPI(new VehicleEnterEvent());
-        VehicleEnterEvent api = (VehicleEnterEvent) getAPI();
-        api.setLicensePlate(license);
+        this.setAPI(new VehicleEnterEvent(license));
         callAPI();
         if (isCancelled()) return;
 
-        license = api.getLicensePlate();
         Vehicle vehicle = VehicleUtils.getVehicle(license);
         if (vehicle == null) return;
 

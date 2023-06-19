@@ -10,7 +10,11 @@ import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
  * On vehicle enter
  */
 public class VehicleEnterEvent extends MTVEvent implements IsCancellable, HasVehicle {
-    private String licensePlate;
+    final private String licensePlate;
+
+    public VehicleEnterEvent(String licensePlate){
+        this.licensePlate = licensePlate;
+    }
 
     @Override
     public void setCancelled(boolean cancelled) {
@@ -20,11 +24,6 @@ public class VehicleEnterEvent extends MTVEvent implements IsCancellable, HasVeh
     @Override
     public String getLicensePlate(){
         return licensePlate;
-    }
-
-    @Override
-    public void setLicensePlate(String licensePlate) {
-        this.licensePlate = licensePlate;
     }
 
 }

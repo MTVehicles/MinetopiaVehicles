@@ -1,6 +1,7 @@
 package nl.mtvehicles.core.infrastructure.utils;
 
 import nl.mtvehicles.core.Main;
+import nl.mtvehicles.core.infrastructure.annotations.LanguageSpecific;
 import nl.mtvehicles.core.infrastructure.enums.InventoryTitle;
 import nl.mtvehicles.core.infrastructure.enums.Language;
 import nl.mtvehicles.core.infrastructure.enums.Message;
@@ -26,6 +27,7 @@ public class LanguageUtils {
     /**
      * Open the language GUI selection to a player
      */
+    @LanguageSpecific
     public static void openLanguageGUI(Player p){
         Inventory inv = Bukkit.createInventory(null, 18, InventoryTitle.CHOOSE_LANGUAGE_MENU.getStringTitle());
         inv.setItem(0, ItemUtils.getMenuItem(Material.GOLD_BLOCK, 1, "&eEnglish", "&7Press to set all messages to English."));
@@ -38,6 +40,8 @@ public class LanguageUtils {
         inv.setItem(7, ItemUtils.getMenuItem(Material.GLASS, 1, "&fJapanese (日本語)", "&7を押して、すべてのメッセージを日本語に設定します。"));
         inv.setItem(8, ItemUtils.getMenuItem(Material.STONE, 1, "&8Hebrew (עִברִית)", "&7.לחץ כדי להגדיר את כל ההודעות לעברית"));
         inv.setItem(9, ItemUtils.getMenuItem(Material.GOLD_ORE, 1, "&6Russian (Русский)", "&7Нажмите, чтобы перевести все сообщения на русский язык."));
+        inv.setItem(10, ItemUtils.getMenuItem(Material.DIAMOND_ORE, 1, "&bFrench (Français)", "&7Appuyez pour définir tous les messages en français."));
+        inv.setItem(11, ItemUtils.getMenuItem(Material.EMERALD_ORE, 1, "&aThai (ภาษาไทย)", "&7กดเพื่อตั้งค่าข้อความทั้งหมดเป็นภาษาไทย."));
         inv.setItem(17, ItemUtils.getMenuItem(Material.PAPER, 1, "&fThat's all for now!", "&7Do you want to help us by translating the plugin? &f&nClick here"));
         p.openInventory(inv);
         languageCheck.put(p.getUniqueId(), true);

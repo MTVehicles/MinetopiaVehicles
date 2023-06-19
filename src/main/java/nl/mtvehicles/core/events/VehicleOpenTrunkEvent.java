@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.events;
 
+import nl.mtvehicles.core.events.interfaces.CanEditLicensePlate;
 import nl.mtvehicles.core.events.interfaces.HasVehicle;
 import nl.mtvehicles.core.events.interfaces.IsCancellable;
 import nl.mtvehicles.core.infrastructure.models.MTVEvent;
@@ -9,7 +10,7 @@ import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
 /**
  * On vehicle trunk open (either via left click or using /vehicle trunk) command
  */
-public class VehicleOpenTrunkEvent extends MTVEvent implements IsCancellable, HasVehicle {
+public class VehicleOpenTrunkEvent extends MTVEvent implements IsCancellable, CanEditLicensePlate {
     private String licensePlate;
 
     @Override

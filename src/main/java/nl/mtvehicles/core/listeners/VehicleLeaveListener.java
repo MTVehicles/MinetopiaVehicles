@@ -25,10 +25,6 @@ import java.util.Map;
  */
 public class VehicleLeaveListener extends MTVListener {
 
-    public VehicleLeaveListener(){
-        super(new VehicleLeaveEvent());
-    }
-
     @EventHandler
     public void onVehicleLeave(EntityDismountEvent event) {
         this.event = event;
@@ -41,12 +37,9 @@ public class VehicleLeaveListener extends MTVListener {
         String license = VehicleUtils.getLicensePlate(entity);
         if (VehicleData.autostand.get("MTVEHICLES_MAIN_" + license) == null) return;
 
-        VehicleLeaveEvent api = (VehicleLeaveEvent) getAPI();
-        api.setLicensePlate(license);
+        this.setAPI(new VehicleLeaveEvent(license));
         callAPI();
         if (isCancelled()) return;
-
-        license = api.getLicensePlate();
 
         BossBarUtils.removeBossBar(player, license);
         VehicleUtils.turnOff(license);

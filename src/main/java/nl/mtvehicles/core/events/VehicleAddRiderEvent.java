@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.events;
 
+import nl.mtvehicles.core.events.interfaces.CanEditLicensePlate;
 import nl.mtvehicles.core.events.interfaces.HasVehicle;
 import nl.mtvehicles.core.events.interfaces.IsCancellable;
 import nl.mtvehicles.core.infrastructure.models.MTVEvent;
@@ -10,7 +11,7 @@ import org.bukkit.entity.Player;
 /**
  * On vehicle add rider (/vehicle addrider command). Riders are players who may steer the vehicle.
  */
-public class VehicleAddRiderEvent extends MTVEvent implements IsCancellable, HasVehicle {
+public class VehicleAddRiderEvent extends MTVEvent implements IsCancellable, CanEditLicensePlate {
     private String licensePlate;
     private Player addedPlayer;
 

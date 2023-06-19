@@ -44,7 +44,11 @@ public enum PluginVersion {
      */
     v2_5_0_pre1,
     /**
-     * 2.5.0 (next expected version)
+     * 2.5.0-pre2
+     */
+    v2_5_0_pre2,
+    /**
+     * 2.5.0 (Boats and API overhaul, 1.20 support)
      */
     v2_5_0,
     /**
