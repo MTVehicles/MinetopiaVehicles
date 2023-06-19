@@ -31,6 +31,15 @@ public class VehicleMovement1_12 extends VehicleMovement {
         final int data = loc.getBlock().getData();
         final int dataBelow = locBlockBelow.getBlock().getData();
 
+        if (vehicleType.isBoat()){
+            if (!locBlockBelow.getBlock().getType().toString().contains("WATER")){
+                VehicleData.speed.put(license, 0.0);
+                return false;
+            }
+
+            return false;
+        }
+
         if (loc.getBlock().getType().toString().contains("CARPET")){
             if (!(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.DRIVE_ON_CARPETS)){ //if carpets are turned off in config
                 VehicleData.speed.put(license, 0.0);
