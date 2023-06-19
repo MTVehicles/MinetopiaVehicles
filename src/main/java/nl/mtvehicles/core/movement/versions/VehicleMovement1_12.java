@@ -2,8 +2,8 @@ package nl.mtvehicles.core.movement.versions;
 
 import net.minecraft.server.v1_12_R1.PacketPlayInSteerVehicle;
 import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
-import nl.mtvehicles.core.infrastructure.vehicle.VehicleData;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
+import nl.mtvehicles.core.infrastructure.vehicle.VehicleData;
 import nl.mtvehicles.core.movement.VehicleMovement;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -38,6 +38,22 @@ public class VehicleMovement1_12 extends VehicleMovement {
             }
 
             return false;
+        }
+
+        if (standMain.getLocation().getBlock().getType().toString().contains("PATH") || standMain.getLocation().getBlock().getType().toString().contains("FARMLAND")){
+
+            if (!isAbovePassable){
+                VehicleData.speed.put(license, 0.0);
+                return false;
+            }
+
+            if (!loc.getBlock().getType().toString().contains("PATH") && !loc.getBlock().getType().toString().contains("FARMLAND")) { //if block ahead isn't a path
+                pushVehicleUp(0.0625);
+                return true; //Vehicle will be pushed up
+            }
+
+            return false;
+
         }
 
         if (loc.getBlock().getType().toString().contains("CARPET")){

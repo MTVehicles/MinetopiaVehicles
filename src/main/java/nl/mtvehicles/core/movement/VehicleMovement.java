@@ -1,6 +1,5 @@
 package nl.mtvehicles.core.movement;
 
-import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.events.HornUseEvent;
 import nl.mtvehicles.core.events.TankShootEvent;
 import nl.mtvehicles.core.infrastructure.annotations.ToDo;
@@ -312,6 +311,22 @@ public class VehicleMovement {
             }
 
             return false;
+        }
+
+        if (standMain.getLocation().getBlock().getType().toString().contains("PATH") || standMain.getLocation().getBlock().getType().toString().contains("FARMLAND")){
+
+            if (!isAbovePassable){
+                VehicleData.speed.put(license, 0.0);
+                return false;
+            }
+
+            if (!loc.getBlock().getType().toString().contains("PATH") && !loc.getBlock().getType().toString().contains("FARMLAND")) { //if block ahead isn't a path
+                pushVehicleUp(0.0625);
+                return true; //Vehicle will be pushed up
+            }
+
+            return false;
+
         }
 
         if (loc.getBlock().getType().toString().contains("CARPET")){ // If block ahead is a carpet
