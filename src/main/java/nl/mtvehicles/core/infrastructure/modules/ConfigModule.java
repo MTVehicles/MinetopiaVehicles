@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.dataconfig.*;
-import nl.mtvehicles.core.infrastructure.models.Config;
+import nl.mtvehicles.core.infrastructure.models.MTVConfig;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -23,7 +23,7 @@ public class ConfigModule {
     /**
      * List of all configuration files.
      */
-    public static List<Config> configList = new ArrayList<>();
+    public static List<MTVConfig> configList = new ArrayList<>();
 
     /**
      * SuperSecretSettings configuration file
@@ -86,7 +86,7 @@ public class ConfigModule {
      * Reload all configuration files.
      */
     public static void reloadConfigs(){
-        configList.forEach(Config::reload);
+        configList.forEach(MTVConfig::reload);
         if (!messagesConfig.setLanguageFile(secretSettings.getMessagesLanguage())){
             Main.instance.getLogger().severe("Messages.yml for your desired language could not be found. Disabling the plugin...");
             Main.disablePlugin();

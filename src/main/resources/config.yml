@@ -17,7 +17,7 @@ autoUpdate: true
 # --- General ---
 
 # How many rows the /vehicle menu has. Must be between 3 and 6.
-# Default: 3 (If your input is not accepted, the default shall be used.)
+# Default: 3 (If your input is not valid, the default shall be used.)
 vehicleMenuSize: 3
 
 # If set to true, helicopter blades will always stay on top of the helicopter.
@@ -51,8 +51,8 @@ usePlayerFacing: false
 # Whether vehicles can be damaged.
 damageEnabled: false
 
-# Multiplier of the damage of ALL vehicles. Works similarly to fuelMultiplier.
-# Must be between 0.1 and 5. Default: 0.5 (If lower/higher, the default will be used.)
+# Multiplier of the damage to ALL vehicles. Works similarly to fuelMultiplier.
+# Must be between 0.1 and 5.0 (Beware: 3 will not work, 3.0 will). Default: 0.5 (If lower/higher, the default will be used.)
 damageMultiplier: 0.5
 
 
@@ -69,7 +69,7 @@ takeOffSpeed: 0.4
 # If damageEnabled = true, the fall will also result in the breakage of the vehicle.
 extremeHelicopterFall: false
 
-# Damage taken by all passengers when a helicopter falls 'extremely' fast (must be higher than 0)
+# Damage taken by all passengers when a helicopter falls 'extremely' fast (must be higher than 0). Beware: 10 will not work, 10.0 will
 helicopterFallDamage: 40.0
 
 
@@ -104,7 +104,7 @@ hornType: "minetopiaclassic.horn1"
 # Whether tanks shoot TNTs.
 tankTNT: false
 
-# Tank shooting cooldown
+# Tank shooting cooldown (Beware: 10.0 will not work, just 10 will)
 tankCooldown: 10
 
 
@@ -145,13 +145,13 @@ disabledWorlds: []
 # If needPermission inside fillJeryCan is set to true, players need to have the 'mtvehicles.filljerrycans' permission. Otherwise everyone can do it.
 
 # The 'price' option may ONLY be used if you have VAULT installed. (If that is not the case, it is automatically DISABLED).
-# Price MUST always be greater than 0. Otherwise, default (30.0) shall be used.
+# Price MUST always be greater than 0. Otherwise, default (30.0) shall be used. (Beware: 10 will not work, 10.0 will)
 # Players with permission 'mtvehicles.filljerrycansforfree' do not pay.
 # BEWARE: If needPermission = true, players STILL NEED permission to even use this feature. Even if they have to pay.
 
 # All the regions MUST have WorldGuard flag "mtv-gasstation=allow".
 gasStations:
-  enabled: false
+  enabled: true
   canUseJerryCanOutsideOfGasStation: true
   fillJerryCans:
     enabled: true

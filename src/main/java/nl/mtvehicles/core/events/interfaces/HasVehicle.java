@@ -1,6 +1,7 @@
 package nl.mtvehicles.core.events.interfaces;
 
-import nl.mtvehicles.core.infrastructure.models.Vehicle;
+import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
+import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
 
 /**
  * Interface for all events with vehicles
@@ -17,12 +18,8 @@ public interface HasVehicle {
      * Get vehicle used in the event
      * @return Vehicle
      */
-    public Vehicle getVehicle();
-
-    /**
-     * Set the license plate of the vehicle used in the event
-     * @param licensePlate New license plate
-     */
-    public void setLicensePlate(String licensePlate);
+    default public Vehicle getVehicle(){
+        return VehicleUtils.getVehicle(getLicensePlate());
+    }
 
 }

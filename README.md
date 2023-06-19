@@ -74,7 +74,7 @@ If this did not work don't hesitate to contact the support on our Discord server
 
 > ⚠ **You will not receive any support regarding unsupported Minecraft versions or other than latest plugin versions.**
 
-## Functionalities
+## Features
 
 ✔ Add custom vehicles.<br>
 ✔ Adjust vehicle data in game.<br>
@@ -96,42 +96,44 @@ If this did not work don't hesitate to contact the support on our Discord server
 
 ### Main commands
 
-| Command           | Description                                       | permission                                       |
-|-------------------|---------------------------------------------------|--------------------------------------------------|
-| /vehicle info     | Get information about a vehicle                   | `None`, `mtvehicles.admin` to display admin info |
-| /vehicle help     | Get a list of all the possible commands           | `None`, `mtvehicles.admin` to display admin info |
-| /vehicle version  | Get info about the plugin *(use this on discord)* | `mtvehicles.admin`                               |
-| /vehicle language | Change the plugin language                        | `mtvehicles.admin` or `mtvehicles.language`      |
+| Command             | Description                                       | permission                                       |
+|---------------------|---------------------------------------------------|--------------------------------------------------|
+| `/vehicle info`     | Get information about a vehicle                   | `None`, `mtvehicles.admin` to display admin info |
+| `/vehicle help`     | Get a list of all the possible commands           | `None`, `mtvehicles.admin` to display admin info |
+| `/vehicle version`  | Get info about the plugin *(use this on discord)* | `mtvehicles.admin`                               |
+| `/vehicle language` | Change the plugin language                        | `mtvehicles.admin` or `mtvehicles.language`      |
 
 ### Vehicle specific commands
 These commands can only be executed by the owner of the vehicle. **Hold a vehicle in your hand while executing these.**
 
-| Command               | Description                                          | Permission |
-|-----------------------|------------------------------------------------------|------------|
-| /vehicle public       | Let everyone sit in your car                         | `None`     |
-| /vehicle private      | Only allow people who have access to sit in your car | `None`     |
-| /vehicle addrider     | Add a rider to your vehicle                          | `None`     |
-| /vehicle addmember    | Add a member to your vehicle                         | `None`     |
-| /vehicle removerider  | Remove a rider from your vehicle                     | `None`     |
-| /vehicle removemember | Remove a member from your vehicle                    | `None`     |
-| /vehicle trunk        | Open the trunk of your vehicle                       | `None`     |
-| /vehicle repair       | Restore the health of a vehicle (vehicle damage must be enabled in the [config.yml]) | `mtvehicles.repair` |
-| /vehicle refill       | Refill the vehicle's fuel                            | `mtvehicles.refill` |
+> Note: You may use some of these commands while **sitting inside** a vehicle, as long as you're the vehicle's owner.
+
+| Command                          | Description                                          | Permission |
+|----------------------------------|------------------------------------------------------|------------|
+| `/vehicle public`                | Let everyone sit in your car                         | `None`     |
+| `/vehicle private`               | Only allow people who have access to sit in your car | `None`     |
+| `/vehicle addrider %player%`     | Add a rider to your vehicle                          | `None`     |
+| `/vehicle addmember %player%`    | Add a member to your vehicle                         | `None`     |
+| `/vehicle removerider %player%`  | Remove a rider from your vehicle                     | `None`     |
+| `/vehicle removemember %player%` | Remove a member from your vehicle                    | `None`     |
+| `/vehicle trunk`                 | Open the trunk of your vehicle                       | `None`     |
+| `/vehicle repair`                | Restore the health of a vehicle (vehicle damage must be enabled in the [config.yml]) | `mtvehicles.repair` |
+| `/vehicle refill`                | Refill the vehicle's fuel                            | `mtvehicles.refill` |
 
 ### Moderation commands
 
-| Command              | Description                                 | Permission               |
-|----------------------|---------------------------------------------|--------------------------|
-| /vehicle edit        | Adjust vehicle settings                     | `mtvehicles.edit`        |
-| /vehicle menu        | Open a menu containing all the vehicles     | `mtvehicles.menu`        |
-| /vehicle givevoucher | Give a voucher to a player                  | `mtvehicles.givevoucher` |
-| /vehicle givecar     | Give a vehicle to a player                  | `mtvehicles.givecar`     |
-| /vehicle restore     | A menu to recover vehicles                  | `mtvehicles.restore`     |
-| /vehicle benzine     | Open the menu with jerrycans for the fuel   | `mtvehicles.benzine`     |
-| /vehicle reload      | Reload the plugin's config files            | `mtvehicles.reload`      |
-| /vehicle setowner    | Set an owner of a vehicle                   | `mtvehicles.setowner`    |
-| /vehicle delete      | Remove a vehicle in your hand from the data | `mtvehicles.delete`      |
-| /vehicle update      | Update the plugin to the latest version     | `mtvehicles.update`      |
+| Command                                | Description                                 | Permission               |
+|----------------------------------------|---------------------------------------------|--------------------------|
+| `/vehicle edit`                        | Adjust vehicle settings                     | `mtvehicles.edit`        |
+| `/vehicle menu`                        | Open a menu containing all the vehicles     | `mtvehicles.menu`        |
+| `/vehicle givevoucher %player% %uuid%` | Give a voucher to a player                  | `mtvehicles.givevoucher` |
+| `/vehicle givecar %player% %uuid%`     | Give a vehicle to a player                  | `mtvehicles.givecar`     |
+| `/vehicle restore`                     | A menu to recover vehicles                  | `mtvehicles.restore`     |
+| `/vehicle benzine`                     | Open the menu with jerrycans for the fuel   | `mtvehicles.benzine`     |
+| `/vehicle reload`                      | Reload the plugin's config files            | `mtvehicles.reload`      |
+| `/vehicle setowner %player%`           | Set an owner of a vehicle                   | `mtvehicles.setowner`    |
+| `/vehicle delete`                      | Remove a vehicle in your hand from the data | `mtvehicles.delete`      |
+| `/vehicle update`                      | Update the plugin to the latest version     | `mtvehicles.update`      |
 
 ### Other permissions
 
@@ -203,7 +205,17 @@ MTVehicles offers special placeholders for you to use.
 
 You can download <a href="https://www.spigotmc.org/resources/vault.34315/">Vault</a> to enable economy integration. (Of course, you must have an economy plugin that supports Vault.)
 
-Options concerning Vault and prices are to be found in the config.yml.
+This includes:
+* Filling up jerrycans at gas stations for a specified price (can be adjusted in config.yml)!
+* Enabling vehicles' price (can be adjusted in vehicles.yml)
+* Buying vehicles and vouchers (via `/mtv buycar` and `/mtv buyvoucher`)
+
+#### Additional commands
+
+| Command                       | Description                                             | Permission |
+|-------------------------------|---------------------------------------------------------|------------|
+| `/vehicle buycar %uuid%`      | Buy a vehicle (for the price specified in vehicles.yml) | `None`     |
+| `/vehicle buyvoucher %uuid%`  | Buy a voucher (which costs the same as a vehicle)       | `None`     |
 
 <div align="right">
   <sub>README.md by <a href="https://github.com/Zettovec">Nikd0</a> & <a href="https://github.com/Jeffrey-H">Jeffrey-H</a></sub>

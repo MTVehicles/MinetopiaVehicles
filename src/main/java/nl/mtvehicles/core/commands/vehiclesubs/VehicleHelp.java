@@ -2,13 +2,13 @@ package nl.mtvehicles.core.commands.vehiclesubs;
 
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.enums.Message;
-import nl.mtvehicles.core.infrastructure.models.MTVehicleSubCommand;
+import nl.mtvehicles.core.infrastructure.models.MTVSubCommand;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 
 /**
  * <b>/vehicle help</b> - list of all MTV commands.
  */
-public class VehicleHelp extends MTVehicleSubCommand {
+public class VehicleHelp extends MTVSubCommand {
     public VehicleHelp() {
         this.setPlayerCommand(true);
     }
@@ -42,7 +42,7 @@ public class VehicleHelp extends MTVehicleSubCommand {
             sendMessage(String.format("&2/vehicle &adelete &f- &2%s", desc(Message.ADMIN_DELETE)));
         }
         sendMessage("");
-        sendMessage("&7&oDownload it for free at mtvehicles.nl, by GamerJoep_.");
+        sendMessage("&7&oDownload it for free at mtvehicles.nl (Originally by GamerJoep_, maintained by Nikd0)");
         return true;
     }
 

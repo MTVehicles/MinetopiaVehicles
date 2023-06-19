@@ -1,13 +1,16 @@
 package nl.mtvehicles.core.movement;
 
+import nl.mtvehicles.core.events.HornUseEvent;
+import nl.mtvehicles.core.events.TankShootEvent;
+import nl.mtvehicles.core.infrastructure.annotations.ToDo;
 import nl.mtvehicles.core.infrastructure.annotations.VersionSpecific;
 import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
 import nl.mtvehicles.core.infrastructure.enums.ServerVersion;
 import nl.mtvehicles.core.infrastructure.enums.VehicleType;
-import nl.mtvehicles.core.infrastructure.helpers.BossBarUtils;
-import nl.mtvehicles.core.infrastructure.helpers.VehicleData;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
+import nl.mtvehicles.core.infrastructure.utils.BossBarUtils;
+import nl.mtvehicles.core.infrastructure.vehicle.VehicleData;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -158,8 +161,14 @@ public class VehicleMovement {
             if (VehicleData.lastUsage.containsKey(player.getName())) lastUsed = VehicleData.lastUsage.get(player.getName());
 
             if (System.currentTimeMillis() - lastUsed >= Long.parseLong(ConfigModule.defaultConfig.get(DefaultConfig.Option.HORN_COOLDOWN).toString()) * 1000L) {
-                standMain.getWorld().playSound(standMain.getLocation(), Objects.requireNonNull(ConfigModule.defaultConfig.get(DefaultConfig.Option.HORN_TYPE).toString()), 0.9f, 1f);
-                VehicleData.lastUsage.put(player.getName(), System.currentTimeMillis());
+                HornUseEvent api = new HornUseEvent(license);
+                api.setPlayer(player);
+                schedulerRun(api::call);
+
+                if (!api.isCancelled()){
+                    standMain.getWorld().playSound(standMain.getLocation(), Objects.requireNonNull(ConfigModule.defaultConfig.get(DefaultConfig.Option.HORN_TYPE).toString()), 0.9f, 1f);
+                    VehicleData.lastUsage.put(player.getName(), System.currentTimeMillis());
+                }
             }
         }
 
@@ -180,7 +189,7 @@ public class VehicleMovement {
                 float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(fbvp.getYaw())));
                 Location loc = new Location(standMain.getWorld(), xvp, standMain.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
                 spawnParticles(standMain, loc);
-                spawnTNT(standMain, loc);
+                tankShoot(standMain, loc);
                 VehicleData.lastUsage.put(player.getName(), System.currentTimeMillis());
             }
         }
@@ -277,18 +286,8 @@ public class VehicleMovement {
     /**
      * Check the next block - carpets, slabs, snow - and do an appropriate action.
      * @return True if the vehicle is moving upwards (in any way)
-     *
-     * @deprecated Renamed to {@link #blockCheck()}.
      */
-    @Deprecated
-    protected boolean slabCheck(){
-        return blockCheck();
-    }
-
-    /**
-     * Check the next block - carpets, slabs, snow - and do an appropriate action.
-     * @return True if the vehicle is moving upwards (in any way)
-     */
+    @ToDo("Trapdoors")
     protected boolean blockCheck() {
         final Location loc = getLocationOfBlockAhead();
         final String locY = String.valueOf(standMain.getLocation().getY());
@@ -305,105 +304,134 @@ public class VehicleMovement {
         final BlockData blockData = loc.getBlock().getBlockData();
         final BlockData blockDataBelow = locBlockBelow.getBlock().getBlockData();
 
-        if (loc.getBlock().getType().toString().contains("CARPET")){
-            if (!(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.DRIVE_ON_CARPETS)){ //if carpets are turned off in config
+        if (vehicleType.isBoat()){
+            if (!locBlockBelow.getBlock().getType().toString().contains("WATER")){
                 VehicleData.speed.put(license, 0.0);
                 return false;
             }
 
-            if (!isAbovePassable) {
+            return false;
+        }
+
+        if (standMain.getLocation().getBlock().getType().toString().contains("PATH") || standMain.getLocation().getBlock().getType().toString().contains("FARMLAND")){
+
+            if (!isAbovePassable){
                 VehicleData.speed.put(license, 0.0);
                 return false;
             }
 
-            if (isOnGround) pushVehicleUp(0.0625);
+            if (!loc.getBlock().getType().toString().contains("PATH") && !loc.getBlock().getType().toString().contains("FARMLAND")) { //if block ahead isn't a path
+                pushVehicleUp(0.0625);
+                return true; //Vehicle will be pushed up
+            }
+
+            return false;
+
+        }
+
+        if (loc.getBlock().getType().toString().contains("CARPET")){ // If block ahead is a carpet
+            if (!(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.DRIVE_ON_CARPETS)){ // If carpets are turned off in config, stop
+                VehicleData.speed.put(license, 0.0);
+                return false;
+            }
+
+            if (!isAbovePassable) { // If there is a block above the carpet, stop
+                VehicleData.speed.put(license, 0.0);
+                return false;
+            }
+
+            if (isOnGround) pushVehicleUp(0.0625); // If the carpet is not placed on a slab, push the vehicle up
             return true;
         }
 
-        if (blockData instanceof Snow){ //Does not include snow block - that's considered a full block.
+        if (blockData instanceof Snow){ // If block ahead is a snow layer (Does not include snow block - that's considered a full block.)
             final int layers = ((Snow) blockData).getLayers();
             double layerHeight = getLayerHeight(layers);
-            if (VehicleData.speed.get(license) > 0.1) VehicleData.speed.put(license, 0.1);
+            if (VehicleData.speed.get(license) > 0.1) VehicleData.speed.put(license, 0.1); // Slow down on snow
 
-            if (layerHeight == difference) return false; //Vehicle will continue
+            if (layerHeight == difference) return false; // If the player is already driving on a snow of the same height, vehicle will continue
 
             final double snowDifference = layerHeight - difference;
-            pushVehicleUp(snowDifference); //Will push either up or down, depending on the difference
+            pushVehicleUp(snowDifference); // Will push either up or down, depending on the difference
 
             return true;
         }
 
-        if (blockData instanceof Fence || loc.getBlock().getType().toString().contains("WALL") || blockData instanceof TrapDoor){
+        if (blockData instanceof Fence || loc.getBlock().getType().toString().contains("WALL") || blockData instanceof TrapDoor){ // If the block ahead is a fence, wall or trapdoor, stop
             VehicleData.speed.put(license, 0.0);
             return false;
         }
 
-        if (ConfigModule.defaultConfig.driveUpSlabs().isSlabs()){
-            if (isOnSlab) {
-                if (isPassable) {
+        if (ConfigModule.defaultConfig.driveUpSlabs().isSlabs()){ // If vehicles may only drive up slabs (and not blocks)
+            if (isOnSlab) { // If the player is driving on a (bottom) slab
+
+                if (isPassable) { // If the block ahead is air or another passable block (grass, flower, ...), vehicle will go down
                     pushVehicleDown(0.5);
-                    return false; //Vehicle will go down
+                    return false;
                 }
 
-                if (blockData instanceof Slab) {
+                if (blockData instanceof Slab) { // If the block ahead is a slab
                     Slab slab = (Slab) blockData;
-                    if (slab.getType().equals(Slab.Type.BOTTOM)) {
-                        return false; //Vehicle will continue on the slabs
+                    if (slab.getType().equals(Slab.Type.BOTTOM)) { // If it is a bottom slab, continue
+                        return false;
                     }
+                    // Else (top/double slab) - treat it like a full block
                 }
 
                 if (!isAbovePassable) {
                     VehicleData.speed.put(license, 0.0);
-                    return false; //Vehicle won't continue if there's a barrier above
+                    return false; // Vehicle won't continue if there's a barrier above
                 }
 
 
-                pushVehicleUp(0.5); //Vehicle will go up if there's a full block or a top/double slab
+                pushVehicleUp(0.5); // Vehicle will go up if there's a full block or a top/double slab
                 return true;
             }
 
-            if (!isPassable) {
-                if (blockData instanceof Slab) {
+            if (!isPassable) { // If block ahead is not air or another passable block (grass, flower, ...)
+
+                if (blockData instanceof Slab) { // If it is a slab
                     Slab slab = (Slab) blockData;
                     if (slab.getType().equals(Slab.Type.BOTTOM)) {
 
                         if (!isAbovePassable) {
                             VehicleData.speed.put(license, 0.0);
-                            return false; //Vehicle won't go up the slab if there's a barrier above
+                            return false; // Vehicle won't go up the slab if there's a barrier above
                         }
 
                         if (isOnGround) {
                             pushVehicleUp(0.5);
-                        } else { //Maybe they're on a carpet
+                        } else { // Maybe they're on a carpet
                             if ((0.5 - difference) > 0) pushVehicleUp(0.5 - difference);
                         }
                     }
                 }
 
                 VehicleData.speed.put(license, 0.0);
-                return false; //If you're on the ground and there isn't bottom slab or a passable block, stop
+                return false; // If you're on the ground and there isn't bottom slab or a passable block, stop
             }
 
-        } else if (ConfigModule.defaultConfig.driveUpSlabs().isBlocks()) {
+        } else if (ConfigModule.defaultConfig.driveUpSlabs().isBlocks()) { // If vehicles may only drive up blocks (and not slabs)
 
-            if (!isOnSlab) {
-                if (!isPassable) {
+            if (!isOnSlab) { // If isn't placed on a slab
+                if (!isPassable) { // If block ahead is not air or another passable block (grass, flower, ...)
+
                     if (blockData instanceof Slab){
                         Slab slab = (Slab) blockData;
                         if (slab.getType().equals(Slab.Type.BOTTOM)){
                             VehicleData.speed.put(license, 0.0);
-                            return false; //If it's a bottom slab, stop.
+                            return false; // If it's a bottom slab, stop.
                         }
                     }
 
-                    if (!isAbovePassable) { //if more than 1 block high
+                    if (!isAbovePassable) { // If more than 1 block high
                         VehicleData.speed.put(license, 0.0);
                         return false;
                     }
 
                     if (isOnGround) {
                         pushVehicleUp(1);
-                    } else { //Maybe they're on a carpet
+                    } else { // Maybe they're on a carpet
                         if ((1 - difference) > 0) pushVehicleUp(1 - difference);
                     }
 
@@ -411,16 +439,16 @@ public class VehicleMovement {
                 }
             }
 
-            //If it's on a slab (might have been placed there)
-            if (isPassable) {
+            // If it's on a slab (might have been placed there)
+            if (isPassable) { // If block ahead is air or another passable block (grass, flower, ...), vehicle will go down
                 pushVehicleDown(0.5);
-                return false; //Vehicle will go down
+                return false;
             }
 
             if (blockData instanceof Slab) {
                 Slab slab = (Slab) blockData;
                 if (slab.getType().equals(Slab.Type.BOTTOM)) {
-                    return false; //Vehicle will continue on the slabs
+                    return false; // Vehicle will continue on the slabs
                 }
             }
 
@@ -432,12 +460,13 @@ public class VehicleMovement {
             pushVehicleUp(0.5); //Vehicle will go up if there's a full block or a top/double slab
             return true;
 
-        } else if (ConfigModule.defaultConfig.driveUpSlabs().isBoth()) {
+        } else if (ConfigModule.defaultConfig.driveUpSlabs().isBoth()) { // If vehicles may drive up both blocks and slabs
 
-            if (isOnSlab) {
-                if (isPassable) {
+            if (isOnSlab) { // If vehicle is on a (bottom) slab
+
+                if (isPassable) { // If block ahead is air or another passable block (grass, flower, ...), vehicle will go down
                     pushVehicleDown(0.5);
-                    return false; //Vehicle will go down
+                    return false;
                 }
 
                 if (blockData instanceof Slab) {
@@ -569,6 +598,9 @@ public class VehicleMovement {
         else if (getServerVersion().is1_18_R1()) teleportSeat(((org.bukkit.craftbukkit.v1_18_R1.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
         else if (getServerVersion().is1_18_R2()) teleportSeat(((org.bukkit.craftbukkit.v1_18_R2.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
         else if (getServerVersion().is1_19()) teleportSeat(((org.bukkit.craftbukkit.v1_19_R1.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+        else if (getServerVersion().is1_19_R2()) teleportSeat(((org.bukkit.craftbukkit.v1_19_R2.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+        else if (getServerVersion().is1_19_R3()) teleportSeat(((org.bukkit.craftbukkit.v1_19_R3.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+        else if (getServerVersion().is1_20_R1()) teleportSeat(((org.bukkit.craftbukkit.v1_20_R1.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
     }
 
     /**
@@ -680,6 +712,20 @@ public class VehicleMovement {
                 return;
             }
             standMain.setVelocity(new Vector(loc.getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.00001, loc.getDirection().multiply(VehicleData.speed.get(license)).getZ()));
+            return;
+        }
+
+        if (vehicleType.isBoat()){
+            if (!blockName.contains("WATER") && !isPassable(locBelow.getBlock())){
+                VehicleData.speed.put(license, 0.0);
+            }
+
+            if (isPassable(locBelow.getBlock()) && !blockName.contains("WATER")){
+                standMain.setVelocity(new Vector(loc.getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.8, loc.getDirection().multiply(VehicleData.speed.get(license)).getZ()));
+                return;
+            }
+
+            standMain.setVelocity(new Vector(loc.getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.0, loc.getDirection().multiply(VehicleData.speed.get(license)).getZ()));
             return;
         }
 
@@ -795,7 +841,12 @@ public class VehicleMovement {
     protected float steerGetXxa(){
         float Xxa = 0;
         try {
-            Method method = packet.getClass().getDeclaredMethod("b");
+            String declaredMethod = "b";
+            if (getServerVersion().isNewerOrEqualTo(ServerVersion.v1_19_R3)) {
+                declaredMethod = "a";
+            }
+
+            Method method = packet.getClass().getDeclaredMethod(declaredMethod);
             Xxa = (float) method.invoke(packet);
         } catch (Exception e) {
             e.printStackTrace();
@@ -833,12 +884,17 @@ public class VehicleMovement {
     }
 
     /**
-     * Spawn and shoot tank's TNT (must be enabled in config.yml)
+     * Spawn and shoot tank's TNT (must be enabled in config.yml), calls the {@link TankShootEvent}.
      * @param stand The tank's main ArmorStand
      * @param loc Location of where the TNT should be spawned
      */
-    protected void spawnTNT(ArmorStand stand, Location loc){
+    public void tankShoot(ArmorStand stand, Location loc){
         if (!(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.TANK_TNT)) return;
+
+        TankShootEvent api = new TankShootEvent(license);
+        api.setPlayer(player);
+        schedulerRun(api::call);
+        if (api.isCancelled()) return;
 
         schedulerRun(() -> {
             TNTPrimed tnt = loc.getWorld().spawn(loc, TNTPrimed.class);

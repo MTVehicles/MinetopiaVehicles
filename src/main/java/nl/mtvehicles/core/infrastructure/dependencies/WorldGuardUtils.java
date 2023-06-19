@@ -1,52 +1,34 @@
 package nl.mtvehicles.core.infrastructure.dependencies;
 
-import com.sk89q.worldedit.bukkit.BukkitWorld;
-import com.sk89q.worldedit.math.BlockVector3;
-import com.sk89q.worldguard.WorldGuard;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.flags.Flag;
-import com.sk89q.worldguard.protection.flags.StateFlag;
-import com.sk89q.worldguard.protection.flags.registry.FlagConflictException;
-import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import nl.mtvehicles.core.infrastructure.enums.SoftDependency;
+import nl.mtvehicles.core.infrastructure.enums.WGFlag;
 import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.codemc.worldguardwrapper.WorldGuardWrapper;
+import org.codemc.worldguardwrapper.flag.IWrappedFlag;
+import org.codemc.worldguardwrapper.flag.WrappedState;
+import org.codemc.worldguardwrapper.region.IWrappedRegion;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * Methods for WorldGuard soft-dependency.<br>
- * <b>Do not initialise this class directly. Use {@link DependencyModule#worldGuard} instead.</b>
+ * @warning <b>Do not initialise this class directly. Use {@link DependencyModule#worldGuard} instead.</b>
  */
 public class WorldGuardUtils {
     //This must only be called if DependencyModule made sure that WorldGuard is installed.
 
     /**
-     * WorldGuard instance
+     * WorldGuardWrapper instance (supports both WG v6 and v7 API)
      */
-    public WorldGuard instance = WorldGuard.getInstance();
+    public static WorldGuardWrapper instance = WorldGuardWrapper.getInstance();
     /**
-     * WorldGuard flag registry
+     * HashMap which contains custom flags
+     * @see WGFlag
      */
-    public FlagRegistry registry = instance.getFlagRegistry();
-
-    /**
-     * List of all custom WorldGuard flags used by the plugin
-     */
-    public final List<String> flagList = Arrays.asList(
-            "mtv-gasstation",
-            "mtv-place",
-            "mtv-enter",
-            "mtv-pickup",
-            "mtv-use-car",
-            "mtv-use-hover",
-            "mtv-user-tank",
-            "mtv-use-helicopter",
-            "mtv-use-airplane"
-    );
+    public static HashMap<WGFlag, IWrappedFlag<WrappedState>> flags = new HashMap<>();
 
     /**
      * Default constructor which registers flags - <b>do not use this.</b><br>
@@ -57,72 +39,65 @@ public class WorldGuardUtils {
     }
 
     /**
+     * Check whether the given location is inside a gas station
+     */
+    public boolean isInsideGasStation(Player player, Location loc){
+        return isInRegionWithFlag(player, loc, WGFlag.GAS_STATION, WrappedState.ALLOW);
+    }
+
+    /**
      * Check whether a location is in a region with a (custom) flag of a specified state.
-     * @param loc - Location which may be inside a region
-     * @param flagName - Name of the flag
-     * @param flagState - State of the flag - specified by WorldGuard State enum (ALLOW/DENY)
+     * @param player Player (may change the flag depending on who the player is)
+     * @param loc Location which may be inside a region
+     * @param customFlag Custom WorldGuard flag (see {@link WGFlag})
+     * @param flagState State of the flag (ALLOW/DENY)
      *
      * @return True if location is in at least 1 region with the flag with the specified state.
      */
-    public boolean isInRegionWithFlag(Location loc, String flagName, StateFlag.State flagState){
-        ApplicableRegionSet regions = WorldGuard.getInstance().getPlatform().getRegionContainer().get(new BukkitWorld(loc.getWorld())).getApplicableRegions(BlockVector3.at(loc.getX(),loc.getY(),loc.getZ()));
-        StateFlag flag = (StateFlag) registry.get(flagName);
-        if (flag == null || regions.size() == 0) return false;
+    public boolean isInRegionWithFlag(Player player, Location loc, WGFlag customFlag, WrappedState flagState){
+        Set<IWrappedRegion> regions = instance.getRegions(loc);
+        if (regions.size() == 0) return false;
 
+        IWrappedFlag<WrappedState> flag = flags.get(customFlag);
         boolean returns = false;
-        for (ProtectedRegion region: regions) {
-            StateFlag.State regionFlagState = region.getFlag(flag);
-            if (regionFlagState != null)
-                if (regionFlagState.equals(flagState)) returns = true;
+        for (IWrappedRegion region : regions) {
+            Optional<WrappedState> regionFlagState = region.getFlag(flag);
+            if (regionFlagState.isPresent()){
+                WrappedState state = instance.queryFlag(player, loc, flag).orElse(null);
+                if (flagState.equals(state)) returns = true;
+            }
         }
         return returns;
     }
 
     /**
      * Check whether a location is in a region with a (custom) flag of a specified state.
-     * @param loc - Location which may be inside a region
-     * @param flagName - Name of the flag
-     * @param flagState - State of the flag - specified by a boolean (true = ALLOW / false = DENY)
+     * @param player (may change the flag depending on who the player is)
+     * @param loc Location which may be inside a region
+     * @param customFlag Custom WorldGuard flag (see {@link WGFlag})
+     * @param flagState State of the flag - specified by a boolean (true = ALLOW / false = DENY)
      *
      * @return True if location is in at least 1 region with the flag with the specified state.
      */
-    public boolean isInRegionWithFlag(Location loc, String flagName, boolean flagState){
-        StateFlag.State state = (flagState) ? StateFlag.State.ALLOW : StateFlag.State.DENY;
-        return isInRegionWithFlag(loc, flagName, state);
+    public boolean isInRegionWithFlag(Player player, Location loc, WGFlag customFlag, boolean flagState){
+        WrappedState state = (flagState) ? WrappedState.ALLOW : WrappedState.DENY;
+        return isInRegionWithFlag(player, loc, customFlag, state);
     }
 
     private void registerFlags(){
         try {
-            for (String flagName: flagList) {
-                StateFlag flag = new StateFlag(flagName, true);
-                registry.register(flag);
+            for (WGFlag flag: WGFlag.getFlagList()) { //Registering flags
+                flags.put(flag, instance.registerFlag(flag.getKey(), WrappedState.class).orElse(null));
             }
-        } catch (Exception e) {
-            if (e instanceof FlagConflictException){ //The flags are already registered
-                if (areFlagsOkay()) Bukkit.getLogger().warning("[MTVehicles] Another plugin has already registered MTVehicles' custom WorldGuard flags. They might interfere with each other!");
-                else disableDependency();
-            } else if (e instanceof IllegalStateException){ //New flags cannot be registered at this time
-                if (areFlagsOkay()) Bukkit.getLogger().warning("[MTVehicles] MTVehicles' custom WorldGuard flags have already been registered and/or are also used by another plugin. This might happen because you've just reloaded the plugin with PlugMan.");
-                else disableDependency();
+        } catch (IllegalStateException e){ //"New flags cannot be registered at this time"
+            for (WGFlag flag: WGFlag.getFlagList()) { //Getting already registered flags, if possible
+                flags.put(flag, instance.getFlag(flag.getKey(), WrappedState.class).orElse(null));
+                if (flags.get(flag) == null) {
+                    Bukkit.getLogger().severe("[MTVehicles] Custom WorldGuard flags could not be registered for MTVehicles. Disabling soft-dependency... (If you've just reloaded the plugin with PlugMan, try restarting the server.)");
+                    DependencyModule.disableDependency(SoftDependency.WORLD_GUARD);
+                    return;
+                }
             }
-            else disableDependency();
         }
-    }
-
-    private void disableDependency(){
-        Bukkit.getLogger().severe("[MTVehicles] Custom WorldGuard flags could not be created for MTVehicles. Disabling as a soft-dependcy... (If you've just reloaded the plugin with PlugMan, try restarting the server.)");
-        DependencyModule.disableDependency(SoftDependency.WORLD_GUARD);
-    }
-
-    /**
-     * Check whether all custom flags are set up correctly.
-     */
-    private boolean areFlagsOkay(){
-        boolean allAreOkay = true;
-        for (String flagName: flagList) {
-            Flag<?> existing = registry.get(flagName);
-            if (!(existing instanceof StateFlag)) allAreOkay = false;
-        }
-        return allAreOkay;
     }
 }

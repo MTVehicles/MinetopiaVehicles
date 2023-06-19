@@ -2,6 +2,7 @@ package nl.mtvehicles.core.infrastructure.enums;
 
 import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import java.util.Locale;
 
@@ -28,7 +29,11 @@ public enum VehicleType {
     /**
      * Airplanes - with the ability to fly, their movement differs from helicopters
      */
-    AIRPLANE;
+    AIRPLANE,
+    /**
+     * Boats - with the ability to move only on water
+     */
+    BOAT;
 
     public String getName(){
         return this.toString().substring(0, 1).toUpperCase() + this.toString().substring(1).toLowerCase(Locale.ROOT);
@@ -54,6 +59,10 @@ public enum VehicleType {
         return this.equals(AIRPLANE);
     }
 
+    public boolean isBoat(){
+        return this.equals(BOAT);
+    }
+
     /**
      * Vehicle is considered as 'able to fly' if it is either an Airplane or a Helicopter
      * @return True if vehicle can fly
@@ -67,8 +76,8 @@ public enum VehicleType {
      * @param loc Location where the vehicle is being used (placed, clicked, ...)
      * @return True if the vehicle can't be used. (Returns false if WorldGuard is not enabled)
      */
-    public boolean isUsageDisabled(Location loc){
+    public boolean isUsageDisabled(Player player, Location loc){
         if (!DependencyModule.isDependencyEnabled(SoftDependency.WORLD_GUARD)) return false;
-        return DependencyModule.worldGuard.isInRegionWithFlag(loc, "mtv-use-" + this.toString().toLowerCase(Locale.ROOT), false);
+        return DependencyModule.worldGuard.isInRegionWithFlag(player, loc, WGFlag.valueOf("USE_" + this.toString()), false);
     }
 }

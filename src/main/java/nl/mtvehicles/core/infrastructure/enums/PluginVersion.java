@@ -40,7 +40,15 @@ public enum PluginVersion {
      */
     v2_4_3,
     /**
-     * 2.5.0 (next expected version)
+     * 2.5.0-pre1
+     */
+    v2_5_0_pre1,
+    /**
+     * 2.5.0-pre2
+     */
+    v2_5_0_pre2,
+    /**
+     * 2.5.0 (Boats and API overhaul, 1.20 support)
      */
     v2_5_0,
     /**
@@ -48,7 +56,7 @@ public enum PluginVersion {
      */
     LATEST,
     /**
-     * Dev-versions (auto-updater is disabled)
+     * Dev-builds (auto-updater is disabled)
      */
     DEV;
 
@@ -58,7 +66,7 @@ public enum PluginVersion {
 
     /**
      * Check whether the plugin version is a dev-version (auto-updater is disabled)
-     * @return True if plugin is a dev-version
+     * @return True if plugin is a dev-build
      */
     public boolean isDev(){
         return this.equals(DEV);

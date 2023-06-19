@@ -7,6 +7,9 @@ CODE CONTRIBUTORS:
 - Jeffrey (https://github.com/Jeffrey-H)
 - Jazzkuh (https://github.com/Jazzkuh)
 - Aaron (https://github.com/duranaaron)
+- FØX (https://github.com/FoxxUI)
+- Manuel P. (https://github.com/Mr-EmPee)
+- Bluebotlabz (https://github.com/Bluebotlabz)
 
 TRANSLATORS:
 - Czech: Nikd0
@@ -16,3 +19,9 @@ TRANSLATORS:
 - Turkish: ꋖꌅꋰꌅomerturkyᴱˑᴶ
 - Japanese: kazumasa200
 - Hebrew: roi
+- Russian: peck1
+- French: Alane38
+- Thai: AungS8430
+
+RESOURCE PACK:
+- Boats: sebxter

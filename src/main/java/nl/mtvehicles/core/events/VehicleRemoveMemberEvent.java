@@ -1,16 +1,17 @@
 package nl.mtvehicles.core.events;
 
+import nl.mtvehicles.core.events.interfaces.CanEditLicensePlate;
 import nl.mtvehicles.core.events.interfaces.HasVehicle;
 import nl.mtvehicles.core.events.interfaces.IsCancellable;
 import nl.mtvehicles.core.infrastructure.models.MTVEvent;
-import nl.mtvehicles.core.infrastructure.models.Vehicle;
-import nl.mtvehicles.core.infrastructure.models.VehicleUtils;
+import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
+import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
 import org.bukkit.entity.Player;
 
 /**
  * On vehicle remove member (/vehicle removemember command). Members are players who may sit in the vehicle.
  */
-public class VehicleRemoveMemberEvent extends MTVEvent implements IsCancellable, HasVehicle {
+public class VehicleRemoveMemberEvent extends MTVEvent implements IsCancellable, CanEditLicensePlate {
     private String licensePlate;
     private Player removedPlayer;
 
@@ -22,11 +23,6 @@ public class VehicleRemoveMemberEvent extends MTVEvent implements IsCancellable,
     @Override
     public String getLicensePlate(){
         return licensePlate;
-    }
-
-    @Override
-    public Vehicle getVehicle(){
-        return VehicleUtils.getVehicle(licensePlate);
     }
 
     @Override
