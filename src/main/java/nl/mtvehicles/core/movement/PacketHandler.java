@@ -82,7 +82,8 @@ public class PacketHandler {
             Object entityPlayer = ((org.bukkit.craftbukkit.v1_19_R3.entity.CraftPlayer) player).getHandle();
             Field playerConnectionField = entityPlayer.getClass().getField("b");
             net.minecraft.server.network.PlayerConnection playerConnection = (net.minecraft.server.network.PlayerConnection) playerConnectionField.get(entityPlayer);
-            Field networkManagerField = playerConnection.getClass().getField("h");
+            Field networkManagerField = playerConnection.getClass().getDeclaredField("h");
+            networkManagerField.setAccessible(true);
             net.minecraft.network.NetworkManager networkManager = (net.minecraft.network.NetworkManager) networkManagerField.get(playerConnection);
             Field channelField = networkManager.getClass().getField("m");
             channel = (Channel) channelField.get(networkManager);
