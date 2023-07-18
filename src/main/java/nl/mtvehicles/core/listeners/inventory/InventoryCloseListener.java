@@ -1,6 +1,7 @@
 package nl.mtvehicles.core.listeners.inventory;
 
 import nl.mtvehicles.core.events.inventory.InventoryCloseEvent;
+import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
 import nl.mtvehicles.core.infrastructure.enums.InventoryTitle;
 import nl.mtvehicles.core.infrastructure.utils.LanguageUtils;
 import nl.mtvehicles.core.infrastructure.utils.TextUtils;
@@ -42,7 +43,7 @@ public class InventoryCloseListener extends MTVListener {
             VehicleUtils.openedTrunk.remove(player);
             List<ItemStack> chest = new ArrayList<>();
             chest.addAll(Arrays.asList(event.getInventory().getContents()));
-            ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + license + ".kofferbakData", chest);
+            ConfigModule.vehicleDataConfig.set(license, VehicleDataConfig.Option.TRUNK_DATA, chest);
             ConfigModule.vehicleDataConfig.save();
         }
 
