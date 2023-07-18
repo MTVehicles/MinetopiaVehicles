@@ -57,6 +57,11 @@ public class VehicleEntityListener extends MTVListener {
             callAPI();
             if (isCancelled()) return;
 
+            if (VehicleUtils.isTrunkInventoryOpen(player, license)) {
+                event.setCancelled(true);
+                return;
+            }
+
             VehicleUtils.openTrunk(player, api.getLicensePlate());
             event.setCancelled(true);
             return;
