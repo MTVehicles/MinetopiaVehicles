@@ -6,6 +6,7 @@ import org.bukkit.entity.ArmorStand;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Maps containing vehicles' data
@@ -45,6 +46,7 @@ public class VehicleData {
     public static HashMap<String, Double> BrakingSpeed = new HashMap<>();
     public static HashMap<String, Double> MaxSpeedBackwards = new HashMap<>();
     public static HashMap<String, Double> FrictionSpeed = new HashMap<>();
+    public static HashMap<String, Set<String>> lastRegions = new HashMap<>();
 
     private VehicleData(){}
 }

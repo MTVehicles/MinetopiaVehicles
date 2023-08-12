@@ -1,18 +1,19 @@
 package nl.mtvehicles.core.events;
 
 import nl.mtvehicles.core.events.interfaces.HasVehicle;
-import nl.mtvehicles.core.events.interfaces.IsCancellable;
 import nl.mtvehicles.core.infrastructure.models.MTVEvent;
 import org.bukkit.event.Cancellable;
 
 /**
- * On tank shoot
+ * On region enter
  */
-public class TankShootEvent extends MTVEvent implements IsCancellable, Cancellable, HasVehicle {
+public class VehicleRegionEnterEvent extends MTVEvent implements Cancellable, HasVehicle {
     final private String licensePlate;
+    final private String regionName;
 
-    public TankShootEvent(String licensePlate){
+    public VehicleRegionEnterEvent(String licensePlate, String regionName){
         this.licensePlate = licensePlate;
+        this.regionName = regionName;
     }
 
     @Override
@@ -25,9 +26,8 @@ public class TankShootEvent extends MTVEvent implements IsCancellable, Cancellab
         return licensePlate;
     }
 
-    @Override
-    public void setLicensePlate(String licensePlate) {
-        this.licensePlate = licensePlate;
+    public String getRegionName(){
+        return regionName;
     }
 
 }

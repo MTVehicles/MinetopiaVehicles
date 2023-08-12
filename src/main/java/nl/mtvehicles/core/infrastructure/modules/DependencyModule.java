@@ -3,11 +3,13 @@ package nl.mtvehicles.core.infrastructure.modules;
 import lombok.Getter;
 import lombok.Setter;
 import nl.mtvehicles.core.infrastructure.dependencies.PlaceholderUtils;
+import nl.mtvehicles.core.infrastructure.dependencies.SkriptUtils;
 import nl.mtvehicles.core.infrastructure.dependencies.VaultUtils;
 import nl.mtvehicles.core.infrastructure.dependencies.WorldGuardUtils;
 import nl.mtvehicles.core.infrastructure.enums.SoftDependency;
 import org.bukkit.Bukkit;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +38,10 @@ public class DependencyModule {
      * PlaceholderAPI's Utils class
      */
     public static PlaceholderUtils placeholderAPI;
+    /**
+     * Skripts's Utils class
+     */
+    public static SkriptUtils skript;
 
     public DependencyModule() {
         if (Bukkit.getServer().getPluginManager().getPlugin("WorldGuard") != null) {
@@ -61,6 +67,14 @@ public class DependencyModule {
                 loadedDependencies.add(SoftDependency.PLACEHOLDER_API);
             } catch (NoClassDefFoundError e){
                 Bukkit.getLogger().severe("[MTVehicles] An error occurred whilst loading PlaceholderAPI as a soft-dependency. (Make sure you're using the latest version, or try restarting the server.)");
+            }
+        }
+        if (Bukkit.getServer().getPluginManager().getPlugin("Skript") != null) {
+            try {
+                skript = new SkriptUtils();
+                loadedDependencies.add(SoftDependency.SKRIPT);
+            } catch (NoClassDefFoundError e){
+                Bukkit.getLogger().severe("[MTVehicles] An error occurred whilst loading Skript as a soft-dependency. (Make sure you're using the latest version, or try restarting the server.)");
             }
         }
     }

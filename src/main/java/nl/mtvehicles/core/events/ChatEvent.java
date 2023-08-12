@@ -2,11 +2,12 @@ package nl.mtvehicles.core.events;
 
 import nl.mtvehicles.core.events.interfaces.IsCancellable;
 import nl.mtvehicles.core.infrastructure.models.MTVEvent;
+import org.bukkit.event.Cancellable;
 
 /**
  * On player chat
  */
-public class ChatEvent extends MTVEvent implements IsCancellable {
+public class ChatEvent extends MTVEvent implements IsCancellable, Cancellable {
     private String message;
 
     @Override

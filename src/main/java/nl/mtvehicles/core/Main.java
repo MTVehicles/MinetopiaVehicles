@@ -1,8 +1,9 @@
 package nl.mtvehicles.core;
 
 import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
-import nl.mtvehicles.core.infrastructure.utils.PluginUpdater;
+import nl.mtvehicles.core.infrastructure.enums.SoftDependency;
 import nl.mtvehicles.core.infrastructure.modules.*;
+import nl.mtvehicles.core.infrastructure.utils.PluginUpdater;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -47,6 +48,7 @@ public class Main extends JavaPlugin {
         logInfo("--------------------------");
 
         disableNBTAPIVersionMessages();
+        loadSkript();
 
         new CommandModule();
         new ListenersModule();
@@ -76,6 +78,12 @@ public class Main extends JavaPlugin {
 
     private void disableNBTAPIVersionMessages(){
         de.tr7zw.changeme.nbtapi.utils.MinecraftVersion.disableUpdateCheck();
+    }
+
+    private void loadSkript(){
+        if (DependencyModule.isDependencyEnabled(SoftDependency.SKRIPT)){
+            DependencyModule.skript.load();
+        }
     }
 
     /**

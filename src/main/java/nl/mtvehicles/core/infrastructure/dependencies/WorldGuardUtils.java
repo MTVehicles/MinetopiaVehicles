@@ -45,6 +45,18 @@ public class WorldGuardUtils {
         return isInRegionWithFlag(player, loc, WGFlag.GAS_STATION, WrappedState.ALLOW);
     }
 
+    public Set<String> getRegionNames(Location loc){
+        Set<String> returns = new HashSet<>();
+        getRegions(loc).forEach((IWrappedRegion region) -> {
+            returns.add(region.getId());
+        });
+        return returns;
+    }
+
+    private Set<IWrappedRegion> getRegions(Location loc){
+        return instance.getRegions(loc);
+    }
+
     /**
      * Check whether a location is in a region with a (custom) flag of a specified state.
      * @param player Player (may change the flag depending on who the player is)
@@ -55,7 +67,7 @@ public class WorldGuardUtils {
      * @return True if location is in at least 1 region with the flag with the specified state.
      */
     public boolean isInRegionWithFlag(Player player, Location loc, WGFlag customFlag, WrappedState flagState){
-        Set<IWrappedRegion> regions = instance.getRegions(loc);
+        Set<IWrappedRegion> regions = getRegions(loc);
         if (regions.size() == 0) return false;
 
         IWrappedFlag<WrappedState> flag = flags.get(customFlag);

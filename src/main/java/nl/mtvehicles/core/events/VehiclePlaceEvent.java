@@ -6,11 +6,12 @@ import nl.mtvehicles.core.infrastructure.models.MTVEvent;
 import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
 import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
 import org.bukkit.Location;
+import org.bukkit.event.Cancellable;
 
 /**
  * On vehicle place
  */
-public class VehiclePlaceEvent extends MTVEvent implements IsCancellable, HasVehicle {
+public class VehiclePlaceEvent extends MTVEvent implements IsCancellable, Cancellable, CanEditLicensePlate {
     private Location location;
     private String licensePlate;
 
