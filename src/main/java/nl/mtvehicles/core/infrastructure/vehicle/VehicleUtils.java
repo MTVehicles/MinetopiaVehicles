@@ -9,7 +9,7 @@ import nl.mtvehicles.core.infrastructure.enums.InventoryTitle;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.enums.RegionAction;
 import nl.mtvehicles.core.infrastructure.enums.VehicleType;
-import nl.mtvehicles.core.infrastructure.utils.PaperUtils;
+import nl.mtvehicles.core.infrastructure.models.PaperUtils;
 import nl.mtvehicles.core.infrastructure.utils.*;
 import nl.mtvehicles.core.infrastructure.models.MTVConfig;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
@@ -80,11 +80,6 @@ public final class VehicleUtils {
         standMainSeat.setGravity(false);
         standMainSeat.setVisible(false);
 
-        if (ConfigModule.vehicleDataConfig.getType(licensePlate).isBoat()){
-            standMain.setGravity(false);
-            standSkin.setGravity(false);
-        }
-
         if (ConfigModule.vehicleDataConfig.getType(licensePlate).isHelicopter()) {
             List<Map<String, Double>> helicopterBlades = (List<Map<String, Double>>) vehicle.getVehicleData().get("wiekens");
             Map<?, ?> blade = helicopterBlades.get(0);
@@ -119,6 +114,32 @@ public final class VehicleUtils {
     public static String getLicensePlate(ItemStack item){
         NBTItem nbt = new NBTItem(item);
         return nbt.getString("mtvehicles.kenteken");
+    }
+
+    /**
+     * Get the license plate of player's driven vehicle
+     * @param p Player
+     * @return Returns null if no vehicle is being driven
+     * @see #getDrivenVehicle(Player)
+     */
+    @Nullable
+    public static String getDrivenVehiclePlate(Player p){
+        if (p.getVehicle() == null) return null;
+        if (!p.getVehicle().getCustomName().contains("MTVEHICLES_")) return null;
+
+        String[] name = p.getVehicle().getCustomName().split("_");
+        return name[2];
+    }
+
+    /**
+     * Get the player's driven vehicle
+     * @param p Player
+     * @return Returns null if no vehicle is being driven
+     * @see #getDrivenVehiclePlate(Player)
+     */
+    public static Vehicle getDrivenVehicle(Player p){
+        if (getDrivenVehiclePlate(p) == null) return null;
+        return getVehicle(getDrivenVehiclePlate(p));
     }
 
     /**
@@ -326,7 +347,7 @@ public final class VehicleUtils {
      *
      * @see Vehicle
      */
-    @ToDo("Beautify the code inside this method, use enums & move some code to VehiclesConfig.")
+    @ToDo("Beautify the code inside this method.")
     public static Vehicle getVehicle(String licensePlate) {
         if (!existsByLicensePlate(licensePlate)) return null;
 
@@ -614,8 +635,7 @@ public final class VehicleUtils {
                 if (vehicleAs.getCustomName().contains("MTVEHICLES_SKIN_" + licensePlate)) {
                     basicStandCreator(licensePlate, "SKIN", location, vehicleAs.getHelmet(), false);
                     basicStandCreator(licensePlate, "MAIN", location, null, true);
-                    vehicle.saveSeats();
-                    List<Map<String, Double>> seats = getSeats(licensePlate);
+                    List<Map<String, Double>> seats = (List<Map<String, Double>>) vehicle.getVehicleData().get("seats");
                     for (int i = 1; i <= seats.size(); i++) {
                         Map<String, Double> seat = seats.get(i - 1);
                         if (i == 1) {
@@ -624,6 +644,10 @@ public final class VehicleUtils {
                             p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_ENTER_RIDER).replace("%p%", getVehicle(licensePlate).getOwnerName())));
                         }
                         if (i > 1) {
+                            VehicleData.seatsize.put(licensePlate, seats.size());
+                            VehicleData.seatx.put("MTVEHICLES_SEAT" + i + "_" + licensePlate, seat.get("x"));
+                            VehicleData.seaty.put("MTVEHICLES_SEAT" + i + "_" + licensePlate, seat.get("y"));
+                            VehicleData.seatz.put("MTVEHICLES_SEAT" + i + "_" + licensePlate, seat.get("z"));
                             Location location2 = new Location(location.getWorld(), location.getX() + Double.valueOf(seat.get("z")), location.getY() + Double.valueOf(seat.get("y")), location.getZ() + Double.valueOf(seat.get("x")));
 
                             ArmorStand as = location2.getWorld().spawn(location2, ArmorStand.class);
@@ -679,7 +703,7 @@ public final class VehicleUtils {
     }
 
     private static void allowTicking(ArmorStand armorStand) {
-        if (PaperUtils.isRunningPaper) {
+        if(PaperUtils.isRunningPaper) {
             armorStand.setCanTick(true);
         }
     }
@@ -698,6 +722,9 @@ public final class VehicleUtils {
         VehicleData.autostand.put("MTVEHICLES_MAINSEAT_" + license, as);
         VehicleData.speed.put(license, 0.0);
         VehicleData.speedhigh.put(license, 0.0);
+        VehicleData.mainx.put("MTVEHICLES_MAINSEAT_" + license, x);
+        VehicleData.mainy.put("MTVEHICLES_MAINSEAT_" + license, y);
+        VehicleData.mainz.put("MTVEHICLES_MAINSEAT_" + license, z);
 
         as.setPassenger(p);
         VehicleData.autostand2.put(license, as);
@@ -739,48 +766,49 @@ public final class VehicleUtils {
      * @warning Do not call this method if a vehicle is being used! Use {@link #kickOut(Player)} instead.
      */
     public static boolean turnOff(@NotNull Vehicle vehicle){
-        return turnOff(vehicle.getLicensePlate());
-    }
+        final String license = vehicle.getLicensePlate();
 
-    /**
-     * @param licensePlate Vehicle's license plate
-     * @see #turnOff(Vehicle)
-     */
-    public static boolean turnOff(@NotNull String licensePlate){
-        if (!existsByLicensePlate(licensePlate)) return false;
+        if (VehicleData.autostand.get("MTVEHICLES_MAIN_" + license) == null) return false;
 
-        if (VehicleData.autostand.get("MTVEHICLES_MAIN_" + licensePlate) == null) return false;
+        final ArmorStand standMain = VehicleData.autostand.get("MTVEHICLES_MAIN_" + license);
+        final ArmorStand standSkin = VehicleData.autostand.get("MTVEHICLES_SKIN_" + license);
+        final ArmorStand standMainSeat = VehicleData.autostand.get("MTVEHICLES_MAINSEAT_" + license);
 
+<<<<<<< Updated upstream
+        if (vehicle.getVehicleType().isHelicopter()) {
+            ArmorStand blades = VehicleData.autostand.get("MTVEHICLES_WIEKENS_" + license);
+=======
         final ArmorStand standMain = VehicleData.autostand.get("MTVEHICLES_MAIN_" + licensePlate);
         final ArmorStand standSkin = VehicleData.autostand.get("MTVEHICLES_SKIN_" + licensePlate);
         final ArmorStand standMainSeat = VehicleData.autostand.get("MTVEHICLES_MAINSEAT_" + licensePlate);
         VehicleType vehicleType = VehicleData.type.get(licensePlate);
 
+        VehicleData.lastRegions.remove(licensePlate); // doesn't do anything if not set
+
         if (vehicleType.isHelicopter()) {
             ArmorStand blades = VehicleData.autostand.get("MTVEHICLES_WIEKENS_" + licensePlate);
+>>>>>>> Stashed changes
             Location locBelow = new Location(blades.getLocation().getWorld(), blades.getLocation().getX(), blades.getLocation().getY() - 0.2, blades.getLocation().getZ(), blades.getLocation().getYaw(), blades.getLocation().getPitch());
             blades.setGravity(locBelow.getBlock().getType().equals(Material.AIR)); // Blades should not fall if the helicopter is on the ground
         }
 
         // If a helicopter is 'extremely falling' and player manages to leave it beforehand
-        if (vehicleType.isHelicopter() && (boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.EXTREME_HELICOPTER_FALL) && !standMainSeat.isOnGround()){
-            VehicleData.fallDamage.put(licensePlate, true); // Do not damage when entering afterwards
+        if (vehicle.getVehicleType().isHelicopter() && (boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.EXTREME_HELICOPTER_FALL) && !standMainSeat.isOnGround()){
+            VehicleData.fallDamage.put(license, true); // Do not damage when entering afterwards
         }
 
-        if (!vehicleType.isBoat()) {
-            standMain.setGravity(true);
-            standSkin.setGravity(true);
-        }
-        List<Map<String, Double>> seats = getSeats(licensePlate);
+        standMain.setGravity(true);
+        standSkin.setGravity(true);
+        List<Map<String, Integer>> seats = (List<Map<String, Integer>>) vehicle.getVehicleData().get("seats");
         for (int i = 2; i <= seats.size(); i++) {
-            if (VehicleData.autostand.get("MTVEHICLES_SEAT" + i + "_" + licensePlate) != null)
-                VehicleData.autostand.get("MTVEHICLES_SEAT" + i + "_" + licensePlate).remove();
+            if (VehicleData.autostand.get("MTVEHICLES_SEAT" + i + "_" + license) != null)
+                VehicleData.autostand.get("MTVEHICLES_SEAT" + i + "_" + license).remove();
         }
-        VehicleData.type.remove(licensePlate); //.remove(license+"b") used to be here... why? maybe i'm missing something?
+        VehicleData.type.remove(license); //.remove(license+"b") used to be here... why? maybe i'm missing something?
 
-        if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.FUEL_ENABLED) && (boolean) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.FUEL_ENABLED)) {
-            double fuel = VehicleData.fuel.get(licensePlate);
-            ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.FUEL, fuel);
+        if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.FUEL_ENABLED) && (boolean) ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.FUEL_ENABLED)) {
+            double fuel = VehicleData.fuel.get(license);
+            ConfigModule.vehicleDataConfig.set(license, VehicleDataConfig.Option.FUEL, fuel);
             ConfigModule.vehicleDataConfig.save();
         }
 
@@ -788,26 +816,12 @@ public final class VehicleUtils {
     }
 
     /**
-     * Get list of seats for a vehicle (specified by license plate)
-     * @see Vehicle#getSeats()
+     * @param licensePlate Vehicle's license plate
+     * @see #turnOff(Vehicle)
      */
-    public static List<Map<String, Double>> getSeats(String licensePlate){
-        final Integer seatSize = VehicleData.seatsize.get(licensePlate);
-        List<Map<String, Double>> seatList = new ArrayList<>();
-        for (int i = 1; i <= seatSize; i++) {
-            Map<String, Double> seat = new HashMap<>();
-            if (i == 1) {
-                seat.put("x", VehicleData.mainx.get("MTVEHICLES_MAINSEAT_" + licensePlate));
-                seat.put("y", VehicleData.mainy.get("MTVEHICLES_MAINSEAT_" + licensePlate));
-                seat.put("z", VehicleData.mainz.get("MTVEHICLES_MAINSEAT_" + licensePlate));
-            } else {
-                seat.put("x", VehicleData.seatx.get("MTVEHICLES_SEAT" + i + "_" + licensePlate));
-                seat.put("y", VehicleData.seatx.get("MTVEHICLES_SEAT" + i + "_" + licensePlate));
-                seat.put("z", VehicleData.seatx.get("MTVEHICLES_SEAT" + i + "_" + licensePlate));
-            }
-            seatList.add(seat);
-        }
-        return seatList;
+    public static boolean turnOff(@NotNull String licensePlate){
+        if (getVehicle(licensePlate) == null) return false;
+        return turnOff(getVehicle(licensePlate));
     }
 
     /**
