@@ -27,9 +27,4 @@ public class VehicleEnterEvent extends MTVEvent implements IsCancellable, Cancel
         return licensePlate;
     }
 
-    @Override
-    public void setLicensePlate(String licensePlate) {
-        this.licensePlate = licensePlate;
-    }
-
 }

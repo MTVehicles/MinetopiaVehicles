@@ -25,9 +25,4 @@ public class TankShootEvent extends MTVEvent implements IsCancellable, Cancellab
         return licensePlate;
     }
 
-    @Override
-    public void setLicensePlate(String licensePlate) {
-        this.licensePlate = licensePlate;
-    }
-
 }

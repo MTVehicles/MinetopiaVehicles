@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.events;
 
+import nl.mtvehicles.core.events.interfaces.CanEditLicensePlate;
 import nl.mtvehicles.core.events.interfaces.IsCancellable;
 import nl.mtvehicles.core.infrastructure.models.MTVEvent;
 import org.bukkit.entity.Player;
