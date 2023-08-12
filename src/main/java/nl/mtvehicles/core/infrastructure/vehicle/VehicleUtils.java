@@ -789,13 +789,15 @@ public final class VehicleUtils {
         }
 
         // If a helicopter is 'extremely falling' and player manages to leave it beforehand
-        if (vehicle.getVehicleType().isHelicopter() && (boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.EXTREME_HELICOPTER_FALL) && !standMainSeat.isOnGround()){
+        if (vehicleType.isHelicopter() && (boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.EXTREME_HELICOPTER_FALL) && !standMainSeat.isOnGround()){
             VehicleData.fallDamage.put(licensePlate, true); // Do not damage when entering afterwards
         }
 
-        standMain.setGravity(true);
-        standSkin.setGravity(true);
-        List<Map<String, Integer>> seats = (List<Map<String, Integer>>) vehicle.getVehicleData().get("seats");
+        if (!vehicleType.isBoat()) {
+            standMain.setGravity(true);
+            standSkin.setGravity(true);
+        }
+        List<Map<String, Double>> seats = getSeats(licensePlate);
         for (int i = 2; i <= seats.size(); i++) {
             if (VehicleData.autostand.get("MTVEHICLES_SEAT" + i + "_" + licensePlate) != null)
                 VehicleData.autostand.get("MTVEHICLES_SEAT" + i + "_" + licensePlate).remove();
