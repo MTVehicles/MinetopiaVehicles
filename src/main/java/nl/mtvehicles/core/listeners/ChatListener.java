@@ -317,7 +317,7 @@ public class ChatListener extends MTVListener {
 
             if (!message.toLowerCase().contains("!q")) {
                 String licensePlate = getLicensePlate(player);
-                ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.ACCELARATION_SPEED, Double.valueOf(message));
+                ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.ACCELERATION_SPEED, Double.valueOf(message));
                 ConfigModule.vehicleDataConfig.save();
                 ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_SUCCESSFUL);
                 ItemUtils.edit.put(player.getUniqueId() + ".acceleratieSpeed", false);
