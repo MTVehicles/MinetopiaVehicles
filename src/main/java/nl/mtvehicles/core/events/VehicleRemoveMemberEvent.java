@@ -6,11 +6,13 @@ import nl.mtvehicles.core.infrastructure.models.MTVEvent;
 import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
 import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
 
 /**
  * On vehicle remove member (/vehicle removemember command). Members are players who may sit in the vehicle.
  */
-public class VehicleRemoveMemberEvent extends MTVEvent implements IsCancellable, HasVehicle {
+public class VehicleRemoveMemberEvent extends MTVEvent implements IsCancellable, Cancellable, CanEditLicensePlate {
+
     private String licensePlate;
     private Player removedPlayer;
 
