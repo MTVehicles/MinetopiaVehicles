@@ -80,6 +80,11 @@ public final class VehicleUtils {
         standMainSeat.setGravity(false);
         standMainSeat.setVisible(false);
 
+        if (ConfigModule.vehicleDataConfig.getType(licensePlate).isBoat()){
+            standMain.setGravity(false);
+            standSkin.setGravity(false);
+        }
+
         if (ConfigModule.vehicleDataConfig.getType(licensePlate).isHelicopter()) {
             List<Map<String, Double>> helicopterBlades = (List<Map<String, Double>>) vehicle.getVehicleData().get("wiekens");
             Map<?, ?> blade = helicopterBlades.get(0);
@@ -635,7 +640,7 @@ public final class VehicleUtils {
                 if (vehicleAs.getCustomName().contains("MTVEHICLES_SKIN_" + licensePlate)) {
                     basicStandCreator(licensePlate, "SKIN", location, vehicleAs.getHelmet(), false);
                     basicStandCreator(licensePlate, "MAIN", location, null, true);
-                    List<Map<String, Double>> seats = (List<Map<String, Double>>) vehicle.getVehicleData().get("seats");
+                    vehicle.saveSeats();
                     for (int i = 1; i <= seats.size(); i++) {
                         Map<String, Double> seat = seats.get(i - 1);
                         if (i == 1) {
@@ -822,6 +827,29 @@ public final class VehicleUtils {
     public static boolean turnOff(@NotNull String licensePlate){
         if (getVehicle(licensePlate) == null) return false;
         return turnOff(getVehicle(licensePlate));
+    }
+
+    /**
+     * Get list of seats for a vehicle (specified by license plate)
+     * @see Vehicle#getSeats()
+     */
+    public static List<Map<String, Double>> getSeats(String licensePlate){
+        final Integer seatSize = VehicleData.seatsize.get(licensePlate);
+        List<Map<String, Double>> seatList = new ArrayList<>();
+        for (int i = 1; i <= seatSize; i++) {
+            Map<String, Double> seat = new HashMap<>();
+            if (i == 1) {
+                seat.put("x", VehicleData.mainx.get("MTVEHICLES_MAINSEAT_" + licensePlate));
+                seat.put("y", VehicleData.mainy.get("MTVEHICLES_MAINSEAT_" + licensePlate));
+                seat.put("z", VehicleData.mainz.get("MTVEHICLES_MAINSEAT_" + licensePlate));
+            } else {
+                seat.put("x", VehicleData.seatx.get("MTVEHICLES_SEAT" + i + "_" + licensePlate));
+                seat.put("y", VehicleData.seatx.get("MTVEHICLES_SEAT" + i + "_" + licensePlate));
+                seat.put("z", VehicleData.seatx.get("MTVEHICLES_SEAT" + i + "_" + licensePlate));
+            }
+            seatList.add(seat);
+        }
+        return seatList;
     }
 
     /**
