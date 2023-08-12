@@ -1,22 +1,15 @@
 package nl.mtvehicles.core.movement;
 
-import com.google.common.collect.Sets;
-import nl.mtvehicles.core.events.HornUseEvent;
 import nl.mtvehicles.core.events.TankShootEvent;
-import nl.mtvehicles.core.events.VehicleRegionEnterEvent;
-import nl.mtvehicles.core.events.VehicleRegionLeaveEvent;
 import nl.mtvehicles.core.infrastructure.annotations.ToDo;
 import nl.mtvehicles.core.infrastructure.annotations.VersionSpecific;
 import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
 import nl.mtvehicles.core.infrastructure.enums.ServerVersion;
-import nl.mtvehicles.core.infrastructure.enums.SoftDependency;
 import nl.mtvehicles.core.infrastructure.enums.VehicleType;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
-import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
 import nl.mtvehicles.core.infrastructure.utils.BossBarUtils;
 import nl.mtvehicles.core.infrastructure.vehicle.VehicleData;
-import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -35,8 +28,6 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicLong;
 
 import static nl.mtvehicles.core.Main.schedulerRun;
 import static nl.mtvehicles.core.infrastructure.modules.VersionModule.getServerVersion;
@@ -107,7 +98,7 @@ public class VehicleMovement {
         this.packet = packet;
 
         this.player = player;
-        AtomicLong lastUsed = new AtomicLong(0L);
+        long lastUsed = 0L;
 
         if (player.getVehicle() == null) return;
         final Entity vehicle = player.getVehicle();
@@ -149,93 +140,55 @@ public class VehicleMovement {
             return;
         }
 
-        schedulerRun(() -> {
-            standSkin.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw(), standMain.getLocation().getPitch()));
-            if (DependencyModule.isDependencyEnabled(SoftDependency.WORLD_GUARD)){
-                Set<String> newRegions = DependencyModule.worldGuard.getRegionNames(standMain.getLocation());
-                if (VehicleData.lastRegions.containsKey(license)){
-                    Set<String> lastRegions = VehicleData.lastRegions.get(license);
+        schedulerRun(() -> standSkin.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw(), standMain.getLocation().getPitch())));
 
-                    for (String leftRegion: Sets.difference(lastRegions, newRegions)) {
-                        VehicleRegionLeaveEvent event = new VehicleRegionLeaveEvent(license, leftRegion);
-                        event.setPlayer(player);
-                        event.call();
-                        if (event.isCancelled()) {
-                            player.getVehicle().removePassenger(player);
-                            return;
-                        }
+        updateStand();
+        if (!vehicleType.canFly()) blockCheck();
+        mainSeat();
 
-                    }
-
-                    for (String enteredRegion : Sets.difference(newRegions, lastRegions)) {
-                        VehicleRegionEnterEvent event = new VehicleRegionEnterEvent(license, enteredRegion);
-                        event.setPlayer(player);
-                        event.call();
-                        if (event.isCancelled()) {
-                            player.getVehicle().removePassenger(player);
-                            return;
-                        }
-                    }
-
-                }
-                VehicleData.lastRegions.put(license, newRegions);
+        if (VehicleData.seatsize.get(license + "addon") != null) {
+            for (int i = 1; i <= VehicleData.seatsize.get(license + "addon"); i++) {
+                ArmorStand standAddon = VehicleData.autostand.get("MTVEHICLES_ADDON" + i + "_" + license);
+                schedulerRun(() -> standAddon.teleport(standMain.getLocation()));
             }
+        }
 
-            updateStand();
-            if (!vehicleType.canFly()) blockCheck();
-            mainSeat();
+        if (vehicleType.isHelicopter()) rotors();
 
-            if (VehicleData.seatsize.get(license + "addon") != null) {
-                for (int i = 1; i <= VehicleData.seatsize.get(license + "addon"); i++) {
-                    ArmorStand standAddon = VehicleData.autostand.get("MTVEHICLES_ADDON" + i + "_" + license);
-                    //schedulerRun(() -> standAddon.teleport(standMain.getLocation()));
-                    standAddon.teleport(standMain.getLocation());
-                }
+        // Horn
+        if (ConfigModule.vehicleDataConfig.isHornEnabled(license) && steerIsJumping() && !isFalling) {
+            if (VehicleData.lastUsage.containsKey(player.getName())) lastUsed = VehicleData.lastUsage.get(player.getName());
+
+            if (System.currentTimeMillis() - lastUsed >= Long.parseLong(ConfigModule.defaultConfig.get(DefaultConfig.Option.HORN_COOLDOWN).toString()) * 1000L) {
+                standMain.getWorld().playSound(standMain.getLocation(), Objects.requireNonNull(ConfigModule.defaultConfig.get(DefaultConfig.Option.HORN_TYPE).toString()), 0.9f, 1f);
+                VehicleData.lastUsage.put(player.getName(), System.currentTimeMillis());
             }
+        }
 
-            if (vehicleType.isHelicopter()) rotors();
+        // Tank
+        if (vehicleType.isTank() && steerIsJumping()) {
+            if (VehicleData.lastUsage.containsKey(player.getName())) lastUsed = VehicleData.lastUsage.get(player.getName());
 
-            // Horn
-            if (ConfigModule.vehicleDataConfig.isHornEnabled(license) && steerIsJumping() && !isFalling) {
-                if (VehicleData.lastUsage.containsKey(player.getName())) lastUsed.set(VehicleData.lastUsage.get(player.getName()));
-
-                if (System.currentTimeMillis() - lastUsed.get() >= Long.parseLong(ConfigModule.defaultConfig.get(DefaultConfig.Option.HORN_COOLDOWN).toString()) * 1000L) {
-                    HornUseEvent api = new HornUseEvent(license);
-                    api.setPlayer(player);
-                    schedulerRun(api::call);
-
-                    if (!api.isCancelled()){
-                        standMain.getWorld().playSound(standMain.getLocation(), Objects.requireNonNull(ConfigModule.defaultConfig.get(DefaultConfig.Option.HORN_TYPE).toString()), 0.9f, 1f);
-                        VehicleData.lastUsage.put(player.getName(), System.currentTimeMillis());
-                    }
-                }
+            if (System.currentTimeMillis() - lastUsed >= Long.parseLong(ConfigModule.defaultConfig.get(DefaultConfig.Option.TANK_COOLDOWN).toString()) * 1000L) {
+                standMain.getWorld().playEffect(standMain.getLocation(), Effect.BLAZE_SHOOT, 1, 1);
+                standMain.getWorld().playEffect(standMain.getLocation(), Effect.GHAST_SHOOT, 1, 1);
+                standMain.getWorld().playEffect(standMain.getLocation(), Effect.WITHER_BREAK_BLOCK, 1, 1);
+                double xOffset = 4;
+                double yOffset = 1.6;
+                double zOffset = 0;
+                Location locvp = standMain.getLocation().clone();
+                Location fbvp = locvp.add(locvp.getDirection().setY(0).normalize().multiply(xOffset));
+                float zvp = (float) (fbvp.getZ() + zOffset * Math.sin(Math.toRadians(fbvp.getYaw())));
+                float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(fbvp.getYaw())));
+                Location loc = new Location(standMain.getWorld(), xvp, standMain.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
+                spawnParticles(standMain, loc);
+                tankShoot(standMain, loc);
+                VehicleData.lastUsage.put(player.getName(), System.currentTimeMillis());
             }
+        }
 
-            // Tank
-            if (vehicleType.isTank() && steerIsJumping()) {
-                if (VehicleData.lastUsage.containsKey(player.getName())) lastUsed.set(VehicleData.lastUsage.get(player.getName()));
-
-                if (System.currentTimeMillis() - lastUsed.get() >= Long.parseLong(ConfigModule.defaultConfig.get(DefaultConfig.Option.TANK_COOLDOWN).toString()) * 1000L) {
-                    standMain.getWorld().playEffect(standMain.getLocation(), Effect.BLAZE_SHOOT, 1, 1);
-                    standMain.getWorld().playEffect(standMain.getLocation(), Effect.GHAST_SHOOT, 1, 1);
-                    standMain.getWorld().playEffect(standMain.getLocation(), Effect.WITHER_BREAK_BLOCK, 1, 1);
-                    double xOffset = 4;
-                    double yOffset = 1.6;
-                    double zOffset = 0;
-                    Location locvp = standMain.getLocation().clone();
-                    Location fbvp = locvp.add(locvp.getDirection().setY(0).normalize().multiply(xOffset));
-                    float zvp = (float) (fbvp.getZ() + zOffset * Math.sin(Math.toRadians(fbvp.getYaw())));
-                    float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(fbvp.getYaw())));
-                    Location loc = new Location(standMain.getWorld(), xvp, standMain.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
-                    spawnParticles(standMain, loc);
-                    tankShoot(standMain, loc);
-                    VehicleData.lastUsage.put(player.getName(), System.currentTimeMillis());
-                }
-            }
-
-            rotation();
-            move();
-        });
+        rotation();
+        move();
     }
 
     /**
@@ -343,31 +296,6 @@ public class VehicleMovement {
         final double difference = Double.parseDouble("0." + locY.split("\\.")[1]);
         final BlockData blockData = loc.getBlock().getBlockData();
         final BlockData blockDataBelow = locBlockBelow.getBlock().getBlockData();
-
-        if (vehicleType.isBoat()){
-            if (!locBlockBelow.getBlock().getType().toString().contains("WATER")){
-                VehicleData.speed.put(license, 0.0);
-                return false;
-            }
-
-            return false;
-        }
-
-        if (standMain.getLocation().getBlock().getType().toString().contains("PATH") || standMain.getLocation().getBlock().getType().toString().contains("FARMLAND")){
-
-            if (!isAbovePassable){
-                VehicleData.speed.put(license, 0.0);
-                return false;
-            }
-
-            if (!loc.getBlock().getType().toString().contains("PATH") && !loc.getBlock().getType().toString().contains("FARMLAND")) { //if block ahead isn't a path
-                pushVehicleUp(0.0625);
-                return true; //Vehicle will be pushed up
-            }
-
-            return false;
-
-        }
 
         if (loc.getBlock().getType().toString().contains("CARPET")){ // If block ahead is a carpet
             if (!(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.DRIVE_ON_CARPETS)){ // If carpets are turned off in config, stop
@@ -639,8 +567,6 @@ public class VehicleMovement {
         else if (getServerVersion().is1_18_R2()) teleportSeat(((org.bukkit.craftbukkit.v1_18_R2.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
         else if (getServerVersion().is1_19()) teleportSeat(((org.bukkit.craftbukkit.v1_19_R1.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
         else if (getServerVersion().is1_19_R2()) teleportSeat(((org.bukkit.craftbukkit.v1_19_R2.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
-        else if (getServerVersion().is1_19_R3()) teleportSeat(((org.bukkit.craftbukkit.v1_19_R3.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
-        else if (getServerVersion().is1_20_R1()) teleportSeat(((org.bukkit.craftbukkit.v1_20_R1.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
     }
 
     /**
@@ -752,20 +678,6 @@ public class VehicleMovement {
                 return;
             }
             standMain.setVelocity(new Vector(loc.getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.00001, loc.getDirection().multiply(VehicleData.speed.get(license)).getZ()));
-            return;
-        }
-
-        if (vehicleType.isBoat()){
-            if (!blockName.contains("WATER") && !isPassable(locBelow.getBlock())){
-                VehicleData.speed.put(license, 0.0);
-            }
-
-            if (isPassable(locBelow.getBlock()) && !blockName.contains("WATER")){
-                standMain.setVelocity(new Vector(loc.getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.8, loc.getDirection().multiply(VehicleData.speed.get(license)).getZ()));
-                return;
-            }
-
-            standMain.setVelocity(new Vector(loc.getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.0, loc.getDirection().multiply(VehicleData.speed.get(license)).getZ()));
             return;
         }
 
@@ -881,12 +793,7 @@ public class VehicleMovement {
     protected float steerGetXxa(){
         float Xxa = 0;
         try {
-            String declaredMethod = "b";
-            if (getServerVersion().isNewerOrEqualTo(ServerVersion.v1_19_R3)) {
-                declaredMethod = "a";
-            }
-
-            Method method = packet.getClass().getDeclaredMethod(declaredMethod);
+            Method method = packet.getClass().getDeclaredMethod("b");
             Xxa = (float) method.invoke(packet);
         } catch (Exception e) {
             e.printStackTrace();
@@ -931,9 +838,10 @@ public class VehicleMovement {
     public void tankShoot(ArmorStand stand, Location loc){
         if (!(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.TANK_TNT)) return;
 
-        TankShootEvent api = new TankShootEvent(license);
+        TankShootEvent api = new TankShootEvent();
         api.setPlayer(player);
-        schedulerRun(api::call);
+        api.setLicensePlate(license);
+        api.call();
         if (api.isCancelled()) return;
 
         schedulerRun(() -> {

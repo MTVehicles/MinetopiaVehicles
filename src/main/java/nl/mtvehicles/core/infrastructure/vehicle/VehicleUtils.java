@@ -117,32 +117,6 @@ public final class VehicleUtils {
     }
 
     /**
-     * Get the license plate of player's driven vehicle
-     * @param p Player
-     * @return Returns null if no vehicle is being driven
-     * @see #getDrivenVehicle(Player)
-     */
-    @Nullable
-    public static String getDrivenVehiclePlate(Player p){
-        if (p.getVehicle() == null) return null;
-        if (!p.getVehicle().getCustomName().contains("MTVEHICLES_")) return null;
-
-        String[] name = p.getVehicle().getCustomName().split("_");
-        return name[2];
-    }
-
-    /**
-     * Get the player's driven vehicle
-     * @param p Player
-     * @return Returns null if no vehicle is being driven
-     * @see #getDrivenVehiclePlate(Player)
-     */
-    public static Vehicle getDrivenVehicle(Player p){
-        if (getDrivenVehiclePlate(p) == null) return null;
-        return getVehicle(getDrivenVehiclePlate(p));
-    }
-
-    /**
      * Create a vehicle and get its item by UUID (UUID may be found in vehicles.yml)
      * @param p Vehicle's owner
      * @param uuid Vehicle's UUID (UUID may be found in vehicles.yml)
@@ -774,20 +748,8 @@ public final class VehicleUtils {
         final ArmorStand standSkin = VehicleData.autostand.get("MTVEHICLES_SKIN_" + license);
         final ArmorStand standMainSeat = VehicleData.autostand.get("MTVEHICLES_MAINSEAT_" + license);
 
-<<<<<<< Updated upstream
         if (vehicle.getVehicleType().isHelicopter()) {
             ArmorStand blades = VehicleData.autostand.get("MTVEHICLES_WIEKENS_" + license);
-=======
-        final ArmorStand standMain = VehicleData.autostand.get("MTVEHICLES_MAIN_" + licensePlate);
-        final ArmorStand standSkin = VehicleData.autostand.get("MTVEHICLES_SKIN_" + licensePlate);
-        final ArmorStand standMainSeat = VehicleData.autostand.get("MTVEHICLES_MAINSEAT_" + licensePlate);
-        VehicleType vehicleType = VehicleData.type.get(licensePlate);
-
-        VehicleData.lastRegions.remove(licensePlate); // doesn't do anything if not set
-
-        if (vehicleType.isHelicopter()) {
-            ArmorStand blades = VehicleData.autostand.get("MTVEHICLES_WIEKENS_" + licensePlate);
->>>>>>> Stashed changes
             Location locBelow = new Location(blades.getLocation().getWorld(), blades.getLocation().getX(), blades.getLocation().getY() - 0.2, blades.getLocation().getZ(), blades.getLocation().getYaw(), blades.getLocation().getPitch());
             blades.setGravity(locBelow.getBlock().getType().equals(Material.AIR)); // Blades should not fall if the helicopter is on the ground
         }
