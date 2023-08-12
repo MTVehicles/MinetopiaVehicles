@@ -5,13 +5,11 @@ import nl.mtvehicles.core.events.interfaces.IsCancellable;
 import nl.mtvehicles.core.infrastructure.models.MTVEvent;
 import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
 import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
-import org.bukkit.event.Cancellable;
 
 /**
  * On vehicle pick up
  */
-public class VehiclePickUpEvent extends MTVEvent implements IsCancellable, Cancellable, CanEditLicensePlate {
-
+public class VehiclePickUpEvent extends MTVEvent implements IsCancellable, HasVehicle {
     private String licensePlate;
 
     @Override

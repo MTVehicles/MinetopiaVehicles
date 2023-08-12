@@ -6,13 +6,11 @@ import nl.mtvehicles.core.infrastructure.models.MTVEvent;
 import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
 import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
 import org.bukkit.entity.Entity;
-import org.bukkit.event.Cancellable;
 
 /**
  * On vehicle damage
  */
-public class VehicleDamageEvent extends MTVEvent implements IsCancellable, Cancellable, CanEditLicensePlate {
-
+public class VehicleDamageEvent extends MTVEvent implements IsCancellable, HasVehicle {
     private Entity damager;
     private double damage;
     private String licensePlate;
