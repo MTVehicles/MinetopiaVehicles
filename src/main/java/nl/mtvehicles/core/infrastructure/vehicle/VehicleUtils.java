@@ -273,6 +273,7 @@ public final class VehicleUtils {
      * @param licensePlate Vehicle's license plate
      * @return The vehicle item - just aesthetic (null if license plate is not found)
      * @see #getItem(String)
+     * @since 2.5.1
      */
     public static ItemStack getItemByLicensePlate(String licensePlate){
         return getItem(getUUID(licensePlate));
@@ -311,6 +312,25 @@ public final class VehicleUtils {
      */
     public static boolean isVehicle(Entity entity){
         return entity.getCustomName() != null && entity instanceof ArmorStand && entity.getCustomName().contains("MTVEHICLES");
+    }
+
+    /**
+     * Get the current driver of the vehicle.
+     * @param licensePlate Vehicle's license plate
+     * @return Returns null if the vehicle is not being driven by any player at the moment.
+     * @since 2.5.1
+     */
+    @Nullable
+    public static Player getCurrentDriver(String licensePlate){
+        Player driver = null;
+        for (World world : Bukkit.getServer().getWorlds()) {
+            for (Entity entity : world.getEntities()) {
+                if (entity.getCustomName() != null && entity.getCustomName().contains("MAINSEAT_" + licensePlate)) {
+                    driver = (Player) entity.getPassenger();
+                }
+            }
+        }
+        return driver;
     }
 
     /**

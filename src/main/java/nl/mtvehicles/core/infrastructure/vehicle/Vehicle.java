@@ -111,6 +111,16 @@ public class Vehicle {
     }
 
     /**
+     * Get the current driver of the vehicle
+     * @return Returns null if the vehicle is not being driven by any player at the moment.
+     * @see VehicleUtils#getCurrentDriver(String)
+     */
+    @Nullable
+    public Player getCurrentDriver(){
+        return VehicleUtils.getCurrentDriver(this.getLicensePlate());
+    }
+
+    /**
      * Get the list of seats
      */
     public List<Map<String, Double>> getSeats(){
