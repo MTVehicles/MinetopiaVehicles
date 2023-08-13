@@ -38,9 +38,9 @@ public class VehiclePlaceListener extends MTVListener {
         if (!action.equals(Action.RIGHT_CLICK_BLOCK)) return;
         if (item == null) return;
         if (!item.hasItemMeta()
-                || !(new NBTItem(item)).hasKey("mtvehicles.kenteken")
                 || clickedBlock == null
         ) return;
+        if (!(new NBTItem(item)).hasTag("mtvehicles.kenteken")) return;
         String license = VehicleUtils.getLicensePlate(item);
         if (license == null) return;
 
