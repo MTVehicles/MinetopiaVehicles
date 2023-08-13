@@ -525,20 +525,12 @@ public final class VehicleUtils {
      * @param player Player
      */
     public static void pickupVehicle(String license, Player player) {
-        if (getVehicle(license) == null) {
+        Vehicle vehicle = getVehicle(license);
+        if (vehicle == null) {
             for (World world : Bukkit.getServer().getWorlds()) {
                 for (Entity entity : world.getEntities()) {
                     if (entity.getCustomName() != null && entity.getCustomName().contains(license)) {
-                        ArmorStand test = (ArmorStand) entity;
-                        if (test.getCustomName().contains("MTVEHICLES_SKIN_" + license)) {
-                            if (!TextUtils.checkInvFull(player)) {
-                                player.getInventory().addItem(test.getHelmet());
-                            } else {
-                                ConfigModule.messagesConfig.sendMessage(player, Message.INVENTORY_FULL);
-                                return;
-                            }
-                        }
-                        test.remove();
+                        entity.remove();
                     }
                 }
             }
@@ -546,13 +538,13 @@ public final class VehicleUtils {
             return;
         }
 
-        if (getVehicle(license).getOwnerName() == null) {
+        if (vehicle.getOwnerName() == null) {
             ConfigModule.messagesConfig.sendMessage(player, Message.VEHICLE_NOT_FOUND);
-            Main.logSevere("Could not find the owner of vehicle " + license + "! The vehicleData.yml must be malformed!");
+            Main.logSevere("Could not find the owner of the vehicle " + license + "! The vehicleData.yml must be malformed!");
             return;
         }
 
-        if (getVehicle(license).isOwner(player) && !((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.CAR_PICKUP)) || player.hasPermission("mtvehicles.oppakken")) {
+        if (vehicle.isOwner(player) && !((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.CAR_PICKUP)) || player.hasPermission("mtvehicles.oppakken")) {
             for (World world : Bukkit.getServer().getWorlds()) {
                 for (Entity entity : world.getEntities()) {
                     if (entity.getCustomName() != null && entity.getCustomName().contains(license)) {
@@ -560,7 +552,7 @@ public final class VehicleUtils {
                         if (test.getCustomName().contains("MTVEHICLES_SKIN_" + license)) {
                             if (!TextUtils.checkInvFull(player)) {
                                 player.getInventory().addItem(test.getHelmet());
-                                player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_PICKUP).replace("%p%", getVehicle(license).getOwnerName())));
+                                player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_PICKUP).replace("%p%", vehicle.getOwnerName())));
                             } else {
                                 ConfigModule.messagesConfig.sendMessage(player, Message.INVENTORY_FULL);
                                 return;
@@ -575,8 +567,48 @@ public final class VehicleUtils {
                 player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.CANNOT_DO_THAT_HERE)));
                 return;
             }
-            player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_NO_OWNER_PICKUP).replace("%p%", getVehicle(license).getOwnerName())));
+            player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_NO_OWNER_PICKUP).replace("%p%", vehicle.getOwnerName())));
             return;
+        }
+    }
+
+    /**
+     * Despawn a vehicle specified by its license plate from all worlds
+     * @param licensePlates Vehicle's license plate
+     * @throws IllegalArgumentException Thrown if given license plate is invalid.
+     * @since 2.5.1
+     * @see #despawnVehicle(World, String...)
+     */
+    public static void despawnVehicle(String... licensePlates) throws IllegalArgumentException {
+        for (String licensePlate : licensePlates) {
+            if (!existsByLicensePlate(licensePlate)) throw new IllegalArgumentException("Vehicle " + licensePlate + " does not exist.");
+
+            for (World world : Bukkit.getServer().getWorlds()) {
+                for (Entity entity : world.getEntities()) {
+                    if (entity.getCustomName() != null && entity.getCustomName().contains(licensePlate)) {
+                        entity.remove();
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     *  Despawn a vehicle specified by its license plate from a specified world
+     * @param world World where the vehicle is being removed
+     * @param licensePlates Vehicle's license plate
+     * @throws IllegalArgumentException Thrown if given license plate is invalid.
+     * @since 2.5.1
+     */
+    public static void despawnVehicle(World world, String... licensePlates) throws IllegalArgumentException {
+        for (String licensePlate : licensePlates) {
+            if (!existsByLicensePlate(licensePlate)) throw new IllegalArgumentException("Vehicle " + licensePlate + " does not exist.");
+
+            for (Entity entity : world.getEntities()) {
+                if (entity.getCustomName() != null && entity.getCustomName().contains(licensePlate)) {
+                    entity.remove();
+                }
+            }
         }
     }
 
