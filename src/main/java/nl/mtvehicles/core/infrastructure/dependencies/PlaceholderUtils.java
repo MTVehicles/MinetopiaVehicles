@@ -152,4 +152,8 @@ public class PlaceholderUtils extends PlaceholderExpansion {
     public static String parsePlaceholders(Player player, String text){
         return PlaceholderAPI.setPlaceholders(player, text);
     }
+
+    public void unregisterOnDisable(){
+        unregister();
+    }
 }

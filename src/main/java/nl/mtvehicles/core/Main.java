@@ -64,6 +64,11 @@ public class Main extends JavaPlugin {
         new DependencyModule();
     }
 
+    @Override
+    public void onDisable(){
+        if (DependencyModule.isDependencyEnabled(SoftDependency.PLACEHOLDER_API)) DependencyModule.placeholderAPI.unregisterOnDisable();
+    }
+
     public static String getFileAsString() {
         return String.valueOf(Main.instance.getFile());
     }
