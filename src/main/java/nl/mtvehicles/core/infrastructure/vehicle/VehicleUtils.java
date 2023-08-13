@@ -613,6 +613,64 @@ public final class VehicleUtils {
     }
 
     /**
+     * Get a list of all spawned vehicles' license plates in all worlds.
+     * @return May return list with duplicates - if the same vehicle is spawned multiple times (see {@link #getUniqueSpawnedVehiclePlates()}).
+     * @since 2.5.1
+     * @see #getAllSpawnedVehiclePlates(World)
+     */
+    public static List<String> getAllSpawnedVehiclePlates(){
+        List<String> list = new ArrayList<>();
+
+        for (World world : Bukkit.getServer().getWorlds()) {
+            for (Entity entity : world.getEntities()) {
+                if (entity.getCustomName() != null) {
+                    String name = entity.getCustomName();
+                    if (name.contains("MTVEHICLES_MAIN_")) list.add(name.split("_")[2]);
+                }
+            }
+        }
+        return list;
+    }
+
+    /**
+     * Get a list of all spawned vehicles' license plates in a specified world.
+     * @return May return list with duplicates - if the same vehicle is spawned multiple times (see {@link #getUniqueSpawnedVehiclePlates(World)}).
+     * @since 2.5.1
+     * @see #getAllSpawnedVehiclePlates()
+     */
+    public static List<String> getAllSpawnedVehiclePlates(World world){
+        List<String> list = new ArrayList<>();
+
+        for (Entity entity : world.getEntities()) {
+            if (entity.getCustomName() != null) {
+                String name = entity.getCustomName();
+                if (name.contains("MTVEHICLES_MAIN_")) list.add(name.split("_")[2]);
+            }
+        }
+        return list;
+    }
+
+    /**
+     * Get a list of all spawned vehicles' license plates in all worlds.
+     * @return Returns HashSet with no duplicates (see {@link #getAllSpawnedVehiclePlates()}).
+     * @since 2.5.1
+     * @see #getUniqueSpawnedVehiclePlates(World)
+     */
+    public static Set<String> getUniqueSpawnedVehiclePlates(){
+        return new HashSet<>(getAllSpawnedVehiclePlates());
+    }
+
+    /**
+     * Get a list of all spawned vehicles' license plates in a specified worlds.
+     * @return Returns HashSet with no duplicates (see {@link #getAllSpawnedVehiclePlates(World)}).
+     * @since 2.5.1
+     * @see #getUniqueSpawnedVehiclePlates()
+     */
+    public static Set<String> getUniqueSpawnedVehiclePlates(World world){
+        return new HashSet<>(getAllSpawnedVehiclePlates(world));
+    }
+
+    /**
      * Create {@link VehicleData} (necessary for driving to work), helicopter blades, and make player enter a vehicle.
      * @param licensePlate Vehicle's license plate
      * @param p Player who is entering the vehicle
