@@ -8,7 +8,6 @@ import nl.mtvehicles.core.events.inventory.InventoryClickEvent;
 import nl.mtvehicles.core.infrastructure.dataconfig.MessagesConfig;
 import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
 import nl.mtvehicles.core.infrastructure.enums.InventoryTitle;
-import nl.mtvehicles.core.infrastructure.enums.Language;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.utils.ItemUtils;
 import nl.mtvehicles.core.infrastructure.utils.LanguageUtils;
@@ -438,14 +437,14 @@ public class InventoryClickListener extends MTVListener {
     private void voucherRedeemMenu(){
         if (clickedSlot == 15) { //Yes
             String carUUID = VehicleVoucherListener.voucher.get(player);
-            if (VehicleUtils.getItemByUUID(player, carUUID) == null){
+            if (VehicleUtils.createAndGetItemByUUID(player, carUUID) == null){
                 player.sendMessage(ConfigModule.messagesConfig.getMessage(Message.GIVE_CAR_NOT_FOUND));
                 player.closeInventory();
                 return;
             }
             player.sendMessage(ConfigModule.messagesConfig.getMessage(Message.VOUCHER_REDEEM));
             player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
-            player.getInventory().addItem(VehicleUtils.getItemByUUID(player, carUUID));
+            player.getInventory().addItem(VehicleUtils.createAndGetItemByUUID(player, carUUID));
         }
 
         VehicleVoucherListener.voucher.remove(player);

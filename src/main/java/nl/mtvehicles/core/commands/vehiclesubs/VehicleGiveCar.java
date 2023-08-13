@@ -34,7 +34,7 @@ public class VehicleGiveCar extends MTVSubCommand {
             return true;
         }
 
-        ItemStack car = VehicleUtils.getItemByUUID(argPlayer, carUuid);
+        ItemStack car = VehicleUtils.createAndGetItemByUUID(argPlayer, carUuid);
 
         if (car == null){
             sender.sendMessage(ConfigModule.messagesConfig.getMessage(Message.GIVE_CAR_NOT_FOUND));

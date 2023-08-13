@@ -146,13 +146,24 @@ public final class VehicleUtils {
         return getVehicle(getDrivenVehiclePlate(p));
     }
 
+
+
     /**
      * Create a vehicle and get its item by UUID (UUID may be found in vehicles.yml)
-     * @param p Vehicle's owner
+     * @deprecated Renamed to {@link #createAndGetItemByUUID(Player, String)} for clarity.
+     */
+    @Deprecated
+    public static ItemStack getItemByUUID(Player p, String uuid) {
+        return createAndGetItemByUUID(p, uuid);
+    }
+
+    /**
+     * Create a vehicle and get its item by UUID (UUID may be found in vehicles.yml)
+     * @param owner Vehicle's owner
      * @param uuid Vehicle's UUID (UUID may be found in vehicles.yml)
      * @return Null if vehicle was not found by given UUID; otherwise, vehicle item
      */
-    public static ItemStack getItemByUUID(Player p, String uuid) {
+    public static ItemStack createAndGetItemByUUID(Player owner, String uuid) {
         List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getVehicles();
         List<Map<?, ?>> matchedVehicles = new ArrayList<>();
         for (Map<?, ?> configVehicle : vehicles) {
@@ -196,7 +207,7 @@ public final class VehicleUtils {
                         vehicle.setFrictionSpeed((Double) configVehicle.get("aftrekkenSpeed"));
                         vehicle.setRotateSpeed((Integer) configVehicle.get("rotateSpeed"));
                         vehicle.setMaxSpeedBackwards((Double) configVehicle.get("maxSpeedBackwards"));
-                        vehicle.setOwner(p.getUniqueId().toString());
+                        vehicle.setOwner(owner.getUniqueId().toString());
                         vehicle.setRiders(riders);
                         vehicle.setMembers(members);
                         vehicle.setNbtValue(((String) skin.get("nbtValue")));
@@ -258,7 +269,17 @@ public final class VehicleUtils {
     }
 
     /**
-     * Get a vehicle item by UUID. <b>Does not create a new vehicle - just for aesthetic purposes.</b> (Otherwise, use {@link #getItemByUUID(Player, String)})
+     * Get a vehicle item by license plate. <b>Does not create a new vehicle.</b>
+     * @param licensePlate Vehicle's license plate
+     * @return The vehicle item - just aesthetic (null if license plate is not found)
+     * @see #getItem(String)
+     */
+    public static ItemStack getItemByLicensePlate(String licensePlate){
+        return getItem(getUUID(licensePlate));
+    }
+
+    /**
+     * Get a vehicle item by UUID. <b>Does not create a new vehicle - just for aesthetic purposes.</b> (Otherwise, use {@link #createAndGetItemByUUID(Player, String)})
      * @param carUUID Vehicle's UUID (UUID may be found in vehicles.yml)
      * @return The vehicle item - just aesthetic (null if UUID is not found)
      *

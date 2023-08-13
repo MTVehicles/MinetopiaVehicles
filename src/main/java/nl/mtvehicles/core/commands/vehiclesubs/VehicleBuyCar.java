@@ -43,7 +43,7 @@ public class VehicleBuyCar extends MTVSubCommand {
         }
 
         if (DependencyModule.vault.withdrawMoneyPlayer(player, price)){
-            ItemStack car = VehicleUtils.getItemByUUID(player, carUuid);
+            ItemStack car = VehicleUtils.createAndGetItemByUUID(player, carUuid);
             player.getInventory().addItem(car);
         }
 
