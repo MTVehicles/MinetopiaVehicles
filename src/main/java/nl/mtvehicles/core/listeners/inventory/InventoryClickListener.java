@@ -192,7 +192,7 @@ public class InventoryClickListener extends MTVListener {
             vehicle.setVehicleType((String) vehicles.get(intSave.get(player.getUniqueId())).get("vehicleType"));
             vehicle.setSkinDamage(vehicleMenu.get(player.getUniqueId()).getDurability());
             vehicle.setSkinItem(vehicleMenu.get(player.getUniqueId()).getType().toString());
-            vehicle.setGlow(false);
+            vehicle.setGlowing(false);
             vehicle.setHornEnabled((Boolean) vehicles.get(intSave.get(player.getUniqueId())).get("hornEnabled"));
             vehicle.setHealth((double) vehicles.get(intSave.get(player.getUniqueId())).get("maxHealth"));
             vehicle.setBenzineEnabled((Boolean) vehicles.get(intSave.get(player.getUniqueId())).get("benzineEnabled"));

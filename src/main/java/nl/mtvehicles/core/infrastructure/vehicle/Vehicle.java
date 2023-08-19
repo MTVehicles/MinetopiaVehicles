@@ -24,7 +24,7 @@ public class Vehicle {
     private VehicleType vehicleType;
     private int skinDamage;
     private String skinItem;
-    private boolean isGlow;
+    private boolean isGlowing;
     private boolean benzineEnabled;
     private double fuel;
     private double fuelUsage;
@@ -39,19 +39,88 @@ public class Vehicle {
     private double frictionSpeed;
     private int rotateSpeed;
     private double maxSpeedBackwards;
-    private boolean isOpen;
+    private boolean isPublic;
     private double price;
     private UUID owner;
     private String nbtValue;
     private List<String> riders;
     private List<String> members;
-    private Map<?, ?> vehicleData;
+    private @Nullable Map<?, ?> vehicleData;
 
     /**
      * @deprecated There is no use for this HashMap. Please, avoid using it in any way as it may get removed soon.
      */
     @Deprecated
     public static HashMap<String, MTVSubCommand> subcommands = new HashMap<>();
+
+    /**
+     * Plain constructor
+     */
+    public Vehicle(){
+
+    }
+
+    /**
+     * Create a new Vehicle instance with all the values necessary
+     * @since 2.5.1
+     */
+    public Vehicle(
+            @Nullable Map<?, ?> vehicleData,
+            String licensePlate,
+            String name,
+            VehicleType vehicleType,
+            boolean isPublic,
+            int skinDamage,
+            String skinItem,
+            boolean glowing,
+            boolean hornEnabled,
+            double health,
+            boolean fuelEnabled,
+            double fuel,
+            double fuelUsage,
+            boolean trunkEnabled,
+            int trunkRows,
+            List<String> trunkData,
+            double accelerationSpeed,
+            double maxSpeed,
+            double maxSpeedBackwards,
+            double brakingSpeed,
+            double frictionSpeed,
+            int rotateSpeed,
+            UUID owner,
+            List<String> riders,
+            List<String> members,
+            double price,
+            String nbtValue
+    ) {
+        this.setVehicleData(vehicleData);
+        this.setLicensePlate(licensePlate);
+        this.setPublic(isPublic);
+        this.setName(name);
+        this.setVehicleType(vehicleType);
+        this.setSkinDamage(skinDamage);
+        this.setSkinItem(skinItem);
+        this.setGlowing(glowing);
+        this.setHornEnabled(hornEnabled);
+        this.setHealth(health);
+        this.setBenzineEnabled(fuelEnabled);
+        this.setFuel(fuel);
+        this.setFuelUsage(fuelUsage);
+        this.setTrunk(trunkEnabled);
+        this.setTrunkRows(trunkRows);
+        this.setTrunkData(trunkData);
+        this.setAccelerationSpeed(accelerationSpeed);
+        this.setMaxSpeed(maxSpeed);
+        this.setBrakingSpeed(brakingSpeed);
+        this.setFrictionSpeed(frictionSpeed);
+        this.setRotateSpeed(rotateSpeed);
+        this.setMaxSpeedBackwards(maxSpeedBackwards);
+        this.setOwner(owner);
+        this.setRiders(riders);
+        this.setMembers(members);
+        this.setPrice(price);
+        this.setNbtValue(nbtValue);
+    }
 
     /**
      * Save the vehicle specifications (and possible adjustments) to vehicleData.yml
@@ -62,8 +131,8 @@ public class Vehicle {
         map.put(VehicleDataConfig.Option.VEHICLE_TYPE.getPath(), this.getVehicleType().toString());
         map.put(VehicleDataConfig.Option.SKIN_DAMAGE.getPath(), this.getSkinDamage());
         map.put(VehicleDataConfig.Option.SKIN_ITEM.getPath(), this.getSkinItem());
-        map.put(VehicleDataConfig.Option.IS_OPEN.getPath(), this.isOpen());
-        map.put(VehicleDataConfig.Option.IS_GLOWING.getPath(), this.isGlow());
+        map.put(VehicleDataConfig.Option.IS_OPEN.getPath(), this.isPublic());
+        map.put(VehicleDataConfig.Option.IS_GLOWING.getPath(), this.isGlowing());
         map.put(VehicleDataConfig.Option.FUEL_ENABLED.getPath(), this.isFuelEnabled());
         map.put(VehicleDataConfig.Option.FUEL.getPath(), this.getFuel());
         map.put(VehicleDataConfig.Option.FUEL_USAGE.getPath(), this.getFuelUsage());
@@ -168,12 +237,28 @@ public class Vehicle {
         return skinItem;
     }
 
-    public boolean isGlow() {
-        return isGlow;
+    public boolean isGlowing() {
+        return isGlowing;
     }
 
+    /**
+     * @deprecated Use {@link #isGlowing()}
+     */
+    @Deprecated
+    public boolean isGlow() {
+        return isGlowing;
+    }
+
+    public boolean isPublic() {
+        return isPublic;
+    }
+
+    /**
+     * @deprecated Use {@link #isPublic()}
+     */
+    @Deprecated
     public boolean isOpen() {
-        return isOpen;
+        return isPublic;
     }
 
     public boolean isFuelEnabled() {
@@ -280,12 +365,28 @@ public class Vehicle {
         this.skinItem = skinItem;
     }
 
-    public void setGlow(boolean glow) {
-        this.isGlow = glow;
+    public void setGlowing(boolean glow) {
+        this.isGlowing = glow;
     }
 
-    public void setOpen(boolean open) {
-        this.isOpen = open;
+    /**
+     * @deprecated Use {@link #setGlowing(boolean)}
+     */
+    @Deprecated
+    public void setGlow(boolean glow) {
+        this.isGlowing = glow;
+    }
+
+    public void setPublic(boolean isPublic) {
+        this.isPublic = isPublic;
+    }
+
+    /**
+     * @deprecated Use {@link #setPublic(boolean)}
+     */
+    @Deprecated
+    public void setOpen(boolean isPublic) {
+        this.isPublic = isPublic;
     }
 
     public void setBenzineEnabled(boolean benzineEnabled) {

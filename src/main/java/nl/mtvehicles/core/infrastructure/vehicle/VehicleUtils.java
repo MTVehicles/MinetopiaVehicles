@@ -165,7 +165,6 @@ public final class VehicleUtils {
      */
     public static ItemStack createAndGetItemByUUID(Player owner, String uuid) {
         List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getVehicles();
-        List<Map<?, ?>> matchedVehicles = new ArrayList<>();
         for (Map<?, ?> configVehicle : vehicles) {
             List<Map<?, ?>> skins = (List<Map<?, ?>>) configVehicle.get("cars");
             for (Map<?, ?> skin : skins) {
@@ -177,42 +176,42 @@ public final class VehicleUtils {
                         } else {
                             nbtVal = skin.get("nbtValue").toString();
                         }
-                        ItemStack is = ItemUtils.getVehicleItem(ItemUtils.getMaterial(skin.get("SkinItem").toString()), (int) skin.get("itemDamage"), ((String) skin.get("name")), "mtcustom", nbtVal);
-                        NBTItem nbt = new NBTItem(is);
-                        String licensePlate = nbt.getString("mtvehicles.kenteken");
-                        matchedVehicles.add(configVehicle);
 
-                        Vehicle vehicle = new Vehicle();
-                        List<String> members = ConfigModule.vehicleDataConfig.getMembers(licensePlate);
-                        List<String> riders = ConfigModule.vehicleDataConfig.getRiders(licensePlate);
-                        List<String> trunkData = ConfigModule.vehicleDataConfig.getTrunkData(licensePlate);
+                        ItemStack item = ItemUtils.getVehicleItem(ItemUtils.getMaterial(skin.get("SkinItem").toString()), (int) skin.get("itemDamage"), ((String) skin.get("name")), "mtcustom", nbtVal);
+                        NBTItem nbt = new NBTItem(item);
+                        final String licensePlate = nbt.getString("mtvehicles.kenteken");
 
-                        vehicle.setLicensePlate(licensePlate);
-                        vehicle.setName((String) skin.get("name"));
-                        vehicle.setVehicleType((String) configVehicle.get("vehicleType"));
-                        vehicle.setSkinDamage((Integer) skin.get("itemDamage"));
-                        vehicle.setSkinItem((String) skin.get("SkinItem"));
-                        vehicle.setGlow(false);
-                        vehicle.setBenzineEnabled((Boolean) configVehicle.get("benzineEnabled"));
-                        vehicle.setFuel(100);
-                        vehicle.setHornEnabled((Boolean) configVehicle.get("hornEnabled"));
-                        vehicle.setHealth((double) configVehicle.get("maxHealth"));
-                        vehicle.setTrunk((Boolean) configVehicle.get("kofferbakEnabled"));
-                        vehicle.setTrunkRows(1);
-                        vehicle.setFuelUsage(0.01);
-                        vehicle.setTrunkData(trunkData);
-                        vehicle.setAccelerationSpeed((Double) configVehicle.get("acceleratieSpeed"));
-                        vehicle.setMaxSpeed((Double) configVehicle.get("maxSpeed"));
-                        vehicle.setBrakingSpeed((Double) configVehicle.get("brakingSpeed"));
-                        vehicle.setFrictionSpeed((Double) configVehicle.get("aftrekkenSpeed"));
-                        vehicle.setRotateSpeed((Integer) configVehicle.get("rotateSpeed"));
-                        vehicle.setMaxSpeedBackwards((Double) configVehicle.get("maxSpeedBackwards"));
-                        vehicle.setOwner(owner.getUniqueId().toString());
-                        vehicle.setRiders(riders);
-                        vehicle.setMembers(members);
-                        vehicle.setNbtValue(((String) skin.get("nbtValue")));
+                        Vehicle vehicle = new Vehicle(
+                                null,
+                                licensePlate,
+                                (String) skin.get("name"),
+                                VehicleType.valueOf((String) configVehicle.get("vehicleType")),
+                                false,
+                                (int) skin.get("itemDamage"),
+                                (String) skin.get("SkinItem"),
+                                false,
+                                ConfigModule.vehicleDataConfig.isHornSet(licensePlate) ? (boolean) configVehicle.get("hornEnabled") : ConfigModule.vehicleDataConfig.isHornEnabled(licensePlate),
+                                ConfigModule.vehicleDataConfig.isHealthSet(licensePlate) ? (double) configVehicle.get("maxHealth") : ConfigModule.vehicleDataConfig.getHealth(licensePlate),
+                                (boolean) configVehicle.get("benzineEnabled"),
+                                100,
+                                0.01,
+                                (boolean) configVehicle.get("kofferbakEnabled"),
+                                1,
+                                ConfigModule.vehicleDataConfig.getTrunkData(licensePlate),
+                                (double) configVehicle.get("acceleratieSpeed"),
+                                (double) configVehicle.get("maxSpeed"),
+                                (double) configVehicle.get("maxSpeedBackwards"),
+                                (double) configVehicle.get("brakingSpeed"),
+                                (double) configVehicle.get("aftrekkenSpeed"),
+                                (int)configVehicle.get("rotateSpeed"),
+                                owner.getUniqueId(),
+                                ConfigModule.vehicleDataConfig.getRiders(licensePlate),
+                                ConfigModule.vehicleDataConfig.getMembers(licensePlate),
+                                (double) skin.get("price"),
+                                (String) skin.get("nbtValue")
+                        );
                         vehicle.save();
-                        return is;
+                        return item;
                     }
                 }
             }
@@ -424,34 +423,35 @@ public final class VehicleUtils {
         }
         if (matchedVehicles.size() == 0) return null;
         if (matchedVehicles.size() > 1) return null;
-        Vehicle vehicle = new Vehicle();
-        vehicle.setVehicleData(matchedVehicles.get(0));
-        vehicle.setLicensePlate(licensePlate);
-        vehicle.setOpen(false);
-        vehicle.setName((String) vehicleData.get("name"));
-        vehicle.setVehicleType((String) vehicleData.get("vehicleType"));
-        vehicle.setSkinDamage((Integer) vehicleData.get("skinDamage"));
-        vehicle.setSkinItem((String) vehicleData.get("skinItem"));
-        vehicle.setGlow((Boolean) vehicleData.get("isGlow"));
-        vehicle.setHornEnabled(ConfigModule.vehicleDataConfig.isHornSet(licensePlate) ? (boolean) vehicleData.get("hornEnabled") : ConfigModule.vehicleDataConfig.isHornEnabled(licensePlate));
-        vehicle.setHealth(ConfigModule.vehicleDataConfig.isHealthSet(licensePlate) ? (double) vehicleData.get("health") : ConfigModule.vehicleDataConfig.getHealth(licensePlate));
-        vehicle.setBenzineEnabled((Boolean) vehicleData.get("benzineEnabled"));
-        vehicle.setFuel((Double) vehicleData.get("benzine"));
-        vehicle.setFuelUsage((Double) vehicleData.get("benzineVerbruik"));
-        vehicle.setTrunk((Boolean) vehicleData.get("kofferbak"));
-        vehicle.setTrunkRows((Integer) vehicleData.get("kofferbakRows"));
-        vehicle.setTrunkData((List<String>) vehicleData.get("kofferbakData"));
-        vehicle.setAccelerationSpeed((Double) vehicleData.get("acceleratieSpeed"));
-        vehicle.setMaxSpeed((Double) vehicleData.get("maxSpeed"));
-        vehicle.setBrakingSpeed((Double) vehicleData.get("brakingSpeed"));
-        vehicle.setFrictionSpeed((Double) vehicleData.get("aftrekkenSpeed"));
-        vehicle.setRotateSpeed((Integer) vehicleData.get("rotateSpeed"));
-        vehicle.setMaxSpeedBackwards((Double) vehicleData.get("maxSpeedBackwards"));
-        vehicle.setOwner((String) vehicleData.get("owner"));
-        vehicle.setRiders((List<String>) vehicleData.get("riders"));
-        vehicle.setMembers((List<String>) vehicleData.get("members"));
-        vehicle.setPrice(price);
-        return vehicle;
+        return new Vehicle(
+                matchedVehicles.get(0),
+                licensePlate,
+                (String) vehicleData.get("name"),
+                VehicleType.valueOf((String) vehicleData.get("vehicleType")),
+                (boolean) vehicleData.get("isOpen"),
+                (int) vehicleData.get("skinDamage"),
+                (String) vehicleData.get("skinItem"),
+                (boolean) vehicleData.get("isGlow"),
+                ConfigModule.vehicleDataConfig.isHornSet(licensePlate) ? (boolean) vehicleData.get("hornEnabled") : ConfigModule.vehicleDataConfig.isHornEnabled(licensePlate),
+                ConfigModule.vehicleDataConfig.isHealthSet(licensePlate) ? (double) vehicleData.get("health") : ConfigModule.vehicleDataConfig.getHealth(licensePlate),
+                (boolean) vehicleData.get("benzineEnabled"),
+                (double) vehicleData.get("benzine"),
+                (double) vehicleData.get("benzineVerbruik"),
+                (boolean) vehicleData.get("kofferbak"),
+                (int) vehicleData.get("kofferbakRows"),
+                ConfigModule.vehicleDataConfig.getTrunkData(licensePlate),
+                (double) vehicleData.get("acceleratieSpeed"),
+                (double) vehicleData.get("maxSpeed"),
+                (double) vehicleData.get("maxSpeedBackwards"),
+                (double) vehicleData.get("brakingSpeed"),
+                (double) vehicleData.get("aftrekkenSpeed"),
+                (int) vehicleData.get("rotateSpeed"),
+                UUID.fromString((String) vehicleData.get("owner")),
+                ConfigModule.vehicleDataConfig.getRiders(licensePlate),
+                ConfigModule.vehicleDataConfig.getMembers(licensePlate),
+                price,
+                (String) vehicleData.get("nbtValue")
+        );
     }
 
     /**
@@ -737,7 +737,7 @@ public final class VehicleUtils {
             return;
         }
 
-        if (!vehicle.isOpen() && !vehicle.isOwner(p) && !vehicle.canRide(p) && !p.hasPermission("mtvehicles.ride")){
+        if (!vehicle.isPublic() && !vehicle.isOwner(p) && !vehicle.canRide(p) && !p.hasPermission("mtvehicles.ride")){
             p.sendMessage(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_NO_RIDER_ENTER).replace("%p%", vehicle.getOwnerName()));
             return;
         }
