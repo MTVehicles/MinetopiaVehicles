@@ -3,6 +3,7 @@ package nl.mtvehicles.core.infrastructure.vehicle;
 import nl.mtvehicles.core.infrastructure.annotations.ToDo;
 import nl.mtvehicles.core.infrastructure.enums.VehicleType;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,6 +48,49 @@ public class VehicleData {
     public static HashMap<String, Double> MaxSpeedBackwards = new HashMap<>();
     public static HashMap<String, Double> FrictionSpeed = new HashMap<>();
     public static HashMap<String, Set<String>> lastRegions = new HashMap<>();
+    /**
+     * @see VehicleUtils#openedTrunk
+     * @since 2.5.1
+     */
+    public static HashMap<String, Set<Player>> trunkViewers = new HashMap<>();
 
     private VehicleData(){}
+
+    /**
+     * Check if a player has an opened trunk
+     * @param licensePlate Vehicle's license plate (this vehicle's trunk is being opened)
+     * @param player Player
+     * @since 2.5.1
+     */
+    public static boolean isTrunkViewer(String licensePlate, Player player){
+        return trunkViewers.get(licensePlate).contains(player);
+    }
+
+    /**
+     * Add a player to list of players who have vehicle's trunk inventory opened
+     * @param licensePlate Vehicle's license plate
+     * @param player Player who's being added to the set
+     * @return Returns {@code false} if player is already present in the set
+     * @since 2.5.1
+     */
+    public static boolean trunkViewerAdd(String licensePlate, Player player){
+        Set<Player> viewers = trunkViewers.get(licensePlate);
+        boolean returns = viewers.add(player);
+        trunkViewers.put(licensePlate, viewers);
+        return returns;
+    }
+
+    /**
+     * Remove a player from list of players who have vehicle's trunk inventory opened
+     * @param licensePlate Vehicle's license plate
+     * @param player Player who's being removed from the set
+     * @return Returns {@code false} if player is not present in the set
+     * @since 2.5.1
+     */
+    public static boolean trunkViewerRemove(String licensePlate, Player player){
+        Set<Player> viewers = trunkViewers.get(licensePlate);
+        boolean returns = viewers.remove(player);
+        trunkViewers.put(licensePlate, viewers);
+        return returns;
+    }
 }

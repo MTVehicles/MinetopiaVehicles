@@ -40,6 +40,7 @@ public final class VehicleUtils {
 
     /**
      * HashMap containing information about which trunk a player has opened (determined by vehicle's license plate)
+     * @see VehicleData#trunkViewers
      */
     public static HashMap<Player, String> openedTrunk = new HashMap<>();
 
@@ -520,6 +521,7 @@ public final class VehicleUtils {
                 }
 
                 openedTrunk.put(p, license);
+                VehicleData.trunkViewerAdd(license, p);
                 p.openInventory(inv);
 
             } else {
@@ -591,6 +593,9 @@ public final class VehicleUtils {
                     if (entity.getCustomName() != null && entity.getCustomName().contains(license)) {
                         ArmorStand test = (ArmorStand) entity;
                         if (test.getCustomName().contains("MTVEHICLES_SKIN_" + license)) {
+                            for (Player trunkViewer : VehicleData.trunkViewers.get(license)){
+                                trunkViewer.closeInventory();
+                            }
                             if (!TextUtils.checkInvFull(player)) {
                                 player.getInventory().addItem(test.getHelmet());
                                 player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_PICKUP).replace("%p%", vehicle.getOwnerName())));
@@ -623,6 +628,9 @@ public final class VehicleUtils {
     public static void despawnVehicle(String... licensePlates) throws IllegalArgumentException {
         for (String licensePlate : licensePlates) {
             if (!existsByLicensePlate(licensePlate)) throw new IllegalArgumentException("Vehicle " + licensePlate + " does not exist.");
+            for (Player trunkViewer : VehicleData.trunkViewers.get(licensePlate)){
+                trunkViewer.closeInventory();
+            }
 
             for (World world : Bukkit.getServer().getWorlds()) {
                 for (Entity entity : world.getEntities()) {
@@ -644,6 +652,10 @@ public final class VehicleUtils {
     public static void despawnVehicle(World world, String... licensePlates) throws IllegalArgumentException {
         for (String licensePlate : licensePlates) {
             if (!existsByLicensePlate(licensePlate)) throw new IllegalArgumentException("Vehicle " + licensePlate + " does not exist.");
+
+            for (Player trunkViewer : VehicleData.trunkViewers.get(licensePlate)){
+                trunkViewer.closeInventory();
+            }
 
             for (Entity entity : world.getEntities()) {
                 if (entity.getCustomName() != null && entity.getCustomName().contains(licensePlate)) {
