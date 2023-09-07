@@ -530,6 +530,12 @@ public final class VehicleUtils {
         }
     }
 
+    /**
+     * Check if trunk of a vehicle is opened by a specified player
+     * @param p Player
+     * @param license Vehicle's license plate
+     * @since 2.5.1
+     */
     public static boolean isTrunkInventoryOpen(Player p, String license) {
         return openedTrunk.containsKey(p) && openedTrunk.get(p).equals(license);
     }
