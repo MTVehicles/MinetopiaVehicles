@@ -530,6 +530,10 @@ public final class VehicleUtils {
         }
     }
 
+    public static boolean isTrunkInventoryOpen(Player p, String license) {
+        return openedTrunk.containsKey(p) && openedTrunk.get(p).equals(license);
+    }
+
     /**
      * Check whether a player is inside a vehicle
      * @param p Player
