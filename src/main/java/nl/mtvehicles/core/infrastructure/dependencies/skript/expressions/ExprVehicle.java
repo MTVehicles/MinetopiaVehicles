@@ -1,6 +1,9 @@
 package nl.mtvehicles.core.infrastructure.dependencies.skript.expressions;
 
 import ch.njol.skript.Skript;
+import ch.njol.skript.doc.Description;
+import ch.njol.skript.doc.Examples;
+import ch.njol.skript.doc.Name;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
@@ -12,6 +15,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
 
+@Name("MTV Vehicle")
+@Description("Get the MTV's vehicle instance")
+@Examples({
+        "set {_car} to a new mtv vehicle with license plate \"DF-4J-2R\"",
+        "set {_helicopter} to player's driven mtv vehicle"
+})
 public class ExprVehicle extends SimpleExpression<Vehicle> {
 
     static {

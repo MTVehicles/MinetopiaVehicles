@@ -1,6 +1,9 @@
 package nl.mtvehicles.core.infrastructure.dependencies.skript.events;
 
 import ch.njol.skript.Skript;
+import ch.njol.skript.doc.Description;
+import ch.njol.skript.doc.Examples;
+import ch.njol.skript.doc.Name;
 import ch.njol.skript.lang.Literal;
 import ch.njol.skript.lang.SkriptEvent;
 import ch.njol.skript.lang.SkriptParser;
@@ -14,6 +17,13 @@ import org.jetbrains.annotations.Nullable;
 /**
  * @see VehicleRegionEnterEvent
  */
+@Name("Vehicle Region Enter Event")
+@Description("Called when a vehicle enters a region")
+@Examples({
+        "on vehicle region enter:",
+        "set {_driver} to event-player",
+        "set {_enteredRegion} to event-text"
+})
 public class EvtVehicleRegionEnter extends SkriptEvent {
 
     static {

@@ -1,6 +1,9 @@
 package nl.mtvehicles.core.infrastructure.dependencies.skript.effects;
 
 import ch.njol.skript.Skript;
+import ch.njol.skript.doc.Description;
+import ch.njol.skript.doc.Examples;
+import ch.njol.skript.doc.Name;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
@@ -12,12 +15,18 @@ import org.bukkit.Location;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
 
+@Name("Spawn an MTV vehicle")
+@Description("Spawn a vehicle on a specific location")
+@Examples({
+        "spawn mtv vehicle {_car} at location {_loc}",
+        "spawn mtv vehicle with license plate \"DF-4J-2R\" at {_loc}"
+})
 public class EffSpawnVehicle extends Effect {
 
     static {
         Skript.registerEffect(EffSpawnVehicle.class,
                 "spawn [mtv] vehicle %object% at [location] %location%",
-                "spawn [mtv] vehicle by license [plate] %string% at [location] %location%"
+                "spawn [mtv] vehicle (by|with) license [plate] %string% at [location] %location%"
         );
     }
 
