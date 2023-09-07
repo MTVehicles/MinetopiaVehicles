@@ -40,7 +40,7 @@ public final class VehicleUtils {
 
     /**
      * HashMap containing information about which trunk a player has opened (determined by vehicle's license plate)
-     * @see VehicleData#trunkViewers
+     * @see VehicleData#getTrunkViewers(String) 
      */
     public static HashMap<Player, String> openedTrunk = new HashMap<>();
 
@@ -593,7 +593,7 @@ public final class VehicleUtils {
                     if (entity.getCustomName() != null && entity.getCustomName().contains(license)) {
                         ArmorStand test = (ArmorStand) entity;
                         if (test.getCustomName().contains("MTVEHICLES_SKIN_" + license)) {
-                            for (Player trunkViewer : VehicleData.trunkViewers.get(license)){
+                            for (Player trunkViewer : VehicleData.getTrunkViewers(license)){
                                 trunkViewer.closeInventory();
                             }
                             if (!TextUtils.checkInvFull(player)) {
@@ -628,7 +628,7 @@ public final class VehicleUtils {
     public static void despawnVehicle(String... licensePlates) throws IllegalArgumentException {
         for (String licensePlate : licensePlates) {
             if (!existsByLicensePlate(licensePlate)) throw new IllegalArgumentException("Vehicle " + licensePlate + " does not exist.");
-            for (Player trunkViewer : VehicleData.trunkViewers.get(licensePlate)){
+            for (Player trunkViewer : VehicleData.getTrunkViewers(licensePlate)){
                 trunkViewer.closeInventory();
             }
 
@@ -653,7 +653,7 @@ public final class VehicleUtils {
         for (String licensePlate : licensePlates) {
             if (!existsByLicensePlate(licensePlate)) throw new IllegalArgumentException("Vehicle " + licensePlate + " does not exist.");
 
-            for (Player trunkViewer : VehicleData.trunkViewers.get(licensePlate)){
+            for (Player trunkViewer : VehicleData.getTrunkViewers(licensePlate)){
                 trunkViewer.closeInventory();
             }
 
