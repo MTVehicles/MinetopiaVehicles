@@ -63,6 +63,10 @@ public enum Language {
      */
     TH("ภาษาไทย"),
     /**
+     * Greek
+     */
+    GR("Ελληνική"),
+    /**
      * Custom language one can create and use
      */
     CUSTOM("Custom language");
@@ -99,7 +103,7 @@ public enum Language {
     @ToDo("make this automatic from the enum's values")
     @LanguageSpecific
     public static String[] getAllLanguages(){
-        String[] languages = {"en", "nl", "es", "cs", "cn", "de", "tr", "ja", "he", "ru", "fr", "th"};
+        String[] languages = {"en", "nl", "es", "cs", "cn", "de", "tr", "ja", "he", "ru", "fr", "th", "gr"};
         return languages;
     }
 
