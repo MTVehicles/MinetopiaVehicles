@@ -9,44 +9,43 @@ import ch.njol.skript.lang.SkriptEvent;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
-import nl.mtvehicles.core.events.VehicleRegionLeaveEvent;
+import nl.mtvehicles.core.events.HornUseEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * @see VehicleRegionLeaveEvent
+ * @see HornUseEvent
  */
-@Name("Vehicle Region Leave Event")
-@Description("Called when a vehicle leaves a region")
+@Name("Horn Use Event")
+@Description("Called when a horn is used")
 @Examples({
-        "on vehicle region leave:",
+        "on horn use:",
         "set {_driver} to event-player",
-        "set {_leftRegion} to event-text"
+        "set {_licensePlate} to event-text"
 })
-public class EvtVehicleRegionLeave extends SkriptEvent {
+public class EvtHornUse extends SkriptEvent {
 
     static {
         Skript.registerEvent(
-                "VehicleRegionLeave",
-                EvtVehicleRegionLeave.class,
-                VehicleRegionLeaveEvent.class,
-                "[mtv] vehicle region leave");
+                "HornUseEvent",
+                EvtHornUse.class,
+                HornUseEvent.class,
+                "[mtv] horn use");
 
-        EventValues.registerEventValue(VehicleRegionLeaveEvent.class, Player.class, new Getter<Player, VehicleRegionLeaveEvent>() {
+        EventValues.registerEventValue(HornUseEvent.class, Player.class, new Getter<Player, HornUseEvent>() {
             @Override
-            public Player get(VehicleRegionLeaveEvent event) {
+            public Player get(HornUseEvent event) {
                 return event.getPlayer();
             }
         }, 0);
 
-        EventValues.registerEventValue(VehicleRegionLeaveEvent.class, String.class, new Getter<String, VehicleRegionLeaveEvent>() {
+        EventValues.registerEventValue(HornUseEvent.class, String.class, new Getter<String, HornUseEvent>() {
             @Override
-            public String get(VehicleRegionLeaveEvent event) {
-                return event.getRegionName();
+            public String get(HornUseEvent event) {
+                return event.getLicensePlate();
             }
         }, 0);
-
     }
 
     @SuppressWarnings("unchecked")
@@ -62,7 +61,7 @@ public class EvtVehicleRegionLeave extends SkriptEvent {
 
     @Override
     public String toString(@Nullable Event e, boolean debug) {
-        return "Vehicle region enter event";
+        return "Horn use event";
     }
 
 }

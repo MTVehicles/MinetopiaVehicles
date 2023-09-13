@@ -31,7 +31,7 @@ public class EvtVehicleRegionEnter extends SkriptEvent {
                 "VehicleRegionEnter",
                 EvtVehicleRegionEnter.class,
                 VehicleRegionEnterEvent.class,
-                "vehicle region enter");
+                "[mtv] vehicle region enter");
 
         EventValues.registerEventValue(VehicleRegionEnterEvent.class, Player.class, new Getter<Player, VehicleRegionEnterEvent>() {
             @Override
