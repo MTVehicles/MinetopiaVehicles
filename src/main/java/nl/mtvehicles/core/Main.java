@@ -87,7 +87,11 @@ public class Main extends JavaPlugin {
 
     private void loadSkript(){
         if (DependencyModule.isDependencyEnabled(SoftDependency.SKRIPT)){
-            DependencyModule.skript.load();
+            try {
+                DependencyModule.skript.load();
+            } catch (Exception e){
+                logSevere("Could not load Skript addon. (Maybe you've just reloaded the plugin with PlugMan?)");
+            }
         }
     }
 
