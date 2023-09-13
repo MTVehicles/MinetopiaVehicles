@@ -789,6 +789,7 @@ public final class VehicleUtils {
                     return;
                 }
 
+                VehicleType vehicleType = ConfigModule.vehicleDataConfig.getType(licensePlate);
                 if (vehicleAs.getCustomName().contains("MTVEHICLES_SKIN_" + licensePlate)) {
                     basicStandCreator(licensePlate, "SKIN", location, vehicleAs.getHelmet(), false);
                     basicStandCreator(licensePlate, "MAIN", location, null, true);
@@ -818,7 +819,6 @@ public final class VehicleUtils {
                         }
                     }
                     List<Map<String, Double>> wiekens = (List<Map<String, Double>>) vehicle.getVehicleData().get("wiekens");
-                    VehicleType vehicleType = ConfigModule.vehicleDataConfig.getType(licensePlate);
                     if (vehicleType.isHelicopter()) {
                         VehicleData.maxheight.put(licensePlate, (int) ConfigModule.defaultConfig.get(DefaultConfig.Option.MAX_FLYING_HEIGHT));
                         for (int i = 1; i <= wiekens.size(); i++) {

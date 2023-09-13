@@ -756,16 +756,16 @@ public class VehicleMovement {
         }
 
         if (vehicleType.isBoat()){
-            if (!blockName.contains("WATER") && !isPassable(locBelow.getBlock())){
+            if (!blockName.contains("WATER") && !blockName.contains("SEAGRASS") && !isPassable(locBelow.getBlock())){
                 VehicleData.speed.put(license, 0.0);
             }
 
-            if (isPassable(locBelow.getBlock()) && !blockName.contains("WATER")){
+            if (isPassable(locBelow.getBlock()) && !blockName.contains("WATER") && !blockName.contains("SEAGRASS")){
                 standMain.setVelocity(new Vector(loc.getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.8, loc.getDirection().multiply(VehicleData.speed.get(license)).getZ()));
                 return;
             }
 
-            standMain.setVelocity(new Vector(loc.getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.0, loc.getDirection().multiply(VehicleData.speed.get(license)).getZ()));
+            standMain.setVelocity(new Vector(loc.getDirection().multiply(VehicleData.speed.get(license)).getX(), 0.01, loc.getDirection().multiply(VehicleData.speed.get(license)).getZ()));
             return;
         }
 
