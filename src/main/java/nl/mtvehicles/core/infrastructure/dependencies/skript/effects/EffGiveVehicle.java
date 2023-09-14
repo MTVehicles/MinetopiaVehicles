@@ -23,7 +23,7 @@ import java.util.Objects;
 @Examples({
         "give mtv vehicle {_boat} to player",
         "give {_player} mtv vehicle with license plate \"DF-4J-2R\"",
-        "give {_player} mtv vehicle with license plate \"DF-4J-2R\""
+        "give {_player} mtv vehicle with uuid \"XN9MKB\""
 })
 public class EffGiveVehicle extends Effect {
 
