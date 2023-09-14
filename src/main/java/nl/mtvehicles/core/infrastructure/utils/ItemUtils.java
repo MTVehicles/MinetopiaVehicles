@@ -3,6 +3,7 @@ package nl.mtvehicles.core.infrastructure.utils;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.annotations.VersionSpecific;
 import nl.mtvehicles.core.infrastructure.dataconfig.MessagesConfig;
+import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
 import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
@@ -110,8 +111,9 @@ public class ItemUtils {
     /**
      * Restore a vehicle item with a known license plate (used in /vehicle restore and #spawnVehicle(...)). Updated method (used to be #carItem5(...)).
      */
-    public static ItemStack getVehicleItem(@NotNull Material material, int durability, boolean glowing, String name, String licensePlate){
+    public static ItemStack getVehicleItem(@NotNull Material material, int durability, @Nullable Boolean glowing, String name, String licensePlate){
         if (!material.isItem()) return null;
+        if (glowing == null) glowing = false;
         ItemStack vehicle = (new ItemFactory(material))
                 .setDurability(durability)
                 .setName(TextUtils.colorize("&6" + name))
@@ -125,13 +127,51 @@ public class ItemUtils {
     }
 
     /**
+     * Restore a vehicle item with a known license plate (will use data from VehicleData.yml).
+     * @see #getVehicleItem(String, boolean)
+     * @see #getVehicleItem(Material, int, Boolean, String, String)
+     * @since 2.5.1
+     */
+    public static ItemStack getVehicleItem(String licensePlate){
+        return getVehicleItem(
+                Objects.requireNonNull(getMaterial(ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.SKIN_ITEM).toString())),
+                (int) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.SKIN_DAMAGE),
+                (boolean) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.IS_GLOWING),
+                ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.NAME).toString(),
+                licensePlate
+        );
+    }
+
+    /**
+     * Restore a vehicle item with a known license plate (will use data from VehicleData.yml).
+     * @param licensePlate Vehicle's license plate
+     * @param nbt Whether the item has an NBT
+     * @see #getVehicleItem(String)
+     * @since 2.5.1
+     */
+    public static ItemStack getVehicleItem(String licensePlate, boolean nbt){
+        if (!nbt) return getVehicleItem(licensePlate);
+
+        return getVehicleItem(
+                Objects.requireNonNull(getMaterial(ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.SKIN_ITEM).toString())),
+                (int) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.SKIN_DAMAGE),
+                (boolean) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.IS_GLOWING),
+                ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.NAME).toString(),
+                licensePlate,
+                "mtcustom",
+                ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.NBT_VALUE)
+        );
+    }
+
+    /**
      * Restore a vehicle item with a known license plate and <b>a custom NBT</b> (used in /vehicle restore). Updated method (used to be #carItem4(...)).
      */
-    public static ItemStack getVehicleItem(@NotNull Material material, int durability, boolean glowing, String name, String licensePlate, String nbtKey, @Nullable Object nbtValue){
+    public static ItemStack getVehicleItem(@NotNull Material material, int durability, Boolean glowing, String name, String licensePlate, String nbtKey, @Nullable Object nbtValue){
         if (!material.isItem()) return null;
         if (nbtValue == null){
             return getVehicleItem(material, durability, glowing, name, licensePlate);
         }
+        if (glowing == null) glowing = false;
         ItemStack vehicle = (new ItemFactory(material))
                 .setDurability(durability)
                 .setName(TextUtils.colorize("&6" + name))

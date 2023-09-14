@@ -174,7 +174,7 @@ public class MenuUtils {
                 (short) 5,
                 1,
                 "&6" + msg.getMessage(Message.ACCELERATION_SPEED),
-                String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), data.get(licensePlate, VehicleDataConfig.Option.ACCELARATION_SPEED))
+                String.format("&7%s: &e%s", msg.getMessage(Message.CURRENTLY), data.get(licensePlate, VehicleDataConfig.Option.ACCELERATION_SPEED))
         );
         ItemStack option2 = ItemUtils.getMenuItem(
                 "LIME_STAINED_GLASS",
@@ -282,26 +282,12 @@ public class MenuUtils {
                 if (i - 1 < dataVehicle.size()) {
                     String license = dataVehicle.get(i - 1);
                     VehicleDataConfig data = ConfigModule.vehicleDataConfig;
-                    Boolean isGlowing = (Boolean) data.get(license, VehicleDataConfig.Option.IS_GLOWING);
-                    if (isGlowing == null) isGlowing = false;
                     if (ownerUUID == null || data.get(license, VehicleDataConfig.Option.OWNER).toString().contains(ownerUUID.toString())) {
                         if (data.get(license, VehicleDataConfig.Option.NBT_VALUE) == null) {
-                            inv.addItem(ItemUtils.getVehicleItem(ItemUtils.getMaterial(
-                                    data.get(license, VehicleDataConfig.Option.SKIN_ITEM).toString()),
-                                    data.getDamage(license),
-                                    isGlowing,
-                                    data.get(license, VehicleDataConfig.Option.NAME).toString(),
-                                    license));
+                            inv.addItem(ItemUtils.getVehicleItem(license));
                             continue;
                         }
-                        inv.addItem(ItemUtils.getVehicleItem(ItemUtils.getMaterial(
-                                data.get(license, VehicleDataConfig.Option.SKIN_ITEM).toString()),
-                                data.getDamage(license),
-                                isGlowing,
-                                data.get(license, VehicleDataConfig.Option.NAME).toString(),
-                                license,
-                                "mtcustom",
-                                data.get(license, VehicleDataConfig.Option.NBT_VALUE)));
+                        inv.addItem(ItemUtils.getVehicleItem(license, true));
                     }
                 }
             }

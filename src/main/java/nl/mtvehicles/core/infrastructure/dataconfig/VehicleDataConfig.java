@@ -263,7 +263,7 @@ public class VehicleDataConfig extends MTVConfig {
          * Can be found as 'aftrekkenSpeed' in vehicleData.yml
          */
         FRICTION_SPEED("aftrekkenSpeed"),
-        ACCELARATION_SPEED("acceleratieSpeed"),
+        ACCELERATION_SPEED("acceleratieSpeed"),
         MAX_SPEED("maxSpeed"),
         MAX_SPEED_BACKWARDS("maxSpeedBackwards"),
         ROTATION_SPEED("rotateSpeed"),

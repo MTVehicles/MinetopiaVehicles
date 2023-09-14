@@ -18,7 +18,7 @@ public class VehiclePublic extends MTVSubCommand {
         Vehicle vehicle = getVehicle();
         if (vehicle == null) return true;
 
-        vehicle.setOpen(true);
+        vehicle.setPublic(true);
         vehicle.save();
 
         sendMessage(Message.ACTION_SUCCESSFUL);

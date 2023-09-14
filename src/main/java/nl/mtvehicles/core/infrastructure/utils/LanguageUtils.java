@@ -42,6 +42,7 @@ public class LanguageUtils {
         inv.setItem(9, ItemUtils.getMenuItem(Material.GOLD_ORE, 1, "&6Russian (Русский)", "&7Нажмите, чтобы перевести все сообщения на русский язык."));
         inv.setItem(10, ItemUtils.getMenuItem(Material.DIAMOND_ORE, 1, "&bFrench (Français)", "&7Appuyez pour définir tous les messages en français."));
         inv.setItem(11, ItemUtils.getMenuItem(Material.EMERALD_ORE, 1, "&aThai (ภาษาไทย)", "&7กดเพื่อตั้งค่าข้อความทั้งหมดเป็นภาษาไทย."));
+        inv.setItem(12, ItemUtils.getMenuItem(Material.BONE_BLOCK, 1, "&3Greek (Ελληνική)", "&7Πιέστε για να ρυθμίσετε όλα τα μηνύματα στα ελληνικά."));
         inv.setItem(17, ItemUtils.getMenuItem(Material.PAPER, 1, "&fThat's all for now!", "&7Do you want to help us by translating the plugin? &f&nClick here"));
         p.openInventory(inv);
         languageCheck.put(p.getUniqueId(), true);
