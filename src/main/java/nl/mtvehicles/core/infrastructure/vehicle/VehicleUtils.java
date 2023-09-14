@@ -159,6 +159,28 @@ public final class VehicleUtils {
     }
 
     /**
+     * Check if given UUID exists (to prevent further issues)
+     * @since 2.5.1
+     */
+    public static boolean vehicleUUIDExists(String uuid){
+        boolean exists = false;
+        List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getVehicles();
+        outerLoop:
+        for (Map<?, ?> configVehicle : vehicles) {
+            List<Map<?, ?>> skins = (List<Map<?, ?>>) configVehicle.get("cars");
+            for (Map<?, ?> skin : skins) {
+                if (skin.get("uuid") != null) {
+                    if (skin.get("uuid").equals(uuid)) {
+                        exists = true;
+                        break outerLoop;
+                    }
+                }
+            }
+        }
+        return exists;
+    }
+
+    /**
      * Create a vehicle and get its item by UUID (UUID may be found in vehicles.yml)
      * @param owner Vehicle's owner
      * @param uuid Vehicle's UUID (UUID may be found in vehicles.yml)

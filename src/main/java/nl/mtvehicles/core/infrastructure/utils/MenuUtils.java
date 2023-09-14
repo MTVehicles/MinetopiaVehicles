@@ -282,26 +282,12 @@ public class MenuUtils {
                 if (i - 1 < dataVehicle.size()) {
                     String license = dataVehicle.get(i - 1);
                     VehicleDataConfig data = ConfigModule.vehicleDataConfig;
-                    Boolean isGlowing = (Boolean) data.get(license, VehicleDataConfig.Option.IS_GLOWING);
-                    if (isGlowing == null) isGlowing = false;
                     if (ownerUUID == null || data.get(license, VehicleDataConfig.Option.OWNER).toString().contains(ownerUUID.toString())) {
                         if (data.get(license, VehicleDataConfig.Option.NBT_VALUE) == null) {
-                            inv.addItem(ItemUtils.getVehicleItem(ItemUtils.getMaterial(
-                                    data.get(license, VehicleDataConfig.Option.SKIN_ITEM).toString()),
-                                    data.getDamage(license),
-                                    isGlowing,
-                                    data.get(license, VehicleDataConfig.Option.NAME).toString(),
-                                    license));
+                            inv.addItem(ItemUtils.getVehicleItem(license));
                             continue;
                         }
-                        inv.addItem(ItemUtils.getVehicleItem(ItemUtils.getMaterial(
-                                data.get(license, VehicleDataConfig.Option.SKIN_ITEM).toString()),
-                                data.getDamage(license),
-                                isGlowing,
-                                data.get(license, VehicleDataConfig.Option.NAME).toString(),
-                                license,
-                                "mtcustom",
-                                data.get(license, VehicleDataConfig.Option.NBT_VALUE)));
+                        inv.addItem(ItemUtils.getVehicleItem(license, true));
                     }
                 }
             }
