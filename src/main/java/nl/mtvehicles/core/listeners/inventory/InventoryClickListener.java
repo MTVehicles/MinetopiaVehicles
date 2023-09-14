@@ -8,8 +8,8 @@ import nl.mtvehicles.core.events.inventory.InventoryClickEvent;
 import nl.mtvehicles.core.infrastructure.dataconfig.MessagesConfig;
 import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
 import nl.mtvehicles.core.infrastructure.enums.InventoryTitle;
-import nl.mtvehicles.core.infrastructure.enums.Language;
 import nl.mtvehicles.core.infrastructure.enums.Message;
+import nl.mtvehicles.core.infrastructure.enums.VehicleType;
 import nl.mtvehicles.core.infrastructure.utils.ItemUtils;
 import nl.mtvehicles.core.infrastructure.utils.LanguageUtils;
 import nl.mtvehicles.core.infrastructure.utils.MenuUtils;
@@ -168,17 +168,9 @@ public class InventoryClickListener extends MTVListener {
 
             NBTItem nbt = new NBTItem(vehicleMenu.get(player.getUniqueId()));
             String licensePlate = nbt.getString("mtvehicles.kenteken");
-            String vehicleName = nbt.getString("mtvehicles.naam");
-
-            Vehicle vehicle = new Vehicle();
-            List<String> members = ConfigModule.vehicleDataConfig.getMembers(licensePlate);
-            List<String> riders = ConfigModule.vehicleDataConfig.getRiders(licensePlate);
-            List<String> trunkData = ConfigModule.vehicleDataConfig.getTrunkData(licensePlate);
 
             // Get vehicle skins
             List<Map<?, ?>> skins = (List<Map<?, ?>>) vehicles.get(intSave.get(player.getUniqueId())).get("cars");
-
-            // Get price of vehicle
             double price = 0.0;
             for (Map<?, ?> skin : skins) {
                 if (skin.get("itemDamage").equals(vehicles.get(intSave.get(player.getUniqueId())).get("skinDamage"))) {
@@ -188,34 +180,37 @@ public class InventoryClickListener extends MTVListener {
                 }
             }
 
-            vehicle.setLicensePlate(licensePlate);
-            vehicle.setName(vehicleName);
-            vehicle.setVehicleType((String) vehicles.get(intSave.get(player.getUniqueId())).get("vehicleType"));
-            vehicle.setSkinDamage(vehicleMenu.get(player.getUniqueId()).getDurability());
-            vehicle.setSkinItem(vehicleMenu.get(player.getUniqueId()).getType().toString());
-            vehicle.setGlow(false);
-            vehicle.setHornEnabled((Boolean) vehicles.get(intSave.get(player.getUniqueId())).get("hornEnabled"));
-            vehicle.setHealth((double) vehicles.get(intSave.get(player.getUniqueId())).get("maxHealth"));
-            vehicle.setBenzineEnabled((Boolean) vehicles.get(intSave.get(player.getUniqueId())).get("benzineEnabled"));
-            vehicle.setFuel(100);
-            vehicle.setTrunk((Boolean) vehicles.get(intSave.get(player.getUniqueId())).get("kofferbakEnabled"));
-            vehicle.setTrunkRows(1);
-            vehicle.setFuelUsage(0.01);
-            vehicle.setTrunkData(trunkData);
-            vehicle.setAccelerationSpeed((Double) vehicles.get(intSave.get(player.getUniqueId())).get("acceleratieSpeed"));
-            vehicle.setMaxSpeed((Double) vehicles.get(intSave.get(player.getUniqueId())).get("maxSpeed"));
-            vehicle.setBrakingSpeed((Double) vehicles.get(intSave.get(player.getUniqueId())).get("brakingSpeed"));
-            vehicle.setFrictionSpeed((Double) vehicles.get(intSave.get(player.getUniqueId())).get("aftrekkenSpeed"));
-            vehicle.setRotateSpeed((Integer) vehicles.get(intSave.get(player.getUniqueId())).get("rotateSpeed"));
-            vehicle.setMaxSpeedBackwards((Double) vehicles.get(intSave.get(player.getUniqueId())).get("maxSpeedBackwards"));
-            vehicle.setOwner(player.getUniqueId());
-            vehicle.setNbtValue(nbt.getString("mtcustom"));
-            vehicle.setRiders(riders);
-            vehicle.setMembers(members);
-            vehicle.setPrice(price);
+            Vehicle vehicle = new Vehicle(
+                    null,
+                    licensePlate,
+                    nbt.getString("mtvehicles.naam"),
+                    VehicleType.valueOf((String) vehicles.get(intSave.get(player.getUniqueId())).get("vehicleType")),
+                    false,
+                    vehicleMenu.get(player.getUniqueId()).getDurability(),
+                    vehicleMenu.get(player.getUniqueId()).getType().toString(),
+                    false,
+                    (boolean) vehicles.get(intSave.get(player.getUniqueId())).get("hornEnabled"),
+                    (double) vehicles.get(intSave.get(player.getUniqueId())).get("maxHealth"),
+                    (boolean) vehicles.get(intSave.get(player.getUniqueId())).get("benzineEnabled"),
+                    100,
+                    0.01,
+                    (boolean) vehicles.get(intSave.get(player.getUniqueId())).get("kofferbakEnabled"),
+                    1,
+                    ConfigModule.vehicleDataConfig.getTrunkData(licensePlate),
+                    (double) vehicles.get(intSave.get(player.getUniqueId())).get("acceleratieSpeed"),
+                    (double) vehicles.get(intSave.get(player.getUniqueId())).get("maxSpeed"),
+                    (double) vehicles.get(intSave.get(player.getUniqueId())).get("maxSpeedBackwards"),
+                    (double) vehicles.get(intSave.get(player.getUniqueId())).get("brakingSpeed"),
+                    (double) vehicles.get(intSave.get(player.getUniqueId())).get("aftrekkenSpeed"),
+                    (int) vehicles.get(intSave.get(player.getUniqueId())).get("rotateSpeed"),
+                    player.getUniqueId(),
+                    ConfigModule.vehicleDataConfig.getRiders(licensePlate),
+                    ConfigModule.vehicleDataConfig.getMembers(licensePlate),
+                    price,
+                    nbt.getString("mtcustom")
+            );
 
             vehicle.save();
-
             player.closeInventory();
         }
     }
@@ -438,14 +433,14 @@ public class InventoryClickListener extends MTVListener {
     private void voucherRedeemMenu(){
         if (clickedSlot == 15) { //Yes
             String carUUID = VehicleVoucherListener.voucher.get(player);
-            if (VehicleUtils.getItemByUUID(player, carUUID) == null){
+            if (VehicleUtils.createAndGetItemByUUID(player, carUUID) == null){
                 player.sendMessage(ConfigModule.messagesConfig.getMessage(Message.GIVE_CAR_NOT_FOUND));
                 player.closeInventory();
                 return;
             }
             player.sendMessage(ConfigModule.messagesConfig.getMessage(Message.VOUCHER_REDEEM));
             player.getInventory().getItemInMainHand().setAmount(player.getInventory().getItemInMainHand().getAmount() - 1);
-            player.getInventory().addItem(VehicleUtils.getItemByUUID(player, carUUID));
+            player.getInventory().addItem(VehicleUtils.createAndGetItemByUUID(player, carUUID));
         }
 
         VehicleVoucherListener.voucher.remove(player);

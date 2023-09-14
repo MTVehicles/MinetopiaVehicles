@@ -5,6 +5,7 @@ import nl.mtvehicles.core.infrastructure.enums.InventoryTitle;
 import nl.mtvehicles.core.infrastructure.utils.LanguageUtils;
 import nl.mtvehicles.core.infrastructure.utils.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVListener;
+import nl.mtvehicles.core.infrastructure.vehicle.VehicleData;
 import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.listeners.VehicleVoucherListener;
@@ -40,6 +41,7 @@ public class InventoryCloseListener extends MTVListener {
         if (title.equals(InventoryTitle.VEHICLE_TRUNK)) {
             String license = VehicleUtils.openedTrunk.get(player);
             VehicleUtils.openedTrunk.remove(player);
+            VehicleData.trunkViewerRemove(license, player);
             List<ItemStack> chest = new ArrayList<>();
             chest.addAll(Arrays.asList(event.getInventory().getContents()));
             ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + license + ".kofferbakData", chest);

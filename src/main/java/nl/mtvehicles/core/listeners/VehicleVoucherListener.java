@@ -39,7 +39,7 @@ public class VehicleVoucherListener extends MTVListener {
 
         if (item == null || item.getType() != Material.PAPER) return;
         NBTItem nbt = new NBTItem(item);
-        if (!nbt.hasKey("mtvehicles.item")) return;
+        if (!nbt.hasTag("mtvehicles.item")) return;
 
         String carUUID = nbt.getString("mtvehicles.item");
 

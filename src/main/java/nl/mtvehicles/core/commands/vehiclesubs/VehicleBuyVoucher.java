@@ -44,7 +44,7 @@ public class VehicleBuyVoucher extends MTVSubCommand {
         }
 
         if (DependencyModule.vault.withdrawMoneyPlayer(player, price)){
-            VehicleUtils.getItemByUUID(player, carUuid); //Necessary for the vehicle to be created
+            VehicleUtils.createAndGetItemByUUID(player, carUuid); //Necessary for the vehicle to be created
             ItemStack voucher = ItemUtils.createVoucher(carUuid);
             player.getInventory().addItem(voucher);
         }

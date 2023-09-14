@@ -6,7 +6,8 @@ package nl.mtvehicles.core.infrastructure.enums;
 public enum SoftDependency {
     WORLD_GUARD("WorldGuard"),
     VAULT("Vault"),
-    PLACEHOLDER_API("PlaceholderAPI");
+    PLACEHOLDER_API("PlaceholderAPI"),
+    SKRIPT("Skript");
 
     final private String name;
 

@@ -2,16 +2,15 @@ package nl.mtvehicles.core.events;
 
 import nl.mtvehicles.core.events.interfaces.CanEditLicensePlate;
 import nl.mtvehicles.core.events.interfaces.HasJerryCan;
-import nl.mtvehicles.core.events.interfaces.HasVehicle;
 import nl.mtvehicles.core.events.interfaces.IsCancellable;
 import nl.mtvehicles.core.infrastructure.models.MTVEvent;
-import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
-import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
+import org.bukkit.event.Cancellable;
 
 /**
  * On vehicle refuel
  */
-public class VehicleFuelEvent extends MTVEvent implements IsCancellable, CanEditLicensePlate, HasJerryCan {
+public class VehicleFuelEvent extends MTVEvent implements IsCancellable, Cancellable, CanEditLicensePlate, HasJerryCan {
+
     final private double vehicleFuel;
     final private int jerryCanFuel;
     final private int jerryCanSize;
