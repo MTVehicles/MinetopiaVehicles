@@ -11,7 +11,6 @@ CODE CONTRIBUTORS:
 - Manuel P. (https://github.com/Mr-EmPee)
 - Bluebotlabz (https://github.com/Bluebotlabz)
 - Djorr (https://github.com/Djorr)
-- GomorrhaDev (https://github.com/GomorrhaDev)
 
 TRANSLATORS:
 - Czech: Nikd0
