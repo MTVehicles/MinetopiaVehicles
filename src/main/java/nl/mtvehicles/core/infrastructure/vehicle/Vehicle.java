@@ -147,7 +147,7 @@ public class Vehicle {
         map.put(VehicleDataConfig.Option.FRICTION_SPEED.getPath(), this.getFrictionSpeed());
         map.put(VehicleDataConfig.Option.ROTATION_SPEED.getPath(), this.getRotateSpeed());
         map.put(VehicleDataConfig.Option.MAX_SPEED_BACKWARDS.getPath(), this.getMaxSpeedBackwards());
-        map.put(VehicleDataConfig.Option.OWNER.getPath(), this.getOwnerUUIDString());
+        map.put(VehicleDataConfig.Option.OWNER.getPath(), this.getOwnerUUID().toString());
         map.put(VehicleDataConfig.Option.NBT_VALUE.getPath(), this.getNbtValue());
         map.put(VehicleDataConfig.Option.RIDERS.getPath(), this.getRiders());
         map.put(VehicleDataConfig.Option.MEMBERS.getPath(), this.getMembers());
@@ -307,14 +307,6 @@ public class Vehicle {
 
     public double getMaxSpeedBackwards() {
         return maxSpeedBackwards;
-    }
-
-    /**
-     * @deprecated Use {@link #getOwnerUUID()} instead.
-     */
-    @Deprecated
-    public String getOwnerUUIDString() {
-        return owner.toString();
     }
 
     public UUID getOwnerUUID() {
@@ -495,19 +487,6 @@ public class Vehicle {
 
     public VehicleType getVehicleType() {
         return vehicleType;
-    }
-
-    /**
-     * @deprecated Use {@link #setVehicleType(VehicleType)} instead.
-     */
-    @Deprecated
-    public void setVehicleType(String vehicleType) {
-        try {
-            this.vehicleType = VehicleType.valueOf(vehicleType.toUpperCase(Locale.ROOT));
-        } catch (IllegalArgumentException e){
-            Main.logSevere("An error occurred while setting a vehicle's type. Using default (CAR)...");
-            this.vehicleType = VehicleType.CAR;
-        }
     }
 
     public void setVehicleType(VehicleType vehicleType){

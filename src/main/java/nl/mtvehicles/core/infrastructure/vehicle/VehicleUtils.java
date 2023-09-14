@@ -283,14 +283,6 @@ public final class VehicleUtils {
     }
 
     /**
-     * @deprecated Renamed to {@link #getItem(String)}.
-     */
-    @Deprecated
-    public static ItemStack getCarItem(String carUUID) {
-        return getItem(carUUID);
-    }
-
-    /**
      * Get a vehicle item by license plate. <b>Does not create a new vehicle.</b>
      * @param licensePlate Vehicle's license plate
      * @return The vehicle item - just aesthetic (null if license plate is not found)
@@ -367,14 +359,6 @@ public final class VehicleUtils {
             return name.split("_")[2];
         }
         return null;
-    }
-
-    /**
-     * @deprecated Renamed to {@link #getUUID(String)}.
-     */
-    @Deprecated
-    public static String getCarUUID(String licensePlate) {
-        return getUUID(licensePlate);
     }
 
     /**
