@@ -37,7 +37,13 @@ public class VehicleData {
      */
     public static HashMap<String, Double> fuel = new HashMap<>();
     public static HashMap<String, Double> fuelUsage = new HashMap<>();
+    /**
+     * All armor stands - vehicle seats, rotors, etc... (by entity names)
+     */
     public static HashMap<String, ArmorStand> autostand = new HashMap<>();
+    /**
+     * Main seat (by license plate)
+     */
     public static HashMap<String, ArmorStand> autostand2 = new HashMap<>();
     public static Map<String, Long> lastUsage = new HashMap<>();
     public static HashMap<String, Boolean> fallDamage = new HashMap<>(); //Used for helicopters when 'extremely falling'

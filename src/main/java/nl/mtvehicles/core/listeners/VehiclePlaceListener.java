@@ -104,6 +104,6 @@ public class VehiclePlaceListener extends MTVListener {
 
         VehicleUtils.spawnVehicle(license, location);
         player.getInventory().remove(player.getEquipment().getItemInHand());
-        player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_PLACE).replace("%p%", VehicleUtils.getVehicle(license).getOwnerName())));
+        player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_PLACE).replace("%p%", vehicle.getOwnerName())));
     }
 }

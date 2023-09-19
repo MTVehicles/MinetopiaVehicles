@@ -765,22 +765,17 @@ public final class VehicleUtils {
 
     /**
      * Create {@link VehicleData} (necessary for driving to work), helicopter blades, and make player enter a vehicle.
-     * @param licensePlate Vehicle's license plate
+     * @param vehicle Vehicle's license plate
      * @param p Player who is entering the vehicle
      */
     @ToDo("Beautify the code inside this method.")
-    public static void enterVehicle(String licensePlate, Player p) {
+    public static void enterVehicle(Vehicle vehicle, Player p) {
+        final String licensePlate = vehicle.getLicensePlate();
+
         if (!(VehicleData.autostand2.get(licensePlate) == null)) {
             if (!VehicleData.autostand2.get(licensePlate).isEmpty()) {
                 return;
             }
-        }
-
-        Vehicle vehicle = getVehicle(licensePlate);
-
-        if (vehicle == null) {
-            ConfigModule.messagesConfig.sendMessage(p, Message.VEHICLE_NOT_FOUND);
-            return;
         }
 
         if (vehicle.getOwnerName() == null) {
@@ -814,12 +809,12 @@ public final class VehicleUtils {
 
                 Location location = new Location(entity.getWorld(), entity.getLocation().getX(), entity.getLocation().getY(), entity.getLocation().getZ(), entity.getLocation().getYaw(), entity.getLocation().getPitch());
 
-                if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.ENTER, vehicle.getVehicleType(), location, p)){
+                VehicleType vehicleType = vehicle.getVehicleType();
+                if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.ENTER, vehicleType, location, p)){
                     ConfigModule.messagesConfig.sendMessage(p, Message.CANNOT_DO_THAT_HERE);
                     return;
                 }
 
-                VehicleType vehicleType = ConfigModule.vehicleDataConfig.getType(licensePlate);
                 if (vehicleAs.getCustomName().contains("MTVEHICLES_SKIN_" + licensePlate)) {
                     basicStandCreator(licensePlate, "SKIN", location, vehicleAs.getHelmet(), false);
                     basicStandCreator(licensePlate, "MAIN", location, null, true);
@@ -830,7 +825,7 @@ public final class VehicleUtils {
                         if (i == 1) {
                             mainSeatStandCreator(licensePlate, location, p, seat.get("x"), seat.get("y"), seat.get("z"));
                             BossBarUtils.addBossBar(p, licensePlate);
-                            p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_ENTER_RIDER).replace("%p%", getVehicle(licensePlate).getOwnerName())));
+                            ConfigModule.messagesConfig.sendMessage(p, Message.VEHICLE_ENTER_RIDER, "%p%", vehicle.getOwnerName());
                         }
                         if (i > 1) {
                             VehicleData.seatsize.put(licensePlate, seats.size());
@@ -877,7 +872,7 @@ public final class VehicleUtils {
     }
 
     /**
-     * Used in {@link #enterVehicle(String, Player)}.
+     * Used in {@link #enterVehicle(Vehicle, Player)}.
      */
     private static void basicStandCreator(String license, String type, Location location, ItemStack item, Boolean gravity) {
         ArmorStand as = location.getWorld().spawn(location, ArmorStand.class);
@@ -897,7 +892,7 @@ public final class VehicleUtils {
     }
 
     /**
-     * Used in {@link #enterVehicle(String, Player)}.
+     * Used in {@link #enterVehicle(Vehicle, Player)}.
      */
     private static void mainSeatStandCreator(String license, Location location, Player p, double x, double y, double z) {
         Location location2 = new Location(location.getWorld(), location.getX() + Double.valueOf(z), location.getY() + Double.valueOf(y), location.getZ() + Double.valueOf(z));
@@ -949,7 +944,7 @@ public final class VehicleUtils {
     /**
      * Delete {@link VehicleData}, helicopter blades; save fuel, etc... <b>after a driver has left the vehicle</b>.
      * @param vehicle Vehicle
-     * @return False if the driver is seated in the vehicle, or if the vehicle doesn't have {@link VehicleData} and thus is not created (see {@link #enterVehicle(String, Player)} -> the vehicle can't be turned off. Otherwise, true.
+     * @return False if the driver is seated in the vehicle, or if the vehicle doesn't have {@link VehicleData} and thus is not created (see {@link #enterVehicle(Vehicle, Player)} -> the vehicle can't be turned off. Otherwise, true.
      *
      * @warning Do not call this method if a vehicle is being used! Use {@link #kickOut(Player)} instead.
      */

@@ -96,22 +96,23 @@ public class VehicleClickListener extends MTVListener {
         Vehicle vehicle = VehicleUtils.getVehicle(license);
         if (vehicle == null) return;
 
+        // if clicked armor stand is a passenger seat
         if (entity.getCustomName().contains("MTVEHICLES_SEAT")) {
 
             if (!vehicle.isPublic() && !vehicle.isOwner(player) && !vehicle.canSit(player) && !player.hasPermission("mtvehicles.ride")) {
-                player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_NO_RIDER_ENTER).replace("%p%", vehicle.getOwnerName())));
+                ConfigModule.messagesConfig.sendMessage(player, Message.VEHICLE_NO_RIDER_ENTER, "%p%", vehicle.getOwnerName());
                 return;
             }
 
             if (entity.isEmpty()) {
                 entity.addPassenger(player);
-                player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_ENTER_MEMBER).replace("%p%", vehicle.getOwnerName())));
+                ConfigModule.messagesConfig.sendMessage(player, Message.VEHICLE_ENTER_MEMBER, "%p%", vehicle.getOwnerName());
             }
 
             return;
         }
 
-        VehicleUtils.enterVehicle(license, player);
+        VehicleUtils.enterVehicle(vehicle, player);
     }
 
 }
