@@ -90,7 +90,7 @@ public class Main extends JavaPlugin {
             try {
                 DependencyModule.skript.load();
             } catch (Exception e){
-                logSevere("Could not load Skript addon. (Maybe you've just reloaded the plugin with PlugMan?)");
+                logWarning("Could not load Skript MTVehicles addon. (Maybe you've just reloaded the plugin with PlugMan?)");
             }
         }
     }
