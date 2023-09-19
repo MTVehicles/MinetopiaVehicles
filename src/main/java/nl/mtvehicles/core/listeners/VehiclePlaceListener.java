@@ -83,6 +83,13 @@ public class VehiclePlaceListener extends MTVListener {
             ConfigModule.messagesConfig.sendMessage(player, Message.BLOCK_NOT_IN_WHITELIST);
             return;
         }
+
+        //prevent vehicles from being placed inside walls
+        if (!VehicleUtils.isPassable(event.getClickedBlock().getLocation().add(0, 1, 0).getBlock())){
+            ConfigModule.messagesConfig.sendMessage(player, Message.BLOCK_NOT_IN_WHITELIST);
+            return;
+        }
+
         if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.PLACE, vehicle.getVehicleType(), loc, player)) {
             ConfigModule.messagesConfig.sendMessage(player, Message.CANNOT_DO_THAT_HERE);
             return;

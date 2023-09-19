@@ -63,6 +63,16 @@ public class VehicleClickListener extends MTVListener {
         Vehicle vehicle = VehicleUtils.getVehicle(license);
         if (vehicle == null) return;
 
+        if (!((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.CAR_PICKUP)) && !player.hasPermission("mtvehicles.oppakken")) {
+            ConfigModule.messagesConfig.sendMessage(player, Message.CANNOT_DO_THAT_HERE);
+            return;
+        }
+
+        if (!vehicle.isOwner(player) && !player.hasPermission("mtvehicles.oppakken")){
+            ConfigModule.messagesConfig.sendMessage(player, Message.VEHICLE_NO_OWNER_PICKUP, "%p%", vehicle.getOwnerName());
+            return;
+        }
+
         if (!player.hasPermission("mtvehicles.anwb") && (boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.DISABLE_PICKUP_FROM_WATER)){
             if (entity.getLocation().clone().add(0, 1, 0).getBlock().isLiquid()) {
                 ConfigModule.messagesConfig.sendMessage(player, Message.VEHICLE_IN_WATER);
@@ -75,7 +85,7 @@ public class VehicleClickListener extends MTVListener {
             return;
         }
 
-        VehicleUtils.pickupVehicle(license, player);
+        VehicleUtils.pickupVehicle(vehicle, player);
     }
 
     private void enter(){

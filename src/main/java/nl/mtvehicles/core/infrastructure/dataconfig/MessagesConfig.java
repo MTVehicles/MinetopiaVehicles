@@ -85,6 +85,17 @@ public class MessagesConfig extends MTVConfig {
     }
 
     /**
+     * Send a message to a player/console by its key (in plugin's set language) and replace some parameters (for instance %p%).
+     * @param receiver Player/Console
+     * @param message Message (enum)
+     * @param replacedText Replaced text (e.g. %p%)
+     * @param replacedBy New text (e.g. player)
+     */
+    public void sendMessage(CommandSender receiver, Message message, String replacedText, String replacedBy){
+        receiver.sendMessage(getMessage(message).replace(replacedText, replacedBy));
+    }
+
+    /**
      * Set this class to work with the appropriate language file
      * @param languageCode 'xx' in 'messages_xx.yml'
      * @return True if successful

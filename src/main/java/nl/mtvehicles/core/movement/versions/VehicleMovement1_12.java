@@ -6,8 +6,6 @@ import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.infrastructure.vehicle.VehicleData;
 import nl.mtvehicles.core.movement.VehicleMovement;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
 
 /**
  * Class concerning the movement of vehicles in 1_12_R2 (because the NMS differ a lot)
@@ -239,22 +237,6 @@ public class VehicleMovement1_12 extends VehicleMovement {
         }
 
         return false;
-    }
-
-    @Override
-    protected boolean isPassable(Block block){
-        String blockName = block.getType().toString();
-        return blockName.contains("AIR")
-                || blockName.contains("FLOWER")
-                || blockName.contains("ROSE")
-                || blockName.contains("PLANT")
-                || block.getType().equals(Material.BROWN_MUSHROOM)
-                || block.getType().equals(Material.RED_MUSHROOM)
-                || blockName.contains("LONG_GRASS")
-                || blockName.contains("SAPLING")
-                || blockName.contains("DEAD_BUSH")
-                || blockName.contains("TORCH")
-                || blockName.contains("BANNER");
     }
 
     @Override

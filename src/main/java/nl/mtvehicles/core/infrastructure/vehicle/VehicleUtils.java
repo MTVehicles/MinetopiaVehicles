@@ -3,6 +3,7 @@ package nl.mtvehicles.core.infrastructure.vehicle;
 import de.tr7zw.changeme.nbtapi.NBTItem;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.annotations.ToDo;
+import nl.mtvehicles.core.infrastructure.annotations.VersionSpecific;
 import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
 import nl.mtvehicles.core.infrastructure.enums.InventoryTitle;
@@ -11,11 +12,13 @@ import nl.mtvehicles.core.infrastructure.enums.RegionAction;
 import nl.mtvehicles.core.infrastructure.enums.VehicleType;
 import nl.mtvehicles.core.infrastructure.models.MTVConfig;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
+import nl.mtvehicles.core.infrastructure.modules.VersionModule;
 import nl.mtvehicles.core.infrastructure.utils.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -178,6 +181,29 @@ public final class VehicleUtils {
             }
         }
         return exists;
+    }
+
+    /**
+     * See if a block is passable (used because in 1.12 the {@link org.bukkit.block.Block#isPassable()} method is not present).
+     */
+    @VersionSpecific
+    public static boolean isPassable(@NotNull Block block){
+        if (VersionModule.getServerVersion().is1_12()) {
+            String blockName = block.getType().toString();
+            return blockName.contains("AIR")
+                    || blockName.contains("FLOWER")
+                    || blockName.contains("ROSE")
+                    || blockName.contains("PLANT")
+                    || block.getType().equals(Material.BROWN_MUSHROOM)
+                    || block.getType().equals(Material.RED_MUSHROOM)
+                    || blockName.contains("LONG_GRASS")
+                    || blockName.contains("SAPLING")
+                    || blockName.contains("DEAD_BUSH")
+                    || blockName.contains("TORCH")
+                    || blockName.contains("BANNER");
+        } else {
+            return block.isPassable();
+        }
     }
 
     /**
@@ -579,11 +605,10 @@ public final class VehicleUtils {
     }
 
     /**
-     * Pick up a vehicle and put it to player's inventory
-     * @param license Vehicle's license plate
-     * @param player Player
+     * @deprecated See {@link #pickupVehicle(Vehicle, Player)}.
      */
-    public static void pickupVehicle(String license, Player player) {
+    @Deprecated
+    public static void pickupVehicle(String license, Player player){
         Vehicle vehicle = getVehicle(license);
         if (vehicle == null) {
             for (World world : Bukkit.getServer().getWorlds()) {
@@ -596,6 +621,14 @@ public final class VehicleUtils {
             ConfigModule.messagesConfig.sendMessage(player, Message.VEHICLE_NOT_FOUND);
             return;
         }
+        pickupVehicle(vehicle, player);
+    }
+
+    /**
+     * Pick up a vehicle and put it to player's inventory <b>(does NOT check whether the player is an owner / has necessary permissions etc.)</b>
+     */
+    public static void pickupVehicle(@NotNull Vehicle vehicle, @NotNull Player player) {
+        final String license = vehicle.getLicensePlate();
 
         if (vehicle.getOwnerName() == null) {
             ConfigModule.messagesConfig.sendMessage(player, Message.VEHICLE_NOT_FOUND);
@@ -603,34 +636,25 @@ public final class VehicleUtils {
             return;
         }
 
-        if (vehicle.isOwner(player) && !((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.CAR_PICKUP)) || player.hasPermission("mtvehicles.oppakken")) {
-            for (World world : Bukkit.getServer().getWorlds()) {
-                for (Entity entity : world.getEntities()) {
-                    if (entity.getCustomName() != null && entity.getCustomName().contains(license)) {
-                        ArmorStand test = (ArmorStand) entity;
-                        if (test.getCustomName().contains("MTVEHICLES_SKIN_" + license)) {
-                            for (Player trunkViewer : VehicleData.getTrunkViewers(license)){
-                                trunkViewer.closeInventory();
-                            }
-                            if (!TextUtils.checkInvFull(player)) {
-                                player.getInventory().addItem(test.getHelmet());
-                                player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_PICKUP).replace("%p%", vehicle.getOwnerName())));
-                            } else {
-                                ConfigModule.messagesConfig.sendMessage(player, Message.INVENTORY_FULL);
-                                return;
-                            }
+        for (World world : Bukkit.getServer().getWorlds()) {
+            for (Entity entity : world.getEntities()) {
+                if (entity.getCustomName() != null && entity.getCustomName().contains(license)) {
+                    ArmorStand test = (ArmorStand) entity;
+                    if (test.getCustomName().contains("MTVEHICLES_SKIN_" + license)) {
+                        for (Player trunkViewer : VehicleData.getTrunkViewers(license)){
+                            trunkViewer.closeInventory();
                         }
-                        test.remove();
+                        if (!TextUtils.checkInvFull(player)) {
+                            player.getInventory().addItem(test.getHelmet());
+                            ConfigModule.messagesConfig.sendMessage(player, Message.VEHICLE_PICKUP, "%p%", vehicle.getOwnerName());
+                        } else {
+                            ConfigModule.messagesConfig.sendMessage(player, Message.INVENTORY_FULL);
+                            return;
+                        }
                     }
+                    test.remove();
                 }
             }
-        } else {
-            if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.CAR_PICKUP)) {
-                player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.CANNOT_DO_THAT_HERE)));
-                return;
-            }
-            player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_NO_OWNER_PICKUP).replace("%p%", vehicle.getOwnerName())));
-            return;
         }
     }
 

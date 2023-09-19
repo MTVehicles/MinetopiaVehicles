@@ -29,6 +29,7 @@ import org.bukkit.block.data.type.Snow;
 import org.bukkit.block.data.type.TrapDoor;
 import org.bukkit.entity.*;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Method;
@@ -804,11 +805,10 @@ public class VehicleMovement {
 
     /**
      * Check whether a block is passable. Method used because 1.12 does not have this method natively.
-     * @param block Checked block
-     * @return True if the checked block is passable.
+     * @see VehicleUtils#isPassable(Block)
      */
-    protected boolean isPassable(Block block){
-        return block.isPassable();
+    protected boolean isPassable(@NotNull Block block){
+        return VehicleUtils.isPassable(block);
     }
 
     /**

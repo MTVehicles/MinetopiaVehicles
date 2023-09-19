@@ -34,6 +34,7 @@ trunkEnabled: true
 putOneselfAsOwner: false
 
 # Turn on if you do not want players to be able to pickup vehicles. Use cautiously.
+# Does not apply to players with "mtvehicles.oppakken" permission.
 carPickup: false
 
 
