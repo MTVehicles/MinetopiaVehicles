@@ -20,6 +20,11 @@ public class VehicleBuyVoucher extends MTVSubCommand {
     @Override
     public boolean execute() {
 
+        if(!player.hasPermission("mtvehicles.buyvoucher")){
+            sendMessage(Message.NO_PERMISSION);
+            return true;
+        }
+
         if (arguments.length != 2) {
             sendMessage(Message.USE_BUY_VOUCHER);
             return true;

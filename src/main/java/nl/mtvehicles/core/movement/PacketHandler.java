@@ -3,6 +3,9 @@ package nl.mtvehicles.core.movement;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.server.level.EntityPlayer;
+import net.minecraft.server.network.PlayerConnection;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.annotations.ToDo;
 import nl.mtvehicles.core.infrastructure.annotations.VersionSpecific;
@@ -10,6 +13,7 @@ import nl.mtvehicles.core.infrastructure.enums.ServerVersion;
 import nl.mtvehicles.core.movement.versions.VehicleMovement1_12;
 import org.bukkit.entity.Player;
 
+import javax.management.AttributeNotFoundException;
 import java.lang.reflect.Field;
 import java.util.NoSuchElementException;
 
@@ -20,6 +24,42 @@ import static nl.mtvehicles.core.infrastructure.modules.VersionModule.getServerV
  */
 @VersionSpecific
 public class PacketHandler {
+
+    /**
+     * Packet handler for vehicle steering in 1.20.2
+     * @param player Player whose steering is being regarded
+     */
+    public static void movement_1_20_R2(Player player) {
+
+        ChannelDuplexHandler channelDuplexHandler = new ChannelDuplexHandler() {
+            public void channelRead(ChannelHandlerContext channelHandlerContext, Object packet) throws Exception {
+                super.channelRead(channelHandlerContext, packet);
+                if (packet instanceof net.minecraft.network.protocol.game.PacketPlayInSteerVehicle) {
+                    net.minecraft.network.protocol.game.PacketPlayInSteerVehicle ppisv = (net.minecraft.network.protocol.game.PacketPlayInSteerVehicle) packet;
+                    VehicleMovement movement = new VehicleMovement();
+                    movement.vehicleMovement(player, ppisv);
+                }
+            }
+        };
+        Channel channel = null;
+        try {
+            EntityPlayer craftPlayer = ((org.bukkit.craftbukkit.v1_20_R2.entity.CraftPlayer) player).getHandle();
+            net.minecraft.server.network.PlayerConnection playerConnection = askForPlayerConnection(craftPlayer);
+            NetworkManager networkManager = askForNetworkManager(playerConnection);
+            channel = askForChannel(networkManager);
+
+            channel.pipeline()
+                    .addBefore("packet_handler", player.getName(), channelDuplexHandler);
+        } catch (IllegalArgumentException e) { //in case of plugin reload, prevent duplicate handler name exception
+            if (channel == null) {
+                unexpectedException(e);
+                return;
+            }
+            if (!channel.pipeline().names().contains(player.getName())) return;
+            channel.pipeline().remove(player.getName());
+            movement_1_20_R2(player);
+        }
+    }
 
     /**
      * Packet handler for vehicle steering in 1.20
@@ -474,6 +514,75 @@ public class PacketHandler {
             }
         }
         return true;
+    }
+
+    public static PlayerConnection askForPlayerConnection(EntityPlayer cp){
+        PlayerConnection pc = null;
+        try
+        {
+            Field field = null;
+            for (Field f : cp.getClass().getFields())
+            {
+                if (f.getType().equals(PlayerConnection.class))
+                {
+                    field = f;
+                }
+            }
+            if (field == null)
+                throw new AttributeNotFoundException();
+            field.setAccessible(true);
+            pc = (PlayerConnection) field.get(cp);
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return pc;
+    }
+
+    public static NetworkManager askForNetworkManager(PlayerConnection pc){
+        NetworkManager networkManager = null;
+        try
+        {
+            Field field = null;
+            for (Field f : pc.getClass().getFields())
+            {
+                if (f.getType().equals(NetworkManager.class))
+                {
+                    field = f;
+                }
+            }
+            if (field == null)
+                throw new AttributeNotFoundException();
+            field.setAccessible(true);
+            networkManager = (NetworkManager) field.get(pc);
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return networkManager;
+    }
+
+    private static Channel askForChannel(NetworkManager nm) {
+        Channel ch = null;
+        try
+        {
+            Field field = null;
+            for (Field f : nm.getClass().getFields())
+            {
+                if (f.getType().equals(Channel.class))
+                {
+                    field = f;
+                }
+            }
+            if (field == null)
+                throw new AttributeNotFoundException();
+            field.setAccessible(true);
+            ch = (Channel) field.get(nm);
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return ch;
     }
 
 }
