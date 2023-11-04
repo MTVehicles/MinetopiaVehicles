@@ -868,7 +868,7 @@ public class VehicleMovement {
     protected boolean steerIsJumping(){
         boolean isJumping = false;
         try {
-            Method method = packet.getClass().getDeclaredMethod("f");
+            Method method = packet.getClass().getDeclaredMethod("d");
             isJumping = (Boolean) method.invoke(packet);
         } catch (Exception e) {
             e.printStackTrace();
