@@ -1,7 +1,6 @@
 package nl.mtvehicles.core.movement;
 
 import com.google.common.collect.Sets;
-import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.events.HornUseEvent;
 import nl.mtvehicles.core.events.TankShootEvent;
 import nl.mtvehicles.core.events.VehicleRegionEnterEvent;
@@ -17,7 +16,6 @@ import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
 import nl.mtvehicles.core.infrastructure.utils.BossBarUtils;
 import nl.mtvehicles.core.infrastructure.vehicle.VehicleData;
-import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -102,6 +100,7 @@ public class VehicleMovement {
      * @see PacketHandler#isObjectPacket(Object)
      */
     public void vehicleMovement(Player player, Object packet) {
+        //player.sendMessage(packet.getClass().getName());
 
         //Do not continue if the correct packet has not been given
         if (!isObjectPacket(packet)) return;
@@ -868,7 +867,12 @@ public class VehicleMovement {
     protected boolean steerIsJumping(){
         boolean isJumping = false;
         try {
-            Method method = packet.getClass().getDeclaredMethod("d");
+            String declaredMethod = "d";
+            if (getServerVersion().isNewerOrEqualTo(ServerVersion.v1_20_R2)) {
+                declaredMethod = "e";
+            }
+
+            Method method = packet.getClass().getDeclaredMethod(declaredMethod);
             isJumping = (Boolean) method.invoke(packet);
         } catch (Exception e) {
             e.printStackTrace();
@@ -903,7 +907,12 @@ public class VehicleMovement {
     protected float steerGetZza(){
         float Zza = 0;
         try {
-            Method method = packet.getClass().getDeclaredMethod("c");
+            String dmethod = "c";
+            if (getServerVersion().isNewerOrEqualTo(ServerVersion.v1_20_R2)) {
+                dmethod = "d";
+            }
+
+            Method method = packet.getClass().getDeclaredMethod(dmethod);
             Zza = (float) method.invoke(packet);
         } catch (Exception e) {
             e.printStackTrace();
