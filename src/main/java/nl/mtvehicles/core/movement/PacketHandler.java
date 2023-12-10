@@ -29,6 +29,42 @@ public class PacketHandler {
      * Packet handler for vehicle steering in 1.20.2
      * @param player Player whose steering is being regarded
      */
+    public static void movement_1_20_R3(Player player) {
+
+        ChannelDuplexHandler channelDuplexHandler = new ChannelDuplexHandler() {
+            public void channelRead(ChannelHandlerContext channelHandlerContext, Object packet) throws Exception {
+                super.channelRead(channelHandlerContext, packet);
+                if (packet instanceof net.minecraft.network.protocol.game.PacketPlayInSteerVehicle) {
+                    net.minecraft.network.protocol.game.PacketPlayInSteerVehicle ppisv = (net.minecraft.network.protocol.game.PacketPlayInSteerVehicle) packet;
+                    VehicleMovement movement = new VehicleMovement();
+                    movement.vehicleMovement(player, ppisv);
+                }
+            }
+        };
+        Channel channel = null;
+        try {
+            EntityPlayer craftPlayer = ((org.bukkit.craftbukkit.v1_20_R3.entity.CraftPlayer) player).getHandle();
+            net.minecraft.server.network.PlayerConnection playerConnection = askForPlayerConnection(craftPlayer);
+            NetworkManager networkManager = askForNetworkManager(playerConnection);
+            channel = askForChannel(networkManager);
+
+            channel.pipeline()
+                    .addBefore("packet_handler", player.getName(), channelDuplexHandler);
+        } catch (IllegalArgumentException e) { //in case of plugin reload, prevent duplicate handler name exception
+            if (channel == null) {
+                unexpectedException(e);
+                return;
+            }
+            if (!channel.pipeline().names().contains(player.getName())) return;
+            channel.pipeline().remove(player.getName());
+            movement_1_20_R3(player);
+        }
+    }
+
+    /**
+     * Packet handler for vehicle steering in 1.20.2
+     * @param player Player whose steering is being regarded
+     */
     public static void movement_1_20_R2(Player player) {
 
         ChannelDuplexHandler channelDuplexHandler = new ChannelDuplexHandler() {
