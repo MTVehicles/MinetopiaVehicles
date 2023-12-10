@@ -26,7 +26,7 @@ import static nl.mtvehicles.core.infrastructure.modules.VersionModule.getServerV
 public class PacketHandler {
 
     /**
-     * Packet handler for vehicle steering in 1.20.2
+     * Packet handler for vehicle steering in 1.20.3 and 1.20.4
      * @param player Player whose steering is being regarded
      */
     public static void movement_1_20_R3(Player player) {
