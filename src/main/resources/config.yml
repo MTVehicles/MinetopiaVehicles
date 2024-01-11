@@ -72,6 +72,11 @@ extremeHelicopterFall: false
 # Damage taken by all passengers when a helicopter falls 'extremely' fast (must be higher than 0). Beware: 10 will not work, 10.0 will
 helicopterFallDamage: 40.0
 
+# Whether a player has the ability to throw TNT out of an airplane
+airplaneTNT: false
+
+# Airplane Bombing cooldown
+airplaneTNTCooldown: 3
 
 # --- Gas ---
 
