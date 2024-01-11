@@ -19,6 +19,11 @@ public class VehicleBuyCar extends MTVSubCommand {
     @Override
     public boolean execute() {
 
+        if(!player.hasPermission("mtvehicles.buycar")){
+            sendMessage(Message.NO_PERMISSION);
+            return true;
+        }
+
         if (arguments.length != 2) {
             sendMessage(Message.USE_BUY_CAR);
             return true;

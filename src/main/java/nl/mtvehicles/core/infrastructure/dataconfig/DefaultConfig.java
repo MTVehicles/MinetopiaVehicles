@@ -307,6 +307,8 @@ public class DefaultConfig extends MTVConfig {
         PUT_ONESELF_AS_OWNER("putOneselfAsOwner", false),
         MAX_FLYING_HEIGHT("maxFlyingHeight", 150),
         TAKE_OFF_SPEED("takeOffSpeed", 0.4),
+        AIRPLANE_TNT("airplaneTNT", false),
+        AIRPLANE_COOLDOWN("airplaneTNTCooldown",3),
         CAR_PICKUP("carPickup", false),
         FUEL_ENABLED("fuelEnabled", true),
         FUEL_MULTIPLIER("fuelMultiplier", 1),

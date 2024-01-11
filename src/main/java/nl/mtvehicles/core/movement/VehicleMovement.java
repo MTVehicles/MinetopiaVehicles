@@ -14,13 +14,11 @@ import nl.mtvehicles.core.infrastructure.enums.SoftDependency;
 import nl.mtvehicles.core.infrastructure.enums.VehicleType;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
+import nl.mtvehicles.core.infrastructure.modules.VersionModule;
 import nl.mtvehicles.core.infrastructure.utils.BossBarUtils;
 import nl.mtvehicles.core.infrastructure.vehicle.VehicleData;
 import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
-import org.bukkit.Effect;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Fence;
@@ -641,6 +639,7 @@ public class VehicleMovement {
         else if (getServerVersion().is1_19_R2()) teleportSeat(((org.bukkit.craftbukkit.v1_19_R2.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
         else if (getServerVersion().is1_19_R3()) teleportSeat(((org.bukkit.craftbukkit.v1_19_R3.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
         else if (getServerVersion().is1_20_R1()) teleportSeat(((org.bukkit.craftbukkit.v1_20_R1.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+        else if (getServerVersion().is1_20_R3()) teleportSeat(((org.bukkit.craftbukkit.v1_20_R3.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
     }
 
     /**
@@ -866,7 +865,12 @@ public class VehicleMovement {
     protected boolean steerIsJumping(){
         boolean isJumping = false;
         try {
-            Method method = packet.getClass().getDeclaredMethod("d");
+            Method method;
+            if (VersionModule.getServerVersion().is1_20_R3()) {
+                method = packet.getClass().getDeclaredMethod("e");
+            } else {
+                method = packet.getClass().getDeclaredMethod("d");
+            }
             isJumping = (Boolean) method.invoke(packet);
         } catch (Exception e) {
             e.printStackTrace();
@@ -901,7 +905,12 @@ public class VehicleMovement {
     protected float steerGetZza(){
         float Zza = 0;
         try {
-            Method method = packet.getClass().getDeclaredMethod("c");
+            Method method;
+            if (VersionModule.getServerVersion().is1_20_R3()) {
+                method = packet.getClass().getDeclaredMethod("d");
+            } else {
+                method = packet.getClass().getDeclaredMethod("c");
+            }
             Zza = (float) method.invoke(packet);
         } catch (Exception e) {
             e.printStackTrace();

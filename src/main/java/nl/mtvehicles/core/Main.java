@@ -25,7 +25,7 @@ public class Main extends JavaPlugin {
      *
      * @see nl.mtvehicles.core.infrastructure.dataconfig.SecretSettingsConfig
      */
-    final public static String configVersion = "2.5.0-pre2";
+    final public static String configVersion = "2.5.2";
     /**
      * <b>Version of messages_xx.yml files - must be equal to the version in SuperSecretSettings.</b><br>
      *
