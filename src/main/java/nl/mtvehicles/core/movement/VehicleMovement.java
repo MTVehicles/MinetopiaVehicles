@@ -17,7 +17,6 @@ import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
 import nl.mtvehicles.core.infrastructure.modules.VersionModule;
 import nl.mtvehicles.core.infrastructure.utils.BossBarUtils;
 import nl.mtvehicles.core.infrastructure.vehicle.VehicleData;
-import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
@@ -342,14 +341,6 @@ public class VehicleMovement {
         final BlockData blockData = loc.getBlock().getBlockData();
         final BlockData blockDataBelow = locBlockBelow.getBlock().getBlockData();
 
-        if (vehicleType.isBoat()){
-            if (!locBlockBelow.getBlock().getType().toString().contains("WATER")){
-                VehicleData.speed.put(license, 0.0);
-                return false;
-            }
-
-            return false;
-        }
 
         if (standMain.getLocation().getBlock().getType().toString().contains("PATH") || standMain.getLocation().getBlock().getType().toString().contains("FARMLAND")){
 
@@ -755,11 +746,11 @@ public class VehicleMovement {
         }
 
         if (vehicleType.isBoat()){
-            if (!blockName.contains("WATER") && !blockName.contains("SEAGRASS") && !isPassable(locBelow.getBlock())){
+            if (!boatPassable(blockName) && !isPassable(locBelow.getBlock())){
                 VehicleData.speed.put(license, 0.0);
             }
 
-            if (isPassable(locBelow.getBlock()) && !blockName.contains("WATER") && !blockName.contains("SEAGRASS")){
+            if (isPassable(locBelow.getBlock()) && !boatPassable(blockName)){
                 standMain.setVelocity(new Vector(loc.getDirection().multiply(VehicleData.speed.get(license)).getX(), -0.8, loc.getDirection().multiply(VehicleData.speed.get(license)).getZ()));
                 return;
             }
@@ -950,6 +941,13 @@ public class VehicleMovement {
             tnt.setFuseTicks(20);
             tnt.setVelocity(stand.getLocation().getDirection().multiply(3.0));
         });
+    }
+
+    public boolean boatPassable(String blockName){
+        if(blockName.contains("WATER") || blockName.contains("SEAGRASS") || blockName.contains("KELP") || blockName.contains("CORAL") || blockName.contains("PICKLE")){
+            return true;
+        } else
+            return false;
     }
 
 }
