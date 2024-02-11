@@ -56,9 +56,14 @@ public enum PluginVersion {
      */
     v2_5_1,
     /**
-    * 2.5.2
+     * 2.5.2
+     * @deprecated <b>(auto-updater not working)</b>
      */
     v2_5_2,
+    /**
+     * 2.5.3 (auto-updater hotfix)
+     */
+    v2_5_3,
     /**
      * Latest version (from auto-updater)
      */
