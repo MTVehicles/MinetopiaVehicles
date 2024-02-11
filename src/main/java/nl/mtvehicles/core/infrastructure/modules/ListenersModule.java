@@ -26,5 +26,6 @@ public class ListenersModule {
         Main.instance.registerListener(new VehicleVoucherListener());
         Main.instance.registerListener(new InventoryCloseListener());
         Main.instance.registerListener(new JerryCanClickListener());
+        Main.instance.registerListener(new TNTSpawnListener());
     }
 }

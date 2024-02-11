@@ -10,6 +10,7 @@ import nl.mtvehicles.core.infrastructure.utils.TextUtils;
 import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
 import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
@@ -37,6 +38,8 @@ public class VehiclePlaceListener extends MTVListener {
 
         if (!action.equals(Action.RIGHT_CLICK_BLOCK)) return;
         if (item == null) return;
+        if (item.getType() == Material.AIR) return;
+        if (item.getAmount() == 0) return;
         if (!item.hasItemMeta()
                 || clickedBlock == null
         ) return;

@@ -55,7 +55,17 @@ public enum ServerVersion {
      * 1.20
      * @since 2.5.0
      */
-    v1_20_R1;
+    v1_20_R1,
+    /**
+     * 1.20.2
+     * @since 2.5.2
+     */
+    v1_20_R2,
+    /**
+     * 1.20.3 and 1.20.4
+     * @since 2.5.2
+     */
+    v1_20_R3;
 
     public boolean is1_12(){
         return this.equals(v1_12);
@@ -99,6 +109,12 @@ public enum ServerVersion {
 
     public boolean is1_20_R1(){
         return this.equals(v1_20_R1);
+    }
+
+    public boolean is1_20_R2() {return this.equals(v1_20_R2);}
+
+    public boolean is1_20_R3() {
+        return this.equals(v1_20_R3);
     }
 
     /**
