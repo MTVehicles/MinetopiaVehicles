@@ -17,6 +17,7 @@ import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
 import nl.mtvehicles.core.infrastructure.modules.VersionModule;
 import nl.mtvehicles.core.infrastructure.utils.BossBarUtils;
 import nl.mtvehicles.core.infrastructure.vehicle.VehicleData;
+import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
@@ -35,6 +36,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 
+import static nl.mtvehicles.core.Main.instance;
 import static nl.mtvehicles.core.Main.schedulerRun;
 import static nl.mtvehicles.core.infrastructure.modules.VersionModule.getServerVersion;
 import static nl.mtvehicles.core.movement.PacketHandler.isObjectPacket;
@@ -141,10 +143,29 @@ public class VehicleMovement {
         standMainSeat = VehicleData.autostand.get("MTVEHICLES_MAINSEAT_" + license);
         standRotors = VehicleData.autostand.get("MTVEHICLES_WIEKENS_" + license);
 
-        if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.DAMAGE_ENABLED) && ConfigModule.vehicleDataConfig.getHealth(license) == 0) { //Vehicle is broken
+        if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.DAMAGE_ENABLED) && ConfigModule.vehicleDataConfig.getHealth(license) == 0) { // The vehicle is broken
             standMain.getWorld().spawnParticle(Particle.SMOKE_NORMAL, standMain.getLocation(), 2);
+
+            if (!VehicleData.isVehicleDestroyed(license)) {
+                if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.EXPLODING_VEHICLE)) {
+                    Bukkit.getScheduler().runTask(instance, () -> {
+                        standMain.getLocation().add(0, 0,0).createExplosion(2);
+                        VehicleData.markVehicleAsDestroyed(license);
+                    });
+                }
+                if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.DESTRUCTIBLE_VEHICLE)) {
+                    Bukkit.getScheduler().runTask(instance, () -> {
+                        String l = license;
+                        VehicleUtils.despawnVehicle(l);
+                        VehicleUtils.getVehicle(l).delete();
+
+                    });
+                }
+            }
+
             return;
         }
+
 
         schedulerRun(() -> {
             standSkin.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw(), standMain.getLocation().getPitch()));

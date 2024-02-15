@@ -55,6 +55,12 @@ damageEnabled: false
 # Must be between 0.1 and 5.0 (Beware: 3 will not work, 3.0 will). Default: 0.5 (If lower/higher, the default will be used.)
 damageMultiplier: 0.5
 
+# Whether vehicles explode when they have no hp left
+explodingVehicle: false
+
+# Whether vehicles are deleted when they no longer have HP.
+destructibleVehicle: false
+
 
 # --- Helicopters & Planes
 

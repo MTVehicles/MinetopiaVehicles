@@ -315,6 +315,8 @@ public class DefaultConfig extends MTVConfig {
         JERRYCANS("jerrycans", new ArrayList<>(Arrays.asList(25, 50, 75))),
         DAMAGE_ENABLED("damageEnabled", false),
         DAMAGE_MULTIPLIER("damageMultiplier", 0.5),
+        EXPLODING_VEHICLE("explodingVehicle", false),
+        DESTRUCTIBLE_VEHICLE("destructibleVehicle", false),
         HORN_COOLDOWN("hornCooldown", 5),
         HORN_TYPE("hornType", "minetopiaclassic.horn1"),
         TANK_TNT("tankTNT", false),
