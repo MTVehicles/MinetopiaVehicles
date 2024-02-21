@@ -29,12 +29,12 @@ public class EffGiveVehicle extends Effect {
 
     static {
         Skript.registerEffect(EffGiveVehicle.class,
-                "give [mtv] vehicle %object% to %player%",
-                "give %player% [mtv] vehicle %object%",
                 "give [mtv] vehicle (by|with) license [plate] %string% to %player%",
                 "give %player% [mtv] vehicle (by|with) license [plate] %string%",
                 "give [mtv] vehicle (by|with) (UUID|uuid) %string% to %player%",
-                "give %player% [mtv] vehicle (by|with) (UUID|uuid) %string%"
+                "give %player% [mtv] vehicle (by|with) (UUID|uuid) %string%",
+                "give [mtv] vehicle %object% to %player%",
+                "give %player% [mtv] vehicle %object%"
         );
     }
 
@@ -53,29 +53,29 @@ public class EffGiveVehicle extends Effect {
     @Override
     public boolean init(Expression<?>[] expressions, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parser) {
         if (matchedPattern == 0) {
-            this.vehicle = (Expression<Object>) expressions[0];
+            this.text = (Expression<String>) expressions[0];
             this.player = (Expression<Player>) expressions[1];
-            pattern = 1;
+            pattern = 2;
         } else if (matchedPattern == 1) {
-            this.vehicle = (Expression<Object>) expressions[1];
+            this.text = (Expression<String>) expressions[1];
             this.player = (Expression<Player>) expressions[0];
-            pattern = 1;
+            pattern = 2;
         } else if (matchedPattern == 2) {
             this.text = (Expression<String>) expressions[0];
             this.player = (Expression<Player>) expressions[1];
-            pattern = 2;
+            pattern = 3;
         } else if (matchedPattern == 3) {
             this.text = (Expression<String>) expressions[1];
             this.player = (Expression<Player>) expressions[0];
-            pattern = 2;
+            pattern = 3;
         } else if (matchedPattern == 4) {
-            this.text = (Expression<String>) expressions[0];
+            this.vehicle = (Expression<Object>) expressions[0];
             this.player = (Expression<Player>) expressions[1];
-            pattern = 3;
+            pattern = 1;
         } else {
-            this.text = (Expression<String>) expressions[1];
+            this.vehicle = (Expression<Object>) expressions[1];
             this.player = (Expression<Player>) expressions[0];
-            pattern = 3;
+            pattern = 1;
         }
         return true;
     }

@@ -25,8 +25,8 @@ public class EffSpawnVehicle extends Effect {
 
     static {
         Skript.registerEffect(EffSpawnVehicle.class,
-                "spawn [mtv] vehicle %object% at [location] %location%",
-                "spawn [mtv] vehicle (by|with) license [plate] %string% at [location] %location%"
+                "spawn [mtv] vehicle (by|with) license [plate] %string% at [location] %location%",
+                "spawn [mtv] vehicle %object% at [location] %location%"
         );
     }
 
@@ -45,10 +45,10 @@ public class EffSpawnVehicle extends Effect {
     @Override
     public boolean init(Expression<?>[] expressions, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parser) {
         if (matchedPattern == 0){
-            this.vehicle = (Expression<Object>) expressions[0];
+            this.licensePlate = (Expression<String>) expressions[0];
             this.location = (Expression<Location>) expressions[1];
         } else {
-            this.licensePlate = (Expression<String>) expressions[0];
+            this.vehicle = (Expression<Object>) expressions[0];
             this.location = (Expression<Location>) expressions[1];
         }
         pattern = matchedPattern;
@@ -64,7 +64,7 @@ public class EffSpawnVehicle extends Effect {
 
     @Override
     protected void execute(Event event) {
-        if (pattern == 0){
+        if (pattern == 1){
             if (vehicle.getSingle(event) instanceof Vehicle) {
                 VehicleUtils.spawnVehicle(((Vehicle) vehicle.getSingle(event)).getLicensePlate(), location.getSingle(event));
                 return;
