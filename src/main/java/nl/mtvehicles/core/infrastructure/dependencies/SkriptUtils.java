@@ -26,7 +26,7 @@ public class SkriptUtils {
 
     public static void load() {
         try {
-            getAddonInstance().loadClasses("nl.mtvehicles.core.infrastructure.dependencies.skript", "effects", "expressions", "events");
+            getAddonInstance().loadClasses("nl.mtvehicles.core.infrastructure.dependencies.skript", "effects", "expressions", "events", "conditions");
         } catch (IOException e){
             Bukkit.getLogger().severe("[MTVehicles] An error occurred whilst loading Skript as a soft-dependency. (Make sure you're using the latest version, or try restarting the server.)");
             DependencyModule.loadedDependencies.remove(SoftDependency.SKRIPT);
