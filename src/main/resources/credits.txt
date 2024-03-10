@@ -16,7 +16,7 @@ TRANSLATORS:
 - Czech: Nikd0
 - German: Mo1810
 - Spanish: Randall_Rut
-- Chinese: xiaoyueyoQvQ
+- Chinese: xiaoyueyoQvQ & Kinboise
 - Turkish: ꋖꌅꋰꌅomerturkyᴱˑᴶ, bnWez
 - Japanese: kazumasa200
 - Hebrew: roi

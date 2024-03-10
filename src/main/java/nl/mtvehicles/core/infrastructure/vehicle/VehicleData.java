@@ -49,6 +49,7 @@ public class VehicleData {
     public static HashMap<String, Double> MaxSpeedBackwards = new HashMap<>();
     public static HashMap<String, Double> FrictionSpeed = new HashMap<>();
     public static HashMap<String, Set<String>> lastRegions = new HashMap<>();
+    public static HashMap<String, Boolean> destroyedVehicles = new HashMap<>();
     /**
      * @see VehicleUtils#openedTrunk
      * @since 2.5.1
@@ -113,4 +114,30 @@ public class VehicleData {
     private static void setTrunkViewers(String licensePlate){
         if (!trunkViewers.containsKey(licensePlate)) trunkViewers.put(licensePlate, new HashSet<>());
     }
+
+    /**
+     * Mark a vehicle as destroyed
+     * @param licensePlate
+     */
+    public static void markVehicleAsDestroyed(String licensePlate) {
+        destroyedVehicles.put(licensePlate, true);
+    }
+
+    /**
+     * Mark vehicle as repaired
+     * @param licensePlate
+     */
+    public static void markVehicleAsRepaired(String licensePlate) {
+        destroyedVehicles.remove(licensePlate);
+    }
+
+    /**
+     * Check if a vehicle is destroyed
+     * @param licensePlate
+     * @return Boolean
+     */
+    public static boolean isVehicleDestroyed(String licensePlate) {
+        return destroyedVehicles.getOrDefault(licensePlate, false);
+    }
+
 }

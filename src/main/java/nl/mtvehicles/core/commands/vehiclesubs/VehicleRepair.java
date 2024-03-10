@@ -2,6 +2,7 @@ package nl.mtvehicles.core.commands.vehiclesubs;
 
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.models.MTVSubCommand;
+import nl.mtvehicles.core.infrastructure.vehicle.VehicleData;
 import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import org.bukkit.inventory.ItemStack;
@@ -25,6 +26,7 @@ public class VehicleRepair extends MTVSubCommand {
         final String license = VehicleUtils.getLicensePlate(item);
         final int damage = ConfigModule.vehicleDataConfig.getDamage(license);
         final double maxHealth = VehicleUtils.getMaxHealthByDamage(damage);
+        VehicleData.markVehicleAsRepaired(license);
 
         ConfigModule.vehicleDataConfig.setHealth(license, maxHealth);
         sendMessage(Message.REPAIR_SUCCESSFUL);

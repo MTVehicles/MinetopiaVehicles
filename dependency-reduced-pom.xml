@@ -212,6 +212,13 @@
       <scope>provided</scope>
     </dependency>
   </dependencies>
+  <distributionManagement>
+    <repository>
+      <id>repsy</id>
+      <name>Gomorrhas MTV Repo</name>
+      <url>https://repo.repsy.io/mvn/gomorrha/mtvehicles</url>
+    </repository>
+  </distributionManagement>
   <properties>
     <maven.compiler.target>16</maven.compiler.target>
     <maven.compiler.source>16</maven.compiler.source>

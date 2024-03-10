@@ -7,6 +7,14 @@
     <artifactId>MTVehicles</artifactId>
     <version>2.5.3</version>
 
+    <distributionManagement>
+        <repository>
+            <id>repsy</id>
+            <name>Gomorrhas MTV Repo</name>
+            <url>https://repo.repsy.io/mvn/gomorrha/mtvehicles</url>
+        </repository>
+    </distributionManagement>
+
     <repositories>
         <repository>
             <id>spigotmc-repo</id>

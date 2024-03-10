@@ -55,7 +55,7 @@ public class TNTSpawnListener implements Listener {
     private void spawnFallingTNT(Player player) {
         Location playerLocation = player.getLocation();
         playerLocation.setY(playerLocation.getY() - 1);
-        TNTPrimed tnt = player.getWorld().spawn(playerLocation, TNTPrimed.class);
+        player.getWorld().spawn(playerLocation, TNTPrimed.class);
         ItemStack mainHandItem = player.getInventory().getItemInMainHand();
         mainHandItem.setAmount(mainHandItem.getAmount()  - 1);
     }
