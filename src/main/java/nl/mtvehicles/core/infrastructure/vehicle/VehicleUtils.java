@@ -122,6 +122,16 @@ public final class VehicleUtils {
     }
 
     /**
+     * Get Vehicle instance from a vehicle item
+     * @param item Vehicle as Item
+     * @return Vehicle
+     * @see #getLicensePlate(ItemStack)
+     */
+    public static Vehicle getVehicle(ItemStack item){
+        return getVehicle(getLicensePlate(item));
+    }
+
+    /**
      * Get the license plate of player's driven vehicle
      * @param p Player
      * @return Returns null if no vehicle is being driven
@@ -635,6 +645,45 @@ public final class VehicleUtils {
     }
 
     /**
+     * Delete a vehicle from the database and despawn it from all worlds
+     * @param licensePlates Vehicle's license plate
+     * @throws IllegalArgumentException Thrown if given license plate is invalid.
+     * @throws IllegalStateException Thrown if vehicle is already deleted
+     * @since 2.5.4
+     */
+    public static void deleteVehicle(String... licensePlates) throws IllegalArgumentException, IllegalStateException {
+        for (String licensePlate : licensePlates) {
+            if (!existsByLicensePlate(licensePlate)) throw new IllegalArgumentException("Vehicle " + licensePlate + " does not exist.");
+            despawnVehicle(licensePlate);
+            ConfigModule.vehicleDataConfig.delete(licensePlate);
+        }
+    }
+
+    /**
+     * Teleport a vehicle to a location
+     * @param licensePlate Vehicle's license plate
+     * @param location Location where the vehicle should be teleported
+     * @throws IllegalArgumentException Thrown if given license plate is invalid.
+     */
+    public static void teleportVehicle(String licensePlate, Location location) throws IllegalArgumentException {
+        if (!existsByLicensePlate(licensePlate)) throw new IllegalArgumentException("Vehicle does not exists.");
+
+        for (World world : Bukkit.getServer().getWorlds()) {
+            for (Entity entity : world.getEntities()) {
+                if (entity.getCustomName() != null && entity.getCustomName().contains(licensePlate)) {
+                    entity.teleport(location);
+
+                    if (!entity.getPassengers().isEmpty()) { // If there are any passengers in the vehicle, set their rotation as well
+                        for (Entity passenger : entity.getPassengers()) {
+                            passenger.setRotation(location.getYaw(), location.getPitch());
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * Despawn a vehicle specified by its license plate from all worlds
      * @param licensePlates Vehicle's license plate
      * @throws IllegalArgumentException Thrown if given license plate is invalid.
@@ -920,6 +969,28 @@ public final class VehicleUtils {
             return turnOff(license);
         }
         return false;
+    }
+
+    /**
+     * Get the location of a vehicle
+     * @param vehicle Vehicle
+     * @return Vehicle's location
+     * @since 2.5.4
+     * @see #getLocation(String)
+     */
+    public static Location getLocation(Vehicle vehicle){
+        return getLocation(vehicle.getLicensePlate());
+    }
+
+    /**
+     * Get the location of a vehicle
+     * @param licensePlate Vehicle's license plate
+     * @return Vehicle's location
+     * @since 2.5.4
+     */
+    public static Location getLocation(String licensePlate){
+        if (VehicleData.autostand.get("MTVEHICLES_MAIN_" + licensePlate) == null) return null;
+        return VehicleData.autostand.get("MTVEHICLES_MAIN_" + licensePlate).getLocation();
     }
 
     /**

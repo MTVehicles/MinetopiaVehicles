@@ -11,23 +11,26 @@ import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
+import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
+import org.bukkit.Location;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
 
-@Name("MTV Vehicle's UUID")
-@Description("Get the vehicle's UUID")
+@Name("MTV Vehicle's location")
+@Description("Get the vehicle location")
 @Examples({
-        "set {_uuid} to {_car}'s vehicle uuid",
-        "set {_uuid} to vehicle UUID of (player's driven mtv vehicle)"
+        "set {_loc} to {_car}'s vehicle location",
+        "set {_loc} to vehicle location of {_car}",
+        "set {_loc} to the vehicle location of (mtv vehicle with license plate \"DF-4J-2R\")"
 })
-public class ExprVehicleUUID extends SimpleExpression<String> {
+public class ExprVehicleLocation extends SimpleExpression<Location> {
 
     static {
-        Skript.registerExpression(ExprVehicleUUID.class,
-                String.class,
+        Skript.registerExpression(ExprVehicleLocation.class,
+                Location.class,
                 ExpressionType.SIMPLE,
-                "%object%'s [mtv] vehicle (UUID|uuid)",
-                "[mtv] vehicle (UUID|uuid) of %object%"
+                "%object%'s [mtv] vehicle location",
+                "[the] [mtv] vehicle location of %object%"
         );
     }
 
@@ -35,8 +38,8 @@ public class ExprVehicleUUID extends SimpleExpression<String> {
     private Expression<Object> vehicle;
 
     @Override
-    public Class<? extends String> getReturnType() {
-        return String.class;
+    public Class<? extends Location> getReturnType() {
+        return Location.class;
     }
 
     @Override
@@ -53,18 +56,18 @@ public class ExprVehicleUUID extends SimpleExpression<String> {
 
     @Override
     public String toString(@Nullable Event event, boolean debug) {
-        return "MTVehicles vehicle";
+        return "MTVehicle's location";
     }
 
     @Override
-    protected String[] get(Event event) {
+    protected Location[] get(Event event) {
         if (vehicle.getSingle(event) instanceof Vehicle) {
-            return new String[] {
-                    ((Vehicle) vehicle.getSingle(event)).getUUID()
+            return new Location[] {
+                    VehicleUtils.getLocation((Vehicle) vehicle.getSingle(event))
             };
         }
 
-        Main.logSevere("Skript error: Provided variable is not a vehicle (\"vehicle uuid of %vehicle%\").");
+        Main.logSevere("Skript error: Provided variable is not a vehicle (\"vehicle location of %vehicle%\").");
         return null;
 
     }
