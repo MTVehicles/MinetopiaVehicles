@@ -21,7 +21,7 @@ voertuigen:
     maxSpeedBackwards: 0.35
     seats:
       - x: -0.2
-        y: -1.5
+        y: -1.7
         z: 0.0
     cars:
       - name: "Oxboard White"
@@ -111,7 +111,7 @@ voertuigen:
     maxSpeedBackwards: 0.0
     seats:
       - x: -0.5
-        y: -0.7
+        y: -0.85
         z: 0.0
     cars:
       - name: "Fiets Man Gray"
@@ -235,7 +235,7 @@ voertuigen:
     maxSpeedBackwards: 0.35
     seats:
       - x: -0.2
-        y: -0.8
+        y: -1.0
         z: 0.0
     cars:
       - name: Motor Orange
@@ -304,7 +304,7 @@ voertuigen:
     maxSpeedBackwards: 0.35
     seats:
       - x: -0.2
-        y: -1.2
+        y: -1.45
         z: 0.0
     cars:
       - name: "Sportief Navyblue"
@@ -453,10 +453,10 @@ voertuigen:
     maxSpeedBackwards: 0.35
     seats:
       - x: 0.0
-        y: -1.0
+        y: -1.25
         z: 0.0
       - x: -1.0
-        y: -1.0
+        y: -1.25
         z: 0.0
     cars:
       - name: "Sedan Navyblauw"
@@ -655,7 +655,7 @@ voertuigen:
     maxSpeedBackwards: 0.35
     seats:
       - x: -0.1
-        y: -1.6
+        y: -1.85
         z: 0.0
     cars:
       - name: Racecar Black
@@ -729,10 +729,10 @@ voertuigen:
     maxSpeedBackwards: 0.35
     seats:
       - x: -0.1
-        y: -1.0
+        y: -1.25
         z: 0.0
       - x: -1.1
-        y: -1.0
+        y: -1.25
         z: 0.0
     cars:
       - name: "Jeep Politie"
@@ -766,7 +766,7 @@ voertuigen:
     maxSpeedBackwards: 0.35
     seats:
       - x: -0.1
-        y: -1.1
+        y: -1.35
         z: 0.0
     cars:
       - name: "Hotrod Red"
@@ -830,7 +830,7 @@ voertuigen:
     maxSpeedBackwards: 0.35
     seats:
       - x: -0.2
-        y: -0.6
+        y: -0.85
         z: 0.0
     cars:
       - name: Hovercraft Lime
@@ -879,16 +879,16 @@ voertuigen:
     maxSpeedBackwards: 0.35
     seats:
       - x: 0.0
-        y: -0.9
+        y: -1.15
         z: 0.4
       - x: 0.0
-        y: -0.9
+        y: -1.15
         z: -0.4
       - x: -0.8
-        y: -0.9
+        y: -1.15
         z: 0.4
       - x: -0.8
-        y: -0.9
+        y: -1.15
         z: -0.4
     cars:
       - name: "SUV Blue"
@@ -1032,7 +1032,7 @@ voertuigen:
     maxSpeedBackwards: 0.35
     seats:
       - x: 0.0
-        y: -0.6
+        y: -0.85
         z: 0.0
     cars:
       - name: UFO
@@ -1081,7 +1081,7 @@ voertuigen:
     maxSpeedBackwards: 0.17
     seats:
       - x: 0.0
-        y: -0.8
+        y: -0.9
         z: 0.0
     cars:
       - name: Tank Legend Black
@@ -1135,7 +1135,7 @@ voertuigen:
     maxSpeedBackwards: 0.17
     seats:
       - x: 0.0
-        y: -0.8
+        y: -1.05
         z: 0.0
     cars:
       - name: Raket Legend Black
@@ -1189,11 +1189,11 @@ voertuigen:
     maxSpeedBackwards: 0.35
     seats:
       - x: -0.3
-        y: -1.0
+        y: -1.25
         z: 0.0
     wiekens:
       - x: -0.85
-        y: -0.12
+        y: -0.37
         z: 0.0
         item:
           ==: org.bukkit.inventory.ItemStack
@@ -1307,10 +1307,10 @@ voertuigen:
     maxSpeedBackwards: 0.0
     seats:
       - x: -0.0
-        y: -0.7
+        y: -0.95
         z: 0.0
       - x: -0.8
-        y: -0.7
+        y: -0.95
         z: 0.0
     cars:
       - name: Plane Gray
@@ -1379,10 +1379,10 @@ voertuigen:
     maxSpeedBackwards: 0.1
     seats:
       - x: -0.0
-        y: -0.7
+        y: -0.95
         z: 0.0
       - x: -0.8
-        y: -0.7
+        y: -0.95
         z: 0.0
     cars:
       - name: "Boat"
@@ -1411,20 +1411,20 @@ voertuigen:
     maxSpeedBackwards: 0.06
     seats:
       - x: 0.6
-        y: -0.65
+        y: -0.90
         z: 0.4
       - x: 0.6
-        y: -0.65
+        y: -0.90
         z: -0.4
       - x: -0.8
-        y: -0.65
+        y: -0.90
         z: 0.4
       - x: -0.8
-        y: -0.65
+        y: -0.90
         z: -0.4
     cars:
       - name: "Raft"
         SkinItem: DIAMOND_HOE
         itemDamage: 1276
-        uuid: PLV334
+        uuid: PLV335
         price: 10000.0
