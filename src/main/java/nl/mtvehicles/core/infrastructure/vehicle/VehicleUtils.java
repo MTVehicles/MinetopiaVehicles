@@ -672,12 +672,6 @@ public final class VehicleUtils {
             for (Entity entity : world.getEntities()) {
                 if (entity.getCustomName() != null && entity.getCustomName().contains(licensePlate)) {
                     entity.teleport(location);
-
-                    if (!entity.getPassengers().isEmpty()) { // If there are any passengers in the vehicle, set their rotation as well
-                        for (Entity passenger : entity.getPassengers()) {
-                            passenger.setRotation(location.getYaw(), location.getPitch());
-                        }
-                    }
                 }
             }
         }
