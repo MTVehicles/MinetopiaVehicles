@@ -843,7 +843,7 @@ public final class VehicleUtils {
                     basicStandCreator(licensePlate, "SKIN", location, vehicleAs.getHelmet(), false);
                     basicStandCreator(licensePlate, "MAIN", location, null, true);
                     vehicle.saveSeats();
-                    List<Map<String, Double>> seats = getSeats(licensePlate);
+                    List<Map<String, Double>> seats = vehicle.getSeats();
                     for (int i = 1; i <= seats.size(); i++) {
                         Map<String, Double> seat = seats.get(i - 1);
                         if (i == 1) {
@@ -851,6 +851,7 @@ public final class VehicleUtils {
                             BossBarUtils.addBossBar(p, licensePlate);
                             p.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_ENTER_RIDER).replace("%p%", getVehicle(licensePlate).getOwnerName())));
                         }
+
                         if (i > 1) {
                             VehicleData.seatsize.put(licensePlate, seats.size());
                             VehicleData.seatx.put("MTVEHICLES_SEAT" + i + "_" + licensePlate, seat.get("x"));
@@ -1021,7 +1022,7 @@ public final class VehicleUtils {
             standMain.setGravity(true);
             standSkin.setGravity(true);
         }
-        List<Map<String, Double>> seats = getSeats(licensePlate);
+        List<Map<String, Double>> seats = vehicle.getSeats();
         for (int i = 2; i <= seats.size(); i++) {
             if (VehicleData.autostand.get("MTVEHICLES_SEAT" + i + "_" + licensePlate) != null)
                 VehicleData.autostand.get("MTVEHICLES_SEAT" + i + "_" + licensePlate).remove();
@@ -1050,24 +1051,7 @@ public final class VehicleUtils {
      * Get list of seats for a vehicle (specified by license plate)
      * @see Vehicle#getSeats()
      */
-    public static List<Map<String, Double>> getSeats(String licensePlate){
-        final Integer seatSize = VehicleData.seatsize.get(licensePlate);
-        List<Map<String, Double>> seatList = new ArrayList<>();
-        for (int i = 1; i <= seatSize; i++) {
-            Map<String, Double> seat = new HashMap<>();
-            if (i == 1) {
-                seat.put("x", VehicleData.mainx.get("MTVEHICLES_MAINSEAT_" + licensePlate));
-                seat.put("y", VehicleData.mainy.get("MTVEHICLES_MAINSEAT_" + licensePlate));
-                seat.put("z", VehicleData.mainz.get("MTVEHICLES_MAINSEAT_" + licensePlate));
-            } else {
-                seat.put("x", VehicleData.seatx.get("MTVEHICLES_SEAT" + i + "_" + licensePlate));
-                seat.put("y", VehicleData.seatx.get("MTVEHICLES_SEAT" + i + "_" + licensePlate));
-                seat.put("z", VehicleData.seatx.get("MTVEHICLES_SEAT" + i + "_" + licensePlate));
-            }
-            seatList.add(seat);
-        }
-        return seatList;
-    }
+
 
     /**
      * Get vehicle's price

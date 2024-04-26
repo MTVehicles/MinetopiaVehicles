@@ -109,6 +109,9 @@ hornCooldown: 5
 # This is just added as beta function to find bugs or problems
 hornType: "minetopiaclassic.horn1"
 
+# --- Headlights ---
+
+headlightsEnabled: false
 
 # --- Tanks ---
 

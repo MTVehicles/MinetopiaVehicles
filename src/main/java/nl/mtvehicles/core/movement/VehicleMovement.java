@@ -1,6 +1,7 @@
 package nl.mtvehicles.core.movement;
 
 import com.google.common.collect.Sets;
+import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.events.HornUseEvent;
 import nl.mtvehicles.core.events.TankShootEvent;
 import nl.mtvehicles.core.events.VehicleRegionEnterEvent;
@@ -16,6 +17,7 @@ import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
 import nl.mtvehicles.core.infrastructure.modules.VersionModule;
 import nl.mtvehicles.core.infrastructure.utils.BossBarUtils;
+import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
 import nl.mtvehicles.core.infrastructure.vehicle.VehicleData;
 import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
 import org.bukkit.*;
@@ -26,6 +28,7 @@ import org.bukkit.block.data.type.Slab;
 import org.bukkit.block.data.type.Snow;
 import org.bukkit.block.data.type.TrapDoor;
 import org.bukkit.entity.*;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.Nullable;
 
@@ -91,6 +94,9 @@ public class VehicleMovement {
      * This makes falling faster, vehicles break when they land, etc...
      */
     protected boolean extremeFalling = false;
+
+    protected boolean headlightsEnabled = false;
+
 
     /**
      * Main method for vehicles' movement
@@ -162,9 +168,10 @@ public class VehicleMovement {
                     });
                 }
             }
-
             return;
         }
+
+        if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.HEADLIGHTS_ENABLED)){headlightsEnabled = true;}
 
 
         schedulerRun(() -> {
@@ -211,6 +218,7 @@ public class VehicleMovement {
                 }
             }
 
+
             if (vehicleType.isHelicopter()) rotors();
 
             // Horn
@@ -249,6 +257,9 @@ public class VehicleMovement {
                     tankShoot(standMain, loc);
                     VehicleData.lastUsage.put(player.getName(), System.currentTimeMillis());
                 }
+            }
+            if(headlightsEnabled && vehicle.getWorld().getTime() >= 13000 && vehicleType.isCar() && !vehicle.isEmpty()){
+                addAndRemoveLight();
             }
 
             rotation();
@@ -972,4 +983,19 @@ public class VehicleMovement {
             return false;
     }
 
+    private void addAndRemoveLight() {
+        double xOffset = 0.7;
+        double yOffset = 0.4;
+        double zOffset = 0.0;
+        Location locvp = standMain.getLocation().clone();
+        Location fbvp = locvp.add(locvp.getDirection().setY(0).normalize().multiply(xOffset).multiply(2));
+        float zvp = (float) (fbvp.getZ() + zOffset * Math.sin(Math.toRadians(fbvp.getYaw())));
+        float xvp = (float) (fbvp.getX() + zOffset * Math.cos(Math.toRadians(fbvp.getYaw())));
+        Location loc = new Location(standMain.getWorld(), xvp, standMain.getLocation().getY() + yOffset, zvp, fbvp.getYaw(), fbvp.getPitch());
+
+        if(loc.getBlock().getType().equals(Material.AIR)){
+            loc.getBlock().setType(Material.LIGHT);
+            Bukkit.getScheduler().runTaskLater(instance, () -> loc.getBlock().setType(Material.AIR), 10L);
+        }
+    }
 }
