@@ -319,6 +319,7 @@ public class DefaultConfig extends MTVConfig {
         DESTRUCTIBLE_VEHICLE("destructibleVehicle", false),
         HORN_COOLDOWN("hornCooldown", 5),
         HORN_TYPE("hornType", "minetopiaclassic.horn1"),
+        HEADLIGHTS_ENABLED("headlightsEnabled", false),
         TANK_TNT("tankTNT", false),
         TANK_COOLDOWN("tankCooldown", 10),
         DRIVE_UP("driveUp", "both"),
