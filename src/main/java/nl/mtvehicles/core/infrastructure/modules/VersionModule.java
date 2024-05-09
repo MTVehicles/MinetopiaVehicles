@@ -49,7 +49,7 @@ public class VersionModule {
 
         //Pre-releases should thus be named "vX.Y.Z-preU" etc... (Instead of pre, dev for developing and rc for release candidates are acceptable too.)
         isPreRelease = pluginVersionString.toLowerCase().contains("pre") || pluginVersionString.toLowerCase().contains("rc") || pluginVersionString.toLowerCase().contains("dev");
-
+        
         serverVersion = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
         serverSoftware = Bukkit.getName();
     }
@@ -100,6 +100,10 @@ public class VersionModule {
                 break;
             case "v1_20_R3":
                 returns = ServerVersion.v1_20_R3;
+                break;
+            case "v1_20_R4":
+                returns = ServerVersion.v1_20_R4;
+                break;
         }
         return returns;
     }
