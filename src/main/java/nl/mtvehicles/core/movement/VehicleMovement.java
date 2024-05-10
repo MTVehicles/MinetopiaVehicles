@@ -890,12 +890,15 @@ public class VehicleMovement {
     protected boolean steerIsJumping(){
         boolean isJumping = false;
         try {
-            Method method;
-            if (VersionModule.getServerVersion().isNewerOrEqualTo(ServerVersion.v1_20_R2)) {
-                method = packet.getClass().getDeclaredMethod("e");
-            } else {
-                method = packet.getClass().getDeclaredMethod("d");
+            String declaredMethod = "d";
+
+            if (getServerVersion().isNewerOrEqualTo(ServerVersion.v1_20_R1) && getServerVersion().isOlderThan(ServerVersion.v1_20_R4))  {
+                declaredMethod = "e";
+            } else if (getServerVersion().isNewerOrEqualTo(ServerVersion.v1_20_R4)) {
+                declaredMethod = "f";
             }
+
+            Method method = packet.getClass().getDeclaredMethod(declaredMethod);
             isJumping = (Boolean) method.invoke(packet);
         } catch (Exception e) {
             e.printStackTrace();
@@ -911,7 +914,8 @@ public class VehicleMovement {
         float Xxa = 0;
         try {
             String declaredMethod = "b";
-            if (getServerVersion().isNewerOrEqualTo(ServerVersion.v1_19_R3)) {
+
+            if (getServerVersion().isNewerOrEqualTo(ServerVersion.v1_19_R3) && getServerVersion().isOlderThan(ServerVersion.v1_20_R4)) {
                 declaredMethod = "a";
             }
 
@@ -930,12 +934,15 @@ public class VehicleMovement {
     protected float steerGetZza(){
         float Zza = 0;
         try {
-            Method method;
-            if (VersionModule.getServerVersion().isNewerOrEqualTo(ServerVersion.v1_20_R2)) {
-                method = packet.getClass().getDeclaredMethod("d");
-            } else {
-                method = packet.getClass().getDeclaredMethod("c");
+            String declaredMethod = "c";
+
+            if (VersionModule.getServerVersion().isNewerOrEqualTo(ServerVersion.v1_20_R2) && getServerVersion().isOlderThan(ServerVersion.v1_20_R4)) {
+                declaredMethod = "d";
+            } else if(getServerVersion().isNewerOrEqualTo(ServerVersion.v1_20_R4)){
+                declaredMethod = "e";
             }
+
+            Method method = packet.getClass().getDeclaredMethod(declaredMethod);
             Zza = (float) method.invoke(packet);
         } catch (Exception e) {
             e.printStackTrace();

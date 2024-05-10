@@ -49,7 +49,7 @@ public class PacketHandler {
             Field networkManagerField = ServerCommonPacketListenerImpl.class.getDeclaredField("e");
             networkManagerField.setAccessible(true);
             net.minecraft.network.NetworkManager networkManager = (net.minecraft.network.NetworkManager) networkManagerField.get(playerConnection);
-            Field channelField = networkManager.getClass().getField("m");
+            Field channelField = networkManager.getClass().getField("n");
             channel = (Channel) channelField.get(networkManager);
 
             channel.pipeline()
