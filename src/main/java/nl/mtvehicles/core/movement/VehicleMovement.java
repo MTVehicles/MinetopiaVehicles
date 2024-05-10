@@ -207,7 +207,7 @@ public class VehicleMovement {
             }
 
             updateStand();
-            if (!vehicleType.canFly()) blockCheck();
+            if (!vehicleType.isHelicopter()) blockCheck();
             mainSeat();
 
             if (VehicleData.seatsize.get(license + "addon") != null) {
