@@ -5,7 +5,6 @@ import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelHandlerContext;
 import net.minecraft.server.level.EntityPlayer;
 import net.minecraft.server.network.PlayerConnection;
-import net.minecraft.server.network.ServerCommonPacketListenerImpl;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.annotations.ToDo;
 import nl.mtvehicles.core.infrastructure.annotations.VersionSpecific;
@@ -46,7 +45,7 @@ public class PacketHandler {
 
             Field playerConnectionField = entityPlayer.getClass().getField("c");
             net.minecraft.server.network.PlayerConnection playerConnection = (net.minecraft.server.network.PlayerConnection) playerConnectionField.get(entityPlayer);
-            Field networkManagerField = ServerCommonPacketListenerImpl.class.getDeclaredField("e");
+            Field networkManagerField = net.minecraft.server.network.ServerCommonPacketListenerImpl.class.getDeclaredField("e");
             networkManagerField.setAccessible(true);
             net.minecraft.network.NetworkManager networkManager = (net.minecraft.network.NetworkManager) networkManagerField.get(playerConnection);
             Field channelField = networkManager.getClass().getField("n");
@@ -89,7 +88,7 @@ public class PacketHandler {
             Field playerConnectionField = entityPlayer.getClass().getField("c");
             playerConnectionField.setAccessible(true);
             net.minecraft.server.network.PlayerConnection playerConnection = (net.minecraft.server.network.PlayerConnection) playerConnectionField.get(entityPlayer);
-            Field networkManagerField = ServerCommonPacketListenerImpl.class.getDeclaredField("c");
+            Field networkManagerField = net.minecraft.server.network.ServerCommonPacketListenerImpl.class.getDeclaredField("c");
             networkManagerField.setAccessible(true);
             net.minecraft.network.NetworkManager networkManager = (net.minecraft.network.NetworkManager) networkManagerField.get(playerConnection);
             Field channelField = networkManager.getClass().getField("n");
@@ -131,7 +130,7 @@ public class PacketHandler {
 
             Field playerConnectionField = entityPlayer.getClass().getField("c");
             net.minecraft.server.network.PlayerConnection playerConnection = (net.minecraft.server.network.PlayerConnection) playerConnectionField.get(entityPlayer);
-            Field networkManagerField = ServerCommonPacketListenerImpl.class.getDeclaredField("c");
+            Field networkManagerField = net.minecraft.server.network.ServerCommonPacketListenerImpl.class.getDeclaredField("c");
             networkManagerField.setAccessible(true);
             net.minecraft.network.NetworkManager networkManager = (net.minecraft.network.NetworkManager) networkManagerField.get(playerConnection);
             Field channelField = networkManager.getClass().getField("n");
