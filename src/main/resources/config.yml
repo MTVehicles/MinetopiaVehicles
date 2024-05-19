@@ -111,6 +111,9 @@ hornType: "minetopiaclassic.horn1"
 
 # --- Headlights ---
 
+# ATTENTION! EXPERIMENTAL MAY CAUSE LAG
+# Feature only for 1.17 and above
+
 headlightsEnabled: false
 
 # --- Tanks ---

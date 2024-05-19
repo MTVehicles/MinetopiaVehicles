@@ -171,7 +171,7 @@ public class VehicleMovement {
             return;
         }
 
-        if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.HEADLIGHTS_ENABLED)){headlightsEnabled = true;}
+        if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.HEADLIGHTS_ENABLED) && getServerVersion().isNewerOrEqualTo(ServerVersion.v1_17)){headlightsEnabled = true;}
 
 
         schedulerRun(() -> {

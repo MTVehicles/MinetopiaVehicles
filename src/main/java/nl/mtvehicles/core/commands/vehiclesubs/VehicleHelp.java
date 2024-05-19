@@ -40,9 +40,10 @@ public class VehicleHelp extends MTVSubCommand {
             sendMessage(String.format("&2/vehicle &asetowner &f- &2%s", desc(Message.ADMIN_SETOWNER)));
             sendMessage(String.format("&2/vehicle &aupdate &f- &2%s", desc(Message.ADMIN_UPDATE)));
             sendMessage(String.format("&2/vehicle &adelete &f- &2%s", desc(Message.ADMIN_DELETE)));
+            sendMessage(String.format("&2/vehicle &agivefuel &f- &2%s", desc(Message.ADMIN_GIVEFUEL)));
         }
         sendMessage("");
-        sendMessage("&7&oDownload it for free at mtvehicles.nl (Originally by GamerJoep_, maintained by Nikd0)");
+        sendMessage("&7&oDownload it for free at mtvehicles.nl (Originally by GamerJoep_, maintained by Nikd0 and gmrrh)");
         return true;
     }
 
