@@ -134,6 +134,7 @@ These commands can only be executed by the owner of the vehicle. **Hold a vehicl
 | `/vehicle givecar %player% %uuid%`     | Give a vehicle to a player                  | `mtvehicles.givecar`     |
 | `/vehicle restore`                     | A menu to recover vehicles                  | `mtvehicles.restore`     |
 | `/vehicle benzine`                     | Open the menu with jerrycans for the fuel   | `mtvehicles.benzine`     |
+| `/vehicle givefuel %player% %amount%`  | Give a jerrycan to a specific player        | `mtvehicles.givefuel`    |
 | `/vehicle reload`                      | Reload the plugin's config files            | `mtvehicles.reload`      |
 | `/vehicle setowner %player%`           | Set an owner of a vehicle                   | `mtvehicles.setowner`    |
 | `/vehicle delete`                      | Remove a vehicle in your hand from the data | `mtvehicles.delete`      |
