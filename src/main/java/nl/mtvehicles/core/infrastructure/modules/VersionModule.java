@@ -49,8 +49,7 @@ public class VersionModule {
 
         //Pre-releases should thus be named "vX.Y.Z-preU" etc... (Instead of pre, dev for developing and rc for release candidates are acceptable too.)
         isPreRelease = pluginVersionString.toLowerCase().contains("pre") || pluginVersionString.toLowerCase().contains("rc") || pluginVersionString.toLowerCase().contains("dev");
-        
-        serverVersion = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+        serverVersion = Bukkit.getServer().getMinecraftVersion();
         serverSoftware = Bukkit.getName();
     }
 
@@ -62,46 +61,46 @@ public class VersionModule {
     public static ServerVersion getServerVersion(){
         ServerVersion returns = null;
         switch (serverVersion) {
-            case "v1_12_R1":
+            case "1.12.2":
                 returns = ServerVersion.v1_12;
                 break;
-            case "v1_13_R2":
+            case "1.13.2":
                 returns = ServerVersion.v1_13;
                 break;
-            case "v1_15_R1":
+            case "1.15.2":
                 returns = ServerVersion.v1_15;
                 break;
-            case "v1_16_R3":
+            case "1.16.5":
                 returns = ServerVersion.v1_16;
                 break;
-            case "v1_17_R1":
+            case "1.17.1":
                 returns = ServerVersion.v1_17;
                 break;
-            case "v1_18_R1":
+            case "1.18":
                 returns = ServerVersion.v1_18_R1;
                 break;
-            case "v1_18_R2":
+            case "1.18.2":
                 returns = ServerVersion.v1_18_R2;
                 break;
-            case "v1_19_R1":
+            case "1.19":
                 returns = ServerVersion.v1_19_R1;
                 break;
-            case "v1_19_R2":
+            case "1.19.2":
                 returns = ServerVersion.v1_19_R2;
                 break;
-            case "v1_19_R3":
+            case "1.19.4":
                 returns = ServerVersion.v1_19_R3;
                 break;
-            case "v1_20_R1":
+            case "1.20.1":
                 returns = ServerVersion.v1_20_R1;
                 break;
-            case "v1_20_R2":
+            case "1.20.3":
                 returns = ServerVersion.v1_20_R2;
                 break;
-            case "v1_20_R3":
+            case "1.20.4":
                 returns = ServerVersion.v1_20_R3;
                 break;
-            case "v1_20_R4":
+            case "1.20.6":
                 returns = ServerVersion.v1_20_R4;
                 break;
         }

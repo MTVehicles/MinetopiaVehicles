@@ -283,7 +283,9 @@ public class VehicleDataConfig extends MTVConfig {
         IS_GLOWING("isGlow"),
         HORN_ENABLED("hornEnabled"),
         HEALTH("health"),
-        NBT_VALUE("nbtValue");
+        NBT_VALUE("nbtValue"),
+
+        IS_PUBLIC("isPublic");
 
         final private String path;
 
