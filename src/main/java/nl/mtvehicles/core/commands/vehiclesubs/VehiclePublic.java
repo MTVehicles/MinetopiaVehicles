@@ -15,13 +15,16 @@ public class VehiclePublic extends MTVSubCommand {
     @Override
     public boolean execute() {
 
-        Vehicle vehicle = getVehicle();
-        if (vehicle == null) return true;
+        if(!player.isInsideVehicle()){
+            Vehicle vehicle = getVehicle();
+            if (vehicle == null) return true;
 
-        vehicle.setPublic(true);
-        vehicle.save();
+            vehicle.setPublic(true);
+            vehicle.save();
 
-        sendMessage(Message.ACTION_SUCCESSFUL);
-        return true;
+            sendMessage(Message.ACTION_SUCCESSFUL);
+            return true;
+        }
+        return false;
     }
 }

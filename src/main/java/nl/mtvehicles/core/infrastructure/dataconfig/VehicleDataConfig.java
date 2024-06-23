@@ -7,8 +7,10 @@ import nl.mtvehicles.core.infrastructure.models.MTVConfig;
 import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
 import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,8 +50,13 @@ public class VehicleDataConfig extends MTVConfig {
      * @param value New value of the option (should be the same type!)
      */
     public void set(String licensePlate, Option dataOption, Object value){
-        this.getConfiguration().set(String.format("vehicle.%s.%s", licensePlate, dataOption.getPath()), value);
-        save();
+        Bukkit.getScheduler().runTaskAsynchronously(Main.instance, new BukkitRunnable(){
+            @Override
+            public void run() {
+                getConfiguration().set(String.format("vehicle.%s.%s", licensePlate, dataOption.getPath()), value);
+                save();
+            }
+        });
     }
 
     /**
