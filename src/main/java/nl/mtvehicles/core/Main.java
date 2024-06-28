@@ -67,6 +67,7 @@ public class Main extends JavaPlugin {
     @Override
     public void onDisable(){
         if (DependencyModule.isDependencyEnabled(SoftDependency.PLACEHOLDER_API)) DependencyModule.placeholderAPI.unregisterOnDisable();
+        ConfigModule.vehicleDataConfig.saveToDisk();
     }
 
     public static String getFileAsString() {

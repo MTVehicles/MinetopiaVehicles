@@ -12,73 +12,119 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Methods for supersecretsettings.yml.<br>
  * <b>Do not initialise this class directly. Use {@link ConfigModule#vehicleDataConfig} instead.</b>
  */
 public class VehicleDataConfig extends MTVConfig {
+
+
+    private Map<String, ConfigurationSection> vehicleDataInMemory;
+    private BukkitRunnable saveTask;
+
+
     /**
      * Default constructor - <b>do not use this.</b><br>
      * Use {@link ConfigModule#vehicleDataConfig} instead.
      */
     public VehicleDataConfig() {
         super(ConfigType.VEHICLE_DATA);
+        this.vehicleDataInMemory = new HashMap<>();
+        loadFromDisk();
+        startAutoSaveTask();
+    }
+
+     * Load vehicle data from disk into memory
+     */
+    private void loadFromDisk() {
+        ConfigurationSection vehiclesSection = getConfiguration().getConfigurationSection("vehicle");
+        if (vehiclesSection != null) {
+            for (String licensePlate : vehiclesSection.getKeys(false)) {
+                vehicleDataInMemory.put(licensePlate, vehiclesSection.getConfigurationSection(licensePlate));
+            }
+        }
     }
 
     /**
-     * Get a data option of a vehicle from vehicleData
+     * Start a task to save data to disk every 10 minutes
+     */
+    private void startAutoSaveTask() {
+        saveTask = new BukkitRunnable() {
+            @Override
+            public void run() {
+                saveToDisk();
+            }
+        };
+        saveTask.runTaskTimer(Main.instance, 20 * 60 * 10, 20 * 60 * 10);
+    }
+
+    /**
+     * Save all vehicle data from memory to disk
+     */
+    public void saveToDisk() {
+        for (Map.Entry<String, ConfigurationSection> entry : vehicleDataInMemory.entrySet()) {
+            getConfiguration().set("vehicle." + entry.getKey(), entry.getValue());
+        }
+        save();
+    }
+
+    /**
+     * Get a data option of a vehicle from in-memory data
      *
      * @param licensePlate Vehicle's license plate
-     * @param dataOption Data option of a vehicle
-     *
+     * @param dataOption   Data option of a vehicle
      * @return Value of the option (as Object)
      */
-    public Object get(String licensePlate, Option dataOption){
-        return this.getConfiguration().get(String.format("vehicle.%s.%s", licensePlate, dataOption.getPath()));
+    public Object get(String licensePlate, Option dataOption) {
+        ConfigurationSection vehicleSection = vehicleDataInMemory.getOrDefault(licensePlate, null);
+        if (vehicleSection == null) {
+            return null;
+        }
+        return vehicleSection.get(dataOption.getPath());
     }
 
+
     /**
-     * Set a data option of a vehicle to vehicleData
+     * Set a data option of a vehicle in memory
      *
      * @param licensePlate Vehicle's license plate
-     * @param dataOption Data option of a vehicle
-     * @param value New value of the option (should be the same type!)
+     * @param dataOption   Data option of a vehicle
+     * @param value        New value of the option (should be the same type!)
      */
-    public void set(String licensePlate, Option dataOption, Object value){
-        this.getConfiguration().set(String.format("vehicle.%s.%s", licensePlate, dataOption.getPath()), value);
+    public void set(String licensePlate, Option dataOption, Object value) {
+        ConfigurationSection vehicleSection = vehicleDataInMemory.computeIfAbsent(licensePlate, k -> getConfiguration().createSection("vehicle." + k));
+        vehicleSection.set(dataOption.getPath(), value);
     }
 
     /**
-     * Delete a vehicle from vehicleData
+     * Delete a vehicle from in-memory data
      *
      * @param licensePlate Vehicle's license plate
      * @throws IllegalStateException If vehicle is already deleted.
      */
     public void delete(String licensePlate) throws IllegalStateException {
-        final String path = "vehicle." + licensePlate;
-        if (!getConfiguration().isSet(path)) throw new IllegalStateException("An error occurred while trying to delete a vehicle. Vehicle is already deleted.");
-        getConfiguration().set(path, null);
-        save();
+        if (!vehicleDataInMemory.containsKey(licensePlate)) {
+            throw new IllegalStateException("An error occurred while trying to delete a vehicle. Vehicle is already deleted.");
+        }
+        vehicleDataInMemory.remove(licensePlate);
+        saveToDisk();
     }
 
 
     /**
      * Whether the vehicleData.yml file is empty
      */
-    public boolean isEmpty(){
-        return getConfiguration().getConfigurationSection("vehicle") == null;
+    public boolean isEmpty() {
+        return vehicleDataInMemory.isEmpty();
     }
 
     /**
      * Get (basically) the whole file.
      */
-    public ConfigurationSection getVehicles(){
-        return getConfiguration().getConfigurationSection("vehicle");
+    public Map<String, ConfigurationSection> getVehicles() {
+        return new HashMap<>(vehicleDataInMemory);
     }
 
     /**

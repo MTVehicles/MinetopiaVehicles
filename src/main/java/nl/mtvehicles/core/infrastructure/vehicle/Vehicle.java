@@ -123,37 +123,36 @@ public class Vehicle {
     }
 
     /**
-     * Save the vehicle specifications (and possible adjustments) to vehicleData.yml
+     * Save the vehicle specifications (and possible adjustments) to in-memory storage.
      */
     public void save() {
-        Map<String, Object> map = new HashMap<>();
-        map.put(VehicleDataConfig.Option.NAME.getPath(), this.getName());
-        map.put(VehicleDataConfig.Option.VEHICLE_TYPE.getPath(), this.getVehicleType().toString());
-        map.put(VehicleDataConfig.Option.SKIN_DAMAGE.getPath(), this.getSkinDamage());
-        map.put(VehicleDataConfig.Option.SKIN_ITEM.getPath(), this.getSkinItem());
-        map.put(VehicleDataConfig.Option.IS_OPEN.getPath(), this.isPublic());
-        map.put(VehicleDataConfig.Option.IS_GLOWING.getPath(), this.isGlowing());
-        map.put(VehicleDataConfig.Option.FUEL_ENABLED.getPath(), this.isFuelEnabled());
-        map.put(VehicleDataConfig.Option.FUEL.getPath(), this.getFuel());
-        map.put(VehicleDataConfig.Option.FUEL_USAGE.getPath(), this.getFuelUsage());
-        map.put(VehicleDataConfig.Option.HORN_ENABLED.getPath(), this.isHornEnabled());
-        map.put(VehicleDataConfig.Option.HEALTH.getPath(), this.getHealth());
-        map.put(VehicleDataConfig.Option.TRUNK_ENABLED.getPath(), this.isTrunkEnabled());
-        map.put(VehicleDataConfig.Option.TRUNK_ROWS.getPath(), this.getTrunkRows());
-        map.put(VehicleDataConfig.Option.TRUNK_DATA.getPath(), this.getTrunkData());
-        map.put(VehicleDataConfig.Option.ACCELERATION_SPEED.getPath(), this.getAccelerationSpeed());
-        map.put(VehicleDataConfig.Option.MAX_SPEED.getPath(), this.getMaxSpeed());
-        map.put(VehicleDataConfig.Option.BRAKING_SPEED.getPath(), this.getBrakingSpeed());
-        map.put(VehicleDataConfig.Option.FRICTION_SPEED.getPath(), this.getFrictionSpeed());
-        map.put(VehicleDataConfig.Option.ROTATION_SPEED.getPath(), this.getRotateSpeed());
-        map.put(VehicleDataConfig.Option.MAX_SPEED_BACKWARDS.getPath(), this.getMaxSpeedBackwards());
-        map.put(VehicleDataConfig.Option.OWNER.getPath(), this.getOwnerUUID().toString());
-        map.put(VehicleDataConfig.Option.NBT_VALUE.getPath(), this.getNbtValue());
-        map.put(VehicleDataConfig.Option.RIDERS.getPath(), this.getRiders());
-        map.put(VehicleDataConfig.Option.MEMBERS.getPath(), this.getMembers());
-        ConfigModule.vehicleDataConfig.getConfig().set(String.format("vehicle.%s", this.getLicensePlate()), map);
-        ConfigModule.vehicleDataConfig.save();
+        ConfigModule.vehicleDataConfig.set(this.getLicensePlate(), VehicleDataConfig.Option.NAME, this.getName());
+        ConfigModule.vehicleDataConfig.set(this.getLicensePlate(), VehicleDataConfig.Option.VEHICLE_TYPE, this.getVehicleType().toString());
+        ConfigModule.vehicleDataConfig.set(this.getLicensePlate(), VehicleDataConfig.Option.SKIN_DAMAGE, this.getSkinDamage());
+        ConfigModule.vehicleDataConfig.set(this.getLicensePlate(), VehicleDataConfig.Option.SKIN_ITEM, this.getSkinItem());
+        ConfigModule.vehicleDataConfig.set(this.getLicensePlate(), VehicleDataConfig.Option.IS_OPEN, this.isPublic());
+        ConfigModule.vehicleDataConfig.set(this.getLicensePlate(), VehicleDataConfig.Option.IS_GLOWING, this.isGlowing());
+        ConfigModule.vehicleDataConfig.set(this.getLicensePlate(), VehicleDataConfig.Option.FUEL_ENABLED, this.isFuelEnabled());
+        ConfigModule.vehicleDataConfig.set(this.getLicensePlate(), VehicleDataConfig.Option.FUEL, this.getFuel());
+        ConfigModule.vehicleDataConfig.set(this.getLicensePlate(), VehicleDataConfig.Option.FUEL_USAGE, this.getFuelUsage());
+        ConfigModule.vehicleDataConfig.set(this.getLicensePlate(), VehicleDataConfig.Option.HORN_ENABLED, this.isHornEnabled());
+        ConfigModule.vehicleDataConfig.set(this.getLicensePlate(), VehicleDataConfig.Option.HEALTH, this.getHealth());
+        ConfigModule.vehicleDataConfig.set(this.getLicensePlate(), VehicleDataConfig.Option.TRUNK_ENABLED, this.isTrunkEnabled());
+        ConfigModule.vehicleDataConfig.set(this.getLicensePlate(), VehicleDataConfig.Option.TRUNK_ROWS, this.getTrunkRows());
+        ConfigModule.vehicleDataConfig.set(this.getLicensePlate(), VehicleDataConfig.Option.TRUNK_DATA, this.getTrunkData());
+        ConfigModule.vehicleDataConfig.set(this.getLicensePlate(), VehicleDataConfig.Option.ACCELERATION_SPEED, this.getAccelerationSpeed());
+        ConfigModule.vehicleDataConfig.set(this.getLicensePlate(), VehicleDataConfig.Option.MAX_SPEED, this.getMaxSpeed());
+        ConfigModule.vehicleDataConfig.set(this.getLicensePlate(), VehicleDataConfig.Option.BRAKING_SPEED, this.getBrakingSpeed());
+        ConfigModule.vehicleDataConfig.set(this.getLicensePlate(), VehicleDataConfig.Option.FRICTION_SPEED, this.getFrictionSpeed());
+        ConfigModule.vehicleDataConfig.set(this.getLicensePlate(), VehicleDataConfig.Option.ROTATION_SPEED, this.getRotateSpeed());
+        ConfigModule.vehicleDataConfig.set(this.getLicensePlate(), VehicleDataConfig.Option.MAX_SPEED_BACKWARDS, this.getMaxSpeedBackwards());
+        ConfigModule.vehicleDataConfig.set(this.getLicensePlate(), VehicleDataConfig.Option.OWNER, this.getOwnerUUID().toString());
+        ConfigModule.vehicleDataConfig.set(this.getLicensePlate(), VehicleDataConfig.Option.NBT_VALUE, this.getNbtValue());
+        ConfigModule.vehicleDataConfig.set(this.getLicensePlate(), VehicleDataConfig.Option.RIDERS, this.getRiders());
+        ConfigModule.vehicleDataConfig.set(this.getLicensePlate(), VehicleDataConfig.Option.MEMBERS, this.getMembers());
     }
+
+
 
     /**
      * Delete a vehicle from the database (vehicleData.yml)
