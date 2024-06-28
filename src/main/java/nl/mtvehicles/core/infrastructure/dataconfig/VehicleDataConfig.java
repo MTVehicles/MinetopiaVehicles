@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 
 /**
  * Methods for supersecretsettings.yml.<br>
@@ -40,22 +39,7 @@ public class VehicleDataConfig extends MTVConfig {
      * @return Value of the option (as Object)
      */
     public Object get(String licensePlate, Option dataOption){
-        CompletableFuture<Object> future = new CompletableFuture<>();
-
-        Bukkit.getScheduler().runTaskAsynchronously(Main.instance, new BukkitRunnable() {
-            @Override
-            public void run() {
-                try {
-                    Object result = getConfiguration().get(String.format("vehicle.%s.%s", licensePlate, dataOption.getPath()));
-                    save();
-                    future.complete(result);
-                } catch (Exception e) {
-                    future.completeExceptionally(e);
-                }
-            }
-        });
-
-        return future;
+        return this.getConfiguration().get(String.format("vehicle.%s.%s", licensePlate, dataOption.getPath()));
     }
 
     /**
