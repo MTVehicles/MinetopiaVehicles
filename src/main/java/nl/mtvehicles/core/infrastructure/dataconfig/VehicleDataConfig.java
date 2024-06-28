@@ -50,13 +50,7 @@ public class VehicleDataConfig extends MTVConfig {
      * @param value New value of the option (should be the same type!)
      */
     public void set(String licensePlate, Option dataOption, Object value){
-        Bukkit.getScheduler().runTaskAsynchronously(Main.instance, new BukkitRunnable(){
-            @Override
-            public void run() {
-                getConfiguration().set(String.format("vehicle.%s.%s", licensePlate, dataOption.getPath()), value);
-                save();
-            }
-        });
+        this.getConfiguration().set(String.format("vehicle.%s.%s", licensePlate, dataOption.getPath()), value);
     }
 
     /**
