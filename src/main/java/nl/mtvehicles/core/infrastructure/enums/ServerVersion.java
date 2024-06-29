@@ -70,7 +70,12 @@ public enum ServerVersion {
      * 1.20.3 and 1.20.4
      * @since 2.5.4
      */
-    v1_20_R4;
+    v1_20_R4,
+    /**
+     * 1.21
+     * @since 2.5.4
+     */
+    v1_21_R1;
 
     public boolean is1_12(){
         return this.equals(v1_12);
@@ -121,6 +126,8 @@ public enum ServerVersion {
     }
 
     public boolean is1_20_R4(){return this.equals(v1_20_R4);}
+
+    public boolean is1_21_R1(){return this.equals(v1_21_R1);}
 
     /**
      * Check whether the server version is older than the given one

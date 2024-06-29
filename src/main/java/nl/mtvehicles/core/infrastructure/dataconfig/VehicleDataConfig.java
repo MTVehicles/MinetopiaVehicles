@@ -7,7 +7,6 @@ import nl.mtvehicles.core.infrastructure.models.MTVConfig;
 import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
 import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -15,8 +14,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.*;
 
 /**
- * Methods for supersecretsettings.yml.<br>
- * <b>Do not initialise this class directly. Use {@link ConfigModule#vehicleDataConfig} instead.</b>
+ * Methods for supersecretsettings.yml.
+ * Do not initialise this class directly. Use {@link ConfigModule#vehicleDataConfig} instead.
  */
 public class VehicleDataConfig extends MTVConfig {
 
@@ -26,7 +25,7 @@ public class VehicleDataConfig extends MTVConfig {
 
 
     /**
-     * Default constructor - <b>do not use this.</b><br>
+     * Default constructor - do not use this.
      * Use {@link ConfigModule#vehicleDataConfig} instead.
      */
     public VehicleDataConfig() {
@@ -36,6 +35,7 @@ public class VehicleDataConfig extends MTVConfig {
         startAutoSaveTask();
     }
 
+    /**
      * Load vehicle data from disk into memory
      */
     private void loadFromDisk() {
