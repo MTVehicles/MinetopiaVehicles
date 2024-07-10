@@ -844,6 +844,7 @@ public final class VehicleUtils {
                     basicStandCreator(licensePlate, "MAIN", location, null, true);
                     vehicle.saveSeats();
                     List<Map<String, Double>> seats = vehicle.getSeats();
+                    VehicleData.seatsize.put(licensePlate, seats.size());
                     for (int i = 1; i <= seats.size(); i++) {
                         Map<String, Double> seat = seats.get(i - 1);
                         if (i == 1) {
@@ -853,11 +854,11 @@ public final class VehicleUtils {
                         }
 
                         if (i > 1) {
-                            VehicleData.seatsize.put(licensePlate, seats.size());
+
                             VehicleData.seatx.put("MTVEHICLES_SEAT" + i + "_" + licensePlate, seat.get("x"));
                             VehicleData.seaty.put("MTVEHICLES_SEAT" + i + "_" + licensePlate, seat.get("y"));
                             VehicleData.seatz.put("MTVEHICLES_SEAT" + i + "_" + licensePlate, seat.get("z"));
-                            Location location2 = new Location(location.getWorld(), location.getX() + Double.valueOf(seat.get("z")), location.getY() + Double.valueOf(seat.get("y")), location.getZ() + Double.valueOf(seat.get("x")));
+                            Location location2 = new Location(location.getWorld(), location.getX() + Double.valueOf(seat.get("x")), location.getY() + Double.valueOf(seat.get("y")), location.getZ() + Double.valueOf(seat.get("z")));
 
                             ArmorStand as = location2.getWorld().spawn(location2, ArmorStand.class);
                             allowTicking(as);
