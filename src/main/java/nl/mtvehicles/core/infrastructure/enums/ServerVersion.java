@@ -67,7 +67,7 @@ public enum ServerVersion {
      */
     v1_20_R3,
     /**
-     * 1.20.3 and 1.20.4
+     * 1.20.5 and 1.20.6
      * @since 2.5.4
      */
     v1_20_R4,
