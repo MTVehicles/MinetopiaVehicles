@@ -411,9 +411,6 @@ public final class VehicleUtils {
     @ToDo("Beautify the code inside this method.")
     public static Vehicle getVehicle(String licensePlate) {
         if (!existsByLicensePlate(licensePlate)) return null;
-
-        ConfigModule.vehicleDataConfig.reload();
-        ConfigModule.vehiclesConfig.reload();
         
         Map<String, Object> vehicleData = new HashMap<>();
         for (VehicleDataConfig.Option option : VehicleDataConfig.Option.values()) {
