@@ -98,6 +98,7 @@ public class VehicleDataConfig extends MTVConfig {
         vehicleSection.set(dataOption.getPath(), value);
     }
 
+
     /**
      * Delete a vehicle from in-memory data
      *
@@ -106,9 +107,11 @@ public class VehicleDataConfig extends MTVConfig {
      */
     public void delete(String licensePlate) throws IllegalStateException {
         if (!vehicleDataInMemory.containsKey(licensePlate)) {
+            getConfiguration().set("vehicle." + licensePlate, null);
             throw new IllegalStateException("An error occurred while trying to delete a vehicle. Vehicle is already deleted.");
         }
         vehicleDataInMemory.remove(licensePlate);
+        getConfiguration().set("vehicle." + licensePlate, null);
         saveToDisk();
     }
 
@@ -181,6 +184,15 @@ public class VehicleDataConfig extends MTVConfig {
         } catch (IllegalArgumentException e){
             Main.logSevere("An error occurred while setting a vehicle's type. Using default (CAR)...");
             return VehicleType.CAR;
+        }
+    }
+
+    public String getModelID(String licensePlate){
+        try {
+            return (String) get(licensePlate, Option.MODELID);
+        } catch (IllegalArgumentException e){
+            Main.logSevere("An error occurred while setting a vehicle's type. Using default (CAR)...");
+            return "";
         }
     }
 
@@ -286,6 +298,7 @@ public class VehicleDataConfig extends MTVConfig {
      * Options available in vehicle data file
      */
     public enum Option {
+        MODELID("modelID"),
         NAME("name"),
         VEHICLE_TYPE("vehicleType"),
         SKIN_ITEM("skinItem"),
