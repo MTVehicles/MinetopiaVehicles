@@ -10,6 +10,7 @@ import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
 import nl.mtvehicles.core.infrastructure.enums.InventoryTitle;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.enums.VehicleType;
+import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
 import nl.mtvehicles.core.infrastructure.utils.ItemUtils;
 import nl.mtvehicles.core.infrastructure.utils.LanguageUtils;
 import nl.mtvehicles.core.infrastructure.utils.MenuUtils;
@@ -21,6 +22,7 @@ import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.listeners.VehicleVoucherListener;
 import org.bukkit.Bukkit;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.Inventory;
@@ -180,14 +182,15 @@ public class InventoryClickListener extends MTVListener {
                 }
             }
 
+
             Vehicle vehicle = new Vehicle(
                     null,
-                    (String) vehicles.get(intSave.get(player.getUniqueId())).get("modelID"),
+                    DependencyModule.modelEngine.getIDFromName(nbt.getString("mtvehicles.naam")),
                     licensePlate,
                     nbt.getString("mtvehicles.naam"),
                     VehicleType.valueOf((String) vehicles.get(intSave.get(player.getUniqueId())).get("vehicleType")),
                     false,
-                    vehicleMenu.get(player.getUniqueId()).getDurability(),
+                    ((Damageable) vehicleMenu.get(player.getUniqueId()).getItemMeta()).getDamage(),
                     vehicleMenu.get(player.getUniqueId()).getType().toString(),
                     false,
                     (boolean) vehicles.get(intSave.get(player.getUniqueId())).get("hornEnabled"),
