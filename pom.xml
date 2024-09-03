@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>nl.mtvehicles.core</groupId>
     <artifactId>MTVehicles</artifactId>
-    <version>2.5.5</version>
+    <version>2.5.4.1</version>
 
     <distributionManagement>
         <repository>
@@ -53,12 +53,6 @@
             <id>placeholderapi</id>
             <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
-        <repository>
-            <id>nexus</id>
-            <name>Lumine Public</name>
-            <url>https://mvn.lumine.io/repository/maven-public/</url>
-        </repository>
-
     </repositories>
 
     <dependencies>
@@ -68,14 +62,6 @@
             <version>1.20-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-
-        <dependency>
-            <groupId>com.ticxo.modelengine</groupId>
-            <artifactId>ModelEngine</artifactId>
-            <version>R4.0.4</version>
-            <scope>provided</scope>
-        </dependency>
-
 
         <!-- The dots are just a sneaky way for maven to think these are different artifacts - which they almost are. -->
         <dependency>

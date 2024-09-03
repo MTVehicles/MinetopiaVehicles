@@ -7,8 +7,7 @@ public enum SoftDependency {
     WORLD_GUARD("WorldGuard"),
     VAULT("Vault"),
     PLACEHOLDER_API("PlaceholderAPI"),
-    SKRIPT("Skript"),
-    MODELENGINE("ModelEngine");
+    SKRIPT("Skript");
 
     final private String name;
 
