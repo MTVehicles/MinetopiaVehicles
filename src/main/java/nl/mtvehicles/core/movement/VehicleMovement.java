@@ -985,13 +985,19 @@ public class VehicleMovement {
         });
     }
 
+    /**
+     * Check whether a block is passable for a boat.
+     * @param blockName Name of checked block
+     * @return True if the checked block is passable for a boat.
+     */
     public boolean boatPassable(String blockName){
-        if(blockName.contains("WATER") || blockName.contains("SEAGRASS") || blockName.contains("KELP") || blockName.contains("CORAL") || blockName.contains("PICKLE")){
-            return true;
-        } else
-            return false;
+        return (blockName.contains("WATER") || blockName.contains("SEAGRASS") || blockName.contains("KELP") || blockName.contains("CORAL") || blockName.contains("PICKLE"));
     }
 
+    /**
+     * Spawn and move headlights, if turned on.
+     * @warning Experimental feature. May cause lag.
+     */
     private void addAndRemoveLight() {
         double xOffset = 0.7;
         double yOffset = 0.4;

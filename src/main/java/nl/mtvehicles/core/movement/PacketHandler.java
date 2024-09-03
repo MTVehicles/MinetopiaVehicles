@@ -597,13 +597,18 @@ public class PacketHandler {
         }
     }
 
-    @ToDo("make language specific")
+    /**
+     * Log an error message and disable the plugin.
+     */
     private static void unexpectedException(){
         Main.logSevere("An unexpected error occurred. Disabling the plugin...");
         Main.disablePlugin();
     }
 
-    @ToDo("make language specific")
+    /**
+     * Log an error message and disable the plugin, providing the exception.
+     * @param e Exception
+     */
     private static void unexpectedException(Exception e){
         Main.logSevere("An unexpected error occurred, disabling the plugin... Check the exception log:");
         e.printStackTrace();
@@ -617,7 +622,6 @@ public class PacketHandler {
      * @return True if the given object is an instance of the steering packet (PacketPlayInSteerVehicle).
      */
     @VersionSpecific
-    @ToDo("make language specific")
     public static boolean isObjectPacket(Object object) {
         final String errorMessage = "An unexpected error occurred (given object is not a valid steering packet). Try reinstalling the plugin or contact the developer: https://discord.gg/vehicle";
 
