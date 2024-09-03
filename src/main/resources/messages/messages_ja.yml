@@ -172,3 +172,6 @@ offlinePlayerNotFound: "指定したプレイヤーはオンラインになっ�
 economyNotSetUp: "&c経済プラグインが連携されていません。"
 useGiveFuel: "&cUse /vehicle givefuel <Player> <fuel>"
 giveFuelSuccess: "&6You gave &c%l%&6 fuel to &c%p%&6!"
+useVehicleDespawn: "&cUse /vehicle despawn <licensePlate>"
+noVehicleToDespwawn: "&cThere is no placed vehicle with this license plate."
+vehicleDespawned: "&aAll vehicles with the license plate have been despawned."

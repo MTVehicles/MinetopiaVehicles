@@ -6,7 +6,8 @@ import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
 import org.bukkit.inventory.ItemStack;
 
 /**
- * <b>/vehicle delete</b> - Delete held vehicle from the database (vehicleData.yml).
+ * <b>/vehicle delete</b> - Delete held vehicle from the database (vehicleData.yml). Does NOT remove the vehicle if placed (use /vehicle despawn).
+ * @see VehicleDespawn
  */
 public class VehicleDelete extends MTVSubCommand {
     public VehicleDelete() {

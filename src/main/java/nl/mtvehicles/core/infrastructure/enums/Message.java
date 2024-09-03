@@ -176,7 +176,11 @@ public enum Message {
     USE_BUY_CAR,
     USE_BUY_VOUCHER,
     USE_GIVE_FUEL,
-    GIVE_FUEL_SUCCESS("giveFuelSuccess");
+    GIVE_FUEL_SUCCESS("giveFuelSuccess"),
+    USE_VEHICLE_DESPAWN,
+    NO_VEHICLE_TO_DESPAWN,
+    VEHICLE_DESPAWNED;
+
     final private String key;
 
     private Message(){

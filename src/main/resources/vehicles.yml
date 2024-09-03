@@ -1306,10 +1306,10 @@ voertuigen:
     rotateSpeed: 4
     maxSpeedBackwards: 0.0
     seats:
-      - x: -0.0
+      - x: 0.0
         y: -0.95
         z: 0.0
-      - x: -0.8
+      - x: -1.0
         y: -0.95
         z: 0.0
     cars:
@@ -1378,12 +1378,18 @@ voertuigen:
     rotateSpeed: 6
     maxSpeedBackwards: 0.1
     seats:
-      - x: -0.0
-        y: -0.95
+      - x: -0.3
+        y: -0.65
         z: 0.0
-      - x: -0.8
-        y: -0.95
+      - x: -1.5
+        y: -0.65
         z: 0.0
+      - x: -2.5
+        y: -0.65
+        z: 0.5
+      - x: -2.5
+        y: -0.65
+        z: -0.5
     cars:
       - name: "Boat"
         SkinItem: DIAMOND_HOE

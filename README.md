@@ -126,19 +126,22 @@ These commands can only be executed by the owner of the vehicle. **Hold a vehicl
 
 ### Moderation commands
 
-| Command                                | Description                                 | Permission               |
-|----------------------------------------|---------------------------------------------|--------------------------|
-| `/vehicle edit`                        | Adjust vehicle settings                     | `mtvehicles.edit`        |
-| `/vehicle menu`                        | Open a menu containing all the vehicles     | `mtvehicles.menu`        |
-| `/vehicle givevoucher %player% %uuid%` | Give a voucher to a player                  | `mtvehicles.givevoucher` |
-| `/vehicle givecar %player% %uuid%`     | Give a vehicle to a player                  | `mtvehicles.givecar`     |
-| `/vehicle restore`                     | A menu to recover vehicles                  | `mtvehicles.restore`     |
-| `/vehicle benzine`                     | Open the menu with jerrycans for the fuel   | `mtvehicles.benzine`     |
-| `/vehicle givefuel %player% %amount%`  | Give a jerrycan to a specific player        | `mtvehicles.givefuel`    |
-| `/vehicle reload`                      | Reload the plugin's config files            | `mtvehicles.reload`      |
-| `/vehicle setowner %player%`           | Set an owner of a vehicle                   | `mtvehicles.setowner`    |
-| `/vehicle delete`                      | Remove a vehicle in your hand from the data | `mtvehicles.delete`      |
-| `/vehicle update`                      | Update the plugin to the latest version     | `mtvehicles.update`      |
+
+| Command                                | Description                                                      | Permission               |
+|----------------------------------------|------------------------------------------------------------------|--------------------------|
+| `/vehicle edit`                        | Adjust vehicle settings                                          | `mtvehicles.edit`        |
+| `/vehicle menu`                        | Open a menu containing all the vehicles                          | `mtvehicles.menu`        |
+| `/vehicle givevoucher %player% %uuid%` | Give a voucher to a player                                       | `mtvehicles.givevoucher` |
+| `/vehicle givecar %player% %uuid%`     | Give a vehicle to a player                                       | `mtvehicles.givecar`     |
+| `/vehicle restore`                     | A menu to recover vehicles                                       | `mtvehicles.restore`     |
+| `/vehicle benzine`                     | Open the menu with jerrycans for the fuel                        | `mtvehicles.benzine`     |
+| `/vehicle givefuel %player% %amount%`  | Give a jerrycan to a specific player                             | `mtvehicles.givefuel`    |
+| `/vehicle reload`                      | Reload the plugin's config files                                 | `mtvehicles.reload`      |
+| `/vehicle setowner %player%`           | Set an owner of a vehicle                                        | `mtvehicles.setowner`    |
+| `/vehicle delete`                      | Remove a vehicle in your hand from the data                      | `mtvehicles.delete`      |
+| `/vehicle despawn %license-plate%`     | Despawn the vehicle from all worlds (doesn't remove from the DB) | `mtvehicles.despawn`     |
+| `/vehicle update`                      | Update the plugin to the latest version                          | `mtvehicles.update`      |
+
 
 ### Other permissions
 

@@ -171,3 +171,7 @@ offlinePlayerNotFound: "Deze speler is nog nooit op de server geweest."
 economyNotSetUp: "&cThere is no economy plugin hooked."
 useGiveFuel: "&cUse /vehicle givefuel <speler> <brandstof>"
 giveFuelSuccess: "&6You gave &c%l%&6 fuel to &c%p%&6!"
+useVehicleDespawn: "&cUse /vehicle despawn <licensePlate>"
+noVehicleToDespwawn: "&cThere is no placed vehicle with this license plate."
+vehicleDespawned: "&aAll vehicles with the license plate have been despawned."
+

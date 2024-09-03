@@ -690,8 +690,10 @@ public final class VehicleUtils {
      * @throws IllegalArgumentException Thrown if given license plate is invalid.
      * @since 2.5.1
      * @see #despawnVehicle(World, String...)
+     * @return Number of vehicles despawned
      */
-    public static void despawnVehicle(String... licensePlates) throws IllegalArgumentException {
+    public static int despawnVehicle(String... licensePlates) throws IllegalArgumentException {
+        int despawned = 0;
         for (String licensePlate : licensePlates) {
             if (!existsByLicensePlate(licensePlate)) throw new IllegalArgumentException("Vehicle " + licensePlate + " does not exist.");
             for (Player trunkViewer : VehicleData.getTrunkViewers(licensePlate)){
@@ -700,12 +702,14 @@ public final class VehicleUtils {
 
             for (World world : Bukkit.getServer().getWorlds()) {
                 for (Entity entity : world.getEntities()) {
-                    if (entity.getCustomName() != null && entity.getCustomName().contains(licensePlate)) {
+                    if (entity.getCustomName() != null && entity.getCustomName().contains(licensePlate) && entity.getCustomName().contains("MTVEHICLES")) {
                         entity.remove();
+                        despawned++;
                     }
                 }
             }
         }
+        return despawned;
     }
 
     /**
@@ -714,8 +718,11 @@ public final class VehicleUtils {
      * @param licensePlates Vehicle's license plate
      * @throws IllegalArgumentException Thrown if given license plate is invalid.
      * @since 2.5.1
+     * @see #despawnVehicle(String...)
+     * @return Number of vehicles despawned
      */
-    public static void despawnVehicle(World world, String... licensePlates) throws IllegalArgumentException {
+    public static int despawnVehicle(World world, String... licensePlates) throws IllegalArgumentException {
+        int despawned = 0;
         for (String licensePlate : licensePlates) {
             if (!existsByLicensePlate(licensePlate)) throw new IllegalArgumentException("Vehicle " + licensePlate + " does not exist.");
 
@@ -726,9 +733,11 @@ public final class VehicleUtils {
             for (Entity entity : world.getEntities()) {
                 if (entity.getCustomName() != null && entity.getCustomName().contains(licensePlate)) {
                     entity.remove();
+                    despawned++;
                 }
             }
         }
+        return despawned;
     }
 
     /**
@@ -851,6 +860,7 @@ public final class VehicleUtils {
                     basicStandCreator(licensePlate, "MAIN", location, null, true);
                     vehicle.saveSeats();
                     List<Map<String, Double>> seats = vehicle.getSeats();
+                    VehicleData.seatsize.put(licensePlate, seats.size());
                     for (int i = 1; i <= seats.size(); i++) {
                         Map<String, Double> seat = seats.get(i - 1);
                         if (i == 1) {
@@ -860,11 +870,11 @@ public final class VehicleUtils {
                         }
 
                         if (i > 1) {
-                            VehicleData.seatsize.put(licensePlate, seats.size());
+
                             VehicleData.seatx.put("MTVEHICLES_SEAT" + i + "_" + licensePlate, seat.get("x"));
                             VehicleData.seaty.put("MTVEHICLES_SEAT" + i + "_" + licensePlate, seat.get("y"));
                             VehicleData.seatz.put("MTVEHICLES_SEAT" + i + "_" + licensePlate, seat.get("z"));
-                            Location location2 = new Location(location.getWorld(), location.getX() + Double.valueOf(seat.get("z")), location.getY() + Double.valueOf(seat.get("y")), location.getZ() + Double.valueOf(seat.get("x")));
+                            Location location2 = new Location(location.getWorld(), location.getX() + Double.valueOf(seat.get("x")), location.getY() + Double.valueOf(seat.get("y")), location.getZ() + Double.valueOf(seat.get("z")));
 
                             ArmorStand as = location2.getWorld().spawn(location2, ArmorStand.class);
                             allowTicking(as);
