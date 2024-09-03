@@ -25,71 +25,85 @@ voertuigen:
         z: 0.0
     cars:
       - name: "Oxboard White"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1009
         uuid: C4UQZJ
         price: 1000.0
       - name: "Oxboard Gold"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1029
         uuid: HUYM42
         price: 1000.0
       - name: "Oxboard Orange"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1030
         uuid: XE9C3P
         price: 1000.0
       - name: "Oxboard Green"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1031
         uuid: YF4P36
         price: 1000.0
       - name: "Oxboard Blue"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1032
         uuid: 2BSTZM
         price: 1000.0
       - name: "Oxboard Red"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1033
         uuid: JE4M2R
         price: 1000.0
       - name: "Oxboard Yellow"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1034
         uuid: 5V2PDY
         price: 1000.0
       - name: "Oxboard Purple"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1035
         uuid: P4FWRX
         price: 1000.0
       - name: "Oxboard Babyblue"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1152
         uuid: LQ53PX
         price: 1000.0
       - name: "Oxboard Goldenglass"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1153
         uuid: CPK3SS
         price: 1000.0
       - name: "Oxboard Champagne"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1154
         uuid: B259DS
         price: 1000.0
       - name: "Oxboard Desert"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1155
         uuid: VFVX2H
         price: 1000.0
       - name: "Oxboard Ender"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1156
         uuid: KC4RHD
         price: 1000.0
       - name: "Oxboard Lemonyellow"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1157
         uuid: SWT2JB
@@ -115,106 +129,127 @@ voertuigen:
         z: 0.0
     cars:
       - name: "Fiets Man Gray"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1008
         uuid: YFDZ5K
         price: 1500.0
       - name: "Fiets Man Green"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1043
         uuid: DSF2HK
         price: 1500.0
       - name: "Fiets Man Brown"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1044
         uuid: MLD9NX
         price: 1500.0
       - name: "Fiets Man Blueblack"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1045
         uuid: SJY2FV
         price: 1500.0
       - name: "Fiets Man Bluediamond"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1143
         uuid: GD9WEU
         price: 1500.0
       - name: "Fiets Man Gold"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1144
         uuid: 2EY6DP
         price: 1500.0
       - name: "Fiets Man Pink"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1145
         uuid: NMLV7G
         price: 1500.0
       - name: "Fiets Man Red"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1146
         uuid: 2A85ZB
         price: 1500.0
       - name: "Fiets Man Koningsdag"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1200
         uuid: WAB77V
         price: 1500.0
       - name: "Fiets Man Babyboy"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1225
         uuid: 5QCTUR
         price: 1500.0
       - name: "Fiets Vrouw Gray"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1046
         uuid: A7V4BN
         price: 1500.0
       - name: "Fiets Vrouw Green"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1047
         uuid: WV96BY
         price: 1500.0
       - name: "Fiets Vrouw Brown"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1048
         uuid: 3YUK29
         price: 1500.0
       - name: "Fiets Vrouw Blueblack"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1049
         uuid: E8K5VC
         price: 1500.0
       - name: "Fiets Vrouw Bluediamond"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1147
         uuid: Q54TDU
         price: 1500.0
       - name: "Fiets Vrouw Gold"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1148
         uuid: 2AYF36
         price: 1500.0
       - name: "Fiets Vrouw Pink"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1149
         uuid: T6Y89D
         price: 1500.0
       - name: "Fiets Vrouw Red"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1150
         uuid: XN9MKB
         price: 1500.0
       - name: "Fiets Vrouw Rainbow"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1187
         uuid: VM8MKX
         price: 1500.0
       - name: "Fiets Vrouw Koningsdag"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1199
         uuid: 3TB9UE
         price: 1500.0
       - name: "Fiets Vrouw Babygirl"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1226
         uuid: 83QL5C
@@ -239,51 +274,61 @@ voertuigen:
         z: 0.0
     cars:
       - name: Motor Orange
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1036
         uuid: FV5PZP
         price: 3000.0
       - name: Motor Green
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1037
         uuid: 4HY4A5
         price: 3000.0
       - name: Motor Blue
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1038
         uuid: K6TBK9
         price: 3000.0
       - name: Motor Gold
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1039
         uuid: 7WTA39
         price: 3000.0
       - name: Motor Police
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1040
         uuid: 384A4N
         price: 3000.0
       - name: Motor Red
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1041
         uuid: JDC78X
         price: 3000.0
       - name: Motor Pink
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1042
         uuid: XTKK54
         price: 3000.0
       - name: Motor Vierjaar
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1194
         uuid: 7H3U63
         price: 3000.0
       - name: Motor Easter
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1195
         uuid: RBSX6N
         price: 3000.0
       - name: Motor Koningsdag
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1197
         uuid: A5K4NY
@@ -308,131 +353,157 @@ voertuigen:
         z: 0.0
     cars:
       - name: "Sportief Navyblue"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1002
         uuid: SMV4M6
         price: 5000.0
       - name: "Sportief White"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1060
         uuid: 5CD8N4
         price: 5000.0
       - name: "Sportief Pink"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1061
         uuid: MW65MB
         price: 5000.0
       - name: "Sportief Blackyellow"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1062
         uuid: NJWR35
         price: 5000.0
       - name: "Sportief Flamered"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1063
         uuid: LHBM2X
         price: 5000.0
       - name: "Sportief Flameblue"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1064
         uuid: 2HSGS9
         price: 5000.0
       - name: "Sportief Flamewhite"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1065
         uuid: W3WRM9
         price: 5000.0
       - name: "Sportief Gold"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1066
         uuid: 3FPCB2
         price: 5000.0
       - name: "Sportief Emerald"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1067
         uuid: R2VWQA
         price: 5000.0
       - name: "Sportief Orange"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1068
         uuid: 8CUSCG
         price: 5000.0
       - name: "Sportief Diamond"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1069
         uuid: 6FHXGA
         price: 5000.0
       - name: "Sportief Black"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1070
         uuid: W32FND
         price: 5000.0
       - name: "Sportief Koningsclean"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1196
         uuid: 54L2U8
         price: 5000.0
       - name: "Sportief Bordeauxclean"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1216
         uuid: D2VPX5
         price: 5000.0
       - name: "Sportief Flamegreen"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1223
         uuid: AULZ53
         price: 5000.0
       - name: "Sportief Flamepink"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1224
         uuid: VC255H
         price: 5000.0
       - name: "Sportief Forest"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1240
         uuid: 5KH7QB
         price: 5000.0
       - name: "Sportief Forestclean"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1241
         uuid: Y4ARH2
         price: 5000.0
       - name: "Sportief Puppel"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1242
         uuid: WCL6KH
         price: 5000.0
       - name: "Sportief Puppelclean"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1243
         uuid: GH3LXS
         price: 5000.0
       - name: "Sportief Nietrood"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1244
         uuid: U7PJ85
         price: 5000.0
       - name: "Sportief Nietroodclean"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1245
         uuid: X2L44E
         price: 5000.0
       - name: "Sportief Fakegold"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1246
         uuid: 6YSL3P
         price: 5000.0
       - name: "Sportief Fakegoldclean"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1247
         uuid: 6Y4XE9
         price: 5000.0
       - name: "Sportief Peppa"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1248
         uuid: RXR5MV
         price: 5000.0
       - name: "Sportief Peppaclean"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1249
         uuid: 4HU8G2
@@ -460,181 +531,217 @@ voertuigen:
         z: 0.0
     cars:
       - name: "Sedan Navyblauw"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1003
         uuid: 7JWQYB
         price: 5500.0
       - name: "Sedan Politie"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1015
         uuid: JSJ4ST
         price: 5500.0
       - name: "Sedan Red"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1017
         uuid: GKAH5U
         price: 5500.0
       - name: "Sedan Green"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1018
         uuid: CT3EGF
         price: 5500.0
       - name: "Sedan Gray"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1019
         uuid: BV3W2A
         price: 5500.0
       - name: "Sedan Pink"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1020
         uuid: S5NU5C
         price: 5500.0
       - name: "Sedan Yellow"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1021
         uuid: YLSS3P
         price: 5500.0
       - name: "Sedan Brown"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1022
         uuid: 4LDQAQ
         price: 5500.0
       - name: "Sedan Sportief Quartz"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1023
         uuid: 7BEQ5K
         price: 5500.0
       - name: "Sedan Purple"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1024
         uuid: TTD9ZR
         price: 5500.0
       - name: "Sedan Sportief Diamond"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1025
         uuid: H4K4ZV
         price: 5500.0
       - name: "Sedan Koningsdag"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1026
         uuid: TX9HKQ
         price: 5500.0
       - name: "Sedan Sportief Rainbow"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1027
         uuid: XJ4Q29
         price: 5500.0
       - name: "Sedan Lesauto"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1028
         uuid: M9LDAV
         price: 5500.0
       - name: "Sedan Sportief Gold v2"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1071
         uuid: QXN6XS
         price: 5500.0
       - name: "Sedan Cars"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1099
         uuid: TG73T8
         price: 5500.0
       - name: "Sedan Thunder"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1100
         uuid: 7VW8AS
         price: 5500.0
       - name: "Sedan Monster"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1101
         uuid: 6U9P2A
         price: 5500.0
       - name: "Sedan Babyblauw"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1109
         uuid: 655LX3
         price: 5500.0
       - name: "Sedan Beige"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1110
         uuid: 58UUXF
         price: 5500.0
       - name: "Sedan Black"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1111
         uuid: FFW36Q
         price: 5500.0
       - name: "Sedan Lemonyellow"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1113
         uuid: A6TLAE
         price: 5500.0
       - name: "Sedan Lily"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1114
         uuid: YR526Z
         price: 5500.0
       - name: "Sedan Sportief Emerald"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1115
         uuid: RBG6HW
         price: 5500.0
       - name: "Sedan Sportief Obsidian"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1116
         uuid: KG59SJ
         price: 5500.0
       - name: "Sedan Zalm"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1117
         uuid: DD4KEN
         price: 5500.0
       - name: "Sedan Sportief President"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1173
         uuid: 4A56NC
         price: 5500.0
       - name: "Sedan OranjeZwart"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1176
         uuid: 2RD98Z
         price: 5500.0
       - name: "Sedan PaarsWit"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1177
         uuid: VL7YRF
         price: 5500.0
       - name: "Sedan GeelZwart"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1178
         uuid: 743YWW
         price: 5500.0
       - name: "Sedan BlauwZwart"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1179
         uuid: KV6RY9
         price: 5500.0
       - name: "Sedan Kerst"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1189
         uuid: U8DQDW
         price: 5500.0
       - name: "Sedan RoodWit"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1190
         uuid: J9WR25
         price: 5500.0
       - name: "Sedan Sportief Lego"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1191
         uuid: MQ694J
         price: 5500.0
       - name: "Sedan Babygirl"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1217
         uuid: ZJD7VR
         price: 5500.0
       - name: "Sedan Babyboy"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1218
         uuid: 43Z6B7
@@ -659,56 +766,67 @@ voertuigen:
         z: 0.0
     cars:
       - name: Racecar Black
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1165
         uuid: 4JXXK8
         price: 7000.0
       - name: Racecar Red
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1166
         uuid: RD8XS9
         price: 7000.0
       - name: Racecar Emerald
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1167
         uuid: 6XXC76
         price: 7000.0
       - name: Racecar Gold
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1168
         uuid: KHNB73
         price: 7000.0
       - name: Racecar Pink
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1169
         uuid: 972EKA
         price: 7000.0
       - name: Racecar Diamond
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1170
         uuid: 8D7JLU
         price: 7000.0
       - name: Racecar Orange
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1171
         uuid: QF6WZD
         price: 7000.0
       - name: Racecar Orangeblack
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1172
         uuid: 63MHGZ
         price: 7000.0
       - name: Racecar Ender
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1186
         uuid: LRGF4Y
         price: 7000.0
       - name: Racecar Purplefade
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1193
         uuid: KS58X3
         price: 7000.0
       - name: Racecar Rainbow
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1210
         uuid: L4SEDU
@@ -736,16 +854,19 @@ voertuigen:
         z: 0.0
     cars:
       - name: "Jeep Politie"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1005
         uuid: 5HEGAR
         price: 6000.0
       - name: "Jeep Blue"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1073
         uuid: G2KQ4V
         price: 6000.0
       - name: "Jeep Gold"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1074
         uuid: 5Z95XA
@@ -770,46 +891,55 @@ voertuigen:
         z: 0.0
     cars:
       - name: "Hotrod Red"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1006
         uuid: CJF7WX
         price: 5000.0
       - name: "Hotrod Blackyellow"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1075
         uuid: 5PR3D5
         price: 5000.0
       - name: "Hotrod Gold"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1158
         uuid: 6WDK7U
         price: 5000.0
       - name: "Hotrod Blue"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1159
         uuid: 2FWFAS
         price: 5000.0
       - name: "Hotrod Orange"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1160
         uuid: E6HMVT
         price: 5000.0
       - name: "Hotrod Black"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1161
         uuid: 6GBKXT
         price: 5000.0
       - name: "Hotrod Pink"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1162
         uuid: 5F2B55
         price: 5000.0
       - name: "Hotrod Army"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1164
         uuid: 4ZEN6W
         price: 5000.0
       - name: "Hotrod Valentijn"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1192
         uuid: S5JPB9
@@ -834,31 +964,37 @@ voertuigen:
         z: 0.0
     cars:
       - name: Hovercraft Lime
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1121
         uuid: 2C7UM7
         price: 8000.0
       - name: Hovercraft White
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1122
         uuid: ABRA7A
         price: 8000.0
       - name: Hovercraft Gold
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1123
         uuid: X24E5U
         price: 8000.0
       - name: Hovercraft Orange
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1201
         uuid: XTD7T7
         price: 8000.0
       - name: Hovercraft Black
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1202
         uuid: L9DN24
         price: 8000.0
       - name: Hovercraft Purpleyellow
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1211
         uuid: F436FE
@@ -892,126 +1028,151 @@ voertuigen:
         z: -0.4
     cars:
       - name: "SUV Blue"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1132
         uuid: NAXR6K
         price: 9000.0
       - name: "SUV Brown"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1133
         uuid: QQER7A
         price: 9000.0
       - name: "SUV Gold"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1134
         uuid: L6XB46
         price: 9000.0
       - name: "SUV Green"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1135
         uuid: YF9328
         price: 9000.0
       - name: "SUV Pink"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1136
         uuid: ZNF57S
         price: 9000.0
       - name: "SUV Red"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1137
         uuid: 8445L7
         price: 9000.0
       - name: "SUV Upperblue"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1138
         uuid: EZD8F5
         price: 9000.0
       - name: "SUV White"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1139
         uuid: 88WPRU
         price: 9000.0
       - name: "SUV Yellow"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1140
         uuid: 6SEXMU
         price: 9000.0
       - name: "SUV Black"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1141
         uuid: FC98KS
         price: 9000.0
       - name: "SUV Ender"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1184
         uuid: 53JTVT
         price: 9000.0
       - name: "SUV Politie"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1185
         uuid: HVN8HB
         price: 9000.0
       - name: "SUV Stars"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1188
         uuid: X4WU9V
         price: 9000.0
       - name: "SUV Cabrio Orangeblack"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1198
         uuid: 7BPAD8
         price: 9000.0
       - name: "SUV Redblack"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1203
         uuid: 85GAEH
         price: 9000.0
       - name: "SUV Greenwhite"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1204
         uuid: W33BEH
         price: 9000.0
       - name: "SUV Lightbluewhite"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1207
         uuid: Q85BXQ
         price: 9000.0
       - name: "SUV Purplewhite"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1208
         uuid: G7KJ8A
         price: 9000.0
       - name: "SUV Pinkwhite"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1209
         uuid: K6DVYQ
         price: 9000.0
       - name: "SUV Lime"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1219
         uuid: M2PYRY
         price: 9000.0
       - name: "SUV Criminalblack"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1220
         uuid: 5R7QP3
         price: 9000.0
       - name: "SUV Navyblue"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1221
         uuid: 3E35UU
         price: 9000.0
       - name: "SUV Bordeaux"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1222
         uuid: 2C8XKA
         price: 9000.0
       - name: "SUV Pokémon"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1227
         uuid: K5B2YL
         price: 9000.0
       - name: "SUV Giraffe"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1228
         uuid: 75W9X8
@@ -1036,31 +1197,37 @@ voertuigen:
         z: 0.0
     cars:
       - name: UFO
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1230
         uuid: U5N8WS
         price: 10000.0
       - name: UFO Orange
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1231
         uuid: 4ZJ2TJ
         price: 10000.0
       - name: UFO Blackgold
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1232
         uuid: BMM98D
         price: 10000.0
       - name: UFO Purple
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1233
         uuid: J979P2
         price: 10000.0
       - name: UFO Blue
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1234
         uuid: 9B9YNV
         price: 10000.0
       - name: UFO Black
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1235
         uuid: KE8E77
@@ -1085,36 +1252,43 @@ voertuigen:
         z: 0.0
     cars:
       - name: Tank Legend Black
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1250
         uuid: G87SH4
         price: 20000.0
       - name: Tank Legend Camo Dark
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1251
         uuid: GAY8AD
         price: 20000.0
       - name: Tank Legend Camo Forest
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1252
         uuid: 5NHQBC
         price: 20000.0
       - name: Tank Legend Camo Marine
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1253
         uuid: E4RAHB
         price: 20000.0
       - name: Tank Legend Desert
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1254
         uuid: Q2NQR7
         price: 20000.0
       - name: Tank Legend Green
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1255
         uuid: 589GVK
         price: 20000.0
       - name: Tank Legend Sand
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1256
         uuid: 98F6Q4
@@ -1139,36 +1313,43 @@ voertuigen:
         z: 0.0
     cars:
       - name: Raket Legend Black
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1257
         uuid: 6GZYGM
         price: 15000.0
       - name: Raket Legend Camo Dark
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1258
         uuid: VT3Y3X
         price: 15000.0
       - name: Raket Legend Camo Forest
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1259
         uuid: VJNR2J
         price: 15000.0
       - name: Raket Legend Camo Marine
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1260
         uuid: 4GS924
         price: 15000.0
       - name: Raket Legend Desert
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1261
         uuid: 5HMTND
         price: 15000.0
       - name: Raket Legend Green
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1262
         uuid: YHS5XC
         price: 15000.0
       - name: Raket Legend Sand
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1263
         uuid: 5WA8S3
@@ -1207,86 +1388,103 @@ voertuigen:
             Damage: 1058
     cars:
       - name: Apache Blue
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1124
         uuid: JLP5XV
         price: 25000.0
       - name: Apache Pink
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1125
         uuid: 4EVZ8U
         price: 25000.0
       - name: Apache Preen
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1126
         uuid: FHY77D
         price: 25000.0
       - name: Apache Brown
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1127
         uuid: E9Y9T3
         price: 25000.0
       - name: Apache Gray
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1128
         uuid: AAJ84C
         price: 25000.0
       - name: Apache Gold
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1129
         uuid: K3G7JG
         price: 25000.0
       - name: Apache Red
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1130
         uuid: 5X8QSY
         price: 25000.0
       - name: Apache Upperblue
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1131
         uuid: 43V6S2
         price: 25000.0
       - name: Apache Black
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1142
         uuid: RJRN9P
         price: 25000.0
       - name: Apache Pink
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1180
         uuid: SYJN6P
         price: 25000.0
       - name: Apache Obsidian
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1181
         uuid: 92XNSC
         price: 25000.0
       - name: Apache Leaves
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1182
         uuid: KQZ4VC
         price: 25000.0
       - name: Apache Orange
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1183
         uuid: EG8HLM
         price: 25000.0
       - name: Apache Roodze
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1212
         uuid: D2CW3G
         price: 25000.0
       - name: Apache Bordeaux
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1213
         uuid: U89YH2
         price: 25000.0
       - name: Apache Criminalblack
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1214
         uuid: 8A4A9Y
         price: 25000.0
       - name: Apache Mint
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1215
         uuid: 6JXVBY
@@ -1314,51 +1512,61 @@ voertuigen:
         z: 0.0
     cars:
       - name: Plane Gray
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1264
         uuid: JLP5A1
         price: 25000.0
       - name: Plane Blue
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1265
         uuid: JLP5A2
         price: 25000.0
       - name: Plane Dragon
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1266
         uuid: JLP5A3
         price: 25000.0
       - name: Plane Fighter
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1267
         uuid: JLP5A4
         price: 28000.0
       - name: Plane Fighter Oranje
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1268
         uuid: JLP5A5
         price: 28000.0
       - name: Plane Gold
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1269
         uuid: JLP5A6
         price: 25000.0
       - name: Plane Green
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1270
         uuid: JLP5A7
         price: 25000.0
       - name: Plane Octopus
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1271
         uuid: JLP5A8
         price: 25000.0
       - name: Plane Orange
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1272
         uuid: JLP5A9
         price: 25000.0
       - name: Plane Purple
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1273
         uuid: JLP5A0
@@ -1386,11 +1594,13 @@ voertuigen:
         z: 0.0
     cars:
       - name: "Boat"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1274
         uuid: PLV334
         price: 35000.0
       - name: "Speedboat"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1275
         uuid: PLV871
@@ -1424,6 +1634,7 @@ voertuigen:
         z: -0.4
     cars:
       - name: "Raft"
+        modelID: ""
         SkinItem: DIAMOND_HOE
         itemDamage: 1276
         uuid: PLV335

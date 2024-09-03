@@ -2,10 +2,7 @@ package nl.mtvehicles.core.infrastructure.modules;
 
 import lombok.Getter;
 import lombok.Setter;
-import nl.mtvehicles.core.infrastructure.dependencies.PlaceholderUtils;
-import nl.mtvehicles.core.infrastructure.dependencies.SkriptUtils;
-import nl.mtvehicles.core.infrastructure.dependencies.VaultUtils;
-import nl.mtvehicles.core.infrastructure.dependencies.WorldGuardUtils;
+import nl.mtvehicles.core.infrastructure.dependencies.*;
 import nl.mtvehicles.core.infrastructure.enums.SoftDependency;
 import org.bukkit.Bukkit;
 
@@ -26,22 +23,31 @@ public class DependencyModule {
      */
     public static List<SoftDependency> loadedDependencies = new ArrayList<>();
 
+
     /**
      * WorldGuard's Utils class
      */
     public static WorldGuardUtils worldGuard;
+
     /**
      * Vault's Utils class
      */
     public static VaultUtils vault;
+
     /**
      * PlaceholderAPI's Utils class
      */
     public static PlaceholderUtils placeholderAPI;
+
     /**
      * Skripts's Utils class
      */
     public static SkriptUtils skript;
+
+    /**
+     * ModelEngine's Utils class
+     */
+    public static ModelEngineUtils modelEngine;
 
     public DependencyModule() {
         if (Bukkit.getServer().getPluginManager().getPlugin("WorldGuard") != null) {
@@ -75,6 +81,14 @@ public class DependencyModule {
                 loadedDependencies.add(SoftDependency.SKRIPT);
             } catch (NoClassDefFoundError e){
                 Bukkit.getLogger().severe("[MTVehicles] An error occurred whilst loading Skript as a soft-dependency. (Make sure you're using the latest version, or try restarting the server.)");
+            }
+        }
+        if (Bukkit.getServer().getPluginManager().getPlugin("ModelEngine") != null){
+            try {
+                modelEngine = new ModelEngineUtils();
+                loadedDependencies.add(SoftDependency.MODELENGINE);
+            } catch (NoClassDefFoundError e){
+                Bukkit.getLogger().severe("[MTVehicles] An error occurred whilst loading ModelEngine as a soft-dependency. (Make sure you're using the latest version, or try restarting the server.)");
             }
         }
     }

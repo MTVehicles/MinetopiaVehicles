@@ -185,10 +185,7 @@ public class InventoryClickListener extends MTVListener {
 
             Vehicle vehicle = new Vehicle(
                     null,
-<<<<<<< HEAD
                     DependencyModule.modelEngine.getIDFromName(nbt.getString("mtvehicles.naam")),
-=======
->>>>>>> parent of 08139d4c (ModelEngine Part 1)
                     licensePlate,
                     nbt.getString("mtvehicles.naam"),
                     VehicleType.valueOf((String) vehicles.get(intSave.get(player.getUniqueId())).get("vehicleType")),

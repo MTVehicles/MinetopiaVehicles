@@ -1,6 +1,7 @@
 package nl.mtvehicles.core.listeners;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
+import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.events.VehiclePlaceEvent;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.enums.RegionAction;
@@ -17,6 +18,8 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.logging.Logger;
 
 /**
  * On place of a vehicle
@@ -45,6 +48,7 @@ public class VehiclePlaceListener extends MTVListener {
         ) return;
         if (!(new NBTItem(item)).hasTag("mtvehicles.kenteken")) return;
         String license = VehicleUtils.getLicensePlate(item);
+        Main.logInfo("Platziert mit " + license + "  id: " + ConfigModule.vehicleDataConfig.getModelID(license));
         if (license == null) return;
 
         VehiclePlaceEvent api = (VehiclePlaceEvent) getAPI();
