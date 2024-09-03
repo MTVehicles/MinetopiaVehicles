@@ -75,6 +75,11 @@ public class DefaultConfig extends MTVConfig {
         return returns;
     }
 
+    //--- Honey ---
+    public boolean isHoneySlowdownEnabled(){
+        return (boolean) get(Option.SLOW_ON_HONEY);
+    }
+
     //--- Gas stations ---
 
     private final GasStationConfig gasStations = new GasStationConfig();
@@ -326,6 +331,7 @@ public class DefaultConfig extends MTVConfig {
         EXTREME_HELICOPTER_FALL("extremeHelicopterFall", false),
         HELICOPTER_FALL_DAMAGE("helicopterFallDamage", 40.0),
         DRIVE_ON_CARPETS("driveOnCarpets", true),
+        SLOW_ON_HONEY("slowDownOnHoney", false),
         BLOCK_WHITELIST_ENABLED("blockWhitelist.enabled", false),
         BLOCK_WHITELIST_LIST("blockWhitelist.list", new ArrayList<>().add("GRAY_CONCRETE")),
         DISABLED_WORLDS("disabledWorlds", new ArrayList<>()),

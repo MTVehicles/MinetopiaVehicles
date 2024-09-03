@@ -1,6 +1,7 @@
 package nl.mtvehicles.core.movement;
 
 import com.google.common.collect.Sets;
+import net.minecraft.world.level.block.BlockHoney;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.events.HornUseEvent;
 import nl.mtvehicles.core.events.TankShootEvent;
@@ -423,6 +424,14 @@ public class VehicleMovement {
             return false;
         }
 
+
+        if(ConfigModule.defaultConfig.isHoneySlowdownEnabled()) {
+            if (locBlockBelow.getBlock().getType() == Material.HONEY_BLOCK) { // Slow down on Honey Blocks
+                VehicleData.speed.put(license, Math.max(VehicleData.speed.get(license) * 0.2, 0.05)); // Reduce speed to 20% of current speed or minimum 0.05
+                return false;
+            }
+        }
+
         if (ConfigModule.defaultConfig.driveUpSlabs().isSlabs()){ // If vehicles may only drive up slabs (and not blocks)
             if (isOnSlab) { // If the player is driving on a (bottom) slab
 
@@ -583,6 +592,7 @@ public class VehicleMovement {
                     return false; //Vehicle will go down
                 }
             }
+
 
         }
 
@@ -892,7 +902,7 @@ public class VehicleMovement {
         try {
             String declaredMethod = "d";
 
-            if (getServerVersion().isNewerOrEqualTo(ServerVersion.v1_20_R1) && getServerVersion().isOlderThan(ServerVersion.v1_20_R4))  {
+            if (getServerVersion().isNewerOrEqualTo(ServerVersion.v1_20_R2) && getServerVersion().isOlderThan(ServerVersion.v1_20_R4))  {
                 declaredMethod = "e";
             } else if (getServerVersion().isNewerOrEqualTo(ServerVersion.v1_20_R4)) {
                 declaredMethod = "f";
