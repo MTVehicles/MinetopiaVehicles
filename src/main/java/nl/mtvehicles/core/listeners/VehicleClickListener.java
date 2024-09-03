@@ -21,8 +21,9 @@ import java.util.Map;
 /**
  * On vehicle right click - entering and picking up
  */
+
 public class VehicleClickListener extends MTVListener {
-    private Map<String, Long> lastUsage = new HashMap<>();
+    private final Map<String, Long> lastUsage = new HashMap<>();
 
     private Entity entity;
     private String license;
@@ -32,45 +33,50 @@ public class VehicleClickListener extends MTVListener {
         this.event = event;
         player = event.getPlayer();
         entity = event.getRightClicked();
-        long lastUsed = 0L;
 
+        // Check if the clicked entity is a vehicle
         if (!VehicleUtils.isVehicle(entity)) return;
-        event.setCancelled(true); //Prevents skin item from getting grabbed by a player
+        event.setCancelled(true);
 
         if (entity.getCustomName().startsWith("VEHICLE")) return;
 
-        if (lastUsage.containsKey(player.getName())) lastUsed = (lastUsage.get(player.getName())).longValue();
-        if (System.currentTimeMillis() - lastUsed >= 500) lastUsage.put(player.getName(), Long.valueOf(System.currentTimeMillis()));
-        else return;
+        final String playerName = player.getName();
+        final long currentTime = System.currentTimeMillis();
+        final long lastUsed = lastUsage.getOrDefault(playerName, 0L);
+
+        if (currentTime - lastUsed < 500) return;
+        lastUsage.put(playerName, currentTime);
 
         license = VehicleUtils.getLicensePlate(entity);
 
         if (player.isSneaking()) {
             pickup();
-            return;
+        } else {
+            enter();
         }
-        enter();
     }
 
-    private void pickup(){
-        this.setAPI(new VehiclePickUpEvent());
+    private void pickup() {
+        setAPI(new VehiclePickUpEvent());
         VehiclePickUpEvent api = (VehiclePickUpEvent) getAPI();
         api.setLicensePlate(license);
         callAPI();
+
         if (isCancelled()) return;
 
         license = api.getLicensePlate();
-        Vehicle vehicle = VehicleUtils.getVehicle(license);
+        final Vehicle vehicle = VehicleUtils.getVehicle(license);
         if (vehicle == null) return;
 
-        if (!player.hasPermission("mtvehicles.anwb") && (boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.DISABLE_PICKUP_FROM_WATER)){
+        final boolean disablePickupFromWater = (boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.DISABLE_PICKUP_FROM_WATER);
+        if (!player.hasPermission("mtvehicles.anwb") && disablePickupFromWater) {
             if (entity.getLocation().clone().add(0, 1, 0).getBlock().isLiquid()) {
                 ConfigModule.messagesConfig.sendMessage(player, Message.VEHICLE_IN_WATER);
                 return;
             }
         }
 
-        if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.PICKUP, vehicle.getVehicleType(), ((PlayerInteractAtEntityEvent) event).getRightClicked().getLocation(), player)){
+        if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.PICKUP, vehicle.getVehicleType(), entity.getLocation(), player)) {
             ConfigModule.messagesConfig.sendMessage(player, Message.CANNOT_DO_THAT_HERE);
             return;
         }
@@ -78,21 +84,22 @@ public class VehicleClickListener extends MTVListener {
         VehicleUtils.pickupVehicle(license, player);
     }
 
-    private void enter(){
-        this.setAPI(new VehicleEnterEvent(license));
+    private void enter() {
+        setAPI(new VehicleEnterEvent(license));
         callAPI();
+
         if (isCancelled()) return;
 
-        Vehicle vehicle = VehicleUtils.getVehicle(license);
+        final Vehicle vehicle = VehicleUtils.getVehicle(license);
         if (vehicle == null) return;
 
-        if (entity.getCustomName().contains("MTVEHICLES_SEAT")) {
+        final String customName = entity.getCustomName();
+        if (customName.contains("MTVEHICLES_SEAT")) {
 
             if (!vehicle.isPublic() && !vehicle.isOwner(player) && !vehicle.canSit(player) && !player.hasPermission("mtvehicles.ride")) {
                 player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_NO_RIDER_ENTER).replace("%p%", vehicle.getOwnerName())));
                 return;
             }
-
             if (entity.isEmpty()) {
                 entity.addPassenger(player);
                 player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_ENTER_MEMBER).replace("%p%", vehicle.getOwnerName())));
@@ -103,5 +110,4 @@ public class VehicleClickListener extends MTVListener {
 
         VehicleUtils.enterVehicle(license, player);
     }
-
 }

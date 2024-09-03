@@ -33,55 +33,76 @@ public class VehicleEntityListener extends MTVListener {
     public void onPlayerInteractAtEntity(EntityDamageByEntityEvent event) {
         this.event = event;
         final Entity victim = event.getEntity();
-        final Entity damager = event.getDamager();
 
         if (!VehicleUtils.isVehicle(victim)) return;
 
         String license = VehicleUtils.getLicensePlate(victim);
 
-        if (!(damager instanceof Player)) {
-            setupDamageAPI(damager, license);
-            callAPI(null);
-            if (isCancelled()) return;
+        if (license == null) return; 
 
-            damage(((VehicleDamageEvent) getAPI()).getLicensePlate());
+        final Entity damager = event.getDamager();
+
+        if (!(damager instanceof Player)) {
+            handleVehicleDamage(damager, license);
             return;
         }
 
         player = (Player) damager;
 
         if (player.isSneaking() && !player.isInsideVehicle()) {
-            this.setAPI(new VehicleOpenTrunkEvent());
-            VehicleOpenTrunkEvent api = (VehicleOpenTrunkEvent) getAPI();
-            api.setLicensePlate(license);
-            callAPI();
-            if (isCancelled()) return;
-
+            handleOpenTrunk(license);
             event.setCancelled(true);
-            if (!VehicleUtils.isTrunkInventoryOpen(player, license)) VehicleUtils.openTrunk(player, api.getLicensePlate());
             return;
         }
 
         if (!player.isInsideVehicle()) return;
 
+        handleFueling(license, player);
+    }
+
+    private void handleVehicleDamage(Entity damager, String license) {
+        setupDamageAPI(damager, license);
+        callAPI(null);
+        if (isCancelled()) return;
+        damage(((VehicleDamageEvent) getAPI()).getLicensePlate());
+    }
+
+    private void handleOpenTrunk(String license) {
+        this.setAPI(new VehicleOpenTrunkEvent());
+        VehicleOpenTrunkEvent api = (VehicleOpenTrunkEvent) getAPI();
+        api.setLicensePlate(license);
+        callAPI();
+        if (isCancelled()) return;
+
+        if (!VehicleUtils.isTrunkInventoryOpen(player, license)) {
+            VehicleUtils.openTrunk(player, api.getLicensePlate());
+        }
+    }
+
+    private void handleFueling(String license, Player player) {
         ItemStack item = player.getInventory().getItemInMainHand();
 
-        if (!item.hasItemMeta() || !new NBTItem(item).hasKey("mtvehicles.benzineval")){
-            setupDamageAPI(damager, license);
-            callAPI();
-            if (isCancelled()) return;
-
-            damage(((VehicleDamageEvent) getAPI()).getLicensePlate());
+        if (!item.hasItemMeta()) {
+            handleVehicleDamage(player, license);
             return;
         }
 
         NBTItem nbt = new NBTItem(item);
+        if (!nbt.hasKey("mtvehicles.benzineval")) {
+            handleVehicleDamage(player, license);
+            return;
+        }
 
-        final double vehicleFuel = VehicleData.fuel.get(license);
-        final String jerryCanFuel = nbt.getString("mtvehicles.benzineval");
-        final String jerryCanSize = nbt.getString("mtvehicles.benzinesize");
+        double vehicleFuel = VehicleData.fuel.getOrDefault(license, 0.0);
+        String jerryCanFuelStr = nbt.getString("mtvehicles.benzineval");
+        String jerryCanSizeStr = nbt.getString("mtvehicles.benzinesize");
 
-        this.setAPI(new VehicleFuelEvent(vehicleFuel, Integer.parseInt(jerryCanFuel), Integer.parseInt(jerryCanSize)));
+        if (jerryCanFuelStr == null || jerryCanSizeStr == null) return;
+
+        int jerryCanFuel = Integer.parseInt(jerryCanFuelStr);
+        int jerryCanSize = Integer.parseInt(jerryCanSizeStr);
+
+        this.setAPI(new VehicleFuelEvent(vehicleFuel, jerryCanFuel, jerryCanSize));
         VehicleFuelEvent api = (VehicleFuelEvent) getAPI();
         api.setLicensePlate(license);
         callAPI();
@@ -89,58 +110,45 @@ public class VehicleEntityListener extends MTVListener {
 
         license = api.getLicensePlate();
 
-        if (!ConfigModule.defaultConfig.canUseJerryCan(player)){
+        if (!ConfigModule.defaultConfig.canUseJerryCan(player)) {
             ConfigModule.messagesConfig.sendMessage(player, Message.NOT_IN_A_GAS_STATION);
             return;
         }
 
-        if (Integer.parseInt(jerryCanFuel) < 1) {
+        if (jerryCanFuel < 1) {
             ConfigModule.messagesConfig.sendMessage(player, Message.NO_FUEL);
             return;
         }
 
-        if (vehicleFuel > 99) {
+        if (vehicleFuel >= 100) {
             ConfigModule.messagesConfig.sendMessage(player, Message.VEHICLE_FULL);
             return;
         }
 
-        if (VehicleData.fallDamage.get(license) != null && vehicleFuel > 2) VehicleData.fallDamage.remove(license);
-
-        if (vehicleFuel + 5 > 100) {
-            int rest = (int) (100 - vehicleFuel);
-            player.setItemInHand(VehicleFuel.jerrycanItem(Integer.parseInt(jerryCanSize), Integer.parseInt(jerryCanFuel) - rest));
-            VehicleData.fuel.put(license, VehicleData.fuel.get(license) + rest);
-            BossBarUtils.setBossBarValue(vehicleFuel / 100.0D, license);
-            return;
+        if (VehicleData.fallDamage.get(license) != null && vehicleFuel > 2) {
+            VehicleData.fallDamage.remove(license);
         }
 
-        if (!(Integer.parseInt(jerryCanFuel) < 5)) {
-            VehicleData.fuel.put(license, VehicleData.fuel.get(license) + 5);
-            BossBarUtils.setBossBarValue(vehicleFuel / 100.0D, license);
-            player.setItemInHand(VehicleFuel.jerrycanItem(Integer.parseInt(jerryCanSize), Integer.parseInt(jerryCanFuel) - 5));
-        } else {
-            VehicleData.fuel.put(license, Double.valueOf(VehicleData.fuel.get(license) + jerryCanFuel));
-            BossBarUtils.setBossBarValue(vehicleFuel / 100.0D, license);
-            player.setItemInHand(VehicleFuel.jerrycanItem(Integer.parseInt(jerryCanSize), 0));
-        }
+        int fuelToAdd = Math.min(5, jerryCanFuel);
+        vehicleFuel = Math.min(vehicleFuel + fuelToAdd, 100);
+        VehicleData.fuel.put(license, vehicleFuel);
+
+        BossBarUtils.setBossBarValue(vehicleFuel / 100.0D, license);
+        player.setItemInHand(VehicleFuel.jerrycanItem(jerryCanSize, jerryCanFuel - fuelToAdd));
     }
 
-    /**
-     * Damage a vehicle.
-     * @param license The vehicle's license plate
-     */
-    public void damage(String license){
+    public void damage(String license) {
         final double damage = ((VehicleDamageEvent) getAPI()).getDamage();
 
         if (!(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.DAMAGE_ENABLED)) return;
         if (VehicleUtils.getVehicle(license) == null) return;
 
         double damageMultiplier = (double) ConfigModule.defaultConfig.get(DefaultConfig.Option.DAMAGE_MULTIPLIER);
-        if (damageMultiplier < 0.1 || damageMultiplier > 5) damageMultiplier = 0.5; //Must be between 0.1 and 5. Default: 0.5
+        damageMultiplier = Math.max(0.1, Math.min(damageMultiplier, 5)); //Must be between 0.1 and 5. Default: 0.5
         ConfigModule.vehicleDataConfig.damageVehicle(license, damage * damageMultiplier);
     }
 
-    private void setupDamageAPI(@Nullable Entity damager, String license){
+    private void setupDamageAPI(@Nullable Entity damager, String license) {
         this.setAPI(new VehicleDamageEvent());
         VehicleDamageEvent api = (VehicleDamageEvent) getAPI();
         api.setDamager(damager);
