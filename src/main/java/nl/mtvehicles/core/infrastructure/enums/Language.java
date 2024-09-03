@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 /**
  * Languages which are offered by the plugin
@@ -98,13 +99,25 @@ public enum Language {
 
     /**
      * Get an array of all languages (in their country codes)
-     * @return Array of all supported languages
+     * @return Array of all supported language codes
+     *
+     * @deprecated Use {@link #getAllLanguageCodes()} instead
      */
-    @ToDo("make this automatic from the enum's values")
-    @LanguageSpecific
+    @Deprecated
     public static String[] getAllLanguages(){
-        String[] languages = {"en", "nl", "es", "cs", "cn", "de", "tr", "ja", "he", "ru", "fr", "th", "gr"};
-        return languages;
+        return (String[]) getAllLanguageCodes().toArray();
+    }
+
+    /**
+     * Get an array of all language codes
+     * @return Array of all supported language codes
+     */
+    public static List<String> getAllLanguageCodes(){
+        return Arrays.stream(Language.values())
+                .map(Language::toString)
+                .map(String::toLowerCase)
+                .filter(code -> !code.equals("custom"))
+                .collect(Collectors.toList());
     }
 
     /**
@@ -114,7 +127,7 @@ public enum Language {
      * @return Whether the language is supported
      */
     public static boolean isSupported(String languageCode){
-        List<String> languages = new ArrayList<>(Arrays.asList(getAllLanguages()));
+        List<String> languages = getAllLanguageCodes();
         return languages.contains(languageCode.toLowerCase(Locale.ROOT));
     }
 }

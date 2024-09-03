@@ -70,6 +70,10 @@ public enum PluginVersion {
      */
     v2_5_4,
     /**
+     * 2.5.5 (next expected version)
+     */
+    v2_5_5,
+    /**
      * Latest version (from auto-updater)
      */
     LATEST,

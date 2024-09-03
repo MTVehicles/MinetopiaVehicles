@@ -25,7 +25,7 @@ public class MessagesConfig extends MTVConfig {
      */
     public MessagesConfig() {
         super(ConfigType.MESSAGES);
-        for (String lang : Language.getAllLanguages()) {
+        for (String lang : Language.getAllLanguageCodes()) {
             saveLanguageFile(lang);
         }
         if (!setLanguageFile(ConfigModule.secretSettings.getMessagesLanguage())){
@@ -118,7 +118,7 @@ public class MessagesConfig extends MTVConfig {
      * @param time Old messages files will be renamed and will contain this time
      */
     public void saveNewLanguageFiles(String time){
-        for (String lang : Language.getAllLanguages()) {
+        for (String lang : Language.getAllLanguageCodes()) {
             File messagesFile = new File(Main.instance.getDataFolder(), "messages/messages_" + lang + ".yml");
             if (!messagesFile.exists()) continue;
             messagesFile.renameTo(new File(Main.instance.getDataFolder(), "messages/messages_" + lang + "Old_" + time + ".yml"));
