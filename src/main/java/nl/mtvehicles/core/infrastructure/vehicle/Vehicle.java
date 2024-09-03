@@ -19,7 +19,6 @@ import static nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils.isInsideVeh
  * Vehicle with its specifications
  */
 public class Vehicle {
-    private String modelID;
     private String licensePlate;
     private String name;
     private VehicleType vehicleType;
@@ -49,9 +48,16 @@ public class Vehicle {
     private @Nullable Map<?, ?> vehicleData;
 
     /**
+     * @deprecated There is no use for this HashMap. Please, avoid using it in any way as it may get removed soon.
+     */
+    @Deprecated
+    public static HashMap<String, MTVSubCommand> subcommands = new HashMap<>();
+
+    /**
      * Plain constructor
      */
     public Vehicle(){
+
     }
 
     /**
@@ -60,7 +66,6 @@ public class Vehicle {
      */
     public Vehicle(
             @Nullable Map<?, ?> vehicleData,
-            String modelID,
             String licensePlate,
             String name,
             VehicleType vehicleType,
@@ -88,7 +93,6 @@ public class Vehicle {
             double price,
             String nbtValue
     ) {
-        this.setModelID(modelID);
         this.setVehicleData(vehicleData);
         this.setLicensePlate(licensePlate);
         this.setPublic(isPublic);
@@ -122,7 +126,6 @@ public class Vehicle {
      * Save the vehicle specifications (and possible adjustments) to in-memory storage.
      */
     public void save() {
-        ConfigModule.vehicleDataConfig.set(this.getLicensePlate(), VehicleDataConfig.Option.MODELID, this.getModelID());
         ConfigModule.vehicleDataConfig.set(this.getLicensePlate(), VehicleDataConfig.Option.NAME, this.getName());
         ConfigModule.vehicleDataConfig.set(this.getLicensePlate(), VehicleDataConfig.Option.VEHICLE_TYPE, this.getVehicleType().toString());
         ConfigModule.vehicleDataConfig.set(this.getLicensePlate(), VehicleDataConfig.Option.SKIN_DAMAGE, this.getSkinDamage());
@@ -487,14 +490,6 @@ public class Vehicle {
 
     public void setVehicleType(VehicleType vehicleType){
         this.vehicleType = vehicleType;
-    }
-
-    public void setModelID(String modelID) {
-        this.modelID = modelID;
-    }
-
-    public String getModelID() {
-        return modelID;
     }
 
     /**

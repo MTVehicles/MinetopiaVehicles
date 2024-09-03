@@ -182,7 +182,6 @@ public class InventoryClickListener extends MTVListener {
 
             Vehicle vehicle = new Vehicle(
                     null,
-                    (String) vehicles.get(intSave.get(player.getUniqueId())).get("modelID"),
                     licensePlate,
                     nbt.getString("mtvehicles.naam"),
                     VehicleType.valueOf((String) vehicles.get(intSave.get(player.getUniqueId())).get("vehicleType")),
