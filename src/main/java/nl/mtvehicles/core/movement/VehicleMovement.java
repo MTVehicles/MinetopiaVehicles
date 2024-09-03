@@ -2,10 +2,7 @@ package nl.mtvehicles.core.movement;
 
 import com.google.common.collect.Sets;
 import nl.mtvehicles.core.Main;
-import nl.mtvehicles.core.events.HornUseEvent;
-import nl.mtvehicles.core.events.TankShootEvent;
-import nl.mtvehicles.core.events.VehicleRegionEnterEvent;
-import nl.mtvehicles.core.events.VehicleRegionLeaveEvent;
+import nl.mtvehicles.core.events.*;
 import nl.mtvehicles.core.infrastructure.annotations.ToDo;
 import nl.mtvehicles.core.infrastructure.annotations.VersionSpecific;
 import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
@@ -28,7 +25,6 @@ import org.bukkit.block.data.type.Slab;
 import org.bukkit.block.data.type.Snow;
 import org.bukkit.block.data.type.TrapDoor;
 import org.bukkit.entity.*;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.Nullable;
 
@@ -48,6 +44,9 @@ import static nl.mtvehicles.core.movement.PacketHandler.isObjectPacket;
  * Class concerning the movement of vehicles
  */
 public class VehicleMovement {
+
+    private Location lastLocation = null;
+
     /**
      * Given steering packet, checked.
      * @see PacketHandler#isObjectPacket(Object)
@@ -175,6 +174,15 @@ public class VehicleMovement {
 
 
         schedulerRun(() -> {
+            if (lastLocation == null) {
+                lastLocation = standMain.getLocation().clone();
+            }
+            Location currentLocation = standMain.getLocation().clone();
+            if (!currentLocation.equals(lastLocation)) {
+                VehicleMoveEvent moveEvent = new VehicleMoveEvent(license, lastLocation, currentLocation);
+                Bukkit.getServer().getPluginManager().callEvent(moveEvent);
+                lastLocation = currentLocation;
+            }
             standSkin.teleport(new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY(), standMain.getLocation().getZ(), standMain.getLocation().getYaw(), standMain.getLocation().getPitch()));
             if (DependencyModule.isDependencyEnabled(SoftDependency.WORLD_GUARD)){
                 Set<String> newRegions = DependencyModule.worldGuard.getRegionNames(standMain.getLocation());
@@ -665,6 +673,7 @@ public class VehicleMovement {
         else if (getServerVersion().is1_20_R2()) teleportSeat(((org.bukkit.craftbukkit.v1_20_R2.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
         else if (getServerVersion().is1_20_R3()) teleportSeat(((org.bukkit.craftbukkit.v1_20_R3.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
         else if (getServerVersion().is1_20_R4()) teleportSeat(((org.bukkit.craftbukkit.v1_20_R4.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+        else if (getServerVersion().is1_21_R1()) teleportSeat(((org.bukkit.craftbukkit.v1_21_R1.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
     }
 
     /**

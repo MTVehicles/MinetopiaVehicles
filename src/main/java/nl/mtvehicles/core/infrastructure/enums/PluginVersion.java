@@ -65,9 +65,13 @@ public enum PluginVersion {
      */
     v2_5_3,
     /**
-     * 2.5.4 (1.20.6 Update & Bug fixes)
+     * 2.5.4 (1.20.6 & 1.21 Update & Bug fixes)
      */
     v2_5_4,
+    /**
+     *2.5.4.1 (1.21 replaced with 1.21.1)
+     */
+    v2_5_5,
     /**
      * Latest version (from auto-updater)
      */

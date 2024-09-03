@@ -22,7 +22,16 @@ public class VehicleGiveFuel extends MTVSubCommand {
 
         Player argPlayer = Bukkit.getPlayer(arguments[1]);
 
-        int fuel = Integer.parseInt(arguments[2]);
+        int fuel = 25;
+
+
+        try{
+            fuel = Integer.parseInt(arguments[2]);
+        } catch ( Exception e) {
+            sendMessage(Message.USE_GIVE_FUEL);
+            return true;
+        }
+
 
         if (argPlayer == null) {
             sendMessage(Message.PLAYER_NOT_FOUND);
