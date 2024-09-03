@@ -275,8 +275,8 @@ public class MenuUtils {
         restorePage.put(p, page);
         if (!ConfigModule.vehicleDataConfig.isEmpty()) {
             List<String> dataVehicle = new ArrayList<>();
-            for (String entry : ConfigModule.vehicleDataConfig.getVehicles().getKeys(false)) {
-                dataVehicle.add(entry);
+            for (String licensePlate : ConfigModule.vehicleDataConfig.getVehicles().keySet()) {
+                dataVehicle.add(licensePlate);
             }
             for (int i = 1 + page * 36 - 36; i <= page * 36; i++) {
                 if (i - 1 < dataVehicle.size()) {

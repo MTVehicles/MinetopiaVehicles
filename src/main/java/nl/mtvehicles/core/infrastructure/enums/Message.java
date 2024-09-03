@@ -29,6 +29,7 @@ public enum Message {
     ADMIN_DELETE,
     ADMIN_REFILL,
     ADMIN_REPAIR,
+    ADMIN_GIVEFUEL,
     RELOAD_SUCCESSFUL("reloadSuccesvol"),
     NOT_FOR_CONSOLE,
     COMMAND_DOES_NOT_EXIST("cmdNotExists"),
@@ -174,6 +175,8 @@ public enum Message {
     ECONOMY_NOT_SET_UP,
     USE_BUY_CAR,
     USE_BUY_VOUCHER,
+    USE_GIVE_FUEL,
+    GIVE_FUEL_SUCCESS("giveFuelSuccess"),
     USE_VEHICLE_DESPAWN,
     NO_VEHICLE_TO_DESPAWN,
     VEHICLE_DESPAWNED;

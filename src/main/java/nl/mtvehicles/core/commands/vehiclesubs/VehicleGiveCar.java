@@ -27,7 +27,7 @@ public class VehicleGiveCar extends MTVSubCommand {
 
         Player argPlayer = Bukkit.getPlayer(arguments[1]);
 
-        String carUuid = arguments[2];
+        String carUuid = arguments[2].replace("-", "");
 
         if (argPlayer == null) {
             sendMessage(Message.PLAYER_NOT_FOUND);

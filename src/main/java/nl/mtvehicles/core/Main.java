@@ -25,13 +25,14 @@ public class Main extends JavaPlugin {
      *
      * @see nl.mtvehicles.core.infrastructure.dataconfig.SecretSettingsConfig
      */
-    final public static String configVersion = "2.5.4-seatfix1";
+    final public static String configVersion = "2.5.5-dev1";
     /**
      * <b>Version of messages_xx.yml files - must be equal to the version in SuperSecretSettings.</b><br>
      *
      * This variable works exactly as {@link #configVersion}.
      */
-    final public static String messagesVersion = "2.5.4-despawnCmd";
+
+    final public static String messagesVersion = "2.5.5-dev1";
 
     @Override
     public void onEnable() {
@@ -66,6 +67,7 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onDisable(){
+        ConfigModule.vehicleDataConfig.saveToDisk();
         if (DependencyModule.isDependencyEnabled(SoftDependency.PLACEHOLDER_API)) DependencyModule.placeholderAPI.unregisterOnDisable();
     }
 

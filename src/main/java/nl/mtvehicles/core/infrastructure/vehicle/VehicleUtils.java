@@ -402,7 +402,7 @@ public final class VehicleUtils {
     }
 
     /**
-     * Get the Vehicle instance by a vehicle's license place
+     * Get the Vehicle instance by a vehicle's license plate
      * @param licensePlate Vehicle's license plate
      * @return Vehicle instance
      *
@@ -411,22 +411,26 @@ public final class VehicleUtils {
     @ToDo("Beautify the code inside this method.")
     public static Vehicle getVehicle(String licensePlate) {
         if (!existsByLicensePlate(licensePlate)) return null;
+        
+        Map<String, Object> vehicleData = new HashMap<>();
+        for (VehicleDataConfig.Option option : VehicleDataConfig.Option.values()) {
+            Object value = ConfigModule.vehicleDataConfig.get(licensePlate, option);
+            if (value != null) {
+                vehicleData.put(option.getPath(), value);
+            }
+        }
 
-        ConfigModule.vehicleDataConfig.reload();
-        ConfigModule.vehiclesConfig.reload();
-
-        Map<?, ?> vehicleData = ConfigModule.vehicleDataConfig.getConfig()
-                .getConfigurationSection(String.format("vehicle.%s", licensePlate)).getValues(true);
         List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getVehicles();
         List<Map<?, ?>> matchedVehicles = new ArrayList<>();
         double price = 0.0;
+
         for (Map<?, ?> configVehicle : vehicles) {
             List<Map<?, ?>> skins = (List<Map<?, ?>>) configVehicle.get("cars");
             for (Map<?, ?> skin : skins) {
-                if (skin.get("itemDamage").equals(vehicleData.get("skinDamage"))) {
-                    if (skin.get("SkinItem").equals(vehicleData.get("skinItem"))) {
+                if (skin.get("itemDamage").equals(vehicleData.get(VehicleDataConfig.Option.SKIN_DAMAGE.getPath()))) {
+                    if (skin.get("SkinItem").equals(vehicleData.get(VehicleDataConfig.Option.SKIN_ITEM.getPath()))) {
                         if (skin.get("nbtValue") != null) {
-                            if (skin.get("nbtValue").equals(vehicleData.get("nbtValue"))) {
+                            if (skin.get("nbtValue").equals(vehicleData.get(VehicleDataConfig.Option.NBT_VALUE.getPath()))) {
                                 matchedVehicles.add(configVehicle);
                                 price = (double) skin.get("price");
                             }
@@ -438,38 +442,41 @@ public final class VehicleUtils {
                 }
             }
         }
-        if (matchedVehicles.size() == 0) return null;
+
+        if (matchedVehicles.isEmpty()) return null;
         if (matchedVehicles.size() > 1) return null;
+
         return new Vehicle(
                 matchedVehicles.get(0),
                 licensePlate,
-                (String) vehicleData.get("name"),
-                VehicleType.valueOf((String) vehicleData.get("vehicleType")),
-                (boolean) vehicleData.get("isOpen"),
-                (int) vehicleData.get("skinDamage"),
-                (String) vehicleData.get("skinItem"),
-                (boolean) vehicleData.get("isGlow"),
-                ConfigModule.vehicleDataConfig.isHornSet(licensePlate) ? (boolean) vehicleData.get("hornEnabled") : ConfigModule.vehicleDataConfig.isHornEnabled(licensePlate),
-                ConfigModule.vehicleDataConfig.isHealthSet(licensePlate) ? (double) vehicleData.get("health") : ConfigModule.vehicleDataConfig.getHealth(licensePlate),
-                (boolean) vehicleData.get("benzineEnabled"),
-                (double) vehicleData.get("benzine"),
-                (double) vehicleData.get("benzineVerbruik"),
-                (boolean) vehicleData.get("kofferbak"),
-                (int) vehicleData.get("kofferbakRows"),
+                (String) vehicleData.get(VehicleDataConfig.Option.NAME.getPath()),
+                VehicleType.valueOf((String) vehicleData.get(VehicleDataConfig.Option.VEHICLE_TYPE.getPath())),
+                (boolean) vehicleData.get(VehicleDataConfig.Option.IS_OPEN.getPath()),
+                (int) vehicleData.get(VehicleDataConfig.Option.SKIN_DAMAGE.getPath()),
+                (String) vehicleData.get(VehicleDataConfig.Option.SKIN_ITEM.getPath()),
+                (boolean) vehicleData.get(VehicleDataConfig.Option.IS_GLOWING.getPath()),
+                ConfigModule.vehicleDataConfig.isHornSet(licensePlate) ? (boolean) vehicleData.get(VehicleDataConfig.Option.HORN_ENABLED.getPath()) : ConfigModule.vehicleDataConfig.isHornEnabled(licensePlate),
+                ConfigModule.vehicleDataConfig.isHealthSet(licensePlate) ? (double) vehicleData.get(VehicleDataConfig.Option.HEALTH.getPath()) : ConfigModule.vehicleDataConfig.getHealth(licensePlate),
+                (boolean) vehicleData.get(VehicleDataConfig.Option.FUEL_ENABLED.getPath()),
+                (double) vehicleData.get(VehicleDataConfig.Option.FUEL.getPath()),
+                (double) vehicleData.get(VehicleDataConfig.Option.FUEL_USAGE.getPath()),
+                (boolean) vehicleData.get(VehicleDataConfig.Option.TRUNK_ENABLED.getPath()),
+                (int) vehicleData.get(VehicleDataConfig.Option.TRUNK_ROWS.getPath()),
                 ConfigModule.vehicleDataConfig.getTrunkData(licensePlate),
-                (double) vehicleData.get("acceleratieSpeed"),
-                (double) vehicleData.get("maxSpeed"),
-                (double) vehicleData.get("maxSpeedBackwards"),
-                (double) vehicleData.get("brakingSpeed"),
-                (double) vehicleData.get("aftrekkenSpeed"),
-                (int) vehicleData.get("rotateSpeed"),
-                UUID.fromString((String) vehicleData.get("owner")),
+                (double) vehicleData.get(VehicleDataConfig.Option.ACCELERATION_SPEED.getPath()),
+                (double) vehicleData.get(VehicleDataConfig.Option.MAX_SPEED.getPath()),
+                (double) vehicleData.get(VehicleDataConfig.Option.MAX_SPEED_BACKWARDS.getPath()),
+                (double) vehicleData.get(VehicleDataConfig.Option.BRAKING_SPEED.getPath()),
+                (double) vehicleData.get(VehicleDataConfig.Option.FRICTION_SPEED.getPath()),
+                (int) vehicleData.get(VehicleDataConfig.Option.ROTATION_SPEED.getPath()),
+                UUID.fromString((String) vehicleData.get(VehicleDataConfig.Option.OWNER.getPath())),
                 ConfigModule.vehicleDataConfig.getRiders(licensePlate),
                 ConfigModule.vehicleDataConfig.getMembers(licensePlate),
                 price,
-                (String) vehicleData.get("nbtValue")
+                (String) vehicleData.get(VehicleDataConfig.Option.NBT_VALUE.getPath())
         );
     }
+
 
     /**
      * Check whether this vehicle exists in the database (vehicleData.yml)
