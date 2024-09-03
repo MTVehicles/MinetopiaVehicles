@@ -167,3 +167,6 @@ notAMember: "Αυτός ο παίκτης δεν μπορεί να καθίσε�
 notARider: "Αυτός ο παίχτης δεν μπορεί να οδηγήσει το όχημα"
 offlinePlayerNotFound: "Αυτός ο παίχτης δεν έχει μπει ακόμα στον διακομιστή."
 economyNotSetUp: "&cΔεν υπάρχει οικονομική προσθήκη."
+useVehicleDespawn: "&cUse /vehicle despawn <licensePlate>"
+noVehicleToDespwawn: "&cThere is no placed vehicle with this license plate."
+vehicleDespawned: "&aAll vehicles with the license plate have been despawned."

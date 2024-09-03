@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 public enum PluginVersion {
     /**
      * Legacy versions (older than 2.3.0)
+     * @deprecated
      */
     LEGACY,
     /**

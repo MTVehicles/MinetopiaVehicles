@@ -169,3 +169,6 @@ notAMember: "このプレイヤーはその乗り物に乗ることができま�
 notARider: "このプレイヤーは乗り物を操縦できません。"
 offlinePlayerNotFound: "指定したプレイヤーはオンラインになったことがありません。"
 economyNotSetUp: "&c経済プラグインが連携されていません。"
+useVehicleDespawn: "&cUse /vehicle despawn <licensePlate>"
+noVehicleToDespwawn: "&cThere is no placed vehicle with this license plate."
+vehicleDespawned: "&aAll vehicles with the license plate have been despawned."

@@ -683,8 +683,10 @@ public final class VehicleUtils {
      * @throws IllegalArgumentException Thrown if given license plate is invalid.
      * @since 2.5.1
      * @see #despawnVehicle(World, String...)
+     * @return Number of vehicles despawned
      */
-    public static void despawnVehicle(String... licensePlates) throws IllegalArgumentException {
+    public static int despawnVehicle(String... licensePlates) throws IllegalArgumentException {
+        int despawned = 0;
         for (String licensePlate : licensePlates) {
             if (!existsByLicensePlate(licensePlate)) throw new IllegalArgumentException("Vehicle " + licensePlate + " does not exist.");
             for (Player trunkViewer : VehicleData.getTrunkViewers(licensePlate)){
@@ -693,12 +695,14 @@ public final class VehicleUtils {
 
             for (World world : Bukkit.getServer().getWorlds()) {
                 for (Entity entity : world.getEntities()) {
-                    if (entity.getCustomName() != null && entity.getCustomName().contains(licensePlate)) {
+                    if (entity.getCustomName() != null && entity.getCustomName().contains(licensePlate) && entity.getCustomName().contains("MTVEHICLES")) {
                         entity.remove();
+                        despawned++;
                     }
                 }
             }
         }
+        return despawned;
     }
 
     /**
@@ -707,8 +711,11 @@ public final class VehicleUtils {
      * @param licensePlates Vehicle's license plate
      * @throws IllegalArgumentException Thrown if given license plate is invalid.
      * @since 2.5.1
+     * @see #despawnVehicle(String...)
+     * @return Number of vehicles despawned
      */
-    public static void despawnVehicle(World world, String... licensePlates) throws IllegalArgumentException {
+    public static int despawnVehicle(World world, String... licensePlates) throws IllegalArgumentException {
+        int despawned = 0;
         for (String licensePlate : licensePlates) {
             if (!existsByLicensePlate(licensePlate)) throw new IllegalArgumentException("Vehicle " + licensePlate + " does not exist.");
 
@@ -719,9 +726,11 @@ public final class VehicleUtils {
             for (Entity entity : world.getEntities()) {
                 if (entity.getCustomName() != null && entity.getCustomName().contains(licensePlate)) {
                     entity.remove();
+                    despawned++;
                 }
             }
         }
+        return despawned;
     }
 
     /**

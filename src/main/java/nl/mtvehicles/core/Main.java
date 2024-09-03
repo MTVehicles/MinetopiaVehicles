@@ -31,7 +31,7 @@ public class Main extends JavaPlugin {
      *
      * This variable works exactly as {@link #configVersion}.
      */
-    final public static String messagesVersion = "2.5.2";
+    final public static String messagesVersion = "2.5.4-despawnCmd";
 
     @Override
     public void onEnable() {

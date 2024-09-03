@@ -168,3 +168,7 @@ notAMember: "У этого Игрока нет доступа."
 notARider: "Этот Игрок не может управлять транспортом."
 offlinePlayerNotFound: "Игрок с таким ником не зарегистрирован."
 economyNotSetUp: "&cThere is no economy plugin hooked."
+useVehicleDespawn: "&cUse /vehicle despawn <licensePlate>"
+noVehicleToDespwawn: "&cThere is no placed vehicle with this license plate."
+vehicleDespawned: "&aAll vehicles with the license plate have been despawned."
+

@@ -168,3 +168,7 @@ notAMember: "Deze speler kan niet in het voertuig zitten."
 notARider: "Deze speler kan het voertuig niet besturen."
 offlinePlayerNotFound: "Deze speler is nog nooit op de server geweest."
 economyNotSetUp: "&cThere is no economy plugin hooked."
+useVehicleDespawn: "&cUse /vehicle despawn <licensePlate>"
+noVehicleToDespwawn: "&cThere is no placed vehicle with this license plate."
+vehicleDespawned: "&aAll vehicles with the license plate have been despawned."
+

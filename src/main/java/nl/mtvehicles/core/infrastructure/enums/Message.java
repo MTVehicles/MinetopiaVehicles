@@ -173,7 +173,10 @@ public enum Message {
     OFFLINE_PLAYER_NOT_FOUND,
     ECONOMY_NOT_SET_UP,
     USE_BUY_CAR,
-    USE_BUY_VOUCHER;
+    USE_BUY_VOUCHER,
+    USE_VEHICLE_DESPAWN,
+    NO_VEHICLE_TO_DESPAWN,
+    VEHICLE_DESPAWNED;
 
     final private String key;
 
