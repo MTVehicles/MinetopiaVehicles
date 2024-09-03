@@ -135,6 +135,11 @@ driveUp: 'both'
 driveOnCarpets: true
 
 
+# Slow down, honey (;
+#Makes the vehicle significantly slower on honey blocks.
+slowDownOnHoney: false
+
+
 # --- Blocks and worlds ---
 
 # A list of allowed blocks to place a car on. If enabled is false, vehicles can be placed on every block.
