@@ -59,8 +59,6 @@ public final class VehicleUtils {
 
         ArmorStand standSkin = location.getWorld().spawn(location, ArmorStand.class);
         allowTicking(standSkin);
-        standSkin.setVisible(false);
-        standSkin.setCustomName("MTVEHICLES_SKIN_" + licensePlate);
         if(isModelEngine(licensePlate)){
             Main.logInfo("Use Model " + (String) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.MODELID));
             ModeledEntity modeledStand = ModelEngineAPI.createModeledEntity(standSkin);
@@ -857,20 +855,20 @@ public final class VehicleUtils {
 
                     VehicleType vehicleType = ConfigModule.vehicleDataConfig.getType(licensePlate);
                     if (vehicleAs.getCustomName().contains("MTVEHICLES_SKIN_" + licensePlate)) {
+                        basicStandCreator(licensePlate, "SKIN", location, new ItemStack(Material.AIR), false);
                         ActiveModel model = DependencyModule.modelEngine.activeModels.get(vehicleAs);
-                        if(model != null) {
-                            if (vehicle.getRiders().isEmpty()) {
-                                model.getMountManager().ifPresent(mountManager -> {
-                                    mountManager.mountDriver(p, MountControllerTypes.WALKING);
-                                });
-                            } else {
-                                model.getMountManager().ifPresent(mountManager -> {
-                                    mountManager.mountPassenger("seat", entity, MountControllerTypes.WALKING);
-                                });
-                            }
+                        if (vehicle.getRiders().isEmpty()) {
+                            model.getMountManager().ifPresent(mountManager -> {
+                                mountManager.mountDriver(p, MountControllerTypes.WALKING);
+                            });
+                        } else {
+                            model.getMountManager().ifPresent(mountManager -> {
+                                mountManager.mountPassenger("seat", entity, MountControllerTypes.WALKING);
+                            });
                         }
 
                     }
+                    vehicleAs.remove();
                 }
             }
 
