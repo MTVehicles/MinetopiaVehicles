@@ -70,7 +70,7 @@ public class DefaultConfig extends MTVConfig {
                     returns = DriveUp.SLABS; break;
             }
         } catch (NullPointerException e){
-            //driveUp was not set up correctly in config and thus it's using the default = both.
+            //driveUp was not set up correctly in config, and thus it's using the default = both.
         }
         return returns;
     }
@@ -78,6 +78,10 @@ public class DefaultConfig extends MTVConfig {
     //--- Honey ---
     public boolean isHoneySlowdownEnabled(){
         return (boolean) get(Option.SLOW_ON_HONEY);
+    }
+
+    public boolean isIceSlippery(){
+        return (boolean) get(Option.SLIPPERY_ICE);
     }
 
     //--- Gas stations ---
@@ -332,6 +336,7 @@ public class DefaultConfig extends MTVConfig {
         HELICOPTER_FALL_DAMAGE("helicopterFallDamage", 40.0),
         DRIVE_ON_CARPETS("driveOnCarpets", true),
         SLOW_ON_HONEY("slowDownOnHoney", false),
+        SLIPPERY_ICE("slipperyIce", false),
         BLOCK_WHITELIST_ENABLED("blockWhitelist.enabled", false),
         BLOCK_WHITELIST_LIST("blockWhitelist.list", new ArrayList<>().add("GRAY_CONCRETE")),
         DISABLED_WORLDS("disabledWorlds", new ArrayList<>()),

@@ -19,7 +19,7 @@ public class VehicleData {
      * @see Vehicle#getCurrentSpeed()
      */
     public static HashMap<String, Double> speed = new HashMap<>();
-    public static HashMap<String, Double> speedhigh = new HashMap<>();
+    public static HashMap<String, Double> speedhigh = new HashMap<>(); // What is this for???
     public static HashMap<String, Integer> maxheight = new HashMap<>();
     public static HashMap<String, Double> mainx = new HashMap<>();
     public static HashMap<String, Double> mainy = new HashMap<>();
