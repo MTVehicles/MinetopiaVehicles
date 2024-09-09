@@ -25,9 +25,34 @@ import java.util.HashMap;
  */
 public class VehicleVoucherListener extends MTVListener {
     public static HashMap<Player, String> voucher = new HashMap<>();
+    private Inventory cachedInventory;  // Cache the inventory
 
     public VehicleVoucherListener(){
         super(new VehicleVoucherEvent());
+        this.cachedInventory = createVoucherInventory();  // Create the inventory when the listener is initialized
+    }
+
+    private Inventory createVoucherInventory() {
+        Inventory inv = Bukkit.createInventory(null, 27, InventoryTitle.VOUCHER_REDEEM_MENU.getStringTitle());
+        MessagesConfig msg = ConfigModule.messagesConfig;
+
+        inv.setItem(11, ItemUtils.getMenuItem(
+                "RED_WOOL",
+                "WOOL",
+                (short) 14,
+                1,
+                "&c" + msg.getMessage(Message.CANCEL),
+                "&7" + msg.getMessage(Message.CANCEL_ACTION), "&7" + msg.getMessage(Message.CANCEL_VOUCHER)
+        ));
+        inv.setItem(15, ItemUtils.getMenuItem(
+                "LIME_WOOL",
+                "WOOL",
+                (short) 5,
+                1,
+                "&a" + msg.getMessage(Message.CONFIRM),
+                "&7" + msg.getMessage(Message.CONFIRM_ACTION), "&7" + msg.getMessage(Message.CONFIRM_VOUCHER)
+        ));
+        return inv;
     }
 
     @EventHandler
@@ -38,6 +63,8 @@ public class VehicleVoucherListener extends MTVListener {
         final ItemStack item = event.getItem();
 
         if (item == null || item.getType() != Material.PAPER) return;
+
+        // Move NBTItem creation inside relevant block to avoid redundant object creation
         NBTItem nbt = new NBTItem(item);
         if (!nbt.hasTag("mtvehicles.item")) return;
 
@@ -57,26 +84,8 @@ public class VehicleVoucherListener extends MTVListener {
         }
 
         if (action.equals(Action.RIGHT_CLICK_BLOCK) || action.equals(Action.RIGHT_CLICK_AIR)) {
-            Inventory inv = Bukkit.createInventory(null, 27, InventoryTitle.VOUCHER_REDEEM_MENU.getStringTitle());
             voucher.put(player, carUUID);
-            MessagesConfig msg = ConfigModule.messagesConfig;
-            inv.setItem(11, ItemUtils.getMenuItem(
-                    "RED_WOOL",
-                    "WOOL",
-                    (short) 14,
-                    1,
-                    "&c" + msg.getMessage(Message.CANCEL),
-                    "&7" + msg.getMessage(Message.CANCEL_ACTION), "&7" + msg.getMessage(Message.CANCEL_VOUCHER)
-            ));
-            inv.setItem(15, ItemUtils.getMenuItem(
-                    "LIME_WOOL",
-                    "WOOL",
-                    (short) 5,
-                    1,
-                    "&a"  + msg.getMessage(Message.CONFIRM),
-                    "&7" + msg.getMessage(Message.CONFIRM_ACTION), "&7" + msg.getMessage(Message.CONFIRM_VOUCHER)
-            ));
-            player.openInventory(inv);
+            player.openInventory(cachedInventory);
         }
     }
 }
