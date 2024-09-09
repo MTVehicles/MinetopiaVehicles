@@ -13,7 +13,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -30,32 +29,44 @@ public class InventoryCloseListener extends MTVListener {
         player = (Player) event.getPlayer();
         String stringTitle = event.getView().getTitle();
 
-        if (InventoryTitle.getByStringTitle(stringTitle) == null) return;
+        InventoryTitle title = InventoryTitle.getByStringTitle(stringTitle);
+        if (title == null) return;
 
-        this.setAPI(new InventoryCloseEvent(InventoryTitle.getByStringTitle(stringTitle)));
+        this.setAPI(new InventoryCloseEvent(title));
         InventoryCloseEvent api = (InventoryCloseEvent) getAPI();
         callAPI();
 
-        InventoryTitle title = api.getTitle();
+        switch (title) {
+            case VEHICLE_TRUNK:
+                handleVehicleTrunk(event);
+                break;
 
-        if (title.equals(InventoryTitle.VEHICLE_TRUNK)) {
-            String license = VehicleUtils.openedTrunk.get(player);
-            VehicleUtils.openedTrunk.remove(player);
-            VehicleData.trunkViewerRemove(license, player);
-            List<ItemStack> chest = new ArrayList<>();
-            chest.addAll(Arrays.asList(event.getInventory().getContents()));
-            ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + license + ".kofferbakData", chest);
-            ConfigModule.vehicleDataConfig.save();
-        }
+            case CHOOSE_LANGUAGE_MENU:
+                handleLanguageMenu();
+                break;
 
-        if (title.equals(InventoryTitle.CHOOSE_LANGUAGE_MENU)) {
-            if (LanguageUtils.languageCheck.get(player.getUniqueId())) {
-                player.sendMessage(TextUtils.colorize("&cThe language settings have not changed because the menu is closed. Do you want to change this anyway? Execute /vehicle language"));
-            }
+            case VOUCHER_REDEEM_MENU:
+                handleVoucherRedeemMenu();
+                break;
         }
+    }
 
-        if (title.equals(InventoryTitle.VOUCHER_REDEEM_MENU)) {
-            if (VehicleVoucherListener.voucher.get(player) != null) VehicleVoucherListener.voucher.remove(player);
+    private void handleVehicleTrunk(org.bukkit.event.inventory.InventoryCloseEvent event) {
+        String license = VehicleUtils.openedTrunk.remove(player);
+        VehicleData.trunkViewerRemove(license, player);
+
+        List<ItemStack> chest = Arrays.asList(event.getInventory().getContents());
+        ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + license + ".kofferbakData", chest);
+        ConfigModule.vehicleDataConfig.save();
+    }
+
+    private void handleLanguageMenu() {
+        if (LanguageUtils.languageCheck.getOrDefault(player.getUniqueId(), false)) {
+            player.sendMessage(TextUtils.colorize("&cThe language settings have not changed because the menu is closed. Do you want to change this anyway? Execute /vehicle language"));
         }
+    }
+
+    private void handleVoucherRedeemMenu() {
+        VehicleVoucherListener.voucher.remove(player);
     }
 }
