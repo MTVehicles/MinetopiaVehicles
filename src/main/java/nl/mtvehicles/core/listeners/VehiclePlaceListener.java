@@ -36,70 +36,58 @@ public class VehiclePlaceListener extends MTVListener {
         final ItemStack item = event.getItem();
         final Block clickedBlock = event.getClickedBlock();
 
-        if (!action.equals(Action.RIGHT_CLICK_BLOCK)) return;
-        if (item == null) return;
-        if (item.getType() == Material.AIR) return;
-        if (item.getAmount() == 0) return;
-        if (!item.hasItemMeta()
-                || clickedBlock == null
-        ) return;
-        if (!(new NBTItem(item)).hasTag("mtvehicles.kenteken")) return;
+        if (action != Action.RIGHT_CLICK_BLOCK || item == null || item.getType() == Material.AIR || item.getAmount() == 0 || !item.hasItemMeta() || clickedBlock == null) return;
+
+        NBTItem nbtItem = new NBTItem(item);
+        if (!nbtItem.hasTag("mtvehicles.kenteken")) return;
+
         String license = VehicleUtils.getLicensePlate(item);
-        if (license == null) return;
+        if (license == null || !VehicleUtils.existsByLicensePlate(license)) {
+            ConfigModule.messagesConfig.sendMessage(player, Message.VEHICLE_NOT_FOUND);
+            event.setCancelled(true);
+            return;
+        }
 
         VehiclePlaceEvent api = (VehiclePlaceEvent) getAPI();
-        if (ConfigModule.vehicleDataConfig.getType(license).isBoat()){ //placing boats (on top of a water body)
-            Location spawnLoc = clickedBlock.getLocation();
-            for (int i = 0; i < 512; i++) {
-                Location locAbove = new Location(spawnLoc.getWorld(), spawnLoc.getX(), spawnLoc.getY() + 1, spawnLoc.getZ());
-                if (!locAbove.getBlock().toString().contains("WATER")) break;
-                spawnLoc = locAbove;
+        Location spawnLoc = clickedBlock.getLocation();
+
+        if (ConfigModule.vehicleDataConfig.getType(license).isBoat()) { //placing boats (on top of a water body)
+            while (spawnLoc.getBlock().getType().toString().contains("WATER")) {
+                spawnLoc.add(0, 1, 0);
+                if (spawnLoc.getY() >= clickedBlock.getLocation().getY() + 512) break;
             }
-            api.setLocation(spawnLoc);
-        } else {
-            api.setLocation(clickedBlock.getLocation());
         }
+
+        api.setLocation(spawnLoc);
         api.setLicensePlate(license);
         callAPI();
         if (isCancelled()) return;
 
         Location loc = api.getLocation();
-        license = api.getLicensePlate();
         Vehicle vehicle = VehicleUtils.getVehicle(license);
         if (vehicle == null) return;
 
         if (event.getHand() != EquipmentSlot.HAND) {
             event.setCancelled(true);
-            event.getPlayer().sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.WRONG_HAND)));
-            return;
-        }
-        if (!VehicleUtils.existsByLicensePlate(license)) {
-            ConfigModule.messagesConfig.sendMessage(player, Message.VEHICLE_NOT_FOUND);
-            event.setCancelled(true);
+            player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.WRONG_HAND)));
             return;
         }
 
-        event.setCancelled(true);
-
-        if (ConfigModule.defaultConfig.isBlockWhitelistEnabled()
-                && !ConfigModule.defaultConfig.blockWhiteList().contains(event.getClickedBlock().getType())) {
+        if (ConfigModule.defaultConfig.isBlockWhitelistEnabled() && !ConfigModule.defaultConfig.blockWhiteList().contains(clickedBlock.getType())) {
             ConfigModule.messagesConfig.sendMessage(player, Message.BLOCK_NOT_IN_WHITELIST);
             return;
         }
+
         if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.PLACE, vehicle.getVehicleType(), loc, player)) {
             ConfigModule.messagesConfig.sendMessage(player, Message.CANNOT_DO_THAT_HERE);
             return;
         }
 
-        if (VehicleUtils.getVehicle(license) == null) {
-            ConfigModule.messagesConfig.sendMessage(player, Message.VEHICLE_NOT_FOUND);
-            return;
-        }
-
-        Location location = new Location(loc.getWorld(), loc.getX(), loc.getY() + 1, loc.getZ());
+        Location location = loc.clone().add(0, 1, 0);
 
         VehicleUtils.spawnVehicle(license, location);
         player.getInventory().remove(player.getEquipment().getItemInHand());
-        player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_PLACE).replace("%p%", VehicleUtils.getVehicle(license).getOwnerName())));
+        player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_PLACE).replace("%p%", vehicle.getOwnerName())));
+        event.setCancelled(true);
     }
 }

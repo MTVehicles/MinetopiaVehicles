@@ -248,20 +248,25 @@ public class InventoryClickListener extends MTVListener {
             case 14:
                 MenuUtils.speedEdit(player);
                 break;
-            case 16: //Delete
-                try {
-                    NBTItem nbt = new NBTItem(player.getInventory().getItemInMainHand());
-                    String licensePlate = nbt.getString("mtvehicles.kenteken");
-                    VehicleUtils.getVehicle(licensePlate).delete();
-                    player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_DELETED)));
-                } catch (Exception e){
-                    player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_ALREADY_DELETED)));
-                }
-                player.getInventory().getItemInMainHand().setAmount(0);
-                player.closeInventory();
+            case 16:
+                deleteVehicle();
                 break;
         }
     }
+
+    private void deleteVehicle() {
+        try {
+            NBTItem nbt = new NBTItem(player.getInventory().getItemInMainHand());
+            String licensePlate = nbt.getString("mtvehicles.kenteken");
+            VehicleUtils.getVehicle(licensePlate).delete();
+            player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_DELETED)));
+        } catch (Exception e) {
+            player.sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_ALREADY_DELETED)));
+        }
+        player.getInventory().getItemInMainHand().setAmount(0);
+        player.closeInventory();
+    }
+
 
     private void vehicleSettingsMenu(){
         if (clickedItem.equals(getCloseItem())) {
@@ -448,30 +453,27 @@ public class InventoryClickListener extends MTVListener {
     }
 
 
-    
+
     private boolean canGetVehicleFromMenu(){
         final int owned = ConfigModule.vehicleDataConfig.getNumberOfOwnedVehicles(player);
-        int limit = -1; //If permission is not specified, players can get as many as they want
+        int limit = player.getEffectivePermissions().stream()
+                .filter(permission -> permission.getPermission().startsWith("mtvehicles.limit.") && permission.getValue())
+                .map(permission -> {
+                    try {
+                        return Integer.parseInt(permission.getPermission().replace("mtvehicles.limit.", ""));
+                    } catch (NumberFormatException e) {
+                        Main.logSevere("An error occurred whilst trying to retrieve player's 'mtvehicles.limit.X' permission.");
+                        return 0;
+                    }
+                })
+                .findFirst()
+                .orElse(-1);
 
-        if (player.hasPermission("mtvehicles.limit.*")) return true;
-
-        for (PermissionAttachmentInfo permission: player.getEffectivePermissions()) {
-            String permName = permission.getPermission();
-            if (permName.contains("mtvehicles.limit.") && permission.getValue()){
-                try {
-                    limit = Integer.parseInt(permName.replace("mtvehicles.limit.", ""));
-                    break;
-                } catch (Exception e) {
-                    limit = 0;
-                    Main.logSevere("An error occurred whilst trying to retrieve player's 'mtvehicles.limit.X' permission. You must have done something wrong when setting it.");
-                    break;
-                }
-            }
+        boolean canGetMore = limit == -1 || limit > owned;
+        if (!canGetMore) {
+            ConfigModule.messagesConfig.sendMessage(player, Message.TOO_MANY_VEHICLES);
         }
 
-        final boolean returns = limit == -1 || limit > owned;
-        if (!returns) ConfigModule.messagesConfig.sendMessage(player, Message.TOO_MANY_VEHICLES);
-
-        return returns;
+        return canGetMore;
     }
 }
