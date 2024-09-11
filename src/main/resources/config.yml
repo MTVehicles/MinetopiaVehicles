@@ -1,7 +1,8 @@
-# If you can't see comments in the config, you can always find them here: https://github.com/GamerJoep/MinetopiaVehicles/blob/master/src/main/resources/config.yml
+# If you can't see comments in the config, you can always find them here: https://github.com/MTVehicles/MinetopiaVehicles/blob/master/src/main/resources/config.yml
 
 # ---------------------------------------------------------------------------
 # MTVehicles - Spigot/Paper plugin, available at https://mtvehicles.nl
+# For more information, see MTVehicles WIKI (and FAQ): https://wiki.mtvehicles.eu
 # For support, visit our official discord server: https://discord.gg/vehicle
 # ---------------------------------------------------------------------------
 
@@ -37,15 +38,6 @@ putOneselfAsOwner: false
 carPickup: false
 
 
-# --- Steering ---
-
-# By default, vehicles are steered by pressing the WASD keys.
-# If you turn this option on (= set to true), instead of pressing A and D, the vehicle turns wherever the driver is facing.
-# BEWARE: By enabling this feature, rotation speed of vehicles is no longer used.
-# THIS IS A BETA FEATURE.
-usePlayerFacing: false
-
-
 # --- Vehicle Health and Damage ---
 
 # Whether vehicles can be damaged.
@@ -67,7 +59,7 @@ destructibleVehicle: false
 # Maximum flying height for HELICOPTERS AND PLANES.
 maxFlyingHeight: 150
 
-# Minimum speed FOR PLANES to take off (must be higher than 0)
+# Minimum speed FOR PLANES to take off (must be higher than 0.0)
 takeOffSpeed: 0.4
 
 # If set to true and HELICOPTER's out of fuel in the air, it will fall directly to the ground. (This does not affect airplanes, they simply glide to the ground)
@@ -109,12 +101,6 @@ hornCooldown: 5
 # This is just added as beta function to find bugs or problems
 hornType: "minetopiaclassic.horn1"
 
-# --- Headlights ---
-
-# ATTENTION! EXPERIMENTAL MAY CAUSE LAG
-# Feature only for 1.17 and above
-
-headlightsEnabled: false
 
 # --- Tanks ---
 
@@ -134,9 +120,8 @@ driveUp: 'both'
 # Whether the vehicles are able to drive up carpets.
 driveOnCarpets: true
 
-
 # Slow down, honey (;
-#Makes the vehicle significantly slower on honey blocks.
+# Makes the vehicle significantly slower on honey blocks.
 slowDownOnHoney: false
 
 
@@ -199,3 +184,23 @@ regionActions:
   place: 'disabled'
   enter: 'disabled'
   pickup: 'disabled'
+
+
+# ----- EXPERIMENTAL FEATURES -----
+# These features are still in development and may not work as expected. Use at your own risk.
+# All options below are disabled (set to false) by default.
+
+
+# -- Enable headlights for vehicles. --
+# ONLY FOR VERSIONS 1.17 AND ABOVE. MAY CAUSE LAG.
+headlightsEnabled: false
+
+# -- Custom steering --
+# By default, vehicles are steered by pressing the WASD keys.
+# If you turn this option on (= set to true), instead of pressing A and D, the vehicle turns wherever the driver is facing.
+# BEWARE: By enabling this feature, rotation speed of vehicles is no longer used.
+usePlayerFacing: false
+
+# Makes vehicles significantly harder to control on ice.
+# Increases speed and rotation speed, as well as reduces friction on ice.
+slipperyIce: false

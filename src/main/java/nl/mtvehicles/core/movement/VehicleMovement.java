@@ -1,8 +1,6 @@
 package nl.mtvehicles.core.movement;
 
 import com.google.common.collect.Sets;
-import net.minecraft.world.level.block.BlockHoney;
-import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.events.HornUseEvent;
 import nl.mtvehicles.core.events.TankShootEvent;
 import nl.mtvehicles.core.events.VehicleRegionEnterEvent;
@@ -18,7 +16,6 @@ import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
 import nl.mtvehicles.core.infrastructure.modules.VersionModule;
 import nl.mtvehicles.core.infrastructure.utils.BossBarUtils;
-import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
 import nl.mtvehicles.core.infrastructure.vehicle.VehicleData;
 import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
 import org.bukkit.*;
@@ -29,7 +26,6 @@ import org.bukkit.block.data.type.Slab;
 import org.bukkit.block.data.type.Snow;
 import org.bukkit.block.data.type.TrapDoor;
 import org.bukkit.entity.*;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.Nullable;
 
@@ -272,11 +268,16 @@ public class VehicleMovement {
      * Check the rotation of the vehicle
      */
     protected void rotation(){
-        final int rotationSpeed = VehicleData.RotationSpeed.get(license);
+        int rotationSpeed = VehicleData.RotationSpeed.get(license);
         final Location locBelow = new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY() - 0.2, standMain.getLocation().getZ(), standMain.getLocation().getYaw(), standMain.getLocation().getPitch());
 
+        final Material blockTypeBelow = locBelow.getBlock().getType();
+
         if (isFalling && vehicleType.isHelicopter()) return;
-        if (vehicleType.isHelicopter() && !locBelow.getBlock().getType().equals(Material.AIR)) return;
+        if (vehicleType.isHelicopter() && !blockTypeBelow.equals(Material.AIR)) return;
+
+        if (ConfigModule.defaultConfig.isIceSlippery() && blockTypeBelow.toString().contains("ICE"))
+            rotationSpeed = rotationSpeed * 2;
 
         if (ConfigModule.defaultConfig.usePlayerFacingDriving()){
             rotateVehicle(player.getLocation().getYaw());
@@ -338,7 +339,13 @@ public class VehicleMovement {
      * Slow down the vehicle due to friction
      */
     protected void putFrictionSpeed(){
-        final double frictionSpeed = VehicleData.FrictionSpeed.get(license);
+        double frictionSpeed = VehicleData.FrictionSpeed.get(license);
+        final String blockBelowName = new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY() - 0.2, standMain.getLocation().getZ(), standMain.getLocation().getYaw(), standMain.getLocation().getPitch()).getBlock().getType().toString();
+
+        // Reduce friction on ice if slippery ice is set to true
+        if (ConfigModule.defaultConfig.isIceSlippery() && blockBelowName.contains("ICE"))
+            frictionSpeed = frictionSpeed * 0.5;
+
         BigDecimal round = BigDecimal.valueOf(VehicleData.speed.get(license)).setScale(1, BigDecimal.ROUND_DOWN);
         if (Double.parseDouble(String.valueOf(round)) == 0.0) {
             VehicleData.speed.put(license, 0.0);
@@ -419,19 +426,28 @@ public class VehicleMovement {
             return true;
         }
 
-        if (blockData instanceof Fence || loc.getBlock().getType().toString().contains("WALL") || blockData instanceof TrapDoor){ // If the block ahead is a fence, wall or trapdoor, stop
+        // If the block ahead is a fence, wall or trapdoor, stop
+        if (blockData instanceof Fence || loc.getBlock().getType().toString().contains("WALL") || blockData instanceof TrapDoor){
             VehicleData.speed.put(license, 0.0);
             return false;
         }
 
-
-        if(ConfigModule.defaultConfig.isHoneySlowdownEnabled()) {
-            if (locBlockBelow.getBlock().getType() == Material.HONEY_BLOCK) { // Slow down on Honey Blocks
-                VehicleData.speed.put(license, Math.max(VehicleData.speed.get(license) * 0.2, 0.05)); // Reduce speed to 20% of current speed or minimum 0.05
+        // Slow down on Honey Blocks
+        if (ConfigModule.defaultConfig.isHoneySlowdownEnabled()) {
+            if (locBlockBelow.getBlock().getType() == Material.HONEY_BLOCK) {
+                if (VehicleData.speed.get(license) > 0.05) VehicleData.speed.put(license, Math.max(VehicleData.speed.get(license) * 0.2, 0.05)); // Reduce speed to 20% of current speed or minimum 0.05
                 return false;
             }
         }
 
+        // Speed up on ice
+        if (ConfigModule.defaultConfig.isIceSlippery()) {
+            if (locBlockBelow.getBlock().getType().toString().contains("ICE")) {
+                if (VehicleData.speed.get(license) > 0.05) VehicleData.speed.put(license, Math.max(VehicleData.speed.get(license) * 1.1, VehicleData.MaxSpeed.get(license) * 1.2)); // Up speed by 10 %, maximum of 120 % of max speed
+            }
+        }
+
+        // Pushing up on blocks/slabs
         if (ConfigModule.defaultConfig.driveUpSlabs().isSlabs()){ // If vehicles may only drive up slabs (and not blocks)
             if (isOnSlab) { // If the player is driving on a (bottom) slab
 

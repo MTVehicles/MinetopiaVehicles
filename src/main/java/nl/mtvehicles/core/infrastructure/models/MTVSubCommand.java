@@ -117,8 +117,10 @@ public abstract class MTVSubCommand {
     protected Vehicle getVehicle(){
         if (player == null) return null;
 
-        if (isInsideVehicle(player) && VehicleUtils.getVehicle(VehicleUtils.getLicensePlate(player.getVehicle())).isOwner(player))
-            return VehicleUtils.getVehicle(VehicleUtils.getLicensePlate(player.getVehicle()));
+        if (isInsideVehicle(player)) {
+            final Vehicle vehicle = VehicleUtils.getVehicle(VehicleUtils.getLicensePlate(player.getVehicle()));
+            if (vehicle.isOwner(player)) return vehicle; //only works if the player is the owner of the vehicle
+        }
 
 
         ItemStack item = player.getInventory().getItemInMainHand();
