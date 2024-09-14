@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 /**
  * The plugin's version
  */
+@Deprecated
 public enum PluginVersion {
     /**
      * Legacy versions (older than 2.3.0)
