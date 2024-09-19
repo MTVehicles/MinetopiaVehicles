@@ -8,8 +8,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
-import static nl.mtvehicles.core.Main.logWarning;
-
 /**
  * Methods for Vault soft-dependency.<br>
  * @warning <b>Do not initialise this class directly. Use {@link DependencyModule#vault} instead.</b>
@@ -25,7 +23,7 @@ public class VaultUtils {
      */
     public VaultUtils(){
         if (!setupEconomy()) {
-            logWarning("Vault has been connected successfully, but no economy plugin is linked.");
+            Bukkit.getLogger().warning("MTVehicles connected to Vault successfully, but found no linked economy plugin.");
         }
     }
 
