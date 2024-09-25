@@ -27,5 +27,6 @@ public class ListenersModule {
         Main.instance.registerListener(new InventoryCloseListener());
         Main.instance.registerListener(new JerryCanClickListener());
         Main.instance.registerListener(new TNTSpawnListener());
+        Main.instance.registerListener(new LeaveListener());
     }
 }
