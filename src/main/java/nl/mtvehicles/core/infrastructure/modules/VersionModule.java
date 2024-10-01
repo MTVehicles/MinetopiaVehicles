@@ -28,12 +28,18 @@ public class VersionModule {
     /**
      * The plugin's version as enum
      * @see PluginVersion
+     * @deprecated PluginVersion enum is no longer used, use {@link #pluginVersionString} instead. (Auto-updater is no longer handled in the plugin, but on the server)
      */
+    @Deprecated
     public static PluginVersion pluginVersion;
     /**
-     * True if the plugin is a pre-release, release candidate or a dev-version
+     * True if the plugin is a pre-release, release candidate or a dev-build
      */
     public static boolean isPreRelease;
+    /**
+     * True if the plugin is a dev-build (auto-updater is disabled)
+     */
+    public static boolean isDevRelease;
     /**
      * The server's minecraft version (e.g. '1_16_R3')
      */
@@ -51,6 +57,7 @@ public class VersionModule {
 
         //Pre-releases should thus be named "vX.Y.Z-preU" etc... (Instead of pre, dev for developing and rc for release candidates are acceptable too.)
         isPreRelease = pluginVersionString.toLowerCase().contains("pre") || pluginVersionString.toLowerCase().contains("rc") || pluginVersionString.toLowerCase().contains("dev");
+        isDevRelease = pluginVersionString.toLowerCase().contains("dev");
         serverSoftware = Bukkit.getName();
 
         //Check Server Version
