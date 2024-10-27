@@ -31,7 +31,7 @@ public class PluginUpdater {
             return null;
         }
         try {
-            URLConnection connection = new URL("https://minetopiavehicles.nl/api/v2/check.php?version=" + pluginVersion + "&now=" + getTimeStamp()).openConnection();
+            URLConnection connection = new URL("https://mtvehicles.github.io/auto-updater/index.html?now=" + getTimeStamp()).openConnection();
             connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
             connection.connect();
             BufferedReader r = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
@@ -42,7 +42,7 @@ public class PluginUpdater {
             }
             return sb.toString();
         } catch (IOException ex) {
-            Main.logSevere("The plugin cannot connect to MTVehicles servers. Try again later...");
+            Main.logSevere("The plugin cannot connect to the webserver. Try again later...");
             ex.printStackTrace();
             return null;
         }
@@ -70,16 +70,13 @@ public class PluginUpdater {
      * @return True if the plugin is the latest version or if check fails
      */
     public static boolean isLatestVersion(){
+        if (pluginVersion.contains("dev")) return true; //auto-updater is disabled for dev releases
+
         final String apiOutput = getAPICheckerOutput();
         if (apiOutput == null) return true;
 
-        if (apiOutput.equals("LATEST")) {
-            latestVersion = pluginVersion;
-            return true;
-        } else {
-            latestVersion = apiOutput;
-            return false;
-        }
+        latestVersion = apiOutput;
+        return apiOutput.equalsIgnoreCase(pluginVersion);
     }
 
     /**
