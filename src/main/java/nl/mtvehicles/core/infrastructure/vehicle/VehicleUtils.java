@@ -12,10 +12,7 @@ import nl.mtvehicles.core.infrastructure.enums.VehicleType;
 import nl.mtvehicles.core.infrastructure.models.MTVConfig;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.infrastructure.utils.*;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -161,7 +158,7 @@ public final class VehicleUtils {
 
     /**
      * Create a vehicle and get its item by UUID (UUID may be found in vehicles.yml)
-     * @deprecated Renamed to {@link #createAndGetItemByUUID(Player, String)} for clarity.
+     * @deprecated Renamed to {@link #createAndGetItemByUUID(OfflinePlayer, String)} for clarity.
      */
     @Deprecated
     public static ItemStack getItemByUUID(Player p, String uuid) {
@@ -196,7 +193,7 @@ public final class VehicleUtils {
      * @param uuid Vehicle's UUID (UUID may be found in vehicles.yml)
      * @return Null if vehicle was not found by given UUID; otherwise, vehicle item
      */
-    public static ItemStack createAndGetItemByUUID(Player owner, String uuid) {
+    public static ItemStack createAndGetItemByUUID(OfflinePlayer owner, String uuid) {
         List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getVehicles();
         for (Map<?, ?> configVehicle : vehicles) {
             List<Map<?, ?>> skins = (List<Map<?, ?>>) configVehicle.get("cars");
@@ -304,7 +301,7 @@ public final class VehicleUtils {
     }
 
     /**
-     * Get a vehicle item by UUID. <b>Does not create a new vehicle - just for aesthetic purposes.</b> (Otherwise, use {@link #createAndGetItemByUUID(Player, String)})
+     * Get a vehicle item by UUID. <b>Does not create a new vehicle - just for aesthetic purposes.</b> (Otherwise, use {@link #createAndGetItemByUUID(OfflinePlayer, String)})
      * @param carUUID Vehicle's UUID (UUID may be found in vehicles.yml)
      * @return The vehicle item - just aesthetic (null if UUID is not found)
      *
@@ -575,6 +572,15 @@ public final class VehicleUtils {
     }
 
     /**
+     * Check whether a vehicle is occupied
+     * @param licensePlate Vehicle's license plate
+     * @return True if the vehicle is occupied
+     */
+    public static boolean isOccupied(String licensePlate) {
+        return getCurrentDriver(licensePlate) != null;
+    }
+
+    /**
      * Get all the vehicle's set drivers/riders.
      * @param licensePlate Vehicle's license plate
      * @return String of all the drivers/riders separated by commas
@@ -796,6 +802,20 @@ public final class VehicleUtils {
      */
     public static Set<String> getUniqueSpawnedVehiclePlates(World world){
         return new HashSet<>(getAllSpawnedVehiclePlates(world));
+    }
+
+    /**
+     * Set vehicle's current fuel level
+     * @param licensePlate Vehicle's license plate
+     * @param fuel Fuel level (0–100)
+     * @return True if fuel level was set successfully
+     */
+    public static boolean setFuel(String licensePlate, Double fuel){
+        if (!existsByLicensePlate(licensePlate)) return false;
+        if (!(fuel <= 100) || !(fuel >= 0)) return false;
+        VehicleData.fuel.put(licensePlate, fuel);
+        ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.FUEL, fuel);
+        return true;
     }
 
     /**

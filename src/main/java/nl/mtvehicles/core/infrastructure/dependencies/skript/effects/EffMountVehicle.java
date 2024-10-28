@@ -51,11 +51,12 @@ public class EffMountVehicle extends Effect {
 
     @Override
     protected void execute(Event event) {
-        if (!(vehicle.getSingle(event) instanceof Vehicle)) {
+        if (!(vehicle.getSingle(event) instanceof Vehicle) || vehicle.getSingle(event) == null) {
             Main.logSevere("Skript error: Provided variable is not a vehicle (\"make player %player% mount [mtv] vehicle %vehicle%\").");
             return;
         }
 
-        VehicleUtils.enterVehicle(((Vehicle) vehicle.getSingle(event)).getLicensePlate(), player.getSingle(event));
+        if (!((Vehicle) vehicle.getSingle(event)).isOccupied())
+            VehicleUtils.enterVehicle(((Vehicle) vehicle.getSingle(event)).getLicensePlate(), player.getSingle(event));
     }
 }

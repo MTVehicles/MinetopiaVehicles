@@ -225,6 +225,10 @@ This includes:
 | `/vehicle buycar %uuid%`      | Buy a vehicle (for the price specified in vehicles.yml) | `mtvehicles.buycar`    |
 | `/vehicle buyvoucher %uuid%`  | Buy a voucher (which costs the same as a vehicle)       | `mtvehicles.buycar` |
 
+### Skript
+
+You can perform some basic tasks with the Skript API. See the [Skript page on MTVehicles Wiki](https://wiki.mtvehicles.eu/information/skript.html) for documentation.
+
 <div align="right">
   <sub>README.md by <a href="https://github.com/Zettovec">Nikd0</a> & <a href="https://github.com/Jeffrey-H">Jeffrey-H</a></sub>
 </div>

@@ -12,6 +12,7 @@ import ch.njol.util.Kleenean;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
 import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
@@ -31,14 +32,15 @@ public class ExprVehicle extends SimpleExpression<Vehicle> {
                 ExpressionType.SIMPLE,
                 "[a[n]] mtv vehicle [with license [plate] %-string%]",
                 "%player%'s driven mtv vehicle",
-                "[a] new [created] mtv vehicle (by|with) (uuid|UUID) %string% [and] [(by|with)] owner %player%",
-                "[a] new [created] mtv vehicle (by|with) (uuid|UUID) owner %player% [and] [(by|with)] (uuid|UUID) %string%"
+                "[a] new[ly] [created] mtv vehicle (by|with) (uuid|UUID) %string% [and] [(by|with)] owner %offlineplayer%",
+                "[a] new[ly] [created] mtv vehicle (by|with) (uuid|UUID) owner %offlineplayer% [and] [(by|with)] (uuid|UUID) %string%"
         );
     }
 
     @SuppressWarnings("null")
     private Expression<String> licensePlate;
     private Expression<Player> player;
+    private Expression<OfflinePlayer> offlinePlayer;
     private Expression<String> uuid;
     private int pattern;
 
@@ -59,11 +61,11 @@ public class ExprVehicle extends SimpleExpression<Vehicle> {
         else if (matchedPattern == 1) this.player = (Expression<Player>) expressions[0];
         else if (matchedPattern == 2) {
             this.uuid = (Expression<String>) expressions[0];
-            this.player = (Expression<Player>) expressions[1];
+            this.offlinePlayer = (Expression<OfflinePlayer>) expressions[1];
         }
         else if (matchedPattern == 3) {
             this.uuid = (Expression<String>) expressions[1];
-            this.player = (Expression<Player>) expressions[0];
+            this.offlinePlayer = (Expression<OfflinePlayer>) expressions[0];
         }
         this.pattern = matchedPattern;
         return true;
@@ -93,13 +95,13 @@ public class ExprVehicle extends SimpleExpression<Vehicle> {
         else {
 
             if (!VehicleUtils.vehicleUUIDExists(uuid.getSingle(event))) {
-                Main.logSevere("Skript error: Provided UUID does not exist (\"a new mtv vehicle with UUID %string% and owner %player%\").");
+                Main.logSevere("Skript error: Provided UUID does not exist (\"a new mtv vehicle with UUID %string% and owner %offlineplayer%\").");
                 return null;
             }
 
             return new Vehicle[] {
                     VehicleUtils.getVehicle(
-                            VehicleUtils.createAndGetItemByUUID(player.getSingle(event), uuid.getSingle(event))
+                            VehicleUtils.createAndGetItemByUUID(offlinePlayer.getSingle(event), uuid.getSingle(event))
                     )
             };
         }

@@ -44,7 +44,7 @@ public class EffDespawnVehicle extends Effect {
 
     @Override
     protected void execute(Event event) {
-        if (!(vehicle.getSingle(event) instanceof Vehicle)) {
+        if (!(vehicle.getSingle(event) instanceof Vehicle) || vehicle.getSingle(event) == null) {
             Main.logSevere("Skript error: Provided variable is not a vehicle (\"despawn [mtv] vehicle %vehicle%\").");
             return;
         }

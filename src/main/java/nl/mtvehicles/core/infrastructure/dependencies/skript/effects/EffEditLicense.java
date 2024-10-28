@@ -52,7 +52,7 @@ public class EffEditLicense extends Effect {
     @Override
     protected void execute(Event event) {
 
-        if (!(this.vehicle.getSingle(event) instanceof Vehicle)) {
+        if (!(this.vehicle.getSingle(event) instanceof Vehicle) || vehicle.getSingle(event) == null) {
             Main.logSevere("Skript error: Provided variable is not a vehicle (\"edit license plate of [mtv] vehicle %vehicle% to %string%\").");
             return;
         }

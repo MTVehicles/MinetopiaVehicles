@@ -512,6 +512,10 @@ public class Vehicle {
         }
     }
 
+    public boolean isOccupied(){
+        return VehicleUtils.isOccupied(this.getLicensePlate());
+    }
+
     /**
      * Seat in a vehicle
      */

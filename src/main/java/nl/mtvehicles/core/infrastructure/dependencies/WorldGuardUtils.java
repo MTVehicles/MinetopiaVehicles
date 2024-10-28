@@ -53,6 +53,17 @@ public class WorldGuardUtils {
         return returns;
     }
 
+    /**
+     * Check whether a location is inside a region with a specified name.
+     * @param loc Location which may be inside a region
+     * @param regionName Name of the region
+     *
+     * @return True if location is in at least 1 region with the specified name.
+     */
+    public boolean isInsideRegion(Location loc, String regionName){
+        return getRegionNames(loc).contains(regionName);
+    }
+
     private Set<IWrappedRegion> getRegions(Location loc){
         return instance.getRegions(loc);
     }

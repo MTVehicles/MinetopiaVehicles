@@ -90,7 +90,7 @@ public class EffGiveVehicle extends Effect {
     @Override
     protected void execute(Event event) {
         if (pattern == 1) {
-            if (!(vehicle.getSingle(event) instanceof Vehicle)) {
+            if (!(vehicle.getSingle(event) instanceof Vehicle) || vehicle.getSingle(event) == null) {
                 Main.logSevere("Skript error: Provided variable is not a vehicle (\"give [mtv] vehicle %vehicle% to %player%\").");
                 return;
             }

@@ -65,7 +65,7 @@ public class EffSpawnVehicle extends Effect {
     @Override
     protected void execute(Event event) {
         if (pattern == 1){
-            if (vehicle.getSingle(event) instanceof Vehicle) {
+            if ((vehicle.getSingle(event) instanceof Vehicle) && vehicle.getSingle(event) != null) {
                 VehicleUtils.spawnVehicle(((Vehicle) vehicle.getSingle(event)).getLicensePlate(), location.getSingle(event));
                 return;
             }
