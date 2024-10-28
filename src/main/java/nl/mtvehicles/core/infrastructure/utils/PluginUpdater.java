@@ -125,10 +125,10 @@ public class PluginUpdater {
             return false;
         }
         try {
-            URL file = new URL("https://minetopiavehicles.nl/api/MTVehicles.jar");
+            URL file = new URL("https://mtvehicles.github.io/auto-updater/MTVehicles.jar");
             File dest = new File("plugins");
             InputStream is = file.openStream();
-            File finaldest = new File(dest + "/" + file.getFile().replace("/api/MTVehicles.jar", "/" + Main.getFileAsString().replace("plugins", "")));
+            File finaldest = new File(dest + "/" + file.getFile().replace("/auto-updater/MTVehicles.jar", "/" + Main.getFileAsString().replace("plugins", "")));
             // File finaldest = new File(dest + "/" + file.getFile());
             finaldest.getParentFile().mkdirs();
             finaldest.createNewFile();
