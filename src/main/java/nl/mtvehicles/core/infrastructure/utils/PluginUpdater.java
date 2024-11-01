@@ -4,7 +4,6 @@ import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.annotations.ToDo;
 import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.enums.Message;
-import nl.mtvehicles.core.infrastructure.enums.PluginVersion;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.infrastructure.modules.VersionModule;
 import org.bukkit.command.CommandSender;
@@ -23,17 +22,16 @@ import java.util.List;
 @ToDo("Translate to multiple languages.")
 public class PluginUpdater {
     private static boolean isEnabled = (boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.AUTO_UPDATE);
-    private static PluginVersion pluginVersion = PluginVersion.getPluginVersion();
-    private static PluginVersion latestVersion = receiveLatestVersion();
-    private static String latestVersionString;
+    private static String pluginVersion = VersionModule.pluginVersionString;
+    private static String latestVersion;
 
-    private static PluginVersion receiveLatestVersion(){
+    private static String getAPICheckerOutput(){
         if (!isEnabled) {
             Main.logWarning(ConfigModule.messagesConfig.getMessage(Message.UPDATE_DISABLED));
             return null;
         }
         try {
-            URLConnection connection = new URL("https://minetopiavehicles.nl/api/update-api-version.php?now=" + getTimeStamp()).openConnection();
+            URLConnection connection = new URL("https://mtvehicles.github.io/auto-updater/index.html?now=" + getTimeStamp()).openConnection();
             connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
             connection.connect();
             BufferedReader r = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
@@ -42,42 +40,11 @@ public class PluginUpdater {
             while ((line = r.readLine()) != null) {
                 sb.append(line);
             }
-            String receivedValue = sb.toString();
-            latestVersionString = receivedValue;
-            return PluginVersion.getVersion(receivedValue);
+            return sb.toString();
         } catch (IOException ex) {
-            Main.logSevere("The plugin cannot connect to MTVehicles servers. Try again later...");
+            Main.logSevere("The plugin cannot connect to the webserver. Try again later...");
             ex.printStackTrace();
             return null;
-        }
-    }
-
-    @Deprecated
-    private static String[] receiveUpdateMessage(){
-        if (!isEnabled) {
-            Main.logWarning(ConfigModule.messagesConfig.getMessage(Message.UPDATE_DISABLED));
-            return null;
-        }
-        try {
-            URLConnection connection = new URL("https://minetopiavehicles.nl/api/update-api-check.php?now=" + getTimeStamp()).openConnection();
-            connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
-            connection.connect();
-            BufferedReader r = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
-            StringBuilder sb = new StringBuilder();
-            String line;
-            while ((line = r.readLine()) != null) {
-                sb.append(line);
-            }
-            String receivedValue = sb.toString();
-            String[] valueMultipleLines = receivedValue.split("@");
-            for (int i = 0; i < valueMultipleLines.length; i++) {
-                valueMultipleLines[i] = valueMultipleLines[i].replace("<oldVer>", VersionModule.pluginVersionString);
-            }
-            return valueMultipleLines;
-        } catch (IOException ex) {
-            Main.logSevere("The plugin cannot connect to MTVehicles servers. Try again later...");
-            ex.printStackTrace();
-            return new String[]{""};
         }
     }
 
@@ -85,9 +52,9 @@ public class PluginUpdater {
         return TextUtils.list(
                 "&7---------------------------------------",
                 "A new version of &2MTVehicles&f is available!",
-                String.format("We have already released &av%s &fbut you are still using &cv%s&f!", latestVersionString, VersionModule.pluginVersionString),
+                String.format("Current update: &cv%s &f--> &av%s", pluginVersion, latestVersion),
                 "Use &2/mtv update&f to update! (Don't forget to reload the plugin!)",
-                "For more information visit &nhttps://mtvehicles.eu&f!",
+                "For more information visit &nhttps://mtvehicles.eu&f :)",
                 "&7---------------------------------------"
         );
     }
@@ -100,14 +67,16 @@ public class PluginUpdater {
 
     /**
      * Check whether the plugin is the latest version
-     * @return True if the plugin is the latest version
+     * @return True if the plugin is the latest version or if check fails
      */
     public static boolean isLatestVersion(){
-        if (latestVersion == null){ //If previous connection was not successful, try connecting one more time
-            latestVersion = receiveLatestVersion();
-            if (latestVersion == null) return true; //If this connection failed as well, abort checking versions.
-        }
-        return !pluginVersion.isOlderThan(latestVersion);
+        if (pluginVersion.contains("dev")) return true; //auto-updater is disabled for dev releases
+
+        final String apiOutput = getAPICheckerOutput();
+        if (apiOutput == null) return true;
+
+        latestVersion = apiOutput;
+        return apiOutput.equalsIgnoreCase(pluginVersion);
     }
 
     /**
@@ -156,10 +125,10 @@ public class PluginUpdater {
             return false;
         }
         try {
-            URL file = new URL("https://minetopiavehicles.nl/api/MTVehicles.jar");
+            URL file = new URL("https://mtvehicles.github.io/auto-updater/MTVehicles.jar");
             File dest = new File("plugins");
             InputStream is = file.openStream();
-            File finaldest = new File(dest + "/" + file.getFile().replace("/api/MTVehicles.jar", "/" + Main.getFileAsString().replace("plugins", "")));
+            File finaldest = new File(dest + "/" + file.getFile().replace("/auto-updater/MTVehicles.jar", "/" + Main.getFileAsString().replace("plugins", "")));
             // File finaldest = new File(dest + "/" + file.getFile());
             finaldest.getParentFile().mkdirs();
             finaldest.createNewFile();

@@ -1,7 +1,7 @@
 package nl.mtvehicles.core.listeners;
 
 import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
-import nl.mtvehicles.core.infrastructure.enums.PluginVersion;
+import nl.mtvehicles.core.infrastructure.modules.VersionModule;
 import nl.mtvehicles.core.infrastructure.utils.PluginUpdater;
 import nl.mtvehicles.core.infrastructure.utils.TextUtils;
 import nl.mtvehicles.core.infrastructure.models.MTVListener;
@@ -30,6 +30,6 @@ public class JoinListener extends MTVListener {
 
         if (!player.hasPermission("mtvehicles.update") || !(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.AUTO_UPDATE)) return;
 
-        if (!PluginVersion.getPluginVersion().isDev()) PluginUpdater.checkNewVersion(player);
+        if (!VersionModule.isDevRelease) PluginUpdater.checkNewVersion(player);
     }
 }
