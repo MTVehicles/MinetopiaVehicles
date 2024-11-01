@@ -14,11 +14,11 @@ Messages in the plugin can be displayed in multiple languages. (Default: English
 
 ---
 
-### ⚠️ Important information for API Developers ⚠️
-**As of `2.5.0`, some classes and packages have been refactored, some deprecated methods have been removed.**<br>
-Please, see [**this**](https://github.com/Zettovec/MinetopiaVehicles/pull/5) and [**Javadoc**](https://docs.mtvehicles.eu) for additional information.
+### Auto-updater info for contributors:
 
-I recommend checking the [`#getPluginVersion()`](https://docs.mtvehicles.eu/nl/mtvehicles/core/infrastructure/enums/PluginVersion.html#getPluginVersion()) to overcome possible issues.
+As of 2.5.5, auto-updater has been moved to https://github.com/MTVehicles/auto-updater!
+
+(The current auto-updater API will only be updated to 2.5.5. This means that in the future, if you're using an older version, you'll have to update to 2.5.5 first, and only then will newer versions be displayed – if available.)
 
 ---
 
