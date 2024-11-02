@@ -32,17 +32,17 @@ public class JerryCanClickListener extends MTVListener {
         ItemStack item = event.getItem();
         if (item == null || item.getType() == Material.AIR || !item.hasItemMeta()) return;
 
-        Block clickedBlock = event.getClickedBlock();
-        if (clickedBlock == null || event.getHand() != EquipmentSlot.HAND) {
-            event.getPlayer().sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.WRONG_HAND)));
-            return;
-        }
-
         NBTItem nbt;
         try {
             nbt = new NBTItem(item);
             if (!nbt.hasKey("mtvehicles.benzinesize")) return;
         } catch (Exception e) {
+            return;
+        }
+
+        Block clickedBlock = event.getClickedBlock();
+        if (clickedBlock == null || event.getHand() != EquipmentSlot.HAND) {
+            event.getPlayer().sendMessage(TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.WRONG_HAND)));
             return;
         }
 
