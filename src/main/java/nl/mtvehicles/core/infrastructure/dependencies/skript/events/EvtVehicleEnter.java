@@ -10,6 +10,7 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
 import nl.mtvehicles.core.events.VehicleEnterEvent;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
@@ -22,7 +23,8 @@ import org.jetbrains.annotations.Nullable;
 @Examples({
         "on mtv vehicle enter:",
         "set {_player} to event-player",
-        "set {_licensePlate} to event-text"
+        "set {_licensePlate} to event-text",
+        "set {_vehicleLocation} to event-location"
 })
 public class EvtVehicleEnter extends SkriptEvent {
 
@@ -44,6 +46,13 @@ public class EvtVehicleEnter extends SkriptEvent {
             @Override
             public String get(VehicleEnterEvent event) {
                 return event.getLicensePlate();
+            }
+        }, 0);
+
+        EventValues.registerEventValue(VehicleEnterEvent.class, Location.class, new Getter<Location, VehicleEnterEvent>() {
+            @Override
+            public Location get(VehicleEnterEvent event) {
+                return event.getLocation();
             }
         }, 0);
     }

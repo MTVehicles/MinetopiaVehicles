@@ -2,6 +2,7 @@ package nl.mtvehicles.core.listeners;
 
 import nl.mtvehicles.core.events.VehicleEnterEvent;
 import nl.mtvehicles.core.events.VehiclePickUpEvent;
+import nl.mtvehicles.core.events.VehiclePlaceEvent;
 import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.enums.RegionAction;
@@ -85,13 +86,13 @@ public class VehicleClickListener extends MTVListener {
     }
 
     private void enter() {
-        setAPI(new VehicleEnterEvent(license));
+        final Vehicle vehicle = VehicleUtils.getVehicle(license);
+        if (vehicle == null) return;
+
+        setAPI(new VehicleEnterEvent(license, entity.getLocation()));
         callAPI();
 
         if (isCancelled()) return;
-
-        final Vehicle vehicle = VehicleUtils.getVehicle(license);
-        if (vehicle == null) return;
 
         final String customName = entity.getCustomName();
         if (customName.contains("MTVEHICLES_SEAT")) {
