@@ -692,6 +692,8 @@ public class VehicleMovement {
         else if (getServerVersion().is1_20_R3()) teleportSeat(((org.bukkit.craftbukkit.v1_20_R3.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
         else if (getServerVersion().is1_20_R4()) teleportSeat(((org.bukkit.craftbukkit.v1_20_R4.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
         else if (getServerVersion().is1_21_R1()) teleportSeat(((org.bukkit.craftbukkit.v1_21_R1.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+        else if (getServerVersion().is1_21_R2()) teleportSeat(((org.bukkit.craftbukkit.v1_21_R2.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
+        else if (getServerVersion().is1_21_R3()) teleportSeat(((org.bukkit.craftbukkit.v1_21_R3.entity.CraftEntity) seat).getHandle(), loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
     }
 
     /**
@@ -917,16 +919,23 @@ public class VehicleMovement {
     protected boolean steerIsJumping(){
         boolean isJumping = false;
         try {
-            String declaredMethod = "d";
+            if(getServerVersion().isOlderOrEqualTo(ServerVersion.v1_21_R1)){
+                
+                String declaredMethod = "d";
 
-            if (getServerVersion().isNewerOrEqualTo(ServerVersion.v1_20_R2) && getServerVersion().isOlderThan(ServerVersion.v1_20_R4))  {
-                declaredMethod = "e";
-            } else if (getServerVersion().isNewerOrEqualTo(ServerVersion.v1_20_R4)) {
-                declaredMethod = "f";
+                if (getServerVersion().isNewerOrEqualTo(ServerVersion.v1_20_R2) && getServerVersion().isOlderThan(ServerVersion.v1_20_R4))  {
+                    declaredMethod = "e";
+                } else if (getServerVersion().isNewerOrEqualTo(ServerVersion.v1_20_R4)) {
+                    declaredMethod = "f";
+                }
+                Method method = packet.getClass().getDeclaredMethod(declaredMethod);
+                isJumping = (Boolean) method.invoke(packet);
+            } else { // 1_21_R2 and newer
+            Object input = packet.getClass().getDeclaredMethod("b").invoke(packet);
+            
+            isJumping = (boolean) input.getClass().getDeclaredMethod("e").invoke(input);
             }
-
-            Method method = packet.getClass().getDeclaredMethod(declaredMethod);
-            isJumping = (Boolean) method.invoke(packet);
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -940,14 +949,23 @@ public class VehicleMovement {
     protected float steerGetXxa(){
         float Xxa = 0;
         try {
-            String declaredMethod = "b";
+            if(getServerVersion().isOlderOrEqualTo(ServerVersion.v1_21_R1)){
+                String declaredMethod = "b";
 
-            if (getServerVersion().isNewerOrEqualTo(ServerVersion.v1_19_R3) && getServerVersion().isOlderThan(ServerVersion.v1_20_R4)) {
-                declaredMethod = "a";
+                if (getServerVersion().isNewerOrEqualTo(ServerVersion.v1_19_R3) && getServerVersion().isOlderThan(ServerVersion.v1_20_R4)) {
+                    declaredMethod = "a";
+                }
+
+                Method method = packet.getClass().getDeclaredMethod(declaredMethod);
+                Xxa = (float) method.invoke(packet);
+            } else { // 1_21_R2 and newer
+                Object input = packet.getClass().getDeclaredMethod("b").invoke(packet);
+                if ((boolean) input.getClass().getDeclaredMethod("c").invoke(input)) {
+                    Xxa = 1;
+                } else if ((boolean) input.getClass().getDeclaredMethod("d").invoke(input)) {
+                    Xxa = -1;
+                }
             }
-
-            Method method = packet.getClass().getDeclaredMethod(declaredMethod);
-            Xxa = (float) method.invoke(packet);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -961,16 +979,25 @@ public class VehicleMovement {
     protected float steerGetZza(){
         float Zza = 0;
         try {
-            String declaredMethod = "c";
+            if(getServerVersion().isOlderOrEqualTo(ServerVersion.v1_21_R1)){
+                String declaredMethod = "c";
 
-            if (VersionModule.getServerVersion().isNewerOrEqualTo(ServerVersion.v1_20_R2) && getServerVersion().isOlderThan(ServerVersion.v1_20_R4)) {
-                declaredMethod = "d";
-            } else if(getServerVersion().isNewerOrEqualTo(ServerVersion.v1_20_R4)){
-                declaredMethod = "e";
+                if (VersionModule.getServerVersion().isNewerOrEqualTo(ServerVersion.v1_20_R2) && getServerVersion().isOlderThan(ServerVersion.v1_20_R4)) {
+                    declaredMethod = "d";
+                } else if(getServerVersion().isNewerOrEqualTo(ServerVersion.v1_20_R4)){
+                    declaredMethod = "e";
+                }
+
+                Method method = packet.getClass().getDeclaredMethod(declaredMethod);
+                Zza = (float) method.invoke(packet);
+            } else { // 1_21_R2 and newer
+                Object input = packet.getClass().getDeclaredMethod("b").invoke(packet);
+                if ((boolean) input.getClass().getDeclaredMethod("a").invoke(input)) {
+                    Zza = 1;
+                } else if ((boolean) input.getClass().getDeclaredMethod("b").invoke(input)) {
+                    Zza = -1;
+                }
             }
-
-            Method method = packet.getClass().getDeclaredMethod(declaredMethod);
-            Zza = (float) method.invoke(packet);
         } catch (Exception e) {
             e.printStackTrace();
         }
