@@ -64,7 +64,11 @@ public class VersionModule {
         if(serverSoftware.contains("CraftBukkit")){
             serverVersion = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
         } else {
-            serverVersion = Bukkit.getServer().getMinecraftVersion();
+            try {
+                serverVersion = Bukkit.getServer().getMinecraftVersion();
+            } catch (NoSuchMethodError e){
+                serverVersion = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+            }
         }
     }
 
@@ -163,7 +167,11 @@ public class VersionModule {
         if(serverSoftware.contains("CraftBukkit")){
             serverVersion = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
         } else {
-            serverVersion = Bukkit.getServer().getMinecraftVersion();
+            try {
+                serverVersion = Bukkit.getServer().getMinecraftVersion();
+            } catch (NoSuchMethodError e){
+                serverVersion = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+            }
         }
 
         if (getServerVersion() == null) {
