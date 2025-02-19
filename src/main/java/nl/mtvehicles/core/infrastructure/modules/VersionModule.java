@@ -61,9 +61,7 @@ public class VersionModule {
         serverSoftware = Bukkit.getName();
 
         //Check Server Version
-        if(serverSoftware.contains("CraftBukkit")){
-            serverVersion = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
-        } else {
+        if(!serverSoftware.contains("Arclight")){
             try {
                 serverVersion = Bukkit.getServer().getMinecraftVersion();
             } catch (NoSuchMethodError e){
@@ -164,9 +162,7 @@ public class VersionModule {
         );
 
         //Check Server Version
-        if(serverSoftware.contains("CraftBukkit")){
-            serverVersion = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
-        } else {
+        if(!serverSoftware.contains("Arclight")){
             try {
                 serverVersion = Bukkit.getServer().getMinecraftVersion();
             } catch (NoSuchMethodError e){
