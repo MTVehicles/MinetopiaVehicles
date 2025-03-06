@@ -51,7 +51,7 @@ public class ChatListener extends MTVListener {
             if (!message.toLowerCase().contains("!q")) {
                 String licensePlate = getLicensePlate(player);
 
-                                if (ConfigModule.vehicleDataConfig.get(message, VehicleDataConfig.Option.SKIN_ITEM) != null) {
+                if (ConfigModule.vehicleDataConfig.get(message, VehicleDataConfig.Option.SKIN_ITEM) != null) {
                     ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_FAILED_DUP_LICENSE);
                     MenuUtils.menuEdit(player);
                     ItemUtils.edit.put(player.getUniqueId() + ".kenteken", false);
