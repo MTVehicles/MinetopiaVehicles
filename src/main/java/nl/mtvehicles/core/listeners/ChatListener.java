@@ -51,17 +51,19 @@ public class ChatListener extends MTVListener {
             if (!message.toLowerCase().contains("!q")) {
                 String licensePlate = getLicensePlate(player);
 
-                if (!(ConfigModule.vehicleDataConfig.get(message, VehicleDataConfig.Option.SKIN_ITEM) == null)) {
+                                if (ConfigModule.vehicleDataConfig.get(message, VehicleDataConfig.Option.SKIN_ITEM) != null) {
                     ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_FAILED_DUP_LICENSE);
                     MenuUtils.menuEdit(player);
                     ItemUtils.edit.put(player.getUniqueId() + ".kenteken", false);
                     return;
                 }
-                for (String s : ConfigModule.vehicleDataConfig.getConfig().getConfigurationSection("vehicle." + licensePlate).getKeys(false)) {
-                    ConfigModule.vehicleDataConfig.getConfig().set("vehicle." + message + "." + s, ConfigModule.vehicleDataConfig.getConfig().get("vehicle." + licensePlate + "." + s));
+                for (VehicleDataConfig.Option option : VehicleDataConfig.Option.values()) {
+                    Object value = ConfigModule.vehicleDataConfig.get(licensePlate, option);
+                    if (value != null) {
+                        ConfigModule.vehicleDataConfig.set(message, option, value);
+                    }
                 }
 
-                ConfigModule.vehicleDataConfig.save();
                 player.getInventory().setItemInMainHand(ItemUtils.getVehicleItem(
                         ItemUtils.getMaterial(ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.SKIN_ITEM).toString()),
                         ConfigModule.vehicleDataConfig.getDamage(licensePlate),
@@ -76,7 +78,6 @@ public class ChatListener extends MTVListener {
                 ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_SUCCESSFUL);
                 ItemUtils.edit.put(player.getUniqueId() + ".kenteken", false);
                 ConfigModule.vehicleDataConfig.delete(licensePlate);
-                ConfigModule.vehicleDataConfig.save();
                 return;
             }
 
