@@ -376,16 +376,18 @@ public final class VehicleUtils {
     public static String getUUID(String licensePlate) {
         if (!existsByLicensePlate(licensePlate)) return null;
 
-        Map<?, ?> vehicleData = ConfigModule.vehicleDataConfig.getConfig()
-                .getConfigurationSection(String.format("vehicle.%s", licensePlate)).getValues(true);
+        Object skinItem = ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.SKIN_ITEM);
+        Object skinDamage = ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.SKIN_DAMAGE);
+        Object nbtValue = ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.NBT_VALUE);
+        
         List<Map<?, ?>> vehicles = ConfigModule.vehiclesConfig.getVehicles();
         for (Map<?, ?> configVehicle : vehicles) {
             List<Map<?, ?>> skins = (List<Map<?, ?>>) configVehicle.get("cars");
             for (Map<?, ?> skin : skins) {
-                if (skin.get("itemDamage").equals(vehicleData.get("skinDamage"))) {
-                    if (skin.get("SkinItem").equals(vehicleData.get("skinItem"))) {
+                if (skin.get("itemDamage").equals(skinDamage)) {
+                    if (skin.get("SkinItem").equals(skinItem)) {
                         if (skin.get("nbtValue") != null) {
-                            if (skin.get("nbtValue").equals(vehicleData.get("nbtValue"))) {
+                            if (skin.get("nbtValue").equals(nbtValue)) {
                                 return skin.get("uuid").toString();
                             }
                         } else {
@@ -481,7 +483,7 @@ public final class VehicleUtils {
      * @return True if vehicle is in the database (vehicleData.yml)
      */
     public static boolean existsByLicensePlate(String licensePlate) {
-        return ConfigModule.vehicleDataConfig.getConfig().get(String.format("vehicle.%s", licensePlate)) != null;
+        return ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.SKIN_ITEM) != null;
     }
 
     /**
@@ -510,10 +512,11 @@ public final class VehicleUtils {
      * @return UUID of vehicle's owner
      */
     public static UUID getOwnerUUID(String licensePlate) {
-        if (ConfigModule.vehicleDataConfig.getConfig().getString("vehicle." + licensePlate + ".owner") == null) {
+        Object owner = ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.OWNER);
+        if(owner == null) {
             return null;
         }
-        return UUID.fromString(ConfigModule.vehicleDataConfig.getConfig().getString("vehicle." + licensePlate + ".owner"));
+        return UUID.fromString(owner.toString());
     }
 
     /**
@@ -590,7 +593,7 @@ public final class VehicleUtils {
     @Deprecated
     public static String getRidersAsString(String licensePlate) {
         StringBuilder sb = new StringBuilder();
-        for (String s : ConfigModule.vehicleDataConfig.getConfig().getStringList("vehicle." + licensePlate + ".riders")) {
+        for (String s : ConfigModule.vehicleDataConfig.getRiders(licensePlate)) {
             if (!UUID.fromString(s).equals(getOwnerUUID(licensePlate))) {
                 sb.append(Bukkit.getOfflinePlayer(UUID.fromString(s)).getName()).append(", ");
             }
@@ -1070,7 +1073,7 @@ public final class VehicleUtils {
         if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.FUEL_ENABLED) && (boolean) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.FUEL_ENABLED)) {
             double fuel = VehicleData.fuel.get(licensePlate);
             ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.FUEL, fuel);
-            ConfigModule.vehicleDataConfig.save();
+            ConfigModule.vehicleDataConfig.saveToDisk();
         }
 
         return true;
