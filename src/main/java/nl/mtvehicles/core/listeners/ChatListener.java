@@ -1,8 +1,8 @@
 package nl.mtvehicles.core.listeners;
 
 import de.tr7zw.changeme.nbtapi.NBTItem;
+import nl.mtvehicles.core.commands.vehiclesubs.VehicleEdit;
 import nl.mtvehicles.core.events.ChatEvent;
-import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.utils.ItemUtils;
 import nl.mtvehicles.core.infrastructure.utils.MenuUtils;
@@ -50,34 +50,15 @@ public class ChatListener extends MTVListener {
 
             if (!message.toLowerCase().contains("!q")) {
                 String licensePlate = getLicensePlate(player);
-
-                if (ConfigModule.vehicleDataConfig.get(message, VehicleDataConfig.Option.SKIN_ITEM) != null) {
-                    ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_FAILED_DUP_LICENSE);
-                    MenuUtils.menuEdit(player);
-                    ItemUtils.edit.put(player.getUniqueId() + ".kenteken", false);
-                    return;
+                
+                if (VehicleEdit.editLicensePlate(player, licensePlate, message)) {
+                    ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_SUCCESSFUL);
                 }
-                for (VehicleDataConfig.Option option : VehicleDataConfig.Option.values()) {
-                    Object value = ConfigModule.vehicleDataConfig.get(licensePlate, option);
-                    if (value != null) {
-                        ConfigModule.vehicleDataConfig.set(message, option, value);
-                    }
-                }
-
-                player.getInventory().setItemInMainHand(ItemUtils.getVehicleItem(
-                        ItemUtils.getMaterial(ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.SKIN_ITEM).toString()),
-                        ConfigModule.vehicleDataConfig.getDamage(licensePlate),
-                        (boolean) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.IS_GLOWING),
-                        ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.NAME).toString(),
-                        message)
-                );
-
+                
+                ItemUtils.edit.put(player.getUniqueId() + ".kenteken", false);
+                
                 if (event.isAsynchronous())
                     schedulerRun(() -> MenuUtils.menuEdit(player));
-
-                ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_SUCCESSFUL);
-                ItemUtils.edit.put(player.getUniqueId() + ".kenteken", false);
-                ConfigModule.vehicleDataConfig.delete(licensePlate);
                 return;
             }
 
@@ -112,16 +93,11 @@ public class ChatListener extends MTVListener {
 
             if (!message.toLowerCase().contains("!q")) {
                 String licensePlate = getLicensePlate(player);
-                ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.NAME, message);
-                ConfigModule.vehicleDataConfig.save();
-                player.getInventory().setItemInMainHand(ItemUtils.getVehicleItem(
-                        ItemUtils.getMaterial(ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.SKIN_ITEM).toString()),
-                        ConfigModule.vehicleDataConfig.getDamage(licensePlate),
-                        (boolean) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.IS_GLOWING),
-                        message,
-                        licensePlate)
-                );
-                ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_SUCCESSFUL);
+                
+                if (VehicleEdit.editName(player, licensePlate, message)) {
+                    ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_SUCCESSFUL);
+                }
+                
                 ItemUtils.edit.put(player.getUniqueId() + ".naam", false);
 
                 if (event.isAsynchronous()) schedulerRun(() -> MenuUtils.menuEdit(player));
@@ -163,18 +139,13 @@ public class ChatListener extends MTVListener {
                 return;
             }
 
-            if (Integer.parseInt(message) > 100) {
-                MenuUtils.benzineEdit(player);
-                ItemUtils.edit.put(player.getUniqueId() + ".benzine", false);
-                player.sendMessage(TextUtils.colorize("&cLetop! Het cijfer moet onder de 100 zijn!"));
-                return;
-            }
-
             if (!message.toLowerCase().contains("!q")) {
                 String licensePlate = getLicensePlate(player);
-                ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.FUEL, Double.valueOf(message));
-                ConfigModule.vehicleDataConfig.save();
-                ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_SUCCESSFUL);
+                
+                if (VehicleEdit.editFuel(player, licensePlate, message)) {
+                    ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_SUCCESSFUL);
+                }
+                
                 ItemUtils.edit.put(player.getUniqueId() + ".benzine", false);
 
                 if (event.isAsynchronous()) schedulerRun(() -> MenuUtils.benzineEdit(player));
@@ -218,9 +189,11 @@ public class ChatListener extends MTVListener {
 
             if (!message.toLowerCase().contains("!q")) {
                 String licensePlate = getLicensePlate(player);
-                ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.FUEL_USAGE, Double.valueOf(message));
-                ConfigModule.vehicleDataConfig.save();
-                ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_SUCCESSFUL);
+                
+                if (VehicleEdit.editFuelUsage(player, licensePlate, message)) {
+                    ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_SUCCESSFUL);
+                }
+                
                 ItemUtils.edit.put(player.getUniqueId() + ".benzineverbruik", false);
 
                 if (event.isAsynchronous()) schedulerRun(() -> MenuUtils.benzineEdit(player));
@@ -263,6 +236,7 @@ public class ChatListener extends MTVListener {
 
                 if (event.isAsynchronous())
                     Bukkit.getScheduler().runTask(Main.instance, () -> MenuUtils.trunkEdit(player));
+                return;
             }
 
             if (!isInt(message)) {
@@ -271,18 +245,12 @@ public class ChatListener extends MTVListener {
                 return;
             }
 
-            int input = Integer.parseInt(message);
-            if (input < 1 || input > 6) {
-                MenuUtils.trunkEdit(player);
-                ConfigModule.messagesConfig.sendMessage(player, Message.INVALID_INPUT);
-                ItemUtils.edit.put(player.getUniqueId() + ".kofferbakRows", false);
-                return;
-            }
-
             String licensePlate = getLicensePlate(player);
-            ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.TRUNK_ROWS, input);
-            ConfigModule.vehicleDataConfig.save();
-            ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_SUCCESSFUL);
+            
+            if (VehicleEdit.editTrunkRows(player, licensePlate, message)) {
+                ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_SUCCESSFUL);
+            }
+            
             ItemUtils.edit.put(player.getUniqueId() + ".kofferbakRows", false);
 
             if (event.isAsynchronous()) schedulerRun(() -> MenuUtils.trunkEdit(player));
@@ -318,16 +286,18 @@ public class ChatListener extends MTVListener {
 
             if (!message.toLowerCase().contains("!q")) {
                 String licensePlate = getLicensePlate(player);
-                ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.ACCELERATION_SPEED, Double.valueOf(message));
-                ConfigModule.vehicleDataConfig.save();
-                ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_SUCCESSFUL);
+                
+                if (VehicleEdit.editAccelerationSpeed(player, licensePlate, message)) {
+                    ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_SUCCESSFUL);
+                }
+                
                 ItemUtils.edit.put(player.getUniqueId() + ".acceleratieSpeed", false);
 
                 if (event.isAsynchronous()) schedulerRun(() -> MenuUtils.speedEdit(player));
                 return;
             }
 
-            MenuUtils.benzineEdit(player);
+            MenuUtils.speedEdit(player);
             ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_CANCELLED);
             ItemUtils.edit.put(player.getUniqueId() + ".acceleratieSpeed", false);
             if (event.isAsynchronous()) schedulerRun(() -> MenuUtils.speedEdit(player));
@@ -363,16 +333,18 @@ public class ChatListener extends MTVListener {
 
             if (!message.toLowerCase().contains("!q")) {
                 String licensePlate = getLicensePlate(player);
-                ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.MAX_SPEED, Double.valueOf(message));
-                ConfigModule.vehicleDataConfig.save();
-                ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_SUCCESSFUL);
+                
+                if (VehicleEdit.editMaxSpeed(player, licensePlate, message)) {
+                    ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_SUCCESSFUL);
+                }
+                
                 ItemUtils.edit.put(player.getUniqueId() + ".maxSpeed", false);
 
                 if (event.isAsynchronous()) schedulerRun(() -> MenuUtils.speedEdit(player));
                 return;
             }
 
-            MenuUtils.benzineEdit(player);
+            MenuUtils.speedEdit(player);
             ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_CANCELLED);
             ItemUtils.edit.put(player.getUniqueId() + ".maxSpeed", false);
 
@@ -409,16 +381,18 @@ public class ChatListener extends MTVListener {
 
             if (!message.toLowerCase().contains("!q")) {
                 String licensePlate = getLicensePlate(player);
-                ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.BRAKING_SPEED, Double.valueOf(message));
-                ConfigModule.vehicleDataConfig.save();
-                ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_SUCCESSFUL);
+                
+                if (VehicleEdit.editBrakingSpeed(player, licensePlate, message)) {
+                    ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_SUCCESSFUL);
+                }
+                
                 ItemUtils.edit.put(player.getUniqueId() + ".brakingSpeed", false);
 
                 if (event.isAsynchronous()) schedulerRun(() -> MenuUtils.speedEdit(player));
                 return;
             }
 
-            MenuUtils.benzineEdit(player);
+            MenuUtils.speedEdit(player);
             ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_CANCELLED);
             ItemUtils.edit.put(player.getUniqueId() + ".brakingSpeed", false);
 
@@ -455,16 +429,18 @@ public class ChatListener extends MTVListener {
 
             if (!message.toLowerCase().contains("!q")) {
                 String licensePlate = getLicensePlate(player);
-                ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.FRICTION_SPEED, Double.valueOf(message));
-                ConfigModule.vehicleDataConfig.save();
-                ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_SUCCESSFUL);
+                
+                if (VehicleEdit.editFrictionSpeed(player, licensePlate, message)) {
+                    ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_SUCCESSFUL);
+                }
+                
                 ItemUtils.edit.put(player.getUniqueId() + ".aftrekkenSpeed", false);
 
                 if (event.isAsynchronous()) schedulerRun(() -> MenuUtils.speedEdit(player));
                 return;
             }
 
-            MenuUtils.benzineEdit(player);
+            MenuUtils.speedEdit(player);
             ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_CANCELLED);
             ItemUtils.edit.put(player.getUniqueId() + ".aftrekkenSpeed", false);
 
@@ -501,16 +477,18 @@ public class ChatListener extends MTVListener {
 
             if (!message.toLowerCase().contains("!q")) {
                 String licensePlate = getLicensePlate(player);
-                ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.MAX_SPEED_BACKWARDS, Double.valueOf(message));
-                ConfigModule.vehicleDataConfig.save();
-                ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_SUCCESSFUL);
+                
+                if (VehicleEdit.editMaxSpeedBackwards(player, licensePlate, message)) {
+                    ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_SUCCESSFUL);
+                }
+                
                 ItemUtils.edit.put(player.getUniqueId() + ".maxSpeedBackwards", false);
 
                 if (event.isAsynchronous()) schedulerRun(() -> MenuUtils.speedEdit(player));
                 return;
             }
 
-            MenuUtils.benzineEdit(player);
+            MenuUtils.speedEdit(player);
             ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_CANCELLED);
             ItemUtils.edit.put(player.getUniqueId() + ".maxSpeedBackwards", false);
 
@@ -547,9 +525,11 @@ public class ChatListener extends MTVListener {
 
             if (!message.toLowerCase().contains("!q")) {
                 String licensePlate = getLicensePlate(player);
-                ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.ROTATION_SPEED, Integer.parseInt(message));
-                ConfigModule.vehicleDataConfig.save();
-                ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_SUCCESSFUL);
+                
+                if (VehicleEdit.editRotationSpeed(player, licensePlate, message)) {
+                    ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_SUCCESSFUL);
+                }
+                
                 ItemUtils.edit.put(player.getUniqueId() + ".rotateSpeed", false);
 
                 if (event.isAsynchronous()) schedulerRun(() -> MenuUtils.speedEdit(player));
@@ -568,7 +548,7 @@ public class ChatListener extends MTVListener {
         try {
             Integer.parseInt(str);
         } catch (Throwable e) {
-            player.sendMessage(TextUtils.colorize("&cPay attention! It must be an integer. (For example: 7)"));
+            ConfigModule.messagesConfig.sendMessage(player, Message.MUST_BE_INTEGER);
             return false;
         }
         return true;
@@ -578,7 +558,7 @@ public class ChatListener extends MTVListener {
         try {
             Double.valueOf(str);
         } catch (Throwable e) {
-            player.sendMessage(TextUtils.colorize("&cPay attention! It must be a double. (For example: 0.02)"));
+            ConfigModule.messagesConfig.sendMessage(player, Message.MUST_BE_DOUBLE);
             return false;
         }
         return true;
