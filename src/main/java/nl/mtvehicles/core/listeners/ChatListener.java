@@ -6,7 +6,6 @@ import nl.mtvehicles.core.events.ChatEvent;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.utils.ItemUtils;
 import nl.mtvehicles.core.infrastructure.utils.MenuUtils;
-import nl.mtvehicles.core.infrastructure.utils.TextUtils;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.models.MTVListener;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
