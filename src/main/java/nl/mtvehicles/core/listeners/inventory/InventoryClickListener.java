@@ -284,17 +284,7 @@ public class InventoryClickListener extends MTVListener {
         boolean isGlowing = (boolean) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.IS_GLOWING);
 
         if (clickedSlot == 16){
-            ItemMeta itemMeta = player.getInventory().getItemInMainHand().getItemMeta();
-            if (isGlowing) {
-                itemMeta.removeEnchant(Enchantment.ARROW_INFINITE);
-                itemMeta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
-                ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.IS_GLOWING, false);
-            } else {
-                itemMeta.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
-                itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-                ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.IS_GLOWING, true);
-            }
-            player.getInventory().getItemInMainHand().setItemMeta(itemMeta);
+            VehicleEdit.editGlowing(player, licensePlate, (isGlowing) ? "false" : "true");
             ConfigModule.vehicleDataConfig.save();
             MenuUtils.menuEdit(player);
         }
@@ -327,12 +317,8 @@ public class InventoryClickListener extends MTVListener {
         String menuItem = new NBTItem(clickedItem).getString("mtvehicles.item");
 
         if (menuItem.contains("1")) {
-            if ((boolean) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.FUEL_ENABLED))
-                ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.FUEL_ENABLED, false);
-            else
-                ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.FUEL_ENABLED, true);
-
-            ConfigModule.vehicleDataConfig.save();
+            boolean fuelEnabled = (boolean) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.FUEL_ENABLED);
+            VehicleEdit.editFuelEnabled(player, licensePlate, fuelEnabled ? "false" : "true");
             MenuUtils.benzineEdit(player);
         }
         if (menuItem.contains("2")) {
@@ -362,12 +348,8 @@ public class InventoryClickListener extends MTVListener {
         String menuItem = new NBTItem(clickedItem).getString("mtvehicles.item");
 
         if (menuItem.contains("1")) {
-            if ((boolean) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.TRUNK_ENABLED))
-                ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.TRUNK_ENABLED, false);
-            else
-                ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.TRUNK_ENABLED, true);
-
-            ConfigModule.vehicleDataConfig.save();
+            boolean trunkEnabled = (boolean) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.TRUNK_ENABLED);
+            VehicleEdit.editTrunkEnabled(player, licensePlate, trunkEnabled ? "false" : "true");
             MenuUtils.trunkEdit(player);
         }
         if (menuItem.contains("2")) {

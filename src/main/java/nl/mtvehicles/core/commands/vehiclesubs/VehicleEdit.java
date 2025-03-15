@@ -10,22 +10,50 @@ import nl.mtvehicles.core.infrastructure.models.MTVConfig;
 import nl.mtvehicles.core.infrastructure.models.MTVSubCommand;
 import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
+
+import org.apache.commons.lang3.function.TriFunction;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <b>/vehicle edit</b> - edit held vehicle's specifications (in a GUI).
  */
 public class VehicleEdit extends MTVSubCommand {
 
+    private static final Map<String, TriFunction<Player, String, String, Boolean>> EDIT_FUNCTIONS = new HashMap<>();
+
+    public static List<String> getEditCommands() {
+        return new ArrayList<>(EDIT_FUNCTIONS.keySet());
+    }
+
     public VehicleEdit() {
-        this.setPlayerCommand(true);
+        this.setPlayerCommand(false);
+        EDIT_FUNCTIONS.put("licenseplate", VehicleEdit::editLicensePlate);
+        EDIT_FUNCTIONS.put("name", VehicleEdit::editName);
+        EDIT_FUNCTIONS.put("fuel", VehicleEdit::editFuel);
+        EDIT_FUNCTIONS.put("fuelusage", VehicleEdit::editFuelUsage);
+        EDIT_FUNCTIONS.put("trunkrows", VehicleEdit::editTrunkRows);
+        EDIT_FUNCTIONS.put("accelerationspeed", VehicleEdit::editAccelerationSpeed);
+        EDIT_FUNCTIONS.put("maxspeed", VehicleEdit::editMaxSpeed);
+        EDIT_FUNCTIONS.put("brakingspeed", VehicleEdit::editBrakingSpeed);
+        EDIT_FUNCTIONS.put("frictionspeed", VehicleEdit::editFrictionSpeed);
+        EDIT_FUNCTIONS.put("maxspeedbackwards", VehicleEdit::editMaxSpeedBackwards);
+        EDIT_FUNCTIONS.put("rotationspeed", VehicleEdit::editRotationSpeed);
+        EDIT_FUNCTIONS.put("glowing", VehicleEdit::editGlowing);
+        EDIT_FUNCTIONS.put("fuelenabled", VehicleEdit::editFuelEnabled);
+        EDIT_FUNCTIONS.put("trunkenabled", VehicleEdit::editTrunkEnabled);
     }
 
     @Override
@@ -39,7 +67,7 @@ public class VehicleEdit extends MTVSubCommand {
             return true;
 
         ConfigModule.configList.forEach(MTVConfig::reload);
-        if (arguments.length == 1) {
+        if (arguments.length == 1 && isPlayer) {
             sendMessage(Message.MENU_OPEN);
             editMenu(player, item);
         } else {
@@ -81,51 +109,18 @@ public class VehicleEdit extends MTVSubCommand {
         final ItemStack item = targetPlayer.getInventory().getItemInMainHand();
 
         String licensePlate = VehicleUtils.getLicensePlate(item);
-        boolean success = false;
 
-        // Call the appropriate edit method based on parameter name
-        switch (paramName.toLowerCase()) {
-            case "licenseplate":
-                success = editLicensePlate(targetPlayer, licensePlate, paramValue);
-                break;
-            case "name":
-                success = editName(targetPlayer, licensePlate, paramValue);
-                break;
-            case "fuel":
-                success = editFuel(targetPlayer, licensePlate, paramValue);
-                break;
-            case "fuelusage":
-                success = editFuelUsage(targetPlayer, licensePlate, paramValue);
-                break;
-            case "trunkrows":
-                success = editTrunkRows(targetPlayer, licensePlate, paramValue);
-                break;
-            case "accelerationspeed":
-                success = editAccelerationSpeed(targetPlayer, licensePlate, paramValue);
-                break;
-            case "maxspeed":
-                success = editMaxSpeed(targetPlayer, licensePlate, paramValue);
-                break;
-            case "brakingspeed":
-                success = editBrakingSpeed(targetPlayer, licensePlate, paramValue);
-                break;
-            case "frictionspeed":
-                success = editFrictionSpeed(targetPlayer, licensePlate, paramValue);
-                break;
-            case "maxspeedbackwards":
-                success = editMaxSpeedBackwards(targetPlayer, licensePlate, paramValue);
-                break;
-            case "rotationspeed":
-                success = editRotationSpeed(targetPlayer, licensePlate, paramValue);
-                break;
-            default:
-                ConfigModule.messagesConfig.sendMessage(player, Message.INVALID_INPUT);
-                return true;
-        }
-
-        if (success) {
-            ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_SUCCESSFUL);
-        }
+        TriFunction<Player, String, String, Boolean> editFunction = EDIT_FUNCTIONS.get(paramName.toLowerCase());
+    if (editFunction == null) {
+        ConfigModule.messagesConfig.sendMessage(player, Message.INVALID_INPUT);
+        return true;
+    }
+    
+    boolean success = editFunction.apply(targetPlayer, licensePlate, paramValue);
+    
+    if (success) {
+        ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_SUCCESSFUL);
+    }
 
         return true;
     }
@@ -220,16 +215,7 @@ public class VehicleEdit extends MTVSubCommand {
      * @return true if successful
      */
     public static boolean editFuelUsage(Player player, String licensePlate, String fuelUsageStr) {
-        try {
-            double fuelUsage = Double.parseDouble(fuelUsageStr);
-
-            ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.FUEL_USAGE, fuelUsage);
-            ConfigModule.vehicleDataConfig.save();
-            return true;
-        } catch (NumberFormatException e) {
-            ConfigModule.messagesConfig.sendMessage(player, Message.MUST_BE_DOUBLE);
-            return false;
-        }
+        return editDoubleValue(player, licensePlate, fuelUsageStr, VehicleDataConfig.Option.FUEL_USAGE);
     }
 
     /**
@@ -267,16 +253,7 @@ public class VehicleEdit extends MTVSubCommand {
      * @return true if successful
      */
     public static boolean editAccelerationSpeed(Player player, String licensePlate, String speedStr) {
-        try {
-            double speed = Double.parseDouble(speedStr);
-
-            ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.ACCELERATION_SPEED, speed);
-            ConfigModule.vehicleDataConfig.save();
-            return true;
-        } catch (NumberFormatException e) {
-            ConfigModule.messagesConfig.sendMessage(player, Message.MUST_BE_DOUBLE);
-            return false;
-        }
+        return editDoubleValue(player, licensePlate, speedStr, VehicleDataConfig.Option.ACCELERATION_SPEED);
     }
 
     /**
@@ -288,16 +265,7 @@ public class VehicleEdit extends MTVSubCommand {
      * @return true if successful
      */
     public static boolean editMaxSpeed(Player player, String licensePlate, String speedStr) {
-        try {
-            double speed = Double.parseDouble(speedStr);
-
-            ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.MAX_SPEED, speed);
-            ConfigModule.vehicleDataConfig.save();
-            return true;
-        } catch (NumberFormatException e) {
-            ConfigModule.messagesConfig.sendMessage(player, Message.MUST_BE_DOUBLE);
-            return false;
-        }
+        return editDoubleValue(player, licensePlate, speedStr, VehicleDataConfig.Option.MAX_SPEED);
     }
 
     /**
@@ -309,16 +277,7 @@ public class VehicleEdit extends MTVSubCommand {
      * @return true if successful
      */
     public static boolean editBrakingSpeed(Player player, String licensePlate, String speedStr) {
-        try {
-            double speed = Double.parseDouble(speedStr);
-
-            ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.BRAKING_SPEED, speed);
-            ConfigModule.vehicleDataConfig.save();
-            return true;
-        } catch (NumberFormatException e) {
-            ConfigModule.messagesConfig.sendMessage(player, Message.MUST_BE_DOUBLE);
-            return false;
-        }
+        return editDoubleValue(player, licensePlate, speedStr, VehicleDataConfig.Option.BRAKING_SPEED);
     }
 
     /**
@@ -330,16 +289,7 @@ public class VehicleEdit extends MTVSubCommand {
      * @return true if successful
      */
     public static boolean editFrictionSpeed(Player player, String licensePlate, String speedStr) {
-        try {
-            double speed = Double.parseDouble(speedStr);
-
-            ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.FRICTION_SPEED, speed);
-            ConfigModule.vehicleDataConfig.save();
-            return true;
-        } catch (NumberFormatException e) {
-            ConfigModule.messagesConfig.sendMessage(player, Message.MUST_BE_DOUBLE);
-            return false;
-        }
+        return editDoubleValue(player, licensePlate, speedStr, VehicleDataConfig.Option.FRICTION_SPEED);
     }
 
     /**
@@ -351,16 +301,7 @@ public class VehicleEdit extends MTVSubCommand {
      * @return true if successful
      */
     public static boolean editMaxSpeedBackwards(Player player, String licensePlate, String speedStr) {
-        try {
-            double speed = Double.parseDouble(speedStr);
-
-            ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.MAX_SPEED_BACKWARDS, speed);
-            ConfigModule.vehicleDataConfig.save();
-            return true;
-        } catch (NumberFormatException e) {
-            ConfigModule.messagesConfig.sendMessage(player, Message.MUST_BE_DOUBLE);
-            return false;
-        }
+        return editDoubleValue(player, licensePlate, speedStr, VehicleDataConfig.Option.MAX_SPEED_BACKWARDS);
     }
 
     /**
@@ -372,10 +313,91 @@ public class VehicleEdit extends MTVSubCommand {
      * @return true if successful
      */
     public static boolean editRotationSpeed(Player player, String licensePlate, String speedStr) {
-        try {
-            int speed = Integer.parseInt(speedStr);
+        return editIntValue(player, licensePlate, speedStr, VehicleDataConfig.Option.ROTATION_SPEED);
+    }
 
-            ConfigModule.vehicleDataConfig.set(licensePlate, VehicleDataConfig.Option.ROTATION_SPEED, speed);
+    /**
+     * Edit whether the vehicle is glowing
+     * 
+     * @param player       Player who holds the vehicle
+     * @param licensePlate Vehicle's license plate
+     * @param valueStr     "true" or "false" for glowing effect
+     * @return true if successful
+     */
+    public static boolean editGlowing(Player player, String licensePlate, String valueStr) {
+        ItemStack item = player.getInventory().getItemInMainHand();
+        ItemMeta meta = item.getItemMeta();
+        if(valueStr.equalsIgnoreCase("true")) {
+            meta.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
+            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        } else {
+            meta.removeEnchant(Enchantment.ARROW_INFINITE);
+            meta.removeItemFlags(ItemFlag.HIDE_ENCHANTS);
+        }
+        item.setItemMeta(meta);
+        return editBooleanValue(player, licensePlate, valueStr, VehicleDataConfig.Option.IS_GLOWING);
+    }
+
+    /**
+     * Edit whether fuel is enabled for the vehicle
+     * 
+     * @param player       Player who holds the vehicle
+     * @param licensePlate Vehicle's license plate
+     * @param valueStr     "true" or "false" for fuel enabled
+     * @return true if successful
+     */
+    public static boolean editFuelEnabled(Player player, String licensePlate, String valueStr) {
+        return editBooleanValue(player, licensePlate, valueStr, VehicleDataConfig.Option.FUEL_ENABLED);
+    }
+
+    /**
+     * Edit whether trunk is enabled for the vehicle
+     * 
+     * @param player       Player who holds the vehicle
+     * @param licensePlate Vehicle's license plate
+     * @param valueStr     "true" or "false" for trunk enabled
+     * @return true if successful
+     */
+    public static boolean editTrunkEnabled(Player player, String licensePlate, String valueStr) {
+        return editBooleanValue(player, licensePlate, valueStr, VehicleDataConfig.Option.TRUNK_ENABLED);
+    }
+
+    private static boolean editBooleanValue(Player player, String licensePlate, String valueStr, VehicleDataConfig.Option option) {
+        boolean value;
+
+        switch (valueStr.toLowerCase()) {
+            case "true":
+                value = true;
+                break;
+            case "false":
+                value = false;
+                break;
+            default:
+                ConfigModule.messagesConfig.sendMessage(player, Message.INVALID_INPUT);
+                return false;
+        }
+        ConfigModule.vehicleDataConfig.set(licensePlate, option, value);
+        ConfigModule.vehicleDataConfig.save();
+        
+        return true;
+    }
+
+    private static boolean editDoubleValue(Player player, String licensePlate, String valueStr, VehicleDataConfig.Option option) {
+        try {
+            double value = Double.parseDouble(valueStr);
+            ConfigModule.vehicleDataConfig.set(licensePlate, option, value);
+            ConfigModule.vehicleDataConfig.save();
+            return true;
+        } catch (NumberFormatException e) {
+            ConfigModule.messagesConfig.sendMessage(player, Message.MUST_BE_DOUBLE);
+            return false;
+        }
+    }
+    
+    private static boolean editIntValue(Player player, String licensePlate, String valueStr, VehicleDataConfig.Option option) {
+        try {
+            int value = Integer.parseInt(valueStr);
+            ConfigModule.vehicleDataConfig.set(licensePlate, option, value);
             ConfigModule.vehicleDataConfig.save();
             return true;
         } catch (NumberFormatException e) {
