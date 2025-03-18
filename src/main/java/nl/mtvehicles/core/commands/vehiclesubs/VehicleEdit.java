@@ -371,7 +371,7 @@ public class VehicleEdit extends MTVSubCommand {
                 value = false;
                 break;
             default:
-                ConfigModule.messagesConfig.sendMessage(player, Message.INVALID_INPUT);
+                ConfigModule.messagesConfig.sendMessage(player, Message.MUST_BE_BOOLEAN);
                 return false;
         }
         ConfigModule.vehicleDataConfig.set(licensePlate, option, value);

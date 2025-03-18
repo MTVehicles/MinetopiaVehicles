@@ -178,3 +178,4 @@ useEdit: "&cUtilisez /vehicle edit ou /vehicle edit [Joueur] <paramètre> <valeu
 fuelTooHigh: "&cLe carburant ne peut pas être au dessus de 100."
 mustBeInteger: "&cLa valeur doit être un nombre entier."
 mustBeDouble: "&cLa valeur doit être un nombre décimal."
+mustBeBoolean: "&cLa valeur doit être sur true (vrai) ou false (faux)."

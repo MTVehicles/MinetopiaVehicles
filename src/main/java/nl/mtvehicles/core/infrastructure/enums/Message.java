@@ -183,7 +183,8 @@ public enum Message {
     USE_EDIT,
     FUEL_TOO_HIGH,
     MUST_BE_INTEGER,
-    MUST_BE_DOUBLE;
+    MUST_BE_DOUBLE,
+    MUST_BE_BOOLEAN;
 
     final private String key;
 
