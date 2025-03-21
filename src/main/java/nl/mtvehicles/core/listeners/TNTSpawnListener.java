@@ -23,7 +23,6 @@ import java.util.UUID;
 
 public class TNTSpawnListener implements Listener {
 
-    private static final int COOLDOWN_TIME = ((int) ConfigModule.defaultConfig.get(DefaultConfig.Option.AIRPLANE_COOLDOWN)) * 1000;
     private final Map<UUID, Long> cooldownMap = new HashMap<>();
 
     @EventHandler
@@ -50,8 +49,9 @@ public class TNTSpawnListener implements Listener {
         UUID playerId = player.getUniqueId();
         long currentTime = System.currentTimeMillis();
         long lastTime = cooldownMap.getOrDefault(playerId, 0L);
-                
-        if (currentTime - lastTime >= COOLDOWN_TIME) {
+        
+        int cooldown = ((int) ConfigModule.defaultConfig.get(DefaultConfig.Option.AIRPLANE_COOLDOWN)) * 1000;
+        if (currentTime - lastTime >= cooldown) {
             spawnFallingTNT(player);
             cooldownMap.put(playerId, currentTime);
         }
