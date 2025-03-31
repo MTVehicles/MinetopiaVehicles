@@ -179,7 +179,12 @@ public enum Message {
     GIVE_FUEL_SUCCESS("giveFuelSuccess"),
     USE_VEHICLE_DESPAWN,
     NO_VEHICLE_TO_DESPAWN,
-    VEHICLE_DESPAWNED;
+    VEHICLE_DESPAWNED,
+    USE_EDIT,
+    FUEL_TOO_HIGH,
+    MUST_BE_INTEGER,
+    MUST_BE_DOUBLE,
+    MUST_BE_BOOLEAN;
 
     final private String key;
 

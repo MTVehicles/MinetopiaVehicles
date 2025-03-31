@@ -1,5 +1,6 @@
 package nl.mtvehicles.core.listeners;
 
+import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.infrastructure.vehicle.VehicleData;
@@ -12,6 +13,7 @@ import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -21,31 +23,35 @@ import java.util.UUID;
 
 public class TNTSpawnListener implements Listener {
 
-    private static final int COOLDOWN_TIME = ((int) ConfigModule.defaultConfig.get(DefaultConfig.Option.AIRPLANE_COOLDOWN)) * 1000;
     private final Map<UUID, Long> cooldownMap = new HashMap<>();
 
     @EventHandler
     public void onPlayerClick(PlayerInteractEvent event) {
-        Player player = event.getPlayer();
-        ItemStack mainHandItem = player.getInventory().getItemInMainHand();
-
-        if (!(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.AIRPLANE_TNT)) return;
         if (event.getAction() != Action.RIGHT_CLICK_AIR && event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-        if (mainHandItem.getType() != Material.TNT) return;
+        trySpawnTNT(event.getPlayer());
+    }
+
+    @EventHandler
+    public void onPlayerClickAtEntity(PlayerInteractAtEntityEvent event) {
+        trySpawnTNT(event.getPlayer());
+    }
+
+    private void trySpawnTNT(Player player) {
+        if (!(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.AIRPLANE_TNT)) return;
+        if (player.getInventory().getItemInMainHand().getType() != Material.TNT) return;
         Entity vehicle = player.getVehicle();
         if (!(vehicle instanceof ArmorStand)) return;
-
         String customName = vehicle.getCustomName();
-        if (customName == null || !customName.startsWith("MTVEHICLES_MAINSEAT_")) return;   // Check the vehicle's custom name and license
-
+        if (customName == null || !customName.startsWith("MTVEHICLES_MAINSEAT_")) return;
         String license = customName.replace("MTVEHICLES_MAINSEAT_", "");
         if (license.isEmpty() || !VehicleData.type.get(license).isAirplane()) return;
-
+        
         UUID playerId = player.getUniqueId();
         long currentTime = System.currentTimeMillis();
         long lastTime = cooldownMap.getOrDefault(playerId, 0L);
-
-        if (currentTime - lastTime >= COOLDOWN_TIME) {
+        
+        int cooldown = ((int) ConfigModule.defaultConfig.get(DefaultConfig.Option.AIRPLANE_COOLDOWN)) * 1000;
+        if (currentTime - lastTime >= cooldown) {
             spawnFallingTNT(player);
             cooldownMap.put(playerId, currentTime);
         }
