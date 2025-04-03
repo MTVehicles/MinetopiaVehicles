@@ -14,6 +14,12 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.bukkit.util.io.BukkitObjectInputStream;
+import org.bukkit.util.io.BukkitObjectOutputStream;
+import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 
 import java.util.*;
 
@@ -420,5 +426,28 @@ public class ItemUtils {
                 .setNBT("mtvehicles.item", carUUID)
                 .toItemStack();
         return voucher;
+    }
+
+    public static String serializeItemStack(ItemStack item) {
+        if (item == null) return "null";
+        try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+             BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream)) {
+            dataOutput.writeObject(item);
+            return Base64Coder.encodeLines(outputStream.toByteArray());
+        } catch (IOException e) {
+            Main.logSevere("Error serializing item stack: " + e.getMessage());
+            return "null";
+        }
+    }
+
+    public static ItemStack deserializeItemStack(String data) {
+        if (data == null || data.equals("null")) return null;
+        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64Coder.decodeLines(data));
+             BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream)) {
+            return (ItemStack) dataInput.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            Main.logSevere("Error deserializing item stack: " + e.getMessage());
+            return null;
+        }
     }
 }

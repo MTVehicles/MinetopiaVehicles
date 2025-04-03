@@ -11,6 +11,7 @@ CODE CONTRIBUTORS:
 - Manuel P. (https://github.com/Mr-EmPee)
 - Bluebotlabz (https://github.com/Bluebotlabz)
 - Djorr (https://github.com/Djorr)
+- Mandali89 (https://github.com/Madnali89)
 
 TRANSLATORS:
 - Czech: Nikd0
