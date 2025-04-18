@@ -17,7 +17,7 @@ import org.jetbrains.annotations.Nullable;
 @Name("Condition - Is inside a vehicle")
 @Description("Check if a player is seated in an MTV Vehicle")
 @Examples({
-        "if player {_p] is seated in an mtv vehicle:",
+        "if player {_p} is seated in an mtv vehicle:",
         "if player is not inside mtv vehicle:"
 })
 public class CondIsInsideVehicle extends Condition {

@@ -46,8 +46,7 @@ public class EffEditFuelUsage extends Effect {
     protected void execute(Event event) {
 
         if (!(this.vehicle.getSingle(event) instanceof Vehicle) || vehicle.getSingle(event) == null) {
-            Main.logSevere("Skript error: Provided variable is not a vehicle (\"edit license plate of [mtv] vehicle %vehicle% to %string%\").");
-            return;
+            Main.logSevere("Skript error: Provided variable is not a vehicle (\"edit fuel usage of [mtv] vehicle %vehicle% to %double%\").");
         }
 
         Vehicle vehicle = (Vehicle) this.vehicle.getSingle(event);
