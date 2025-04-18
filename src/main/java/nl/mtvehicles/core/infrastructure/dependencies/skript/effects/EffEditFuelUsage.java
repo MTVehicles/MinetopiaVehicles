@@ -7,16 +7,17 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
+import nl.mtvehicles.core.infrastructure.vehicle.VehicleData;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
 
 @Deprecated
-public class EffEditLicense extends Effect {
+public class EffEditFuelUsage extends Effect {
 
     static {
-        Skript.registerEffect(EffEditLicense.class,
-                "edit [the] license [plate] of [a[n]] [mtv] vehicle %object% to %string%",
-                "edit [a[n]] [mtv] [vehicle] %object%'s [mtv] license [plate] to %string%"
+        Skript.registerEffect(EffEditFuelUsage.class,
+                "edit [the] [mtv] fuel usage of [a[n]] [mtv] vehicle %object% to %double%",
+                "edit [a[n]] [mtv] [vehicle] %object%'s [mtv] fuel usage to %double%"
         );
     }
 
@@ -24,20 +25,20 @@ public class EffEditLicense extends Effect {
     private Expression<Object> vehicle;
 
     @SuppressWarnings("null")
-    private Expression<String> newPlate;
+    private Expression<Double> newUsage;
 
     @SuppressWarnings({"unchecked", "null"})
     @Override
     public boolean init(Expression<?>[] expressions, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parser) {
-        this.newPlate = (Expression<String>) expressions[1];
+        this.newUsage = (Expression<Double>) expressions[1];
         this.vehicle = (Expression<Object>) expressions[0];
         return true;
     }
 
     @Override
     public String toString(@Nullable Event event, boolean debug) {
-        return String.format("Edit vehicle's license plate to %s.",
-                this.newPlate.toString(event, debug)
+        return String.format("Edit vehicle's fuel usage to %s.",
+                this.newUsage.toString(event, debug)
         );
     }
 
@@ -51,8 +52,11 @@ public class EffEditLicense extends Effect {
 
         Vehicle vehicle = (Vehicle) this.vehicle.getSingle(event);
 
-        vehicle.setLicensePlate(newPlate.getSingle(event));
+        vehicle.setFuelUsage(this.newUsage.getSingle(event));
         vehicle.save();
+
+        if (VehicleData.fuelUsage.containsKey(vehicle.getLicensePlate()))
+            VehicleData.fuelUsage.put(vehicle.getLicensePlate(), this.newUsage.getSingle(event));
 
     }
 }

@@ -25,14 +25,14 @@ public class ExprVehicleUUID extends SimpleExpression<String> {
     static {
         Skript.registerExpression(ExprVehicleUUID.class,
                 String.class,
-                ExpressionType.SIMPLE,
-                "%object%'s [mtv] vehicle (UUID|uuid)",
-                "[mtv] vehicle (UUID|uuid) of %object%"
+                ExpressionType.PROPERTY,
+                "%vehicle%'s [mtv] vehicle (UUID|uuid)",
+                "[mtv] vehicle (UUID|uuid) of %vehicle%"
         );
     }
 
     @SuppressWarnings("null")
-    private Expression<Object> vehicle;
+    private Expression<Vehicle> vehicle;
 
     @Override
     public Class<? extends String> getReturnType() {
@@ -47,25 +47,20 @@ public class ExprVehicleUUID extends SimpleExpression<String> {
     @SuppressWarnings({"unchecked", "null"})
     @Override
     public boolean init(Expression<?>[] expressions, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parser) {
-        this.vehicle = (Expression<Object>) expressions[0];
+        this.vehicle = (Expression<Vehicle>) expressions[0];
         return true;
     }
 
     @Override
     public String toString(@Nullable Event event, boolean debug) {
-        return "MTVehicles vehicle";
+        return "MTVehicles vehicle UUID";
     }
 
     @Override
     protected String[] get(Event event) {
-        if (vehicle.getSingle(event) instanceof Vehicle) {
-            return new String[] {
-                    ((Vehicle) vehicle.getSingle(event)).getUUID()
-            };
-        }
-
-        Main.logSevere("Skript error: Provided variable is not a vehicle (\"vehicle uuid of %vehicle%\").");
-        return null;
+        return new String[] {
+                vehicle.getSingle(event).getUUID()
+        };
 
     }
 

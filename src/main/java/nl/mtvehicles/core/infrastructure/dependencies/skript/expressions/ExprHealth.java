@@ -11,32 +11,34 @@ import org.bukkit.event.Event;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-@Name("MTV Vehicle's vehicle speed")
-@Description("Get the vehicle's vehicle speed")
+@Name("MTV Vehicle's vehicle health")
+@Description("Get the vehicle's vehicle fuel usage")
 @Examples({
-        "set {_licensePlate} to {_car}'s vehicle speed",
-        "add 0.5 to vehicle speed of (player's driven mtv vehicle)",
-        "set mtv vehicle speed of {_helicopter} to 3"
+        "set {_currentHealth} to {_car}'s vehicle health",
+        "set {_health} to vehicle health of (player's driven mtv vehicle)",
+        "set vehicle health of {_car} to 100",
+        "remove 55.5 from {_car}'s vehicle health",
+        "add 0.5 to {_car}'s vehicle health"
 })
-public class ExprSpeed extends SimplePropertyExpression<Vehicle, Double> {
+public class ExprHealth extends SimplePropertyExpression<Vehicle, Double> {
 
     static {
-        register(ExprSpeed.class, Double.class, "[mtv] vehicle speed", "vehicles");
+        register(ExprHealth.class, Double.class, "[mtv] vehicle health", "vehicles");
     }
 
     @Override
     protected String getPropertyName() {
-        return "[mtv] vehicle speed";
-    }
-
-    @Override
-    public @Nullable Double convert(Vehicle vehicle) {
-        return VehicleData.speed.get(vehicle.getLicensePlate());
+        return "[mtv] vehicle health";
     }
 
     @Override
     public Class<? extends Double> getReturnType() {
         return Double.class;
+    }
+
+    @Override
+    public @Nullable Double convert(Vehicle vehicle) {
+        return vehicle.getHealth();
     }
 
     @Override
@@ -48,24 +50,32 @@ public class ExprSpeed extends SimplePropertyExpression<Vehicle, Double> {
     @Override
     public void change(@NotNull Event event, @Nullable Object @NotNull [] delta, Changer.@NotNull ChangeMode changeMode) {
         Vehicle vehicle = getExpr().getSingle(event);
-        final String licensePlate = vehicle.getLicensePlate();
 
         if (delta == null || delta[0] == null) return;
         double changeValue = ((Number) delta[0]).doubleValue();
+        final double currentHealth = vehicle.getHealth();
 
         switch (changeMode) {
             case SET:
-                VehicleData.speed.put(licensePlate, changeValue);
+                setHealth(vehicle, changeValue);
                 break;
             case ADD:
-                VehicleData.speed.put(licensePlate, VehicleData.speed.get(licensePlate) + changeValue);
+                setHealth(vehicle, currentHealth + changeValue);
                 break;
             case REMOVE:
-                VehicleData.speed.put(licensePlate, VehicleData.speed.get(licensePlate) - changeValue);
+                setHealth(vehicle, currentHealth - changeValue);
                 break;
             default:
                 break;
         }
+    }
+
+    private void setHealth(@NotNull Vehicle vehicle, double newHealth){
+        final double health = (newHealth < 0) ? 0 : newHealth;
+        if (health > 0) VehicleData.markVehicleAsRepaired(vehicle.getLicensePlate());
+        else VehicleData.markVehicleAsDestroyed(vehicle.getLicensePlate());
+        vehicle.setHealth(health);
+        vehicle.save();
     }
 
 }
