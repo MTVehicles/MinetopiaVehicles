@@ -43,7 +43,9 @@ public class CondIsInsideVehicle extends Condition {
     @SuppressWarnings("NullableProblems")
     @Override
     public boolean check(Event event) {
-        return this.player.check(event, CondIsInsideVehicle::isInsideVehicle, isNegated());
+        boolean check = player.getSingle(event) != null && isInsideVehicle(player.getSingle(event));
+        if (!isNegated()) return check;
+        else return !check;
     }
 
     private static boolean isInsideVehicle(Player p){

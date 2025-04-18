@@ -42,7 +42,9 @@ public class CondIsRidingVehicle extends Condition {
     @SuppressWarnings("NullableProblems")
     @Override
     public boolean check(Event event) {
-        return this.player.check(event, CondIsRidingVehicle::isRidingVehicle, isNegated());
+        boolean check = player.getSingle(event) != null && isRidingVehicle(player.getSingle(event));
+        if (!isNegated()) return check;
+        else return !check;
     }
 
     private static boolean isRidingVehicle(Player p){
