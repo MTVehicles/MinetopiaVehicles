@@ -4,6 +4,7 @@ import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
@@ -19,17 +20,18 @@ import org.jetbrains.annotations.Nullable;
 @Examples({
         "if player is the vehicle owner of {_car}:"
 })
+@Since("2.5.5")
 public class CondIsOwner extends Condition {
 
     static {
         Skript.registerCondition(CondIsOwner.class,
-                "[player] %player% is [the] [mtv] vehicle owner of %object%",
-                "[player] %player% (isn't|is not) [the] [mtv] vehicle owner of %object%"
+                "[player] %player% is [the] [mtv] vehicle owner of %vehicle%",
+                "[player] %player% (isn't|is not) [the] [mtv] vehicle owner of %vehicle%"
         );
     }
 
     @SuppressWarnings("null")
-    private Expression<Object> vehicle;
+    private Expression<Vehicle> vehicle;
 
     private Expression<Player> player;
 
@@ -37,7 +39,7 @@ public class CondIsOwner extends Condition {
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         setNegated(matchedPattern == 1);
-        this.vehicle = (Expression<Object>) exprs[1];
+        this.vehicle = (Expression<Vehicle>) exprs[1];
         this.player = (Expression<Player>) exprs[0];
         return true;
     }
@@ -45,12 +47,7 @@ public class CondIsOwner extends Condition {
     @SuppressWarnings("NullableProblems")
     @Override
     public boolean check(Event event) {
-        if (!(vehicle.getSingle(event) instanceof Vehicle) || vehicle.getSingle(event) == null) {
-            Main.logSevere("Skript error: Provided variable is not a vehicle (\"if %player% is the [mtv] vehicle owner of %vehicle%\").");
-            return false;
-        }
-
-        boolean check = ((Vehicle) vehicle.getSingle(event)).isOwner(player.getSingle(event));
+        boolean check = vehicle.getSingle(event).isOwner(player.getSingle(event));
         if (!isNegated()) return check;
         else return !check;
     }

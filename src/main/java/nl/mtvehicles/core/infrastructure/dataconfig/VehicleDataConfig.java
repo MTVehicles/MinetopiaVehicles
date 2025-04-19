@@ -189,9 +189,16 @@ public class VehicleDataConfig extends MTVConfig {
      * @param license Vehicle's license plate
      */
     public boolean isHornEnabled(String license){
-        final String path = "vehicle." + license + ".hornEnabled";
-        if (!isHornSet(license)) setInitialHorn(license);
-        return getConfiguration().getBoolean(path);
+        Boolean horn = (Boolean) get(license, Option.HORN_ENABLED);
+        if (horn == null){
+            saveToDisk();
+            // If the vehicle is not in memory, it means it was never set.
+            // So we need to load it from disk and set the default value
+            final String path = "vehicle." + license + ".hornEnabled";
+            if (!isHornSet(license)) setInitialHorn(license);
+            return getConfiguration().getBoolean(path);
+        }
+        return horn;
     }
 
     /**
@@ -212,6 +219,7 @@ public class VehicleDataConfig extends MTVConfig {
         boolean state = VehicleUtils.getHornByDamage(getDamage(license));
         getConfiguration().set(path, state);
         save();
+        loadFromDisk();
     }
 
 
@@ -220,9 +228,14 @@ public class VehicleDataConfig extends MTVConfig {
      * @param license Vehicle's license plate
      */
     public double getHealth(String license){
-        final String path = "vehicle." + license + ".health";
-        if (!isHealthSet(license)) setInitialHealth(license);
-        return getConfiguration().getDouble(path);
+        Double health = (Double) get(license, Option.HEALTH);
+        if (health == null) {
+            saveToDisk();
+            final String path = "vehicle." + license + ".health";
+            if (!isHealthSet(license)) setInitialHealth(license);
+            return getConfiguration().getDouble(path);
+        }
+        return health;
     }
 
     /**
@@ -244,6 +257,7 @@ public class VehicleDataConfig extends MTVConfig {
         double state = VehicleUtils.getMaxHealthByDamage(damage);
         getConfiguration().set(path, state);
         save();
+        loadFromDisk();
     }
 
     /**

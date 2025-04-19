@@ -4,6 +4,7 @@ import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
@@ -20,35 +21,31 @@ import org.jetbrains.annotations.Nullable;
         "if the vehicle {_car} is occupied:",
         "if the vehicle {_car} is not occupied:"
 })
+@Since("2.5.5")
 public class CondIsOccupied extends Condition {
 
     static {
         Skript.registerCondition(CondIsOccupied.class,
-                "[the] [mtv] vehicle %object% is occupied",
-                "[the] [mtv] vehicle %object% (isn't|is not) occupied"
+                "[the] [mtv] vehicle %vehicle% is occupied",
+                "[the] [mtv] vehicle %vehicle% (isn't|is not) occupied"
         );
     }
 
     @SuppressWarnings("null")
-    private Expression<Object> vehicle;
+    private Expression<Vehicle> vehicle;
 
     @SuppressWarnings({"NullableProblems", "unchecked"})
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
         setNegated(matchedPattern == 1);
-        this.vehicle = (Expression<Object>) exprs[0];
+        this.vehicle = (Expression<Vehicle>) exprs[0];
         return true;
     }
 
     @SuppressWarnings("NullableProblems")
     @Override
     public boolean check(Event event) {
-        if (!(vehicle.getSingle(event) instanceof Vehicle) || vehicle.getSingle(event) == null) {
-            Main.logSevere("Skript error: Provided variable is not a vehicle (\"if %player% is the [mtv] vehicle owner of %vehicle%\").");
-            return false;
-        }
-
-        boolean check = ((Vehicle) vehicle.getSingle(event)).isOccupied();
+        boolean check = vehicle.getSingle(event).isOccupied();
         if (!isNegated()) return check;
         else return !check;
     }

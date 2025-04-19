@@ -9,6 +9,7 @@ nl.mtvehicles.core.infrastructure.annotations
 nl.mtvehicles.core.infrastructure.dataconfig
 nl.mtvehicles.core.infrastructure.dependencies
 nl.mtvehicles.core.infrastructure.dependencies.skript
+nl.mtvehicles.core.infrastructure.dependencies.skript.conditions
 nl.mtvehicles.core.infrastructure.dependencies.skript.effects
 nl.mtvehicles.core.infrastructure.dependencies.skript.events
 nl.mtvehicles.core.infrastructure.dependencies.skript.expressions

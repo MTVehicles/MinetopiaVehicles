@@ -4,11 +4,9 @@ import nl.mtvehicles.core.infrastructure.annotations.ToDo;
 import nl.mtvehicles.core.infrastructure.enums.VehicleType;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Maps containing vehicles' data
@@ -19,6 +17,7 @@ public class VehicleData {
      * @see Vehicle#getCurrentSpeed()
      */
     public static HashMap<String, Double> speed = new HashMap<>();
+    @Deprecated
     public static HashMap<String, Double> speedhigh = new HashMap<>(); // What is this for???
     public static HashMap<String, Integer> maxheight = new HashMap<>();
     public static HashMap<String, Double> mainx = new HashMap<>();
@@ -42,12 +41,14 @@ public class VehicleData {
     public static Map<String, Long> lastUsage = new HashMap<>();
     public static HashMap<String, Boolean> fallDamage = new HashMap<>(); //Used for helicopters when 'extremely falling'
 
-    public static HashMap<String, Integer> RotationSpeed = new HashMap<>();
-    public static HashMap<String, Double> MaxSpeed = new HashMap<>();
-    public static HashMap<String, Double> AccelerationSpeed = new HashMap<>();
-    public static HashMap<String, Double> BrakingSpeed = new HashMap<>();
-    public static HashMap<String, Double> MaxSpeedBackwards = new HashMap<>();
-    public static HashMap<String, Double> FrictionSpeed = new HashMap<>();
+    private static HashMap<String, Integer> RotationSpeed = new HashMap<>();
+    private static HashMap<String, Double> MaxSpeed = new HashMap<>();
+    private static HashMap<String, Double> AccelerationSpeed = new HashMap<>();
+    private static HashMap<String, Double> BrakingSpeed = new HashMap<>();
+    private static HashMap<String, Double> MaxSpeedBackwards = new HashMap<>();
+    private static HashMap<String, Double> FrictionSpeed = new HashMap<>();
+    public static Set<String> frictionBlocked = new HashSet<>();
+    public static Set<String> brakingBlocked = new HashSet<>();
     public static HashMap<String, Set<String>> lastRegions = new HashMap<>();
     public static HashMap<String, Boolean> destroyedVehicles = new HashMap<>();
     /**
@@ -67,6 +68,55 @@ public class VehicleData {
     public static boolean isTrunkViewer(String licensePlate, Player player){
         setTrunkViewers(licensePlate);
         return trunkViewers.get(licensePlate).contains(player);
+    }
+
+    public enum DataSpeed {
+        MAXSPEED, ACCELERATION, BRAKING, MAXSPEEDBACKWARDS, FRICTION
+    }
+
+    public static Double getSpeed(@NotNull DataSpeed speedType, @NotNull String licensePlate) {
+        if (speedType == DataSpeed.MAXSPEED) {
+            return MaxSpeed.get(licensePlate);
+        } else if (speedType == DataSpeed.ACCELERATION) {
+            return AccelerationSpeed.get(licensePlate);
+        } else if (speedType == DataSpeed.BRAKING) {
+            if (brakingBlocked.contains(licensePlate)) return 0.0;
+            else return BrakingSpeed.get(licensePlate);
+        } else if (speedType == DataSpeed.MAXSPEEDBACKWARDS) {
+            return MaxSpeedBackwards.get(licensePlate);
+        } else if (speedType == DataSpeed.FRICTION) {
+            if (frictionBlocked.contains(licensePlate)) return 0.0;
+            else return FrictionSpeed.get(licensePlate);
+        }
+        return null;
+    }
+
+    public static Integer getRotationSpeed(String licensePlate) {
+        return RotationSpeed.get(licensePlate);
+    }
+
+    public static void setSpeed(@NotNull DataSpeed speedType, @NotNull String licensePlate, @NotNull Double value) {
+        switch (speedType) {
+            case MAXSPEED:
+                MaxSpeed.put(licensePlate, value);
+                break;
+            case ACCELERATION:
+                AccelerationSpeed.put(licensePlate, value);
+                break;
+            case BRAKING:
+                BrakingSpeed.put(licensePlate, value);
+                break;
+            case MAXSPEEDBACKWARDS:
+                MaxSpeedBackwards.put(licensePlate, value);
+                break;
+            case FRICTION:
+                FrictionSpeed.put(licensePlate, value);
+                break;
+        }
+    }
+
+    public static void setRotationSpeed(String licensePlate, Integer value) {
+        RotationSpeed.put(licensePlate, value);
     }
 
     /**

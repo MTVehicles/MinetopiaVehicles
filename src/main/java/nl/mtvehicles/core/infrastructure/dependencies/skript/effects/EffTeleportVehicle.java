@@ -24,12 +24,12 @@ public class EffTeleportVehicle extends Effect {
 
     static {
         Skript.registerEffect(EffTeleportVehicle.class,
-                "(teleport|tp) [a[n]] [mtv] vehicle %object% to [location] %location%"
+                "(teleport|tp) [a[n]] [mtv] vehicle %vehicle% to [location] %location%"
         );
     }
 
     @SuppressWarnings("null")
-    private Expression<Object> vehicle;
+    private Expression<Vehicle> vehicle;
 
     @SuppressWarnings("null")
     private Expression<Location> location;
@@ -38,7 +38,7 @@ public class EffTeleportVehicle extends Effect {
     @Override
     public boolean init(Expression<?>[] expressions, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parser) {
         this.location = (Expression<Location>) expressions[1];
-        this.vehicle = (Expression<Object>) expressions[0];
+        this.vehicle = (Expression<Vehicle>) expressions[0];
         return true;
     }
 
@@ -51,13 +51,6 @@ public class EffTeleportVehicle extends Effect {
 
     @Override
     protected void execute(Event event) {
-
-        if (!(vehicle.getSingle(event) instanceof Vehicle) || vehicle.getSingle(event) == null) {
-            Main.logSevere("Skript error: Provided variable is not a vehicle (\"teleport [mtv] vehicle %vehicle% to location %location%\").");
-            return;
-        }
-
-        VehicleUtils.teleportVehicle(((Vehicle) vehicle.getSingle(event)).getLicensePlate(), location.getSingle(event));
-
+        VehicleUtils.teleportVehicle(vehicle.getSingle(event).getLicensePlate(), location.getSingle(event));
     }
 }

@@ -11,7 +11,7 @@ import java.io.IOException;
 
 /**
  * Methods for Skript soft-dependency.<br>
- * @warning <b>Do not initialise this class directly. Use {@link DependencyModule#skript} instead.</b>
+ * @warn <b>Do not initialise this class directly. Use {@link DependencyModule#skript} instead.</b>
  * @since 2.5.1
  */
 public class SkriptUtils {
