@@ -4,6 +4,7 @@ import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
@@ -22,6 +23,7 @@ import java.util.List;
         "add {_player} as a rider of the vehicle {_car}",
         "add player {_offlinePlayer} as a member to mtv vehicle {_car}"
 })
+@Since("2.5.5")
 public class EffAddRiderMember extends Effect {
 
     static {

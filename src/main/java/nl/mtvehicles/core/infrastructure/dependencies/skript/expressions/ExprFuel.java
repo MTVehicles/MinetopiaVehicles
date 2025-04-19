@@ -4,6 +4,7 @@ import ch.njol.skript.classes.Changer;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
 import nl.mtvehicles.core.infrastructure.vehicle.VehicleData;
@@ -19,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
         "set vehicle fuel level of {_car} to 96",
         "remove 10 from {_car}'s vehicle fuel level"
 })
+@Since("2.5.6")
 public class ExprFuel extends SimplePropertyExpression<Vehicle, Double> {
 
     static {

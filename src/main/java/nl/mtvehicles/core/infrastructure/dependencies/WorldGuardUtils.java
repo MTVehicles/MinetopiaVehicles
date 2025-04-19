@@ -15,7 +15,7 @@ import java.util.*;
 
 /**
  * Methods for WorldGuard soft-dependency.<br>
- * @warning <b>Do not initialise this class directly. Use {@link DependencyModule#worldGuard} instead.</b>
+ * @warn <b>Do not initialise this class directly. Use {@link DependencyModule#worldGuard} instead.</b>
  */
 public class WorldGuardUtils {
     //This must only be called if DependencyModule made sure that WorldGuard is installed.

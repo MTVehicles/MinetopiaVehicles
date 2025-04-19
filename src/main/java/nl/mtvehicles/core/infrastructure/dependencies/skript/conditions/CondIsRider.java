@@ -4,6 +4,7 @@ import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
@@ -19,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
 @Examples({
         "if player is a vehicle rider of {_car}:"
 })
+@Since("2.5.5")
 public class CondIsRider extends Condition {
 
     static {

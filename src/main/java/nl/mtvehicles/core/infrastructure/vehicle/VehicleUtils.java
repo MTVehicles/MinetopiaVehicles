@@ -1033,7 +1033,7 @@ public final class VehicleUtils {
      * @param vehicle Vehicle
      * @return False if the driver is seated in the vehicle, or if the vehicle doesn't have {@link VehicleData} and thus is not created (see {@link #enterVehicle(String, Player)} -> the vehicle can't be turned off. Otherwise, true.
      *
-     * @warning Do not call this method if a vehicle is being used! Use {@link #kickOut(Player)} instead.
+     * @warn Do not call this method if a vehicle is being used! Use {@link #kickOut(Player)} instead.
      */
     public static boolean turnOff(@NotNull Vehicle vehicle){
         final String licensePlate = vehicle.getLicensePlate();

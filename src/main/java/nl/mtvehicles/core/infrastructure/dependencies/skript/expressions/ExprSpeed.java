@@ -4,6 +4,7 @@ import ch.njol.skript.classes.Changer;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
 import nl.mtvehicles.core.infrastructure.vehicle.VehicleData;
@@ -18,6 +19,7 @@ import org.jetbrains.annotations.Nullable;
         "add 0.5 to vehicle speed of (player's driven mtv vehicle)",
         "set mtv vehicle speed of {_helicopter} to 3"
 })
+@Since("2.5.5")
 public class ExprSpeed extends SimplePropertyExpression<Vehicle, Double> {
 
     static {

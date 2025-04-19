@@ -4,6 +4,7 @@ import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
@@ -19,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
         "if player {_p} is driving an mtv vehicle:",
         "if player is not driving mtv vehicle:"
 })
+@Since("2.5.6")
 public class CondIsRidingVehicle extends Condition {
 
     static {

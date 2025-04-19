@@ -4,6 +4,7 @@ import ch.njol.skript.classes.Changer;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
 import org.bukkit.Bukkit;
@@ -18,6 +19,7 @@ import org.jetbrains.annotations.Nullable;
         "set {_owner} to {_car}'s vehicle owner",
         "set {_owner} to vehicle owner of (mtv vehicle with license plate \"DF-4J-2R\")"
 })
+@Since("2.5.5")
 public class ExprOwner extends SimplePropertyExpression<Vehicle, OfflinePlayer> {
 
     static {

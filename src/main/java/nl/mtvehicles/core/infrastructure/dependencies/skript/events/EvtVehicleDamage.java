@@ -4,6 +4,7 @@ import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Literal;
 import ch.njol.skript.lang.SkriptEvent;
 import ch.njol.skript.lang.SkriptParser;
@@ -25,6 +26,7 @@ import org.jetbrains.annotations.Nullable;
         "set {_licensePlate} to event-text",
         "set {_damage} to event-number"
 })
+@Since("2.5.6")
 public class EvtVehicleDamage extends SkriptEvent {
 
     static {

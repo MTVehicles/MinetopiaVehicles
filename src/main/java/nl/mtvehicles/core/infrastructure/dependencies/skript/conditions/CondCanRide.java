@@ -4,11 +4,11 @@ import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
-import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -20,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
         "if player can ride [mtv] vehicle {_car}:",
         "if {_p} cannot ride [mtv] vehicle {_car}:"
 })
+@Since("2.5.5")
 public class CondCanRide extends Condition {
 
     static {

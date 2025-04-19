@@ -4,6 +4,11 @@ import ch.njol.skript.classes.ClassInfo;
 import ch.njol.skript.registrations.Classes;
 import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
 
+/**
+ * Custom Skript types for the MTV plugin.
+ * Registers the "vehicle" type to represent MTV vehicles (instead of just using Objects).
+ * @since 2.5.6
+ */
 public class Types {
     // Register custom Skript types
     static {
