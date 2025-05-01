@@ -147,7 +147,7 @@ public class VehicleMovement {
         standMainSeat = VehicleData.autostand.get("MTVEHICLES_MAINSEAT_" + license);
         standRotors = VehicleData.autostand.get("MTVEHICLES_WIEKENS_" + license);
 
-        if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.DAMAGE_ENABLED) && ConfigModule.vehicleDataConfig.getHealth(license) == 0) { // The vehicle is broken
+        if (ConfigModule.vehicleDataConfig.getHealth(license) == 0) { // The vehicle is broken
             standMain.getWorld().spawnParticle(Particle.SMOKE_NORMAL, standMain.getLocation(), 2);
 
             if (!VehicleData.isVehicleDestroyed(license)) {
@@ -269,7 +269,7 @@ public class VehicleMovement {
      * Check the rotation of the vehicle
      */
     protected void rotation(){
-        int rotationSpeed = VehicleData.RotationSpeed.get(license);
+        int rotationSpeed = VehicleData.getRotationSpeed(license);
         final Location locBelow = new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY() - 0.2, standMain.getLocation().getZ(), standMain.getLocation().getYaw(), standMain.getLocation().getPitch());
 
         final Material blockTypeBelow = locBelow.getBlock().getType();
@@ -304,10 +304,10 @@ public class VehicleMovement {
      * Check the movement of the vehicle
      */
     protected void move(){ // Forwards × Backwards
-        final double maxSpeed = VehicleData.MaxSpeed.get(license);
-        final double accelerationSpeed = VehicleData.AccelerationSpeed.get(license);
-        final double brakingSpeed = VehicleData.BrakingSpeed.get(license);
-        final double maxSpeedBackwards = VehicleData.MaxSpeedBackwards.get(license);
+        final double maxSpeed = VehicleData.getSpeed(VehicleData.DataSpeed.MAXSPEED, license);
+        final double accelerationSpeed = VehicleData.getSpeed(VehicleData.DataSpeed.ACCELERATION, license);
+        final double brakingSpeed = VehicleData.getSpeed(VehicleData.DataSpeed.BRAKING, license);
+        final double maxSpeedBackwards = VehicleData.getSpeed(VehicleData.DataSpeed.MAXSPEEDBACKWARDS, license);
         final Location locBelow = new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY() - 0.2, standMain.getLocation().getZ(), standMain.getLocation().getYaw(), standMain.getLocation().getPitch());
 
         if (steerGetZza() == 0.0 && !locBelow.getBlock().getType().equals(Material.AIR)) {
@@ -315,6 +315,7 @@ public class VehicleMovement {
         }
 
         if (steerGetZza() > 0.0) {
+            VehicleData.frictionBlocked.remove(license); //remove friction block if applicable
             if (VehicleData.speed.get(license) < 0) {
                 VehicleData.speed.put(license, VehicleData.speed.get(license) + brakingSpeed);
                 return;
@@ -325,6 +326,7 @@ public class VehicleMovement {
             VehicleData.speed.put(license, VehicleData.speed.get(license) + accelerationSpeed);
         }
         if (steerGetZza() < 0.0) {
+            VehicleData.frictionBlocked.remove(license); //remove friction block if applicable
             if (VehicleData.speed.get(license) > 0) {
                 VehicleData.speed.put(license, VehicleData.speed.get(license) - brakingSpeed);
                 return;
@@ -340,7 +342,7 @@ public class VehicleMovement {
      * Slow down the vehicle due to friction
      */
     protected void putFrictionSpeed(){
-        double frictionSpeed = VehicleData.FrictionSpeed.get(license);
+        double frictionSpeed = VehicleData.getSpeed(VehicleData.DataSpeed.FRICTION, license);
         final String blockBelowName = new Location(standMain.getLocation().getWorld(), standMain.getLocation().getX(), standMain.getLocation().getY() - 0.2, standMain.getLocation().getZ(), standMain.getLocation().getYaw(), standMain.getLocation().getPitch()).getBlock().getType().toString();
 
         // Reduce friction on ice if slippery ice is set to true
@@ -444,7 +446,7 @@ public class VehicleMovement {
         // Speed up on ice
         if (ConfigModule.defaultConfig.isIceSlippery()) {
             if (locBlockBelow.getBlock().getType().toString().contains("ICE")) {
-                if (VehicleData.speed.get(license) > 0.05) VehicleData.speed.put(license, Math.max(VehicleData.speed.get(license) * 1.1, VehicleData.MaxSpeed.get(license) * 1.2)); // Up speed by 10 %, maximum of 120 % of max speed
+                if (VehicleData.speed.get(license) > 0.05) VehicleData.speed.put(license, Math.max(VehicleData.speed.get(license) * 1.1, VehicleData.getSpeed(VehicleData.DataSpeed.MAXSPEED, license) * 1.2)); // Up speed by 10 %, maximum of 120 % of max speed
             }
         }
 

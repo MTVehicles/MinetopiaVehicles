@@ -28,6 +28,8 @@ public class VehicleRefill extends MTVSubCommand {
         vehicle.setFuel(100.0);
         vehicle.save();
 
+        VehicleData.fuel.put(licensePlate, 100.0);
+
         if (VehicleData.fallDamage.get(licensePlate) != null) VehicleData.fallDamage.remove(licensePlate);
 
         sendMessage(Message.REFILL_SUCCESSFUL);

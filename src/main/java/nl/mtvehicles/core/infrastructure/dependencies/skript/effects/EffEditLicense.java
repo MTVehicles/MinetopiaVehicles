@@ -1,9 +1,6 @@
 package nl.mtvehicles.core.infrastructure.dependencies.skript.effects;
 
 import ch.njol.skript.Skript;
-import ch.njol.skript.doc.Description;
-import ch.njol.skript.doc.Examples;
-import ch.njol.skript.doc.Name;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
@@ -13,18 +10,13 @@ import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
 
-@Name("Edit license plate")
-@Description("Edit license plate of an MTV vehicle")
-@Examples({
-        "edit license plate of a mtv vehicle {_car} to \"DF-4J-2R\"",
-        "set {_car}'s mtv license plate to \"DF-4J-2R\""
-})
+@Deprecated
 public class EffEditLicense extends Effect {
 
     static {
         Skript.registerEffect(EffEditLicense.class,
-                "(set|edit) [the] license [plate] of [a[n]] [mtv] vehicle %object% to %string%",
-                "(set|edit) [a[n]] [mtv] [vehicle] %object%'s [mtv] license [plate] to %string%"
+                "edit [the] license [plate] of [a[n]] [mtv] vehicle %object% to %string%",
+                "edit [a[n]] [mtv] [vehicle] %object%'s [mtv] license [plate] to %string%"
         );
     }
 

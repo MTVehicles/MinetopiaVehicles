@@ -1,6 +1,6 @@
 /**
  * Classes for Skript - events, expressions, effects.
- * @warning <b>Do not initialise classes directly. Use {@link nl.mtvehicles.core.infrastructure.modules.DependencyModule}'s fields instead.</b>
+ * @warn <b>Do not initialise classes directly. Use {@link nl.mtvehicles.core.infrastructure.modules.DependencyModule}'s fields instead.</b>
  *
  * @since 2.5.1
  **/

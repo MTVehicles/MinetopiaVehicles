@@ -1,73 +1,73 @@
 package nl.mtvehicles.core.infrastructure.dependencies.skript.expressions;
 
-import ch.njol.skript.Skript;
+import ch.njol.skript.classes.Changer;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
-import ch.njol.skript.lang.Expression;
-import ch.njol.skript.lang.ExpressionType;
-import ch.njol.skript.lang.SkriptParser;
-import ch.njol.skript.lang.util.SimpleExpression;
-import ch.njol.util.Kleenean;
-import nl.mtvehicles.core.Main;
+import ch.njol.skript.doc.Since;
+import ch.njol.skript.expressions.base.SimplePropertyExpression;
 import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
 import nl.mtvehicles.core.infrastructure.vehicle.VehicleData;
 import org.bukkit.event.Event;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @Name("MTV Vehicle's vehicle speed")
 @Description("Get the vehicle's vehicle speed")
 @Examples({
         "set {_licensePlate} to {_car}'s vehicle speed",
-        "set {_licensePlate} to vehicle speed of (player's driven mtv vehicle)"
+        "add 0.5 to vehicle speed of (player's driven mtv vehicle)",
+        "set mtv vehicle speed of {_helicopter} to 3"
 })
-public class ExprSpeed extends SimpleExpression<String> {
+@Since("2.5.5")
+public class ExprSpeed extends SimplePropertyExpression<Vehicle, Double> {
 
     static {
-        Skript.registerExpression(ExprSpeed.class,
-                String.class,
-                ExpressionType.SIMPLE,
-                "%object%'s [mtv] vehicle speed",
-                "[mtv] vehicle speed of %object%"
-        );
-    }
-
-    @SuppressWarnings("null")
-    private Expression<Object> vehicle;
-
-    @Override
-    public Class<? extends String> getReturnType() {
-        return String.class;
+        register(ExprSpeed.class, Double.class, "[mtv] vehicle speed", "vehicles");
     }
 
     @Override
-    public boolean isSingle() {
-        return true;
-    }
-
-    @SuppressWarnings({"unchecked", "null"})
-    @Override
-    public boolean init(Expression<?>[] expressions, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parser) {
-        this.vehicle = (Expression<Object>) expressions[0];
-        return true;
+    protected String getPropertyName() {
+        return "[mtv] vehicle speed";
     }
 
     @Override
-    public String toString(@Nullable Event event, boolean debug) {
-        return "MTVehicles vehicle";
+    public @Nullable Double convert(Vehicle vehicle) {
+        return VehicleData.speed.get(vehicle.getLicensePlate());
     }
 
     @Override
-    protected String[] get(Event event) {
-        if (vehicle.getSingle(event) instanceof Vehicle) {
-            return new String[] {
-                    String.valueOf(VehicleData.speed.get(((Vehicle) vehicle.getSingle(event)).getLicensePlate()))
-            };
+    public Class<? extends Double> getReturnType() {
+        return Double.class;
+    }
+
+    @Override
+    public @Nullable Class<?> @NotNull [] acceptChange(Changer.ChangeMode mode) {
+        if (mode == Changer.ChangeMode.SET || mode == Changer.ChangeMode.ADD || mode == Changer.ChangeMode.REMOVE) return new Class[]{Double.class, Number.class};
+        else return null;
+    }
+
+    @Override
+    public void change(@NotNull Event event, @Nullable Object @NotNull [] delta, Changer.@NotNull ChangeMode changeMode) {
+        Vehicle vehicle = getExpr().getSingle(event);
+        final String licensePlate = vehicle.getLicensePlate();
+
+        if (delta == null || delta[0] == null) return;
+        double changeValue = ((Number) delta[0]).doubleValue();
+
+        switch (changeMode) {
+            case SET:
+                VehicleData.speed.put(licensePlate, changeValue);
+                break;
+            case ADD:
+                VehicleData.speed.put(licensePlate, VehicleData.speed.get(licensePlate) + changeValue);
+                break;
+            case REMOVE:
+                VehicleData.speed.put(licensePlate, VehicleData.speed.get(licensePlate) - changeValue);
+                break;
+            default:
+                break;
         }
-
-        Main.logSevere("Skript error: Provided variable is not a vehicle (\"vehicle speed of %vehicle%\").");
-        return null;
-
     }
 
 }

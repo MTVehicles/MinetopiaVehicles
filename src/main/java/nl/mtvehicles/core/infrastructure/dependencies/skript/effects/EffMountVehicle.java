@@ -24,12 +24,12 @@ public class EffMountVehicle extends Effect {
 
     static {
         Skript.registerEffect(EffMountVehicle.class,
-                "make [player] %player% (mount|drive|ride) [mtv] vehicle %object%"
+                "make [player] %player% (mount|drive|ride) [mtv] vehicle %vehicle%"
         );
     }
 
     @SuppressWarnings("null")
-    private Expression<Object> vehicle;
+    private Expression<Vehicle> vehicle;
 
     @SuppressWarnings("null")
     private Expression<Player> player;
@@ -37,7 +37,7 @@ public class EffMountVehicle extends Effect {
     @SuppressWarnings({"unchecked", "null"})
     @Override
     public boolean init(Expression<?>[] expressions, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parser) {
-        this.vehicle = (Expression<Object>) expressions[1];
+        this.vehicle = (Expression<Vehicle>) expressions[1];
         this.player = (Expression<Player>) expressions[0];
         return true;
     }
@@ -51,12 +51,7 @@ public class EffMountVehicle extends Effect {
 
     @Override
     protected void execute(Event event) {
-        if (!(vehicle.getSingle(event) instanceof Vehicle) || vehicle.getSingle(event) == null) {
-            Main.logSevere("Skript error: Provided variable is not a vehicle (\"make player %player% mount [mtv] vehicle %vehicle%\").");
-            return;
-        }
-
-        if (!((Vehicle) vehicle.getSingle(event)).isOccupied())
-            VehicleUtils.enterVehicle(((Vehicle) vehicle.getSingle(event)).getLicensePlate(), player.getSingle(event));
+        if (!vehicle.getSingle(event).isOccupied())
+            VehicleUtils.enterVehicle(vehicle.getSingle(event).getLicensePlate(), player.getSingle(event));
     }
 }

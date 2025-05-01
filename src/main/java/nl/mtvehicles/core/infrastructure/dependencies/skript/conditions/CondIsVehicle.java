@@ -20,6 +20,8 @@ import org.jetbrains.annotations.Nullable;
 @Examples({
         "if {_car} is an mtv vehicle:"
 })
+
+@Deprecated
 public class CondIsVehicle extends Condition {
 
     static {
