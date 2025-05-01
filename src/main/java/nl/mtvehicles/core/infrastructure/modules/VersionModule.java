@@ -128,6 +128,11 @@ public class VersionModule {
             case "v1_19_R3":
                 returns = ServerVersion.v1_19_R3;
                 break;
+            case "1.20":
+            case "1.20.1":
+            case "v1_20_R1":
+                returns = ServerVersion.v1_20_R1;
+                break;
             case "1.20.2":
             case "1.20.3":
             case "v1_20_R2":
