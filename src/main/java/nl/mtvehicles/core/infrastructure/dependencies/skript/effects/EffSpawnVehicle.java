@@ -26,12 +26,12 @@ public class EffSpawnVehicle extends Effect {
     static {
         Skript.registerEffect(EffSpawnVehicle.class,
                 "spawn [mtv] vehicle (by|with) license [plate] %string% at [location] %location%",
-                "spawn [mtv] vehicle %object% at [location] %location%"
+                "spawn [mtv] vehicle %vehicle% at [location] %location%"
         );
     }
 
     @SuppressWarnings("null")
-    private Expression<Object> vehicle;
+    private Expression<Vehicle> vehicle;
 
     @SuppressWarnings("null")
     private Expression<String> licensePlate;
@@ -48,7 +48,7 @@ public class EffSpawnVehicle extends Effect {
             this.licensePlate = (Expression<String>) expressions[0];
             this.location = (Expression<Location>) expressions[1];
         } else {
-            this.vehicle = (Expression<Object>) expressions[0];
+            this.vehicle = (Expression<Vehicle>) expressions[0];
             this.location = (Expression<Location>) expressions[1];
         }
         pattern = matchedPattern;
@@ -65,11 +65,7 @@ public class EffSpawnVehicle extends Effect {
     @Override
     protected void execute(Event event) {
         if (pattern == 1){
-            if ((vehicle.getSingle(event) instanceof Vehicle) && vehicle.getSingle(event) != null) {
-                VehicleUtils.spawnVehicle(((Vehicle) vehicle.getSingle(event)).getLicensePlate(), location.getSingle(event));
-                return;
-            }
-            Main.logSevere("Skript error: Provided variable is not a vehicle (\"spawn vehicle %vehicle% at location %location%\").");
+            VehicleUtils.spawnVehicle(vehicle.getSingle(event).getLicensePlate(), location.getSingle(event));
         }
         else {
             try {

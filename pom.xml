@@ -267,7 +267,7 @@
                     <destDir>docs</destDir>
                     <tags>
                         <tag>
-                            <name>warning</name>
+                            <name>warn</name>
                             <placement>a</placement>
                             <head>Beware!</head>
                         </tag>

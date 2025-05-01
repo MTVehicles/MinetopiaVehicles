@@ -4,6 +4,7 @@ import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
+import ch.njol.skript.doc.Since;
 import ch.njol.skript.lang.Effect;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
@@ -22,17 +23,18 @@ import java.util.List;
         "add {_player} as a rider of the vehicle {_car}",
         "add player {_offlinePlayer} as a member to mtv vehicle {_car}"
 })
+@Since("2.5.5")
 public class EffAddRiderMember extends Effect {
 
     static {
         Skript.registerEffect(EffAddRiderMember.class,
-                "add [player] %offlineplayer% as [a] rider (of|to) [the] [mtv] vehicle %object%",
-                "add [player] %offlineplayer% as [a] member (of|to) [the] [mtv] vehicle %object%"
+                "add [player] %offlineplayer% as [a] rider (of|to) [the] [mtv] vehicle %vehicle%",
+                "add [player] %offlineplayer% as [a] member (of|to) [the] [mtv] vehicle %vehicle%"
         );
     }
 
     @SuppressWarnings("null")
-    private Expression<Object> vehicle;
+    private Expression<Vehicle> vehicle;
 
     @SuppressWarnings("null")
     private Expression<OfflinePlayer> player;
@@ -48,7 +50,7 @@ public class EffAddRiderMember extends Effect {
     @Override
     public boolean init(Expression<?>[] expressions, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parser) {
         this.player = (Expression<OfflinePlayer>) expressions[0];
-        this.vehicle = (Expression<Object>) expressions[1];
+        this.vehicle = (Expression<Vehicle>) expressions[1];
         this.type = (matchedPattern == 0) ? MemberType.RIDER : MemberType.MEMBER;
         return true;
     }
@@ -62,13 +64,7 @@ public class EffAddRiderMember extends Effect {
 
     @Override
     protected void execute(Event event) {
-
-        if (!(this.vehicle.getSingle(event) instanceof Vehicle) || vehicle.getSingle(event) == null) {
-            Main.logSevere("Skript error: Provided variable is not a vehicle (\"add player %offlineplayer% as a rider/member of vehicle %vehicle%\").");
-            return;
-        }
-
-        Vehicle vehicle = (Vehicle) this.vehicle.getSingle(event);
+        Vehicle vehicle = this.vehicle.getSingle(event);
         String playerUUID = this.player.getSingle(event).getUniqueId().toString();
 
         if (type.equals(MemberType.RIDER)) {

@@ -152,6 +152,13 @@ public class Vehicle {
         ConfigModule.vehicleDataConfig.set(this.getLicensePlate(), VehicleDataConfig.Option.MEMBERS, this.getMembers());
     }
 
+    @Override
+    public String toString(){
+        if (this.getName() == null) return "an MTV vehicle";
+        else if (this.getLicensePlate() == null) return "a " + this.getName();
+        else return this.getName() + " with license plate " + this.getLicensePlate();
+    }
+
 
 
     /**

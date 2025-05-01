@@ -28,14 +28,14 @@ public class ExprVehicleLocation extends SimpleExpression<Location> {
     static {
         Skript.registerExpression(ExprVehicleLocation.class,
                 Location.class,
-                ExpressionType.SIMPLE,
-                "%object%'s [mtv] vehicle location",
-                "[the] [mtv] vehicle location of %object%"
+                ExpressionType.PROPERTY,
+                "%vehicle%'s [mtv] vehicle location",
+                "[the] [mtv] vehicle location of %vehicle%"
         );
     }
 
     @SuppressWarnings("null")
-    private Expression<Object> vehicle;
+    private Expression<Vehicle> vehicle;
 
     @Override
     public Class<? extends Location> getReturnType() {
@@ -50,7 +50,7 @@ public class ExprVehicleLocation extends SimpleExpression<Location> {
     @SuppressWarnings({"unchecked", "null"})
     @Override
     public boolean init(Expression<?>[] expressions, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parser) {
-        this.vehicle = (Expression<Object>) expressions[0];
+        this.vehicle = (Expression<Vehicle>) expressions[0];
         return true;
     }
 
@@ -61,14 +61,9 @@ public class ExprVehicleLocation extends SimpleExpression<Location> {
 
     @Override
     protected Location[] get(Event event) {
-        if (vehicle.getSingle(event) instanceof Vehicle) {
-            return new Location[] {
-                    VehicleUtils.getLocation((Vehicle) vehicle.getSingle(event))
-            };
-        }
-
-        Main.logSevere("Skript error: Provided variable is not a vehicle (\"vehicle location of %vehicle%\").");
-        return null;
+        return new Location[] {
+                VehicleUtils.getLocation(vehicle.getSingle(event))
+        };
 
     }
 

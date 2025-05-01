@@ -23,17 +23,17 @@ public class EffDeleteVehicle extends Effect {
 
     static {
         Skript.registerEffect(EffDeleteVehicle.class,
-                "(delete|clear) [mtv] vehicle %object%"
+                "(delete|clear) [mtv] vehicle %vehicle%"
         );
     }
 
     @SuppressWarnings("null")
-    private Expression<Object> vehicle;
+    private Expression<Vehicle> vehicle;
 
     @SuppressWarnings({"unchecked", "null"})
     @Override
     public boolean init(Expression<?>[] expressions, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parser) {
-        this.vehicle = (Expression<Object>) expressions[0];
+        this.vehicle = (Expression<Vehicle>) expressions[0];
         return true;
     }
 
@@ -44,11 +44,6 @@ public class EffDeleteVehicle extends Effect {
 
     @Override
     protected void execute(Event event) {
-        if (!(vehicle.getSingle(event) instanceof Vehicle) || vehicle.getSingle(event) == null) {
-            Main.logSevere("Skript error: Provided variable is not a vehicle (\"delete [mtv] vehicle %vehicle%\").");
-            return;
-        }
-
-        VehicleUtils.deleteVehicle(((Vehicle) vehicle.getSingle(event)).getLicensePlate());
+        VehicleUtils.deleteVehicle(vehicle.getSingle(event).getLicensePlate());
     }
 }

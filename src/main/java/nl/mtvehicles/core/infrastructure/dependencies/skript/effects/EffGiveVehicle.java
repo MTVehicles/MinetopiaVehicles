@@ -33,13 +33,13 @@ public class EffGiveVehicle extends Effect {
                 "give %player% [mtv] vehicle (by|with) license [plate] %string%",
                 "give [mtv] vehicle (by|with) (UUID|uuid) %string% to %player%",
                 "give %player% [mtv] vehicle (by|with) (UUID|uuid) %string%",
-                "give [mtv] vehicle %object% to %player%",
-                "give %player% [mtv] vehicle %object%"
+                "give [mtv] vehicle %vehicle% to %player%",
+                "give %player% [mtv] vehicle %vehicle%"
         );
     }
 
     @SuppressWarnings("null")
-    private Expression<Object> vehicle;
+    private Expression<Vehicle> vehicle;
 
     @SuppressWarnings("null")
     private Expression<String> text;
@@ -69,11 +69,11 @@ public class EffGiveVehicle extends Effect {
             this.player = (Expression<Player>) expressions[0];
             pattern = 3;
         } else if (matchedPattern == 4) {
-            this.vehicle = (Expression<Object>) expressions[0];
+            this.vehicle = (Expression<Vehicle>) expressions[0];
             this.player = (Expression<Player>) expressions[1];
             pattern = 1;
         } else {
-            this.vehicle = (Expression<Object>) expressions[1];
+            this.vehicle = (Expression<Vehicle>) expressions[1];
             this.player = (Expression<Player>) expressions[0];
             pattern = 1;
         }
@@ -90,13 +90,8 @@ public class EffGiveVehicle extends Effect {
     @Override
     protected void execute(Event event) {
         if (pattern == 1) {
-            if (!(vehicle.getSingle(event) instanceof Vehicle) || vehicle.getSingle(event) == null) {
-                Main.logSevere("Skript error: Provided variable is not a vehicle (\"give [mtv] vehicle %vehicle% to %player%\").");
-                return;
-            }
-
             player.getSingle(event).getInventory().addItem(
-                    ItemUtils.getVehicleItem(((Vehicle) vehicle.getSingle(event)).getLicensePlate())
+                    ItemUtils.getVehicleItem(vehicle.getSingle(event).getLicensePlate())
             );
         } else if (pattern == 2) {
             player.getSingle(event).getInventory().addItem(
