@@ -78,27 +78,35 @@ public class VersionModule {
     public static ServerVersion getServerVersion(){
         ServerVersion returns = null;
         switch (serverVersion) {
+            case "1.12":
+            case "1.12.1":
             case "1.12.2":
             case "v1_12_R1":
                 returns = ServerVersion.v1_12;
                 break;
+            case "1.13.1":
             case "1.13.2":
             case "v1_13_R2":
                 returns = ServerVersion.v1_13;
                 break;
+            case "1.15":
+            case "1.15.1":
             case "1.15.2":
             case "v1_15_R1":
                 returns = ServerVersion.v1_15;
                 break;
+            case "1.16.4":
             case "1.16.5":
             case "v1_16_R3":
                 returns = ServerVersion.v1_16;
                 break;
+            case "1.17":
             case "1.17.1":
             case "v1_17_R1":
                 returns = ServerVersion.v1_17;
                 break;
             case "1.18":
+            case "1.18.1":
             case "v1_18_R1":
                 returns = ServerVersion.v1_18_R1;
                 break;
@@ -107,10 +115,12 @@ public class VersionModule {
                 returns = ServerVersion.v1_18_R2;
                 break;
             case "1.19":
+            case "1.19.1":
+            case "1.19.2":
             case "v1_19_R1":
                 returns = ServerVersion.v1_19_R1;
                 break;
-            case "1.19.2":
+            case "1.19.3":
             case "v1_19_R2":
                 returns = ServerVersion.v1_19_R2;
                 break;
@@ -118,11 +128,18 @@ public class VersionModule {
             case "v1_19_R3":
                 returns = ServerVersion.v1_19_R3;
                 break;
+            case "1.20":
+            case "1.20.1":
+            case "v1_20_R1":
+                returns = ServerVersion.v1_20_R1;
+                break;
             case "1.20.2":
+            case "1.20.3":
             case "v1_20_R2":
                 returns = ServerVersion.v1_20_R2;
                 break;
             case "1.20.4":
+            case "1.20.5":
             case "v1_20_R3":
                 returns = ServerVersion.v1_20_R3;
                 break;
@@ -130,7 +147,9 @@ public class VersionModule {
             case "v1_20_R4":
                 returns = ServerVersion.v1_20_R4;
                 break;
+            case "1.21":
             case "1.21.1":
+            case "1.21.2":
             case "v1_21_R1":
                 returns = ServerVersion.v1_21_R1;
                 break;
@@ -142,6 +161,10 @@ public class VersionModule {
             case "v1_21_R3":
                 returns = ServerVersion.v1_21_R3;
                 break;
+            case "1.21.5":
+            case "v1_21_R4":
+                    returns = ServerVersion.v1_21_R4;
+                    break;
 
         }
         return returns;
@@ -156,8 +179,8 @@ public class VersionModule {
     public boolean isSupportedVersion(){
 
         List<String> highestVersions = Arrays.asList(
-                "1.12.2", "1.13.2", "1.15.2", "1.16.5", "1.17.1", "1.18.2", "1.19.4", "1.20.6", "1.21.1", "1.21.3", "1.21.4",
-                "v1_21_R1", "v1_20_R4", "v1_19_R3", "v1_18_R2", "v1_17_R1", "v1_16_R3", "v1_15_R1", "v1_13_R2", "v1_12_R1", "v1_21_R2", "v1_21_R3"
+                "1.12.2", "1.13.2", "1.15.2", "1.16.5", "1.17.1", "1.18.2", "1.19.4", "1.20.6", "1.21.1", "1.21.3", "1.21.4", "1.21.5",
+                "v1_21_R4", "v1_21_R3", "v1_21_R2", "v1_21_R1", "v1_20_R4", "v1_19_R3", "v1_18_R2", "v1_17_R1", "v1_16_R3", "v1_15_R1", "v1_13_R2", "v1_12_R1"
 
         );
 
