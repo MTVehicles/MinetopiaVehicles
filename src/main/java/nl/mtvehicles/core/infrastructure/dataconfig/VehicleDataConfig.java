@@ -64,10 +64,20 @@ public class VehicleDataConfig extends MTVConfig {
      * Save all vehicle data from memory to disk
      */
     public void saveToDisk() {
+        clearFile(false);
         for (Map.Entry<String, ConfigurationSection> entry : vehicleDataInMemory.entrySet()) {
             getConfiguration().set("vehicle." + entry.getKey(), entry.getValue());
         }
         save();
+    }
+
+    /**
+     * Clear the whole vehicleData file (to be used while saving new data from memory to disk)
+     * @param save Whether to save the configuration file afterwards
+     */
+    private void clearFile(boolean save){
+        getConfiguration().set("vehicle", null);
+        if (save) save();
     }
 
     /**
