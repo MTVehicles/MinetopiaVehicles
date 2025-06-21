@@ -173,6 +173,12 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>org.spigotmc..................</groupId>
+            <artifactId>spigot</artifactId>
+            <version>1.21.6-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
             <version>24.0.1</version>
@@ -187,7 +193,7 @@
         <dependency>
             <groupId>de.tr7zw</groupId>
             <artifactId>item-nbt-api</artifactId>
-            <version>2.15.0</version>
+            <version>2.15.1-SNAPSHOT</version>
         </dependency>
 
         <dependency>
