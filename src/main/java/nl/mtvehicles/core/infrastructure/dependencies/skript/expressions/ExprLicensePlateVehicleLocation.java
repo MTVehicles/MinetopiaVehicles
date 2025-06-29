@@ -9,34 +9,32 @@ import ch.njol.skript.lang.ExpressionType;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.skript.lang.util.SimpleExpression;
 import ch.njol.util.Kleenean;
-import nl.mtvehicles.core.Main;
-import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
+import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
+import org.bukkit.Location;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
 
-@Name("MTV Vehicle's type")
-@Description("Get the vehicle's type as String")
+@Name("MTV Vehicle's location")
+@Description("Get the vehicle location")
 @Examples({
-        "set {_type} to {_car}'s vehicle type",
-        "set {_type} to vehicle type of (player's driven mtv vehicle)"
+        "set {_loc} to vehicle location of license plate \"DF-4J-2R\""
 })
-public class ExprVehicleType extends SimpleExpression<String> {
+public class ExprLicensePlateVehicleLocation extends SimpleExpression<Location> {
 
     static {
-        Skript.registerExpression(ExprVehicleType.class,
-                String.class,
+        Skript.registerExpression(ExprLicensePlateVehicleLocation.class,
+                Location.class,
                 ExpressionType.PROPERTY,
-                "%vehicle%'s [mtv] vehicle type",
-                "[mtv] vehicle type of %vehicle%"
+                "[the] [mtv] vehicle location of license [plate] %string%"
         );
     }
 
     @SuppressWarnings("null")
-    private Expression<Vehicle> vehicle;
+    private Expression<String> license;
 
     @Override
-    public Class<? extends String> getReturnType() {
-        return String.class;
+    public Class<? extends Location> getReturnType() {
+        return Location.class;
     }
 
     @Override
@@ -47,20 +45,20 @@ public class ExprVehicleType extends SimpleExpression<String> {
     @SuppressWarnings({"unchecked", "null"})
     @Override
     public boolean init(Expression<?>[] expressions, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parser) {
-        this.vehicle = (Expression<Vehicle>) expressions[0];
+        this.license = (Expression<String>) expressions[0];
         return true;
     }
 
     @Override
     public String toString(@Nullable Event event, boolean debug) {
-        return "MTVehicles vehicle type";
+        return "MTVehicle's location";
     }
 
     @Override
-    protected String[] get(Event event) {
-        if (vehicle.getSingle(event) == null) return null;
-        return new String[] {
-                vehicle.getSingle(event).getVehicleType().toString()
+    protected Location[] get(Event event) {
+        if (license.getSingle(event) == null) return null;
+        return new Location[] {
+                VehicleUtils.getLocation(license.getSingle(event))
         };
 
     }

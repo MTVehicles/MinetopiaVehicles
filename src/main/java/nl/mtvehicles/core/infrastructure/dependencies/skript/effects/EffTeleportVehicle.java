@@ -51,6 +51,7 @@ public class EffTeleportVehicle extends Effect {
 
     @Override
     protected void execute(Event event) {
+        if (vehicle.getSingle(event) == null) return;
         VehicleUtils.teleportVehicle(vehicle.getSingle(event).getLicensePlate(), location.getSingle(event));
     }
 }

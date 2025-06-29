@@ -17,6 +17,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+import static nl.mtvehicles.core.Main.isNotNull;
+
 @Name("Remove rider/member to MTV vehicle")
 @Description("Remove a rider or member to an MTV vehicle.")
 @Examples({
@@ -64,6 +66,7 @@ public class EffRemoveRiderMember extends Effect {
 
     @Override
     protected void execute(Event event) {
+        if (!isNotNull(vehicle.getSingle(event), player.getSingle(event))) return;
         Vehicle vehicle = this.vehicle.getSingle(event);
         String playerUUID = this.player.getSingle(event).getUniqueId().toString();
 

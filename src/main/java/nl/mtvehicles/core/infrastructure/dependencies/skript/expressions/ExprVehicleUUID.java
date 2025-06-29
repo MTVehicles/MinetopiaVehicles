@@ -58,6 +58,7 @@ public class ExprVehicleUUID extends SimpleExpression<String> {
 
     @Override
     protected String[] get(Event event) {
+        if (vehicle.getSingle(event) == null) return null;
         return new String[] {
                 vehicle.getSingle(event).getUUID()
         };

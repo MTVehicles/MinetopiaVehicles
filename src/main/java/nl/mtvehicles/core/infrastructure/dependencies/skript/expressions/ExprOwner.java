@@ -13,6 +13,8 @@ import org.bukkit.event.Event;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import static nl.mtvehicles.core.Main.isNotNull;
+
 @Name("MTV Vehicle's owner")
 @Description("Get/Set the vehicle's owner (as OfflinePlayer)")
 @Examples({
@@ -38,6 +40,7 @@ public class ExprOwner extends SimplePropertyExpression<Vehicle, OfflinePlayer> 
 
     @Override
     public @Nullable OfflinePlayer convert(Vehicle vehicle) {
+        if (vehicle == null) return null;
         return Bukkit.getOfflinePlayer(vehicle.getOwnerUUID());
     }
 
@@ -52,7 +55,7 @@ public class ExprOwner extends SimplePropertyExpression<Vehicle, OfflinePlayer> 
         if (changeMode != Changer.ChangeMode.SET) return;
         Vehicle vehicle = getExpr().getSingle(event);
 
-        if (delta == null || delta[0] == null) return;
+        if (!isNotNull(delta, delta[0], vehicle)) return;
         if (!(delta[0] instanceof OfflinePlayer)) return;
         final OfflinePlayer newOwner = (OfflinePlayer) delta[0];
 

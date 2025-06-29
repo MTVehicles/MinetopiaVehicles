@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 @Name("MTV Vehicle")
 @Description("Get the MTV's vehicle instance")
 @Examples({
-        "set {_car} to a new mtv vehicle with license plate \"DF-4J-2R\"",
+        "set {_car} to mtv vehicle with license plate \"DF-4J-2R\"",
         "set {_helicopter} to player's driven mtv vehicle",
         "set {_car} to a new mtv vehicle with UUID \"C4UQZJ\" and owner player"
 })

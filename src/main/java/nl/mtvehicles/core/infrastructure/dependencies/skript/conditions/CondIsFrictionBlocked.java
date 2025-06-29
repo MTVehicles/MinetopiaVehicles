@@ -53,8 +53,12 @@ public class CondIsFrictionBlocked extends Condition {
     @Override
     public boolean check(Event event) {
         boolean check;
-        if (usingLicensePlate) check = VehicleData.frictionBlocked.contains(licensePlate.getSingle(event));
-        else check = VehicleData.frictionBlocked.contains(vehicle.getSingle(event).getLicensePlate());
+        if (usingLicensePlate) {
+            check = VehicleData.frictionBlocked.contains(licensePlate.getSingle(event));
+        } else {
+            if (vehicle.getSingle(event) == null) return isNegated();
+            check = VehicleData.frictionBlocked.contains(vehicle.getSingle(event).getLicensePlate());
+        }
         if (!isNegated()) return check;
         else return !check;
     }

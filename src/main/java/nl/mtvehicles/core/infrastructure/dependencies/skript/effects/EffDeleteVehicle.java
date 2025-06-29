@@ -44,6 +44,7 @@ public class EffDeleteVehicle extends Effect {
 
     @Override
     protected void execute(Event event) {
+        if (vehicle.getSingle(event) == null) return;
         VehicleUtils.deleteVehicle(vehicle.getSingle(event).getLicensePlate());
     }
 }

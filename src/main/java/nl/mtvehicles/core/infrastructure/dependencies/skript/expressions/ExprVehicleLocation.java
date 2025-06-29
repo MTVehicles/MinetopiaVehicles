@@ -61,6 +61,7 @@ public class ExprVehicleLocation extends SimpleExpression<Location> {
 
     @Override
     protected Location[] get(Event event) {
+        if (vehicle.getSingle(event) == null) return null;
         return new Location[] {
                 VehicleUtils.getLocation(vehicle.getSingle(event))
         };
