@@ -244,6 +244,9 @@ public class DefaultConfig extends MTVConfig {
             case ENTER:
                 configOption = get(Option.REGION_ACTIONS_ENTER).toString().toLowerCase(Locale.ROOT);
                 break;
+            case RIDE:
+                configOption = get(Option.REGION_ACTIONS_RIDE).toString().toLowerCase(Locale.ROOT);
+                break;
         }
         if (configOption.equalsIgnoreCase("whitelist")) return RegionAction.ListType.WHITELIST;
         else if (configOption.equalsIgnoreCase("blacklist")) return RegionAction.ListType.BLACKLIST;
@@ -289,6 +292,12 @@ public class DefaultConfig extends MTVConfig {
                     returns = DependencyModule.worldGuard.isInRegionWithFlag(p, loc, WGFlag.ENTER, true);
                 else if (isBlacklist)
                     returns = !DependencyModule.worldGuard.isInRegionWithFlag(p, loc, WGFlag.ENTER, false);
+                break;
+            case RIDE:
+                if (isWhitelist)
+                    returns = DependencyModule.worldGuard.isInRegionWithFlag(p, loc, WGFlag.RIDE, true);
+                else if (isBlacklist)
+                    returns = !DependencyModule.worldGuard.isInRegionWithFlag(p, loc, WGFlag.RIDE, false);
                 break;
         }
         return returns;
@@ -352,6 +361,7 @@ public class DefaultConfig extends MTVConfig {
         REGION_ACTIONS_PLACE("regionActions.place", "disabled"),
         REGION_ACTIONS_ENTER("regionActions.enter", "disabled"),
         REGION_ACTIONS_PICKUP("regionActions.pickup", "disabled"),
+        REGION_ACTIONS_RIDE("regionActions.ride", "disabled"),
         USE_PLAYER_FACING("usePlayerFacing", false);
 
         final private String path;

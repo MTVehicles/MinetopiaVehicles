@@ -176,14 +176,18 @@ gasStations:
 # The PICKUP section is quite hazardous. You might not be able to pick up vehicles freely. Use cautiously.
 
 # Acceptable inputs:
-# - 'disabled' (default) -> players can place/enter/pick up vehicles wherever they want
-# - 'blacklist' -> players CAN'T place/enter/pick up vehicles in regions where flags 'mtv-place', 'mtv-enter', and 'mtv-pickup' are DENIED.
-# - 'whitelist' -> players CAN ONLY place/enter/pick up vehicles in region where flags 'mtv-place', 'mtv-enter', and 'mtv-pickup' are ALLOWED.
+# - 'disabled' (default) -> players can place/enter/pick up/ride vehicles wherever they want
+# - 'blacklist' -> players CAN'T place/enter/pick up/ride vehicles in regions where flags are DENIED.
+# - 'whitelist' -> players CAN ONLY place/enter/pick up/ride vehicles in region where flags are ALLOWED.
 # (If your input is not recognized, the default shall be used.)
+
+# Use flags 'mtv-place', 'mtv-enter', 'mtv-pickup' or 'mtv-ride' to set the flags for regions.
+# Ride permission will also prevent players from entering regions where it is denied.
 regionActions:
   place: 'disabled'
   enter: 'disabled'
   pickup: 'disabled'
+  ride: 'disabled'
 
 
 # ----- EXPERIMENTAL FEATURES -----
