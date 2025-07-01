@@ -6,7 +6,11 @@ package nl.mtvehicles.core.infrastructure.enums;
 public enum RegionAction {
     PLACE,
     PICKUP,
-    ENTER;
+    ENTER,
+    /**
+     * @since 2.5.6
+     */
+    RIDE;
 
     /**
      * Type of WorldGuard list - a region action may either be whitelisted or blacklisted.
@@ -21,11 +25,11 @@ public enum RegionAction {
         }
 
         public boolean isWhitelist(){
-            return !(this.equals(ListType.WHITELIST));
+            return (this.equals(ListType.WHITELIST));
         }
 
         public boolean isBlacklist(){
-            return !(this.equals(ListType.BLACKLIST));
+            return (this.equals(ListType.BLACKLIST));
         }
     }
 }

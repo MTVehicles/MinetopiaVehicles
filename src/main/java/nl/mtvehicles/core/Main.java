@@ -25,7 +25,7 @@ public class Main extends JavaPlugin {
      *
      * @see nl.mtvehicles.core.infrastructure.dataconfig.SecretSettingsConfig
      */
-    final public static String configVersion = "2.5.5-dev3";
+    final public static String configVersion = "2.5.6-b";
     /**
      * <b>Version of messages_xx.yml files - must be equal to the version in SuperSecretSettings.</b><br>
      *
@@ -131,5 +131,19 @@ public class Main extends JavaPlugin {
      */
     public static void schedulerRun(Runnable task){
         Bukkit.getScheduler().runTask(instance, task);
+    }
+
+    /**
+     * Check if all objects are not null
+     * @param objects Objects to check
+     * @return True if all objects are not null, false otherwise
+     */
+    public static boolean isNotNull(Object... objects){
+        for (Object object : objects) {
+            if (object == null) {
+                return false;
+            }
+        }
+        return true;
     }
 }

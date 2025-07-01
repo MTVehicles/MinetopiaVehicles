@@ -17,7 +17,7 @@ public class Types {
                     .user("vehicles?")
                     .name("MTVVehicle - Vehicle")
                     .description("Represents an MTV Vehicle.")
-                    .since("2.6")
+                    .since("2.5.5")
             );
         }
     }

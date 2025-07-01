@@ -55,8 +55,12 @@ public class CondIsBrakingBlocked extends Condition {
     @Override
     public boolean check(Event event) {
         boolean check;
-        if (usingLicensePlate) check = VehicleData.brakingBlocked.contains(licensePlate.getSingle(event));
-        else check = VehicleData.brakingBlocked.contains(vehicle.getSingle(event).getLicensePlate());
+        if (usingLicensePlate) {
+            check = VehicleData.brakingBlocked.contains(licensePlate.getSingle(event));
+        } else {
+            if (vehicle.getSingle(event) == null) return isNegated();
+            check = VehicleData.brakingBlocked.contains(vehicle.getSingle(event).getLicensePlate());
+        }
         if (!isNegated()) return check;
         else return !check;
     }

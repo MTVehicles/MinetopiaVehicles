@@ -67,6 +67,8 @@ public class EffBlockBraking extends Effect {
             return;
         }
 
+        if (vehicle.getSingle(event) == null) return;
+
         String license = vehicle.getSingle(event).getLicensePlate();
         if (block) VehicleData.brakingBlocked.add(license);
         else VehicleData.brakingBlocked.remove(license);

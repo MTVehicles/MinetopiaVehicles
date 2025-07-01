@@ -15,6 +15,8 @@ import org.bukkit.Location;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
 
+import static nl.mtvehicles.core.Main.isNotNull;
+
 @Name("Spawn an MTV vehicle")
 @Description("Spawn a vehicle on a specific location")
 @Examples({
@@ -64,7 +66,9 @@ public class EffSpawnVehicle extends Effect {
 
     @Override
     protected void execute(Event event) {
+        if (location.getSingle(event) == null) return;
         if (pattern == 1){
+            if (vehicle.getSingle(event) == null) return;
             VehicleUtils.spawnVehicle(vehicle.getSingle(event).getLicensePlate(), location.getSingle(event));
         }
         else {

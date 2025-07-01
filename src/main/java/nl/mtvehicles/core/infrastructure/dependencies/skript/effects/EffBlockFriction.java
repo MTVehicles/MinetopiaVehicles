@@ -67,6 +67,8 @@ public class EffBlockFriction extends Effect {
             return;
         }
 
+        if (vehicle.getSingle(event) == null) return;
+
         String license = vehicle.getSingle(event).getLicensePlate();
         if (block) VehicleData.frictionBlocked.add(license);
         else VehicleData.frictionBlocked.remove(license);

@@ -11,6 +11,7 @@ import nl.mtvehicles.core.infrastructure.vehicle.VehicleData;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import static nl.mtvehicles.core.Main.isNotNull;
 
 @Name("MTV Vehicle's vehicle fuel")
 @Description("Get the vehicle's vehicle fuel (from VehicleData or VehicleData.yml – whatever is lower)")
@@ -39,6 +40,7 @@ public class ExprFuel extends SimplePropertyExpression<Vehicle, Double> {
 
     @Override
     public @Nullable Double convert(Vehicle vehicle) {
+        if (vehicle == null) return null;
         final String license = vehicle.getLicensePlate();
         Double dataFuel = VehicleData.fuel.get(license);
         if (dataFuel == null) dataFuel = 100.0; //return 100 and it will take the lower configFuel value
@@ -56,7 +58,8 @@ public class ExprFuel extends SimplePropertyExpression<Vehicle, Double> {
     public void change(@NotNull Event event, @Nullable Object @NotNull [] delta, Changer.@NotNull ChangeMode changeMode) {
         Vehicle vehicle = getExpr().getSingle(event);
 
-        if (delta == null || delta[0] == null) return;
+        if (!isNotNull(delta, delta[0], ((Number) delta[0]).doubleValue())) return;
+        if (!isNotNull(vehicle.getLicensePlate())) return;
         double changeValue = ((Number) delta[0]).doubleValue();
         final double currentFuel = Math.min(VehicleData.fuel.get(vehicle.getLicensePlate()), vehicle.getFuel());
 
@@ -77,6 +80,7 @@ public class ExprFuel extends SimplePropertyExpression<Vehicle, Double> {
 
     private void setFuel(Vehicle vehicle, double currentFuel, double newFuel){
         String licensePlate = vehicle.getLicensePlate();
+        if (licensePlate == null) return; //if the vehicle is not registered, do nothing
         final double finalFuel = Math.max(0, Math.min(100, newFuel)); //assures it is in the range 0 - 100
 
         vehicle.setFuel(finalFuel);

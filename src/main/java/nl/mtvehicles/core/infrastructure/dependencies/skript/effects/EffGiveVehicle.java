@@ -89,7 +89,9 @@ public class EffGiveVehicle extends Effect {
 
     @Override
     protected void execute(Event event) {
+        if (player.getSingle(event) == null) return;
         if (pattern == 1) {
+            if (vehicle.getSingle(event) == null) return;
             player.getSingle(event).getInventory().addItem(
                     ItemUtils.getVehicleItem(vehicle.getSingle(event).getLicensePlate())
             );

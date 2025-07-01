@@ -12,6 +12,8 @@ import org.bukkit.event.Event;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import static nl.mtvehicles.core.Main.isNotNull;
+
 @Name("MTV Vehicle's vehicle health")
 @Description("Get the vehicle's vehicle fuel usage")
 @Examples({
@@ -40,6 +42,7 @@ public class ExprHealth extends SimplePropertyExpression<Vehicle, Double> {
 
     @Override
     public @Nullable Double convert(Vehicle vehicle) {
+        if (vehicle == null) return null;
         return vehicle.getHealth();
     }
 
@@ -53,7 +56,7 @@ public class ExprHealth extends SimplePropertyExpression<Vehicle, Double> {
     public void change(@NotNull Event event, @Nullable Object @NotNull [] delta, Changer.@NotNull ChangeMode changeMode) {
         Vehicle vehicle = getExpr().getSingle(event);
 
-        if (delta == null || delta[0] == null) return;
+        if (!isNotNull(delta, delta[0], vehicle)) return;
         double changeValue = ((Number) delta[0]).doubleValue();
         final double currentHealth = vehicle.getHealth();
 
@@ -73,6 +76,7 @@ public class ExprHealth extends SimplePropertyExpression<Vehicle, Double> {
     }
 
     private void setHealth(@NotNull Vehicle vehicle, double newHealth){
+        if (vehicle == null) return;
         final double health = (newHealth < 0) ? 0 : newHealth;
         if (health > 0) VehicleData.markVehicleAsRepaired(vehicle.getLicensePlate());
         else VehicleData.markVehicleAsDestroyed(vehicle.getLicensePlate());

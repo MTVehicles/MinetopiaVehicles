@@ -51,6 +51,7 @@ public class EffMountVehicle extends Effect {
 
     @Override
     protected void execute(Event event) {
+        if (vehicle.getSingle(event) == null) return;
         if (!vehicle.getSingle(event).isOccupied())
             VehicleUtils.enterVehicle(vehicle.getSingle(event).getLicensePlate(), player.getSingle(event));
     }

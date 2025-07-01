@@ -1,24 +1,16 @@
 package nl.mtvehicles.core.infrastructure.dependencies.skript.expressions;
 
-import ch.njol.skript.Skript;
 import ch.njol.skript.classes.Changer;
 import ch.njol.skript.doc.Description;
 import ch.njol.skript.doc.Examples;
 import ch.njol.skript.doc.Name;
 import ch.njol.skript.expressions.base.SimplePropertyExpression;
-import ch.njol.skript.lang.Expression;
-import ch.njol.skript.lang.ExpressionType;
-import ch.njol.skript.lang.SkriptParser;
-import ch.njol.skript.lang.util.SimpleExpression;
-import ch.njol.util.Kleenean;
-import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
-import nl.mtvehicles.core.infrastructure.vehicle.VehicleData;
-import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import static nl.mtvehicles.core.Main.isNotNull;
 
 @Name("MTV Vehicle's license plate")
 @Description("Get the vehicle's license plate")
@@ -45,6 +37,7 @@ public class ExprLicensePlate extends SimplePropertyExpression<Vehicle, String> 
 
     @Override
     public @Nullable String convert(Vehicle vehicle) {
+        if (vehicle == null) return null;
         return vehicle.getLicensePlate();
     }
 
@@ -59,7 +52,7 @@ public class ExprLicensePlate extends SimplePropertyExpression<Vehicle, String> 
         if (changeMode != Changer.ChangeMode.SET) return;
         Vehicle vehicle = getExpr().getSingle(event);
 
-        if (delta == null || delta[0] == null) return;
+        if (!isNotNull(delta, delta[0], vehicle)) return;
         final String newLicense = delta[0].toString();
 
         vehicle.setLicensePlate(newLicense);

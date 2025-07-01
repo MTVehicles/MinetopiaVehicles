@@ -12,6 +12,8 @@ import org.bukkit.event.Event;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import static nl.mtvehicles.core.Main.isNotNull;
+
 @Name("MTV Vehicle's vehicle fuel usage")
 @Description("Get the vehicle's vehicle fuel usage")
 @Examples({
@@ -38,6 +40,7 @@ public class ExprFuelUsage extends SimplePropertyExpression<Vehicle, Double> {
 
     @Override
     public @Nullable Double convert(Vehicle vehicle) {
+        if (vehicle == null) return null;
         return vehicle.getFuelUsage();
     }
 
@@ -52,7 +55,7 @@ public class ExprFuelUsage extends SimplePropertyExpression<Vehicle, Double> {
         if (changeMode != Changer.ChangeMode.SET) return;
         Vehicle vehicle = getExpr().getSingle(event);
 
-        if (delta == null || delta[0] == null) return;
+        if (!isNotNull(delta, delta[0], vehicle)) return;
         double changeValue = ((Number) delta[0]).doubleValue();
 
         vehicle.setFuelUsage(Math.min(0, changeValue)); //cannot be lower than zero (it would be adding fuel :D)

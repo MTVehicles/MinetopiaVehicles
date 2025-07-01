@@ -44,6 +44,7 @@ public class EffDespawnVehicle extends Effect {
 
     @Override
     protected void execute(Event event) {
+        if (vehicle.getSingle(event) == null) return;
         VehicleUtils.despawnVehicle(vehicle.getSingle(event).getLicensePlate());
     }
 }

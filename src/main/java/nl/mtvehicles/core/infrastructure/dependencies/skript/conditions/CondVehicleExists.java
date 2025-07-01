@@ -9,25 +9,23 @@ import ch.njol.skript.lang.Condition;
 import ch.njol.skript.lang.Expression;
 import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
-import nl.mtvehicles.core.Main;
 import nl.mtvehicles.core.infrastructure.vehicle.Vehicle;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
 
-@Name("Condition - Is vehicle occupied")
-@Description("Check if an MTV Vehicle is occupied")
+@Name("Condition - Vehicle exists")
+@Description("Check if an MTV Vehicle exists (is not deleted)")
 @Examples({
-        "if the vehicle {_car} is occupied:",
-        "if the vehicle {_car} is not occupied:"
+        "if the vehicle {_car} exists:",
+        "if the vehicle {_car} is not deleted:"
 })
-@Since("2.5.5")
-public class CondIsOccupied extends Condition {
+@Since("2.5.6")
+public class CondVehicleExists extends Condition {
 
     static {
-        Skript.registerCondition(CondIsOccupied.class,
-                "[the] [mtv] vehicle %vehicle% is occupied",
-                "[the] [mtv] vehicle %vehicle% (isn't|is not) occupied"
+        Skript.registerCondition(CondVehicleExists.class,
+                "[the] [mtv] vehicle %vehicle% exist[s]",
+                "[the] [mtv] vehicle %vehicle% (isn't|is not) deleted"
         );
     }
 
@@ -37,7 +35,6 @@ public class CondIsOccupied extends Condition {
     @SuppressWarnings({"NullableProblems", "unchecked"})
     @Override
     public boolean init(Expression<?>[] exprs, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parseResult) {
-        setNegated(matchedPattern == 1);
         this.vehicle = (Expression<Vehicle>) exprs[0];
         return true;
     }
@@ -45,16 +42,12 @@ public class CondIsOccupied extends Condition {
     @SuppressWarnings("NullableProblems")
     @Override
     public boolean check(Event event) {
-        if (vehicle.getSingle(event) == null) return isNegated();
-        boolean check = vehicle.getSingle(event).isOccupied();
-        if (!isNegated()) return check;
-        else return !check;
+        return !(vehicle.getSingle(event) == null);
     }
 
     @Override
     public String toString(@Nullable Event e, boolean d) {
-        final String neg = isNegated() ? " not" : "";
-        return "Check if player is " + neg + " the owner of an MTV vehicle.";
+        return "Check if vehicle exists.";
     }
 
 }

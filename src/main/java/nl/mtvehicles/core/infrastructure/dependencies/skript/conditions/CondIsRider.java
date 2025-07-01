@@ -15,6 +15,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.jetbrains.annotations.Nullable;
 
+import static nl.mtvehicles.core.Main.isNotNull;
+
 @Name("Condition - Is player a rider of a vehicle")
 @Description("Check if a player is a rider of an MTV Vehicle")
 @Examples({
@@ -47,6 +49,7 @@ public class CondIsRider extends Condition {
     @SuppressWarnings("NullableProblems")
     @Override
     public boolean check(Event event) {
+        if (!isNotNull(vehicle.getSingle(event), player.getSingle(event))) return isNegated();
         boolean check = vehicle.getSingle(event).canRide(player.getSingle(event));
         if (!isNegated()) return check;
         else return !check;

@@ -10,6 +10,7 @@ import nl.mtvehicles.core.infrastructure.annotations.ToDo;
 import nl.mtvehicles.core.infrastructure.annotations.VersionSpecific;
 import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
+import nl.mtvehicles.core.infrastructure.enums.RegionAction;
 import nl.mtvehicles.core.infrastructure.enums.ServerVersion;
 import nl.mtvehicles.core.infrastructure.enums.SoftDependency;
 import nl.mtvehicles.core.infrastructure.enums.VehicleType;
@@ -179,12 +180,19 @@ public class VehicleMovement {
                 if (VehicleData.lastRegions.containsKey(license)){
                     Set<String> lastRegions = VehicleData.lastRegions.get(license);
 
+                    if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.RIDE, vehicleType, standMain.getLocation(), player)) {
+                        player.getVehicle().eject();
+                        VehicleData.speed.put(license, 0.0);
+                        return;
+                    }
+
                     for (String leftRegion: Sets.difference(lastRegions, newRegions)) {
                         VehicleRegionLeaveEvent event = new VehicleRegionLeaveEvent(license, leftRegion);
                         event.setPlayer(player);
                         event.call();
                         if (event.isCancelled()) {
-                            player.getVehicle().removePassenger(player);
+                            player.getVehicle().eject();
+                            VehicleData.speed.put(license, 0.0);
                             return;
                         }
 
@@ -195,7 +203,8 @@ public class VehicleMovement {
                         event.setPlayer(player);
                         event.call();
                         if (event.isCancelled()) {
-                            player.getVehicle().removePassenger(player);
+                            player.getVehicle().eject();
+                            VehicleData.speed.put(license, 0.0);
                             return;
                         }
                     }

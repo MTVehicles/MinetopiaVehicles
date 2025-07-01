@@ -16,7 +16,11 @@ public enum WGFlag {
     USE_TANK("mtv-use-tank"),
     USE_HELICOPTER("mtv-use-helicopter"),
     USE_AIRPLANE("mtv-use-airplane"),
-    USE_BOAT("mtv-use-boat");
+    USE_BOAT("mtv-use-boat"),
+    /**
+     * @since 2.5.6
+     */
+    RIDE("mtv-ride");
 
     private String key;
 
