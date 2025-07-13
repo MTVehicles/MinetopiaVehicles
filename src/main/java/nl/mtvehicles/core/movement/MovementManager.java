@@ -32,5 +32,6 @@ public class MovementManager {
         else if (getServerVersion().is1_21_R2()) PacketHandler.movement_1_21_R2(player);
         else if (getServerVersion().is1_21_R3()) PacketHandler.movement_1_21_R3(player);
         else if (getServerVersion().is1_21_R4()) PacketHandler.movement_1_21_R4(player);
+        else if (getServerVersion().is1_21_R5()) PacketHandler.movement_1_21_R5(player);
     }
 }

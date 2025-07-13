@@ -165,6 +165,11 @@ public class VersionModule {
             case "v1_21_R4":
                     returns = ServerVersion.v1_21_R4;
                     break;
+            case "1.21.6":
+            case "1.21.7":
+            case "v1_21_R5":
+                returns = ServerVersion.v1_21_R5;
+                break;
 
         }
         return returns;
@@ -179,8 +184,8 @@ public class VersionModule {
     public boolean isSupportedVersion(){
 
         List<String> highestVersions = Arrays.asList(
-                "1.12.2", "1.13.2", "1.15.2", "1.16.5", "1.17.1", "1.18.2", "1.19.4", "1.20.6", "1.21.1", "1.21.3", "1.21.4", "1.21.5",
-                "v1_21_R4", "v1_21_R3", "v1_21_R2", "v1_21_R1", "v1_20_R4", "v1_19_R3", "v1_18_R2", "v1_17_R1", "v1_16_R3", "v1_15_R1", "v1_13_R2", "v1_12_R1"
+                "1.12.2", "1.13.2", "1.15.2", "1.16.5", "1.17.1", "1.18.2", "1.19.4", "1.20.6", "1.21.1", "1.21.3", "1.21.4", "1.21.5", "1.21.6", "1.21.7",
+                "v1_21_R5", "v1_21_R4", "v1_21_R3", "v1_21_R2", "v1_21_R1", "v1_20_R4", "v1_19_R3", "v1_18_R2", "v1_17_R1", "v1_16_R3", "v1_15_R1", "v1_13_R2", "v1_12_R1"
 
         );
 
