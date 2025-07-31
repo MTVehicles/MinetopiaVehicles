@@ -27,6 +27,7 @@ public class JerryCanClickListener extends MTVListener {
 
     @EventHandler
     public void onJerryCanClick(final PlayerInteractEvent event) {
+        this.event = event;
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
 
         ItemStack item = event.getItem();
