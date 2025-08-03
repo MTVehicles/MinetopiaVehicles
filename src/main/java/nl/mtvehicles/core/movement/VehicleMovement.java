@@ -10,10 +10,7 @@ import nl.mtvehicles.core.infrastructure.annotations.ToDo;
 import nl.mtvehicles.core.infrastructure.annotations.VersionSpecific;
 import nl.mtvehicles.core.infrastructure.dataconfig.DefaultConfig;
 import nl.mtvehicles.core.infrastructure.dataconfig.VehicleDataConfig;
-import nl.mtvehicles.core.infrastructure.enums.RegionAction;
-import nl.mtvehicles.core.infrastructure.enums.ServerVersion;
-import nl.mtvehicles.core.infrastructure.enums.SoftDependency;
-import nl.mtvehicles.core.infrastructure.enums.VehicleType;
+import nl.mtvehicles.core.infrastructure.enums.*;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
 import nl.mtvehicles.core.infrastructure.modules.DependencyModule;
 import nl.mtvehicles.core.infrastructure.modules.VersionModule;
@@ -183,6 +180,7 @@ public class VehicleMovement {
                     if (!ConfigModule.defaultConfig.canProceedWithAction(RegionAction.RIDE, vehicleType, standMain.getLocation(), player)) {
                         player.getVehicle().eject();
                         VehicleData.speed.put(license, 0.0);
+                        ConfigModule.messagesConfig.sendMessage(player, Message.CANNOT_DO_THAT_HERE);
                         return;
                     }
 
