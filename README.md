@@ -3,8 +3,8 @@
 
 <div align="center">
 
-<a href="https://www.spigotmc.org/resources/80910/"><img alt="Spiget Version" src="https://img.shields.io/spiget/version/80910?label=version"></a>
-<a href="https://github.com/Zettovec/MinetopiaVehicles/releases"><img alt="GitHub release (latest by date including pre-releases)" src="https://img.shields.io/github/v/release/Zettovec/MinetopiaVehicles?include_prereleases&label=pre-release"></a>
+<a href="https://www.spigotmc.org/resources/80910/"><img alt="Spiget Version" src="https://img.shields.io/spiget/version/80910?label=latest-stable"></a>
+<a href="https://github.com/MTVehicles/MinetopiaVehicles/releases"><img alt="GitHub release (latest by date including pre-releases)" src="https://img.shields.io/github/v/release/MTVehicles/MinetopiaVehicles?include_prereleases&label=pre-release"></a>
 <a href="https://www.spigotmc.org/resources/80910/"><img alt="Spiget Version" src="https://img.shields.io/spiget/downloads/80910"></a>
 <a href="https://www.spigotmc.org/resources/80910/"><img alt="Spiget Stars" src="https://img.shields.io/spiget/stars/80910?color=yellow"></a>
 ---  
