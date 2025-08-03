@@ -70,8 +70,6 @@ public class PluginUpdater {
      * @return True if the plugin is the latest version or if check fails
      */
     public static boolean isLatestVersion(){
-        if (pluginVersion.contains("dev")) return true; //auto-updater is disabled for dev releases
-
         final String apiOutput = getAPICheckerOutput();
         if (apiOutput == null) return true;
 
