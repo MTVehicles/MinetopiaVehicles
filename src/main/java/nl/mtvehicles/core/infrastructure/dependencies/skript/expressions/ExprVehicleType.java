@@ -26,8 +26,8 @@ public class ExprVehicleType extends SimpleExpression<String> {
         Skript.registerExpression(ExprVehicleType.class,
                 String.class,
                 ExpressionType.PROPERTY,
-                "%vehicle%'s [mtv] vehicle type",
-                "[mtv] vehicle type of %vehicle%"
+                "%mtvehicle%'s [mtv] vehicle type",
+                "[mtv] vehicle type of %mtvehicle%"
         );
     }
 

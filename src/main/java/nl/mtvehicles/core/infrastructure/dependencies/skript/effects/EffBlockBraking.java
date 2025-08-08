@@ -28,9 +28,9 @@ public class EffBlockBraking extends Effect {
 
     static {
         Skript.registerEffect(EffBlockBraking.class,
-                "block [mtv] vehicle breaking of [mtv] [vehicle] %vehicle%",
+                "block [mtv] vehicle breaking of [mtv] [vehicle] %mtvehicle%",
                 "block [mtv] vehicle breaking of license [plate] %string%",
-                "unblock [mtv] vehicle breaking of [mtv] [vehicle] %vehicle%",
+                "unblock [mtv] vehicle breaking of [mtv] [vehicle] %mtvehicle%",
                 "unblock [mtv] vehicle breaking of license [plate] %string%"
         );
     }

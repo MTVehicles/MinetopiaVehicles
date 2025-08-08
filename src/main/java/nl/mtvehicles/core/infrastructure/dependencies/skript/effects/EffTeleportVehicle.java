@@ -24,7 +24,7 @@ public class EffTeleportVehicle extends Effect {
 
     static {
         Skript.registerEffect(EffTeleportVehicle.class,
-                "(teleport|tp) [a[n]] [mtv] vehicle %vehicle% to [location] %location%"
+                "(teleport|tp) [a[n]] [mtv] vehicle %mtvehicle% to [location] %location%"
         );
     }
 

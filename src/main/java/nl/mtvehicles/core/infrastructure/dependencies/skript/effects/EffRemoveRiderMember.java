@@ -30,8 +30,8 @@ public class EffRemoveRiderMember extends Effect {
 
     static {
         Skript.registerEffect(EffRemoveRiderMember.class,
-                "remove [player] %offlineplayer% as [a] rider (of|from) [the] [mtv] vehicle %vehicle%",
-                "remove [player] %offlineplayer% as [a] member (of|from) [the] [mtv] vehicle %vehicle%"
+                "remove [player] %offlineplayer% as [a] rider (of|from) [the] [mtv] vehicle %mtvehicle%",
+                "remove [player] %offlineplayer% as [a] member (of|from) [the] [mtv] vehicle %mtvehicle%"
         );
     }
 

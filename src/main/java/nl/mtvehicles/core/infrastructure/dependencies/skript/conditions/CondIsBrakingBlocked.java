@@ -28,9 +28,9 @@ public class CondIsBrakingBlocked extends Condition {
 
     static {
         Skript.registerCondition(CondIsBrakingBlocked.class,
-                "[mtv] vehicle breaking of [mtv] vehicle %vehicle% is blocked",
+                "[mtv] vehicle breaking of [mtv] vehicle %mtvehicle% is blocked",
                 "[mtv] vehicle breaking of license [plate] %string% is blocked",
-                "[mtv] vehicle breaking of [mtv] vehicle %vehicle% (isn't|is not) blocked",
+                "[mtv] vehicle breaking of [mtv] vehicle %mtvehicle% (isn't|is not) blocked",
                 "[mtv] vehicle breaking of license [plate] %string% (isn't|is not) blocked"
         );
     }

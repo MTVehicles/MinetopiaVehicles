@@ -26,7 +26,7 @@ import static nl.mtvehicles.core.Main.isNotNull;
 public class ExprRotationSpeed extends SimplePropertyExpression<Vehicle, Integer> {
 
     static {
-        register(ExprRotationSpeed.class, Integer.class, "[mtv] vehicle rotation speed", "vehicles");
+        register(ExprRotationSpeed.class, Integer.class, "[mtv] vehicle rotation speed", "mtvehicles");
     }
 
     @Override

@@ -25,7 +25,7 @@ import static nl.mtvehicles.core.Main.isNotNull;
 public class ExprSpeed extends SimplePropertyExpression<Vehicle, Double> {
 
     static {
-        register(ExprSpeed.class, Double.class, "[mtv] vehicle speed", "vehicles");
+        register(ExprSpeed.class, Double.class, "[mtv] vehicle speed", "mtvehicles");
     }
 
     @Override

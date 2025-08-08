@@ -26,9 +26,9 @@ public class CondIsFrictionBlocked extends Condition {
 
     static {
         Skript.registerCondition(CondIsFrictionBlocked.class,
-                "[mtv] vehicle friction of [mtv] vehicle %vehicle% is blocked",
+                "[mtv] vehicle friction of [mtv] vehicle %mtvehicle% is blocked",
                 "[mtv] vehicle friction of license [plate] %string% is blocked",
-                "[mtv] vehicle friction of [mtv] vehicle %vehicle% (isn't|is not) blocked",
+                "[mtv] vehicle friction of [mtv] vehicle %mtvehicle% (isn't|is not) blocked",
                 "[mtv] vehicle friction of license [plate] %string% (isn't|is not) blocked"
         );
     }

@@ -33,8 +33,8 @@ public class EffGiveVehicle extends Effect {
                 "give %player% [mtv] vehicle (by|with) license [plate] %string%",
                 "give [mtv] vehicle (by|with) (UUID|uuid) %string% to %player%",
                 "give %player% [mtv] vehicle (by|with) (UUID|uuid) %string%",
-                "give [mtv] vehicle %vehicle% to %player%",
-                "give %player% [mtv] vehicle %vehicle%"
+                "give [mtv] vehicle %mtvehicle% to %player%",
+                "give %player% [mtv] vehicle %mtvehicle%"
         );
     }
 

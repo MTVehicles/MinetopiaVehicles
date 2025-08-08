@@ -30,8 +30,8 @@ public class EffAddRiderMember extends Effect {
 
     static {
         Skript.registerEffect(EffAddRiderMember.class,
-                "add [player] %offlineplayer% as [a] rider (of|to) [the] [mtv] vehicle %vehicle%",
-                "add [player] %offlineplayer% as [a] member (of|to) [the] [mtv] vehicle %vehicle%"
+                "add [player] %offlineplayer% as [a] rider (of|to) [the] [mtv] vehicle %mtvehicle%",
+                "add [player] %offlineplayer% as [a] member (of|to) [the] [mtv] vehicle %mtvehicle%"
         );
     }
 

@@ -28,9 +28,9 @@ public class EffBlockFriction extends Effect {
 
     static {
         Skript.registerEffect(EffBlockFriction.class,
-                "block [mtv] vehicle friction of [mtv] [vehicle] %vehicle%",
+                "block [mtv] vehicle friction of [mtv] [vehicle] %mtvehicle%",
                 "block [mtv] vehicle friction of license [plate] %string%",
-                "unblock [mtv] vehicle friction of [mtv] [vehicle] %vehicle%",
+                "unblock [mtv] vehicle friction of [mtv] [vehicle] %mtvehicle%",
                 "unblock [mtv] vehicle friction of license [plate] %string%"
         );
     }

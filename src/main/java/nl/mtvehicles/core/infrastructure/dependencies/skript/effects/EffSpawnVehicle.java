@@ -28,7 +28,7 @@ public class EffSpawnVehicle extends Effect {
     static {
         Skript.registerEffect(EffSpawnVehicle.class,
                 "spawn [mtv] vehicle (by|with) license [plate] %string% at [location] %location%",
-                "spawn [mtv] vehicle %vehicle% at [location] %location%"
+                "spawn [mtv] vehicle %mtvehicle% at [location] %location%"
         );
     }
 

@@ -23,7 +23,7 @@ public class EffDespawnVehicle extends Effect {
 
     static {
         Skript.registerEffect(EffDespawnVehicle.class,
-                "(despawn|hide) [mtv] vehicle %vehicle%"
+                "(despawn|hide) [mtv] vehicle %mtvehicle%"
         );
     }
 

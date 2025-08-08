@@ -25,7 +25,7 @@ import static nl.mtvehicles.core.Main.isNotNull;
 public class ExprOwner extends SimplePropertyExpression<Vehicle, OfflinePlayer> {
 
     static {
-        register(ExprOwner.class, OfflinePlayer.class, "[mtv] vehicle owner", "vehicles");
+        register(ExprOwner.class, OfflinePlayer.class, "[mtv] vehicle owner", "mtvehicles");
     }
 
     @Override

@@ -29,8 +29,8 @@ public class ExprVehicleLocation extends SimpleExpression<Location> {
         Skript.registerExpression(ExprVehicleLocation.class,
                 Location.class,
                 ExpressionType.PROPERTY,
-                "%vehicle%'s [mtv] vehicle location",
-                "[the] [mtv] vehicle location of %vehicle%"
+                "%mtvehicle%'s [mtv] vehicle location",
+                "[the] [mtv] vehicle location of %mtvehicle%"
         );
     }
 

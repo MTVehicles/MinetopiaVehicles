@@ -24,8 +24,8 @@ public class CondVehicleExists extends Condition {
 
     static {
         Skript.registerCondition(CondVehicleExists.class,
-                "[the] [mtv] vehicle %vehicle% exist[s]",
-                "[the] [mtv] vehicle %vehicle% (isn't|is not) deleted"
+                "[the] [mtv] vehicle %mtvehicle% exist[s]",
+                "[the] [mtv] vehicle %mtvehicle% (isn't|is not) deleted"
         );
     }
 

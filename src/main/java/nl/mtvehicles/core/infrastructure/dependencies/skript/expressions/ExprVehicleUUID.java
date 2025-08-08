@@ -26,8 +26,8 @@ public class ExprVehicleUUID extends SimpleExpression<String> {
         Skript.registerExpression(ExprVehicleUUID.class,
                 String.class,
                 ExpressionType.PROPERTY,
-                "%vehicle%'s [mtv] vehicle (UUID|uuid)",
-                "[mtv] vehicle (UUID|uuid) of %vehicle%"
+                "%mtvehicle%'s [mtv] vehicle (UUID|uuid)",
+                "[mtv] vehicle (UUID|uuid) of %mtvehicle%"
         );
     }
 

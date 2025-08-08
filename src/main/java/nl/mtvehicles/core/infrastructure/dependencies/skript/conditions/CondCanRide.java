@@ -27,8 +27,8 @@ public class CondCanRide extends Condition {
 
     static {
         Skript.registerCondition(CondCanRide.class,
-                "[player] %player% can ride [the] [mtv] vehicle %vehicle%",
-                "[player] %player% (cannot|can't) ride [the] [mtv] vehicle %vehicle%"
+                "[player] %player% can ride [the] [mtv] vehicle %mtvehicle%",
+                "[player] %player% (cannot|can't) ride [the] [mtv] vehicle %mtvehicle%"
         );
     }
 

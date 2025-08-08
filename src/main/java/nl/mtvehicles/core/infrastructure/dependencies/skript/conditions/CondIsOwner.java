@@ -27,8 +27,8 @@ public class CondIsOwner extends Condition {
 
     static {
         Skript.registerCondition(CondIsOwner.class,
-                "[player] %player% is [the] [mtv] vehicle owner of %vehicle%",
-                "[player] %player% (isn't|is not) [the] [mtv] vehicle owner of %vehicle%"
+                "[player] %player% is [the] [mtv] vehicle owner of %mtvehicle%",
+                "[player] %player% (isn't|is not) [the] [mtv] vehicle owner of %mtvehicle%"
         );
     }
 

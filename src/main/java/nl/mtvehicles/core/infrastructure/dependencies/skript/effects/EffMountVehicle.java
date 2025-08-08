@@ -24,7 +24,7 @@ public class EffMountVehicle extends Effect {
 
     static {
         Skript.registerEffect(EffMountVehicle.class,
-                "make [player] %player% (mount|drive|ride) [mtv] vehicle %vehicle%"
+                "make [player] %player% (mount|drive|ride) [mtv] vehicle %mtvehicle%"
         );
     }
 

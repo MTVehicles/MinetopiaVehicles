@@ -25,7 +25,7 @@ import static nl.mtvehicles.core.Main.isNotNull;
 public class ExprFuelUsage extends SimplePropertyExpression<Vehicle, Double> {
 
     static {
-        register(ExprFuelUsage.class, Double.class, "[mtv] vehicle fuel usage", "vehicles");
+        register(ExprFuelUsage.class, Double.class, "[mtv] vehicle fuel usage", "mtvehicles");
     }
 
     @Override

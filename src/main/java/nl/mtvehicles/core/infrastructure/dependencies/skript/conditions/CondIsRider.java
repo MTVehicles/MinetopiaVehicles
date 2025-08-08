@@ -27,8 +27,8 @@ public class CondIsRider extends Condition {
 
     static {
         Skript.registerCondition(CondIsRider.class,
-                "[player] %player% is [a] [mtv] vehicle rider of %vehicle%",
-                "[player] %player% (isn't|is not) [a] [mtv] vehicle rider of %vehicle%"
+                "[player] %player% is [a] [mtv] vehicle rider of %mtvehicle%",
+                "[player] %player% (isn't|is not) [a] [mtv] vehicle rider of %mtvehicle%"
         );
     }
 

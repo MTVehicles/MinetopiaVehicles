@@ -22,7 +22,7 @@ import static nl.mtvehicles.core.Main.isNotNull;
 public class ExprLicensePlate extends SimplePropertyExpression<Vehicle, String> {
 
     static {
-        register(ExprLicensePlate.class, String.class, "[mtv] vehicle license [plate]", "vehicles");
+        register(ExprLicensePlate.class, String.class, "[mtv] vehicle license [plate]", "mtvehicles");
     }
 
     @Override

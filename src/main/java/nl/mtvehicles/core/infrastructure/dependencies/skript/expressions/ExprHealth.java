@@ -27,7 +27,7 @@ import static nl.mtvehicles.core.Main.isNotNull;
 public class ExprHealth extends SimplePropertyExpression<Vehicle, Double> {
 
     static {
-        register(ExprHealth.class, Double.class, "[mtv] vehicle health", "vehicles");
+        register(ExprHealth.class, Double.class, "[mtv] vehicle health", "mtvehicles");
     }
 
     @Override

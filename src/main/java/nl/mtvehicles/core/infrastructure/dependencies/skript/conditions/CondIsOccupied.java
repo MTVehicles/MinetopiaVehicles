@@ -26,8 +26,8 @@ public class CondIsOccupied extends Condition {
 
     static {
         Skript.registerCondition(CondIsOccupied.class,
-                "[the] [mtv] vehicle %vehicle% is occupied",
-                "[the] [mtv] vehicle %vehicle% (isn't|is not) occupied"
+                "[the] [mtv] vehicle %mtvehicle% is occupied",
+                "[the] [mtv] vehicle %mtvehicle% (isn't|is not) occupied"
         );
     }
 

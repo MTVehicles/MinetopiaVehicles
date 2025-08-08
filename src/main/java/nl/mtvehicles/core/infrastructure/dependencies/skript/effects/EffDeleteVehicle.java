@@ -23,7 +23,7 @@ public class EffDeleteVehicle extends Effect {
 
     static {
         Skript.registerEffect(EffDeleteVehicle.class,
-                "(delete|clear) [mtv] vehicle %vehicle%"
+                "(delete|clear) [mtv] vehicle %mtvehicle%"
         );
     }
 
