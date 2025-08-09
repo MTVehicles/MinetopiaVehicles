@@ -33,5 +33,7 @@ public class CommandModule {
             pluginCommand.setExecutor(new VehicleSubCommandManager());
             pluginCommand.setTabCompleter(new VehicleTabCompleterManager());
         }
+
+        VehicleTabCompleterManager.loadVehicleList();
     }
 }

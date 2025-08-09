@@ -11,7 +11,9 @@ import org.bukkit.inventory.ItemStack;
 
 /**
  * <b>/vehicle givevoucher %player% %uuid%</b> - add a vehicle voucher to a player.
+ * @deprecated Since 2.5.7, use {@link VehicleGive} instead.
  */
+@Deprecated
 public class VehicleGiveVoucher extends MTVSubCommand {
     public VehicleGiveVoucher() {
         this.setPlayerCommand(false);

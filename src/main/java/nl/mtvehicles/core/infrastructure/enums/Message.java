@@ -184,7 +184,10 @@ public enum Message {
     FUEL_TOO_HIGH,
     MUST_BE_INTEGER,
     MUST_BE_DOUBLE,
-    MUST_BE_BOOLEAN;
+    MUST_BE_BOOLEAN,
+    USE_NEW_VEHICLE_GIVE,
+    NO_INVENTORY_SPACE,
+    VOUCHER_PERMANENT;
 
     final private String key;
 
