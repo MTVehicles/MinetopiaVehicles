@@ -22,7 +22,12 @@ public class VehicleGive extends MTVSubCommand {
 
     @Override
     public boolean execute() {
-        if (!checkPermission("mtvehicles.give")) return true;
+        // If they don't have any necessary permission, don't let them run the command in the first place
+        // Otherwise, permissions are checked based on the arguments (whether voucher is given)
+        if (!sender.hasPermission("mtvehicles.givecar") && !sender.hasPermission("mtvehicles.givevoucher")) {
+            ConfigModule.messagesConfig.sendMessage(sender, Message.NO_PERMISSION);
+            return true;
+        }
 
         if (arguments.length != 3 && arguments.length != 4) {
             sendMessage(Message.USE_NEW_VEHICLE_GIVE);
@@ -50,6 +55,8 @@ public class VehicleGive extends MTVSubCommand {
         else useVoucher = arguments[3].equals("--voucher:true");
 
         if (useVoucher) {
+            if (!checkPermission("mtvehicles.givevoucher")) return true;
+
             if (VehicleUtils.getItem(carUuid) == null){
                 sender.sendMessage(ConfigModule.messagesConfig.getMessage(Message.GIVE_CAR_NOT_FOUND));
                 return true;
@@ -57,6 +64,8 @@ public class VehicleGive extends MTVSubCommand {
 
             itemToGive = ItemUtils.createVoucher(carUuid);
         } else {
+            if (!checkPermission("mtvehicles.givecar")) return true;
+
             ItemStack car = VehicleUtils.createAndGetItemByUUID(argPlayer, carUuid);
 
             if (car == null){
