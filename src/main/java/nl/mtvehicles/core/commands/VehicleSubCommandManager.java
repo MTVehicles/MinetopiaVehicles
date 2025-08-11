@@ -40,6 +40,7 @@ public class VehicleSubCommandManager extends MTVCommand {
         CommandModule.subcommands.put("give", new VehicleGive());
         CommandModule.subcommands.put("givecar", new VehicleGiveCar());
         CommandModule.subcommands.put("givevoucher", new VehicleGiveVoucher());
+        CommandModule.subcommands.put("buy", new VehicleBuy());
         CommandModule.subcommands.put("buycar", new VehicleBuyCar());
         CommandModule.subcommands.put("buyvoucher", new VehicleBuyVoucher());
         CommandModule.subcommands.put("update", new VehicleUpdate());

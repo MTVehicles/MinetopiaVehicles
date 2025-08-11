@@ -14,6 +14,8 @@ import java.util.HashMap;
 
 /**
  * <b>/vehicle give %player% %vehicleName% [--voucher:true]</b> - give a vehicle / a voucher to a player.
+ * @permission mtvehicles.givecar / mtvehicles.givevoucher
+ * @since 2.5.7
  */
 public class VehicleGive extends MTVSubCommand {
     public VehicleGive() {

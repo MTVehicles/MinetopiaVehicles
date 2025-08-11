@@ -54,9 +54,16 @@ public class VehicleTabCompleterManager implements org.bukkit.command.TabComplet
                     if (Bukkit.getPlayer(strings[1]) != null) {
                         return getApplicableTabCompleters(strings[2], vehicleList.keySet());
                     }
-                } else if (strings.length == 4) {
+                } else if (strings.length == 4 && commandSender.hasPermission("mtvehicles.givevoucher")) {
                     List<String> completions = Arrays.asList("--voucher:true", "--voucher:false");
                     return getApplicableTabCompleters(strings[3], completions);
+                }
+            } else if (subCommand.equals("buy")) {
+                if (strings.length == 2) {
+                    return getApplicableTabCompleters(strings[1], vehicleList.keySet());
+                } else if (strings.length == 3 && commandSender.hasPermission("mtvehicles.buyvoucher")) {
+                    List<String> completions = Arrays.asList("--voucher:true", "--voucher:false");
+                    return getApplicableTabCompleters(strings[2], completions);
                 }
             }
         }
