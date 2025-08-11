@@ -58,11 +58,11 @@ public class ExprFuelUsage extends SimplePropertyExpression<Vehicle, Double> {
         if (!isNotNull(delta, delta[0], vehicle)) return;
         double changeValue = ((Number) delta[0]).doubleValue();
 
-        vehicle.setFuelUsage(Math.min(0, changeValue)); //cannot be lower than zero (it would be adding fuel :D)
+        vehicle.setFuelUsage(Math.max(0, changeValue)); //cannot be lower than zero (it would be adding fuel :D)
         vehicle.save();
 
         if (VehicleData.fuelUsage.containsKey(vehicle.getLicensePlate()))
-            VehicleData.fuelUsage.put(vehicle.getLicensePlate(), Math.min(0, changeValue));
+            VehicleData.fuelUsage.put(vehicle.getLicensePlate(), Math.max(0, changeValue));
     }
 
 }
