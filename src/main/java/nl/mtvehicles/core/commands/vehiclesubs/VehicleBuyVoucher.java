@@ -11,7 +11,9 @@ import org.bukkit.inventory.ItemStack;
 
 /**
  * <b>/vehicle buyvoucher %uuid%</b> - buy a vehicle voucher.
+ * @deprecated Since 2.5.7, use {@link VehicleBuy} instead.
  */
+@Deprecated
 public class VehicleBuyVoucher extends MTVSubCommand {
     public VehicleBuyVoucher() {
         this.setPlayerCommand(true);
@@ -20,7 +22,7 @@ public class VehicleBuyVoucher extends MTVSubCommand {
     @Override
     public boolean execute() {
 
-        if(!player.hasPermission("mtvehicles.buycar")){
+        if(!player.hasPermission("mtvehicles.buyvoucher")){
             sendMessage(Message.NO_PERMISSION);
             return true;
         }

@@ -10,7 +10,9 @@ import org.bukkit.inventory.ItemStack;
 
 /**
  * <b>/vehicle buycar %uuid%</b> - buy a vehicle.
+ * @deprecated Since 2.5.7, use {@link VehicleBuy} instead.
  */
+@Deprecated
 public class VehicleBuyCar extends MTVSubCommand {
     public VehicleBuyCar() {
         this.setPlayerCommand(true);
