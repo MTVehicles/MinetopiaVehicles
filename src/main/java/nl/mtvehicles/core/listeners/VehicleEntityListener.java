@@ -22,6 +22,8 @@ import org.bukkit.inventory.ItemStack;
 import javax.annotation.Nullable;
 import java.util.HashMap;
 
+import static org.bukkit.event.entity.EntityDamageEvent.DamageCause.ENTITY_ATTACK;
+
 /**
  * On vehicle left click - damaging, opening a trunk, fueling
  */
@@ -55,16 +57,30 @@ public class VehicleEntityListener extends MTVListener {
             return;
         }
 
-        if (!player.isInsideVehicle()) return;
+        ItemStack heldItem = player.getInventory().getItemInMainHand();
 
-        handleFueling(license, player);
+        if (!heldItem.hasItemMeta()) {
+            handleVehicleDamage(player, license);
+            return;
+        }
+
+        NBTItem nbt = new NBTItem(heldItem);
+        if (!nbt.hasKey("mtvehicles.benzineval")) {
+            handleVehicleDamage(player, license);
+            return;
+        }
+
+        handleFueling(license, player, nbt);
     }
 
     private void handleVehicleDamage(Entity damager, String license) {
         setupDamageAPI(damager, license);
         callAPI(null);
         if (isCancelled()) return;
-        damage(((VehicleDamageEvent) getAPI()).getLicensePlate());
+
+        final String newLicense = ((VehicleDamageEvent) getAPI()).getLicensePlate();
+        final double damage = ((VehicleDamageEvent) getAPI()).getDamage();
+        damage(newLicense, damage);
     }
 
     private void handleOpenTrunk(String license) {
@@ -79,20 +95,7 @@ public class VehicleEntityListener extends MTVListener {
         }
     }
 
-    private void handleFueling(String license, Player player) {
-        ItemStack item = player.getInventory().getItemInMainHand();
-
-        if (!item.hasItemMeta()) {
-            handleVehicleDamage(player, license);
-            return;
-        }
-
-        NBTItem nbt = new NBTItem(item);
-        if (!nbt.hasKey("mtvehicles.benzineval")) {
-            handleVehicleDamage(player, license);
-            return;
-        }
-
+    private void handleFueling(String license, Player player, NBTItem nbt) {
         double vehicleFuel = VehicleData.fuel.getOrDefault(license, 0.0);
         String jerryCanFuelStr = nbt.getString("mtvehicles.benzineval");
         String jerryCanSizeStr = nbt.getString("mtvehicles.benzinesize");
@@ -134,12 +137,10 @@ public class VehicleEntityListener extends MTVListener {
         VehicleData.fuel.put(license, vehicleFuel);
 
         BossBarUtils.setBossBarValue(vehicleFuel / 100.0D, license);
-        player.setItemInHand(VehicleFuel.jerrycanItem(jerryCanSize, jerryCanFuel - fuelToAdd));
+        player.getInventory().setItemInMainHand(VehicleFuel.jerrycanItem(jerryCanSize, jerryCanFuel - fuelToAdd));
     }
 
-    public void damage(String license) {
-        final double damage = ((VehicleDamageEvent) getAPI()).getDamage();
-
+    public static void damage(String license, double damage) {
         if (!(boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.DAMAGE_ENABLED)) return;
         if (VehicleUtils.getVehicle(license) == null) return;
 
@@ -152,6 +153,7 @@ public class VehicleEntityListener extends MTVListener {
         this.setAPI(new VehicleDamageEvent());
         VehicleDamageEvent api = (VehicleDamageEvent) getAPI();
         api.setDamager(damager);
+        api.setDamageCause(ENTITY_ATTACK);
         api.setLicensePlate(license);
         api.setDamage(((EntityDamageByEntityEvent) event).getDamage());
     }

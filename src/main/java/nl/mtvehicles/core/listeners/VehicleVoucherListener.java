@@ -25,14 +25,14 @@ import java.util.HashMap;
  */
 public class VehicleVoucherListener extends MTVListener {
     public static HashMap<Player, String> voucher = new HashMap<>();
-    private Inventory cachedInventory;  // Cache the inventory
+    private static Inventory cachedInventory;  // Cache the inventory
 
     public VehicleVoucherListener(){
         super(new VehicleVoucherEvent());
-        this.cachedInventory = createVoucherInventory();  // Create the inventory when the listener is initialized
+        createVoucherInventory();  // Create the inventory when the listener is initialized
     }
 
-    private Inventory createVoucherInventory() {
+    public static void createVoucherInventory() {
         Inventory inv = Bukkit.createInventory(null, 27, InventoryTitle.VOUCHER_REDEEM_MENU.getStringTitle());
 
         inv.setItem(11, ItemUtils.getMenuItem(
@@ -51,7 +51,8 @@ public class VehicleVoucherListener extends MTVListener {
                 "&a" + ConfigModule.messagesConfig.getMessage(Message.CONFIRM),
                 "&7" + ConfigModule.messagesConfig.getMessage(Message.CONFIRM_ACTION), "&7" + ConfigModule.messagesConfig.getMessage(Message.CONFIRM_VOUCHER)
         ));
-        return inv;
+
+        cachedInventory = inv;
     }
 
     @EventHandler

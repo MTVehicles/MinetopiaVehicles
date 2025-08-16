@@ -6,6 +6,7 @@ import nl.mtvehicles.core.infrastructure.enums.InventoryTitle;
 import nl.mtvehicles.core.infrastructure.enums.Language;
 import nl.mtvehicles.core.infrastructure.enums.Message;
 import nl.mtvehicles.core.infrastructure.modules.ConfigModule;
+import nl.mtvehicles.core.listeners.VehicleVoucherListener;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -75,6 +76,9 @@ public class LanguageUtils {
             p.sendMessage(ConfigModule.messagesConfig.getMessage(Message.LANGUAGE_HAS_CHANGED));
             ConfigModule.secretSettings.setMessagesLanguage(language);
             ConfigModule.secretSettings.save();
+
+            VehicleVoucherListener.createVoucherInventory(); // Recreate the voucher inventory to apply new language
+
         } else {
             p.sendMessage(ChatColor.RED + "An error occurred whilst trying to set a new language.");
             Main.instance.getLogger().severe(String.format("Could not find file messages/messages_%s.yml, aborting...", languageCode));
