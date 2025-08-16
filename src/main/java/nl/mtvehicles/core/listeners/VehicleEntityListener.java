@@ -13,6 +13,7 @@ import nl.mtvehicles.core.infrastructure.utils.BossBarUtils;
 import nl.mtvehicles.core.infrastructure.vehicle.VehicleData;
 import nl.mtvehicles.core.infrastructure.vehicle.VehicleUtils;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -55,12 +56,23 @@ public class VehicleEntityListener extends MTVListener {
             return;
         }
 
-        if (!player.isInsideVehicle()) return;
+        ItemStack heldItem = player.getInventory().getItemInMainHand();
 
-        handleFueling(license, player);
+        if (!heldItem.hasItemMeta()) {
+            handleVehicleDamage(player, license);
+            return;
+        }
+
+        NBTItem nbt = new NBTItem(heldItem);
+        if (!nbt.hasKey("mtvehicles.benzineval")) {
+            handleVehicleDamage(player, license);
+            return;
+        }
+
+        handleFueling(license, player, nbt);
     }
 
-    private void handleVehicleDamage(Entity damager, String license) {
+    public void handleVehicleDamage(Entity damager, String license) {
         setupDamageAPI(damager, license);
         callAPI(null);
         if (isCancelled()) return;
@@ -79,20 +91,7 @@ public class VehicleEntityListener extends MTVListener {
         }
     }
 
-    private void handleFueling(String license, Player player) {
-        ItemStack item = player.getInventory().getItemInMainHand();
-
-        if (!item.hasItemMeta()) {
-            handleVehicleDamage(player, license);
-            return;
-        }
-
-        NBTItem nbt = new NBTItem(item);
-        if (!nbt.hasKey("mtvehicles.benzineval")) {
-            handleVehicleDamage(player, license);
-            return;
-        }
-
+    private void handleFueling(String license, Player player, NBTItem nbt) {
         double vehicleFuel = VehicleData.fuel.getOrDefault(license, 0.0);
         String jerryCanFuelStr = nbt.getString("mtvehicles.benzineval");
         String jerryCanSizeStr = nbt.getString("mtvehicles.benzinesize");
@@ -134,7 +133,7 @@ public class VehicleEntityListener extends MTVListener {
         VehicleData.fuel.put(license, vehicleFuel);
 
         BossBarUtils.setBossBarValue(vehicleFuel / 100.0D, license);
-        player.setItemInHand(VehicleFuel.jerrycanItem(jerryCanSize, jerryCanFuel - fuelToAdd));
+        player.getInventory().setItemInMainHand(VehicleFuel.jerrycanItem(jerryCanSize, jerryCanFuel - fuelToAdd));
     }
 
     public void damage(String license) {
