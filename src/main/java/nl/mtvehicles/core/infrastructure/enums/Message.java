@@ -96,6 +96,7 @@ public enum Message {
     VEHICLE_INFO_MEMBERS("vehicleInfoMembers2"),
     @Deprecated
     VEHICLE_INFO_NO_MEMBERS,
+    VEHICLE_INFO_HEALTH,
     LANGUAGE_HAS_CHANGED,
     USING_PRE_RELEASE,
     NOT_IN_A_GAS_STATION,
