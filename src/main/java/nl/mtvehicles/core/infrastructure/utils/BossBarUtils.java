@@ -29,6 +29,9 @@ public class BossBarUtils {
      */
     public static void setBossBarValue(double counter, String licensePlate) {
         if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.FUEL_ENABLED) && (boolean) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.FUEL_ENABLED)) {
+
+            if (!Fuelbar.containsKey(licensePlate)) return;
+
             Fuelbar.get(licensePlate).setProgress(counter);
             Fuelbar.get(licensePlate).setTitle(Math.round(counter * 100.0D) + "% " + TextUtils.colorize(ConfigModule.messagesConfig.getMessage(Message.BOSSBAR_FUEL)));
 

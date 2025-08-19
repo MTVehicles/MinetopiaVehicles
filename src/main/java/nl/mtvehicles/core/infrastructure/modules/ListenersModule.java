@@ -22,6 +22,7 @@ public class ListenersModule {
         Main.instance.registerListener(new VehicleLeaveListener());
         Main.instance.registerListener(new ChatListener());
         Main.instance.registerListener(new VehicleEntityListener());
+        Main.instance.registerListener(new VehicleOtherDamageListener());
         Main.instance.registerListener(new JoinListener());
         Main.instance.registerListener(new VehicleVoucherListener());
         Main.instance.registerListener(new InventoryCloseListener());

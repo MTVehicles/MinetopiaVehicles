@@ -1,19 +1,37 @@
 package nl.mtvehicles.core.events;
 
+import lombok.Getter;
+import lombok.Setter;
 import nl.mtvehicles.core.events.interfaces.CanEditLicensePlate;
 import nl.mtvehicles.core.events.interfaces.IsCancellable;
 import nl.mtvehicles.core.infrastructure.models.MTVEvent;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.Cancellable;
+import org.bukkit.event.entity.EntityDamageEvent;
+
+import javax.annotation.Nullable;
 
 /**
  * On vehicle damage
  */
 public class VehicleDamageEvent extends MTVEvent implements IsCancellable, Cancellable, CanEditLicensePlate {
 
-    private Entity damager;
+    private @Nullable Entity damager;
+    /**
+     * Amount of the damage dealt to the vehicle
+     */
+    @Setter
+    @Getter
     private double damage;
     private String licensePlate;
+
+    @Setter
+    @Getter
+    /**
+     * The cause of the damage dealt to the vehicle
+     * @since 2.5.7
+     */
+    private EntityDamageEvent.DamageCause damageCause;
 
     @Override
     public void setCancelled(boolean cancelled) {
@@ -32,9 +50,9 @@ public class VehicleDamageEvent extends MTVEvent implements IsCancellable, Cance
 
     /**
      * Get the entity that has damaged the vehicle
-     * @return Damager
+     * @return Damager (null if not caused by an entity)
      */
-    public Entity getDamager() {
+    public @Nullable Entity getDamager() {
         return damager;
     }
 
@@ -42,23 +60,8 @@ public class VehicleDamageEvent extends MTVEvent implements IsCancellable, Cance
      * Set the entity that has damaged the vehicle
      * @param damager New damager
      */
-    public void setDamager(Entity damager) {
+    public void setDamager(@Nullable Entity damager) {
         this.damager = damager;
     }
 
-    /**
-     * Get the damage dealt to the vehicle
-     * @return Damage
-     */
-    public double getDamage() {
-        return damage;
-    }
-
-    /**
-     * Set new damage dealt to the vehicle
-     * @param damage New damage
-     */
-    public void setDamage(double damage) {
-        this.damage = damage;
-    }
 }
