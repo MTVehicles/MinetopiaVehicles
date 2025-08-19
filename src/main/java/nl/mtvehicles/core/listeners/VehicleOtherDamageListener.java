@@ -46,7 +46,7 @@ public class VehicleOtherDamageListener extends MTVListener {
         callAPI();
         if (isCancelled()) return;
 
-        VehicleEntityListener.damage(api.getLicensePlate(), Double.valueOf(api.getDamage()));
+        VehicleEntityListener.damage(api.getLicensePlate(), api.getDamage());
     }
 
     @EventHandler
@@ -76,7 +76,7 @@ public class VehicleOtherDamageListener extends MTVListener {
                 api.setDamageCause(cause);
                 api.setLicensePlate(license);
                 callAPI();
-                if (!isCancelled()) VehicleEntityListener.damage(api.getLicensePlate(), Double.valueOf(api.getDamage()));
+                if (!isCancelled()) VehicleEntityListener.damage(api.getLicensePlate(), api.getDamage());
             }
         }
     }
