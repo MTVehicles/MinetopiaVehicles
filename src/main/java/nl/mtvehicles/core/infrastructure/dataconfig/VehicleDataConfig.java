@@ -276,11 +276,8 @@ public class VehicleDataConfig extends MTVConfig {
      * @param damage Amount of damage
      */
     public void damageVehicle(String license, double damage){
-        final String path = "vehicle." + license + ".health";
-        double h = getHealth(license) - damage;
-        final double health = (h > 0) ? h : 0.0;
-        getConfiguration().set(path, health);
-        save();
+        final double health = getHealth(license) - damage;
+        set(license, Option.HEALTH, Math.max(health, 0.0));
     }
 
     /**
@@ -289,6 +286,7 @@ public class VehicleDataConfig extends MTVConfig {
      * @param health New health
      */
     public void setHealth(String license, double health){
+        set(license, Option.HEALTH, health);
         final String path = "vehicle." + license + ".health";
         getConfiguration().set(path, health);
         save();
