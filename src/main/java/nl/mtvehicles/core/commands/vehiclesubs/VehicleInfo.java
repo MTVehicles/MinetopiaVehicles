@@ -45,7 +45,7 @@ public class VehicleInfo extends MTVSubCommand {
         }
         sendMessage(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_INFO_SPEED) + formatter.format(vehicle.getMaxSpeed()*20).toString().replace(",", ".") + " blocks/sec");
         sendMessage(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_INFO_ACCELERATION) + formatter.format(vehicle.getAccelerationSpeed()/0.2*100).toString().replace(",", ".") + " blocks/sec^2");
-        sendMessage(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_INFO_HEALTH) + vehicle.getHealth());
+        sendMessage(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_INFO_HEALTH) + ((double) Math.round(vehicle.getHealth() * 100.0) / 100.0));
 
         sendMessage(ConfigModule.messagesConfig.getMessage(Message.VEHICLE_INFO_OWNER) + vehicle.getOwnerName());
 
