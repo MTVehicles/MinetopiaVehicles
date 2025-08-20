@@ -13,6 +13,7 @@ nl.mtvehicles.core.infrastructure.dependencies.skript.conditions
 nl.mtvehicles.core.infrastructure.dependencies.skript.effects
 nl.mtvehicles.core.infrastructure.dependencies.skript.events
 nl.mtvehicles.core.infrastructure.dependencies.skript.expressions
+nl.mtvehicles.core.infrastructure.dependencies.skript.types
 nl.mtvehicles.core.infrastructure.enums
 nl.mtvehicles.core.infrastructure.models
 nl.mtvehicles.core.infrastructure.modules

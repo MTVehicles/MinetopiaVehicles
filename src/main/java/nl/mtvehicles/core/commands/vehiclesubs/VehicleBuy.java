@@ -15,8 +15,8 @@ import org.bukkit.inventory.ItemStack;
 import java.util.HashMap;
 
 /**
- * <b>/vehicle buy %vehicleName% [--voucher:true]</b> - buy yourself a vehicle / a voucher.
- * @permission mtvehicles.buycar / mtvehicles.buyvoucher
+ * <b>/vehicle buy %vehicleName% [--voucher:true]</b> - buy yourself a vehicle / a voucher.<br>
+ * Permission: mtvehicles.buycar / mtvehicles.buyvoucher
  * @since 2.5.7
  */
 public class VehicleBuy extends MTVSubCommand {

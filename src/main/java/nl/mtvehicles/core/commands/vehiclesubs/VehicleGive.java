@@ -13,8 +13,8 @@ import org.bukkit.inventory.ItemStack;
 import java.util.HashMap;
 
 /**
- * <b>/vehicle give %player% %vehicleName% [--voucher:true]</b> - give a vehicle / a voucher to a player.
- * @permission mtvehicles.givecar / mtvehicles.givevoucher
+ * <b>/vehicle give %player% %vehicleName% [--voucher:true]</b> - give a vehicle / a voucher to a player.<br>
+ * Permission: mtvehicles.givecar / mtvehicles.givevoucher
  * @since 2.5.7
  */
 public class VehicleGive extends MTVSubCommand {
