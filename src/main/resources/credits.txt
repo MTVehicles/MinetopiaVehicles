@@ -3,11 +3,12 @@ List of people who contributed to MTVehicles:
 
 CODE CONTRIBUTORS:
 - Nikd0 (https://github.com/Zettovec)
+- GomorrhaDev (https://github.com/GomorrhaDev)
+- Tiakin (https://github.com/Tiakin)
 - Joep (https://github.com/GamerJoep)
 - Jeffrey (https://github.com/Jeffrey-H)
 - Jazzkuh (https://github.com/Jazzkuh)
 - Aaron (https://github.com/duranaaron)
-- GomorrhaDev (https://github.com/GomorrhaDev)
 - Manuel P. (https://github.com/Mr-EmPee)
 - Bluebotlabz (https://github.com/Bluebotlabz)
 - Djorr (https://github.com/Djorr)
