@@ -35,21 +35,21 @@ public class ItemUtils {
      */
     public static Material getMaterial(String string){
         try {
-            Material material = Material.getMaterial(string);
+            Material material = Material.matchMaterial(string);
             assert material != null;
             return material;
         } catch (Exception e1){
             try {
-                Material material = Material.getMaterial("LEGACY_" + string);
+                Material material = Material.matchMaterial("LEGACY_" + string);
                 assert material != null;
                 return material;
             } catch (Exception e2){
                 try {
-                    Material material = Material.getMaterial(string, true);
+                    Material material = Material.matchMaterial(string, true);
                     assert material != null;
                     return material;
                 } catch (Exception e3){
-                    Main.logSevere("An error occurred while trying to obtain material from string '" + string + "'. This is most likely a plugin issue, contact us at discord.gg/vehicle!");
+                    Main.logSevere("An error occurred while trying to obtain material from string '" + string + "'. This might happen after meddling with the config files or it could be a plugin issue.");
                     return null;
                 }
             }
@@ -291,8 +291,8 @@ public class ItemUtils {
      */
     @VersionSpecific
     public static Material getStainedGlassPane(){
-        if (getServerVersion().is1_12()) return Material.getMaterial("STAINED_GLASS_PANE");
-        else return Material.getMaterial("LEGACY_STAINED_GLASS_PANE");
+        if (getServerVersion().is1_12()) return Material.matchMaterial("STAINED_GLASS_PANE");
+        else return Material.matchMaterial("WHITE_STAINED_GLASS_PANE");
     }
 
     /**
