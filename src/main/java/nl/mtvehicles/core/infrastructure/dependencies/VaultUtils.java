@@ -27,11 +27,16 @@ public class VaultUtils {
         }
     }
 
-    private static boolean setupEconomy(){
+    private boolean setupEconomy(){
         RegisteredServiceProvider<Economy> rsp = Bukkit.getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp == null) return false;
         economy = rsp.getProvider();
         return economy != null;
+    }
+
+    public boolean retryEconomySetup(){
+        economy = null;
+        return setupEconomy();
     }
 
     /**
