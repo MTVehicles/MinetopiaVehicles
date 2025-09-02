@@ -438,6 +438,8 @@ public class InventoryClickListener extends MTVListener {
 
     private boolean canGetVehicleFromMenu(){
         final int owned = ConfigModule.vehicleDataConfig.getNumberOfOwnedVehicles(player);
+        if (player.hasPermission("mtvehicles.nolimit")) return true;
+
         int limit = player.getEffectivePermissions().stream()
                 .filter(permission -> permission.getPermission().startsWith("mtvehicles.limit.") && permission.getValue())
                 .map(permission -> {

@@ -116,14 +116,15 @@ These commands can only be executed by the owner of the vehicle. **Hold a vehicl
 
 ### Other permissions
 
-| Permission                        | Description                                                                                    |
-|-----------------------------------|------------------------------------------------------------------------------------------------|
-| `mtvehicles.ride`                 | Whether a player can ride others' vehicles                                                     |
-| `mtvehicles.anwb`                 | Whether a player can pick up vehicles from water - useless unless ANWB turned on in config     |
-| `mtvehicles.oppakken`             | Whether a player can pick up vehicles                                                          |
-| `mtvehicles.filljerrycans`        | Whether a player can fill up a jerry can - can be turned on/off in config                      |
-| `mtvehicles.filljerrycansforfree` | Whether a player can fill up a jerry can for free (Economy plugin + Vault necessary)           |
-| `mtvehicles.limit.X`              | Number of vehicles obtainable from /vehicle menu (Change X to an integer, use * for unlimited) |
+| Permission                        | Description                                                                                        |
+|-----------------------------------|----------------------------------------------------------------------------------------------------|
+| `mtvehicles.ride`                 | Whether a player can ride others' vehicles                                                         |
+| `mtvehicles.anwb`                 | Whether a player can pick up vehicles from water - useless unless ANWB turned on in config         |
+| `mtvehicles.oppakken`             | Whether a player can pick up vehicles                                                              |
+| `mtvehicles.filljerrycans`        | Whether a player can fill up a jerry can - can be turned on/off in config                          |
+| `mtvehicles.filljerrycansforfree` | Whether a player can fill up a jerry can for free (Economy plugin + Vault necessary)               |
+| `mtvehicles.limit.X`              | Number of vehicles obtainable from /vehicle menu (Change X to an integer, e.g. `mtvehicles.limit.6`) |
+| `mtvehicles.nolimit`              | No limit for vehicles obtainable from /vehicle menu (in case of issues)                            |
 
 ## **Softdependencies**
 
