@@ -191,6 +191,10 @@ public class VehicleMovement {
                         if (event.isCancelled()) {
                             player.getVehicle().eject();
                             VehicleData.speed.put(license, 0.0);
+                            Bukkit.getScheduler().runTaskLater(Main.instance, () -> {
+                                standMain.teleport(player);
+                                standSkin.teleport(player);
+                            }, 5L);
                             return;
                         }
 
@@ -203,6 +207,10 @@ public class VehicleMovement {
                         if (event.isCancelled()) {
                             player.getVehicle().eject();
                             VehicleData.speed.put(license, 0.0);
+                            Bukkit.getScheduler().runTaskLater(Main.instance, () -> {
+                                standMain.teleport(player);
+                                standSkin.teleport(player);
+                            }, 5L);
                             return;
                         }
                     }
