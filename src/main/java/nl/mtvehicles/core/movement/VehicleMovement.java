@@ -190,10 +190,10 @@ public class VehicleMovement {
                         event.call();
                         if (event.isCancelled()) {
                             player.getVehicle().eject();
-                            VehicleData.speed.put(license, 0.0);
+                            VehicleData.speed.put(license, 0.0);;
                             Bukkit.getScheduler().runTaskLater(Main.instance, () -> {
-                                standMain.teleport(player);
-                                standSkin.teleport(player);
+                                standMain.teleport(new Location(player.getWorld(), player.getLocation().getX(), standMain.getLocation().getY(), player.getLocation().getZ()));
+                                standSkin.teleport(new Location(player.getWorld(), player.getLocation().getX(), standSkin.getLocation().getY(), player.getLocation().getZ()));
                             }, 5L);
                             return;
                         }
@@ -208,8 +208,8 @@ public class VehicleMovement {
                             player.getVehicle().eject();
                             VehicleData.speed.put(license, 0.0);
                             Bukkit.getScheduler().runTaskLater(Main.instance, () -> {
-                                standMain.teleport(player);
-                                standSkin.teleport(player);
+                                standMain.teleport(new Location(player.getWorld(), player.getLocation().getX(), standMain.getLocation().getY(), player.getLocation().getZ()));
+                                standSkin.teleport(new Location(player.getWorld(), player.getLocation().getX(), standSkin.getLocation().getY(), player.getLocation().getZ()));
                             }, 5L);
                             return;
                         }
