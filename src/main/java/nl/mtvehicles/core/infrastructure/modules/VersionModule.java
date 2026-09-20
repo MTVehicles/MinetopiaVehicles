@@ -218,6 +218,9 @@ public class VersionModule {
             case "26.2":
                 serverVersion = ServerVersion.v26_2;
                 break;
+            case "26.3":
+                serverVersion = ServerVersion.v26_3;
+                break;
 
         }
     }
@@ -233,7 +236,7 @@ public class VersionModule {
 
         List<String> highestVersions = Arrays.asList(
                 "1.12.2", "1.13.2", "1.15.2", "1.16.5", "1.17.1", "1.18.2", "1.19.4", "1.20.6", "1.21.11", "26.1.2",
-                "26.2",
+                "26.2", "26.3",
                 "v1_21_R7", "v1_20_R4", "v1_19_R3", "v1_18_R2", "v1_17_R1", "v1_16_R3", "v1_15_R1", "v1_14_R1",
                 "v1_13_R2", "v1_12_R1"
 
