@@ -1,1 +1,26 @@
 vehicle:
+voertuigen:
+  - name: "Lamborghini"
+    vehicleType: CAR
+    skinItem: DIAMOND_HOE
+    itemDamage: 2001
+    benzineEnabled: true
+    kofferbakEnabled: true
+    hornEnabled: true
+    maxHealth: 200.0
+    acceleratieSpeed: 0.010
+    maxSpeed: 0.60
+    brakingSpeed: 0.03
+    aftrekkenSpeed: 0.005
+    rotateSpeed: 8
+    maxSpeedBackwards: 0.35
+    seats:
+      - x: -0.5
+        y: -0.85
+        z: 0.0
+    cars:
+      - name: "Lamborghini Yellow"
+        SkinItem: DIAMOND_HOE
+        itemDamage: 2001
+        uuid: LMB001
+        price: 500000.0
