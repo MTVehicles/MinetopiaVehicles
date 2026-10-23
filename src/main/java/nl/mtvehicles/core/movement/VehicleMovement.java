@@ -507,6 +507,7 @@ public class VehicleMovement {
                         } else { // Maybe they're on a carpet
                             if ((0.5 - difference) > 0) pushVehicleUp(0.5 - difference);
                         }
+                        return true;
                     }
                 }
 
