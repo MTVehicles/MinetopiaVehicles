@@ -163,7 +163,7 @@
                 </configuration>
             </plugin>
         </plugins>
-        <finalName>MTVehicles</finalName>
+        <finalName>MTVehicles-${project.version}</finalName>
     </build>
 
     <properties>

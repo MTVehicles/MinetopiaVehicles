@@ -12,7 +12,7 @@
         <directory>src/main/resources</directory>
       </resource>
     </resources>
-    <finalName>MTVehicles</finalName>
+    <finalName>MTVehicles-${project.version}</finalName>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
