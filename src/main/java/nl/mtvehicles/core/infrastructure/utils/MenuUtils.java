@@ -282,12 +282,12 @@ public class MenuUtils {
                 if (i - 1 < dataVehicle.size()) {
                     String license = dataVehicle.get(i - 1);
                     VehicleDataConfig data = ConfigModule.vehicleDataConfig;
-                    if (ownerUUID == null || data.get(license, VehicleDataConfig.Option.OWNER).toString().contains(ownerUUID.toString())) {
-                        if (data.get(license, VehicleDataConfig.Option.NBT_VALUE) == null) {
-                            inv.addItem(ItemUtils.getVehicleItem(license));
-                            continue;
-                        }
-                        inv.addItem(ItemUtils.getVehicleItem(license, true));
+                    Object owner = data.get(license, VehicleDataConfig.Option.OWNER);
+                    if (ownerUUID == null || (owner != null && owner.toString().contains(ownerUUID.toString()))) {
+                        ItemStack item = data.get(license, VehicleDataConfig.Option.NBT_VALUE) == null
+                                ? ItemUtils.getVehicleItem(license)
+                                : ItemUtils.getVehicleItem(license, true);
+                        if (item != null) inv.addItem(item); // null = incomplete vehicle data (already logged)
                     }
                 }
             }
