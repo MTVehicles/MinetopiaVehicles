@@ -134,13 +134,44 @@ public class ItemUtils {
      * @since 2.5.1
      */
     public static ItemStack getVehicleItem(String licensePlate){
+        Material material = getStoredMaterial(licensePlate);
+        if (material == null) return null;
         return getVehicleItem(
-                Objects.requireNonNull(getMaterial(ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.SKIN_ITEM).toString())),
-                (int) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.SKIN_DAMAGE),
-                (boolean) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.IS_GLOWING),
-                ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.NAME).toString(),
+                material,
+                getStoredInt(licensePlate, VehicleDataConfig.Option.SKIN_DAMAGE),
+                getStoredBoolean(licensePlate, VehicleDataConfig.Option.IS_GLOWING),
+                getStoredName(licensePlate),
                 licensePlate
         );
+    }
+
+    /**
+     * Get the vehicle's skin material from VehicleData.yml.
+     * @return Material, or null (and a logged warning) if the vehicle's data is missing or invalid
+     */
+    private static @Nullable Material getStoredMaterial(String licensePlate){
+        Object skinItem = ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.SKIN_ITEM);
+        Material material = null;
+        if (skinItem != null) material = getMaterial(skinItem.toString());
+        if (material == null) {
+            Main.logWarning("Vehicle with license plate '" + licensePlate + "' has a missing or invalid skinItem in vehicleData.yml. Skipping it.");
+        }
+        return material;
+    }
+
+    private static int getStoredInt(String licensePlate, VehicleDataConfig.Option option){
+        Object value = ConfigModule.vehicleDataConfig.get(licensePlate, option);
+        return (value instanceof Number) ? ((Number) value).intValue() : 0;
+    }
+
+    private static boolean getStoredBoolean(String licensePlate, VehicleDataConfig.Option option){
+        Object value = ConfigModule.vehicleDataConfig.get(licensePlate, option);
+        return value instanceof Boolean && (Boolean) value;
+    }
+
+    private static String getStoredName(String licensePlate){
+        Object name = ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.NAME);
+        return name != null ? name.toString() : licensePlate;
     }
 
     /**
@@ -153,11 +184,13 @@ public class ItemUtils {
     public static ItemStack getVehicleItem(String licensePlate, boolean nbt){
         if (!nbt) return getVehicleItem(licensePlate);
 
+        Material material = getStoredMaterial(licensePlate);
+        if (material == null) return null;
         return getVehicleItem(
-                Objects.requireNonNull(getMaterial(ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.SKIN_ITEM).toString())),
-                (int) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.SKIN_DAMAGE),
-                (boolean) ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.IS_GLOWING),
-                ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.NAME).toString(),
+                material,
+                getStoredInt(licensePlate, VehicleDataConfig.Option.SKIN_DAMAGE),
+                getStoredBoolean(licensePlate, VehicleDataConfig.Option.IS_GLOWING),
+                getStoredName(licensePlate),
                 licensePlate,
                 "mtcustom",
                 ConfigModule.vehicleDataConfig.get(licensePlate, VehicleDataConfig.Option.NBT_VALUE)

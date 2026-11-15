@@ -34,10 +34,16 @@ public class Main extends JavaPlugin {
 
     final public static String messagesVersion = "2.5.8-dev7";
 
+    /**
+     * Whether the plugin has finished loading its configuration (used to avoid touching the configs in {@link #onDisable()} if the plugin has been disabled early, e.g. because of an unsupported server version).
+     */
+    private static boolean configsLoaded = false;
+
     @Override
     public void onEnable() {
 
         instance = this;
+        configsLoaded = false;
 
         if (!new VersionModule().isSupportedVersion()) return;
 
@@ -56,6 +62,7 @@ public class Main extends JavaPlugin {
         new MetricsModule();
         new LoopModule();
         new ConfigModule();
+        configsLoaded = true;
 
         if ((boolean) ConfigModule.defaultConfig.get(DefaultConfig.Option.AUTO_UPDATE)) PluginUpdater.checkNewVersion(getServer().getConsoleSender());
     }
@@ -67,8 +74,9 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onDisable(){
-        ConfigModule.vehicleDataConfig.saveToDisk();
-        if (DependencyModule.isDependencyEnabled(SoftDependency.PLACEHOLDER_API)) DependencyModule.placeholderAPI.unregisterOnDisable();
+        // If the plugin was disabled before the configs were loaded, there is nothing to save (and touching ConfigModule would initialise it while the plugin is already disabled).
+        if (configsLoaded) ConfigModule.vehicleDataConfig.saveToDisk();
+        if (DependencyModule.isDependencyEnabled(SoftDependency.PLACEHOLDER_API) && DependencyModule.placeholderAPI != null) DependencyModule.placeholderAPI.unregisterOnDisable();
     }
 
     public static String getFileAsString() {

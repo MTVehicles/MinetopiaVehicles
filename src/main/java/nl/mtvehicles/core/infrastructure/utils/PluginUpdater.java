@@ -25,6 +25,9 @@ public class PluginUpdater {
     private static String pluginVersion = VersionModule.getPluginVersion();
     private static String latestVersion;
 
+    private static final int CONNECT_TIMEOUT_MS = 5000;
+    private static final int READ_TIMEOUT_MS = 10000;
+
     private static String getAPICheckerOutput(){
         if (!isEnabled) {
             Main.logWarning(ConfigModule.messagesConfig.getMessage(Message.UPDATE_DISABLED));
@@ -33,14 +36,18 @@ public class PluginUpdater {
         try {
             URLConnection connection = new URL("https://mtvehicles.github.io/auto-updater/index.html?now=" + getTimeStamp()).openConnection();
             connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+            // Without timeouts an unreachable server would block the (main) thread forever.
+            connection.setConnectTimeout(CONNECT_TIMEOUT_MS);
+            connection.setReadTimeout(READ_TIMEOUT_MS);
             connection.connect();
-            BufferedReader r = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
-            StringBuilder sb = new StringBuilder();
-            String line;
-            while ((line = r.readLine()) != null) {
-                sb.append(line);
+            try (BufferedReader r = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
+                StringBuilder sb = new StringBuilder();
+                String line;
+                while ((line = r.readLine()) != null) {
+                    sb.append(line);
+                }
+                return sb.toString();
             }
-            return sb.toString();
         } catch (IOException ex) {
             Main.logSevere("The plugin cannot connect to the webserver. Try again later...");
             ex.printStackTrace();
@@ -125,22 +132,32 @@ public class PluginUpdater {
         try {
             URL file = new URL("https://mtvehicles.github.io/auto-updater/MTVehicles.jar");
             File dest = new File("plugins");
-            InputStream is = file.openStream();
             File finaldest = new File(dest + "/" + file.getFile().replace("/auto-updater/MTVehicles.jar", "/" + Main.getFileAsString().replace("plugins", "")));
             // File finaldest = new File(dest + "/" + file.getFile());
             finaldest.getParentFile().mkdirs();
-            finaldest.createNewFile();
-            Main.logInfo("Reload the server/plugin to finish the plugin update!");
 
-            OutputStream os = new FileOutputStream(finaldest);
-            byte[] data = new byte[1024];
-            int count;
-            while ((count = is.read(data, 0, 1024)) != -1) {
-                os.write(data, 0, count);
+            // Download to a temporary file first, so that a failed/interrupted download can never corrupt the installed plugin jar.
+            File tempFile = new File(finaldest.getParentFile(), finaldest.getName() + ".download");
+            URLConnection connection = file.openConnection();
+            connection.setConnectTimeout(CONNECT_TIMEOUT_MS);
+            connection.setReadTimeout(READ_TIMEOUT_MS);
+            try (InputStream is = connection.getInputStream(); OutputStream os = new FileOutputStream(tempFile)) {
+                byte[] data = new byte[1024];
+                int count;
+                while ((count = is.read(data, 0, 1024)) != -1) {
+                    os.write(data, 0, count);
+                }
+                os.flush();
+            } catch (IOException | RuntimeException e) {
+                tempFile.delete();
+                throw e;
             }
-            os.flush();
-            is.close();
-            os.close();
+            if (tempFile.length() == 0) {
+                tempFile.delete();
+                throw new IOException("Downloaded file is empty.");
+            }
+            java.nio.file.Files.move(tempFile.toPath(), finaldest.toPath(), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+            Main.logInfo("Reload the server/plugin to finish the plugin update!");
             return true;
 
         } catch (Exception ec) {

@@ -255,14 +255,19 @@ public class InventoryClickListener extends MTVListener {
     private void vehicleRestoreMenu(){
         if (clickedItem.equals(ItemUtils.getMenuItem(ItemUtils.getStainedGlassPane(), 1, "&c", "&c"))) return;
 
+        // Ignore clicks in the player's own inventory - otherwise any item with meta clicked there would be duplicated.
+        if (clickedSlot < 0 || clickedSlot >= player.getOpenInventory().getTopInventory().getSize()) return;
+
+        final int currentPage = MenuUtils.restorePage.getOrDefault(player, 1);
+
         if (clickedSlot == 53) { //Next page
-            MenuUtils.restoreCMD(player, MenuUtils.restorePage.get(player) + 1, MenuUtils.restoreUUID.get(player));
+            MenuUtils.restoreCMD(player, currentPage + 1, MenuUtils.restoreUUID.get(player));
             return;
         }
 
         if (clickedSlot == 45) { //Previous page
-            if (MenuUtils.restorePage.get(player) - 1 >= 1)
-                MenuUtils.restoreCMD(player, MenuUtils.restorePage.get(player) - 1, MenuUtils.restoreUUID.get(player));
+            if (currentPage - 1 >= 1)
+                MenuUtils.restoreCMD(player, currentPage - 1, MenuUtils.restoreUUID.get(player));
             return;
         }
         player.getInventory().addItem(clickedItem);

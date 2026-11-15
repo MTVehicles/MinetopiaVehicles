@@ -238,7 +238,8 @@ public class VehicleDataConfig extends MTVConfig {
      * @param license Vehicle's license plate
      */
     public double getHealth(String license){
-        Double health = (Double) get(license, Option.HEALTH);
+        Object healthValue = get(license, Option.HEALTH);
+        Double health = healthValue instanceof Number ? ((Number) healthValue).doubleValue() : null; // may be an Integer if edited by hand
         if (health == null) {
             saveToDisk();
             final String path = "vehicle." + license + ".health";
@@ -298,9 +299,11 @@ public class VehicleDataConfig extends MTVConfig {
      */
     public int getNumberOfOwnedVehicles(Player p){
         final String playerUUID = p.getUniqueId().toString();
-        int owned;
-        Map<String, Object> vehicleData = getConfiguration().getValues(true);
-        owned = (int) vehicleData.keySet().stream().filter(key -> key.contains(".owner") && String.valueOf(vehicleData.get(key)).equals(playerUUID)).count();
+        // Count from the in-memory data (the file on disk is only updated periodically, so it may be outdated)
+        int owned = 0;
+        for (String license : vehicleDataInMemory.keySet()) {
+            if (playerUUID.equals(String.valueOf(get(license, Option.OWNER)))) owned++;
+        }
         return owned;
     }
 
