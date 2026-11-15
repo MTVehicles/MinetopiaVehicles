@@ -35,6 +35,8 @@ public abstract class MTVEvent extends Event {
      * Call this event (to other plugins)
      */
     public void call() {
+        // Some listeners keep a single event instance and reuse it - a cancellation must not carry over to the next call.
+        this.cancelled = false;
         Bukkit.getPluginManager().callEvent(this);
     }
 

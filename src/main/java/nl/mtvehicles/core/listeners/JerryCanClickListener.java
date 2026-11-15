@@ -49,8 +49,14 @@ public class JerryCanClickListener extends MTVListener {
         }
 
         player = event.getPlayer();
-        int currentFuel = Integer.parseInt(nbt.getString("mtvehicles.benzineval"));
-        int maxFuel = Integer.parseInt(nbt.getString("mtvehicles.benzinesize"));
+        int currentFuel;
+        int maxFuel;
+        try {
+            currentFuel = Integer.parseInt(nbt.getString("mtvehicles.benzineval"));
+            maxFuel = Integer.parseInt(nbt.getString("mtvehicles.benzinesize"));
+        } catch (NumberFormatException e) {
+            return; // Malformed jerrycan item (missing/invalid fuel NBT)
+        }
 
         this.setAPI(new JerryCanClickEvent(currentFuel, maxFuel));
         callAPI();

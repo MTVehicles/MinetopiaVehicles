@@ -137,9 +137,11 @@ public final class VehicleUtils {
     @Nullable
     public static String getDrivenVehiclePlate(Player p){
         if (p.getVehicle() == null) return null;
-        if (!p.getVehicle().getCustomName().contains("MTVEHICLES_")) return null;
+        final String vehicleName = p.getVehicle().getCustomName();
+        if (vehicleName == null || !vehicleName.contains("MTVEHICLES_")) return null;
 
-        String[] name = p.getVehicle().getCustomName().split("_");
+        String[] name = vehicleName.split("_", 3);
+        if (name.length < 3) return null;
         return name[2];
     }
 
@@ -336,7 +338,7 @@ public final class VehicleUtils {
         for (World world : Bukkit.getServer().getWorlds()) {
             for (Entity entity : world.getEntities()) {
                 if (entity.getCustomName() != null && entity.getCustomName().contains("MAINSEAT_" + licensePlate)) {
-                    driver = (Player) entity.getPassenger();
+                    if (entity.getPassenger() instanceof Player) driver = (Player) entity.getPassenger();
                 }
             }
         }
@@ -351,8 +353,11 @@ public final class VehicleUtils {
     public static String getLicensePlate(@Nullable Entity entity){
         if (entity == null) return null;
         final String name = entity.getCustomName();
-        if (name.split("_").length > 1) {
-            return name.split("_")[2];
+        if (name == null) return null;
+        // Entity names look like 'MTVEHICLES_TYPE_licensePlate'. Limit the split, so that license plates containing underscores are kept whole.
+        final String[] parts = name.split("_", 3);
+        if (parts.length == 3) {
+            return parts[2];
         }
         return null;
     }
@@ -751,7 +756,7 @@ public final class VehicleUtils {
             for (Entity entity : world.getEntities()) {
                 if (entity.getCustomName() != null) {
                     String name = entity.getCustomName();
-                    if (name.contains("MTVEHICLES_MAIN_")) list.add(name.split("_")[2]);
+                    if (name.contains("MTVEHICLES_MAIN_")) list.add(name.split("_", 3)[2]);
                 }
             }
         }
@@ -770,7 +775,7 @@ public final class VehicleUtils {
         for (Entity entity : world.getEntities()) {
             if (entity.getCustomName() != null) {
                 String name = entity.getCustomName();
-                if (name.contains("MTVEHICLES_MAIN_")) list.add(name.split("_")[2]);
+                if (name.contains("MTVEHICLES_MAIN_")) list.add(name.split("_", 3)[2]);
             }
         }
         return list;

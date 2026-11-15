@@ -132,6 +132,12 @@ public class VehicleEdit extends MTVSubCommand {
      * @return true if successful
      */
     public static boolean editLicensePlate(Player player, String licensePlate, String newLicensePlate) {
+        // A dot is a path separator in YAML configs - such a plate would corrupt vehicleData.yml (the vehicle would be saved as nested sections and loaded back without its data).
+        if (newLicensePlate == null || newLicensePlate.trim().isEmpty() || newLicensePlate.contains(".")) {
+            ConfigModule.messagesConfig.sendMessage(player, Message.INVALID_INPUT);
+            return false;
+        }
+
         if (ConfigModule.vehicleDataConfig.get(newLicensePlate, VehicleDataConfig.Option.SKIN_ITEM) != null) {
             ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_FAILED_DUP_LICENSE);
             return false;
@@ -383,6 +389,7 @@ public class VehicleEdit extends MTVSubCommand {
     private static boolean editDoubleValue(Player player, String licensePlate, String valueStr, VehicleDataConfig.Option option) {
         try {
             double value = Double.parseDouble(valueStr);
+            if (Double.isNaN(value) || Double.isInfinite(value)) throw new NumberFormatException();
             ConfigModule.vehicleDataConfig.set(licensePlate, option, value);
             ConfigModule.vehicleDataConfig.save();
             return true;

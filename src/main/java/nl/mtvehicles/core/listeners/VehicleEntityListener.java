@@ -99,15 +99,22 @@ public class VehicleEntityListener extends MTVListener {
     }
 
     private void handleFueling(String license, Player player, NBTItem nbt) {
-        double vehicleFuel = Math.max(VehicleData.fuel.getOrDefault(license, 0.0), (double) ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.FUEL));
+        final Object storedFuel = ConfigModule.vehicleDataConfig.get(license, VehicleDataConfig.Option.FUEL);
+        double vehicleFuel = Math.max(VehicleData.fuel.getOrDefault(license, 0.0), storedFuel instanceof Number ? ((Number) storedFuel).doubleValue() : 0.0);
 
         String jerryCanFuelStr = nbt.getString("mtvehicles.benzineval");
         String jerryCanSizeStr = nbt.getString("mtvehicles.benzinesize");
 
         if (jerryCanFuelStr == null || jerryCanSizeStr == null) return;
 
-        int jerryCanFuel = Integer.parseInt(jerryCanFuelStr);
-        int jerryCanSize = Integer.parseInt(jerryCanSizeStr);
+        int jerryCanFuel;
+        int jerryCanSize;
+        try {
+            jerryCanFuel = Integer.parseInt(jerryCanFuelStr);
+            jerryCanSize = Integer.parseInt(jerryCanSizeStr);
+        } catch (NumberFormatException e) {
+            return; // Not a (valid) jerrycan
+        }
 
         this.setAPI(new VehicleFuelEvent(vehicleFuel, jerryCanFuel, jerryCanSize));
         VehicleFuelEvent api = (VehicleFuelEvent) getAPI();

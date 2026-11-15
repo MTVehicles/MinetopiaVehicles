@@ -32,7 +32,8 @@ public class ChatListener extends MTVListener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onLicensePlateChange(AsyncPlayerChatEvent event) {
         this.event = event;
-        player = event.getPlayer();
+        final Player player = event.getPlayer();
+        this.player = player; // local copy is used in the scheduled task (the field may be overwritten by another player's chat message)
         String realMessage = event.getMessage().trim();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".kenteken") == null) return;
@@ -75,7 +76,8 @@ public class ChatListener extends MTVListener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onVehicleNameChange(final AsyncPlayerChatEvent event) {
         this.event = event;
-        player = event.getPlayer();
+        final Player player = event.getPlayer();
+        this.player = player; // local copy is used in the scheduled task (the field may be overwritten by another player's chat message)
         String realMessage = event.getMessage().trim();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".naam") == null) return;
@@ -117,7 +119,8 @@ public class ChatListener extends MTVListener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onFuelChange(final AsyncPlayerChatEvent event) {
         this.event = event;
-        player = event.getPlayer();
+        final Player player = event.getPlayer();
+        this.player = player; // local copy is used in the scheduled task (the field may be overwritten by another player's chat message)
         String realMessage = event.getMessage().trim();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".benzine") == null) return;
@@ -132,7 +135,7 @@ public class ChatListener extends MTVListener {
 
             String message = api.getMessage();
 
-            if (!isInt(message)) {
+            if (!isInt(player, message)) {
                 MenuUtils.benzineEdit(player);
                 ItemUtils.edit.put(player.getUniqueId() + ".benzine", false);
                 return;
@@ -165,7 +168,8 @@ public class ChatListener extends MTVListener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onFuelUsageChange(final AsyncPlayerChatEvent event) {
         this.event = event;
-        player = event.getPlayer();
+        final Player player = event.getPlayer();
+        this.player = player; // local copy is used in the scheduled task (the field may be overwritten by another player's chat message)
         String realMessage = event.getMessage().trim();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".benzineverbruik") == null) return;
@@ -180,7 +184,7 @@ public class ChatListener extends MTVListener {
 
             String message = api.getMessage();
 
-            if (!isDouble(message)) {
+            if (!isDouble(player, message)) {
                 MenuUtils.benzineEdit(player);
                 ItemUtils.edit.put(player.getUniqueId() + ".benzineverbruik", false);
                 return;
@@ -201,7 +205,7 @@ public class ChatListener extends MTVListener {
 
             MenuUtils.benzineEdit(player);
             ConfigModule.messagesConfig.sendMessage(player, Message.ACTION_CANCELLED);
-            ItemUtils.edit.put(player.getUniqueId() + ".benzine", false);
+            ItemUtils.edit.put(player.getUniqueId() + ".benzineverbruik", false);
 
             if (event.isAsynchronous()) schedulerRun(() -> MenuUtils.benzineEdit(player));
         });
@@ -213,7 +217,8 @@ public class ChatListener extends MTVListener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onTrunkRowsChange(final AsyncPlayerChatEvent event) {
         this.event = event;
-        player = event.getPlayer();
+        final Player player = event.getPlayer();
+        this.player = player; // local copy is used in the scheduled task (the field may be overwritten by another player's chat message)
         String realMessage = event.getMessage().trim();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".kofferbakRows") == null) return;
@@ -238,7 +243,7 @@ public class ChatListener extends MTVListener {
                 return;
             }
 
-            if (!isInt(message)) {
+            if (!isInt(player, message)) {
                 MenuUtils.trunkEdit(player);
                 ItemUtils.edit.put(player.getUniqueId() + ".kofferbakRows", false);
                 return;
@@ -262,7 +267,8 @@ public class ChatListener extends MTVListener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onAccelerationSpeedChange(final AsyncPlayerChatEvent event) {
         this.event = event;
-        player = event.getPlayer();
+        final Player player = event.getPlayer();
+        this.player = player; // local copy is used in the scheduled task (the field may be overwritten by another player's chat message)
         String realMessage = event.getMessage().trim();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".acceleratieSpeed") == null) return;
@@ -277,7 +283,7 @@ public class ChatListener extends MTVListener {
 
             String message = api.getMessage();
 
-            if (!isDouble(message)) {
+            if (!isDouble(player, message)) {
                 MenuUtils.speedEdit(player);
                 ItemUtils.edit.put(player.getUniqueId() + ".acceleratieSpeed", false);
                 return;
@@ -309,7 +315,8 @@ public class ChatListener extends MTVListener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onMaxSpeedChange(final AsyncPlayerChatEvent event) {
         this.event = event;
-        player = event.getPlayer();
+        final Player player = event.getPlayer();
+        this.player = player; // local copy is used in the scheduled task (the field may be overwritten by another player's chat message)
         String realMessage = event.getMessage().trim();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".maxSpeed") == null) return;
@@ -324,7 +331,7 @@ public class ChatListener extends MTVListener {
 
             String message = api.getMessage();
 
-            if (!isDouble(message)) {
+            if (!isDouble(player, message)) {
                 MenuUtils.speedEdit(player);
                 ItemUtils.edit.put(player.getUniqueId() + ".maxSpeed", false);
                 return;
@@ -357,7 +364,8 @@ public class ChatListener extends MTVListener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onBrakingSpeedChange(final AsyncPlayerChatEvent event) {
         this.event = event;
-        player = event.getPlayer();
+        final Player player = event.getPlayer();
+        this.player = player; // local copy is used in the scheduled task (the field may be overwritten by another player's chat message)
         String realMessage = event.getMessage().trim();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".brakingSpeed") == null) return;
@@ -372,7 +380,7 @@ public class ChatListener extends MTVListener {
 
             String message = api.getMessage();
 
-            if (!isDouble(message)) {
+            if (!isDouble(player, message)) {
                 MenuUtils.speedEdit(player);
                 ItemUtils.edit.put(player.getUniqueId() + ".brakingSpeed", false);
                 return;
@@ -405,7 +413,8 @@ public class ChatListener extends MTVListener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onFrictionSpeedChange(final AsyncPlayerChatEvent event) {
         this.event = event;
-        player = event.getPlayer();
+        final Player player = event.getPlayer();
+        this.player = player; // local copy is used in the scheduled task (the field may be overwritten by another player's chat message)
         String realMessage = event.getMessage().trim();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".aftrekkenSpeed") == null) return;
@@ -420,7 +429,7 @@ public class ChatListener extends MTVListener {
 
             String message = api.getMessage();
 
-            if (!isDouble(message)) {
+            if (!isDouble(player, message)) {
                 MenuUtils.speedEdit(player);
                 ItemUtils.edit.put(player.getUniqueId() + ".aftrekkenSpeed", false);
                 return;
@@ -453,7 +462,8 @@ public class ChatListener extends MTVListener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onMaxSpeedBackwardsChange(final AsyncPlayerChatEvent event) {
         this.event = event;
-        player = event.getPlayer();
+        final Player player = event.getPlayer();
+        this.player = player; // local copy is used in the scheduled task (the field may be overwritten by another player's chat message)
         String realMessage = event.getMessage().trim();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".maxSpeedBackwards") == null) return;
@@ -468,7 +478,7 @@ public class ChatListener extends MTVListener {
 
             String message = api.getMessage();
 
-            if (!isDouble(message)) {
+            if (!isDouble(player, message)) {
                 MenuUtils.speedEdit(player);
                 ItemUtils.edit.put(player.getUniqueId() + ".maxSpeedBackwards", false);
                 return;
@@ -501,7 +511,8 @@ public class ChatListener extends MTVListener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onRotateSpeedChange(final AsyncPlayerChatEvent event) {
         this.event = event;
-        player = event.getPlayer();
+        final Player player = event.getPlayer();
+        this.player = player; // local copy is used in the scheduled task (the field may be overwritten by another player's chat message)
         String realMessage = event.getMessage().trim();
 
         if (ItemUtils.edit.get(player.getUniqueId() + ".rotateSpeed") == null) return;
@@ -516,7 +527,7 @@ public class ChatListener extends MTVListener {
 
             String message = api.getMessage();
 
-            if (!isInt(message)) {
+            if (!isInt(player, message)) {
                 MenuUtils.speedEdit(player);
                 ItemUtils.edit.put(player.getUniqueId() + ".rotateSpeed", false);
                 return;
@@ -543,7 +554,9 @@ public class ChatListener extends MTVListener {
         });
     }
 
-    private boolean isInt(String str) {
+    // "!q" (cancel) is accepted here so that it reaches the cancel branch of the handlers instead of being reported as an invalid number.
+    private boolean isInt(Player player, String str) {
+        if (str.toLowerCase().contains("!q")) return true;
         try {
             Integer.parseInt(str);
         } catch (Throwable e) {
@@ -553,9 +566,11 @@ public class ChatListener extends MTVListener {
         return true;
     }
 
-    private boolean isDouble(String str) {
+    private boolean isDouble(Player player, String str) {
+        if (str.toLowerCase().contains("!q")) return true;
         try {
-            Double.valueOf(str);
+            double value = Double.parseDouble(str);
+            if (Double.isNaN(value) || Double.isInfinite(value)) throw new NumberFormatException();
         } catch (Throwable e) {
             ConfigModule.messagesConfig.sendMessage(player, Message.MUST_BE_DOUBLE);
             return false;

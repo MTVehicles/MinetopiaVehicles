@@ -274,21 +274,23 @@ public class MenuUtils {
         ConfigModule.configList.forEach(MTVConfig::reload);
         restorePage.put(p, page);
         if (!ConfigModule.vehicleDataConfig.isEmpty()) {
+            VehicleDataConfig data = ConfigModule.vehicleDataConfig;
+            // Filter by owner first, then paginate - otherwise pages would contain a random number of the owner's vehicles.
             List<String> dataVehicle = new ArrayList<>();
-            for (String licensePlate : ConfigModule.vehicleDataConfig.getVehicles().keySet()) {
-                dataVehicle.add(licensePlate);
+            for (String licensePlate : data.getVehicles().keySet()) {
+                Object owner = data.get(licensePlate, VehicleDataConfig.Option.OWNER);
+                if (ownerUUID == null || (owner != null && owner.toString().contains(ownerUUID.toString()))) {
+                    dataVehicle.add(licensePlate);
+                }
             }
+            dataVehicle.sort(String::compareToIgnoreCase); // stable order between pages (the underlying map is unordered)
             for (int i = 1 + page * 36 - 36; i <= page * 36; i++) {
                 if (i - 1 < dataVehicle.size()) {
                     String license = dataVehicle.get(i - 1);
-                    VehicleDataConfig data = ConfigModule.vehicleDataConfig;
-                    Object owner = data.get(license, VehicleDataConfig.Option.OWNER);
-                    if (ownerUUID == null || (owner != null && owner.toString().contains(ownerUUID.toString()))) {
-                        ItemStack item = data.get(license, VehicleDataConfig.Option.NBT_VALUE) == null
-                                ? ItemUtils.getVehicleItem(license)
-                                : ItemUtils.getVehicleItem(license, true);
-                        if (item != null) inv.addItem(item); // null = incomplete vehicle data (already logged)
-                    }
+                    ItemStack item = data.get(license, VehicleDataConfig.Option.NBT_VALUE) == null
+                            ? ItemUtils.getVehicleItem(license)
+                            : ItemUtils.getVehicleItem(license, true);
+                    if (item != null) inv.addItem(item); // null = incomplete vehicle data (already logged)
                 }
             }
             for (int i = 36; i <= 44; i++) {
